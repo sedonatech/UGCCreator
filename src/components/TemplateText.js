@@ -125,7 +125,7 @@ const TemplateText = ({
 
 const styles = StyleSheet.create({
   default: {
-    fontFamily: isAndroid ? 'Roboto' : 'Iowan Old Style',
+    fontFamily: isAndroid ? 'Roboto' : 'Arial',
     fontSize: isShortDEvice ? 15 : 18,
     color: BLACK_SECONDARY,
   },

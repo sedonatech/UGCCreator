@@ -4,6 +4,7 @@ import TemplateTouchable from './TemplateTouchable';
 import {BLACK, PRIMARY} from '../theme/Colors';
 import {ActivityIndicator, StyleSheet, Text} from 'react-native';
 import {RADIUS_SMALL, SCREEN_WIDTH} from '../theme/Layout';
+import TemplateText from './TemplateText';
 
 const Button = ({
   height,
@@ -43,7 +44,9 @@ const Button = ({
       {loading ? (
         <ActivityIndicator size="small" color={BLACK} />
       ) : (
-        <Text style={styles.title}>{title}</Text>
+        <TemplateText subTitle bold center>
+          {title}
+        </TemplateText>
       )}
     </TemplateTouchable>
   );
@@ -75,11 +78,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: RADIUS_SMALL,
-  },
-  title: {
-    color: BLACK,
-    fontSize: 20,
-    fontWeight: '600',
   },
 });
 export default Button;
