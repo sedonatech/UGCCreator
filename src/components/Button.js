@@ -22,7 +22,6 @@ const Button = ({
     if (loading) {
       return;
     }
-    console.log('onPress');
     if (onPress) {
       onPress();
     }

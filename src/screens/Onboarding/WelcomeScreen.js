@@ -12,7 +12,6 @@ const WelcomeScreen = ({navigation}) => {
       <Button
         title="Get Started"
         onPress={() => {
-          console.log('Get Started');
           navigation.navigate(ONBOARDING);
         }}
         style={styles.button}
