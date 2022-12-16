@@ -22,6 +22,7 @@ const Button = ({
     if (loading) {
       return;
     }
+    console.log('onPress');
     if (onPress) {
       onPress();
     }
@@ -29,7 +30,7 @@ const Button = ({
 
   return (
     <TemplateTouchable
-      onClick={handleOnPress}
+      onPress={handleOnPress}
       style={[
         styles.container,
         {
