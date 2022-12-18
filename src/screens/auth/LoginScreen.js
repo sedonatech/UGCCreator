@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
+import auth from '@react-native-firebase/auth';
 import {BLACK, BLACK_SECONDARY, BLUE, WHITE} from '../../theme/Colors';
 import Logo from '../../../asssets/svgs/Logo';
 import TemplateText from '../../components/TemplateText';
@@ -11,6 +12,32 @@ import {isAndroid} from '../../Utils/Platform';
 import TemplateTextInput from '../../components/TemplateTextInput';
 
 const LoginScreen = ({navigation}) => {
+  const [email, setEmail] = useState();
+
+  const [password, setPassword] = useState();
+
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = () => {
+    setLoading(true);
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User signed in!');
+        setLoading(false);
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+        setLoading(false);
+        console.error(error);
+      });
+  };
   return (
     <Wrapper
       contentContainerStyle={styles.contentContainerStyle}
@@ -28,18 +55,28 @@ const LoginScreen = ({navigation}) => {
       <TemplateText size={18} color={BLACK_SECONDARY}>
         Enter your email and password to continue
       </TemplateText>
-      <TemplateTextInput placeholder="Email" style={styles.input} />
+      <TemplateTextInput
+        placeholder="Email"
+        style={styles.input}
+        value={email}
+        onChangeText={text => setEmail(text)}
+        keyboardType="email-address"
+        disabled={!email && !password}
+      />
       <TemplateTextInput
         placeholder="Password"
         style={styles.input}
+        value={password}
+        onChangeText={text => setPassword(text)}
         secureTextEntry
       />
       <View style={styles.buttonContainer}>
         <Button
           title="Login"
-          onPress={() => {}}
+          onPress={handleLogin}
           style={styles.button}
           titleColor={BLACK}
+          loading={loading}
         />
 
         <TemplateText size={16} center italic style={styles.signupLink}>
