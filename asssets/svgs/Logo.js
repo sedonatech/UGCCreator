@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
+import PropTypes from 'prop-types';
 
-function Logo(props) {
+function Logo({height, width, ...props}) {
   return (
-    <Svg width={300} height={180} viewBox="0 0 189 96" fill="none" {...props}>
+    <Svg width={width} height={height} viewBox="0 0 189 96" fill="none" {...props}>
       <Path
         d="M61.941 46c10.493 0 19-8.507 19-19s-8.507-19-19-19-19 8.507-19 19 8.507 19 19 19z"
         fill="#040607"
@@ -24,5 +25,15 @@ function Logo(props) {
     </Svg>
   );
 }
+
+Logo.propTypes = {
+  height: PropTypes.number,
+  width: PropTypes.number,
+};
+
+Logo.defaultProps = {
+  height: 100,
+  width: 360,
+};
 
 export default Logo;
