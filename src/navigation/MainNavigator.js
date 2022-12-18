@@ -12,7 +12,6 @@ const {Navigator, Screen} = Stack;
 enableScreens();
 const MainNavigator = () => {
   const {user, initializing} = useAuthState();
-  console.log('-> user', JSON.stringify(user, null, 2));
 
   if (initializing) {
     return <Loading />;
