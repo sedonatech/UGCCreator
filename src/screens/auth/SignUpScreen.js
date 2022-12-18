@@ -8,7 +8,6 @@ import Button from '../../components/Button';
 import {LOGIN} from '../../navigation/ScreenNames';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import Wrapper from '../../components/Wrapper';
-import {isAndroid} from '../../Utils/Platform';
 
 const SignUpScreen = ({navigation, route}) => {
   const type = route.params?.type;
@@ -23,6 +22,7 @@ const SignUpScreen = ({navigation, route}) => {
     <Wrapper
       contentContainerStyle={styles.contentContainerStyle}
       style={styles.container}
+      showsVerticalScrollIndicator={false}
       keyboard>
       <Logo
         height={SCREEN_WIDTH / 3}
@@ -79,6 +79,7 @@ const SignUpScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: 'center',
   },
   dot: {
@@ -90,8 +91,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   contentContainerStyle: {
-    flex: isAndroid ? 0 : 1,
-    height: isAndroid ? SCREEN_HEIGHT : null,
+    height: SCREEN_HEIGHT,
     backgroundColor: WHITE,
   },
   textContainer: {
@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
     marginBottom: WRAPPER_MARGIN,
   },
   buttonContainer: {
-    flex: 1,
     marginTop: WRAPPER_MARGIN * 2,
     alignSelf: 'center',
   },

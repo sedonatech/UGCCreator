@@ -42,7 +42,7 @@ const LoginScreen = ({navigation}) => {
           titleColor={BLACK}
         />
 
-        <TemplateText size={16} center style={styles.signupLink}>
+        <TemplateText size={16} center italic style={styles.signupLink}>
           New to the UGC creator app? {''}
           <TemplateText
             color={BLUE}
