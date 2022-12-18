@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1029021461255",
+    "project_id": "ugccreatorapp",
+    "storage_bucket": "ugccreatorapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029021461255:android:bf170f5086181bbf5b33a2",
+        "android_client_info": {
+          "package_name": "com.ugccreatorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029021461255-nh4uaoteai791no6j4ga2psg3gdqreq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdW4l5YJ3MtVzEwjq5KKogpOdXkri0oH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029021461255-nh4uaoteai791no6j4ga2psg3gdqreq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

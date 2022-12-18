@@ -3,3 +3,6 @@ export const ONBOARDING = 'Onboarding';
 export const AUTH = 'Auth';
 export const SIGN_UP = 'SignUp';
 export const LOGIN = 'Login';
+export const HOME = 'Home';
+
+export const HOME_STACK = 'HomeStack';
