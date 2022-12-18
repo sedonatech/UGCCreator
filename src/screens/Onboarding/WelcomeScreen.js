@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
   },
   logo: {
+    flex: 1,
     marginTop: SCREEN_HEIGHT / 9,
     alignSelf: 'center',
   },

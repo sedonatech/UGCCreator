@@ -3,7 +3,7 @@ import {Text, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 import {startCase as startCaseFunc} from 'lodash';
 import {isShortDEvice} from '../theme/Layout';
-import {BLACK, BLACK_SECONDARY, PRIMARY, WHITE} from '../theme/Colors';
+import {BLACK, PRIMARY, WHITE} from '../theme/Colors';
 import {isAndroid} from '../Utils/Platform';
 
 const TemplateText = ({
@@ -28,6 +28,7 @@ const TemplateText = ({
   children,
   numberOfLines,
   startCase,
+  italic,
   ...restProps
 }) => {
   const textStyle = {};
@@ -92,6 +93,10 @@ const TemplateText = ({
     textStyle.color = color;
   }
 
+  if (italic) {
+    textStyle.fontStyle = 'italic';
+  }
+
   if (size) {
     textStyle.fontSize = size;
   }
@@ -127,7 +132,7 @@ const styles = StyleSheet.create({
   default: {
     fontFamily: isAndroid ? 'Roboto' : 'Arial',
     fontSize: isShortDEvice ? 15 : 18,
-    color: BLACK_SECONDARY,
+    color: BLACK,
   },
 });
 
@@ -153,6 +158,7 @@ TemplateText.propTypes = {
   children: PropTypes.node,
   numberOfLines: PropTypes.number,
   startCase: PropTypes.bool,
+  italic: PropTypes.bool,
 };
 
 TemplateText.defaultProps = {
@@ -177,6 +183,7 @@ TemplateText.defaultProps = {
   children: null,
   numberOfLines: null,
   startCase: false,
+  italic: false,
 };
 
 export default TemplateText;

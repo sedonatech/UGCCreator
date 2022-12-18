@@ -12,3 +12,5 @@ export const RADIUS_LARGE = 24;
 export const isShortDEvice = SCREEN_HEIGHT < 700;
 
 export const isSmallDevice = SCREEN_WIDTH < 350;
+
+export const WRAPPER_MARGIN = 16

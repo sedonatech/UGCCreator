@@ -15,6 +15,7 @@ const Button = ({
   loading,
   disabled,
   style,
+                  titleColor
 }) => {
   const handleOnPress = () => {
     if (disabled) {
@@ -44,7 +45,7 @@ const Button = ({
       {loading ? (
         <ActivityIndicator size="small" color={BLACK} />
       ) : (
-        <TemplateText subTitle bold center>
+        <TemplateText subTitle semiBold center color={titleColor}>
           {title}
         </TemplateText>
       )}
@@ -61,6 +62,7 @@ Button.propTypes = {
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
   style: PropTypes.object,
+  titleColor: PropTypes.string,
 };
 Button.defaultProps = {
   height: 60,
@@ -71,13 +73,14 @@ Button.defaultProps = {
   loading: false,
   disabled: false,
   style: {},
+  titleColor: BLACK,
 };
 
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: RADIUS_SMALL,
+    borderRadius: 8,
   },
 });
 export default Button;
