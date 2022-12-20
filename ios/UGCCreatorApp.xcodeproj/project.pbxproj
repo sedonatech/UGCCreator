@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* UGCCreatorAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* UGCCreatorAppTests.m */; };
+		0525B4C446EC0B0BC24C49BA /* Pods_UGCCreatorApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E549F6DAC8EC7FE498C2B71F /* Pods_UGCCreatorApp.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		80F2AEC81A9E5D33161B8370 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D76A7C3F55091296E30C0F42 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */; };
+		6E7BAABE351F6A19283E6638 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 209A24B4A24EFCCA2C4C422A /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C8BB7251294E359C00149E9D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7242294E359C00149E9D /* Octicons.ttf */; };
 		C8BB7252294E359C00149E9D /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7243294E359C00149E9D /* MaterialCommunityIcons.ttf */; };
@@ -29,7 +30,6 @@
 		C8BB725E294E359C00149E9D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB724F294E359C00149E9D /* Foundation.ttf */; };
 		C8BB725F294E359C00149E9D /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7250294E359C00149E9D /* Fontisto.ttf */; };
 		C8BB7263294F414100149E9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7262294F414100149E9D /* GoogleService-Info.plist */; };
-		E6DE5A52124C83D821866D34 /* Pods_UGCCreatorApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42E01726AA6109E7F3DBF1A0 /* Pods_UGCCreatorApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,11 +52,12 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = UGCCreatorApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = UGCCreatorApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = UGCCreatorApp/main.m; sourceTree = "<group>"; };
-		30A4F1133ABBBDCB66D01E85 /* Pods-UGCCreatorApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp.release.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp.release.xcconfig"; sourceTree = "<group>"; };
-		42E01726AA6109E7F3DBF1A0 /* Pods_UGCCreatorApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		209A24B4A24EFCCA2C4C422A /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp_UGCCreatorAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E422B013BA3625AE3A11D29 /* Pods-UGCCreatorApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp.release.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp.release.xcconfig"; sourceTree = "<group>"; };
+		592BC0AA1FF73F18341A5E6D /* Pods-UGCCreatorApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp.debug.xcconfig"; sourceTree = "<group>"; };
+		736AF34E8022191D36929105 /* Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = UGCCreatorApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		86EF62E5E193E2297950D6E3 /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		89D6D3CED52AE7A8CA4C86A3 /* Pods-UGCCreatorApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp.debug.xcconfig"; sourceTree = "<group>"; };
+		A1C3B95A63E62D04FCD2877C /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C8BB7242294E359C00149E9D /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C8BB7243294E359C00149E9D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		C8BB7244294E359C00149E9D /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -73,9 +74,8 @@
 		C8BB724F294E359C00149E9D /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		C8BB7250294E359C00149E9D /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		C8BB7262294F414100149E9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		D76A7C3F55091296E30C0F42 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp_UGCCreatorAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E549F6DAC8EC7FE498C2B71F /* Pods_UGCCreatorApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F17BB6D1B43122EFE99D5F38 /* Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80F2AEC81A9E5D33161B8370 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework in Frameworks */,
+				6E7BAABE351F6A19283E6638 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6DE5A52124C83D821866D34 /* Pods_UGCCreatorApp.framework in Frameworks */,
+				0525B4C446EC0B0BC24C49BA /* Pods_UGCCreatorApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,8 +132,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				42E01726AA6109E7F3DBF1A0 /* Pods_UGCCreatorApp.framework */,
-				D76A7C3F55091296E30C0F42 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */,
+				E549F6DAC8EC7FE498C2B71F /* Pods_UGCCreatorApp.framework */,
+				209A24B4A24EFCCA2C4C422A /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -174,10 +174,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				89D6D3CED52AE7A8CA4C86A3 /* Pods-UGCCreatorApp.debug.xcconfig */,
-				30A4F1133ABBBDCB66D01E85 /* Pods-UGCCreatorApp.release.xcconfig */,
-				86EF62E5E193E2297950D6E3 /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */,
-				F17BB6D1B43122EFE99D5F38 /* Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig */,
+				592BC0AA1FF73F18341A5E6D /* Pods-UGCCreatorApp.debug.xcconfig */,
+				3E422B013BA3625AE3A11D29 /* Pods-UGCCreatorApp.release.xcconfig */,
+				A1C3B95A63E62D04FCD2877C /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */,
+				736AF34E8022191D36929105 /* Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -211,11 +211,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UGCCreatorAppTests" */;
 			buildPhases = (
-				A5B3FE3A78F35A7E4DE23C5F /* [CP] Check Pods Manifest.lock */,
+				2EE9D658AC1412256690B4DB /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				4F89EBE4F5244533580C241C /* [CP] Embed Pods Frameworks */,
+				1B5DEA91AFE985862D5115EA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -231,14 +231,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "UGCCreatorApp" */;
 			buildPhases = (
-				1801F239D30D8C6B4EC779EF /* [CP] Check Pods Manifest.lock */,
+				0DF87662128B069EDECED065 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				8FD41044CEEC81B58DEB998B /* [CP] Embed Pods Frameworks */,
-				EC7E6A29BF5B1B9C400CADD1 /* [CP-User] [RNFB] Core Configuration */,
+				5788B7227490EF552AAAB28D /* [CP] Embed Pods Frameworks */,
+				DEDC0C92C2C48E3EE1A1AAA9 /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -337,7 +337,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		1801F239D30D8C6B4EC779EF /* [CP] Check Pods Manifest.lock */ = {
+		0DF87662128B069EDECED065 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -359,7 +359,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4F89EBE4F5244533580C241C /* [CP] Embed Pods Frameworks */ = {
+		1B5DEA91AFE985862D5115EA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -376,24 +376,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8FD41044CEEC81B58DEB998B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A5B3FE3A78F35A7E4DE23C5F /* [CP] Check Pods Manifest.lock */ = {
+		2EE9D658AC1412256690B4DB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -415,7 +398,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EC7E6A29BF5B1B9C400CADD1 /* [CP-User] [RNFB] Core Configuration */ = {
+		5788B7227490EF552AAAB28D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DEDC0C92C2C48E3EE1A1AAA9 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -480,7 +480,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86EF62E5E193E2297950D6E3 /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */;
+			baseConfigurationReference = A1C3B95A63E62D04FCD2877C /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -507,7 +507,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F17BB6D1B43122EFE99D5F38 /* Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig */;
+			baseConfigurationReference = 736AF34E8022191D36929105 /* Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -531,7 +531,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89D6D3CED52AE7A8CA4C86A3 /* Pods-UGCCreatorApp.debug.xcconfig */;
+			baseConfigurationReference = 592BC0AA1FF73F18341A5E6D /* Pods-UGCCreatorApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -559,7 +559,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30A4F1133ABBBDCB66D01E85 /* Pods-UGCCreatorApp.release.xcconfig */;
+			baseConfigurationReference = 3E422B013BA3625AE3A11D29 /* Pods-UGCCreatorApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
