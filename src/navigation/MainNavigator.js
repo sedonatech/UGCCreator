@@ -1,11 +1,11 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {AUTH, HOME_STACK} from './ScreenNames';
+import {APP, AUTH} from './ScreenNames';
 import {enableScreens} from 'react-native-screens';
 import AuthStack from './auth/AuthStack';
-import HomeStack from './app/HomeStack';
 import useAuthState from '../hooks/auth/useAuthState';
 import Loading from '../components/Loading';
+import AppStack from './app/AppStack';
 const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
@@ -23,7 +23,7 @@ const MainNavigator = () => {
         headerShown: false,
       }}>
       {user ? (
-        <Screen name={HOME_STACK} component={HomeStack} />
+        <Screen name={APP} component={AppStack} />
       ) : (
         <Screen name={AUTH} component={AuthStack} />
       )}

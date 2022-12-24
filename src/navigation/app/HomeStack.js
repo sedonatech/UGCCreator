@@ -2,7 +2,6 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {HOME} from '../ScreenNames';
-
 import HomeScreen from '../../screens/app/home/HomeScreen';
 
 const Stack = createStackNavigator();

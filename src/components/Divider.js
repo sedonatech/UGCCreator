@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import PropTypes from 'prop-types';
 
-import { BLACK, BLACK_50 } from "../theme/Colors";
+import {BLACK_50} from '../theme/Colors';
 import {SCREEN_WIDTH, WRAPPER_MARGIN} from '../theme/Layout';
 
 const Divider = ({wrap, style}) => (
