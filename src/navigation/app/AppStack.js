@@ -1,12 +1,9 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {
-  SWITCH,
-  TRANSPARENT_NO_LOGO_HEADER,
-} from '../../components/header/screenOptions';
 import {APP_TABS} from '../ScreenNames';
 import AppTabs from './AppTabs';
+import {SWITCH} from '../../components/header/ScreenOptions';
 
 const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
@@ -18,7 +15,7 @@ const AppStack = () => (
     screenOptions={SWITCH}>
     <Screen
       name={APP_TABS}
-      options={TRANSPARENT_NO_LOGO_HEADER}
+      options={{headerShown: false}}
       component={AppTabs}
     />
   </Navigator>

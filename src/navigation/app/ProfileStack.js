@@ -1,10 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {
-  SWITCH,
-  TRANSPARENT_NO_LOGO_HEADER,
-} from '../../components/header/screenOptions';
+import {SWITCH} from '../../components/header/ScreenOptions';
 import ProfileScreen from '../../screens/app/profile/ProfileScreen';
 import {PROFILE} from '../ScreenNames';
 
@@ -18,7 +15,7 @@ const ProfileStack = () => (
     screenOptions={SWITCH}>
     <Screen
       name={PROFILE}
-      options={TRANSPARENT_NO_LOGO_HEADER}
+      options={{headerShown: false}}
       component={ProfileScreen}
     />
   </Navigator>

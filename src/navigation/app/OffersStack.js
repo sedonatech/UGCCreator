@@ -1,10 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {
-  SWITCH,
-  TRANSPARENT_NO_LOGO_HEADER,
-} from '../../components/header/screenOptions';
+import {SWITCH} from '../../components/header/ScreenOptions';
 import OffersScreen from '../../screens/app/offers/OffersScreen';
 import {OFFERS} from '../ScreenNames';
 
@@ -18,7 +15,7 @@ const OffersStack = () => (
     screenOptions={SWITCH}>
     <Screen
       name={OFFERS}
-      options={TRANSPARENT_NO_LOGO_HEADER}
+      options={{headerShown: false}}
       component={OffersScreen}
     />
   </Navigator>

@@ -18,7 +18,7 @@ const {Navigator, Screen} = Tab;
 
 const AppTabs = () => {
   return (
-    <Navigator>
+    <Navigator screenOptions={{headerShown: false}}>
       <Screen name={HOME_STACK} component={HomeStack} />
       <Screen name={EXPLORE_STACK} component={ExploreStack} />
       <Screen name={OFFERS_STACK} component={OffersStack} />

@@ -32,8 +32,11 @@ const HomeScreen = () => {
   return (
     <Wrapper>
       <TemplateText>HomeScreen</TemplateText>
-      <TemplateIcon name="chat-processing-outline" />
+
       <Button onPress={handleLogout} title="logout" />
+        <TemplateIcon name="chat-processing-outline" />
+
+        <TemplateIcon name="chat-processing-outline" />
     </Wrapper>
   );
 };

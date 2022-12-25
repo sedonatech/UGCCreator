@@ -1,12 +1,9 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {
-  SWITCH,
-  TRANSPARENT_NO_LOGO_HEADER,
-} from '../../components/header/screenOptions';
 import ExploreScreen from '../../screens/app/explore/ExploreScreen';
 import {EXPLORE} from '../ScreenNames';
+import {SWITCH} from '../../components/header/ScreenOptions';
 
 const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
@@ -18,7 +15,7 @@ const ExploreStack = () => (
     screenOptions={SWITCH}>
     <Screen
       name={EXPLORE}
-      options={TRANSPARENT_NO_LOGO_HEADER}
+      options={{headerShown: false}}
       component={ExploreScreen}
     />
   </Navigator>

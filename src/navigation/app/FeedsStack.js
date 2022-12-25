@@ -1,10 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {
-  SWITCH,
-  TRANSPARENT_NO_LOGO_HEADER,
-} from '../../components/header/screenOptions';
+import {SWITCH} from '../../components/header/ScreenOptions';
 import FeedsScreen from '../../screens/app/feeds/FeedsScreen';
 import {FEEDS} from '../ScreenNames';
 
@@ -18,7 +15,7 @@ const FeedsStack = () => (
     screenOptions={SWITCH}>
     <Screen
       name={FEEDS}
-      options={TRANSPARENT_NO_LOGO_HEADER}
+      options={{headerShown: false}}
       component={FeedsScreen}
     />
   </Navigator>

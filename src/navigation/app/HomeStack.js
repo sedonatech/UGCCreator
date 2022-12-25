@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
+import {SWITCH} from '../../components/header/ScreenOptions';
 import {HOME} from '../ScreenNames';
 import HomeScreen from '../../screens/app/home/HomeScreen';
 
@@ -9,11 +10,12 @@ const {Navigator, Screen} = Stack;
 
 const HomeStack = () => {
   return (
-    <Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Screen name={HOME} component={HomeScreen} />
+    <Navigator screenOptions={SWITCH}>
+      <Screen
+        options={{headerShown: false}}
+        name={HOME}
+        component={HomeScreen}
+      />
     </Navigator>
   );
 };
