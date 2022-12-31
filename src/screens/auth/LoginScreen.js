@@ -18,25 +18,22 @@ const LoginScreen = ({navigation}) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setLoading(true);
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('User signed in!');
-        setLoading(false);
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
+    try {
+      const response = await auth().signInWithEmailAndPassword(email, password);
+      console.log('-> response', JSON.stringify(response, null, 2));
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
 
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-        setLoading(false);
-        console.error(error);
-      });
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <Wrapper
