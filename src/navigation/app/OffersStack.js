@@ -9,10 +9,7 @@ const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
 const OffersStack = () => (
-  <Navigator
-    initialRouteName={OFFERS}
-    headerMode="screen"
-    screenOptions={SWITCH}>
+  <Navigator initialRouteName={OFFERS} screenOptions={SWITCH}>
     <Screen
       name={OFFERS}
       options={{headerShown: false}}

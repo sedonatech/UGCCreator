@@ -11,10 +11,7 @@ const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
 const SubscriptionStack = () => (
-  <Navigator
-    initialRouteName="Subscription"
-    headerMode="screen"
-    screenOptions={SWITCH}>
+  <Navigator initialRouteName="Subscription" screenOptions={SWITCH}>
     <Screen
       name="Subscription"
       options={TRANSPARENT_NO_LOGO_HEADER}

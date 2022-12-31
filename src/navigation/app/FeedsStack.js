@@ -9,10 +9,7 @@ const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
 const FeedsStack = () => (
-  <Navigator
-    initialRouteName={FEEDS}
-    headerMode="screen"
-    screenOptions={SWITCH}>
+  <Navigator initialRouteName={FEEDS} screenOptions={SWITCH}>
     <Screen
       name={FEEDS}
       options={{headerShown: false}}

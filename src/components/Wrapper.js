@@ -190,7 +190,7 @@ Wrapper.defaultProps = {
   scroll: true,
   contentContainerStyle: null,
   loading: false,
-  safe: false,
+  safe: true,
   extraHeight: 20,
   background: null,
 };

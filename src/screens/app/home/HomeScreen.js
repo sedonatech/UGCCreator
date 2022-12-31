@@ -1,44 +1,33 @@
 import React from 'react';
-import auth from '@react-native-firebase/auth';
+import {ScrollView, StyleSheet} from 'react-native';
 
-import TemplateIcon from '../../../components/TemplateIcon';
-import Wrapper from '../../../components/Wrapper';
-import TemplateText from '../../../components/TemplateText';
-import Button from '../../../components/Button';
-import {Alert} from 'react-native';
+import {WHITE} from '../../../theme/Colors';
+import {SCREEN_HEIGHT, WRAPPER_MARGIN} from '../../../theme/Layout';
+import useAuthState from '../../../hooks/auth/useAuthState';
+import Greeting from './components /Greeting';
+import TrendingCategoriesCarousel from './components /TrendingCategoriesCarousel';
 
 const HomeScreen = () => {
-  const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {
-          text: 'OK',
-          onPress: () =>
-            auth()
-              .signOut()
-              .then(() => console.log('User signed out!')),
-        },
-      ],
-      {cancelable: false},
-    );
-  };
+  const {user} = useAuthState();
+
   return (
-    <Wrapper>
-      <TemplateText>HomeScreen</TemplateText>
-
-      <Button onPress={handleLogout} title="logout" />
-        <TemplateIcon name="chat-processing-outline" />
-
-        <TemplateIcon name="chat-processing-outline" />
-    </Wrapper>
+    <ScrollView style={styles.container}>
+      {user?.displayName && (
+        <Greeting userName={user?.displayName} style={styles.greeting} />
+      )}
+      <TrendingCategoriesCarousel />
+    </ScrollView>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: WHITE,
+  },
+  greeting: {
+    marginTop: SCREEN_HEIGHT * 0.14,
+    marginBottom: WRAPPER_MARGIN * 2,
+    marginHorizontal: WRAPPER_MARGIN,
+  },
+});
 export default HomeScreen;

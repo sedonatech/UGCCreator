@@ -9,10 +9,7 @@ const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
 const AppStack = () => (
-  <Navigator
-    initialRouteName={APP_TABS}
-    headerMode="screen"
-    screenOptions={SWITCH}>
+  <Navigator initialRouteName={APP_TABS} screenOptions={SWITCH}>
     <Screen
       name={APP_TABS}
       options={{headerShown: false}}

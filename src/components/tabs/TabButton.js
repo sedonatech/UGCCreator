@@ -6,7 +6,13 @@ import {BLACK} from '../../theme/Colors';
 
 const TabButton = ({focused, icon}) => (
   <View style={[styles.container, focused && styles.activeContainer]}>
-    <TemplateIcon name={icon} style={styles.icon} size={22} color={BLACK} />
+    <TemplateIcon
+      name={icon}
+      style={styles.icon}
+      size={24}
+      color={BLACK}
+      family="Ionicons"
+    />
   </View>
 );
 

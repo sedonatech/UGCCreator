@@ -2,12 +2,10 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {LOGIN, ONBOARDING, SIGN_UP, WELCOME} from '../ScreenNames';
-
-
-import WelcomeScreen from "../../screens/Onboarding/WelcomeScreen";
-import OnboardingScreen from "../../screens/Onboarding/OnboardingScreen";
-import SignUpScreen from "../../screens/auth/SignUpScreen";
-import LoginScreen from "../../screens/auth/LoginScreen";
+import WelcomeScreen from '../../screens/Onboarding/WelcomeScreen';
+import OnboardingScreen from '../../screens/Onboarding/OnboardingScreen';
+import SignUpScreen from '../../screens/auth/SignUpScreen';
+import LoginScreen from '../../screens/auth/LoginScreen';
 
 const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;

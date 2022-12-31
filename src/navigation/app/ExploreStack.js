@@ -9,10 +9,7 @@ const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
 const ExploreStack = () => (
-  <Navigator
-    initialRouteName={EXPLORE}
-    headerMode="screen"
-    screenOptions={SWITCH}>
+  <Navigator initialRouteName={EXPLORE} screenOptions={SWITCH}>
     <Screen
       name={EXPLORE}
       options={{headerShown: false}}

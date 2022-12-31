@@ -9,10 +9,7 @@ const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
 const ProfileStack = () => (
-  <Navigator
-    initialRouteName={PROFILE}
-    headerMode="screen"
-    screenOptions={SWITCH}>
+  <Navigator initialRouteName={PROFILE} screenOptions={SWITCH}>
     <Screen
       name={PROFILE}
       options={{headerShown: false}}

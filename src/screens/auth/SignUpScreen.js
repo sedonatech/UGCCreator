@@ -68,33 +68,29 @@ const SignUpScreen = ({navigation, route}) => {
       !!error
     );
   }, [email, password, name, loading, error]);
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     setLoading(true);
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        const user = auth().currentUser;
-        user
-          ?.sendEmailVerification()
-          ?.then(() => {
-            setLoading(false);
-          })
-          .catch(e => {
-            setLoading(false);
-            setError(e.message);
-          });
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          setError('That email address is already in use!');
-        }
+    try {
+      const response = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      if (response?.user) {
+        const userInformation = {
+          displayName: name,
+        };
+        await auth().currentUser.updateProfile(userInformation);
+      }
+    } catch (e) {
+      if (e.code === 'auth/email-already-in-use') {
+        setError('That email address is already in use!');
+      }
 
-        if (error.code === 'auth/invalid-email') {
-          setPassword('That email address is invalid!');
-        }
-        setLoading(false);
-        console.error(error);
-      });
+      if (e.code === 'auth/invalid-email') {
+        setPassword('That email address is invalid!');
+      }
+      setLoading(false);
+    }
   };
 
   return (
