@@ -17,6 +17,8 @@ export const BLUE = '#2D9CDB';
 export const BLUE_SECONDARY = '#56CCF2';
 
 export const ERROR_RED = '#EB5757';
+
+export const LIGHT_PURPLE = '#ECEDFD';
 export default {
   TRANSPARENT,
 };

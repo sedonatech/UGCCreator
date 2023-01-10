@@ -1,6 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   BLACK,
   BLACK_SECONDARY,
@@ -17,6 +18,7 @@ import TemplateTextInput from '../../components/TemplateTextInput';
 import Wrapper from '../../components/Wrapper';
 import Error from '../../components/Error';
 import {emailValid, passwordValid, isEmpty} from '../../Utils/validation';
+import useProfile from '../../hooks/user/useProfile';
 
 const CREATOR_PLACEHOLDER = 'Creator';
 const BRAND_PLACEHOLDER = 'Brand';
@@ -68,18 +70,24 @@ const SignUpScreen = ({navigation, route}) => {
       !!error
     );
   }, [email, password, name, loading, error]);
+
+  const {createCreatorProfile, createBrandProfile} = useProfile();
+
   const handleSignUp = async () => {
     setLoading(true);
     try {
+      await AsyncStorage.setItem('@userType', namePlaceholder);
       const response = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
+
       if (response?.user) {
-        const userInformation = {
-          displayName: name,
-        };
-        await auth().currentUser.updateProfile(userInformation);
+        if (isCreator) {
+          await createCreatorProfile(name, response?.user);
+        } else {
+          await createBrandProfile(name, response?.user);
+        }
       }
     } catch (e) {
       if (e.code === 'auth/email-already-in-use') {

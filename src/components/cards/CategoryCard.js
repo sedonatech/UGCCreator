@@ -9,25 +9,22 @@ import {
   RADIUS_SMALL,
   WRAPPER_MARGIN,
 } from '../../theme/Layout';
-import {BLACK, BLACK_30, BLACK_50, BLUE} from '../../theme/Colors';
+import {BLACK_30, BLUE, LIGHT_PURPLE} from '../../theme/Colors';
 import TemplateText from '../TemplateText';
 import TemplateIcon from '../TemplateIcon';
+
 const CategoryCard = ({onPress, title, icon, proposalCount, style}) => {
   const Component = onPress ? TemplateTouchable : View;
 
   return (
     <Component onPress={onPress} style={[styles.container, style]}>
       <View style={styles.iconContainer}>
-        <TemplateIcon name={icon} family="Ionicons" size={20} color={BLUE} />
-        <TemplateText style={styles.proposalCount} size={14} color={BLACK_30}>
-          {proposalCount}
-        </TemplateText>
+        <TemplateIcon name={icon} family="Ionicons" size={24} color={BLUE} />
       </View>
-      <View style={styles.textContainer}>
-        <TemplateText style={styles.title} size={18}>
-          {title}
-        </TemplateText>
-      </View>
+
+      <TemplateText style={styles.title} size={14}>
+        {title}
+      </TemplateText>
     </Component>
   );
 };
@@ -55,15 +52,18 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS_SMALL * 2,
     borderWidth: 0.4,
     borderColor: BLACK_30,
-    paddingHorizontal: WRAPPER_MARGIN,
     paddingVertical: WRAPPER_MARGIN,
-    justifyContent: 'space-between',
-    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: LIGHT_PURPLE,
+    padding: 10,
+    borderRadius: 50,
+    marginBottom: 10,
   },
 });
 

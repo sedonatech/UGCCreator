@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {WHITE} from '../../../theme/Colors';
 import {SCREEN_HEIGHT, WRAPPER_MARGIN} from '../../../theme/Layout';
-import useAuthState from '../../../hooks/auth/useAuthState';
+
 import Greeting from './components /Greeting';
 import TrendingCategoriesCarousel from './components /TrendingCategoriesCarousel';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const HomeScreen = () => {
-  const {user} = useAuthState();
+  const {auth} = useAuthContext();
 
+  const profile = auth?.profile;
   return (
     <ScrollView style={styles.container}>
-      {user?.displayName && (
-        <Greeting userName={user?.displayName} style={styles.greeting} />
+      {profile?.userName && (
+        <Greeting userName={profile?.userName} style={styles.greeting} />
       )}
       <TrendingCategoriesCarousel />
     </ScrollView>
