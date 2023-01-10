@@ -3,17 +3,17 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {APP, AUTH} from './ScreenNames';
 import {enableScreens} from 'react-native-screens';
 import AuthStack from './auth/AuthStack';
-import useAuthState from '../hooks/auth/useAuthState';
 import Loading from '../components/Loading';
 import AppStack from './app/AppStack';
+import useAuthContext from '../hooks/auth/useAuthContext';
 const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
 
 enableScreens();
 const MainNavigator = () => {
-  const {user, initializing} = useAuthState();
+  const {auth} = useAuthContext();
 
-  if (initializing) {
+  if (auth?.initializing) {
     return <Loading />;
   }
 
@@ -22,7 +22,7 @@ const MainNavigator = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {user ? (
+      {auth?.user ? (
         <Screen name={APP} component={AppStack} />
       ) : (
         <Screen name={AUTH} component={AuthStack} />
