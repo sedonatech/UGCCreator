@@ -8,8 +8,10 @@ const AuthContext = createContext();
 const {Provider, Consumer: AuthConsumer} = AuthContext;
 const AuthProvider = ({children}) => {
   const {user, initializing} = useAuthState();
+  console.log('-> user', JSON.stringify(user, null, 2));
 
   const [profile, setProfile] = useState(null);
+  console.log('-> profile', JSON.stringify(profile, null, 2));
 
   const {getProfile} = useProfile();
 

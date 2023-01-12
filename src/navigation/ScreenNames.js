@@ -24,3 +24,20 @@ export const OFFERS_STACK = 'OffersStack';
 export const APP_TABS = 'AppTabs';
 
 export const APP = 'App';
+
+//Brands
+export const BRANDS_STACK = 'BrandsStack';
+
+export const BRANDS_TABS = 'BrandsTabs';
+
+export const ADMIN_PANEL = 'AdminPanel';
+
+export const BRANDS_PROFILE = 'BrandsProfile';
+
+export const CREATORS_PROFILES = 'CreatorsProfiles';
+
+export const ADMIN_PANEL_STACK = 'AdminPanelStack';
+
+export const BRANDS_PROFILE_STACK = 'BrandsProfileStack';
+
+export const CREATORS_PROFILES_STACK = 'CreatorsProfilesStack';
