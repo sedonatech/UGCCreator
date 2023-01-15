@@ -5,7 +5,9 @@ import useAuthState from '../hooks/auth/useAuthState';
 import useProfile from '../hooks/user/useProfile';
 
 const AuthContext = createContext();
+
 const {Provider, Consumer: AuthConsumer} = AuthContext;
+
 const AuthProvider = ({children}) => {
   const {user, initializing} = useAuthState();
 
