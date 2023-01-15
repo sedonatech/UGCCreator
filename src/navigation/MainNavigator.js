@@ -15,10 +15,10 @@ const MainNavigator = () => {
   const {auth} = useAuthContext();
 
   const loading = auth?.initializing;
+
   const isCreator = auth?.profile?.type === 'creator';
-  console.log('-> isCreator', isCreator);
+
   const isSignedIn = !loading && !!auth?.user;
-  console.log('-> isSignedIn', isSignedIn);
 
   if (loading) {
     return <Loading />;

@@ -4,36 +4,47 @@ import {
   BLACK,
   BLACK_SECONDARY,
   BLUE,
-  BLUE_SECONDARY,
+  DEEP_LAVENDER,
   WHITE,
 } from '../../theme/Colors';
-import Logo from '../../../asssets/svgs/Logo';
 import TemplateText from '../../components/TemplateText';
-import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from "../../theme/Layout";
+import {SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN} from '../../theme/Layout';
 import Button from '../../components/Button';
 import {LOGIN, SIGN_UP} from '../../navigation/ScreenNames';
+import Blob from '../../../asssets/svgs/Blob';
+import backgroundImage from '../../../asssets/images/Subject.png';
+import BackgroundImage from '../../components/BackgroundImage';
+import {isIOS} from '../../Utils/Platform';
 const OnboardingScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Logo
-        height={SCREEN_WIDTH / 3}
-        width={SCREEN_WIDTH / 3}
-        style={styles.logo}
+      <BackgroundImage
+        source={backgroundImage}
+        style={styles.backgroundImage}
       />
-
-      <TemplateText title bold caps color={BLACK}>
+      <Blob color={DEEP_LAVENDER} top />
+      <Blob right />
+      <Blob color={DEEP_LAVENDER} bottom />
+      <TemplateText
+        title
+        bold
+        startCase
+        center
+        color={BLACK}
+        size={24}
+        style={styles.title}>
         Where brands and creators connect
       </TemplateText>
       <View style={styles.textContainer}>
         <View style={styles.dot} />
-        <TemplateText size={18} color={BLACK_SECONDARY}>
+        <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
           Connect with top brands as a creator
         </TemplateText>
       </View>
 
       <View style={styles.textContainer}>
         <View style={styles.dot} />
-        <TemplateText size={18} color={BLACK_SECONDARY}>
+        <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
           Connect with top creators as a brand
         </TemplateText>
       </View>
@@ -46,7 +57,6 @@ const OnboardingScreen = ({navigation}) => {
             })
           }
           style={styles.button}
-          titleColor={BLACK}
         />
         <Button
           title="Register as a Brand"
@@ -56,7 +66,6 @@ const OnboardingScreen = ({navigation}) => {
             })
           }
           style={styles.button}
-          titleColor={BLACK}
         />
         <TemplateText italic size={16} center style={styles.loginText}>
           Already joined? {''}
@@ -77,7 +86,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: WHITE,
-    padding: WRAPPER_MARGIN,
     alignItems: 'center',
   },
   dot: {
@@ -86,27 +94,35 @@ const styles = StyleSheet.create({
     height: 6,
     borderRadius: 4,
     marginHorizontal: 8,
-    marginTop: 8,
   },
   textContainer: {
     flexDirection: 'row',
     width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
     marginTop: WRAPPER_MARGIN,
-  },
-  logo: {
-    alignSelf: 'center',
-    marginBottom: WRAPPER_MARGIN,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: SCREEN_HEIGHT / 5,
+    bottom: 40,
     alignSelf: 'center',
   },
   button: {
-    marginVertical: 24,
+    marginBottom: 20,
   },
   loginText: {
     marginTop: 8,
+  },
+  title: {
+    marginTop: SCREEN_HEIGHT / 2,
+  },
+  subtitle: {
+    fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
+  },
+  backgroundImage: {
+    height: '44%',
+    width: '100%',
+    top: 40,
   },
 });
 export default OnboardingScreen;

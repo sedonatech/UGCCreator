@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TemplateTouchable from './TemplateTouchable';
-import {BLACK, PRIMARY} from '../theme/Colors';
+import {BLACK, DEEP_PURPLE, PRIMARY, WHITE} from '../theme/Colors';
 import {ActivityIndicator, StyleSheet, Text} from 'react-native';
 import {RADIUS_SMALL, SCREEN_WIDTH} from '../theme/Layout';
 import TemplateText from './TemplateText';
@@ -15,7 +15,7 @@ const Button = ({
   loading,
   disabled,
   style,
-                  titleColor
+  titleColor,
 }) => {
   const handleOnPress = () => {
     if (disabled) {
@@ -45,7 +45,7 @@ const Button = ({
       {loading ? (
         <ActivityIndicator size="small" color={BLACK} />
       ) : (
-        <TemplateText subTitle semiBold center color={titleColor}>
+        <TemplateText size={16} subTitle semiBold center color={titleColor}>
           {title}
         </TemplateText>
       )}
@@ -67,13 +67,13 @@ Button.propTypes = {
 Button.defaultProps = {
   height: 60,
   width: SCREEN_WIDTH - 32,
-  color: PRIMARY,
+  color: BLACK,
   onPress: () => {},
   title: 'Button',
   loading: false,
   disabled: false,
   style: {},
-  titleColor: BLACK,
+  titleColor: WHITE,
 };
 
 const styles = StyleSheet.create({
