@@ -17,68 +17,68 @@ import BackgroundImage from '../../components/BackgroundImage';
 import {isIOS} from '../../Utils/Platform';
 const OnboardingScreen = ({navigation}) => {
   return (
-    <View style={styles.container}>
-      <BackgroundImage
-        source={backgroundImage}
-        style={styles.backgroundImage}
-      />
-      <Blob color={DEEP_LAVENDER} top />
-      <Blob right />
-      <Blob color={DEEP_LAVENDER} bottom />
-      <TemplateText
-        title
-        bold
-        startCase
-        center
-        color={BLACK}
-        size={24}
-        style={styles.title}>
-        Where brands and creators connect
-      </TemplateText>
-      <View style={styles.textContainer}>
-        <View style={styles.dot} />
-        <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
-          Connect with top brands as a creator
-        </TemplateText>
-      </View>
-
-      <View style={styles.textContainer}>
-        <View style={styles.dot} />
-        <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
-          Connect with top creators as a brand
-        </TemplateText>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Register as a Creator"
-          onPress={() =>
-            navigation.navigate(SIGN_UP, {
-              type: 'creator',
-            })
-          }
-          style={styles.button}
+      <View style={styles.container}>
+        <BackgroundImage
+            source={backgroundImage}
+            style={styles.backgroundImage}
         />
-        <Button
-          title="Register as a Brand"
-          onPress={() =>
-            navigation.navigate(SIGN_UP, {
-              type: 'brand',
-            })
-          }
-          style={styles.button}
-        />
-        <TemplateText italic size={16} center style={styles.loginText}>
-          Already joined? {''}
-          <TemplateText
-            color={BLUE}
-            underLine
-            size={16}
-            onPress={() => navigation.navigate(LOGIN)}>
-            Login
+        <Blob color={DEEP_LAVENDER} top />
+        <Blob right />
+        <Blob color={DEEP_LAVENDER} bottom />
+        <TemplateText
+            title
+            bold
+            startCase
+            center
+            color={BLACK}
+            size={24}
+            style={styles.title}>
+          Where brands and creators connect
+        </TemplateText>
+        <View style={styles.textContainer}>
+          <View style={styles.dot} />
+          <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
+            Connect with top brands as a creator
           </TemplateText>
-        </TemplateText>
+        </View>
+
+        <View style={styles.textContainer}>
+          <View style={styles.dot} />
+          <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
+            Connect with top creators as a brand
+          </TemplateText>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+              title="Register as a Creator"
+              onPress={() =>
+                  navigation.navigate(SIGN_UP, {
+                    type: 'creator',
+                  })
+              }
+              style={styles.button}
+          />
+          <Button
+              title="Register as a Brand"
+              onPress={() =>
+                  navigation.navigate(SIGN_UP, {
+                    type: 'brand',
+                  })
+              }
+              style={styles.button}
+          />
+          <TemplateText italic size={16} center style={styles.loginText}>
+            Already joined? {''}
+            <TemplateText
+                color={BLUE}
+                underLine
+                size={16}
+                onPress={() => navigation.navigate(LOGIN)}>
+              Login
+            </TemplateText>
+          </TemplateText>
+        </View>
       </View>
-    </View>
   );
 };
 
