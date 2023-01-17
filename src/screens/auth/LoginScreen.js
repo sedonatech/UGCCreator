@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
-import {BLACK, BLACK_SECONDARY, BLUE, WHITE} from '../../theme/Colors';
+import {
+  BLACK,
+  BLACK_SECONDARY,
+  BLUE,
+  DEEP_LAVENDER,
+  WHITE,
+} from '../../theme/Colors';
 import Logo from '../../../asssets/svgs/Logo';
 import TemplateText from '../../components/TemplateText';
 import {SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN} from '../../theme/Layout';
@@ -10,6 +16,7 @@ import {ONBOARDING} from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
 import {isAndroid} from '../../Utils/Platform';
 import TemplateTextInput from '../../components/TemplateTextInput';
+import Blob from '../../../asssets/svgs/Blob';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -40,11 +47,9 @@ const LoginScreen = ({navigation}) => {
       contentContainerStyle={styles.contentContainerStyle}
       style={styles.container}
       keyboard>
-      <Logo
-        height={SCREEN_WIDTH / 3}
-        width={SCREEN_WIDTH / 3}
-        style={styles.logo}
-      />
+      <Blob color={DEEP_LAVENDER} top />
+      <Blob right />
+      <Blob color={DEEP_LAVENDER} bottom />
 
       <TemplateText title bold caps center color={BLACK} style={styles.title}>
         Welcome back!
@@ -58,7 +63,6 @@ const LoginScreen = ({navigation}) => {
         value={email}
         onChangeText={text => setEmail(text)}
         keyboardType="email-address"
-        disabled={!email && !password}
       />
       <TemplateTextInput
         placeholder="Password"
@@ -72,7 +76,6 @@ const LoginScreen = ({navigation}) => {
           title="Login"
           onPress={handleLogin}
           style={styles.button}
-          titleColor={BLACK}
           loading={loading}
         />
 

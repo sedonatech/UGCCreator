@@ -44,7 +44,7 @@ const TemplateTextInput = ({
     <Component
       {...restProps}
       ref={ref}
-      selectionColor={PRIMARY}
+      selectionColor={BLACK}
       placeholderTextColor={placeholderTextColor || BLACK_SECONDARY}
       value={value}
       editable={!disabled}

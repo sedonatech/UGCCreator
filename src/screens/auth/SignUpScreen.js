@@ -6,6 +6,7 @@ import {
   BLACK,
   BLACK_SECONDARY,
   BLUE,
+  DEEP_LAVENDER,
   ERROR_RED,
   WHITE,
 } from '../../theme/Colors';
@@ -19,6 +20,7 @@ import Wrapper from '../../components/Wrapper';
 import Error from '../../components/Error';
 import {emailValid, passwordValid, isEmpty} from '../../Utils/validation';
 import useProfile from '../../hooks/user/useProfile';
+import Blob from '../../../asssets/svgs/Blob';
 
 const CREATOR_PLACEHOLDER = 'Creator';
 const BRAND_PLACEHOLDER = 'Brand';
@@ -107,11 +109,9 @@ const SignUpScreen = ({navigation, route}) => {
       style={styles.container}
       showsVerticalScrollIndicator={false}
       keyboard>
-      <Logo
-        height={SCREEN_WIDTH / 3}
-        width={SCREEN_WIDTH / 3}
-        style={styles.logo}
-      />
+      <Blob color={DEEP_LAVENDER} top />
+      <Blob right />
+      <Blob color={DEEP_LAVENDER} bottom />
 
       <TemplateText title bold caps center color={BLACK} style={styles.title}>
         Lets Create Your Account
@@ -159,7 +159,6 @@ const SignUpScreen = ({navigation, route}) => {
           title="Create Account"
           onPress={handleSignUp}
           style={styles.button}
-          titleColor={BLACK}
           loading={loading}
           disabled={disabled}
         />
