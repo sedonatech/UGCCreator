@@ -11,32 +11,32 @@ import backgroundImage from '../../../asssets/images/Subject.png';
 import {isIOS} from '../../Utils/Platform';
 const WelcomeScreen = ({navigation}) => {
   return (
-      <View style={styles.container}>
-        <Blob color={DEEP_LAVENDER} top />
-        <Blob right />
-        <Blob color={DEEP_LAVENDER} bottom />
+    <View style={styles.container}>
+      <Blob color={DEEP_LAVENDER} top />
+      <Blob right />
+      <Blob color={DEEP_LAVENDER} bottom />
 
-        <BackgroundImage
-            source={backgroundImage}
-            style={styles.backgroundImage}
-        />
-        <TemplateText
-            color={BLACK}
-            size={30}
-            caps
-            bold
-            center
-            style={styles.title}>
-          UGC {'\n'} Creator {'\n'} APP
-        </TemplateText>
-        <Button
-            title="Get Started"
-            onPress={() => {
-              navigation.navigate(ONBOARDING);
-            }}
-            style={styles.button}
-        />
-      </View>
+      <BackgroundImage
+        source={backgroundImage}
+        style={styles.backgroundImage}
+      />
+      <TemplateText
+        color={BLACK}
+        size={30}
+        caps
+        bold
+        center
+        style={styles.title}>
+        UGC {'\n'} Creator {'\n'} APP
+      </TemplateText>
+      <Button
+        title="Get Started"
+        onPress={() => {
+          navigation.navigate(ONBOARDING);
+        }}
+        style={styles.button}
+      />
+    </View>
   );
 };
 
