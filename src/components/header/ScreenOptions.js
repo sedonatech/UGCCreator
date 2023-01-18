@@ -17,7 +17,7 @@ export const TRANSPARENT_NO_LOGO_HEADER = {
 
 export const TRANSPARENT_HEADER = {
   headerTitle: () => (
-    <TemplateText caps size={18} style={styles.title} color={BLACK}>
+    <TemplateText caps size={18} italic style={styles.title} color={BLACK}>
       UGC Creator
     </TemplateText>
   ),
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
     fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
   },
   header: {
-    height: SCREEN_HEIGHT * 0.12,
+    height: SCREEN_HEIGHT * 0.1,
     width: SCREEN_WIDTH,
-    backgroundColor: LAVENDER, // or 'transparent',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },

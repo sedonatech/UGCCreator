@@ -130,7 +130,7 @@ const TemplateText = ({
 
 const styles = StyleSheet.create({
   default: {
-    fontFamily: isAndroid ? 'Roboto' : 'Arial',
+    fontFamily: isAndroid ? 'sans-serif' : 'Arial',
     fontSize: isShortDEvice ? 15 : 18,
     color: BLACK,
   },
