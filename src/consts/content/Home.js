@@ -1,3 +1,13 @@
+import productOne from '../../../asssets/images/product.jpg';
+import productTwo from '../../../asssets/images/product2.jpg';
+import productThree from '../../../asssets/images/product3.jpg';
+import productFour from '../../../asssets/images/product4.jpg';
+import creative from '../../../asssets/images/creative.jpg';
+import fendi from '../../../asssets/images/fendi.jpg';
+import gucci from '../../../asssets/images/gucci.jpg';
+import redBull from '../../../asssets/images/redBull.jpg';
+import starBucks from '../../../asssets/images/starBucks.jpg';
+
 export const CATEGORIES = [
   {
     id: 1,
@@ -112,3 +122,125 @@ export const CATEGORIES = [
 export const TRENDING_CATEGORIES = CATEGORIES.filter(
   category => category?.proposals > 60,
 );
+
+export const CURRENT_PROJECTS = [
+  {
+    id: 4,
+    image: productFour,
+    macros: {
+      daysLeft: 40,
+      rate: 70,
+      brand: 'Nexus Kicks',
+      currency: 'USD',
+    },
+  },
+  {
+    id: 1,
+    image: productOne,
+    macros: {
+      daysLeft: 10,
+      rate: 40,
+      brand: 'CoCoil',
+      currency: 'USD',
+    },
+  },
+  {
+    id: 2,
+    image: productTwo,
+    macros: {
+      daysLeft: 20,
+      rate: 50,
+      brand: 'Blue Orange',
+      currency: 'USD',
+    },
+  },
+  {
+    id: 3,
+    image: productThree,
+    macros: {
+      daysLeft: 30,
+      rate: 60,
+      brand: 'Enurage',
+      currency: 'USD',
+    },
+  },
+];
+
+export const BRANDS = [
+  {
+    id: 1,
+    image: fendi,
+    name: 'Fendi',
+    shortDescription: 'Fendi is an Italian luxury fashion house',
+    description:
+      'Fendi is an Italian luxury fashion house, based in Rome, founded in 1925 by Adele and Edoardo Fendi. The company is known for its fur, leather goods, and ready-to-wear. Fendi is a member of the Chambre Syndicale de la Haute Couture et de la Mode, the governing body of the French fashion industry.',
+  },
+  {
+    id: 2,
+    image: gucci,
+    name: 'Gucci',
+    shortDescription: 'Gucci is an Italian luxury fashion house',
+    description:
+      'Gucci is an Italian luxury fashion house, founded by Guccio Gucci in Florence in 1921. Gucci is the most famous Italian brand in the world. Gucci is a member of the Chambre Syndicale de la Haute Couture et de la Mode, the governing body of the French fashion industry.',
+  },
+  {
+    id: 3,
+    image: redBull,
+    name: 'Red Bull',
+    shortDescription: 'Red Bull is an energy drink',
+    description:
+      'Red Bull is an energy drink sold by Austrian company Red Bull GmbH, created in 1987. Red Bull has the highest market share of any energy drink in the world, with 7.5 billion cans sold in a year. Red Bull has been criticized for its high sugar content and marketing to children.',
+  },
+  {
+    id: 4,
+    image: starBucks,
+    name: 'Starbucks',
+    shortDescription: 'Starbucks is an American coffee company',
+    description:
+      'Starbucks is an American coffee company and coffeehouse chain. Starbucks was founded in Seattle, Washington in 1971. As of 2018, the company operates 28,218 locations worldwide. Starbucks is the largest coffeehouse company in the world, with 30,000 locations in over 70 countries.',
+  },
+  {
+    id: 5,
+    image: creative,
+    name: 'Creative',
+    shortDescription: 'Creative is a Singapore-based global company',
+    description:
+      'Creative is a Singapore-based global company that designs, manufactures and markets products for the audio, video, gaming, and Internet markets. Creative is the fourth-largest manufacturer of PC sound cards in the world. Creative is the fourth-largest manufacturer of PC sound cards in the world.',
+  },
+];
+
+export const PROJECTS = [
+  {
+    id: 1,
+    image: productOne,
+    title: 'CoCoil',
+    description:
+      'CoCoil is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+    shortDescription:
+      'CoCoil is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+  },
+  {
+    id: 2,
+    image: productTwo,
+    title: 'Blue Orange',
+    description:
+      'Blue Orange is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+    shortDescription: 'Blue Orange is a new way to charge your phone.',
+  },
+  {
+    id: 3,
+    image: productThree,
+    title: 'Enurage',
+    description:
+      'Enurage is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+    shortDescription: 'Enurage is a new way to charge your phone.',
+  },
+  {
+    id: 4,
+    image: productFour,
+    title: 'Nexus Kicks',
+    description:
+      'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+    shortDescription: 'Nexus Kicks is a new way to charge your phone.',
+  },
+];

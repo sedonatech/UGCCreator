@@ -1,6 +1,6 @@
 import React from 'react';
-import {BLACK, LAVENDER, PRIMARY, WHITE} from '../../theme/Colors';
-import Logo from '../../../asssets/svgs/Logo';
+import {BLACK, PRIMARY, WHITE} from '../../theme/Colors';
+
 import TemplateText from '../TemplateText';
 import {StyleSheet, View} from 'react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../theme/Layout';

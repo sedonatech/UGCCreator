@@ -73,7 +73,7 @@ const ContentCard = ({creator, isLast, hasRequest}) => {
         <View style={styles.imageContainer}>
           {avatar && <Image source={{uri: avatar}} style={styles.image} />}
           <View>
-            <TemplateText startCase color={DEEP_PURPLE} size={16}>
+            <TemplateText startCase color={BLACK} size={16}>
               {creator?.userName}
             </TemplateText>
             <TemplateText startCase color={BLACK_50} size={12}>

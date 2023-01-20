@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TemplateTouchable from './TemplateTouchable';
-import {BLACK, DEEP_PURPLE, PRIMARY, WHITE} from '../theme/Colors';
-import {ActivityIndicator, StyleSheet, Text} from 'react-native';
-import {RADIUS_SMALL, SCREEN_WIDTH} from '../theme/Layout';
+import {BLACK, WHITE} from '../theme/Colors';
+import {ActivityIndicator, StyleSheet} from 'react-native';
+import {SCREEN_WIDTH} from '../theme/Layout';
 import TemplateText from './TemplateText';
 
 const Button = ({
