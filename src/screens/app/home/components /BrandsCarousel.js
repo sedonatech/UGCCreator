@@ -5,9 +5,10 @@ import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import CardCarousel from '../../../../components/carousels/CardCarousel';
 import {BRANDS} from '../../../../consts/content/Home';
-import {BLACK, BLACK_50, BLUE} from '../../../../theme/Colors';
+import {BLACK_50, BLUE} from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import PropTypes from 'prop-types';
+
 const BrandsCarousel = ({style}) => {
   return (
     <View style={style}>

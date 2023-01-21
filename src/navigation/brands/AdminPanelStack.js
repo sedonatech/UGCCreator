@@ -1,12 +1,13 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {ADMIN_PANEL} from '../ScreenNames';
+import {ADD_PROJECT, ADMIN_PANEL} from '../ScreenNames';
 import {
   SWITCH,
   TRANSPARENT_HEADER,
 } from '../../components/header/ScreenOptions';
 import AdminPanelScreen from '../../screens/brands/admin/AdminPanelScreen';
+import AddProjectScreen from '../../screens/brands/admin/AddProjectScreen';
 
 const Stack = createStackNavigator();
 const {Navigator, Screen} = Stack;
@@ -17,6 +18,11 @@ const AdminPanelStack = () => (
       name={ADMIN_PANEL}
       options={TRANSPARENT_HEADER}
       component={AdminPanelScreen}
+    />
+    <Screen
+      name={ADD_PROJECT}
+      options={TRANSPARENT_HEADER}
+      component={AddProjectScreen}
     />
   </Navigator>
 );

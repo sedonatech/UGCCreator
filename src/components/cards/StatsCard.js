@@ -14,7 +14,7 @@ const StatsCard = ({title, value, icon, color}) => {
       </TemplateText>
       <View style={styles.valueWrapper}>
         <View style={[styles.emojiContainer, {backgroundColor: color}]}>
-          <TemplateIcon size={18} color={BLACK} name={icon} />
+          <TemplateIcon size={18} color={BLACK} name={icon} family="Ionicons" />
         </View>
         <TemplateText bold size={18} color={DEEP_PURPLE}>
           {value}

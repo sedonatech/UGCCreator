@@ -39,7 +39,7 @@ const CurrentProjectCard = ({image, style, macros}) => {
             {`${macros?.rate} ${macros?.currency}`}
           </TemplateText>
           <TemplateText size={10} color={BLACK_30} startCase>
-            Amount charged
+            Amount
           </TemplateText>
         </View>
       </View>
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     borderRadius: 10,
+    overflow: 'hidden',
   },
   image: {
     width: '100%',

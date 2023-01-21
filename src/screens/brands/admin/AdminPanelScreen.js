@@ -1,33 +1,29 @@
-import React, {useLayoutEffect, useMemo, useState} from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import React, {useLayoutEffect, useMemo} from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import TemplateText from '../../../components/TemplateText';
 import {
-  BLACK,
-  BLACK_30,
   BLACK_50,
   BLUE,
   DEEP_LAVENDER,
   DEEP_PURPLE,
-  GREEN,
-  LIGHT_PURPLE,
   WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import {SCREEN_WIDTH, WRAPPER_MARGIN} from '../../../theme/Layout';
 import useGetCreators from '../../../hooks/brands/useGetCreators';
-import useFirebaseGetStorage from '../../../hooks/imageUpload/useFirebaseGetStorage';
-import {indexOf} from 'lodash';
-import Button from '../../../components/Button';
 import Blob from '../../../../asssets/svgs/Blob';
 import Stats from '../../../components/Stats';
 import {STATS} from '../../../consts/content/Home';
 import ContentSection from './components/ContentSection';
+import {ADD_PROJECT} from '../../../navigation/ScreenNames';
 
 const AdminPanelScreen = ({navigation}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TemplateTouchable style={styles.addButton}>
+        <TemplateTouchable
+          style={styles.addButton}
+          onPress={() => navigation.navigate(ADD_PROJECT)}>
           <TemplateText bold caps size={10} color={WHITE}>
             Add project
           </TemplateText>

@@ -46,9 +46,13 @@ const HomeScreen = () => {
       {profile?.userName && (
         <Greeting userName={profile?.userName} style={styles.greeting} />
       )}
+
       <Stats stats={STATS} />
+
       <CurrentProjectsCarousel style={styles.carousel} />
+
       <BrandsCarousel style={styles.carousel} />
+
       <View style={styles.content}>
         <View style={styles.contentTitleContainer}>
           <TemplateText
