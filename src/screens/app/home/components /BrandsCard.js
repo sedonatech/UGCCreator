@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: WHITE,
-    width: SCREEN_WIDTH - 56,
-    height: SCREEN_HEIGHT / 3,
+    width: SCREEN_WIDTH - 66,
+    height: SCREEN_HEIGHT / 2.7,
     shadowColor: BLACK_50,
     shadowOffset: {
       width: 0,

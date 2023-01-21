@@ -25,7 +25,7 @@ const BrandsCarousel = ({style}) => {
 
       <CardCarousel
         cardMargin={20}
-        smallCardWidth={SCREEN_WIDTH - 56}
+        smallCardWidth={SCREEN_WIDTH - 66}
         style={styles.cardCarousel}>
         {BRANDS.map((item, index) => (
           <BrandsCard

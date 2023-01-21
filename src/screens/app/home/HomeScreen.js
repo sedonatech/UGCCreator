@@ -8,6 +8,7 @@ import {
   BLUE,
   DEEP_LAVENDER,
   DEEP_PURPLE,
+  LAVENDER,
   LIGHT_PURPLE,
   WHITE,
 } from '../../../theme/Colors';
@@ -18,15 +19,16 @@ import {
 } from '../../../theme/Layout';
 
 import Greeting from './components /Greeting';
-import TrendingCategoriesCarousel from './components /TrendingCategoriesCarousel';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Blob from '../../../../asssets/svgs/Blob';
-import CurrentProjectCard from './components /CurrentProjectCard';
+
 import CurrentProjectsCarousel from './components /CurrentProjectsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
 import TemplateText from '../../../components/TemplateText';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import {PROJECTS} from '../../../consts/content/Home';
+import {PROJECTS, STATS} from '../../../consts/content/Home';
+import Stats from '../../../components/Stats';
+import ContentCard from '../../../components/cards/ContentCard';
 
 const HomeScreen = () => {
   const {auth} = useAuthContext();
@@ -36,14 +38,15 @@ const HomeScreen = () => {
     <ScrollView style={styles.container}>
       <View>
         <Blob top />
-        <Blob right color={DEEP_LAVENDER} />
-        <Blob color={DEEP_LAVENDER} bottom />
+        <Blob right color={LAVENDER} />
+        <Blob color={LAVENDER} bottom />
         <Blob center />
       </View>
 
       {profile?.userName && (
         <Greeting userName={profile?.userName} style={styles.greeting} />
       )}
+      <Stats stats={STATS} />
       <CurrentProjectsCarousel style={styles.carousel} />
       <BrandsCarousel style={styles.carousel} />
       <View style={styles.content}>
@@ -68,18 +71,19 @@ const HomeScreen = () => {
           </TemplateTouchable>
         </View>
 
-        {/*{PROJECTS.map((creator, index) => {*/}
-        {/*  return (*/}
-        {/*    <ContentCard*/}
-        {/*      key={creator?.id}*/}
-        {/*      creator={creator}*/}
-        {/*      isLast={*/}
-        {/*        creator === creatorsWithRequest[creatorsWithRequest?.length - 1]*/}
-        {/*      }*/}
-        {/*      hasRequest*/}
-        {/*    />*/}
-        {/*  );*/}
-        {/*})}*/}
+        {PROJECTS.map((creator, index) => {
+          return (
+            <ContentCard
+              key={creator?.id}
+              image={creator?.image}
+              title={creator?.title}
+              description={creator?.description}
+              subtitle={creator?.shortDescription}
+              isLast={creator === PROJECTS[PROJECTS?.length - 1]}
+              buttonTitle="View"
+            />
+          );
+        })}
       </View>
     </ScrollView>
   );
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
   },
   greeting: {
     marginTop: SCREEN_HEIGHT * 0.14,
-    marginBottom: WRAPPER_MARGIN * 2,
+    marginBottom: WRAPPER_MARGIN,
     marginHorizontal: WRAPPER_MARGIN,
   },
   carousel: {

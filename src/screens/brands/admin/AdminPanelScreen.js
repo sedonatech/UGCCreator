@@ -19,92 +19,9 @@ import useFirebaseGetStorage from '../../../hooks/imageUpload/useFirebaseGetStor
 import {indexOf} from 'lodash';
 import Button from '../../../components/Button';
 import Blob from '../../../../asssets/svgs/Blob';
-
-const defaultImage =
-  'https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60';
-
-const StatCard = ({title, value, emoji, color}) => {
-  return (
-    <View style={styles.statsContainer}>
-      <TemplateText color={DEEP_PURPLE} size={12} semiBold>
-        {title}
-      </TemplateText>
-      <View style={styles.valueWrapper}>
-        <View style={[styles.emojiContainer, {backgroundColor: color}]}>
-          <TemplateText size={14}>{emoji}</TemplateText>
-        </View>
-        <TemplateText bold size={18} color={DEEP_PURPLE}>
-          {value}
-        </TemplateText>
-      </View>
-    </View>
-  );
-};
-
-const ContentCard = ({creator, isLast, hasRequest}) => {
-  const [avatar, setAvatar] = useState('');
-  const {getAvatar} = useFirebaseGetStorage();
-  const getCreatorAvatar = async id => {
-    try {
-      let avatar;
-      const response = await getAvatar(id);
-      if (response?.url) {
-        avatar = response?.url;
-      } else {
-        avatar = defaultImage;
-      }
-
-      return avatar;
-    } catch (error) {
-      console.log('-> error', error);
-    }
-  };
-
-  useLayoutEffect(() => {
-    (async () => {
-      const avatarUrl = await getCreatorAvatar(creator?.id);
-      setAvatar(avatarUrl);
-    })();
-  }, [creator]);
-
-  return (
-    <View>
-      <View style={styles.contentCard}>
-        <View style={styles.imageContainer}>
-          {avatar && <Image source={{uri: avatar}} style={styles.image} />}
-          <View>
-            <TemplateText startCase color={BLACK} size={16}>
-              {creator?.userName}
-            </TemplateText>
-            <TemplateText startCase color={BLACK_50} size={12}>
-              Berlin, Germany
-            </TemplateText>
-          </View>
-        </View>
-
-        {hasRequest ? (
-          <TemplateTouchable style={styles.addButton}>
-            <TemplateText color={WHITE} size={12}>
-              review
-            </TemplateText>
-          </TemplateTouchable>
-        ) : (
-          <TemplateText color={BLACK_50} size={12}>
-            yesterday
-          </TemplateText>
-        )}
-      </View>
-      {!isLast && <View style={styles.divider} />}
-    </View>
-  );
-};
-
-StatCard.defaultProps = {
-  title: 'Title',
-  value: 0,
-  emoji: '👍',
-  color: DEEP_PURPLE,
-};
+import Stats from '../../../components/Stats';
+import {STATS} from '../../../consts/content/Home';
+import ContentSection from './components/ContentSection';
 
 const AdminPanelScreen = ({navigation}) => {
   useLayoutEffect(() => {
@@ -135,32 +52,8 @@ const AdminPanelScreen = ({navigation}) => {
         <Blob right />
         <Blob color={DEEP_LAVENDER} bottom />
         <Blob center />
-        <View style={styles.statsWrapper}>
-          <StatCard
-            title="Open Projects"
-            value="60"
-            emoji="💪🏻"
-            color="#E6FAF7"
-          />
-          <StatCard
-            title="Total Creators"
-            value="10,100"
-            emoji="👥"
-            color="#FFDE9F"
-          />
-          <StatCard
-            title="Closed Projects"
-            value="16"
-            emoji="🎉"
-            color="#E7FAFD"
-          />
-          <StatCard
-            title="Total Payouts"
-            value="24,000"
-            emoji="💷"
-            color="#DADBFB"
-          />
-        </View>
+
+        <Stats stats={STATS} style={styles.stats} />
 
         <View style={styles.content}>
           <View style={styles.contentTitleContainer}>
@@ -189,7 +82,7 @@ const AdminPanelScreen = ({navigation}) => {
               ?.filter(({projects}) => projects?.length > 0)
               ?.map((creator, index) => {
                 return (
-                  <ContentCard
+                  <ContentSection
                     key={creator?.id}
                     creator={creator}
                     isLast={
@@ -228,7 +121,7 @@ const AdminPanelScreen = ({navigation}) => {
           {!!creators?.length &&
             creators?.map((creator, index) => {
               return (
-                <ContentCard
+                <ContentSection
                   key={creator?.id}
                   creator={creator}
                   isLast={creator === creators[creators?.length - 1]}
@@ -236,10 +129,6 @@ const AdminPanelScreen = ({navigation}) => {
               );
             })}
         </View>
-
-        {/*<TemplateText>New creators </TemplateText>*/}
-
-        {/*<TemplateText>Projects Statuses</TemplateText>*/}
       </ScrollView>
     </>
   );
@@ -259,12 +148,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 8,
   },
-  statsWrapper: {
-    padding: 20,
+  stats: {
     marginTop: 100,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
   },
   statsContainer: {
     width: SCREEN_WIDTH / 2 - 30,
@@ -306,28 +191,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     margin: WRAPPER_MARGIN,
     paddingBottom: 20,
-  },
-  contentCard: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  image: {
-    height: 50,
-    width: 50,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  divider: {
-    height: 0.6,
-    backgroundColor: LIGHT_PURPLE,
-    width: '100%',
-    alignSelf: 'center',
-    marginVertical: WRAPPER_MARGIN,
   },
   contentTitle: {},
   contentTitleContainer: {

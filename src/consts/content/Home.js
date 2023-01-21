@@ -216,8 +216,7 @@ export const PROJECTS = [
     title: 'CoCoil',
     description:
       'CoCoil is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
-    shortDescription:
-      'CoCoil is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+    shortDescription: 'CoCoil is a new way',
   },
   {
     id: 2,
@@ -225,7 +224,7 @@ export const PROJECTS = [
     title: 'Blue Orange',
     description:
       'Blue Orange is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
-    shortDescription: 'Blue Orange is a new way to charge your phone.',
+    shortDescription: 'Blue Orange is a new.',
   },
   {
     id: 3,
@@ -233,7 +232,7 @@ export const PROJECTS = [
     title: 'Enurage',
     description:
       'Enurage is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
-    shortDescription: 'Enurage is a new way to charge your phone.',
+    shortDescription: 'Enurage is a new way .',
   },
   {
     id: 4,
@@ -241,6 +240,37 @@ export const PROJECTS = [
     title: 'Nexus Kicks',
     description:
       'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
-    shortDescription: 'Nexus Kicks is a new way to charge your phone.',
+    shortDescription: 'Nexus Kicks is a new way',
+  },
+];
+
+export const STATS = [
+  {
+    id: '1',
+    title: 'Total Projects',
+    value: 12,
+    icon: 'cube-outline',
+    color: '#E6FAF7',
+  },
+  {
+    id: '2',
+    title: 'Total Proposals',
+    value: 12,
+    icon: 'clipboard-outline',
+    color: '#FFDE9F',
+  },
+  {
+    id: '3',
+    title: 'Total Brands',
+    value: 120,
+    icon: 'briefcase-outline',
+    color: '#E7FAFD',
+  },
+  {
+    id: '5',
+    title: 'Total Payouts',
+    value: 120,
+    icon: 'card-outline',
+    color: '#FDE9F9',
   },
 ];
