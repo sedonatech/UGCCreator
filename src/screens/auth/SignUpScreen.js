@@ -237,6 +237,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 16,
     marginTop: WRAPPER_MARGIN * 2,
+    borderColor: DEEP_LAVENDER,
   },
   error: {
     borderColor: ERROR_RED,

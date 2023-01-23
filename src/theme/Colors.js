@@ -6,8 +6,37 @@ export const BLACK_50 = 'rgba(0, 0, 0, 0.5)';
 
 export const BLACK_10 = 'rgba(0, 0, 0, 0.1)';
 
+export const BLACK_20 = 'rgba(0, 0, 0, 0.2)';
+
 export const BLACK_30 = 'rgba(0, 0, 0, 0.3)';
 
+export const BLACK_40 = 'rgba(0, 0, 0, 0.4)';
+
+export const BLACK_60 = 'rgba(0, 0, 0, 0.6)';
+
+export const BLACK_70 = 'rgba(0, 0, 0, 0.7)';
+
+export const BLACK_80 = 'rgba(0, 0, 0, 0.8)';
+
+export const BLACK_90 = 'rgba(0, 0, 0, 0.9)';
+
+export const WHITE_10 = 'rgba(255, 255, 255, 0.1)';
+
+export const WHITE_20 = 'rgba(255, 255, 255, 0.2)';
+
+export const WHITE_30 = 'rgba(255, 255, 255, 0.3)';
+
+export const WHITE_40 = 'rgba(255, 255, 255, 0.4)';
+
+export const WHITE_50 = 'rgba(255, 255, 255, 0.5)';
+
+export const WHITE_60 = 'rgba(255, 255, 255, 0.6)';
+
+export const WHITE_80 = 'rgba(255, 255, 255, 0.8)';
+
+export const WHITE_90 = 'rgba(255, 255, 255, 0.9)';
+
+export const WHITE_70 = 'rgba(255, 255, 255, 0.7)';
 export const BLACK_SECONDARY = '#3D3D3F';
 
 export const PRIMARY = '#56CCF2';

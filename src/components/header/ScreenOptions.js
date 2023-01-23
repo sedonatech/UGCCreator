@@ -1,10 +1,11 @@
 import React from 'react';
-import {BLACK, LAVENDER, PRIMARY, WHITE} from '../../theme/Colors';
-import Logo from '../../../asssets/svgs/Logo';
+import {BLACK, PRIMARY, WHITE} from '../../theme/Colors';
+
 import TemplateText from '../TemplateText';
 import {StyleSheet, View} from 'react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../theme/Layout';
 import {isIOS} from '../../Utils/Platform';
+import BrandLogo from '../../../asssets/svgs/BrandLogo';
 
 export const TRANSPARENT_NO_LOGO_HEADER = {
   headerTitle: null,
@@ -16,11 +17,7 @@ export const TRANSPARENT_NO_LOGO_HEADER = {
 };
 
 export const TRANSPARENT_HEADER = {
-  headerTitle: () => (
-    <TemplateText caps size={18} style={styles.title} color={BLACK}>
-      UGC Creator
-    </TemplateText>
-  ),
+  headerTitle: () => <BrandLogo />,
   headerTransparent: true,
   headerBackTitleVisible: false,
   headerTintColor: PRIMARY,
@@ -38,9 +35,9 @@ const styles = StyleSheet.create({
     fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
   },
   header: {
-    height: SCREEN_HEIGHT * 0.12,
+    height: SCREEN_HEIGHT * 0.1,
     width: SCREEN_WIDTH,
-    backgroundColor: LAVENDER, // or 'transparent',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },

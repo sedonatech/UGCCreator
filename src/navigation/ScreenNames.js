@@ -41,3 +41,5 @@ export const ADMIN_PANEL_STACK = 'AdminPanelStack';
 export const BRANDS_PROFILE_STACK = 'BrandsProfileStack';
 
 export const CREATORS_PROFILES_STACK = 'CreatorsProfilesStack';
+
+export const ADD_PROJECT = 'AddProject';

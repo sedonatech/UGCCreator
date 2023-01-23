@@ -15,26 +15,15 @@ import Blob from '../../../asssets/svgs/Blob';
 import backgroundImage from '../../../asssets/images/Subject.png';
 import BackgroundImage from '../../components/BackgroundImage';
 import {isIOS} from '../../Utils/Platform';
+import BrandLogo from '../../../asssets/svgs/BrandLogo';
 const OnboardingScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <BackgroundImage
-        source={backgroundImage}
-        style={styles.backgroundImage}
-      />
+      <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} />
       <Blob color={DEEP_LAVENDER} top />
       <Blob right />
       <Blob color={DEEP_LAVENDER} bottom />
-      <TemplateText
-        title
-        bold
-        startCase
-        center
-        color={BLACK}
-        size={24}
-        style={styles.title}>
-        Where brands and creators connect
-      </TemplateText>
+
       <View style={styles.textContainer}>
         <View style={styles.dot} />
         <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>

@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: SCREEN_WIDTH - 32,
     borderWidth: 0.4,
-    borderColor: BLACK_SECONDARY,
+    borderColor: DEEP_LAVENDER,
     borderRadius: 8,
     paddingLeft: 16,
     marginTop: WRAPPER_MARGIN * 2,
