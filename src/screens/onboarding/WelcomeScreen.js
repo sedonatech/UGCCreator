@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../../components/Button';
 import {View, StyleSheet} from 'react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../theme/Layout';
-import {DEEP_LAVENDER, WHITE} from '../../theme/Colors';
+import {BRAND_BLUE, DEEP_LAVENDER, WHITE} from '../../theme/Colors';
 import {ONBOARDING} from '../../navigation/ScreenNames';
 import Blob from '../../../asssets/svgs/Blob';
 import BrandLogo from '../../../asssets/svgs/BrandLogo';
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: WHITE,
+    backgroundColor: BRAND_BLUE,
   },
   logo: {
     flex: 1,

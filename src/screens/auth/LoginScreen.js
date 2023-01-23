@@ -5,6 +5,7 @@ import {
   BLACK,
   BLACK_SECONDARY,
   BLUE,
+  BRAND_BLUE,
   DEEP_LAVENDER,
   WHITE,
 } from '../../theme/Colors';
@@ -14,9 +15,10 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN} from '../../theme/Layout';
 import Button from '../../components/Button';
 import {ONBOARDING} from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
-import {isAndroid} from '../../Utils/Platform';
+import {isAndroid, isIOS} from '../../Utils/Platform';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import Blob from '../../../asssets/svgs/Blob';
+import BrandLogo from '../../../asssets/svgs/BrandLogo';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
@@ -47,14 +49,21 @@ const LoginScreen = ({navigation}) => {
       contentContainerStyle={styles.contentContainerStyle}
       style={styles.container}
       keyboard>
+      <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} style={styles.logo} />
       <Blob color={DEEP_LAVENDER} top />
       <Blob right />
       <Blob color={DEEP_LAVENDER} bottom />
 
-      <TemplateText title bold caps center color={BLACK} style={styles.title}>
+      <TemplateText
+        size={18}
+        bold
+        caps
+        center
+        color={BLACK}
+        style={styles.title}>
         Welcome back!
       </TemplateText>
-      <TemplateText size={18} color={BLACK_SECONDARY}>
+      <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
         Enter your email and password to continue
       </TemplateText>
       <TemplateTextInput
@@ -63,6 +72,7 @@ const LoginScreen = ({navigation}) => {
         value={email}
         onChangeText={text => setEmail(text)}
         keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TemplateTextInput
         placeholder="Password"
@@ -70,6 +80,7 @@ const LoginScreen = ({navigation}) => {
         value={password}
         onChangeText={text => setPassword(text)}
         secureTextEntry
+        autoCapitalize="none"
       />
       <View style={styles.buttonContainer}>
         <Button
@@ -97,6 +108,7 @@ const LoginScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    backgroundColor: BRAND_BLUE,
   },
   dot: {
     backgroundColor: BLACK,
@@ -109,18 +121,14 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     flex: isAndroid ? 0 : 1,
     height: isAndroid ? SCREEN_HEIGHT : null,
-    backgroundColor: WHITE,
+    backgroundColor: BRAND_BLUE,
   },
   textContainer: {
     flexDirection: 'row',
     width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
     marginTop: WRAPPER_MARGIN,
   },
-  logo: {
-    alignSelf: 'center',
-    position: 'absolute',
-    top: 30,
-  },
+  logo: {},
   buttonContainer: {
     alignSelf: 'center',
   },
@@ -135,6 +143,10 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: WRAPPER_MARGIN,
+    fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
+  },
+  subtitle: {
+    fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
   },
   input: {
     height: 60,

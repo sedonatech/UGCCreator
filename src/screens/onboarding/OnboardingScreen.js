@@ -4,6 +4,7 @@ import {
   BLACK,
   BLACK_SECONDARY,
   BLUE,
+  BRAND_BLUE,
   DEEP_LAVENDER,
   WHITE,
 } from '../../theme/Colors';
@@ -12,8 +13,7 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN} from '../../theme/Layout';
 import Button from '../../components/Button';
 import {LOGIN, SIGN_UP} from '../../navigation/ScreenNames';
 import Blob from '../../../asssets/svgs/Blob';
-import backgroundImage from '../../../asssets/images/Subject.png';
-import BackgroundImage from '../../components/BackgroundImage';
+
 import {isIOS} from '../../Utils/Platform';
 import BrandLogo from '../../../asssets/svgs/BrandLogo';
 const OnboardingScreen = ({navigation}) => {
@@ -74,7 +74,7 @@ const OnboardingScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: WHITE,
+    backgroundColor: BRAND_BLUE,
     alignItems: 'center',
   },
   dot: {

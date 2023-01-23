@@ -47,6 +47,8 @@ export const BLUE = '#2D9CDB';
 
 export const BLUE_SECONDARY = '#56CCF2';
 
+export const BRAND_BLUE = '#A5C4FD';
+
 export const ERROR_RED = '#EB5757';
 
 export const DEEP_PURPLE = '#021942';
