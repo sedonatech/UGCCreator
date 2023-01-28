@@ -4,7 +4,7 @@ import ContentCard from '../../../../components/cards/ContentCard';
 
 const defaultImage =
   'https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60';
-const ContentSection = ({creator, isLast, hasRequest}) => {
+const ContentSection = ({creator, isLast, hasRequest, slideInTime}) => {
   const [avatar, setAvatar] = useState('');
   const {getAvatar} = useFirebaseGetStorage();
   const getCreatorAvatar = async id => {
@@ -38,6 +38,7 @@ const ContentSection = ({creator, isLast, hasRequest}) => {
       buttonTitle={hasRequest ? 'review' : ''}
       callout={hasRequest ? '' : 'yesterday'}
       isLast={isLast}
+      slideInTime={slideInTime}
     />
   );
 };

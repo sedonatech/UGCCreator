@@ -4,6 +4,7 @@ import {Image, StyleSheet, View} from 'react-native';
 import TemplateText from '../TemplateText';
 import {BLACK, BLACK_30, BLACK_50, WHITE} from '../../theme/Colors';
 import TemplateTouchable from '../TemplateTouchable';
+import TemplateBox from '../TemplateBox';
 const ContentCard = ({
   image,
   title,
@@ -11,10 +12,11 @@ const ContentCard = ({
   callout,
   buttonTitle,
   isLast,
+  slideInTime,
 }) => {
   return (
-    <View>
-      <View style={styles.contentCard}>
+    <>
+      <TemplateBox slideInTime={slideInTime} slideIn style={styles.contentCard}>
         <View style={styles.imageContainer}>
           {!!image && <Image source={image} style={styles.image} />}
           <View>
@@ -38,9 +40,9 @@ const ContentCard = ({
             {callout}
           </TemplateText>
         )}
-      </View>
+      </TemplateBox>
       {!isLast && <View style={styles.divider} />}
-    </View>
+    </>
   );
 };
 
@@ -81,6 +83,7 @@ ContentCard.propTypes = {
   callout: PropTypes.string,
   buttonTitle: PropTypes.string,
   isLast: PropTypes.bool,
+  slideInTime: PropTypes.number,
 };
 
 ContentCard.defaultProps = {
@@ -90,6 +93,7 @@ ContentCard.defaultProps = {
   callout: '',
   buttonTitle: '',
   isLast: false,
+  slideInTime: 0,
 };
 
 export default ContentCard;
