@@ -37,7 +37,7 @@ export const WHITE_80 = 'rgba(255, 255, 255, 0.8)';
 export const WHITE_90 = 'rgba(255, 255, 255, 0.9)';
 
 export const WHITE_70 = 'rgba(255, 255, 255, 0.7)';
-export const BLACK_SECONDARY = '#3D3D3F';
+export const BLACK_SECONDARY = '#2D3439';
 
 export const PRIMARY = '#56CCF2';
 
