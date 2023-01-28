@@ -4,13 +4,13 @@ import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   BLACK,
+  BLACK_10,
   BLACK_SECONDARY,
   BLUE,
+  BRAND_BLUE,
   DEEP_LAVENDER,
   ERROR_RED,
-  WHITE,
 } from '../../theme/Colors';
-import Logo from '../../../asssets/svgs/Logo';
 import TemplateText from '../../components/TemplateText';
 import {SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN} from '../../theme/Layout';
 import Button from '../../components/Button';
@@ -21,6 +21,8 @@ import Error from '../../components/Error';
 import {emailValid, passwordValid, isEmpty} from '../../Utils/validation';
 import useProfile from '../../hooks/user/useProfile';
 import Blob from '../../../asssets/svgs/Blob';
+import BrandLogo from '../../../asssets/svgs/BrandLogo';
+import {isIOS} from '../../Utils/Platform';
 
 const CREATOR_PLACEHOLDER = 'Creator';
 const BRAND_PLACEHOLDER = 'Brand';
@@ -109,14 +111,21 @@ const SignUpScreen = ({navigation, route}) => {
       style={styles.container}
       showsVerticalScrollIndicator={false}
       keyboard>
+      <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} style={styles.logo} />
       <Blob color={DEEP_LAVENDER} top />
       <Blob right />
       <Blob color={DEEP_LAVENDER} bottom />
 
-      <TemplateText title bold caps center color={BLACK} style={styles.title}>
+      <TemplateText
+        size={18}
+        bold
+        caps
+        center
+        color={BLACK}
+        style={styles.title}>
         Lets Create Your Account
       </TemplateText>
-      <TemplateText size={18} color={BLACK_SECONDARY}>
+      <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
         Enter your credentials to continue
       </TemplateText>
 
@@ -190,8 +199,9 @@ const SignUpScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    backgroundColor: BRAND_BLUE,
+    paddingBottom: 44,
   },
   dot: {
     backgroundColor: BLACK,
@@ -203,7 +213,7 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     height: SCREEN_HEIGHT,
-    backgroundColor: WHITE,
+    backgroundColor: BRAND_BLUE,
   },
   textContainer: {
     flexDirection: 'row',
@@ -212,11 +222,11 @@ const styles = StyleSheet.create({
   },
   logo: {
     alignSelf: 'center',
-    marginBottom: WRAPPER_MARGIN,
   },
   buttonContainer: {
     marginTop: WRAPPER_MARGIN * 2,
     alignSelf: 'center',
+    marginBottom: WRAPPER_MARGIN * 4,
   },
   button: {
     marginTop: 24,
@@ -229,6 +239,10 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: WRAPPER_MARGIN,
+    fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
+  },
+  subtitle: {
+    fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
   },
   input: {
     height: 60,
@@ -237,6 +251,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 16,
     marginTop: WRAPPER_MARGIN * 2,
+    borderColor: BLACK_10,
   },
   error: {
     borderColor: ERROR_RED,
