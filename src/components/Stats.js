@@ -10,7 +10,7 @@ const Stats = ({stats, style}) => {
       pAll={20}
       row
       spaceBetween
-      flexWrap={'wrap'}
+      flexWrap="wrap"
       style={[styles.statsWrapper, style]}>
       {stats?.map((stat, index) => (
         <StatsCard
