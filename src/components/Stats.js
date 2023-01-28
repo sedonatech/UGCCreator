@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import StatsCard from './cards/StatsCard';
+import TemplateBox from './TemplateBox';
 
 const Stats = ({stats, style}) => {
   return (
-    <View style={[styles.statsWrapper, style]}>
+    <TemplateBox
+      pAll={20}
+      row
+      spaceBetween
+      flexWrap="wrap"
+      style={[styles.statsWrapper, style]}>
       {stats?.map((stat, index) => (
         <StatsCard
           key={index}
@@ -13,9 +19,10 @@ const Stats = ({stats, style}) => {
           value={stat?.value}
           icon={stat?.icon}
           color={stat?.color}
+          slideInDelayTime={(index + 1) * 0.5}
         />
       ))}
-    </View>
+    </TemplateBox>
   );
 };
 
@@ -39,10 +46,7 @@ Stats.defaultProps = {
 
 const styles = StyleSheet.create({
   statsWrapper: {
-    padding: 20,
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    flexWrap: 'wrap',
   },
 });
 export default Stats;

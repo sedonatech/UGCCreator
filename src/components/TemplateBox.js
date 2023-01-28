@@ -2,10 +2,11 @@ import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {TouchableOpacity, View, StyleSheet, Animated} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {PRIMARY_GRADIENT} from '../../consts/COLOURS';
-import {SHADOW} from '../../consts/SHADOW';
-import {IS_ANDROID, SPACE_LARGE} from '../../consts/LAYOUT';
-import {wp} from '../../utils/getResponsiveSize';
+import {PRIMARY_GRADIENT} from '../theme/Colors';
+import {SHADOW} from '../theme/Shadow';
+import {isAndroid} from '../Utils/Platform';
+import {wp} from '../Utils/getResponsiveSize';
+import {SPACE_LARGE} from '../theme/Layout';
 
 const TemplateBox = ({
   animated,
@@ -167,10 +168,10 @@ const TemplateBox = ({
         (!!left || left === 0) && {left},
         (!!right || right === 0) && {right},
         !!disabled && {opacity: 0.5},
-        IS_ANDROID &&
+        isAndroid &&
           (shadow || lightShadow) &&
           !animated &&
-          SHADOW('android', backgroundColor, {}),
+          SHADOW('default', backgroundColor, {}),
         style,
       ]}
       onPress={onPress}
@@ -178,11 +179,11 @@ const TemplateBox = ({
       disabled={disabled}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...restProps}>
-      {!IS_ANDROID && shadow && (
+      {!isAndroid && shadow && (
         <View
           style={[
             styles.overlay,
-            SHADOW('card', backgroundColor, {}),
+            SHADOW('default', backgroundColor, {}),
             !!borderRadius && {borderRadius},
             !!borderBottomLeftRadius && {borderBottomLeftRadius},
             !!borderBottomRightRadius && {borderBottomRightRadius},
@@ -191,11 +192,11 @@ const TemplateBox = ({
           ]}
         />
       )}
-      {!IS_ANDROID && shadow && (
+      {!isAndroid && shadow && (
         <View
           style={[
             styles.overlay,
-            SHADOW('lightCard', backgroundColor, {}),
+            SHADOW('default', backgroundColor, {}),
             !!borderRadius && {borderRadius},
             !!borderBottomLeftRadius && {borderBottomLeftRadius},
             !!borderBottomRightRadius && {borderBottomRightRadius},

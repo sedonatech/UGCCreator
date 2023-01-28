@@ -58,6 +58,8 @@ export const LAVENDER = '#E6E6FA';
 export const DEEP_LAVENDER = '#9370DB';
 
 export const LIGHT_PURPLE = '#ECEDFD';
+
+export const PRIMARY_GRADIENT = [BLACK_10, BLACK_20, BLACK_50];
 export default {
   TRANSPARENT,
 };

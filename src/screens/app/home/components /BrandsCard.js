@@ -6,12 +6,8 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../../theme/Layout';
 import {
   BLACK,
   BLACK_50,
-  DEEP_LAVENDER,
   WHITE,
-  LAVENDER,
-  BLACK_10,
-  BLACK_30,
-  BLACK_20,
+  PRIMARY_GRADIENT,
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -21,10 +17,7 @@ const BrandsCard = ({image, style, shortDescription, title}) => {
   return (
     <View style={[styles.container, style]}>
       <BackgroundImage source={image} style={styles.image} />
-      <LinearGradient
-        colors={[BLACK_10, BLACK_20, BLACK_50]}
-        style={styles.linearGradient}
-      />
+      <LinearGradient colors={PRIMARY_GRADIENT} style={styles.linearGradient} />
       <View style={styles.buttonWrapper}>
         <TemplateText color={WHITE} bold size={18} style={styles.text}>
           {title}

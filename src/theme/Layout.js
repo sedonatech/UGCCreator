@@ -16,6 +16,8 @@ export const isSmallDevice = SCREEN_WIDTH < 350;
 
 export const WRAPPER_MARGIN = 16;
 
+export const SPACE_LARGE = 20;
+
 export const WRAPPED_SCREEN_WIDTH = SCREEN_WIDTH - 2 * WRAPPER_MARGIN;
 
 export const CATEGORY_CARD_HEIGHT = isShortDEvice
