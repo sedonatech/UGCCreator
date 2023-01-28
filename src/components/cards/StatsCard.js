@@ -5,10 +5,19 @@ import TemplateText from '../TemplateText';
 import {BLACK, BLACK_50, DEEP_PURPLE, WHITE} from '../../theme/Colors';
 import {SCREEN_WIDTH} from '../../theme/Layout';
 import TemplateIcon from '../TemplateIcon';
+import TemplateBox from '../TemplateBox';
 
-const StatsCard = ({title, value, icon, color}) => {
+const StatsCard = ({title, value, icon, color, slideInDelayTime}) => {
   return (
-    <View style={styles.statsContainer}>
+    <TemplateBox
+      pAll={10}
+      mb={10}
+      borderRadius={10}
+      slideIn
+      slideInTime={slideInDelayTime}
+      backgroundColor={WHITE}
+      shadow
+      width={SCREEN_WIDTH / 2 - 30}>
       <TemplateText color={DEEP_PURPLE} size={12} semiBold>
         {title}
       </TemplateText>
@@ -20,7 +29,7 @@ const StatsCard = ({title, value, icon, color}) => {
           {value}
         </TemplateText>
       </View>
-    </View>
+    </TemplateBox>
   );
 };
 
@@ -29,6 +38,7 @@ StatsCard.propTypes = {
   value: PropTypes.number,
   icon: PropTypes.string,
   color: PropTypes.string,
+  slideInDelayTime: PropTypes.number,
 };
 
 StatsCard.defaultProps = {
@@ -36,22 +46,12 @@ StatsCard.defaultProps = {
   value: 0,
   icon: '',
   color: '',
+  slideInDelayTime: 0,
 };
 
 const styles = StyleSheet.create({
   statsContainer: {
-    width: SCREEN_WIDTH / 2 - 30,
     backgroundColor: WHITE,
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 20,
-    elevation: 5,
-    shadowColor: BLACK_50,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
   },
   valueWrapper: {
     flexDirection: 'row',
