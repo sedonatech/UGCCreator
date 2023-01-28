@@ -59,6 +59,7 @@
 		A768195047CC8FA2B533804A /* Pods_UGCCreatorApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3258807DCC93D4142740187 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp_UGCCreatorAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB4224295FF6678BD26D9733 /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C868EEE0298449E400FD226C /* UGCCreatorAppDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = UGCCreatorAppDebug.entitlements; path = UGCCreatorApp/UGCCreatorAppDebug.entitlements; sourceTree = "<group>"; };
 		C8BB7242294E359C00149E9D /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C8BB7243294E359C00149E9D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		C8BB7244294E359C00149E9D /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome5_Solid.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
@@ -118,6 +119,7 @@
 		13B07FAE1A68108700A75B9A /* UGCCreatorApp */ = {
 			isa = PBXGroup;
 			children = (
+				C868EEE0298449E400FD226C /* UGCCreatorAppDebug.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -534,7 +536,9 @@
 			baseConfigurationReference = 8D3B7170E83DCE5459F775AE /* Pods-UGCCreatorApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = UGCCreatorApp/UGCCreatorAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -565,6 +569,7 @@
 			baseConfigurationReference = 9083236557F986876E4BE6DE /* Pods-UGCCreatorApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;

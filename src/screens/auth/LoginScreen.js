@@ -3,13 +3,12 @@ import {StyleSheet, View} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
   BLACK,
+  BLACK_10,
   BLACK_SECONDARY,
   BLUE,
   BRAND_BLUE,
   DEEP_LAVENDER,
-  WHITE,
 } from '../../theme/Colors';
-import Logo from '../../../asssets/svgs/Logo';
 import TemplateText from '../../components/TemplateText';
 import {SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN} from '../../theme/Layout';
 import Button from '../../components/Button';
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: SCREEN_WIDTH - 32,
     borderWidth: 0.4,
-    borderColor: DEEP_LAVENDER,
+    borderColor: BLACK_10,
     borderRadius: 8,
     paddingLeft: 16,
     marginTop: WRAPPER_MARGIN * 2,
