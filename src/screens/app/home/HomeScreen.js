@@ -6,6 +6,7 @@ import {
   BLACK,
   BLACK_50,
   BLUE,
+  BRAND_BLUE,
   DEEP_LAVENDER,
   DEEP_PURPLE,
   LAVENDER,
@@ -29,6 +30,8 @@ import TemplateTouchable from '../../../components/TemplateTouchable';
 import {PROJECTS, STATS} from '../../../consts/content/Home';
 import Stats from '../../../components/Stats';
 import ContentCard from '../../../components/cards/ContentCard';
+import TemplateBox from '../../../components/TemplateBox';
+import {SHADOW} from '../../../theme/Shadow';
 
 const HomeScreen = () => {
   const {auth} = useAuthContext();
@@ -49,45 +52,46 @@ const HomeScreen = () => {
 
       <Stats stats={STATS} />
 
-      <CurrentProjectsCarousel style={styles.carousel} />
+      <View style={[styles.bottomWrapper, SHADOW('card', WHITE)]}>
+        <CurrentProjectsCarousel style={styles.carousel} />
 
-      <BrandsCarousel style={styles.carousel} />
-
-      <View style={styles.content}>
-        <View style={styles.contentTitleContainer}>
-          <TemplateText
-            startCase
-            size={18}
-            color={DEEP_PURPLE}
-            style={styles.contentTitle}>
-            New Projects
-          </TemplateText>
-
-          <View />
-          <TemplateTouchable>
+        <BrandsCarousel style={styles.carousel} />
+        <View style={styles.content}>
+          <View style={styles.contentTitleContainer}>
             <TemplateText
               startCase
-              size={14}
-              color={BLUE}
+              size={18}
+              color={DEEP_PURPLE}
               style={styles.contentTitle}>
-              View all
+              New Projects
             </TemplateText>
-          </TemplateTouchable>
-        </View>
 
-        {PROJECTS.map((creator, index) => {
-          return (
-            <ContentCard
-              key={creator?.id}
-              image={creator?.image}
-              title={creator?.title}
-              description={creator?.description}
-              subtitle={creator?.shortDescription}
-              isLast={creator === PROJECTS[PROJECTS?.length - 1]}
-              buttonTitle="View"
-            />
-          );
-        })}
+            <View />
+            <TemplateTouchable>
+              <TemplateText
+                startCase
+                size={14}
+                color={BLUE}
+                style={styles.contentTitle}>
+                View all
+              </TemplateText>
+            </TemplateTouchable>
+          </View>
+
+          {PROJECTS.map((creator, index) => {
+            return (
+              <ContentCard
+                key={creator?.id}
+                image={creator?.image}
+                title={creator?.title}
+                description={creator?.description}
+                subtitle={creator?.shortDescription}
+                isLast={creator === PROJECTS[PROJECTS?.length - 1]}
+                buttonTitle="View"
+              />
+            );
+          })}
+        </View>
       </View>
     </ScrollView>
   );
@@ -96,7 +100,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: WHITE,
+    backgroundColor: LIGHT_PURPLE,
   },
   greeting: {
     marginTop: SCREEN_HEIGHT * 0.14,
@@ -104,7 +108,7 @@ const styles = StyleSheet.create({
     marginHorizontal: WRAPPER_MARGIN,
   },
   carousel: {
-    marginBottom: WRAPPER_MARGIN,
+    marginVertical: WRAPPER_MARGIN,
   },
   content: {
     padding: 10,
@@ -142,7 +146,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: WRAPPER_MARGIN,
   },
-  contentTitle: {},
   contentTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -164,6 +167,11 @@ const styles = StyleSheet.create({
   },
   description: {
     width: SCREEN_WIDTH * 0.58,
+  },
+  bottomWrapper: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: WHITE,
   },
 });
 export default HomeScreen;

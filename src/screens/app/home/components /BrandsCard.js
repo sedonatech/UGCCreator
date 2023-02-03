@@ -1,23 +1,25 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import PropTypes from 'prop-types';
-import LinearGradient from 'react-native-linear-gradient';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../../theme/Layout';
-import {
-  BLACK,
-  BLACK_50,
-  WHITE,
-  PRIMARY_GRADIENT,
-} from '../../../../theme/Colors';
+
+import {SCREEN_WIDTH} from '../../../../theme/Layout';
+import {BLACK, WHITE} from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
+import TemplateBox from '../../../../components/TemplateBox';
 
 const BrandsCard = ({image, style, shortDescription, title}) => {
   return (
-    <View style={[styles.container, style]}>
+    <TemplateBox
+      flex
+      vGradient
+      overflow="hidden"
+      borderRadius={10}
+      width={SCREEN_WIDTH / 1.6}
+      aspectRatio={1}
+      style={style}>
       <BackgroundImage source={image} style={styles.image} />
-      <LinearGradient colors={PRIMARY_GRADIENT} style={styles.linearGradient} />
       <View style={styles.buttonWrapper}>
         <TemplateText color={WHITE} bold size={18} style={styles.text}>
           {title}
@@ -31,53 +33,30 @@ const BrandsCard = ({image, style, shortDescription, title}) => {
           </TemplateText>
         </TemplateTouchable>
       </View>
-    </View>
+    </TemplateBox>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: WHITE,
-    width: SCREEN_WIDTH - 56,
-    height: SCREEN_HEIGHT / 2.4,
-    shadowColor: BLACK_50,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
   image: {
     width: '100%',
     height: '100%',
     borderRadius: 10,
+    zIndex: -1,
   },
   viewOffersButton: {
     backgroundColor: BLACK,
     borderRadius: 10,
-    alignSelf: 'center',
-    width: SCREEN_WIDTH - 86,
     alignItems: 'center',
     justifyContent: 'center',
     height: 40,
     marginTop: 10,
   },
-  linearGradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: '100%',
-  },
   buttonWrapper: {
     position: 'absolute',
     bottom: 10,
     alignSelf: 'center',
+    padding: 10,
   },
   text: {
     marginBottom: 5,

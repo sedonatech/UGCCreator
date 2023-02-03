@@ -30,7 +30,6 @@ const LoginScreen = ({navigation}) => {
     setLoading(true);
     try {
       const response = await auth().signInWithEmailAndPassword(email, password);
-      console.log('-> response', JSON.stringify(response, null, 2));
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         console.log('That email address is already in use!');
