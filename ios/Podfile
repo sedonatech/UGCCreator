@@ -13,6 +13,11 @@ target 'UGCCreatorApp' do
   flags = get_default_flags()
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+  pod 'react-native-blob-util',
+      :path => '../node_modules/react-native-blob-util'
+
+  pod 'RNPurchases', :path => '../node_modules/react-native-purchases', :inhibit_warnings => true
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.

@@ -49,7 +49,7 @@ const AdminPanelScreen = ({navigation}) => {
         <Blob color={DEEP_LAVENDER} bottom />
         <Blob center />
 
-        <Stats stats={STATS} style={styles.stats} />
+        {/*<Stats stats={STATS} style={styles.stats} />*/}
 
         <View style={styles.content}>
           <View style={styles.contentTitleContainer}>
