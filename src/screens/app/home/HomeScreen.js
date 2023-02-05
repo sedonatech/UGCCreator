@@ -50,12 +50,13 @@ const HomeScreen = () => {
         <Greeting userName={profile?.userName} style={styles.greeting} />
       )}
 
-      <Stats stats={STATS} />
+      {/*<Stats stats={STATS} />*/}
 
       <View style={[styles.bottomWrapper, SHADOW('card', WHITE)]}>
         <CurrentProjectsCarousel style={styles.carousel} />
 
         <BrandsCarousel style={styles.carousel} />
+
         <View style={styles.content}>
           <View style={styles.contentTitleContainer}>
             <TemplateText
@@ -100,7 +101,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: LIGHT_PURPLE,
+    backgroundColor: WHITE,
   },
   greeting: {
     marginTop: SCREEN_HEIGHT * 0.14,
