@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C806DE12298D8047008B405B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C806DE11298D8046008B405B /* GoogleService-Info.plist */; };
 		C8BB7251294E359C00149E9D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7242294E359C00149E9D /* Octicons.ttf */; };
 		C8BB7252294E359C00149E9D /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7243294E359C00149E9D /* MaterialCommunityIcons.ttf */; };
 		C8BB7253294E359C00149E9D /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7244294E359C00149E9D /* FontAwesome5_Solid.ttf */; };
@@ -28,7 +29,6 @@
 		C8BB725D294E359C00149E9D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB724E294E359C00149E9D /* FontAwesome.ttf */; };
 		C8BB725E294E359C00149E9D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB724F294E359C00149E9D /* Foundation.ttf */; };
 		C8BB725F294E359C00149E9D /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7250294E359C00149E9D /* Fontisto.ttf */; };
-		C8BB7263294F414100149E9D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7262294F414100149E9D /* GoogleService-Info.plist */; };
 		E4AE638900EA19340B2B55FC /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3258807DCC93D4142740187 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +59,7 @@
 		A768195047CC8FA2B533804A /* Pods_UGCCreatorApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3258807DCC93D4142740187 /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp_UGCCreatorAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB4224295FF6678BD26D9733 /* Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C806DE11298D8046008B405B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C868EEE0298449E400FD226C /* UGCCreatorAppDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = UGCCreatorAppDebug.entitlements; path = UGCCreatorApp/UGCCreatorAppDebug.entitlements; sourceTree = "<group>"; };
 		C8BB7242294E359C00149E9D /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C8BB7243294E359C00149E9D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialCommunityIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -75,7 +76,6 @@
 		C8BB724E294E359C00149E9D /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		C8BB724F294E359C00149E9D /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		C8BB7250294E359C00149E9D /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		C8BB7262294F414100149E9D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -150,7 +150,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				C8BB7262294F414100149E9D /* GoogleService-Info.plist */,
+				C806DE11298D8046008B405B /* GoogleService-Info.plist */,
 				C8BB7241294E34B700149E9D /* Fonts */,
 				13B07FAE1A68108700A75B9A /* UGCCreatorApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -310,7 +310,7 @@
 				C8BB725F294E359C00149E9D /* Fontisto.ttf in Resources */,
 				C8BB7251294E359C00149E9D /* Octicons.ttf in Resources */,
 				C8BB725B294E359C00149E9D /* Entypo.ttf in Resources */,
-				C8BB7263294F414100149E9D /* GoogleService-Info.plist in Resources */,
+				C806DE12298D8047008B405B /* GoogleService-Info.plist in Resources */,
 				C8BB7259294E359C00149E9D /* MaterialIcons.ttf in Resources */,
 				C8BB7252294E359C00149E9D /* MaterialCommunityIcons.ttf in Resources */,
 				C8BB725D294E359C00149E9D /* FontAwesome.ttf in Resources */,
@@ -627,7 +627,6 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -721,7 +720,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
