@@ -54,14 +54,14 @@ const TemplateCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...restProps}
             />
-            <TemplateBox hCenter>
-                {showPagination && (
-                    <TemplatePagination
-                        paginationSize={paginationSize || 0}
-                        position={activeIndex}
-                    />
-                )}
-            </TemplateBox>
+
+            {showPagination && (
+                <TemplatePagination
+                    paginationSize={paginationSize || 0}
+                    position={activeIndex}
+                />
+            )}
+
         </TemplateBox>
     );
 });
@@ -78,6 +78,6 @@ TemplateCarousel.defaultProps = {
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        // width: '100%',
     },
 });
