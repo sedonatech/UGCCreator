@@ -66,6 +66,8 @@ export interface Props {
     onPress?:(() => void) | null,
     activeOpacity?:number,
     hGradient?:boolean,
+
+    fullGradient?:boolean,
     vGradient?:boolean,
     gradientColors?:string[],
     gradientStartBalance?:number,
@@ -136,6 +138,7 @@ const TemplateBox: FC<Props> = ({
     activeOpacity,
     hGradient,
     vGradient,
+    fullGradient,
     gradientColors,
     gradientStartBalance,
     gradientEndBalance,
@@ -287,6 +290,20 @@ const TemplateBox: FC<Props> = ({
                             ? { x: gradientEndBalance || 1, y: 0 }
                             : { x: 0, y: gradientEndBalance || 1 }
                     }
+                    style={[
+                        styles.overlay,
+                        !!borderRadius && { borderRadius },
+                        !!borderBottomLeftRadius && { borderBottomLeftRadius },
+                        !!borderBottomRightRadius && { borderBottomRightRadius },
+                        !!borderTopLeftRadius && { borderTopLeftRadius },
+                        !!borderTopRightRadius && { borderTopRightRadius },
+                    ]}
+                    colors={gradientColors || PRIMARY_GRADIENT}
+                />
+            )}
+
+            {fullGradient && (
+                <LinearGradient
                     style={[
                         styles.overlay,
                         !!borderRadius && { borderRadius },

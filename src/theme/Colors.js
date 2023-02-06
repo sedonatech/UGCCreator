@@ -33,7 +33,11 @@ export const BLUE_SECONDARY = '#56CCF2';
 
 export const BRAND_BLUE = '#A5C4FD';
 
-export const ERROR_RED = '#FFCCD2';
+export const ERROR_RED = '#FF2D2D';
+
+export const PINK = 'rgb(255, 204, 210)';
+
+export const PEACH = '#FFDAB9';
 
 export const DEEP_PURPLE = '#021942';
 

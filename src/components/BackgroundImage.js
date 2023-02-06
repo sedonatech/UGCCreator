@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import FastImage from 'react-native-fast-image';
@@ -8,7 +8,7 @@ import { SCREEN_WIDTH } from '../theme/Layout';
 const BackgroundImage = ({
     style, source, width, ...rest
 }) => (
-    <FastImage
+    <Image
         style={[styles.image, style]}
         {...rest}
         source={source}
@@ -18,7 +18,7 @@ const BackgroundImage = ({
 
 BackgroundImage.propTypes = {
     style: PropTypes.object,
-    source: PropTypes.string || PropTypes.number,
+    source: PropTypes.number || PropTypes.object,
     width: PropTypes.number,
 };
 

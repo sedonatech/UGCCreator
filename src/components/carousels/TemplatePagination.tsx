@@ -2,10 +2,10 @@
 import React, { FC } from 'react';
 import { ViewStyle, StyleSheet } from 'react-native';
 
-import { wp } from '../../utils/getResponsiveSize';
 import TemplateBox from '../TemplateBox';
 import { BLACK_20, BLACK_SECONDARY } from '../../theme/Colors';
 import { RADIUS_XSMALL, SPACE_XSMALL } from '../../theme/Layout';
+import { wp } from '../../Utils/getResponsiveSize';
 
 interface Props {
     paginationSize: number;
@@ -22,10 +22,11 @@ const TemplatePagination: FC<Props> = ({
     children,
     ...restProps
 }: any) => (
-    <TemplateBox row center {...restProps}>
+    <TemplateBox row center selfCenter mt={10} {...restProps}>
         {paginationSize > 1
       && Array.from(Array(paginationSize).keys()).map((item, index) => {
           const isActive = index === position;
+
           return (
               <TemplateBox
                   key={`${index}`}
