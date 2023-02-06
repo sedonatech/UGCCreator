@@ -4,24 +4,20 @@ import {
 } from 'react-native';
 
 import {
-    BLACK_50,
     LAVENDER,
-    LIGHT_PURPLE,
     WHITE,
 } from '../../../theme/Colors';
 import {
     SCREEN_HEIGHT,
-    SCREEN_WIDTH,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
-
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Blob from '../../../../asssets/svgs/Blob';
-
 import CurrentProjectsCarousel from './components /CurrentProjectsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
+import TemplateBox from '../../../components/TemplateBox';
 
 const HomeScreen = () => {
     const { auth } = useAuthContext();
@@ -29,12 +25,12 @@ const HomeScreen = () => {
     const profile = auth?.profile;
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            <View>
+            <TemplateBox>
                 <Blob top color={LAVENDER} />
                 <Blob right color={LAVENDER} />
                 <Blob color={LAVENDER} bottom />
                 <Blob center />
-            </View>
+            </TemplateBox>
 
             {profile?.userName && (
                 <Greeting userName={profile?.userName} style={styles.greeting} />

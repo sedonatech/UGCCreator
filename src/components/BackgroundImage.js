@@ -8,7 +8,7 @@ import { SCREEN_WIDTH } from '../theme/Layout';
 const BackgroundImage = ({
     style, source, width, ...rest
 }) => (
-    <Image
+    <FastImage
         style={[styles.image, style]}
         {...rest}
         source={source}

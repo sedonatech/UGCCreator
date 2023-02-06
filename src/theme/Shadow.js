@@ -1,63 +1,63 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import {isAndroid} from '../Utils/Platform';
-import {BLACK_10, BLACK_50, WHITE} from './Colors';
+import { isAndroid } from '../Utils/Platform';
+import { BLACK_10, BLACK_50, WHITE } from './Colors';
 
-export const ELEVATION = 3;
+export const ELEVATION = 5;
 export const SHADOW_COLOR = BLACK_10;
 export const SHADOW_OFFSET_WIDTH = 0;
 export const SHADOW_OFFSET_HEIGHT = 2;
-export const SHADOW_RADIUS = 4;
+export const SHADOW_RADIUS = 5;
 export const SHADOW_OPACITY = 1;
 
 export const shadowStyle = StyleSheet.create({
-  default: {
-    shadowColor: SHADOW_COLOR,
-    shadowOffset: {
-      width: SHADOW_OFFSET_WIDTH,
-      height: SHADOW_OFFSET_HEIGHT,
+    default: {
+        shadowColor: SHADOW_COLOR,
+        shadowOffset: {
+            width: SHADOW_OFFSET_WIDTH,
+            height: SHADOW_OFFSET_HEIGHT,
+        },
+        shadowRadius: SHADOW_RADIUS,
+        shadowOpacity: SHADOW_OPACITY,
+        elevation: ELEVATION,
     },
-    shadowRadius: SHADOW_RADIUS,
-    shadowOpacity: SHADOW_OPACITY,
-    elevation: ELEVATION,
-  },
-  card: {
-    shadowColor: SHADOW_COLOR,
-    shadowOffset: {
-      width: SHADOW_OFFSET_WIDTH,
-      height: SHADOW_OFFSET_HEIGHT,
+    card: {
+        shadowColor: SHADOW_COLOR,
+        shadowOffset: {
+            width: SHADOW_OFFSET_WIDTH,
+            height: SHADOW_OFFSET_HEIGHT,
+        },
+        shadowRadius: SHADOW_RADIUS,
+        shadowOpacity: SHADOW_OPACITY,
+        elevation: ELEVATION,
     },
-    shadowRadius: SHADOW_RADIUS,
-    shadowOpacity: SHADOW_OPACITY,
-    elevation: ELEVATION,
-  },
-  lightCard: {
-    shadowColor: isAndroid ? BLACK_50 : BLACK_10,
-    shadowOffset: {
-      width: SHADOW_OFFSET_WIDTH,
-      height: SHADOW_OFFSET_HEIGHT,
+    lightCard: {
+        shadowColor: isAndroid ? BLACK_50 : BLACK_10,
+        shadowOffset: {
+            width: SHADOW_OFFSET_WIDTH,
+            height: SHADOW_OFFSET_HEIGHT,
+        },
+        shadowRadius: SHADOW_RADIUS,
+        shadowOpacity: SHADOW_OPACITY,
+        elevation: ELEVATION,
     },
-    shadowRadius: SHADOW_RADIUS,
-    shadowOpacity: SHADOW_OPACITY,
-    elevation: ELEVATION,
-  },
-  none: {
-    shadowColor: null,
-    shadowOffset: {
-      width: 0,
-      height: 0,
+    none: {
+        shadowColor: null,
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowRadius: 0,
+        shadowOpacity: 0,
+        elevation: 0,
     },
-    shadowRadius: 0,
-    shadowOpacity: 0,
-    elevation: 0,
-  },
 });
 
 export const SHADOW = (type, backgroundColor, restProps) => {
-  const style = shadowStyle[type || 'default'];
-  return {
-    ...style,
-    backgroundColor,
-    ...restProps,
-  };
+    const style = shadowStyle[type || 'default'];
+    return {
+        ...style,
+        backgroundColor,
+        ...restProps,
+    };
 };

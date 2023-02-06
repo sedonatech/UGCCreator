@@ -276,6 +276,7 @@ export const PROJECTS = [
       'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
         shortDescription: 'Nexus Kicks is a new way',
     },
+
 ];
 
 export const STATS = [
