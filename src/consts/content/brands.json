@@ -1,0 +1,72 @@
+[
+  {
+    "id":1,
+    "image":"productOne",
+    "title":"CoCoil",
+    "description":"CoCoil is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"CoCoil is a new way"
+  },
+  {
+    "id":2,
+    "image":"productTwo",
+    "title":"Blue Orange",
+    "description":"Blue Orange is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Blue Orange is a new."
+  },
+  {
+    "id":3,
+    "image":"productThree",
+    "title":"Enurage",
+    "description":"Enurage is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Enurage is a new way ."
+  },
+  {
+    "id":4,
+    "image":"productFour",
+    "title":"Nexus Kicks",
+    "description":"Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Nexus Kicks is a new way"
+  },
+  {
+    "id":5,
+    "image":"fendi",
+    "title":"Nexus Kicks",
+    "description":"Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Nexus Kicks is a new way"
+  },
+  {
+    "id":6,
+    "image":"productOne",
+    "title":"Nexus Kicks",
+    "description":"Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Nexus Kicks is a new way"
+  },
+  {
+    "id":7,
+    "image":"gucci",
+    "title":"Nexus Kicks",
+    "description":"Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Nexus Kicks is a new way"
+  },
+  {
+    "id":8,
+    "image":"productThree",
+    "title":"Nexus Kicks",
+    "description":"Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Nexus Kicks is a new way"
+  },
+  {
+    "id":9,
+    "image":"productFour",
+    "title":"Nexus Kicks",
+    "description":"Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.",
+    "shortDescription":"Nexus Kicks is a new way"
+  },
+  {
+    "id":10,
+    "image":"starBucks",
+    "title":"Nexus Kicks",
+    "description":"Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses",
+    "shortDescription":"Nexus Kicks is a new way"
+  }
+]

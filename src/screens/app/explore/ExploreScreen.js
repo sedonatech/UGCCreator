@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import RBSheet from 'react-native-raw-bottom-sheet';
+
+import Fuse from 'fuse.js';
 import TemplateText from '../../../components/TemplateText';
-import { BLACK, LAVENDER, WHITE } from '../../../theme/Colors';
+import {
+    BLACK, BRAND_BLUE, LAVENDER, WHITE,
+} from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
-import Blob from '../../../../asssets/svgs/Blob';
+import Blob from '../../../../assets/svgs/Blob';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import {
-    SCREEN_HEIGHT, WRAPPER_MARGIN,
+    SCREEN_HEIGHT, SPACE_XSMALL, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import { SHADOW } from '../../../theme/Shadow';
-import TemplateIcon from '../../../components/TemplateIcon';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import ExploreTabSelector from './components/ExploreTabSelector';
 import BrandsTab from './BrandsTab';
 import ProjectsTab from './ProjectsTab';
+import Filter from '../../../../assets/svgs/Filter';
+import {
+    countryFilters,
+    genderFilters,
+    languageFilters,
+    projectFilters,
+} from '../../../consts/AppFilters/ProjectFilters';
+import { BRANDS, PROJECTS } from '../../../consts/content/Home';
+import FilterCategory from './components/FilterCategory';
 
 const BRANDS_TAB = 'Brands';
 const PROJECTS_TAB = 'Projects';
@@ -21,9 +34,57 @@ const PROJECTS_TAB = 'Projects';
 const TABS = [BRANDS_TAB, PROJECTS_TAB];
 
 const ExploreScreen = () => {
-    const [search, setSearch] = useState('');
+    const refRBSheet = useRef();
+
+    const [search, setSearch] = useState(null);
 
     const [selectedTab, setSelectedTab] = useState(TABS[0]);
+
+    const [selectedFilters, setSelectedFilters] = useState([]);
+
+    const onProjectFilterPress = (value) => {
+        if (selectedFilters.includes(value)) {
+            setSelectedFilters(selectedFilters.filter((filter) => filter !== value));
+        } else {
+            setSelectedFilters([...selectedFilters, value]);
+        }
+    };
+
+    const [searchResults, setSearchResults] = useState([]);
+
+    const [projectsSearchResults, setProjectsSearchResults] = useState([]);
+
+    const options = {
+        shouldSort: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+            'name',
+            'title',
+            'shortDescription',
+        ],
+    };
+
+    useEffect(() => {
+        if (!!search && BRANDS?.length) {
+            const fuse = new Fuse(BRANDS, options);
+            const results = fuse.search(search).map(({ item }) => item);
+            setSearchResults(results);
+        }
+
+        if (!!search && PROJECTS?.length) {
+            const fuse = new Fuse(PROJECTS, options);
+            const results = fuse.search(search).map(({ item }) => item);
+            setProjectsSearchResults(results);
+        }
+    }, [search]);
+
+    const filteredBrands = search?.length ? searchResults : BRANDS;
+
+    const filteredProjects = search?.length ? projectsSearchResults : PROJECTS;
 
     return (
         <ScrollView style={styles.container}>
@@ -45,8 +106,11 @@ const ExploreScreen = () => {
                     onChangeText={(text) => setSearch(text)}
                     autoCapitalize="none"
                 />
-                <TemplateTouchable onPress={() => ''} style={styles.filterButton}>
-                    <TemplateIcon name="filter-outline" size={24} color={BLACK} />
+                <TemplateTouchable
+                    onPress={() => refRBSheet.current.open()}
+                    style={styles.filterButton}
+                >
+                    <Filter />
                 </TemplateTouchable>
             </TemplateBox>
 
@@ -56,12 +120,105 @@ const ExploreScreen = () => {
                 setSelectedTab={setSelectedTab}
             />
 
-            {selectedTab === BRANDS_TAB && (
-                <BrandsTab />
+            {selectedTab === BRANDS_TAB && filteredBrands && (
+                <BrandsTab data={filteredBrands} />
             )}
-            {selectedTab === PROJECTS_TAB && (
-                <ProjectsTab />
+            {selectedTab === PROJECTS_TAB && filteredProjects && (
+                <ProjectsTab data={filteredProjects} />
             )}
+
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown
+                closeOnPressMask
+                customStyles={{
+                    wrapper: {
+
+                        blurType: 'dark',
+                        blurAmount: 10,
+                    },
+                    container: {
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                        backgroundColor: WHITE,
+                        paddingTop: 10,
+                        paddingBottom: 40,
+                        height: SCREEN_HEIGHT * 0.7,
+                    },
+                    draggableIcon: {
+                        backgroundColor: BLACK,
+                    },
+                }}
+            >
+
+                <ScrollView>
+                    <TemplateBox
+                        mb={WRAPPER_MARGIN}
+                        mt={SPACE_XSMALL}
+                        alignItems="center"
+                        justifyContent="center"
+                        row
+                    >
+                        <TemplateText size={18} bold>Select Filters</TemplateText>
+
+                        {selectedFilters.length > 0 && (
+                            <TemplateText
+                                size={14}
+                                color={BRAND_BLUE}
+                                style={styles.applyText}
+                                onPress={() => {
+                                    refRBSheet.current.close();
+                                }}
+                            >
+                                Apply Filters
+                            </TemplateText>
+                        )}
+
+                        {selectedFilters.length > 0 && (
+                            <TemplateText
+                                size={14}
+                                color={BRAND_BLUE}
+                                style={styles.applyText}
+                                onPress={() => {
+                                    setSelectedFilters([]);
+                                    refRBSheet.current.close();
+                                }}
+                            >
+                                Clear Filters
+                            </TemplateText>
+                        )}
+                    </TemplateBox>
+
+                    <FilterCategory
+                        title="Project Category"
+                        filters={projectFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+
+                    />
+                    <FilterCategory
+                        title="Country"
+                        filters={countryFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Language"
+                        filters={languageFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Gender Identity"
+                        filters={genderFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+
+                </ScrollView>
+
+            </RBSheet>
+
         </ScrollView>
     );
 };
@@ -75,14 +232,19 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 50,
         borderRadius: 10,
-        paddingHorizontal: 20,
+        paddingRight: 30,
+        paddingLeft: 10,
         fontSize: 16,
         color: BLACK,
     },
     filterButton: {
         position: 'absolute',
-        right: WRAPPER_MARGIN,
+        right: 10,
         bottom: 13,
+        zIndex: 1,
+    },
+    applyText: {
+        marginLeft: WRAPPER_MARGIN,
     },
 });
 export default ExploreScreen;

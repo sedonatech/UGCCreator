@@ -20,8 +20,8 @@ import Wrapper from '../../components/Wrapper';
 import Error from '../../components/Error';
 import { emailValid, passwordValid, isEmpty } from '../../Utils/validation';
 import useProfile from '../../hooks/user/useProfile';
-import Blob from '../../../asssets/svgs/Blob';
-import BrandLogo from '../../../asssets/svgs/BrandLogo';
+import Blob from '../../../assets/svgs/Blob';
+import BrandLogo from '../../../assets/svgs/BrandLogo';
 import { isIOS } from '../../Utils/Platform';
 
 const CREATOR_PLACEHOLDER = 'Creator';

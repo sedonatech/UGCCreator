@@ -6,10 +6,10 @@ import React, { PropsWithChildren } from 'react';
 import TemplateBox from './TemplateBox';
 import { hp, wp } from '../Utils/getResponsiveSize';
 import {
-    BORDER_XSMALL, IS_ANDROID, RADIUS_LARGE, SPACE_MEDIUM, SPACE_XSMALL
+    BORDER_XSMALL, BORDER_XXSMALL, IS_ANDROID, RADIUS_LARGE, RADIUS_SMALL, SPACE_MEDIUM, SPACE_SMALL, SPACE_XSMALL
 } from '../theme/Layout';
 import {
-    ACCENT, BLACK, GREY, PRIMARY, PRIMARY_GRADIENT, SECONDARY_GRADIENT, WHITE
+    ACCENT, BLACK, BLACK_SECONDARY, BRAND_BLUE, GREY, PRIMARY, PRIMARY_GRADIENT, SECONDARY_GRADIENT, TRANSPARENT, WHITE
 } from '../theme/Colors';
 import TemplateText from './TemplateText';
 import TemplateIcon from './TemplateIcon';
@@ -25,6 +25,8 @@ interface Props extends PropsWithChildren<TextProps> {
     noMargin?: boolean,
     onPress?: ()=>void,
     children: string
+
+    fadeInDelay?: number
 }
 
 // @ts-ignore
@@ -39,26 +41,27 @@ const PillTag:React.FC<Props> = ({
     noMargin,
     onPress,
     children,
+    fadeInDelay
 }) => (
     <TemplateBox
         row
         center
         ph={wp(SPACE_MEDIUM)}
-        mh={!noMargin && wp(SPACE_XSMALL)}
+        mh={!noMargin && wp(SPACE_SMALL)}
         pr={showClose && wp(SPACE_XSMALL)}
         pt={IS_ANDROID && hp(1)}
         minWidth={wp(30)}
         onPress={onPress}
         height={grey ? hp(22) : hp(26)}
-        borderRadius={hp(RADIUS_LARGE)}
-        borderWidth={(primaryTransparent || whiteTransparent) && BORDER_XSMALL}
-        backgroundColor={(accent && ACCENT)
+        borderRadius={hp(RADIUS_SMALL)}
+        borderWidth={(primaryTransparent || whiteTransparent) && BORDER_XXSMALL}
+        backgroundColor={((primaryTransparent || whiteTransparent) ? TRANSPARENT : BLACK_SECONDARY)
       || (grey && GREY)
       || (secondary && SECONDARY_GRADIENT) as any}
-        borderColor={(primaryTransparent && PRIMARY) || (whiteTransparent && WHITE)}
-        vGradient={primary || secondary}
-        gradientColors={primary ? PRIMARY_GRADIENT : SECONDARY_GRADIENT}
+        borderColor={(primaryTransparent && BRAND_BLUE) || (whiteTransparent && WHITE)}
         style={styles.container}
+        fadeIn={fadeInDelay !== undefined}
+        fadeInDelay={fadeInDelay}
     >
         <TemplateText
             color={(primaryTransparent && BLACK) || (grey && PRIMARY) || WHITE}
@@ -67,7 +70,15 @@ const PillTag:React.FC<Props> = ({
         >
             {children}
         </TemplateText>
-        {!!showClose && <TemplateIcon name="close" size={hp(18)} family="Ionicons" />}
+        {!!showClose && (
+            <TemplateIcon
+                name="close"
+                size={hp(12)}
+                family="Ionicons"
+                color={WHITE}
+                style={styles.closeIcon}
+            />
+        )}
     </TemplateBox>
 );
 
@@ -87,6 +98,12 @@ PillTag.defaultProps = {
 
 const styles = StyleSheet.create({
     container: {
-        alignSelf: 'baseline'
+        alignSelf: 'baseline',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: hp(SPACE_SMALL),
+    },
+    closeIcon: {
+        marginLeft: wp(SPACE_XSMALL),
     }
 });

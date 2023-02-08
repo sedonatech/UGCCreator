@@ -16,13 +16,20 @@ interface Props {
     title?: string;
     shortDescription?: string;
     style?: any;
+
+    slideInDelay?: number;
 }
 
 const CARD_WIDTH = SCREEN_WIDTH / 2.36;
 const ProjectCard: FC<Props> = ({
-    image, style, shortDescription, title,
+    image, style, shortDescription, title, slideInDelay,
 }) => (
-    <TemplateBox mb={20} style={style}>
+    <TemplateBox
+        mb={20}
+        style={style}
+        slideIn={slideInDelay !== undefined}
+        slideInDelay={slideInDelay}
+    >
         <TemplateBox
             width={CARD_WIDTH}
             aspectRatio={1.18}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { isArray } from 'lodash';
+import { StyleSheet } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
 import { hp } from '../../../../Utils/getResponsiveSize';
 import { IS_ANDROID, SPACE_LARGE } from '../../../../theme/Layout';
@@ -40,7 +41,8 @@ const ExploreTabSelector:React.FC<Props> = ({ tabs, selectedTab, setSelectedTab 
                     <TemplateText
                         underLine={isSelected}
                         size={hp(IS_ANDROID ? 14 : 16)}
-                        color={isSelected ? BRAND_BLUE : BLACK_40}
+                        color={isSelected ? BLACK : BLACK_40}
+                        bold
                     >
                         {item}
                     </TemplateText>

@@ -1,12 +1,12 @@
-import productOne from '../../../asssets/images/product.jpg';
-import productTwo from '../../../asssets/images/product2.jpg';
-import productThree from '../../../asssets/images/product3.jpg';
-import productFour from '../../../asssets/images/product4.jpg';
-import creative from '../../../asssets/images/creative.jpg';
-import fendi from '../../../asssets/images/fendi.jpg';
-import gucci from '../../../asssets/images/gucci.jpg';
-import redBull from '../../../asssets/images/redBull.jpg';
-import starBucks from '../../../asssets/images/starBucks.jpg';
+import productOne from '../../../assets/images/product.jpg';
+import productTwo from '../../../assets/images/product2.jpg';
+import productThree from '../../../assets/images/product3.jpg';
+import productFour from '../../../assets/images/product4.jpg';
+import creative from '../../../assets/images/creative.jpg';
+import fendi from '../../../assets/images/fendi.jpg';
+import gucci from '../../../assets/images/gucci.jpg';
+import redBull from '../../../assets/images/redBull.jpg';
+import starBucks from '../../../assets/images/starBucks.jpg';
 
 export const CATEGORIES = [
     {
@@ -248,36 +248,75 @@ export const PROJECTS = [
         id: 1,
         image: productOne,
         title: 'CoCoil',
-        description:
-      'CoCoil is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        description: 'CoCoil is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
         shortDescription: 'CoCoil is a new way',
     },
     {
         id: 2,
         image: productTwo,
         title: 'Blue Orange',
-        description:
-      'Blue Orange is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        description: 'Blue Orange is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
         shortDescription: 'Blue Orange is a new.',
     },
     {
         id: 3,
         image: productThree,
         title: 'Enurage',
-        description:
-      'Enurage is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        description: 'Enurage is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
         shortDescription: 'Enurage is a new way .',
     },
     {
         id: 4,
         image: productFour,
         title: 'Nexus Kicks',
-        description:
-      'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        description: 'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
         shortDescription: 'Nexus Kicks is a new way',
     },
-
+    {
+        id: 5,
+        image: fendi,
+        title: 'Nexus Kicks',
+        description: 'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        shortDescription: 'Nexus Kicks is a new way',
+    },
+    {
+        id: 6,
+        image: productOne,
+        title: 'Nexus Kicks',
+        description: 'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        shortDescription: 'Nexus Kicks is a new way',
+    },
+    {
+        id: 7,
+        image: gucci,
+        title: 'Nexus Kicks',
+        description: 'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        shortDescription: 'Nexus Kicks is a new way',
+    },
+    {
+        id: 8,
+        image: productThree,
+        title: 'Nexus Kicks',
+        description: 'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        shortDescription: 'Nexus Kicks is a new way',
+    },
+    {
+        id: 9,
+        image: productFour,
+        title: 'Nexus Kicks',
+        description: 'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone.',
+        shortDescription: 'Nexus Kicks is a new way',
+    },
+    {
+        id: 10,
+        image: starBucks,
+        title: 'Nexus Kicks',
+        description: 'Nexus Kicks is a new way to charge your phone. It’s a wireless charging pad that uses magnetic induction to charge your phone. It’s a wireless charging pad that uses',
+        shortDescription: 'Nexus Kicks is a new way',
+    },
 ];
+
+export const PROJECTS_CAROUSEL = PROJECTS.slice(0, 4);
 
 export const STATS = [
     {
@@ -309,3 +348,12 @@ export const STATS = [
         color: '#FDE9F9',
     },
 ];
+
+export const PROFILE_INCOMPLETE_MESSAGE = 'Complete your profile fully to engage brands!';
+export const PROFILE_COMPLETE_MESSAGE = 'Your profile is complete!';
+
+export const PROFILE_INCOMPLETE_TITLE = 'Profile Incomplete';
+
+export const NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
+
+export const NO_CURRENT_PROJECT_MESSAGE = 'You have no current projects. Check out the projects page to find a project to work on!';

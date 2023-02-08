@@ -1,14 +1,12 @@
 import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
-import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import { BRANDS, PROJECTS } from '../../../../consts/content/Home';
+import { PROJECTS_CAROUSEL } from '../../../../consts/content/Home';
 import { BLACK_50, BLUE } from '../../../../theme/Colors';
-import BrandsCard from './BrandsCard';
-import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
+
 import TemplateBox from '../../../../components/TemplateBox';
 import ProjectCard from './ProjectCard';
 
@@ -34,7 +32,7 @@ const ProjectsCarousel: FC<Props> = ({ style }) => (
 
         <TemplateBox row flexWrap="wrap" ph={WRAPPER_MARGIN} justifyContent="space-between">
             {
-                PROJECTS.map((item, index) => (
+                PROJECTS_CAROUSEL.map((item, index) => (
                     <ProjectCard
                         key={item.id}
                         image={item.image}

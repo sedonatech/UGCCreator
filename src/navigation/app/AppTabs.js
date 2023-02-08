@@ -40,16 +40,16 @@ const AppTabs = () => (
                 tabBarLabel: (props) => <TabLabel {...props}>Explore</TabLabel>,
             }}
         />
-        {/* <Screen */}
-        {/*    name={OFFERS_STACK} */}
-        {/*    component={OffersStack} */}
-        {/*    options={{ */}
-        {/*        tabBarIcon: ({ focused }) => ( */}
-        {/*            <TabButton focused={focused} icon="briefcase" /> */}
-        {/*        ), */}
-        {/*        tabBarLabel: (props) => <TabLabel {...props}>My Offers</TabLabel>, */}
-        {/*    }} */}
-        {/* /> */}
+        <Screen
+            name={OFFERS_STACK}
+            component={OffersStack}
+            options={{
+                tabBarIcon: ({ focused }) => (
+                    <TabButton focused={focused} icon="briefcase" />
+                ),
+                tabBarLabel: (props) => <TabLabel {...props}>My Offers</TabLabel>,
+            }}
+        />
         <Screen
             name={FEEDS_STACK}
             component={FeedsStack}

@@ -19,6 +19,7 @@ interface Props {
 
     cardWidth?: number;
     aspectRatio?: number;
+    slideInDelay?: number;
 }
 
 const BrandsCard: FC<Props> = ({
@@ -28,6 +29,7 @@ const BrandsCard: FC<Props> = ({
     title,
     cardWidth = SCREEN_WIDTH / 1.6,
     aspectRatio = 1.5,
+    slideInDelay,
 }) => (
     <TemplateBox
         fullGradient
@@ -38,6 +40,8 @@ const BrandsCard: FC<Props> = ({
         width={cardWidth}
         aspectRatio={aspectRatio}
         style={style}
+        slideIn={slideInDelay !== undefined}
+        slideInDelay={slideInDelay}
     >
         <BackgroundImage source={image} style={styles.image} width="100%" />
         <TemplateBox pAll={20}>
