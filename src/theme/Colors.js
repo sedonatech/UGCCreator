@@ -54,6 +54,3 @@ export const GREY = '#7A8499';
 export const PRIMARY_GRADIENT = [BLACK_10, BLACK_20, BLACK_50];
 
 export const SECONDARY_GRADIENT = [BLACK_20, BLACK_30, BLACK_60];
-export default {
-    TRANSPARENT,
-};

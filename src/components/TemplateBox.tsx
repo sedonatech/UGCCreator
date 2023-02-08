@@ -10,6 +10,7 @@ import { SHADOW } from '../theme/Shadow';
 import { isAndroid } from '../Utils/Platform';
 import { wp } from '../Utils/getResponsiveSize';
 import { SPACE_LARGE } from '../theme/Layout';
+import TemplateTouchable from './TemplateTouchable';
 
 export interface Props {
     animated?:boolean,
@@ -156,7 +157,7 @@ const TemplateBox: FC<Props> = ({
     const Component: any = onPress
         ? animated || fadeIn
             ? Animated.createAnimatedComponent(TouchableOpacity)
-            : TouchableOpacity
+            : TemplateTouchable
         : animated || fadeIn
             ? Animated.View
             : View;

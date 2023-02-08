@@ -1,73 +1,74 @@
-import React, {useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, { useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
-import {startCase} from 'lodash';
+import { startCase } from 'lodash';
 import PropTypes from 'prop-types';
 
 import TemplateText from '../../../../components/TemplateText';
-import {WRAPPER_MARGIN} from '../../../../theme/Layout';
-import {BLACK_SECONDARY} from '../../../../theme/Colors';
+import { WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { BLACK_SECONDARY } from '../../../../theme/Colors';
 import Avatar from '../../../../components/Avatar';
 
-const Greeting = ({userName, style}) => {
-  const hour = moment().hour();
+const Greeting = ({ userName, style }) => {
+    const hour = moment().hour();
 
-  const today = useMemo(() => moment().startOf('day'), []);
+    const today = useMemo(() => moment().startOf('day'), []);
 
-  const activeDay = useMemo(() => today.format('MMMM Do YYYY'), [today]);
+    const activeDay = useMemo(() => today.format('MMMM Do YYYY'), [today]);
 
-  const getTimeGreeting = hour => {
-    if (hour > 16) {
-      return 'Good evening, ';
-    }
-    if (hour > 11) {
-      return 'Good afternoon, ';
-    }
-    return 'Good morning, ';
-  };
+    const getTimeGreeting = (hour) => {
+        if (hour > 16) {
+            return 'Good evening, ';
+        }
+        if (hour > 11) {
+            return 'Good afternoon, ';
+        }
+        return 'Good morning, ';
+    };
 
-  return (
-    <View style={[styles.container, style]}>
-      <Avatar style={styles.avatar} />
-      <View>
-        <TemplateText bold size={18} style={styles.greetingTitle}>
-          {`${getTimeGreeting(hour)}${startCase(userName)}!`}
-        </TemplateText>
-        <TemplateText
-          size={13}
-          color={BLACK_SECONDARY}
-          style={styles.greetingTitle}>
-          {activeDay}
-        </TemplateText>
-      </View>
-    </View>
-  );
+    return (
+        <View style={[styles.container, style]}>
+            <Avatar style={styles.avatar} />
+            <View>
+                <TemplateText bold size={18} style={styles.greetingTitle}>
+                    {`${getTimeGreeting(hour)}${startCase(userName)}!`}
+                </TemplateText>
+                <TemplateText
+                    size={13}
+                    color={BLACK_SECONDARY}
+                    style={styles.greetingTitle}
+                >
+                    {activeDay}
+                </TemplateText>
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  greetingTitle: {
-    marginBottom: WRAPPER_MARGIN / 3,
-  },
-  avatar: {
-    marginRight: WRAPPER_MARGIN / 1.6,
-  },
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    titleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    greetingTitle: {
+        marginBottom: WRAPPER_MARGIN / 3,
+    },
+    avatar: {
+        marginRight: WRAPPER_MARGIN / 1.6,
+    },
 });
 
 Greeting.propTypes = {
-  userName: PropTypes.string.isRequired,
-  style: PropTypes.object,
+    userName: PropTypes.string.isRequired,
+    style: PropTypes.object,
 };
 
 Greeting.defaultProps = {
-  style: null,
+    style: null,
 };
 export default Greeting;

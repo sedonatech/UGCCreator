@@ -34,6 +34,7 @@ export const SPACE_LARGE = 20;
 export const SPACE_XLARGE = 25;
 export const SPACE_XXLARGE = 30;
 
+export const BORDER_XXSMALL = 0.4;
 export const BORDER_XSMALL = 1;
 export const BORDER_SMALL = 2;
 export const BORDER_MEDIUM = 3;
