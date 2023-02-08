@@ -7,7 +7,7 @@ export const HOME = 'Home';
 
 export const HOME_STACK = 'HomeStack';
 export const FEEDS = 'Feeds';
-export const PROFILE = 'Profile';
+export const PROFILE = 'Portfolio';
 
 export const FEEDS_STACK = 'FeedsStack';
 
@@ -25,7 +25,7 @@ export const APP_TABS = 'AppTabs';
 
 export const APP = 'App';
 
-//Brands
+// Brands
 export const BRANDS_STACK = 'BrandsStack';
 
 export const BRANDS_TABS = 'BrandsTabs';
