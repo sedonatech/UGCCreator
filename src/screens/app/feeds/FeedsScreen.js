@@ -11,9 +11,13 @@ import TemplateBox from '../../../components/TemplateBox';
 import Blob from '../../../../assets/svgs/Blob';
 import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import { FEED_CATEGORIES } from '../../../consts/content/Home';
+import useFeatureFlags from '../../../hooks/auth/featureFlags/useFeatureFlags';
 
 const FeedsScreen = () => {
     const [selectedStatus, setSelectedStatus] = useState(FEED_CATEGORIES[0].value);
+
+    const { feed } = useFeatureFlags();
+    console.log('-> feed', feed);
 
     return (
         <ScrollView style={styles.container}>

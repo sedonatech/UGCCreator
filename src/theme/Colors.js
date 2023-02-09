@@ -29,7 +29,7 @@ export const WHITE_70 = 'rgba(255, 255, 255, 0.7)';
 
 export const PRIMARY = '#56CCF2';
 
-export const GREEN = '#00FA9A';
+export const GREEN = '#90EE90';
 
 export const BLUE = '#2D9CDB';
 
