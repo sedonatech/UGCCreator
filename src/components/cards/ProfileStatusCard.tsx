@@ -19,6 +19,10 @@ interface ProfileStatusCardProps {
     showProgress?: boolean;
 
     slideInDelay?: number;
+
+    showIcon?: boolean;
+
+    icon?: string;
 }
 // @ts-ignore
 const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
@@ -29,6 +33,8 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
     onPress,
     showProgress = true,
     slideInDelay,
+    showIcon = true,
+    icon,
 }) => (
     <TemplateBox
         width={SCREEN_WIDTH - 40}
@@ -44,12 +50,14 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
         slideInDelay={slideInDelay}
     >
 
-        <TemplateIcon
-            name="open-outline"
-            color={BLACK}
-            size={20}
-            style={styles.icon}
-        />
+        {showIcon && (
+            <TemplateIcon
+                name={icon || 'open-outline'}
+                color={BLACK}
+                size={20}
+                style={styles.icon}
+            />
+        )}
         {showProgress && (
             <TemplateBox mr={10}>
                 <Progress.Circle
