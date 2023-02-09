@@ -1,0 +1,14 @@
+{
+  "feeds": [
+    {
+      "title": "Feed 1",
+      "description": "Description 1",
+      "type": "tips"
+    },
+    {
+      "title": "Feed 2",
+      "description": "Description 2",
+      "type": "videoLessons"
+    }
+  ]
+}
