@@ -29,12 +29,14 @@ import {
 import { BRANDS, PROJECTS } from '../../../consts/content/Home';
 import FilterCategory from './components/FilterCategory';
 
-const BRANDS_TAB = 'Brands';
-const PROJECTS_TAB = 'Projects';
+export const BRANDS_TAB = 'Brands';
+export const PROJECTS_TAB = 'Projects';
 
 const TABS = [BRANDS_TAB, PROJECTS_TAB];
 
-const ExploreScreen = () => {
+const ExploreScreen = ({ route }) => {
+    const initialTab = route?.params?.initialTab || TABS[0];
+
     const refRBSheet = useRef();
 
     const [search, setSearch] = useState(null);
@@ -82,6 +84,14 @@ const ExploreScreen = () => {
             setProjectsSearchResults(results);
         }
     }, [search]);
+
+    useEffect(() => {
+        if (initialTab === BRANDS_TAB) {
+            setSelectedTab(BRANDS_TAB);
+        } else if (initialTab === PROJECTS_TAB) {
+            setSelectedTab(PROJECTS_TAB);
+        }
+    }, [initialTab]);
 
     const filteredBrands = search?.length ? searchResults : BRANDS;
 
