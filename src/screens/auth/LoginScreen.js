@@ -48,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
             style={styles.container}
             keyboard
         >
-            <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} style={styles.logo} />
+            <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} />
             <Blob color={DEEP_LAVENDER} top />
             <Blob right />
             <Blob color={DEEP_LAVENDER} bottom />
@@ -110,36 +110,19 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
+
         alignItems: 'center',
         backgroundColor: BRAND_BLUE,
     },
-    dot: {
-        backgroundColor: BLACK,
-        width: 6,
-        height: 6,
-        borderRadius: 4,
-        marginHorizontal: 8,
-        marginTop: 8,
-    },
     contentContainerStyle: {
-        flex: isAndroid ? 0 : 1,
-        height: isAndroid ? SCREEN_HEIGHT : null,
+        flex: 1,
         backgroundColor: BRAND_BLUE,
     },
-    textContainer: {
-        flexDirection: 'row',
-        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
-        marginTop: WRAPPER_MARGIN,
-    },
-    logo: {},
     buttonContainer: {
         alignSelf: 'center',
     },
     button: {
         marginTop: 24,
-    },
-    loginText: {
-        marginTop: WRAPPER_MARGIN,
     },
     signupLink: {
         marginTop: WRAPPER_MARGIN * 2,
