@@ -208,22 +208,8 @@ const styles = StyleSheet.create({
         backgroundColor: BRAND_BLUE,
         paddingBottom: 44,
     },
-    dot: {
-        backgroundColor: BLACK,
-        width: 6,
-        height: 6,
-        borderRadius: 4,
-        marginHorizontal: 8,
-        marginTop: 8,
-    },
     contentContainerStyle: {
-        height: SCREEN_HEIGHT,
         backgroundColor: BRAND_BLUE,
-    },
-    textContainer: {
-        flexDirection: 'row',
-        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
-        marginTop: WRAPPER_MARGIN,
     },
     logo: {
         alignSelf: 'center',
