@@ -1,3 +1,5 @@
+import { IS_ANDROID } from './Layout';
+
 export const TRANSPARENT = 'transparent';
 
 export const BLACK = '#192126';
@@ -21,11 +23,13 @@ export const WHITE_50 = 'rgba(255, 255, 255, 0.5)';
 export const WHITE_60 = 'rgba(255, 255, 255, 0.6)';
 export const WHITE_80 = 'rgba(255, 255, 255, 0.8)';
 export const WHITE_90 = 'rgba(255, 255, 255, 0.9)';
+export const WHITE_96 = 'rgba(255, 255, 255, 0.96)';
+
 export const WHITE_70 = 'rgba(255, 255, 255, 0.7)';
 
 export const PRIMARY = '#56CCF2';
 
-export const GREEN = '#98FB98';
+export const GREEN = '#00FA9A';
 
 export const BLUE = '#2D9CDB';
 

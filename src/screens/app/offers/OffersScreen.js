@@ -1,13 +1,150 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
 import TemplateText from '../../../components/TemplateText';
+import {
+    BRAND_BLUE, DEEP_PURPLE, GREEN, GREY, LAVENDER, PINK, TRANSPARENT, WHITE,
+} from '../../../theme/Colors';
+import Blob from '../../../../assets/svgs/Blob';
+import TemplateBox from '../../../components/TemplateBox';
+import {
+    IS_ANDROID,
+    SCREEN_HEIGHT, SCREEN_WIDTH, SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
+} from '../../../theme/Layout';
+import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
+import {
+    CURRENT_PROJECTS,
+    NO_CURRENT_PROJECT_MESSAGE,
+    NO_CURRENT_PROJECT_TITLE,
+    STATUS,
+} from '../../../consts/content/Home';
+import CurrentProjectCard from '../home/components /CurrentProjectCard';
+import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 
+const getTagColor = (status) => {
+    if (status === 'backlog') {
+        return BRAND_BLUE;
+    } if (status === 'inProgress') {
+        return PINK;
+    } if (status === 'inReview') {
+        return LAVENDER;
+    } if (status === 'completed') {
+        return GREEN;
+    }
+    return BRAND_BLUE;
+};
 const OffersScreen = () => {
-  return (
-    <View>
-      <TemplateText>OffersScreen </TemplateText>
-    </View>
-  );
+    const [selectedStatus, setSelectedStatus] = useState(STATUS[0].value);
+
+    const filteredProjects = useMemo(() => {
+        if (!CURRENT_PROJECTS) return [];
+
+        return CURRENT_PROJECTS.filter((item) => item?.currentStatus?.value === selectedStatus);
+    }, [CURRENT_PROJECTS, selectedStatus]);
+
+    return (
+        <ScrollView style={styles.container}>
+            <TemplateBox>
+                <Blob top color={LAVENDER} />
+                <Blob right color={LAVENDER} />
+                <Blob color={LAVENDER} bottom />
+                <Blob center />
+            </TemplateBox>
+            <TemplateBox
+                mt={SCREEN_HEIGHT * 0.15}
+                alignItems="center"
+                justifyContent="center"
+            >
+                <TemplateText
+                    size={18}
+                    startCase
+                    bold
+                >
+                    Check the status of your offers
+                </TemplateText>
+            </TemplateBox>
+
+            <TemplateCarousel
+                data={STATUS}
+                renderItem={({ item }) => {
+                    const isSelected = item.value === selectedStatus;
+                    return (
+                        <TemplateBox
+                            mr={SPACE_MEDIUM}
+                            alignItems="center"
+                            onPress={() => setSelectedStatus(item.value)}
+                        >
+                            <TemplateText
+                                size={16}
+                                startCase
+                                medium
+                                color={isSelected ? DEEP_PURPLE : GREY}
+                            >
+                                {item.name}
+                            </TemplateText>
+                            {
+                                isSelected && (
+                                    <TemplateBox
+                                        height={3}
+                                        width={32}
+                                        mt={SPACE_SMALL / 2}
+                                        backgroundColor={DEEP_PURPLE}
+                                        borderRadius={2}
+                                    />
+                                )
+                            }
+                        </TemplateBox>
+                    );
+                }}
+                contentContainerStyle={styles.tabs}
+            />
+
+            {
+                filteredProjects?.length ? filteredProjects.map((item, index) => (
+                    <CurrentProjectCard
+                        title={item?.title}
+                        brand={item?.brand}
+                        price={item?.price}
+                        status={item?.currentStatus?.name}
+                        notificationCount={item?.notifications}
+                        documentCount={item?.documents}
+                        daysLeft={item?.daysLeft}
+                        progress={item?.currentStatus?.value === STATUS[1].value
+                            ? item?.progress
+                            : 0}
+                        onPress={() => {}}
+                        style={styles.card}
+                        cardColor={WHITE}
+                        tagColor={getTagColor(item?.currentStatus?.value)}
+                        width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
+                        slideInDelay={(index + 1) * 100}
+                    />
+                )) : (
+                    <ProfileStatusCard
+                        title={NO_CURRENT_PROJECT_TITLE}
+                        description={NO_CURRENT_PROJECT_MESSAGE}
+                        showProgress={false}
+                        style={styles.statusCard}
+                        slideInDelay={200}
+                        showIcon={false}
+                    />
+                )
+            }
+        </ScrollView>
+    );
 };
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
+    },
+    tabs: {
+        paddingHorizontal: WRAPPER_MARGIN,
+        marginVertical: SPACE_LARGE,
+    },
+    card: {
+        marginHorizontal: WRAPPER_MARGIN,
+        marginBottom: SPACE_LARGE,
+    },
+});
 export default OffersScreen;

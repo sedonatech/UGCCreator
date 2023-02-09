@@ -9,6 +9,8 @@ export const HOME_STACK = 'HomeStack';
 export const FEEDS = 'Feeds';
 export const PROFILE = 'Portfolio';
 
+export const SETTINGS = 'Settings';
+
 export const FEEDS_STACK = 'FeedsStack';
 
 export const PROFILE_STACK = 'ProfileStack';

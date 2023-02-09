@@ -123,6 +123,24 @@ export const TRENDING_CATEGORIES = CATEGORIES.filter(
     (category) => category?.proposals > 60,
 );
 
+export const STATUS = [
+    {
+        name: 'Backlog',
+        value: 'backlog',
+    },
+    {
+        name: 'In Progress',
+        value: 'inProgress',
+    },
+    {
+        name: 'In Brand Review',
+        value: 'inReview',
+    },
+    {
+        name: 'Completed',
+        value: 'completed',
+    },
+];
 export const CURRENT_PROJECTS = [
     {
         id: 4,
@@ -134,7 +152,7 @@ export const CURRENT_PROJECTS = [
         documents: 5,
         comments: 10,
         daysLeft: 2,
-
+        currentStatus: STATUS[1],
     },
     {
         id: 5,
@@ -146,7 +164,7 @@ export const CURRENT_PROJECTS = [
         documents: 5,
         comments: 10,
         daysLeft: 10,
-
+        currentStatus: STATUS[1],
     },
     {
         id: 6,
@@ -158,7 +176,7 @@ export const CURRENT_PROJECTS = [
         documents: 5,
         comments: 10,
         daysLeft: 10,
-
+        currentStatus: STATUS[0],
     },
     {
         id: 7,
@@ -170,7 +188,7 @@ export const CURRENT_PROJECTS = [
         documents: 5,
         comments: 10,
         daysLeft: 10,
-
+        currentStatus: STATUS[0],
     },
     {
         id: 8,
@@ -182,7 +200,7 @@ export const CURRENT_PROJECTS = [
         documents: 5,
         comments: 10,
         daysLeft: 10,
-
+        currentStatus: STATUS[0],
     },
     {
         id: 9,
@@ -194,7 +212,19 @@ export const CURRENT_PROJECTS = [
         documents: 5,
         comments: 10,
         daysLeft: 10,
-
+        currentStatus: STATUS[2],
+    },
+    {
+        id: 10,
+        title: 'Face care kit by Alpyn Beauty for oily skin',
+        brand: 'Alpyn Beauty',
+        progress: 0.8,
+        status: 'Medium',
+        notifications: 3,
+        documents: 5,
+        comments: 10,
+        daysLeft: 10,
+        currentStatus: STATUS[3],
     },
 ];
 
@@ -357,3 +387,32 @@ export const PROFILE_INCOMPLETE_TITLE = 'Profile Incomplete';
 export const NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
 
 export const NO_CURRENT_PROJECT_MESSAGE = 'You have no current projects. Check out the projects page to find a project to work on!';
+
+export const FEED_CATEGORIES = [
+    {
+        name: 'Ideas',
+        value: 'ideas',
+    },
+    {
+        name: 'Tips',
+        value: 'tips',
+    },
+    {
+        name: 'Video Lessons',
+        value: 'videoLessons',
+    },
+    {
+        name: 'Photo Editing',
+        value: 'photoEditing',
+    },
+    {
+        name: 'Hooks',
+        value: 'hooks',
+
+    },
+    {
+        name: 'CTA Tips',
+        value: 'ctaTips',
+    },
+
+];

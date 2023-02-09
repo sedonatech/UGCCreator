@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { sortBy } from 'lodash';
 import { ProjectFilters } from '../../../../consts/AppFilters/ProjectFilters';
 import {
-    RADIUS_SMALL, SPACE_LARGE, SPACE_MEDIUM, SPACE_XSMALL, WRAPPED_SCREEN_WIDTH
+    RADIUS_SMALL, SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL, SPACE_XSMALL, WRAPPED_SCREEN_WIDTH
 } from '../../../../theme/Layout';
 import FilterPill from './FilterPill';
 import TemplateBox from '../../../../components/TemplateBox';
@@ -51,7 +51,7 @@ const FilterCategory: FC<Props> = ({
                 />
             </TemplateBox>
             {toggleFilters && (
-                <TemplateBox row flexWrap="wrap" pAll={SPACE_XSMALL}>
+                <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
                     {
                         sortBy(filters, 'name').map(({ value, name }, index) => (
                             <FilterPill
