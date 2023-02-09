@@ -12,7 +12,7 @@ import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
-import { BRANDS_TAB, PROJECTS_TAB } from '../../explore/ExploreScreen';
+import { BRANDS_TAB } from '../../explore/ExploreScreen';
 
 const BrandsCarousel = ({ style }) => {
     const navigation = useNavigation();

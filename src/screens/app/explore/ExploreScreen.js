@@ -5,7 +5,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK, BRAND_BLUE, LAVENDER, TRANSPARENT, WHITE, WHITE_90, WHITE_96,
+    BLACK, BRAND_BLUE, LAVENDER, TRANSPARENT, WHITE, WHITE_96,
 } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import Blob from '../../../../assets/svgs/Blob';

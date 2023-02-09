@@ -11,9 +11,8 @@ import { BLUE } from '../../../../theme/Colors';
 import CurrentProjectCard from './CurrentProjectCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import {
-    EXPLORE, EXPLORE_STACK, OFFERS, OFFERS_STACK,
+    OFFERS, OFFERS_STACK,
 } from '../../../../navigation/ScreenNames';
-import { BRANDS_TAB } from '../../explore/ExploreScreen';
 
 const CurrentProjectsCarousel = ({ style }) => {
     const navigation = useNavigation();
