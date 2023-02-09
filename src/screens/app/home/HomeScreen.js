@@ -25,7 +25,6 @@ import {
     NO_CURRENT_PROJECT_TITLE,
     PROFILE_INCOMPLETE_MESSAGE,
     PROFILE_INCOMPLETE_TITLE,
-    PROJECTS_CAROUSEL,
 } from '../../../consts/content/Home';
 
 const HomeScreen = () => {

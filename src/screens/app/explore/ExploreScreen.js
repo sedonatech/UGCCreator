@@ -5,12 +5,13 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK, BRAND_BLUE, LAVENDER, WHITE,
+    BLACK, BRAND_BLUE, LAVENDER, TRANSPARENT, WHITE, WHITE_90, WHITE_96,
 } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import Blob from '../../../../assets/svgs/Blob';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import {
+    IS_ANDROID,
     SCREEN_HEIGHT, SPACE_XSMALL, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import { SHADOW } from '../../../theme/Shadow';
@@ -96,7 +97,7 @@ const ExploreScreen = () => {
             </TemplateBox>
 
             <TemplateBox mt={SCREEN_HEIGHT * 0.15} alignItems="center" justifyContent="center">
-                <TemplateText size={18} bold>Explore Brands and Projects</TemplateText>
+                <TemplateText size={18} bold startCase>Explore Brands and Projects</TemplateText>
             </TemplateBox>
             <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
                 <TemplateTextInput
@@ -140,7 +141,7 @@ const ExploreScreen = () => {
                     container: {
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                        backgroundColor: WHITE,
+                        backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
                         paddingTop: 10,
                         paddingBottom: 40,
                         height: SCREEN_HEIGHT * 0.7,
@@ -209,7 +210,7 @@ const ExploreScreen = () => {
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Gender Identity"
+                        title="Gender"
                         filters={genderFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
@@ -226,7 +227,7 @@ const ExploreScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: WHITE,
+        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     input: {
         width: '100%',

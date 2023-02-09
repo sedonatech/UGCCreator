@@ -20,12 +20,13 @@ export const TRANSPARENT_HEADER = {
     headerTitle: () => <BrandLogo />,
     headerTransparent: true,
     headerBackTitleVisible: false,
-    headerTintColor: PRIMARY,
+    headerTintColor: BLACK,
     headerTitleAlign: 'center',
     headerBackground: () => <View style={styles.header} />,
     animationEnabled: true,
     headerMode: 'screen',
 };
+
 export const SWITCH = {
     animationEnabled: false,
 };

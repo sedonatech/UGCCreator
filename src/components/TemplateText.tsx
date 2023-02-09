@@ -75,7 +75,7 @@ const TemplateText: FC<Props> = ({
         textStyle.fontWeight = '700';
     }
     if (semiBold) {
-        textStyle.fontWeight = '600';
+        textStyle.fontWeight = '500';
     }
 
     if (black) {

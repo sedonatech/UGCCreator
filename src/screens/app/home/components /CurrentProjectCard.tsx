@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import TemplateBox from '../../../../components/TemplateBox';
 import {
-    BLACK, BLACK_20, BRAND_BLUE, GREY, PINK, WHITE_20, WHITE_30
+    BLACK, BLACK_20, BRAND_BLUE, GREY, PINK, WHITE_30
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
-import { RADIUS_MEDIUM, RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
+import {
+    RADIUS_MEDIUM, RADIUS_SMALL, RADIUS_XSMALL, SCREEN_WIDTH
+} from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
 interface Props {
@@ -24,6 +25,13 @@ interface Props {
     onPress?: () => void;
 
     style?: any;
+    cardColor?: string;
+
+    tagColor?: string;
+
+    width?: number;
+
+    slideInDelay?: number;
 }
 
 const CurrentProjectCard: FC<Props> = ({
@@ -36,24 +44,30 @@ const CurrentProjectCard: FC<Props> = ({
     daysLeft,
     onPress,
     style,
+    cardColor,
+    tagColor,
+    width,
+    slideInDelay
 }) => {
     const color = status === 'High' ? PINK : BRAND_BLUE;
 
     return (
         <TemplateBox
-            width={SCREEN_WIDTH / 1.23}
+            width={width || (SCREEN_WIDTH / 1.23)}
             borderRadius={RADIUS_MEDIUM}
             shadow
             pAll={20}
-            backgroundColor={color}
+            backgroundColor={cardColor || color}
             style={style}
             onPress={onPress}
+            slideIn={slideInDelay !== undefined}
+            slideInDelay={slideInDelay}
         >
 
             <TemplateBox row alignItems="center" mb={20}>
                 <TemplateBox
-                    borderRadius={RADIUS_SMALL}
-                    backgroundColor={WHITE_30}
+                    borderRadius={8}
+                    backgroundColor={tagColor || WHITE_30}
                     alignItems="center"
                     justifyContent="center"
                     ph={10}
@@ -66,14 +80,13 @@ const CurrentProjectCard: FC<Props> = ({
                 {/* <TemplateIcon color={BLACK} size={24} name="bookmark-outline" /> */}
                 <TemplateIcon color={BLACK} size={24} name="ellipsis-vertical-outline" />
             </TemplateBox>
-
-            <TemplateText size={18} bold color={BLACK}>
+            {/* @ts-ignore */}
+            <TemplateText size={18} bold color={BLACK} style={styles.title}>
                 {title}
             </TemplateText>
 
-            {progress && (
+            {!!progress && (
                 <TemplateBox
-                    mt={10}
                     mb={16}
                 >
                     <TemplateText size={12} color={GREY}>
@@ -135,6 +148,9 @@ const CurrentProjectCard: FC<Props> = ({
 const styles = StyleSheet.create({
     progress: {
         marginRight: 10,
+    },
+    title: {
+        marginBottom: 10,
     }
 });
 
