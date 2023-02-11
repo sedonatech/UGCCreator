@@ -12,13 +12,14 @@ import {
 } from '../../../theme/Layout';
 import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import {
-    CURRENT_PROJECTS,
+    CURRENT_PROJECTS, FEED_CATEGORIES,
     NO_CURRENT_PROJECT_MESSAGE,
     NO_CURRENT_PROJECT_TITLE,
     STATUS,
 } from '../../../consts/content/Home';
 import CurrentProjectCard from '../home/components /CurrentProjectCard';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
+import ToggleCarousel from '../../../components/ToggleCarousel';
 
 const getTagColor = (status) => {
     if (status === 'backlog') {
@@ -33,12 +34,12 @@ const getTagColor = (status) => {
     return BRAND_BLUE;
 };
 const OffersScreen = () => {
-    const [selectedStatus, setSelectedStatus] = useState(STATUS[0].value);
+    const [selectedStatus, setSelectedStatus] = useState(STATUS[0]);
 
     const filteredProjects = useMemo(() => {
         if (!CURRENT_PROJECTS) return [];
 
-        return CURRENT_PROJECTS.filter((item) => item?.currentStatus?.value === selectedStatus);
+        return CURRENT_PROJECTS.filter((item) => item?.currentStatus?.value === selectedStatus?.value);
     }, [CURRENT_PROJECTS, selectedStatus]);
 
     return (
@@ -63,39 +64,10 @@ const OffersScreen = () => {
                 </TemplateText>
             </TemplateBox>
 
-            <TemplateCarousel
+            <ToggleCarousel
                 data={STATUS}
-                renderItem={({ item }) => {
-                    const isSelected = item.value === selectedStatus;
-                    return (
-                        <TemplateBox
-                            mr={SPACE_MEDIUM}
-                            alignItems="center"
-                            onPress={() => setSelectedStatus(item.value)}
-                        >
-                            <TemplateText
-                                size={16}
-                                startCase
-                                medium
-                                color={isSelected ? DEEP_PURPLE : GREY}
-                            >
-                                {item.name}
-                            </TemplateText>
-                            {
-                                isSelected && (
-                                    <TemplateBox
-                                        height={3}
-                                        width={32}
-                                        mt={SPACE_SMALL / 2}
-                                        backgroundColor={DEEP_PURPLE}
-                                        borderRadius={2}
-                                    />
-                                )
-                            }
-                        </TemplateBox>
-                    );
-                }}
-                contentContainerStyle={styles.tabs}
+                selectedTab={selectedStatus}
+                onChange={setSelectedStatus}
             />
 
             {

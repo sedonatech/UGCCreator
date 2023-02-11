@@ -16,7 +16,6 @@ import {
 } from '../../../theme/Layout';
 import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import ExploreTabSelector from './components/ExploreTabSelector';
 import BrandsTab from './BrandsTab';
 import ProjectsTab from './ProjectsTab';
 import Filter from '../../../../assets/svgs/Filter';
@@ -28,20 +27,27 @@ import {
 } from '../../../consts/AppFilters/ProjectFilters';
 import { BRANDS, PROJECTS } from '../../../consts/content/Home';
 import FilterCategory from './components/FilterCategory';
+import ToggleCarousel from '../../../components/ToggleCarousel';
 
-export const BRANDS_TAB = 'Brands';
-export const PROJECTS_TAB = 'Projects';
+export const BRANDS_TAB = {
+    name: 'Brands',
+    value: 'brands',
+};
+export const PROJECTS_TAB = {
+    name: 'Projects',
+    value: 'projects',
+};
 
-const TABS = [BRANDS_TAB, PROJECTS_TAB];
+const TAB_DATA = [BRANDS_TAB, PROJECTS_TAB];
 
 const ExploreScreen = ({ route }) => {
-    const initialTab = route?.params?.initialTab || TABS[0];
+    const initialTab = route?.params?.initialTab || TAB_DATA[0];
 
     const refRBSheet = useRef();
 
     const [search, setSearch] = useState(null);
 
-    const [selectedTab, setSelectedTab] = useState(TABS[0]);
+    const [selectedTab, setSelectedTab] = useState(TAB_DATA[0]);
 
     const [selectedFilters, setSelectedFilters] = useState([]);
 
@@ -125,12 +131,13 @@ const ExploreScreen = ({ route }) => {
                 </TemplateTouchable>
             </TemplateBox>
 
-            <ExploreTabSelector
-                tabs={TABS}
-                selectedTab={selectedTab}
-                setSelectedTab={setSelectedTab}
-            />
-
+            <TemplateBox selfCenter flex>
+                <ToggleCarousel
+                    data={TAB_DATA}
+                    selectedTab={selectedTab}
+                    onChange={setSelectedTab}
+                />
+            </TemplateBox>
             {selectedTab === BRANDS_TAB && filteredBrands && (
                 <BrandsTab data={filteredBrands} />
             )}
