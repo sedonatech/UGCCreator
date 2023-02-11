@@ -19,6 +19,7 @@
     "@react-native-firebase/storage": "^15.7.0",
     "@react-native-firebase/remote-config": "^15.7.0",
     "@react-native-firebase/crashlytics": "^15.7.0",
+    "@react-native-firebase/analytics": "^15.7.0",
     "@react-native-masked-view/masked-view": "^0.2.8",
     "@react-native-picker/picker": "^2.4.8",
     "@react-navigation/bottom-tabs": "^6.5.2",
