@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
     BLACK,
@@ -12,7 +12,7 @@ import {
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
-import { FORGOT_PASSWORD, ONBOARDING } from '../../navigation/ScreenNames';
+import { ONBOARDING } from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
 import { isIOS } from '../../Utils/Platform';
 import TemplateTextInput from '../../components/TemplateTextInput';
@@ -20,30 +20,35 @@ import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
 
-const LoginScreen = ({ navigation }) => {
+const ResetPasswordScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
-
-    const [password, setPassword] = useState();
 
     const [error, setError] = useState(null);
 
     const [loading, setLoading] = useState(false);
 
-    const handleLogin = async () => {
-        setLoading(true);
+    const handleResetPassword = async () => {
         try {
-            await auth().signInWithEmailAndPassword(email, password);
-            // eslint-disable-next-line @typescript-eslint/no-shadow
+            setLoading(true);
+            if (!email) {
+                setError('Please enter your email address');
+                setLoading(false);
+                return;
+            }
+            await auth().sendPasswordResetEmail(email);
+            Alert.alert(
+                'Password Reset',
+                'A password reset link has been sent to your email address',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate(ONBOARDING),
+                    },
+                ],
+            );
         } catch (error) {
-            if (error.code === 'auth/email-already-in-use') {
-                setError('That email address is already in use!');
-            }
-
-            if (error.code === 'auth/invalid-email') {
-                setEmail('That email address is invalid!');
-            }
-            if (error.code === 'auth/wrong-password') {
-                setError('That password is invalid!');
+            if (error.code === 'au-email') {
+                setError('That email address is invalid!');
             }
             if (error.code === 'auth/user-not-found') {
                 setError('That user does not exist!');
@@ -71,10 +76,10 @@ const LoginScreen = ({ navigation }) => {
                 color={BLACK}
                 style={styles.title}
             >
-                Welcome back!
+                Reset your password!
             </TemplateText>
             <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
-                Enter your email and password to continue
+                Enter your email to continue
             </TemplateText>
             <TemplateTextInput
                 placeholder="Email"
@@ -84,38 +89,16 @@ const LoginScreen = ({ navigation }) => {
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
-            <TemplateTextInput
-                placeholder="Password"
-                style={styles.input}
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-                secureTextEntry
-                autoCapitalize="none"
-            />
             <Error show={!!error} style={styles.generalError}>
                 {error}
             </Error>
             <View style={styles.buttonContainer}>
                 <Button
-                    title="Login"
-                    onPress={handleLogin}
+                    title="Reset Password"
+                    onPress={handleResetPassword}
                     style={styles.button}
                     loading={loading}
                 />
-                <TemplateText size={16} center italic style={styles.signupLink}>
-                    Forgot you password?
-                    {' '}
-
-                    <TemplateText
-                        color={BLUE}
-                        underLine
-                        size={16}
-                        onPress={() => navigation.navigate(FORGOT_PASSWORD)}
-                    >
-                        Reset Password
-                    </TemplateText>
-                </TemplateText>
-
                 <TemplateText size={16} center italic style={styles.signupLink}>
                     New to the UGC creator app?
                     {' '}
@@ -175,4 +158,4 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
 });
-export default LoginScreen;
+export default ResetPasswordScreen;

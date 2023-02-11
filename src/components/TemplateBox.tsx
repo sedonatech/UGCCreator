@@ -82,6 +82,8 @@ export interface Props {
     slideIn?: boolean
     slideInTime?: number,
     slideInDelay?: number
+    slideInDirection?: 'left' | 'right' | 'top' | 'bottom'
+    animationType?: 'spring' | 'timing'
 }
 const TemplateBox: FC<Props> = ({
     animated,
@@ -151,6 +153,8 @@ const TemplateBox: FC<Props> = ({
     slideIn,
     slideInTime,
     slideInDelay,
+    slideInDirection = 'right',
+    animationType = 'timing',
     ...restProps
 }) => {
     // eslint-disable-next-line no-nested-ternary
@@ -164,7 +168,14 @@ const TemplateBox: FC<Props> = ({
 
     const fadeOpacity = useRef(new Animated.Value(0)).current;
     const slideValue = useRef(
-        new Animated.ValueXY({ x: slideIn ? wp(SPACE_LARGE) : 0, y: 0 }),
+        new Animated.ValueXY({
+            x: slideIn
+                ? slideInDirection === 'left'
+                    ? -wp(SPACE_LARGE)
+                    : wp(SPACE_LARGE) : 0,
+            y:
+              0
+        }),
     ).current;
 
     useEffect(() => {
@@ -184,7 +195,19 @@ const TemplateBox: FC<Props> = ({
             setTimeout(() => {
                 Animated.timing(slideValue, {
                     toValue: { x: 0, y: 0 },
-                    duration: ((slideInTime || slideInTime === 0) && slideInTime) || 500,
+                    duration: ((slideInTime || slideInTime === 0) && slideInTime) || 300,
+                    useNativeDriver: true,
+                }).start();
+            }, slideInDelay || 0);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (slideIn && animationType === 'spring') {
+            setTimeout(() => {
+                Animated.spring(slideValue, {
+                    toValue: { x: 0, y: 0 },
+                    velocity: 10,
                     useNativeDriver: true,
                 }).start();
             }, slideInDelay || 0);
