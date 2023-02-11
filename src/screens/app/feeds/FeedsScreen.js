@@ -16,16 +16,31 @@ import ToggleCarousel from '../../../components/ToggleCarousel';
 import FeedCard from './components/FeedCard';
 import VideoOverlay from '../../../components/VideoOverlay';
 
+const getIconByType = (type) => {
+    if (type === 'ideas') {
+        return 'trending-up-outline';
+    } if (type === 'tips') {
+        return 'rocket-outline';
+    } if (type === 'videoLessons') {
+        return 'videocam-outline';
+    } if (type === 'hooks') {
+        return 'reader-outline';
+    } if (type === 'photoEditing') {
+        return 'camera-outline';
+    } if (type === 'ctaTips') {
+        return 'bar-chart-outline';
+    }
+    return 'article';
+};
 const FeedsScreen = () => {
     const [selectedStatus, setSelectedStatus] = useState(FEED_CATEGORIES[0]);
 
     const { feed } = useFeatureFlags();
-    console.log('-> feed', JSON.stringify(feed, null, 2));
 
     const [selectedVideoUrl, setSelectedVideoUrl] = useState();
 
     const filteredFeed = useMemo(() => {
-        if (!feed) return [];
+        if (!feed?.feeds?.length) return [];
 
         return feed?.feeds?.filter((item) => {
             if (selectedStatus?.value === 'all') return true;
@@ -34,65 +49,65 @@ const FeedsScreen = () => {
     }, [feed, selectedStatus]);
 
     return (
-        <ScrollView style={styles.container}>
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
-            <TemplateBox
-                mt={SCREEN_HEIGHT * 0.15}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <TemplateText
-                    size={18}
-                    startCase
-                    bold
+        <>
+            <ScrollView style={styles.container}>
+                <TemplateBox>
+                    <Blob top color={LAVENDER} />
+                    <Blob right color={LAVENDER} />
+                    <Blob color={LAVENDER} bottom />
+                    <Blob center />
+                </TemplateBox>
+                <TemplateBox
+                    mt={SCREEN_HEIGHT * 0.15}
+                    alignItems="center"
+                    justifyContent="center"
                 >
-                    Check the status of your offers
-                </TemplateText>
-            </TemplateBox>
+                    <TemplateText
+                        size={18}
+                        startCase
+                        bold
+                    >
+                        Check out the latest tips and trends
+                    </TemplateText>
+                </TemplateBox>
 
-            <ToggleCarousel
-                data={FEED_CATEGORIES}
-                selectedTab={selectedStatus}
-                onChange={setSelectedStatus}
-            />
+                <ToggleCarousel
+                    data={FEED_CATEGORIES}
+                    selectedTab={selectedStatus}
+                    onChange={setSelectedStatus}
+                />
 
-            {
-                filteredFeed && filteredFeed?.map((item, index) => (
-                    <FeedCard
-                        key={`feed-${index}`}
-                        image={{ uri: item?.thumbnail }}
-                        title={item?.title}
-                        subtitle={item?.subtitle}
-                        shortDescription={item?.description}
-                        style={styles.card}
-                        cardWidth={SCREEN_WIDTH / 1.12}
-                        aspectRatio={1.8}
-                        slideInDelay={(index + 1) * 100}
-                        showVideoButton={item?.type === 'videoLessons'}
-                        onPress={() => {
-                            console.log('item', item?.videoUrl);
-                            if (item?.type === 'videoLessons') {
-                                setSelectedVideoUrl(item?.videoUrl);
-                            }
-                        }}
-                    />
-                ))
-            }
+                {
+                    filteredFeed && filteredFeed?.map((item, index) => (
+                        <FeedCard
+                            key={`feed-${index}`}
+                            image={{ uri: item?.thumbnail }}
+                            title={item?.title}
+                            icon={getIconByType(item?.type)}
+                            subtitle={item?.subtitle}
+                            shortDescription={item?.description}
+                            style={styles.card}
+                            showGradient
+                            cardWidth={SCREEN_WIDTH / 1.12}
+                            aspectRatio={1.8}
+                            slideInDelay={(index + 1) * 100}
+                            showVideoButton={item?.type === 'videoLessons'}
+                            onPress={() => {
+                                console.log('item', item?.videoUrl);
+                                if (item?.type === 'videoLessons') {
+                                    setSelectedVideoUrl(item?.videoUrl);
+                                }
+                            }}
+                        />
+                    ))
+                }
+
+            </ScrollView>
             <VideoOverlay
                 url={selectedVideoUrl}
-                muted={false}
-                upscale
-                landscape
-                onShow={() => ''}
                 onClose={() => setSelectedVideoUrl(null)}
-                name="video"
             />
-        </ScrollView>
+        </>
     );
 };
 

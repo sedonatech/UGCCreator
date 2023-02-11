@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLACK } from '../../theme/Colors';
 import TemplateText from '../TemplateText';
+import { IS_ANDROID } from '../../theme/Layout';
 
 const TabLabel = ({ focused, children }) => (
     <TemplateText black style={[styles.label, focused && styles.activeLabel]}>
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
         opacity: 0.5,
         textAlign: 'center',
         marginTop: 4,
+        marginBottom: IS_ANDROID ? 4 : 0,
     },
     activeLabel: {
         opacity: 1,

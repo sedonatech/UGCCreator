@@ -7358,9 +7358,9 @@ react-native-video-controls@^2.8.1:
   dependencies:
     lodash "^4.16.4"
 
-react-native-video@^5.2.1:
+react-native-video@^5.1.1:
   version "5.2.1"
-  resolved "https://registry.npmjs.org/react-native-video/-/react-native-video-5.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-5.2.1.tgz#a17e856759d7e17eee9cbd9df0d05ba22e88d457"
   integrity sha512-aJlr9MeTuQ0LpZ4n+EC9RvhoKeiPbLtI2Rxy8u7zo/wzGevbRpWHSBj9xZ5YDBXnAVXzuqyNIkGhdw7bfdIBZw==
   dependencies:
     deprecated-react-native-prop-types "^2.2.0"

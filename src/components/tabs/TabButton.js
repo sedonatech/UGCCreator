@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import TemplateIcon from '../TemplateIcon';
 import { BLACK } from '../../theme/Colors';
+import { IS_ANDROID } from '../../theme/Layout';
 
 const TabButton = ({ focused, icon }) => (
     <View style={[styles.container, focused && styles.activeContainer]}>
@@ -24,7 +25,7 @@ TabButton.propTypes = {
 const styles = StyleSheet.create({
     container: {
         opacity: 0.3,
-        marginTop: 8,
+        marginTop: IS_ANDROID ? 5 : 8,
         width: '100%',
         flex: 1,
     },
