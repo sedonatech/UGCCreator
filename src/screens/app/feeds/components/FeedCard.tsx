@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BLACK_30, BRAND_BLUE, TRANSPARENT, WHITE_30
+    BLACK, WHITE, BLACK_30, BRAND_BLUE, TRANSPARENT, WHITE_30, BLACK_40
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -27,6 +27,8 @@ interface Props {
     showVideoButton?: boolean;
 
     onPress?: () => void;
+
+    icon?: string;
 }
 
 const FeedCard: FC<Props> = ({
@@ -41,12 +43,13 @@ const FeedCard: FC<Props> = ({
     subtitle,
     showVideoButton,
     onPress,
+    icon
 }) => (
     <TemplateBox
         fullGradient={showGradient}
         alignItems="center"
         justifyContent="center"
-        gradientColors={[BLACK_30, BLACK_30]}
+        gradientColors={[BLACK_40, BLACK_40]}
         borderRadius={RADIUS_SMALL}
         width={cardWidth}
         aspectRatio={aspectRatio}
@@ -54,26 +57,27 @@ const FeedCard: FC<Props> = ({
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
         backgroundColor={!image ? BRAND_BLUE : TRANSPARENT}
-        onPress={onPress}
+
     >
-        {showVideoButton && (
-            <TemplateBox
-                height={40}
-                width={40}
-                absolute
-                top={10}
-                left={SCREEN_WIDTH - 100}
-                borderRadius={10}
-                backgroundColor={WHITE_30}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <TemplateIcon name="videocam-outline" size={24} color={BLACK} />
-            </TemplateBox>
-        )}
+
         {image && <BackgroundImage source={image} style={styles.image} width="100%" />}
 
-        <TemplateBox pAll={20}>
+        <TemplateBox pAll={20} onPress={onPress}>
+            {icon && (
+                <TemplateBox
+                    height={30}
+                    width={30}
+                    absolute
+                    top={-5}
+                    left={SCREEN_WIDTH - 95}
+                    borderRadius={10}
+                    backgroundColor={WHITE_30}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <TemplateIcon name={icon} size={20} color={BLACK} />
+                </TemplateBox>
+            )}
             {/* @ts-ignore */}
             <TemplateText color={WHITE} bold size={20} style={styles.text}>
                 {title}

@@ -1,161 +1,100 @@
 import React, {
-    FC,
-    useEffect, useLayoutEffect, useState,
+    FC, useEffect, useRef, useState
 } from 'react';
 import Video from 'react-native-video';
-// @ts-ignore
 import VideoPlayer from 'react-native-video-controls';
-import { get, isObject } from 'lodash';
-import { StyleSheet, View, } from 'react-native';
+import { get } from 'lodash';
+import { StyleSheet, } from 'react-native';
 import Modal from 'react-native-modal';
-import { isAndroid } from '../Utils/Platform';
-import { SCREEN_HEIGHT, SCREEN_WIDTH, STATUS_BAR_HEIGHT } from '../theme/Layout';
-import { BLACK } from '../theme/Colors';
 
-const upscaleSource = (baseUrl: string | null, quality = '720') => {
-    if (!baseUrl) return null;
-    return baseUrl.replace(/(\d\d\d\.mp4)$/g, `${quality}.mp4`);
-};
+import Box from '../layout/Box';
+import { IS_ANDROID, SCREEN_WIDTH } from '../theme/Layout';
+import TemplateBox from './TemplateBox';
+import upscaleSource from '../Utils/upscaleSource';
 
 interface Props {
     url: string | null,
-    name: string,
-    onClose: ()=>void,
-    muted: boolean,
-    upscale: boolean,
-    onShow: ()=>void,
-    landscape: boolean,
+    onClose: ()=>void
 }
 
-// @ts-ignore
-const VideoOverlay:FC<Props> = React.forwardRef(({
-    url,
-    name = 'default',
-    onClose,
-    muted = true,
-    upscale = false,
-    onShow,
-    landscape
-}, ref) => {
-    const videoRef: any = ref;
-    const [source, setSource] = useState<any>(upscale ? upscaleSource(url) : url);
-
+const VideoOverlay:FC<Props> = ({ url, onClose }) => {
+    const videoRef = useRef(null);
+    const [source, setSource] = useState(url);
     useEffect(() => {
-        if (url) {
-            // setSource(upscaleSource(url));
-            setSource(upscale ? upscaleSource(url) : url);
-        }
-        console.log('[Video overlay] - url', url);
+        setSource(url);
     }, [url]);
-
     useEffect(() => {
-        if (!url) {
-            setSource(null);
-            console.log(`[Video Overlay] ${name}  - cleaning source`);
+        if (get(videoRef, 'current', false) && source) {
+            if (!IS_ANDROID) {
+                setTimeout(() => {
+                    !!videoRef && videoRef?.current.presentFullscreenPlayer();
+                }, 300);
+            }
         }
-    }, [url]);
-
-    useLayoutEffect(() => {
-        if (get(videoRef, 'current') && source !== null && !isAndroid) {
-            setTimeout(() => {
-                console.log(`[Video Overlay] ${name}  - presenting full screen player`);
-                videoRef.current.presentFullscreenPlayer();
-            }, 100);
-        }
-
-        console.log(`[Video Overlay] ${name}  - trigger`, isObject(get(videoRef, 'current')), source);
     }, [source, videoRef]);
 
-    return isAndroid
-        ? (
-            <Modal
-                hideModalContentWhileAnimating
-                backdropOpacity={1}
-                isVisible={source !== null}
-                onBackdropPress={onClose}
-                onBackButtonPress={onClose}
-                onShow={onShow}
-                supportedOrientations={['portrait', 'landscape']}
-                style={styles.modal}
+    return IS_ANDROID ? (
+        <Modal
+            hideModalContentWhileAnimating
+            backdropOpacity={1}
+            isVisible={source !== null}
+            onBackdropPress={onClose}
+            onBackButtonPress={onClose}
+            supportedOrientations={['portrait']}
+            style={styles.modal}
+        >
+            <TemplateBox
+                height={(SCREEN_WIDTH / 16) * 8}
+                width={SCREEN_WIDTH}
+                center
             >
-                <View
-                    style={landscape
-                        ? styles.androidContainerLandscape
-                        : styles.androidContainerPortrait}
-                >
-                    <VideoPlayer
-                        ref={videoRef}
-                        paused={!source}
-                        source={!!source && {
-                            uri: source,
-                        }}
-                        volume={1}
-                        playInBackground
-                        ignoreSilentSwitch="ignore"
-                        resizeMode="contain"
-                        style={landscape
-                            ? styles.videoAndroidLandscape
-                            : styles.videoAndroidPortrait}
-                        muted={muted}
-                        repeat
-                        mixWithOthers="mix"
-                        disableFocus
-                        onBack={() => onClose()}
-                        onEnterFullscreen
-                        onExitFullscreen={() => {
-                            onClose();
-                        }}
-                        onError={(err: any) => {
-                            console.log('video overlay err', err);
-                        }}
-                        // disableVolume
-                    />
-                </View>
-            </Modal>
-        )
-        : !!source && (
-            <Video
-                ref={videoRef}
-                paused={!url}
-                // @ts-ignore
-                source={!!source && {
-                    uri: source,
-                }}
-                volume={0}
-                playInBackground
-                ignoreSilentSwitch="ignore"
-                resizeMode="contain"
-                style={source && isAndroid ? styles.video : styles.hiddenVideo}
-                muted={muted}
-                repeat
-                mixWithOthers="mix"
-                disableFocus
-                onFullscreenPlayerWillDismiss={() => {
-                    videoRef.current.seek(0);
-                    onClose();
-                    videoRef.current.dismissFullscreenPlayer();
-                }}
-                onFullscreenPlayerWillPresent={() => {
-                    console.log('[Video Overlay] - Video will open', get(videoRef, 'current.props.source'));
-                }}
-                onFullscreenPlayerDidDismiss={() => {
-                    console.log('[Video Overlay] - Video has Closed', get(videoRef, 'current.props.source'));
-                }}
-                onError={(err) => {
-                    console.log('video overlay err', err);
-                }}
-            />
-        );
-});
+                <VideoPlayer
+                    controls
+                    ref={videoRef}
+                    paused={!source}
+                    source={!!source && {
+                        uri: upscaleSource(source, '1080'),
+                    }}
+                    volume={1}
+                    playInBackground
+                    ignoreSilentSwitch="ignore"
+                    resizeMode="contain"
+                    repeat
+                    mixWithOthers="mix"
+                    disableFocus
+                    onBack={() => onClose()}
+                    onEnterFullscreen
+                    onExitFullscreen={() => {
+                        onClose();
+                    }}
+                />
+            </TemplateBox>
+        </Modal>
+    ) : ((!!source && (
+        <Video
+            ref={videoRef}
+            paused={!url}
+            source={!!source && {
+                uri: source,
+            }}
+            volume={1}
+            playInBackground
+            ignoreSilentSwitch="ignore"
+            resizeMode="contain"
+            style={!(source && IS_ANDROID) && styles.hiddenVideo}
+            repeat
+            mixWithOthers="mix"
+            disableFocus
+            onFullscreenPlayerWillDismiss={() => {
+                videoRef.current.seek(0);
+                onClose();
+                videoRef.current.dismissFullscreenPlayer();
+            }}
+        />
+    )) || null);
+};
 
 const styles = StyleSheet.create({
-    video: {
-        height: SCREEN_HEIGHT,
-        width: SCREEN_WIDTH,
-        backgroundColor: BLACK,
-        overflow: 'hidden',
-        position: 'absolute',
-    },
     modal: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -166,32 +105,5 @@ const styles = StyleSheet.create({
         height: 0,
         width: 0,
     },
-    videoAndroidPortrait: {
-        height: SCREEN_HEIGHT * 0.9,
-        width: SCREEN_WIDTH,
-        backgroundColor: BLACK,
-        overflow: 'hidden',
-        position: 'absolute',
-    },
-    androidContainerPortrait: {
-        height: (SCREEN_WIDTH / 16) * 8,
-        width: SCREEN_WIDTH,
-        justifyContent: 'center',
-    },
-    videoAndroidLandscape: {
-        height: SCREEN_WIDTH,
-        width: SCREEN_HEIGHT - STATUS_BAR_HEIGHT,
-    },
-    androidContainerLandscape: {
-        height: SCREEN_WIDTH - 50,
-        width: SCREEN_HEIGHT - STATUS_BAR_HEIGHT,
-    },
-    androidCloseIcon: {
-        position: 'absolute',
-        top: 20,
-        right: 20,
-        zIndex: 1000,
-    },
 });
-
 export default VideoOverlay;
