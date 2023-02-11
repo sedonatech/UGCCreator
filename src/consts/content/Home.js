@@ -390,6 +390,10 @@ export const NO_CURRENT_PROJECT_MESSAGE = 'You have no current projects. Check o
 
 export const FEED_CATEGORIES = [
     {
+        name: 'All',
+        value: 'all',
+    },
+    {
         name: 'Ideas',
         value: 'ideas',
     },
@@ -411,7 +415,7 @@ export const FEED_CATEGORIES = [
 
     },
     {
-        name: 'CTA Tips',
+        name: 'CTA',
         value: 'ctaTips',
     },
 
