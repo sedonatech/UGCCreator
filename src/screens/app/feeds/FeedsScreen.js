@@ -67,7 +67,7 @@ const FeedsScreen = () => {
                         startCase
                         bold
                     >
-                        Check out the latest tips and trends
+                        latest tips and trends
                     </TemplateText>
                 </TemplateBox>
 

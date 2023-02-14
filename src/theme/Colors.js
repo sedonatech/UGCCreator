@@ -1,7 +1,4 @@
-import { IS_ANDROID } from './Layout';
-
 export const TRANSPARENT = 'transparent';
-
 export const BLACK = '#192126';
 export const BLACK_SECONDARY = '#2D3439';
 export const BLACK_50 = 'rgba(0, 0, 0, 0.5)';
@@ -13,6 +10,7 @@ export const BLACK_60 = 'rgba(0, 0, 0, 0.6)';
 export const BLACK_70 = 'rgba(0, 0, 0, 0.7)';
 export const BLACK_80 = 'rgba(0, 0, 0, 0.8)';
 export const BLACK_90 = 'rgba(0, 0, 0, 0.9)';
+export const BLACK_0_5 = 'rgba(0, 0, 0, 0.03)';
 
 export const WHITE = 'white';
 export const WHITE_10 = 'rgba(255, 255, 255, 0.1)';
@@ -54,6 +52,8 @@ export const LIGHT_PURPLE = '#ECEDFD';
 export const ACCENT = '#A5C4FD';
 
 export const GREY = '#7A8499';
+
+export const GREY_SECONDARY = 'rgba(227, 231, 236, 1)';
 
 export const PRIMARY_GRADIENT = [BLACK_10, BLACK_20, BLACK_50];
 

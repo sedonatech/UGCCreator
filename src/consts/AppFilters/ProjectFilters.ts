@@ -370,3 +370,88 @@ export const genderFilters: ProjectFilters[] = [
         value: 'other',
     }
 ];
+
+export const ageFilters: ProjectFilters[] = [
+    {
+        name: '18-24',
+        value: '18-24',
+    },
+    {
+        name: '25-34',
+        value: '25-34',
+    },
+    {
+        name: '35-44',
+        value: '35-44',
+    },
+    {
+        name: '45-54',
+        value: '45-54',
+    },
+    {
+        name: '55-64',
+        value: '55-64',
+    },
+    {
+        name: '65+',
+        value: '65+',
+    }
+];
+
+export const projectTypeFilters: ProjectFilters[] = [
+    {
+        name: 'Affiliate',
+        value: 'affiliate',
+    },
+    {
+        name: 'Sponsored',
+        value: 'sponsored',
+    },
+    {
+        name: 'Influencer',
+        value: 'influencer',
+    },
+    {
+        name: 'Paid Collaboration',
+        value: 'paidCollaboration',
+    },
+    {
+        name: 'Paid Post',
+        value: 'paidPost',
+    },
+    {
+        name: 'Sponsored Post',
+        value: 'sponsoredPost',
+    },
+    {
+        name: 'Gifted Collaboration',
+        value: 'giftedCollaboration',
+    }
+];
+
+export const deliveryFormatFilters: ProjectFilters[] = [
+    {
+        name: 'Videos',
+        value: 'videos',
+    },
+    {
+        name: 'Photos',
+        value: 'photos',
+    },
+    {
+        name: 'Raw Footage',
+        value: 'rawFootage',
+    },
+
+];
+
+export const projectDurationFilters: ProjectFilters[] = [
+    {
+        name: 'One time',
+        value: 'oneTimeProject',
+    },
+    {
+        name: 'Recurring',
+        value: 'recurring',
+    },
+];

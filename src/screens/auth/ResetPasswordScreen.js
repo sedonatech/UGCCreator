@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import {
@@ -7,7 +7,7 @@ import {
     BLACK_SECONDARY,
     BLUE,
     BRAND_BLUE,
-    DEEP_LAVENDER,
+    DEEP_LAVENDER, WHITE_40,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
@@ -19,6 +19,7 @@ import TemplateTextInput from '../../components/TemplateTextInput';
 import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
+import HeaderIconButton from '../../components/header/HeaderButton';
 
 const ResetPasswordScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
@@ -56,6 +57,19 @@ const ResetPasswordScreen = ({ navigation }) => {
         }
         setLoading(false);
     };
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <HeaderIconButton
+                    name="arrow-back-outline"
+                    onPress={() => navigation.goBack()}
+                    backDropColor={WHITE_40}
+                    ml={WRAPPER_MARGIN}
+                />
+            ),
+        });
+    }, [navigation]);
 
     return (
         <Wrapper

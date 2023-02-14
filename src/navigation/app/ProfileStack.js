@@ -6,6 +6,7 @@ import ProfileScreen from '../../screens/app/profile/ProfileScreen';
 import { PROFILE, SETTINGS } from '../ScreenNames';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import SettingsScreen from '../../screens/app/profile/SettingsScreen';
+import { WRAPPER_MARGIN } from '../../theme/Layout';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -16,7 +17,13 @@ const ProfileStack = () => (
             name={PROFILE}
             options={{
                 ...TRANSPARENT_HEADER,
-                headerRight: () => <HeaderIconButton name="settings-outline" screen={SETTINGS} />,
+                headerRight: () => (
+                    <HeaderIconButton
+                        name="settings-outline"
+                        screen={SETTINGS}
+                        mr={WRAPPER_MARGIN}
+                    />
+                ),
             }}
             component={ProfileScreen}
         />
