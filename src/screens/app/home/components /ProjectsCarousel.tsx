@@ -10,7 +10,7 @@ import { BLACK_50, BLUE } from '../../../../theme/Colors';
 
 import TemplateBox from '../../../../components/TemplateBox';
 import ProjectCard from './ProjectCard';
-import { EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
+import { EXPLORE, EXPLORE_STACK, PROJECT_DETAILS } from '../../../../navigation/ScreenNames';
 import { PROJECTS_TAB } from '../../explore/ExploreScreen';
 
 interface Props {
@@ -46,10 +46,14 @@ const ProjectsCarousel: FC<Props> = ({ style }) => {
                 {
                     PROJECTS_CAROUSEL.map((item, index) => (
                         <ProjectCard
-                            key={item.id}
-                            image={item.image}
-                            title={item.title}
-                            shortDescription={item.shortDescription}
+                            key={item?.id}
+                            image={item?.image}
+                            title={item?.title}
+                            shortDescription={item?.shortDescription}
+                            // @ts-ignore
+                            onPress={() => navigation.navigate(PROJECT_DETAILS, {
+                                projectId: item?.id,
+                            })}
                         />
                     ))
                 }
@@ -59,13 +63,6 @@ const ProjectsCarousel: FC<Props> = ({ style }) => {
 };
 
 const styles = StyleSheet.create({
-    cardCarousel: {
-        paddingHorizontal: WRAPPER_MARGIN,
-    },
-    card: {
-        marginRight: WRAPPER_MARGIN,
-        marginBottom: 10,
-    },
     subtitle: {
         marginLeft: WRAPPER_MARGIN,
         marginBottom: 10,

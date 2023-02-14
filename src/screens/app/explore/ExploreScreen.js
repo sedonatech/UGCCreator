@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
+import { sample } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK, BRAND_BLUE, LAVENDER, TRANSPARENT, WHITE, WHITE_96,
@@ -16,14 +17,15 @@ import {
 } from '../../../theme/Layout';
 import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import BrandsTab from './BrandsTab';
-import ProjectsTab from './ProjectsTab';
+import BrandsTab from './components/BrandsTab';
+import ProjectsTab from './components/ProjectsTab';
 import Filter from '../../../../assets/svgs/Filter';
 import {
-    countryFilters,
+    ageFilters,
+    countryFilters, deliveryFormatFilters,
     genderFilters,
-    languageFilters,
-    projectFilters,
+    languageFilters, projectDurationFilters,
+    projectFilters, projectTypeFilters,
 } from '../../../consts/AppFilters/ProjectFilters';
 import { BRANDS, PROJECTS } from '../../../consts/content/Home';
 import FilterCategory from './components/FilterCategory';
@@ -229,6 +231,30 @@ const ExploreScreen = ({ route }) => {
                     <FilterCategory
                         title="Gender"
                         filters={genderFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Age Group"
+                        filters={ageFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Project Type"
+                        filters={projectTypeFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Delivery Format"
+                        filters={deliveryFormatFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Project Duration"
+                        filters={projectDurationFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />

@@ -18,21 +18,30 @@ interface Props {
     style?: any;
 
     slideInDelay?: number;
+
+    onPress?: () => void;
 }
 
 const CARD_WIDTH = SCREEN_WIDTH / 2.36;
 const ProjectCard: FC<Props> = ({
-    image, style, shortDescription, title, slideInDelay,
+    image,
+    style,
+    shortDescription,
+    title,
+    slideInDelay,
+    onPress,
 }) => (
     <TemplateBox
         mb={20}
         style={style}
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
+        width={CARD_WIDTH}
     >
         <TemplateBox
             width={CARD_WIDTH}
             aspectRatio={1.18}
+            onPress={onPress}
         >
             <BackgroundImage source={image} style={styles.image} width={CARD_WIDTH} />
         </TemplateBox>
@@ -41,7 +50,7 @@ const ProjectCard: FC<Props> = ({
             {title}
         </TemplateText>
         {/* @ts-ignore */}
-        <TemplateText color={BLACK_40} size={12} style={styles.text}>
+        <TemplateText color={BLACK_40} size={12} style={styles.text} numberOfLines={2}>
             {shortDescription}
         </TemplateText>
     </TemplateBox>

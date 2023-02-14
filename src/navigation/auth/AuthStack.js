@@ -30,7 +30,11 @@ const AuthStack = () => (
         />
         <Screen name={SIGN_UP} component={SignUpScreen} />
         <Screen name={LOGIN} component={LoginScreen} />
-        <Screen name={FORGOT_PASSWORD} component={ResetPasswordScreen} />
+        <Screen
+            name={FORGOT_PASSWORD}
+            component={ResetPasswordScreen}
+            options={TRANSPARENT_HEADER}
+        />
     </Navigator>
 );
 

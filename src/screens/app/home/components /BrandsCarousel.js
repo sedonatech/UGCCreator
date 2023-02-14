@@ -11,7 +11,7 @@ import { BLACK_50, BLUE } from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import { EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
+import { BRAND_DETAILS, EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
 import { BRANDS_TAB } from '../../explore/ExploreScreen';
 
 const BrandsCarousel = ({ style }) => {
@@ -46,6 +46,7 @@ const BrandsCarousel = ({ style }) => {
                         title={item?.name}
                         shortDescription={item?.shortDescription}
                         style={styles.card}
+                        onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
