@@ -18,6 +18,9 @@ export const PROFILE_STACK = 'ProfileStack';
 
 export const EXPLORE = 'Explore';
 
+export const BRAND_DETAILS = 'BrandDetails';
+
+export const PROJECT_DETAILS = 'ProjectDetails';
 export const EXPLORE_STACK = 'ExploreStack';
 
 export const OFFERS = 'Offers';

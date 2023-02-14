@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import FastImage from 'react-native-fast-image';
@@ -17,13 +17,13 @@ const BackgroundImage = ({
 );
 
 BackgroundImage.propTypes = {
-    style: PropTypes.object,
+    style: PropTypes.shape({}),
     source: PropTypes.number || PropTypes.object,
     width: PropTypes.number,
 };
 
 BackgroundImage.defaultProps = {
-    style: PropTypes.object,
+    style: null,
     width: SCREEN_WIDTH,
     source: null,
 };

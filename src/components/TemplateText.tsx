@@ -34,7 +34,9 @@ interface Props {
     startCase?: boolean,
     italic?: boolean,
     children?: string | React.ReactChild | null | (string | React.ReactChild | null)[]
+    lineHeight?: number | null,
 
+    style?: any,
 }
 const TemplateText: FC<Props> = ({
     light,
@@ -59,6 +61,7 @@ const TemplateText: FC<Props> = ({
     numberOfLines,
     startCase,
     italic,
+    lineHeight,
     ...restProps
 }) => {
     const textStyle = {} as any;
@@ -134,6 +137,9 @@ const TemplateText: FC<Props> = ({
     if (lineThrough) {
         textStyle.textDecorationLine = 'line-through';
         textStyle.textDecorationStyle = 'solid';
+    }
+    if (lineHeight) {
+        textStyle.lineHeight = lineHeight;
     }
 
     let content = children;

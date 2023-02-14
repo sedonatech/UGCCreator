@@ -2,12 +2,12 @@ import React, {
     FC, useEffect, useRef, useState
 } from 'react';
 import Video from 'react-native-video';
+// @ts-ignore
 import VideoPlayer from 'react-native-video-controls';
 import { get } from 'lodash';
 import { StyleSheet, } from 'react-native';
 import Modal from 'react-native-modal';
 
-import Box from '../layout/Box';
 import { IS_ANDROID, SCREEN_WIDTH } from '../theme/Layout';
 import TemplateBox from './TemplateBox';
 import upscaleSource from '../Utils/upscaleSource';
@@ -27,6 +27,7 @@ const VideoOverlay:FC<Props> = ({ url, onClose }) => {
         if (get(videoRef, 'current', false) && source) {
             if (!IS_ANDROID) {
                 setTimeout(() => {
+                    // @ts-ignore
                     !!videoRef && videoRef?.current.presentFullscreenPlayer();
                 }, 300);
             }
@@ -74,6 +75,7 @@ const VideoOverlay:FC<Props> = ({ url, onClose }) => {
         <Video
             ref={videoRef}
             paused={!url}
+            // @ts-ignore
             source={!!source && {
                 uri: source,
             }}
@@ -86,8 +88,10 @@ const VideoOverlay:FC<Props> = ({ url, onClose }) => {
             mixWithOthers="mix"
             disableFocus
             onFullscreenPlayerWillDismiss={() => {
+                // @ts-ignore
                 videoRef.current.seek(0);
                 onClose();
+                // @ts-ignore
                 videoRef.current.dismissFullscreenPlayer();
             }}
         />

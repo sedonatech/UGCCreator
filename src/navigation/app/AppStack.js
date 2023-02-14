@@ -15,6 +15,7 @@ const AppStack = () => (
             options={{ headerShown: false }}
             component={AppTabs}
         />
+
     </Navigator>
 );
 
