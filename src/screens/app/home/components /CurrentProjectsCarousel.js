@@ -11,6 +11,7 @@ import { BLUE } from '../../../../theme/Colors';
 import CurrentProjectCard from './CurrentProjectCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import {
+    CURRENT_PROJECT_DETAILS,
     OFFERS, OFFERS_STACK,
 } from '../../../../navigation/ScreenNames';
 
@@ -27,7 +28,6 @@ const CurrentProjectsCarousel = ({ style }) => {
                 <TemplateTouchable
                     onPress={() => navigation.navigate(OFFERS_STACK, {
                         screen: OFFERS,
-
                     })}
                 >
                     <TemplateText startCase size={14} underLine color={BLUE}>
@@ -48,7 +48,9 @@ const CurrentProjectsCarousel = ({ style }) => {
                         documentCount={item?.documents}
                         daysLeft={item?.daysLeft}
                         progress={item?.progress}
-                        onPress={() => {}}
+                        onPress={() => navigation.navigate(OFFERS_STACK, {
+                            screen: CURRENT_PROJECT_DETAILS,
+                        })}
                         style={styles.card}
                     />
                 )}

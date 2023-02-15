@@ -36,7 +36,6 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
 
         return PROJECTS?.find(({ id }) => id === projectId);
     }, [projectId, PROJECTS]);
-    console.log('-> selectedProject', selectedProject);
 
     useLayoutEffect(() => {
         navigation.setOptions({

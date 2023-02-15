@@ -2,7 +2,8 @@ import React, {
     FC, useLayoutEffect, useMemo, useState
 } from 'react';
 import {
-    ScrollView, StyleSheet,
+    Animated,
+    ScrollView, StyleSheet
 } from 'react-native';
 
 import {
@@ -61,14 +62,48 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
         });
     }, [navigation]);
 
+    const pan = React.useRef(new Animated.ValueXY()).current;
+
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+
+        <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            scrollEventThrottle={1}
+            onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
+                {
+                    useNativeDriver: false,
+                }
+            )}
+            contentContainerStyle={styles.contentContainer}
+        >
+
             <TemplateBox
+                animated
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={[BLACK_30, BLACK_30]}
+                style={{
+                    transform: [
+                        {
+                            translateY: pan.y.interpolate({
+                                inputRange: [-1000, 0],
+                                outputRange: [-200, 0],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                        {
+                            scale: pan.y.interpolate({
+                                inputRange: [-3000, 0],
+                                outputRange: [20, 1],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                    ],
+                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage
@@ -97,6 +132,7 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
+
             <TemplateBox selfCenter flex>
                 <ToggleCarousel
                     data={BRAND_DETAILS_TABS}
@@ -122,7 +158,9 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
             {selectedTab?.value === BRAND_DETAILS_TABS[1]?.value && (
                 <ProjectsTab data={PROJECTS} />
             )}
+
         </ScrollView>
+
     );
 };
 
@@ -133,7 +171,9 @@ const styles = StyleSheet.create({
     },
     image: {
         zIndex: -1,
-    }
-
+    },
+    contentContainer: {
+        flexGrow: 1,
+    },
 });
 export default BrandDetailsScreen;

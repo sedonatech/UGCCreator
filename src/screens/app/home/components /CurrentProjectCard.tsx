@@ -32,6 +32,7 @@ interface Props {
     width?: number;
 
     slideInDelay?: number;
+
 }
 
 const CurrentProjectCard: FC<Props> = ({
