@@ -16,6 +16,7 @@ import { projectStatuses } from '../../../consts/AppFilters/ProjectStatus';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import TemplateIcon from '../../../components/TemplateIcon';
 import OverviewTab from './components/OverviewTab';
+import ProjectNotificationsTab from './components/ProjectNotificationsTab';
 
 const CURRENT_PROJECT_TABS = [
     {
@@ -23,8 +24,8 @@ const CURRENT_PROJECT_TABS = [
         value: 'overview'
     },
     {
-        name: 'Comments',
-        value: 'comments'
+        name: 'Project Notifications',
+        value: 'projectNotifications'
     }
 ];
 interface Props {
@@ -139,38 +140,38 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
                     justifyContent="space-between"
                 >
                     <TemplateBox
-                        pAll={20}
+                        pAll={10}
                         borderRadius={10}
                         mr={20}
                         backgroundColor={GREY_SECONDARY}
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={40} />
+                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
                     </TemplateBox>
                     <TemplateBox
-                        pAll={20}
+                        pAll={10}
                         borderRadius={10}
                         mr={20}
                         backgroundColor={GREY_SECONDARY}
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={40} />
+                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
                     </TemplateBox>
                     <TemplateBox
-                        pAll={20}
+                        pAll={10}
                         borderRadius={10}
                         mr={20}
                         backgroundColor={GREY_SECONDARY}
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={40} />
+                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
                     </TemplateBox>
                 </TemplateBox>
             </TemplateBox>
-            <TemplateBox selfCenter height={100}>
+            <TemplateBox height={100}>
                 <ToggleCarousel
                     data={CURRENT_PROJECT_TABS}
                     selectedTab={selectedTab}
@@ -179,8 +180,13 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
                 />
             </TemplateBox>
             {
-                selectedTab?.value === 'overview' && (
+                selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
                     <OverviewTab />
+                )
+            }
+            {
+                selectedTab?.value === CURRENT_PROJECT_TABS[1].value && (
+                    <ProjectNotificationsTab />
                 )
             }
         </ScrollView>
