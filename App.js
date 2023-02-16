@@ -10,13 +10,14 @@ import MainNavigator from './src/navigation/MainNavigator';
 import { AuthProvider } from './src/context/AuthProvider';
 import { FeatureFlagProvider } from './src/context/FeatureFlagsContext';
 import defaultFeatures from './config/defaultFeatures';
-import { BRAND_BLUE } from './src/theme/Colors';
+import { BRAND_BLUE, TRANSPARENT, WHITE } from './src/theme/Colors';
+import { IS_ANDROID } from './src/theme/Layout';
 
 const NAVIGATION_THEME = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,
-        background: BRAND_BLUE,
+        background: IS_ANDROID ? TRANSPARENT : BRAND_BLUE,
     },
 };
 const App = () => {
@@ -43,7 +44,7 @@ const App = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: BRAND_BLUE,
+        backgroundColor: IS_ANDROID ? TRANSPARENT : BRAND_BLUE,
 
     },
 });

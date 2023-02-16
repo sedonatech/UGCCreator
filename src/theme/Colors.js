@@ -27,7 +27,7 @@ export const WHITE_70 = 'rgba(255, 255, 255, 0.7)';
 
 export const PRIMARY = '#56CCF2';
 
-export const GREEN = '#90EE90';
+export const GREEN = 'rgba(0, 197, 102, 1)';
 
 export const BLUE = '#2D9CDB';
 
@@ -51,9 +51,11 @@ export const LIGHT_PURPLE = '#ECEDFD';
 
 export const ACCENT = '#A5C4FD';
 
-export const GREY = '#7A8499';
+export const GREY = '#9CA4AB';
 
 export const GREY_SECONDARY = 'rgba(227, 231, 236, 1)';
+
+export const GREY_30 = 'rgba(227, 231, 236, 0.3)';
 
 export const PRIMARY_GRADIENT = [BLACK_10, BLACK_20, BLACK_50];
 

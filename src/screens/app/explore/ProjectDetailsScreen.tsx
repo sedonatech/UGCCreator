@@ -53,7 +53,12 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
     if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            bouncesZoom
+            bounces={false}
+        >
             <TemplateBox
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}

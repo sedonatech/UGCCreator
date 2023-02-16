@@ -50,6 +50,9 @@ const CurrentProjectsCarousel = ({ style }) => {
                         progress={item?.progress}
                         onPress={() => navigation.navigate(OFFERS_STACK, {
                             screen: CURRENT_PROJECT_DETAILS,
+                            params: {
+                                projectId: item?.id,
+                            },
                         })}
                         style={styles.card}
                     />
