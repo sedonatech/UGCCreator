@@ -25,6 +25,7 @@ export const EXPLORE_STACK = 'ExploreStack';
 
 export const OFFERS = 'Offers';
 
+export const CURRENT_PROJECT_DETAILS = 'CurrentProjectDetails';
 export const OFFERS_STACK = 'OffersStack';
 
 export const APP_TABS = 'AppTabs';

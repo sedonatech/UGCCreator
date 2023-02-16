@@ -17,17 +17,21 @@ interface ToggleCarouselProps {
     data: CarouselTab[]
     selectedTab: CarouselTab
     onChange: (value: CarouselTab) => void
+
+    flex?: boolean
 }
 const ToggleCarousel:FC<ToggleCarouselProps> = ({
     data,
     onChange,
-    selectedTab
+    selectedTab,
+    flex
 }) => {
     const activeIndex = data?.indexOf(selectedTab);
 
     return (
         <TemplateCarousel
             data={data}
+            flex={flex}
             renderItem={({ item }) => {
                 const isSelected = item.value === selectedTab?.value;
 
@@ -64,6 +68,7 @@ const ToggleCarousel:FC<ToggleCarouselProps> = ({
                 );
             }}
             contentContainerStyle={styles.tabs}
+
         />
     );
 };
@@ -74,6 +79,6 @@ const styles = StyleSheet.create({
         marginVertical: SPACE_LARGE,
         justifyContent: 'center',
         alignSelf: 'center',
-    }
+    },
 });
 export default ToggleCarousel;

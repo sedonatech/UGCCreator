@@ -20,6 +20,7 @@ import {
 import CurrentProjectCard from '../home/components /CurrentProjectCard';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import ToggleCarousel from '../../../components/ToggleCarousel';
+import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 
 const getTagColor = (status) => {
     if (status === 'backlog') {
@@ -33,7 +34,7 @@ const getTagColor = (status) => {
     }
     return BRAND_BLUE;
 };
-const OffersScreen = () => {
+const OffersScreen = ({ navigation }) => {
     const [selectedStatus, setSelectedStatus] = useState(STATUS[0]);
 
     const filteredProjects = useMemo(() => {
@@ -83,12 +84,16 @@ const OffersScreen = () => {
                         progress={item?.currentStatus?.value === STATUS[1].value
                             ? item?.progress
                             : 0}
-                        onPress={() => {}}
                         style={styles.card}
                         cardColor={WHITE}
                         tagColor={getTagColor(item?.currentStatus?.value)}
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                         slideInDelay={(index + 1) * 100}
+                        key={item?.id}
+                        onPress={
+                            () => navigation.navigate(CURRENT_PROJECT_DETAILS,
+                                { projectId: item?.id })
+                        }
                     />
                 )) : (
                     <ProfileStatusCard
