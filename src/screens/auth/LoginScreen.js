@@ -136,7 +136,6 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-
         alignItems: 'center',
         backgroundColor: BRAND_BLUE,
     },
@@ -146,6 +145,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         alignSelf: 'center',
+        marginBottom: WRAPPER_MARGIN * 4,
     },
     button: {
         marginTop: 24,
