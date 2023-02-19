@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import ViewShot from 'react-native-view-shot';
 
-import { TRANSPARENT, WHITE } from '../../../theme/Colors';
-import { IS_ANDROID } from '../../../theme/Layout';
-
+import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
 import PortfolioHeader from './components/PortfolioHeader';
 import AboutSection from './components/AboutSection';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -15,8 +15,10 @@ import {
 import ContactSection from './components/ContactSection';
 import SampleWorkSection from './components/SampleWorkSection';
 import RatesSection from './components/RatesSection';
+import HeaderIconButton from '../../../components/header/HeaderButton';
+import useShareScreenShot from '../../../Utils/useShareScreenShot';
 
-const PortfolioScreen = () => {
+const PortfolioScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const userName = auth?.profile?.userName;
@@ -27,23 +29,47 @@ const PortfolioScreen = () => {
     const location = auth?.profile?.location?.city || 'London';
     const rates = DEFAULT_CREATOR_RATES;
 
-    return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            showsVerticalScrollIndicator={false}
-        >
+    const screenshot = useRef(null);
 
-            <PortfolioHeader userName={userName} location={location} />
-            <AboutSection about={about} />
-            <SampleWorkSection />
-            <RatesSection rates={rates} />
-            <ContactSection
-                contactInfo={contact}
-                socials={socials}
-                paypalLink={paypalLink}
-            />
-        </ScrollView>
+    const [shareScreenshot] = useShareScreenShot(userName, screenshot);
+
+    const handleShare = async () => {
+        await shareScreenshot();
+    };
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <HeaderIconButton
+                    name="share-outline"
+                    onPress={handleShare}
+                    backDropColor={BLACK_10}
+                    ml={WRAPPER_MARGIN}
+                />
+            ),
+        });
+    }, [navigation]);
+
+    return (
+        <ViewShot style={styles.viewShot} ref={screenshot}>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+            >
+
+                <PortfolioHeader userName={userName} location={location} />
+                <AboutSection about={about} />
+                <SampleWorkSection />
+                <RatesSection rates={rates} />
+                <ContactSection
+                    contactInfo={contact}
+                    socials={socials}
+                    paypalLink={paypalLink}
+                />
+            </ScrollView>
+        </ViewShot>
     );
 };
 
@@ -54,6 +80,9 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+    },
+    viewShot: {
+        flex: 1,
     },
 });
 export default PortfolioScreen;
