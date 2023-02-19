@@ -21,7 +21,8 @@ import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
 import HeaderIconButton from '../../components/header/HeaderButton';
 
-const ResetPasswordScreen = ({ navigation }) => {
+const ResetPasswordScreen = ({ navigation, route }) => {
+    const isUpdate = route.params?.isUpdate;
     const [email, setEmail] = useState();
 
     const [error, setError] = useState(null);
@@ -38,12 +39,18 @@ const ResetPasswordScreen = ({ navigation }) => {
             }
             await auth().sendPasswordResetEmail(email);
             Alert.alert(
-                'Password Reset',
+                isUpdate ? 'Password Update' : 'Password Reset',
                 'A password reset link has been sent to your email address',
                 [
                     {
                         text: 'OK',
-                        onPress: () => navigation.navigate(ONBOARDING),
+                        onPress: () => {
+                            if (isUpdate) {
+                                navigation.goBack();
+                                return;
+                            }
+                            navigation.navigate(ONBOARDING);
+                        },
                     },
                 ],
             );
@@ -90,7 +97,7 @@ const ResetPasswordScreen = ({ navigation }) => {
                 color={BLACK}
                 style={styles.title}
             >
-                Reset your password!
+                {isUpdate ? 'Update your Password!' : 'Reset your Password!' }
             </TemplateText>
             <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
                 Enter your email to continue
@@ -113,19 +120,21 @@ const ResetPasswordScreen = ({ navigation }) => {
                     style={styles.button}
                     loading={loading}
                 />
-                <TemplateText size={16} center italic style={styles.signupLink}>
-                    New to the UGC creator app?
-                    {' '}
+                {!isUpdate && (
+                    <TemplateText size={16} center italic style={styles.signupLink}>
+                        New to the UGC creator app?
+                        {' '}
 
-                    <TemplateText
-                        color={BLUE}
-                        underLine
-                        size={16}
-                        onPress={() => navigation.navigate(ONBOARDING)}
-                    >
-                        Sign Up
+                        <TemplateText
+                            color={BLUE}
+                            underLine
+                            size={16}
+                            onPress={() => navigation.navigate(ONBOARDING)}
+                        >
+                            Sign Up
+                        </TemplateText>
                     </TemplateText>
-                </TemplateText>
+                )}
             </View>
         </Wrapper>
     );

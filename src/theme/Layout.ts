@@ -3,6 +3,11 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Appearance, Dimensions, Platform } from 'react-native';
 import { wp } from '../Utils/getResponsiveSize';
 
+const deviceVersion = Platform.Version;
+console.log('-> deviceVersion', deviceVersion);
+
+const IS_IOS_16 = deviceVersion >= 16 && Platform.OS === 'ios';
+
 export const IS_DARK:boolean = (Appearance.getColorScheme() === 'dark');
 
 // Dimensions corresponding to iPhone 13, used in the designs
@@ -57,3 +62,8 @@ export const OFFER_CARD_HEIGHT = IS_SMALL_DEVICE
 export const OFFER_CARD_WIDTH = IS_SMALL_DEVICE
     ? SCREEN_WIDTH / 2.2
     : SCREEN_WIDTH / 2.2;
+
+// eslint-disable-next-line no-nested-ternary
+const HEADER_MARGIN_OFFSET = IS_ANDROID ? 2.2 : IS_IOS_16 ? 5 : 2.6;
+
+export const HEADER_MARGIN = STATUS_BAR_HEIGHT + (WRAPPER_MARGIN * HEADER_MARGIN_OFFSET);

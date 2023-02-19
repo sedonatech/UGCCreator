@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import TemplateText from '../../../components/TemplateText';
 import {
+    HEADER_MARGIN,
     IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import {
@@ -58,7 +59,7 @@ const FeedsScreen = () => {
                     <Blob center />
                 </TemplateBox>
                 <TemplateBox
-                    mt={SCREEN_HEIGHT * 0.15}
+                    mt={HEADER_MARGIN}
                     alignItems="center"
                     justifyContent="center"
                 >
