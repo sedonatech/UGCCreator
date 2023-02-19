@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { SWITCH, TRANSPARENT_HEADER } from '../../components/header/ScreenOptions';
-import ProfileScreen from '../../screens/app/profile/ProfileScreen';
+import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import { PROFILE, SETTINGS } from '../ScreenNames';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import SettingsScreen from '../../screens/app/profile/SettingsScreen';
@@ -25,7 +25,7 @@ const ProfileStack = () => (
                     />
                 ),
             }}
-            component={ProfileScreen}
+            component={PortfolioScreen}
         />
         <Screen
             name={SETTINGS}

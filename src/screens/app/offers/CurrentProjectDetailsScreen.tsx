@@ -60,6 +60,8 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
 
     if (!currentProject) return <LoadingOverlay message="Loading project details..." />;
 
+    // TODO: Add the empty states of the document pickers
+
     return (
         <ScrollView
             style={styles.container}

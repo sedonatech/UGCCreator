@@ -1,76 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Image, StyleSheet } from 'react-native';
 
-import { useActionSheet } from '@expo/react-native-action-sheet';
 import TemplateTouchable from './TemplateTouchable';
-import AvatarIcon from '../../assets/svgs/AvatarIcon';
 import { BLACK, BRAND_BLUE, LIGHT_PURPLE } from '../theme/Colors';
-import useFirebaseSetStorage from '../hooks/imageUpload/useFirebaseSetStorage';
-import useAuthContext from '../hooks/auth/useAuthContext';
-import useFirebaseGetStorage from '../hooks/imageUpload/useFirebaseGetStorage';
 import TemplateBox from './TemplateBox';
 import TemplateIcon from './TemplateIcon';
+import useImageStorage from '../hooks/Portfolio/useImageStorage';
 
-const Avatar = ({ image, onPress, style }) => {
-    const { auth } = useAuthContext();
-    const uuid = auth?.user?.uid;
-    const { showActionSheetWithOptions } = useActionSheet();
-    const [avatar, setAvatar] = useState();
-
-    const { takeAPicture, progress } = useFirebaseSetStorage();
-    const { getAvatar } = useFirebaseGetStorage();
-
-    const handleOnPhotoSelect = async (options) => {
-        await takeAPicture({
-            saveAutomatically: true,
-            isAvatar: true,
-            customMetadata: {},
-            pickerOptions: options,
-            uuid,
-        });
+const Avatar = ({
+    style, height, width, borderRadius,
+}) => {
+    const { image: avatarData, onAddImage: onAddPhoto } = useImageStorage();
+    const imageStyle = {
+        width,
+        height,
+        borderRadius,
     };
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const avatarFromStorage = await getAvatar(uuid);
-                if (avatarFromStorage) {
-                    setAvatar(avatarFromStorage);
-                }
-            } catch (e) {
-                console.log('-> e', e);
-            }
-        })();
-    }, [progress]);
-    const onAddPhoto = async () => {
-        showActionSheetWithOptions(
-            {
-                options: ['Camera', 'Gallery', 'Cancel'],
-                cancelButtonIndex: 2,
-            },
-            (buttonIndex) => {
-                if (buttonIndex === 0) {
-                    handleOnPhotoSelect('openCamera');
-                } else if (buttonIndex === 1) {
-                    handleOnPhotoSelect('openPicker');
-                } else {
-                }
-            },
-        );
-    };
+    const avatar = useMemo(() => {
+        if (avatarData) {
+            return avatarData;
+        }
+        return null;
+    }, [avatarData]);
 
     return (
         <TemplateTouchable style={[styles.container, style]}>
             {!avatar?.url ? (
                 <TemplateBox
-                    height={50}
-                    width={50}
-                    borderRadius={25}
+                    height={height}
+                    width={width}
+                    borderRadius={borderRadius}
                     backgroundColor={BRAND_BLUE}
                     justifyContent="center"
                     alignItems="center"
-                    onPress={onAddPhoto}
+                    onPress={() => onAddPhoto(true)}
                     hit
                 >
                     <TemplateIcon
@@ -80,8 +45,8 @@ const Avatar = ({ image, onPress, style }) => {
                     />
                 </TemplateBox>
             ) : (
-                <TemplateTouchable onPress={onAddPhoto}>
-                    <Image source={{ uri: avatar?.url }} style={styles.image} />
+                <TemplateTouchable onPress={() => onAddPhoto(true)}>
+                    <Image source={{ uri: avatar?.url }} style={imageStyle} />
                 </TemplateTouchable>
             )}
         </TemplateTouchable>
@@ -89,14 +54,16 @@ const Avatar = ({ image, onPress, style }) => {
 };
 
 Avatar.propTypes = {
-    image: PropTypes.string,
-    onPress: PropTypes.func,
-    style: PropTypes.object,
+    style: PropTypes.shape({}),
+    height: PropTypes.number,
+    width: PropTypes.number,
+    borderRadius: PropTypes.number,
 };
 Avatar.defaultProps = {
-    image: null,
-    onPress: () => {},
     style: {},
+    height: 50,
+    width: 50,
+    borderRadius: 25,
 };
 const styles = StyleSheet.create({
     container: {
@@ -106,11 +73,6 @@ const styles = StyleSheet.create({
         backgroundColor: LIGHT_PURPLE,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    image: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
     },
 });
 export default Avatar;

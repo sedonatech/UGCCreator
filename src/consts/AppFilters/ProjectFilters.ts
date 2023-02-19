@@ -184,6 +184,10 @@ export const projectFilters: ProjectFilters[] = [
     {
         name: 'Cigars and Tobacco',
         value: 'cigars-and-tobacco',
+    },
+    {
+        name: 'Health & Wellness',
+        value: 'health-wellness',
     }
 ];
 
