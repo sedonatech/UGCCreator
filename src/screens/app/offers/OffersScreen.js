@@ -7,6 +7,7 @@ import {
 import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 import {
+    HEADER_MARGIN,
     IS_ANDROID,
     SCREEN_HEIGHT, SCREEN_WIDTH, SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
@@ -52,7 +53,7 @@ const OffersScreen = ({ navigation }) => {
                 <Blob center />
             </TemplateBox>
             <TemplateBox
-                mt={SCREEN_HEIGHT * 0.15}
+                mt={HEADER_MARGIN}
                 alignItems="center"
                 justifyContent="center"
             >

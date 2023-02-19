@@ -12,6 +12,8 @@ export const PROFILE = 'Portfolio';
 
 export const SETTINGS = 'Settings';
 
+export const UPDATE_PORTFOLIO = 'UpdatePortfolio';
+
 export const FEEDS_STACK = 'FeedsStack';
 
 export const PROFILE_STACK = 'ProfileStack';

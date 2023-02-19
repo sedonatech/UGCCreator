@@ -12,8 +12,9 @@ import TemplateBox from '../../../components/TemplateBox';
 import Blob from '../../../../assets/svgs/Blob';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import {
+    HEADER_MARGIN,
     IS_ANDROID,
-    SCREEN_HEIGHT, SPACE_XSMALL, WRAPPER_MARGIN,
+    SCREEN_HEIGHT, SPACE_XSMALL, STATUS_BAR_HEIGHT, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';
@@ -114,7 +115,7 @@ const ExploreScreen = ({ route }) => {
                 <Blob center />
             </TemplateBox>
 
-            <TemplateBox mt={SCREEN_HEIGHT * 0.15} alignItems="center" justifyContent="center">
+            <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                 <TemplateText size={18} bold startCase>Explore Brands and Projects</TemplateText>
             </TemplateBox>
             <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>

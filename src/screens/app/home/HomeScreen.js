@@ -8,7 +8,7 @@ import {
     WHITE,
 } from '../../../theme/Colors';
 import {
-    SCREEN_HEIGHT,
+    HEADER_MARGIN,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         backgroundColor: WHITE,
     },
     greeting: {
-        marginTop: SCREEN_HEIGHT * 0.14,
+        marginTop: HEADER_MARGIN,
         marginBottom: WRAPPER_MARGIN,
         marginHorizontal: WRAPPER_MARGIN,
     },
