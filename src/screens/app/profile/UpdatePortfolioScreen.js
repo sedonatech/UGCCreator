@@ -7,7 +7,7 @@ import { IS_ANDROID } from '../../../theme/Layout';
 import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 
-const ProfileScreen = () => (
+const UpdatePortfolioScreen = () => (
     <ScrollView contentContainerStyle={styles.container}>
         <TemplateBox>
             <Blob top color={LAVENDER} />
@@ -15,7 +15,7 @@ const ProfileScreen = () => (
             <Blob color={LAVENDER} bottom />
             <Blob center />
         </TemplateBox>
-        <TemplateText>ProfileScreen </TemplateText>
+        <TemplateText>UpdateProfile </TemplateText>
     </ScrollView>
 );
 
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-export default ProfileScreen;
+export default UpdatePortfolioScreen;

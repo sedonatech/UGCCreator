@@ -79,8 +79,8 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
                 }
             )}
             contentContainerStyle={styles.contentContainer}
-            bouncesZoom
-            bounces={false}
+            // bouncesZoom
+            // bounces={false}
         >
 
             <TemplateBox
