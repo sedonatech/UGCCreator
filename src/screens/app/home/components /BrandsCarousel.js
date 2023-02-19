@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 });
 
 BrandsCarousel.propTypes = {
-    style: PropTypes.object,
+    style: PropTypes.shape({}),
 };
 
 BrandsCarousel.defaultProps = {

@@ -31,7 +31,11 @@ const Greeting = ({ userName, style }) => {
             <Avatar style={styles.avatar} />
             <View>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
-                    {`${getTimeGreeting(hour)}${startCase(userName)}!`}
+                    {`${getTimeGreeting(hour)}`}
+
+                </TemplateText>
+                <TemplateText bold size={18} style={styles.greetingTitle}>
+                    {`${startCase(userName)}!`}
                 </TemplateText>
                 <TemplateText
                     size={13}

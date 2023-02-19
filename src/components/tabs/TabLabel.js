@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { BLACK } from '../../theme/Colors';
+import { BLACK, BRAND_BLUE } from '../../theme/Colors';
 import TemplateText from '../TemplateText';
 import { IS_ANDROID } from '../../theme/Layout';
 
@@ -22,7 +22,7 @@ TabLabel.defaultProps = {
 
 const styles = StyleSheet.create({
     label: {
-        color: BLACK,
+        color: BRAND_BLUE,
         fontSize: 10,
         opacity: 0.5,
         textAlign: 'center',
