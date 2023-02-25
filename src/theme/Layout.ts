@@ -34,10 +34,10 @@ export const RADIUS_XXLARGE = 30;
 
 export const SPACE_XSMALL = 5;
 export const SPACE_SMALL = 10;
-export const SPACE_MEDIUM = 15;
+export const SPACE_MEDIUM = 16;
 export const SPACE_LARGE = 20;
 export const SPACE_XLARGE = 25;
-export const SPACE_XXLARGE = 30;
+export const SPACE_XXLARGE = 35;
 
 export const BORDER_XXSMALL = 0.4;
 export const BORDER_XSMALL = 1;

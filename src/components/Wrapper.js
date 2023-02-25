@@ -179,9 +179,9 @@ const Wrapper = forwardRef(
 
 Wrapper.propTypes = {
     children: PropTypes.node.isRequired,
-    style: PropTypes.object,
-    outerStyle: PropTypes.object,
-    contentContainerStyle: PropTypes.object,
+    style: PropTypes.shape({}),
+    outerStyle: PropTypes.shape({}),
+    contentContainerStyle: PropTypes.shape({}),
     keyboard: PropTypes.bool,
     scroll: PropTypes.bool,
     loading: PropTypes.bool,

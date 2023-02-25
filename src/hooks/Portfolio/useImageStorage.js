@@ -9,9 +9,10 @@ const useImageStorage = () => {
     const uuid = auth?.user?.uid;
     const { showActionSheetWithOptions } = useActionSheet();
     const [image, setImage] = useState();
+    const [images, setImages] = useState([]);
 
     const { takeAPicture, progress } = useFirebaseSetStorage();
-    const { getAvatar } = useFirebaseGetStorage();
+    const { getAvatar, getImages } = useFirebaseGetStorage();
 
     const handleOnPhotoSelect = async (options, isAvatar) => {
         await takeAPicture({
@@ -27,8 +28,12 @@ const useImageStorage = () => {
         (async () => {
             try {
                 const imageFromStorage = await getAvatar(uuid);
+                const imagesFromStorage = await getImages(uuid);
                 if (imageFromStorage) {
                     setImage(imageFromStorage);
+                }
+                if (imagesFromStorage) {
+                    setImages(imagesFromStorage);
                 }
             } catch (e) {
                 console.log('-> e', e);
@@ -56,6 +61,7 @@ const useImageStorage = () => {
         image,
         onAddImage,
         progress,
+        images,
     };
 };
 

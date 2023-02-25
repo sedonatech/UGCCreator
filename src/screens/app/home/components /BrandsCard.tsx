@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BLACK_30, BLACK_40
+    BLACK, WHITE, BLACK_30, BLACK_40, BRAND_BLUE, TRANSPARENT
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -23,6 +23,8 @@ interface Props {
     descriptionSize?: number;
 
     onPress?: () => void;
+
+    buttonTitle?: string;
 }
 
 const BrandsCard: FC<Props> = ({
@@ -37,20 +39,34 @@ const BrandsCard: FC<Props> = ({
     descriptionLines = 2,
     descriptionSize = 14,
     onPress,
+    buttonTitle = 'View Offers',
 }) => (
     <TemplateBox
-        fullGradient
+        fullGradient={!!image}
         alignItems="center"
         justifyContent="center"
-        gradientColors={[BLACK_40, BLACK_40]}
+        gradientColors={image ? [BLACK_40, BLACK_40] : [TRANSPARENT, TRANSPARENT]}
         borderRadius={RADIUS_SMALL}
         width={cardWidth}
         aspectRatio={aspectRatio}
         style={style}
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
+
     >
-        <BackgroundImage source={image} style={styles.image} width="100%" />
+        {
+            image ? (
+                <BackgroundImage source={image} style={styles.image} width="100%" />
+            ) : (
+                <TemplateBox
+                    backgroundColor={BRAND_BLUE}
+                    width={cardWidth}
+                    aspectRatio={aspectRatio}
+                    absolute
+                    borderRadius={RADIUS_SMALL}
+                />
+            )
+        }
         <TemplateBox pAll={20} onPress={onPress}>
             {/* @ts-ignore */}
             <TemplateText color={WHITE} bold size={titleSize} style={styles.text}>
@@ -72,7 +88,7 @@ const BrandsCard: FC<Props> = ({
                 onPress={onPress}
             >
                 <TemplateText color={WHITE} bold size={14}>
-                    View Offers
+                    {buttonTitle}
                 </TemplateText>
             </TemplateTouchable>
         </TemplateBox>

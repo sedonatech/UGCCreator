@@ -54,11 +54,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    titleRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
     greetingTitle: {
         marginBottom: WRAPPER_MARGIN / 3,
     },
@@ -69,7 +64,7 @@ const styles = StyleSheet.create({
 
 Greeting.propTypes = {
     userName: PropTypes.string.isRequired,
-    style: PropTypes.object,
+    style: PropTypes.shape({}),
 };
 
 Greeting.defaultProps = {
