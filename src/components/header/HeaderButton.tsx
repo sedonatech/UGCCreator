@@ -7,6 +7,7 @@ import {
     BLACK, BLACK_10, BLACK_20, BLACK_30
 } from '../../theme/Colors';
 import TemplateBox from '../TemplateBox';
+import TemplateText from '../TemplateText';
 
 export type HeaderIconButtonProps = {
     name: string;
@@ -17,6 +18,7 @@ export type HeaderIconButtonProps = {
 
     mr?: number;
     ml?: number;
+    title?: string;
 };
 
 const HeaderIconButton:React.FC<HeaderIconButtonProps> = ({
@@ -25,7 +27,8 @@ const HeaderIconButton:React.FC<HeaderIconButtonProps> = ({
     screen,
     backDropColor = BLACK_10,
     mr,
-    ml
+    ml,
+    title
 }) => {
     const { navigate } = useNavigation();
     // @ts-ignore
@@ -41,11 +44,15 @@ const HeaderIconButton:React.FC<HeaderIconButtonProps> = ({
             backgroundColor={backDropColor}
             borderRadius={10}
         >
-            <TemplateIcon
-                name={name}
-                color={BLACK}
-                size={24}
-            />
+            {title ? (
+                <TemplateText color={BLACK} size={10} bold caps>{title}</TemplateText>
+            ) : (
+                <TemplateIcon
+                    name={name}
+                    color={BLACK}
+                    size={24}
+                />
+            )}
         </TemplateBox>
     );
 };

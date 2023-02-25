@@ -16,6 +16,7 @@ const AuthProvider = ({ children }) => {
     const { getProfile } = useProfile();
 
     const update = (key, data) => {
+        console.log('[Profile] Auth Provider: Update called, updating profile: ', key, data);
         setProfile((prevState) => ({
             ...prevState,
             [key]: data,
@@ -44,7 +45,11 @@ const AuthProvider = ({ children }) => {
         update,
     };
 
-    return <Provider value={value}>{children}</Provider>;
+    return (
+        <Provider value={value}>
+            {children}
+        </Provider>
+    );
 };
 
 AuthProvider.propTypes = {
@@ -54,4 +59,9 @@ AuthProvider.propTypes = {
 AuthProvider.defaultProps = {
     children: null,
 };
-export { AuthContext, AuthProvider, AuthConsumer };
+
+export {
+    AuthContext,
+    AuthProvider,
+    AuthConsumer,
+};

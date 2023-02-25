@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
-import { sample } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK, BRAND_BLUE, LAVENDER, TRANSPARENT, WHITE, WHITE_96,
@@ -14,7 +13,7 @@ import TemplateTextInput from '../../../components/TemplateTextInput';
 import {
     HEADER_MARGIN,
     IS_ANDROID,
-    SCREEN_HEIGHT, SPACE_XSMALL, STATUS_BAR_HEIGHT, WRAPPER_MARGIN,
+    SCREEN_HEIGHT, SPACE_XSMALL, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';

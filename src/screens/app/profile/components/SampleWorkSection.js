@@ -31,7 +31,7 @@ const SampleWorkSection = () => {
     return (
         <TemplateBox flex mt={WRAPPER_MARGIN * 2}>
             <TemplateBox ml={WRAPPER_MARGIN} mb={10}>
-                <TemplateText bold color={BLACK} size={18}>My Work Samples</TemplateText>
+                <TemplateText bold color={BLACK} size={18}>My Work Examples</TemplateText>
             </TemplateBox>
 
             <TemplateCarousel

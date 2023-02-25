@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/prefer-default-export
 export const DEFAULT_CREATOR_DESCRIPTION = ''
-  + 'I am a UGC content creator 🌴🌵🏜\n'
-  + '\n'
   + 'I produce primarily video, photography, and lifestyle content for brands like you! I have been studying content creation for over a decade. When I’m not creating content I am spending time with my dogs, cats, and baby boy.\n'
   + '\n'
 + 'I believe in 2022 consumers are looking for authenticity, transparency and credibility from the brands they buy from. I would love to help you humanize your brand!';
+
+export const DEFAULT_CREATOR_SHORT_DESCRIPTION = 'I am a UGC content creator 🌴🌵🏜';
 
 export const DEFAULT_CREATOR_SOCIAL = {
     facebook: 'www.facebook.com/yourfacebookpage',

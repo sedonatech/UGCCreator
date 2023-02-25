@@ -75,7 +75,7 @@ const PillTag:React.FC<Props> = ({
                 name="close"
                 size={hp(12)}
                 family="Ionicons"
-                color={WHITE}
+                color={primaryTransparent ? BLACK : WHITE}
                 style={styles.closeIcon}
             />
         )}
