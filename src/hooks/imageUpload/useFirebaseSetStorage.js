@@ -94,11 +94,16 @@ const useFirebaseSetStorage = () => {
             });
     };
 
+    const clearCurrentPicture = () => {
+        setPicture(null);
+    };
+
     return {
         takeAPicture,
         saveAPicture,
         progress,
         picture,
+        clearCurrentPicture,
     };
 };
 

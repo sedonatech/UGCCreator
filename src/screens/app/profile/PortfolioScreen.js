@@ -9,7 +9,7 @@ import AboutSection from './components/AboutSection';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import {
     DEFAULT_CREATOR_CONTACT_INFO,
-    DEFAULT_CREATOR_DESCRIPTION, DEFAULT_CREATOR_PAYPAL_LINK, DEFAULT_CREATOR_RATES,
+    DEFAULT_CREATOR_DESCRIPTION, DEFAULT_CREATOR_PAYPAL_LINK, DEFAULT_CREATOR_RATES, DEFAULT_CREATOR_SHORT_DESCRIPTION,
     DEFAULT_CREATOR_SOCIAL,
 } from '../../../consts/content/Portfolio';
 import ContactSection from './components/ContactSection';
@@ -23,10 +23,11 @@ const PortfolioScreen = ({ navigation }) => {
 
     const userName = auth?.profile?.userName;
     const about = auth?.profile?.about || DEFAULT_CREATOR_DESCRIPTION;
+    const shortDescription = auth?.profile?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION;
     const contact = DEFAULT_CREATOR_CONTACT_INFO;
     const socials = auth?.profile?.socials || DEFAULT_CREATOR_SOCIAL;
     const paypalLink = auth?.profile?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
-    const location = auth?.profile?.location?.city || 'London';
+    const location = auth?.profile?.location?.country || 'London';
     const rates = DEFAULT_CREATOR_RATES;
 
     const screenshot = useRef(null);
@@ -60,7 +61,10 @@ const PortfolioScreen = ({ navigation }) => {
             >
 
                 <PortfolioHeader userName={userName} location={location} />
-                <AboutSection about={about} />
+                <AboutSection
+                    about={about}
+                    shortDescription={shortDescription}
+                />
                 <SampleWorkSection />
                 <RatesSection rates={rates} />
                 <ContactSection

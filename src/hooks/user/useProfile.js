@@ -1,8 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
+import { useState } from 'react';
+import { DEFAULT_CREATOR_DESCRIPTION, DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../consts/content/Portfolio';
 
 const USERS_COLLECTION = 'users';
 
 const useProfile = () => {
+    const [loading, setLoading] = useState(false);
     const createCreatorProfile = async (userName, currentUser) => {
         try {
             await firestore()
@@ -13,8 +16,8 @@ const useProfile = () => {
                     email: currentUser?.email,
                     id: currentUser?.uid,
                     image: currentUser?.photoURL || '',
-                    shortDescription: '',
-                    description: '',
+                    shortDescription: DEFAULT_CREATOR_SHORT_DESCRIPTION,
+                    description: DEFAULT_CREATOR_DESCRIPTION,
                     socialMedia: {
                         facebook: '',
                         instagram: '',
@@ -56,24 +59,24 @@ const useProfile = () => {
                             {
                                 title: 'Video Usage Rights',
                                 price: 0,
-                                description: 'Usage rights are for the video content',
+                                description: 'Usage rights for the video content',
                             },
                             {
                                 title: 'Photo Usage Rights',
                                 price: 0,
-                                description: 'Usage rights are for the photo content',
+                                description: 'Usage rights for the photo content',
                             },
                         ],
                         exclusiveRights: [
                             {
                                 title: 'Video Exclusive Rights',
                                 price: 0,
-                                description: 'Exclusive rights are for the video content',
+                                description: 'Exclusive rights for the video content',
                             },
                             {
                                 title: 'Photo Exclusive Rights',
                                 price: 0,
-                                description: 'Exclusive rights are for the photo content',
+                                description: 'Exclusive rights for the photo content',
                             },
                         ],
                     },
@@ -91,7 +94,6 @@ const useProfile = () => {
                     contact: {
                         phoneNumber: '',
                         email: '',
-                        address: '',
                     },
                     currentProjects: [],
                     paypalLink: '',
@@ -124,6 +126,7 @@ const useProfile = () => {
 
     const updateProfile = async (data, id) => {
         try {
+            setLoading(true);
             await firestore()
                 .collection(USERS_COLLECTION)
                 .doc(id)
@@ -133,6 +136,7 @@ const useProfile = () => {
         } catch (e) {
             console.log(e);
         }
+        setLoading(false);
     };
 
     const getProfile = async (id) => {
@@ -152,6 +156,7 @@ const useProfile = () => {
         createBrandProfile,
         updateProfile,
         getProfile,
+        loading,
     };
 };
 

@@ -3,19 +3,25 @@ import { ActivityIndicator } from 'react-native';
 import TemplateBox from './TemplateBox';
 import TemplateText from './TemplateText';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
-import { BLACK, BRAND_BLUE, LAVENDER } from '../theme/Colors';
+import {
+    BLACK, LAVENDER, WHITE_30
+} from '../theme/Colors';
 import Blob from '../../assets/svgs/Blob';
 
 interface LoadingOverlayProps {
     message?: string
+    ml?: number
 }
-const LoadingOverlay: FC<LoadingOverlayProps> = ({ message }) => (
+const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0 }) => (
     <TemplateBox
         height={SCREEN_HEIGHT}
         width={SCREEN_WIDTH}
         alignItems="center"
         justifyContent="center"
-        backgroundColor={BRAND_BLUE}
+        backgroundColor={WHITE_30}
+        absolute
+        ml={ml}
+
     >
         <TemplateBox>
             {/* @ts-ignore */}

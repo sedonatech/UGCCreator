@@ -12,7 +12,7 @@ import Blob from '../../../../../assets/svgs/Blob';
 import Avatar from '../../../../components/Avatar';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
-const PortfolioHeader = ({ userName, location }) => (
+const PortfolioHeader = ({ userName, location, isUpdate }) => (
     <TemplateBox>
         <TemplateBox
             backgroundColor={BRAND_BLUE}
@@ -30,36 +30,77 @@ const PortfolioHeader = ({ userName, location }) => (
                 absolute
                 top={SCREEN_HEIGHT * 0.14}
                 left={SCREEN_WIDTH * 0.5 - 102}
-                borderWidth={2}
+                borderWidth={10}
                 borderColor={WHITE}
-                borderRadius={40}
-                width={204}
-                height={184}
+                borderRadius={42}
+                width={202}
+                height={182}
                 justifyContent="center"
                 alignItems="center"
             >
-                <Avatar height={180} width={200} borderRadius={40} />
+                <Avatar height={176} width={196} borderRadius={40} />
+                {isUpdate && (
+                    <TemplateBox
+                        height={50}
+                        width={50}
+                        borderRadius={18}
+                        borderWidth={4}
+                        borderColor={WHITE}
+                        absolute
+                        mt={145}
+                        ml={145}
+                        backgroundColor={BRAND_BLUE}
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <TemplateIcon
+                            name="camera-outline"
+                            color={BLACK}
+                            size={30}
+                        />
+                    </TemplateBox>
+                )}
             </TemplateBox>
         </TemplateBox>
-        <TemplateBox selfCenter slideIn slideInDelay={100} slideInDirection="left">
-            <TemplateBox row mt={120} alignItems="center" mb={6}>
-                <TemplateText bold size={24} color={BLACK}>{userName}</TemplateText>
-                <TemplateIcon name="check-decagram" family="MaterialCommunity" color={GREEN} size={20} style={styles.icon} />
-            </TemplateBox>
-            <TemplateBox row alignItems="center">
-                <TemplateText size={12} bold color={BLACK_40}>{`@${userName}`}</TemplateText>
-                <TemplateBox width={10} />
+        { !isUpdate ? (
+            <TemplateBox selfCenter slideIn slideInDelay={100} slideInDirection="left">
+                <TemplateBox row mt={120} alignItems="center" mb={6}>
+                    <TemplateText bold size={24} color={BLACK}>{userName}</TemplateText>
+                    <TemplateIcon
+                        name="check-decagram"
+                        family="MaterialCommunity"
+                        color={GREEN}
+                        size={20}
+                        style={styles.icon}
+                    />
+                </TemplateBox>
                 <TemplateBox row alignItems="center">
-                    <TemplateIcon size={12} color={BLACK_40} name="location-outline" />
-                    <TemplateText size={12} bold color={BLACK_40}>{location}</TemplateText>
+                    <TemplateText size={12} bold color={BLACK_40}>{`@${userName}`}</TemplateText>
+                    <TemplateBox width={10} />
+                    <TemplateBox row alignItems="center">
+                        <TemplateIcon size={12} color={BLACK_40} name="location-outline" />
+                        <TemplateText size={12} bold color={BLACK_40}>{location}</TemplateText>
+                    </TemplateBox>
                 </TemplateBox>
             </TemplateBox>
-        </TemplateBox>
+        ) : (
+            <TemplateBox mt={135} alignItems="center" mb={6} selfCenter>
+                <TemplateText bold size={18} color={BLACK}>Update Your Portfolio</TemplateText>
+            </TemplateBox>
+        )}
     </TemplateBox>
 );
 
 PortfolioHeader.propTypes = {
-    userName: PropTypes.string.isRequired,
+    userName: PropTypes.string,
+    location: PropTypes.string,
+    isUpdate: PropTypes.bool,
+};
+
+PortfolioHeader.defaultProps = {
+    isUpdate: false,
+    userName: '',
+    location: '',
 };
 
 const styles = StyleSheet.create({
