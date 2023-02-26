@@ -11,6 +11,8 @@ import {
     RADIUS_MEDIUM, RADIUS_SMALL, RADIUS_XSMALL, SCREEN_WIDTH
 } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
+import AvatarOverlaps from '../../../../components/AvatarOverlaps';
+import { DEFAULT_AVATARS } from '../../../../consts/content/Home';
 
 interface Props {
     title?: string;
@@ -32,6 +34,7 @@ interface Props {
     width?: number;
 
     slideInDelay?: number;
+    isBrand?: boolean;
 
 }
 
@@ -48,7 +51,8 @@ const CurrentProjectCard: FC<Props> = ({
     cardColor,
     tagColor,
     width,
-    slideInDelay
+    slideInDelay,
+    isBrand = false,
 }) => {
     const color = status === 'High' ? PINK : BRAND_BLUE;
 
@@ -115,9 +119,13 @@ const CurrentProjectCard: FC<Props> = ({
             )}
 
             <TemplateBox row alignItems="center">
-                <TemplateText size={14} color={BLACK} bold>
-                    {brand}
-                </TemplateText>
+                {isBrand ? (
+                    <AvatarOverlaps imageUrls={DEFAULT_AVATARS} />
+                ) : (
+                    <TemplateText size={14} color={BLACK} bold>
+                        {brand}
+                    </TemplateText>
+                )}
                 <TemplateBox flex />
 
                 <TemplateBox row alignItems="center">

@@ -313,6 +313,46 @@ export const countryFilters: ProjectFilters[] = [
     {
         name: 'Ukraine',
         value: 'ukraine',
+    },
+    {
+        name: 'South Africa',
+        value: 'south-africa',
+    },
+    {
+        name: 'Nigeria',
+        value: 'nigeria',
+    },
+    {
+        name: 'Kenya',
+        value: 'kenya',
+    },
+    {
+        name: 'Ghana',
+        value: 'ghana',
+    },
+    {
+        name: 'Tanzania',
+        value: 'tanzania',
+    },
+    {
+        name: 'Egypt',
+        value: 'egypt',
+    },
+    {
+        name: 'Morocco',
+        value: 'morocco',
+    },
+    {
+        name: 'Algeria',
+        value: 'algeria',
+    },
+    {
+        name: 'Saudi Arabia',
+        value: 'saudi-arabia',
+    },
+    {
+        name: 'UAE',
+        value: 'uae',
     }
 ];
 

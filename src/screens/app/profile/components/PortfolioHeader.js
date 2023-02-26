@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 
+import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import {
@@ -12,7 +13,9 @@ import Blob from '../../../../../assets/svgs/Blob';
 import Avatar from '../../../../components/Avatar';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
-const PortfolioHeader = ({ userName, location, isUpdate }) => (
+const PortfolioHeader = ({
+    userName, location, isUpdate, image,
+}) => (
     <TemplateBox>
         <TemplateBox
             backgroundColor={BRAND_BLUE}
@@ -38,7 +41,12 @@ const PortfolioHeader = ({ userName, location, isUpdate }) => (
                 justifyContent="center"
                 alignItems="center"
             >
-                <Avatar height={176} width={196} borderRadius={40} />
+
+                {image ? (
+                    <FastImage source={{ uri: image }} style={styles.image} />
+                ) : (
+                    <Avatar height={176} width={196} borderRadius={40} />
+                )}
                 {isUpdate && (
                     <TemplateBox
                         height={50}
@@ -95,17 +103,24 @@ PortfolioHeader.propTypes = {
     userName: PropTypes.string,
     location: PropTypes.string,
     isUpdate: PropTypes.bool,
+    image: PropTypes.string,
 };
 
 PortfolioHeader.defaultProps = {
     isUpdate: false,
     userName: '',
     location: '',
+    image: '',
 };
 
 const styles = StyleSheet.create({
     icon: {
         marginTop: 5.5,
+    },
+    image: {
+        height: 176,
+        width: 196,
+        borderRadius: 40,
     },
 });
 export default PortfolioHeader;

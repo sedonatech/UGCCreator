@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Image, StyleSheet } from 'react-native';
 
@@ -7,11 +7,19 @@ import { BLACK, BRAND_BLUE, LIGHT_PURPLE } from '../theme/Colors';
 import TemplateBox from './TemplateBox';
 import TemplateIcon from './TemplateIcon';
 import useImageStorage from '../hooks/Portfolio/useImageStorage';
+import useProfile from '../hooks/user/useProfile';
+import useAuthContext from '../hooks/auth/useAuthContext';
 
 const Avatar = ({
     style, height, width, borderRadius,
 }) => {
     const { image: avatarData, onAddImage: onAddPhoto } = useImageStorage();
+
+    const { auth } = useAuthContext();
+    const { updateProfile } = useProfile();
+
+    const { profile: profileData, update } = auth;
+
     const imageStyle = {
         width,
         height,
@@ -24,6 +32,19 @@ const Avatar = ({
         }
         return null;
     }, [avatarData]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                if (avatar?.url) {
+                    update('image', avatar?.url);
+                    await updateProfile(profileData, profileData?.id);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }, [avatar]);
 
     return (
         <TemplateTouchable style={[styles.container, style]}>
