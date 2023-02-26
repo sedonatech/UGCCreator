@@ -9,7 +9,7 @@ import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import { BLACK_SECONDARY } from '../../../../theme/Colors';
 import Avatar from '../../../../components/Avatar';
 
-const Greeting = ({ userName, style }) => {
+const Greeting = ({ userName, style, showAvatar }) => {
     const hour = moment().hour();
 
     const today = useMemo(() => moment().startOf('day'), []);
@@ -28,7 +28,9 @@ const Greeting = ({ userName, style }) => {
 
     return (
         <View style={[styles.container, style]}>
-            <Avatar style={styles.avatar} />
+            {showAvatar && (
+                <Avatar style={styles.avatar} />
+            )}
             <View>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
                     {`${getTimeGreeting(hour)}`}
@@ -65,9 +67,11 @@ const styles = StyleSheet.create({
 Greeting.propTypes = {
     userName: PropTypes.string.isRequired,
     style: PropTypes.shape({}),
+    showAvatar: PropTypes.bool,
 };
 
 Greeting.defaultProps = {
     style: null,
+    showAvatar: true,
 };
 export default Greeting;

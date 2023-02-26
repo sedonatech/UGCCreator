@@ -1,28 +1,28 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useNavigation } from '@react-navigation/native';
-import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import { CURRENT_PROJECTS_CAROUSEL } from '../../../../consts/content/Home';
+import { OFFERS, OFFERS_STACK } from '../../../../navigation/ScreenNames';
 import { BLUE } from '../../../../theme/Colors';
-import CurrentProjectCard from './CurrentProjectCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
-import {
-    CURRENT_PROJECT_DETAILS,
-    OFFERS, OFFERS_STACK,
-} from '../../../../navigation/ScreenNames';
 
-const CurrentProjectsCarousel = ({ style, isBrand }) => {
+import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import CurrentCreatorsCard from './CurrentCreatorsCard';
+import useGetCreators from '../../../../hooks/brands/useGetCreators';
+
+const CurrentCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
+
+    const { filteredCreators } = useGetCreators();
 
     return (
         <View style={style}>
             <View style={styles.titleContainer}>
                 <TemplateText bold size={18}>
-                    Your Active Projects
+                    Your Active Creators
                     {' '}
                 </TemplateText>
                 <TemplateTouchable
@@ -37,34 +37,30 @@ const CurrentProjectsCarousel = ({ style, isBrand }) => {
             </View>
 
             <TemplateCarousel
-                data={CURRENT_PROJECTS_CAROUSEL}
+                data={filteredCreators}
                 renderItem={({ item }) => (
-                    <CurrentProjectCard
-                        title={item?.title}
-                        brand={item?.brand}
-                        price={item?.price}
-                        status={item?.status}
-                        notificationCount={item?.notifications}
-                        documentCount={item?.documents}
-                        daysLeft={item?.daysLeft}
-                        progress={item?.progress}
-                        onPress={() => navigation.navigate(OFFERS_STACK, {
-                            screen: CURRENT_PROJECT_DETAILS,
-                            params: {
-                                projectId: item?.id,
-                            },
-                        })}
+                    <CurrentCreatorsCard
+                        name={item?.userName}
+                        image={item?.image}
+                        shortDescription={item?.shortDescription}
                         style={styles.card}
-                        isBrand={isBrand}
                     />
                 )}
-                snapToInterval={SCREEN_WIDTH / 1.23}
+                snapToInterval={SCREEN_WIDTH / 1.3}
                 showPagination
-                paginationSize={CURRENT_PROJECTS_CAROUSEL?.length}
+                paginationSize={filteredCreators?.length}
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>
     );
+};
+
+CurrentCreatorsCarousel.propTypes = {
+    style: PropTypes.shape({}),
+};
+
+CurrentCreatorsCarousel.defaultProps = {
+    style: {},
 };
 
 const styles = StyleSheet.create({
@@ -83,14 +79,4 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
 });
-
-CurrentProjectsCarousel.propTypes = {
-    style: PropTypes.shape({}),
-    isBrand: PropTypes.bool,
-};
-
-CurrentProjectsCarousel.defaultProps = {
-    style: {},
-    isBrand: false,
-};
-export default CurrentProjectsCarousel;
+export default CurrentCreatorsCarousel;

@@ -12,7 +12,7 @@ import {
 import TemplateBox from '../../../components/TemplateBox';
 import Blob from '../../../../assets/svgs/Blob';
 import { FEED_CATEGORIES } from '../../../consts/content/Home';
-import useFeatureFlags from '../../../hooks/auth/featureFlags/useFeatureFlags';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import FeedCard from './components/FeedCard';
 import VideoOverlay from '../../../components/VideoOverlay';

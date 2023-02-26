@@ -18,6 +18,10 @@ import {
     projectFilters,
     projectTypeFilters,
 } from '../AppFilters/ProjectFilters';
+import {
+    BLACK_20,
+    BRAND_BLUE, DEEP_PURPLE, GREEN, GREY_SECONDARY,
+} from '../../theme/Colors';
 
 export const CATEGORIES = [
     {
@@ -644,3 +648,32 @@ export const FEED_CATEGORIES = [
     },
 
 ];
+
+export const DEFAULT_AVATARS = [
+    'https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
+    'https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
+    'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
+];
+
+export const chartData = {
+    labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June'],
+    datasets: [
+        {
+            data: [100, 120, 20, 40, 240, 349],
+            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+            strokeWidth: 2, // optional
+        },
+    ],
+
+};
+
+export const chartConfig = {
+    backgroundGradientFrom: `${BRAND_BLUE}30`,
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: `${BRAND_BLUE}30`,
+    backgroundGradientToOpacity: 0.2,
+    color: (opacity = 1) => BLACK_20,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+};

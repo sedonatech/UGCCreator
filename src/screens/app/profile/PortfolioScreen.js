@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import { ScrollView, StyleSheet, Linking } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 
 import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
@@ -9,7 +9,10 @@ import AboutSection from './components/AboutSection';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import {
     DEFAULT_CREATOR_CONTACT_INFO,
-    DEFAULT_CREATOR_DESCRIPTION, DEFAULT_CREATOR_PAYPAL_LINK, DEFAULT_CREATOR_RATES, DEFAULT_CREATOR_SHORT_DESCRIPTION,
+    DEFAULT_CREATOR_DESCRIPTION,
+    DEFAULT_CREATOR_PAYPAL_LINK,
+    DEFAULT_CREATOR_RATES,
+    DEFAULT_CREATOR_SHORT_DESCRIPTION,
     DEFAULT_CREATOR_SOCIAL,
 } from '../../../consts/content/Portfolio';
 import ContactSection from './components/ContactSection';
@@ -17,17 +20,37 @@ import SampleWorkSection from './components/SampleWorkSection';
 import RatesSection from './components/RatesSection';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import useShareScreenShot from '../../../Utils/useShareScreenShot';
+import useGetCreators from '../../../hooks/brands/useGetCreators';
+import TemplateBox from '../../../components/TemplateBox';
+import Button from '../../../components/Button';
 
-const PortfolioScreen = ({ navigation }) => {
+const PortfolioScreen = ({ navigation, route }) => {
+    const creatorId = route?.params?.creatorId;
+
+    const { creators } = useGetCreators();
+
+    const selectedCreator = useMemo(() => {
+        if (!creators || !creatorId) return null;
+
+        return creators?.find(({ id }) => id === creatorId);
+    }, [
+        creators,
+        creatorId,
+    ]);
+
     const { auth } = useAuthContext();
 
-    const userName = auth?.profile?.userName;
-    const about = auth?.profile?.about || DEFAULT_CREATOR_DESCRIPTION;
-    const shortDescription = auth?.profile?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION;
-    const contact = DEFAULT_CREATOR_CONTACT_INFO;
-    const socials = auth?.profile?.socials || DEFAULT_CREATOR_SOCIAL;
-    const paypalLink = auth?.profile?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
-    const location = auth?.profile?.location?.country || 'London';
+    const creator = selectedCreator || auth?.profile;
+
+    const userName = creator?.userName;
+    const image = creator?.image;
+    const about = creator?.about || DEFAULT_CREATOR_DESCRIPTION;
+    const shortDescription = creator?.shortDescription
+      || DEFAULT_CREATOR_SHORT_DESCRIPTION;
+    const contact = creator?.contact || DEFAULT_CREATOR_CONTACT_INFO;
+    const socials = creator?.socials || DEFAULT_CREATOR_SOCIAL;
+    const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
+    const location = creator?.location?.country || 'London';
     const rates = DEFAULT_CREATOR_RATES;
 
     const screenshot = useRef(null);
@@ -39,17 +62,19 @@ const PortfolioScreen = ({ navigation }) => {
     };
 
     useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <HeaderIconButton
-                    name="share-outline"
-                    onPress={handleShare}
-                    backDropColor={BLACK_10}
-                    ml={WRAPPER_MARGIN}
-                />
-            ),
-        });
-    }, [navigation]);
+        if (!creatorId) {
+            navigation.setOptions({
+                headerLeft: () => (
+                    <HeaderIconButton
+                        name="share-outline"
+                        onPress={handleShare}
+                        backDropColor={BLACK_10}
+                        ml={WRAPPER_MARGIN}
+                    />
+                ),
+            });
+        }
+    }, [navigation, creatorId]);
 
     return (
         <ViewShot style={styles.viewShot} ref={screenshot}>
@@ -57,10 +82,14 @@ const PortfolioScreen = ({ navigation }) => {
                 style={styles.container}
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
-                bounces={false}
             >
 
-                <PortfolioHeader userName={userName} location={location} />
+                <PortfolioHeader
+                    userName={userName}
+                    location={location}
+                    creatorId={creatorId}
+                    image={image}
+                />
                 <AboutSection
                     about={about}
                     shortDescription={shortDescription}
@@ -72,6 +101,24 @@ const PortfolioScreen = ({ navigation }) => {
                     socials={socials}
                     paypalLink={paypalLink}
                 />
+                {
+                    creatorId
+                  && creator?.email
+                  && (
+                      <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
+                          <Button
+                              title="Contact Creator"
+                              onPress={async () => {
+                                  try {
+                                      await Linking.openURL(`mailto:${creator?.email}`);
+                                  } catch (e) {
+                                      console.log('-> e', e);
+                                  }
+                              }}
+                          />
+                      </TemplateBox>
+                  )
+                }
             </ScrollView>
         </ViewShot>
     );

@@ -1,71 +1,249 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import Fuse from 'fuse.js';
 import TemplateText from '../../../components/TemplateText';
 
 import { hp } from '../../../Utils/getResponsiveSize';
-import { SPACE_LARGE } from '../../../theme/Layout';
-import { BLACK_SECONDARY, LAVENDER, WHITE } from '../../../theme/Colors';
+import {
+    HEADER_MARGIN,
+    IS_ANDROID,
+    SCREEN_HEIGHT,
+    SPACE_LARGE,
+    SPACE_XSMALL,
+    WRAPPER_MARGIN,
+} from '../../../theme/Layout';
+import {
+    BLACK, BRAND_BLUE, WHITE, WHITE_96,
+} from '../../../theme/Colors';
 import Blob from '../../../../assets/svgs/Blob';
 import useGetCreators from '../../../hooks/brands/useGetCreators';
-import ContentSection from '../admin/components/ContentSection';
+
+import TemplateBox from '../../../components/TemplateBox';
+import TemplateTextInput from '../../../components/TemplateTextInput';
+import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import { ADD_PROJECT } from '../../../navigation/ScreenNames';
-import TemplateIcon from '../../../components/TemplateIcon';
+import Filter from '../../../../assets/svgs/Filter';
+import FilterCategory from '../../app/explore/components/FilterCategory';
+import {
+    ageFilters,
+    countryFilters, deliveryFormatFilters,
+    genderFilters,
+    languageFilters, projectDurationFilters,
+    projectFilters, projectTypeFilters,
+} from '../../../consts/AppFilters/ProjectFilters';
+
+import CreatorCard from './CreatorCard';
+import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../consts/content/Portfolio';
+import { PROFILE } from '../../../navigation/ScreenNames';
 
 const CreatorProfilesScreen = ({ navigation }) => {
     const { creators } = useGetCreators();
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TemplateTouchable style={styles.addButton} onPress={() => {}}>
-                    <TemplateIcon
-                        color={WHITE}
-                        name="filter"
-                        size={14}
-                        family="Ionicons"
-                    />
-                    <TemplateText
-                        bold
-                        caps
-                        size={10}
-                        color={WHITE}
-                        style={styles.addButtonText}
-                    >
-                        filters
-                    </TemplateText>
-                </TemplateTouchable>
-            ),
-        });
-    }, [navigation]);
+    const refRBSheet = useRef();
+
+    const [search, setSearch] = useState(null);
+
+    const [selectedFilters, setSelectedFilters] = useState([]);
+
+    const [searchResults, setSearchResults] = useState([]);
+
+    const onProjectFilterPress = (value) => {
+        if (selectedFilters.includes(value)) {
+            setSelectedFilters(selectedFilters.filter((filter) => filter !== value));
+        } else {
+            setSelectedFilters([...selectedFilters, value]);
+        }
+    };
+
+    const options = {
+        shouldSort: true,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+            'userName',
+            'title',
+            'shortDescription',
+        ],
+    };
+
+    useEffect(() => {
+        if (!!search && creators?.length) {
+            const fuse = new Fuse(creators, options);
+            const results = fuse.search(search).map(({ item }) => item);
+            setSearchResults(results);
+        }
+    }, [search]);
+
+    const filteredCreators = search?.length ? searchResults : creators;
     return (
         <ScrollView
             style={styles.scroll}
             contentContainerStyle={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
         >
-            <Blob color={LAVENDER} top />
+            <Blob top />
             <Blob right />
-            <Blob color={LAVENDER} bottom />
+            <Blob bottom />
             <Blob center />
-            <TemplateText
-                size={20}
-                bold
-                caps
-                color={BLACK_SECONDARY}
-                style={styles.title}
+            <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
+                <TemplateText
+                    size={18}
+                    bold
+                    startCase
+                >
+                    Find the perfect creator
+                </TemplateText>
+            </TemplateBox>
+            <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
+                <TemplateTextInput
+                    placeholder="Search"
+                    style={[styles.input, SHADOW('default', WHITE)]}
+                    value={search}
+                    onChangeText={(text) => setSearch(text)}
+                    autoCapitalize="none"
+                />
+                <TemplateTouchable
+                    onPress={() => refRBSheet.current.open()}
+                    style={styles.filterButton}
+                >
+                    <Filter />
+                </TemplateTouchable>
+            </TemplateBox>
+
+            {
+                filteredCreators?.length > 0 && filteredCreators?.map((creator) => (
+                    <CreatorCard
+                        key={creator?.id}
+                        name={creator?.userName}
+                        imageUrl={creator?.image}
+                        shortDescription={creator?.shortDescription
+                          || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                        location={creator?.location?.country}
+                        email={creator?.email}
+                        onPress={() => navigation.navigate(PROFILE, { creatorId: creator?.id })}
+                    />
+                ))
+            }
+
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown
+                closeOnPressMask
+                customStyles={{
+                    wrapper: {
+
+                        blurType: 'dark',
+                        blurAmount: 10,
+                    },
+                    container: {
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                        backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
+                        paddingTop: 10,
+                        paddingBottom: 40,
+                        height: SCREEN_HEIGHT * 0.7,
+                    },
+                    draggableIcon: {
+                        backgroundColor: BLACK,
+                    },
+                }}
             >
-                Creator Profiles
-            </TemplateText>
-            {!!creators?.length
-        && creators?.map((creator, index) => (
-            <ContentSection
-                key={creator?.id}
-                creator={creator}
-                isLast={creator === creators[creators?.length - 1]}
-                slideInTime={(index + 1) * 100}
-            />
-        ))}
+
+                <ScrollView>
+                    <TemplateBox
+                        mb={WRAPPER_MARGIN}
+                        mt={SPACE_XSMALL}
+                        alignItems="center"
+                        justifyContent="center"
+                        row
+                    >
+                        <TemplateText size={18} bold>Select Filters</TemplateText>
+
+                        {selectedFilters.length > 0 && (
+                            <TemplateText
+                                size={14}
+                                color={BRAND_BLUE}
+                                style={styles.applyText}
+                                onPress={() => {
+                                    refRBSheet.current.close();
+                                }}
+                            >
+                                Apply Filters
+                            </TemplateText>
+                        )}
+
+                        {selectedFilters.length > 0 && (
+                            <TemplateText
+                                size={14}
+                                color={BRAND_BLUE}
+                                style={styles.applyText}
+                                onPress={() => {
+                                    setSelectedFilters([]);
+                                    refRBSheet.current.close();
+                                }}
+                            >
+                                Clear Filters
+                            </TemplateText>
+                        )}
+                    </TemplateBox>
+
+                    <FilterCategory
+                        title="Project Category"
+                        filters={projectFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+
+                    />
+                    <FilterCategory
+                        title="Country"
+                        filters={countryFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Language"
+                        filters={languageFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Gender"
+                        filters={genderFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Age Group"
+                        filters={ageFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Project Type"
+                        filters={projectTypeFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Delivery Format"
+                        filters={deliveryFormatFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+                    <FilterCategory
+                        title="Project Duration"
+                        filters={projectDurationFilters}
+                        onFilterPress={onProjectFilterPress}
+                        selectedFilters={selectedFilters}
+                    />
+
+                </ScrollView>
+
+            </RBSheet>
         </ScrollView>
     );
 };
@@ -81,23 +259,23 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         backgroundColor: WHITE,
     },
-    addButton: {
-        marginRight: 20,
-        height: 30,
+    input: {
+        width: '100%',
+        height: 50,
         borderRadius: 10,
-        backgroundColor: BLACK_SECONDARY,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 8,
-        flexDirection: 'row',
+        paddingRight: 30,
+        paddingLeft: 10,
+        fontSize: 16,
+        color: BLACK,
     },
-    addButtonText: {
-        marginLeft: 5,
+    filterButton: {
+        position: 'absolute',
+        right: 10,
+        bottom: 13,
+        zIndex: 1,
     },
-    title: {
-        marginLeft: 20,
-        marginBottom: 20,
-        marginTop: 80,
+    applyText: {
+        marginLeft: WRAPPER_MARGIN,
     },
 });
 export default CreatorProfilesScreen;

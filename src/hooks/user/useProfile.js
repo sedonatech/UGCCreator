@@ -1,3 +1,5 @@
+// eslint-disable-file consistent-return
+
 import firestore from '@react-native-firebase/firestore';
 import { useState } from 'react';
 import { DEFAULT_CREATOR_DESCRIPTION, DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../consts/content/Portfolio';
