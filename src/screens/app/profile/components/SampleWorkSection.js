@@ -6,7 +6,7 @@ import { BRANDS } from '../../../../consts/content/Home';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import SampleWorkCard from './SampleWorkCard';
-import useFeatureFlags from '../../../../hooks/auth/featureFlags/useFeatureFlags';
+import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import TemplateText from '../../../../components/TemplateText';
 import { BLACK } from '../../../../theme/Colors';
 

@@ -10,8 +10,10 @@ import MainNavigator from './src/navigation/MainNavigator';
 import { AuthProvider } from './src/context/AuthProvider';
 import { FeatureFlagProvider } from './src/context/FeatureFlagsContext';
 import defaultFeatures from './config/defaultFeatures';
-import { BRAND_BLUE, TRANSPARENT, WHITE } from './src/theme/Colors';
+import { BRAND_BLUE, TRANSPARENT } from './src/theme/Colors';
 import { IS_ANDROID } from './src/theme/Layout';
+import { ProjectsProvider } from './src/context/ProjectsProvider';
+import { ProjectApplicationProvider } from './src/context/ProjectApplicationProvider';
 
 const NAVIGATION_THEME = {
     ...DefaultTheme,
@@ -27,14 +29,18 @@ const App = () => {
         <View style={styles.container}>
             <FeatureFlagProvider defaultFeatures={defaultFeatures}>
                 <AuthProvider>
-                    <ActionSheetProvider>
-                        <NavigationContainer
-                            theme={NAVIGATION_THEME}
-                        >
-                            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-                            <MainNavigator />
-                        </NavigationContainer>
-                    </ActionSheetProvider>
+                    <ProjectsProvider>
+                        <ProjectApplicationProvider>
+                            <ActionSheetProvider>
+                                <NavigationContainer
+                                    theme={NAVIGATION_THEME}
+                                >
+                                    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                    <MainNavigator />
+                                </NavigationContainer>
+                            </ActionSheetProvider>
+                        </ProjectApplicationProvider>
+                    </ProjectsProvider>
                 </AuthProvider>
             </FeatureFlagProvider>
         </View>

@@ -4,7 +4,7 @@ export const DEFAULT_CREATOR_DESCRIPTION = ''
   + '\n'
 + 'I believe in 2022 consumers are looking for authenticity, transparency and credibility from the brands they buy from. I would love to help you humanize your brand!';
 
-export const DEFAULT_CREATOR_SHORT_DESCRIPTION = 'I am a UGC content creator 🌴🌵🏜';
+export const DEFAULT_CREATOR_SHORT_DESCRIPTION = 'I am a UGC content creator. I produce primarily video, photography, and lifestyle content for brands like you!🌴🌵🏜.';
 
 export const DEFAULT_CREATOR_SOCIAL = {
     facebook: 'www.facebook.com/yourfacebookpage',
