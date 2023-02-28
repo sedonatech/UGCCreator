@@ -83,6 +83,7 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={(text) => setEmail(text)}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                returnKeyType="next"
             />
             <TemplateTextInput
                 placeholder="Password"
@@ -91,6 +92,7 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={(text) => setPassword(text)}
                 secureTextEntry
                 autoCapitalize="none"
+                returnKeyType="next"
             />
             <Error show={!!error} style={styles.generalError}>
                 {error}

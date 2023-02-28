@@ -1,228 +1,345 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+import { isEmpty, reverse } from 'lodash';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import Blob from '../../../../assets/svgs/Blob';
 import {
-    BLACK, DEEP_LAVENDER, LAVENDER, WHITE,
+    BLACK, BLACK_40, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
 import {
-    SCREEN_HEIGHT,
-    SCREEN_WIDTH,
+    IS_ANDROID,
+    SCREEN_WIDTH, SPACE_XXLARGE,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import TemplateTextInput from '../../../components/TemplateTextInput';
-import TemplateTouchable from '../../../components/TemplateTouchable';
-import TemplateIcon from '../../../components/TemplateIcon';
 import Button from '../../../components/Button';
+import TemplateBox from '../../../components/TemplateBox';
+import useProjects from '../../../hooks/brands/useProjects';
+import Wrapper from '../../../components/Wrapper';
+import CurrencyPicker from '../../../components/CurrencyPicker';
+import {
+    ageFilters,
+    countryFilters,
+    deliveryFormatFilters, genderFilters,
+    languageFilters, projectDurationFilters, projectFilters,
+    projectTypeFilters,
+} from '../../../consts/AppFilters/ProjectFilters';
+import FilterCategory from '../../app/explore/components/FilterCategory';
+import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
+import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
 
-const AddProjectScreen = () => (
-    <ScrollView style={styles.container}>
-        <View>
-            <Blob top />
-            <Blob right color={LAVENDER} />
-            <Blob color={LAVENDER} bottom />
-            <Blob center />
-        </View>
-        <TemplateText
-            bold
-            color={BLACK}
-            size={18}
-            startCase
-            style={styles.title}
-            center
+const AddProjectScreen = () => {
+    const { update, project, createProject } = useProjects();
+
+    const { onAddImage: onAddPhoto, images } = useImageStorage();
+
+    useEffect(() => {
+        if (images?.length > 0) {
+            update('image', reverse(images)[0]?.url);
+        }
+    }, [images]);
+
+    const handleCreateProject = () => {
+        if (isEmpty(project)) {
+            Alert.alert('Please fill all the fields');
+        }
+        createProject(project);
+    };
+    return (
+        <Wrapper
+            contentContainerStyle={styles.contentContainer}
+            style={styles.container}
+            keyboard
+            safe={false}
         >
-            Add a new project
-        </TemplateText>
+            <View>
+                <Blob top />
+                <Blob right color={LAVENDER} />
+                <Blob color={LAVENDER} bottom />
+                <Blob center />
+            </View>
+            <TemplateBox height={100} />
+            <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
+                <TemplateText
+                    bold
+                    color={BLACK}
+                    size={18}
+                    startCase
+                    center
+                >
+                    Add a new project
+                </TemplateText>
+            </TemplateBox>
 
-        <TemplateTextInput
-            placeholder="Project title"
-            style={styles.input}
-            autoCapitalize="none"
-        />
-        <TemplateTextInput
-            placeholder="Short description"
-            style={styles.input}
-            autoCapitalize="none"
-            maxLength={20}
-        />
-        <TemplateTextInput
-            placeholder="Description"
-            style={[styles.input, styles.multiline]}
-            autoCapitalize="none"
-            multiline
-            numberOfLines={20}
-        />
-        <TemplateTouchable style={styles.inputButton}>
-            <TemplateIcon
-                name="camera-outline"
-                family="Ionicons"
-                color={DEEP_LAVENDER}
-                size={20}
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Project Title</TemplateText>
+                <TemplateTextInput
+                    placeholder="Project Title"
+                    placeholderTextColor={BLACK_40}
+                    style={styles.input}
+                    value={project?.title}
+                    onChangeText={(text) => update('title', text)}
+                    autoCapitalize="none"
+                />
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Short Description</TemplateText>
+                <TemplateTextInput
+                    placeholder="Short description"
+                    placeholderTextColor={BLACK_40}
+                    style={styles.input}
+                    value={project?.shortDescription}
+                    onChangeText={(text) => update('shortDescription', text)}
+                    autoCapitalize="none"
+                    multiline
+                    numberOfLines={6}
+                    maxLength={80}
+                />
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Description</TemplateText>
+                <TemplateTextInput
+                    placeholder="Description"
+                    placeholderTextColor={BLACK_40}
+                    style={styles.input}
+                    value={project?.description}
+                    onChangeText={(text) => update('description', text)}
+                    autoCapitalize="none"
+                    multiline
+                    numberOfLines={6}
+                    maxLength={500}
+                />
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Start Date</TemplateText>
+                <TemplateBox width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}>
+                    <DateTimePicker
+                        value={project?.startDate || new Date()}
+                        mode="date"
+                        display="inline"
+                        onChange={(event, selectedDate) => {
+                            const currentDate = selectedDate || project?.startDate;
+                            update('startDate', currentDate);
+                        }}
+                        textColor={BLACK_40}
+                    />
+                </TemplateBox>
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>End Date</TemplateText>
+                <TemplateBox width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}>
+                    <DateTimePicker
+                        value={project?.endDate || new Date()}
+                        mode="date"
+                        display="inline"
+                        onChange={(event, selectedDate) => {
+                            const currentDate = selectedDate || project?.endDate;
+                            update('endDate', currentDate);
+                        }}
+                        textColor={BLACK_40}
+                    />
+                </TemplateBox>
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Image</TemplateText>
+                <TemplateBox height={10} />
+                <TemplateBox onPress={() => onAddPhoto()}>
+                    <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} />
+                </TemplateBox>
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Maximum Budget</TemplateText>
+                <TemplateTextInput
+                    placeholder="Maximum Budget limit"
+                    placeholderTextColor={BLACK_40}
+                    style={styles.input}
+                    value={project?.priceRange?.max}
+                    onChangeText={(text) => update('priceRange', {
+                        min: project?.priceRange?.min,
+                        max: text,
+                    })}
+                    keyboardType="numeric"
+                />
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Minimum Budget</TemplateText>
+                <TemplateTextInput
+                    placeholder="Minimum Budget limit"
+                    placeholderTextColor={BLACK_40}
+                    style={styles.input}
+                    value={project?.priceRange?.min}
+                    onChangeText={(text) => update('priceRange', {
+                        min: text,
+                        max: project?.priceRange?.max,
+                    })}
+                    keyboardType="numeric"
+                />
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>Currency</TemplateText>
+                <TemplateBox height={10} />
+                <CurrencyPicker
+                    value={project?.currency?.code}
+                    onSelectCurrency={(value) => update('currency', {
+                        code: value.code,
+                        symbol: value.symbol,
+                    })}
+                />
+            </TemplateBox>
+
+            <FilterCategory
+                title="Delivery Format"
+                filters={deliveryFormatFilters}
+                onFilterPress={(value) => {
+                    if (project?.deliveryFormat.includes(value)) {
+                        const newDeliveryFormat = project
+                            ?.deliveryFormat.filter((item) => item !== value);
+                        return update('deliveryFormat', newDeliveryFormat);
+                    }
+                    update('deliveryFormat',
+                        [...project?.deliveryFormat, value]);
+                }}
+                selectedFilters={project?.deliveryFormat}
+
             />
-        </TemplateTouchable>
+            <FilterCategory
+                title="Project Type"
+                filters={projectTypeFilters}
+                onFilterPress={(value) => {
+                    if (project?.projectType.includes(value)) {
+                        const newProjectType = project
+                            ?.projectType.filter((item) => item !== value);
+                        return update('projectType', newProjectType);
+                    }
+                    update('projectType',
+                        [...project?.projectType, value]);
+                }}
+                selectedFilters={project?.projectType}
+            />
+            <FilterCategory
+                title="Project Categories"
+                filters={projectFilters}
+                onFilterPress={(value) => {
+                    if (project?.categories.includes(value)) {
+                        const newProjectCategories = project
+                            ?.categories.filter((item) => item !== value);
+                        return update('categories', newProjectCategories);
+                    }
+                    update('categories',
+                        [...project?.categories, value]);
+                }}
+                selectedFilters={project?.categories}
+            />
+            <FilterCategory
+                title="Country"
+                filters={countryFilters}
+                onFilterPress={(value) => {
+                    if (project?.countries.includes(value)) {
+                        const newCountries = project
+                            ?.countries.filter((item) => item !== value);
+                        return update('countries', newCountries);
+                    }
+                    update('countries',
+                        [...project?.countries, value]);
+                }}
+                selectedFilters={project?.countries}
+            />
+            <FilterCategory
+                title="Language"
+                filters={languageFilters}
+                onFilterPress={(value) => {
+                    if (project?.languages.includes(value)) {
+                        const newLanguages = project
+                            ?.languages.filter((item) => item !== value);
+                        return update('languages', newLanguages);
+                    }
+                    update('languages',
+                        [...project?.languages, value]);
+                }}
+                selectedFilters={project?.languages}
+            />
+            <FilterCategory
+                title="Gender"
+                filters={genderFilters}
+                onFilterPress={(value) => {
+                    if (project?.gender.includes(value)) {
+                        const newGenders = project
+                            ?.languages.filter((item) => item !== value);
+                        return update('gender', newGenders);
+                    }
+                    update('gender',
+                        [...project?.gender, value]);
+                }}
+                selectedFilters={project?.gender}
+            />
+            <FilterCategory
+                title="Age Group"
+                filters={ageFilters}
+                onFilterPress={(value) => {
+                    if (project?.ageRange.includes(value)) {
+                        const newAgeRange = project
+                            ?.ageRange.filter((item) => item !== value);
+                        return update('ageRange', newAgeRange);
+                    }
+                    update('ageRange',
+                        [...project?.ageRange, value]);
+                }}
+                selectedFilters={project?.ageRange}
+            />
 
-        <View style={styles.multiInputWrapper}>
-            <TemplateTouchable style={[styles.inputButton, styles.smallInput]}>
-                <TemplateIcon
-                    name="calendar-outline"
-                    family="Ionicons"
-                    color={DEEP_LAVENDER}
-                    size={20}
-                />
-                <TemplateText
-                    size={12}
-                    color={DEEP_LAVENDER}
-                    startCase
-                    style={styles.smallInputTitle}
-                >
-                    Start date
-                </TemplateText>
-            </TemplateTouchable>
-
-            <TemplateTouchable style={[styles.inputButton, styles.smallInput]}>
-                <TemplateIcon
-                    name="calendar-outline"
-                    family="Ionicons"
-                    color={DEEP_LAVENDER}
-                    size={20}
-                />
-                <TemplateText
-                    size={12}
-                    color={DEEP_LAVENDER}
-                    startCase
-                    style={styles.smallInputTitle}
-                >
-                    end date
-                </TemplateText>
-            </TemplateTouchable>
-
-            <TemplateTouchable style={[styles.inputButton, styles.smallInput]}>
-                <TemplateIcon
-                    name="cash-outline"
-                    family="Ionicons"
-                    color={DEEP_LAVENDER}
-                    size={20}
-                />
-                <TemplateText
-                    size={12}
-                    color={DEEP_LAVENDER}
-                    startCase
-                    style={styles.smallInputTitle}
-                >
-                    Min budget
-                </TemplateText>
-            </TemplateTouchable>
-
-            <TemplateTouchable style={[styles.inputButton, styles.smallInput]}>
-                <TemplateIcon
-                    name="cash-outline"
-                    family="Ionicons"
-                    color={DEEP_LAVENDER}
-                    size={20}
-                />
-                <TemplateText
-                    size={12}
-                    color={DEEP_LAVENDER}
-                    startCase
-                    style={styles.smallInputTitle}
-                >
-                    Max budget
-                </TemplateText>
-            </TemplateTouchable>
-            <TemplateTouchable style={[styles.inputButton, styles.smallInput]}>
-                <TemplateIcon
-                    name="videocam-outline"
-                    family="Ionicons"
-                    color={DEEP_LAVENDER}
-                    size={20}
-                />
-                <TemplateText
-                    size={12}
-                    color={DEEP_LAVENDER}
-                    startCase
-                    style={styles.smallInputTitle}
-                >
-                    Video required
-                </TemplateText>
-            </TemplateTouchable>
-
-            <TemplateTouchable style={[styles.inputButton, styles.smallInput]}>
-                <TemplateIcon
-                    name="images-outline"
-                    family="Ionicons"
-                    color={DEEP_LAVENDER}
-                    size={20}
-                />
-                <TemplateText
-                    size={12}
-                    color={DEEP_LAVENDER}
-                    startCase
-                    style={styles.smallInputTitle}
-                >
-                    Images required
-                </TemplateText>
-            </TemplateTouchable>
-        </View>
-
-        <Button
-            title="Create Project"
-            onPress={() => {}}
-            style={styles.button}
-            loading={false}
-            disabled={false}
-        />
-    </ScrollView>
-);
+            <FilterCategory
+                title="Project Duration"
+                filters={projectDurationFilters}
+                onFilterPress={(value) => {
+                    if (project?.duration.includes(value)) {
+                        const newDuration = project
+                            ?.duration.filter((item) => item !== value);
+                        return update('duration', newDuration);
+                    }
+                    update('duration',
+                        [...project?.duration, value]);
+                }}
+                selectedFilters={project?.duration}
+            />
+            <Button
+                title="Create Project"
+                onPress={handleCreateProject}
+                style={styles.button}
+                loading={false}
+                disabled={false}
+            />
+        </Wrapper>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: WHITE,
+        alignItems: 'center',
+        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
+        paddingBottom: SPACE_XXLARGE,
     },
-    title: {
-        marginTop: SCREEN_HEIGHT * 0.14,
-        marginBottom: 20,
-        marginHorizontal: 20,
+    contentContainer: {
+        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     input: {
         height: 60,
-        width: SCREEN_WIDTH - 32,
-        borderWidth: 0.4,
-        borderRadius: 8,
+        borderWidth: 1,
+        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
+        borderColor: GREY_SECONDARY,
+        borderRadius: 10,
         paddingLeft: 16,
-        marginTop: WRAPPER_MARGIN * 2,
-        borderColor: DEEP_LAVENDER,
-        alignSelf: 'center',
-    },
-    multiline: {
-        height: 130,
-    },
-    inputButton: {
-        height: 60,
-        width: SCREEN_WIDTH - 32,
-        borderWidth: 0.4,
-        borderRadius: 8,
-        marginTop: WRAPPER_MARGIN * 2,
-        borderColor: DEEP_LAVENDER,
-        borderStyle: 'dashed',
-        alignSelf: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    multiInputWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        paddingHorizontal: 20,
-        marginTop: WRAPPER_MARGIN * 2,
-    },
-    smallInput: {
-        width: (SCREEN_WIDTH - 52) / 2,
-    },
-    smallInputTitle: {
-        marginLeft: 10,
+        marginTop: 10,
+        color: BLACK_40,
     },
     button: {
         marginTop: 20,

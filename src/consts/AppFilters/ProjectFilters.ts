@@ -486,7 +486,10 @@ export const deliveryFormatFilters: ProjectFilters[] = [
         name: 'Raw Footage',
         value: 'rawFootage',
     },
-
+    {
+        name: ' Social Media Post',
+        value: 'post',
+    }
 ];
 
 export const projectDurationFilters: ProjectFilters[] = [

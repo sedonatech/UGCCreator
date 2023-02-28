@@ -4,10 +4,46 @@ import { useState } from 'react';
 
 const PROJECTS_COLLECTION = 'projects';
 
+const initialProjectState = {
+    brandId: '',
+    image: '',
+    title: '',
+    deliveryFormat: [],
+    socials: [],
+    startDate: '',
+    endDate: '',
+    priceRange: {
+        min: 0,
+        max: 0,
+    },
+    currency: {
+        code: '',
+        symbol: '',
+    },
+    categories: [],
+    countries: [],
+    gender: [],
+    languages: [],
+    ageRange: [],
+    projectType: [],
+    deliverFormat: [],
+    duration: [],
+    description: '',
+    shortDescription: '',
+};
+
 const useProjects = () => {
     const [projects, setProjects] = useState([]);
-    const [project, setProject] = useState({});
+    const [project, setProject] = useState(initialProjectState);
     const [loading, setLoading] = useState(false);
+
+    const update = (key, data) => {
+        console.log('[Projects] Use projects: ', key, data);
+        setProject((prevState) => ({
+            ...prevState,
+            [key]: data,
+        }));
+    };
     const createProject = async (projectData) => {
         try {
             setLoading(true);
@@ -91,6 +127,7 @@ const useProjects = () => {
         projects,
         project,
         loading,
+        update,
     };
 };
 
