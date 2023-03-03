@@ -271,7 +271,6 @@ const styles = StyleSheet.create({
         paddingBottom: SPACE_XXLARGE,
     },
     contentContainer: {
-
         backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     input: {
