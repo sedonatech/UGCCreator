@@ -4,13 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import {
-    FORGOT_PASSWORD, PROFILE, SETTINGS, UPDATE_PORTFOLIO,
+    FORGOT_PASSWORD, PROFILE, SETTINGS, SUBSCRIPTION, UPDATE_PORTFOLIO,
 } from '../ScreenNames';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import SettingsScreen from '../../screens/app/profile/SettingsScreen';
 import { WRAPPER_MARGIN } from '../../theme/Layout';
 import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScreen';
 import ResetPasswordScreen from '../../screens/auth/ResetPasswordScreen';
+import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -44,6 +45,11 @@ const ProfileStack = () => (
         <Screen
             name={FORGOT_PASSWORD}
             component={ResetPasswordScreen}
+            options={TRANSPARENT_HEADER_NO_LOGO}
+        />
+        <Screen
+            name={SUBSCRIPTION}
+            component={SubscriptionScreen}
             options={TRANSPARENT_HEADER_NO_LOGO}
         />
     </Navigator>

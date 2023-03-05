@@ -1,23 +1,20 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-
-import {
-  SWITCH,
-  TRANSPARENT_NO_LOGO_HEADER,
-} from '../../components/header/screenOptions';
-import SubscriptionScreen from '../../screens/subscription/SubscriptionScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SWITCH, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
+import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
+import { SUBSCRIPTION } from '../ScreenNames';
 
 const Stack = createStackNavigator();
-const {Navigator, Screen} = Stack;
+const { Navigator, Screen } = Stack;
 
 const SubscriptionStack = () => (
-  <Navigator initialRouteName="Subscription" screenOptions={SWITCH}>
-    <Screen
-      name="Subscription"
-      options={TRANSPARENT_NO_LOGO_HEADER}
-      component={SubscriptionScreen}
-    />
-  </Navigator>
+    <Navigator initialRouteName={SUBSCRIPTION} screenOptions={SWITCH}>
+        <Screen
+            name={SUBSCRIPTION}
+            options={TRANSPARENT_HEADER_NO_LOGO}
+            component={SubscriptionScreen}
+        />
+    </Navigator>
 );
 
 export default SubscriptionStack;

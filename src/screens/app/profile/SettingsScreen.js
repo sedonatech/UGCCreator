@@ -15,7 +15,7 @@ import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
-import { FORGOT_PASSWORD, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
+import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout } = useLogout();
@@ -60,6 +60,12 @@ const SettingsScreen = ({ navigation }) => {
             description: 'Learn more about us',
             onPress: () => '',
             icon: 'information-circle-outline',
+        },
+        {
+            title: 'Subscription',
+            description: 'Manage Subscription settings',
+            onPress: () => navigation.navigate(SUBSCRIPTION),
+            icon: 'card-outline',
         },
         {
             title: 'Logout',

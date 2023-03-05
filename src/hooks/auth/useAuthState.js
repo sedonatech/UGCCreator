@@ -17,7 +17,11 @@ const useAuthState = () => {
         return subscribe;
     }, []);
 
-    return { user, initializing };
+    return {
+        user,
+        initializing,
+        isLoggedIn: !!user,
+    };
 };
 
 export default useAuthState;
