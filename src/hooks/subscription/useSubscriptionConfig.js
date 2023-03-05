@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { isArray, keys } from 'lodash';
 import { Platform } from 'react-native';
 import useFeatureFlags from '../featureFlags/useFeatureFlags';
+import useAuthContext from '../auth/useAuthContext';
 
 const buildPurchaseConfig = (subKeys, purchase) => {
     if (!subKeys || !subKeys?.main) {
@@ -36,9 +37,19 @@ const buildPurchaseConfig = (subKeys, purchase) => {
 
     return newPurchase;
 };
+const useSubscriptionConfig = (debug = false) => {
+    const { auth } = useAuthContext();
 
-export default (debug = false) => {
-    const { subscription } = useFeatureFlags();
+    const profile = auth?.profile;
+
+    const { subscription: creatorSubscription, brandSubscription } = useFeatureFlags();
+
+    const subscription = useMemo(() => {
+        if (profile?.type === 'brand') {
+            return brandSubscription;
+        }
+        return creatorSubscription;
+    }, [brandSubscription, creatorSubscription, profile]);
 
     const [config, setConfig] = useState({});
 
@@ -52,3 +63,5 @@ export default (debug = false) => {
 
     return config;
 };
+
+export default useSubscriptionConfig;
