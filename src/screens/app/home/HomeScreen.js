@@ -43,7 +43,7 @@ const HomeScreen = () => {
                 <Blob center />
             </TemplateBox>
 
-            {profile?.userName && (
+            {!!profile?.userName && (
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
 
