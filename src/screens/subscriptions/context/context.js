@@ -14,10 +14,7 @@ const SubscriptionContext = createContext(null);
 const { Provider, Consumer: SubscriptionConsumer } = SubscriptionContext;
 
 const SubscriptionProvider = ({ children, purchase }) => {
-    console.log('-> purchase in SubscriptionProvider', purchase);
     const [ready, userEmail] = useInitPurchases();
-    console.log('-> userEmail SubscriptionProvider', userEmail);
-    console.log('-> ready SubscriptionProvider', ready);
 
     const [store, setStore] = useState({
         offerings: null,
@@ -30,7 +27,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
         hasSubscription: null,
         purchase,
     });
-    console.log('-> store in SubscriptionProvider', JSON.stringify(store, null, 2));
+
     const [userEligible, setUserEligible] = useState(true);
 
     // Updater

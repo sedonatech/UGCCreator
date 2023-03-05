@@ -18,9 +18,12 @@ import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Button from '../../components/Button';
 import SubscriptionCard from './components/SubscriptionCard';
+import useLogout from "../app/profile/useLogout";
 
 const SubscriptionScreen = () => {
     const subscription = useSubscriptionContext();
+
+    const { logout: handleLogout } = useLogout();
 
     const [loading, setLoading] = useState(false);
 
@@ -60,16 +63,7 @@ const SubscriptionScreen = () => {
         }
     };
 
-    const handleSubscription = async (index) => {
-        try {
-            setSubscribing(index);
-            await onSubscribe(index);
-            setSubscribing(false);
-        } catch (er) {
-            alert(er.message);
-            setSubscribing(false);
-        }
-    };
+
 
     const onRestore = async () => {
         try {
@@ -91,6 +85,17 @@ const SubscriptionScreen = () => {
         setSelectedPackage(item);
     };
 
+    const handleSubscription = async (index) => {
+        try {
+            setSelected(index);
+            setSubscribing(index);
+            await onSubscribe(index);
+            setSubscribing(false);
+        } catch (er) {
+            alert(er.message);
+            setSubscribing(false);
+        }
+    };
     const getSavings = (pack) => {
         const monthlyPackage = packages?.length && packages?.find(({ identifier }) => identifier?.includes('monthly'));
         const monthlyPrice = monthlyPackage?.isSale
@@ -110,7 +115,10 @@ const SubscriptionScreen = () => {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+        >
             <Blob color={DEEP_LAVENDER} top />
             <Blob right />
             <Blob color={DEEP_LAVENDER} bottom />
@@ -170,27 +178,24 @@ const SubscriptionScreen = () => {
                                 />
                             ))
                         ) : (
-                            <TemplateBox selfCenter>
+                            <TemplateBox selfCenter alignItems="center" justifyContent="center">
                                 <ActivityIndicator color={BLACK} size="large" />
                             </TemplateBox>
                         )
                     }
 
                 </TemplateBox>
-                <TemplateBox selfCenter mt={WRAPPER_MARGIN * 2} mh={WRAPPER_MARGIN}>
-                    <Button title="Subscribe" />
-                </TemplateBox>
-
                 <TemplateBox
-                    selfCenter
                     onPress={onRestore}
+                    selfCenter
                     mv={WRAPPER_MARGIN}
+                    mh={WRAPPER_MARGIN}
                 >
-                    <TemplateText caps color={IOS_BLUE} semiBold size={14}>
+                    <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
                         restore subscription
                     </TemplateText>
                 </TemplateBox>
-                <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>
+                <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN}>
                     <TemplateText size={14} color={BLACK_40} center small>
                         By selecting a subscription plan you agree to our
                         {' '}
@@ -229,6 +234,16 @@ const SubscriptionScreen = () => {
                         in your iTunes settings after purchase if you choose. We will create
                         you an account that will allow you to access our content on any iOS
                         devices and you may choose to add additional devices as you require.
+                    </TemplateText>
+                </TemplateBox>
+                <TemplateBox
+                    selfCenter
+                    mb={WRAPPER_MARGIN * 2}
+                    mh={WRAPPER_MARGIN}
+                    onPress={() => handleLogout()}
+                >
+                    <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
+                        logout
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>

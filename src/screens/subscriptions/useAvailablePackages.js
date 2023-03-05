@@ -19,7 +19,6 @@ export default (
     const {
         offerings, discountOfferings, introEligibility,
     } = useSubscriptionContext();
-    console.log('////-> offerings', offerings);
 
     // featureCurrentOffering = RevenueCat's `current` switch on their dashboard on an offering will
     // ensure it is placed on the top (irrespective of provided sortOrder)

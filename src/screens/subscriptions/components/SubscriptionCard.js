@@ -22,6 +22,7 @@ const SubscriptionCard = ({
     recommendedCopy,
     popularCopy,
     loading,
+    index,
 }) => (
     <TemplateBox
         backgroundColor={selected
@@ -34,6 +35,8 @@ const SubscriptionCard = ({
         style={SHADOW('card', selected
             ? DEEP_LAVENDER
             : GREY_SECONDARY)}
+        slideIn
+        slideInDelay={(index + 1) * 100}
     >
 
         <TemplateBox onPress={onPress}>
@@ -151,6 +154,8 @@ SubscriptionCard.propTypes = {
     recommended: PropTypes.bool,
     recommendedCopy: PropTypes.string,
     popularCopy: PropTypes.string,
+    loading: PropTypes.bool,
+    index: PropTypes.number,
 };
 
 SubscriptionCard.defaultProps = {
@@ -166,5 +171,7 @@ SubscriptionCard.defaultProps = {
     recommended: false,
     recommendedCopy: '',
     popularCopy: '',
+    loading: false,
+    index: 0,
 };
 export default SubscriptionCard;
