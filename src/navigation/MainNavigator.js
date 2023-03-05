@@ -4,7 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { enableScreens } from 'react-native-screens';
 import { View } from 'react-native';
 import {
-    APP, AUTH, BRANDS_STACK, ONBOARDING, SUBSCRIPTION_STACK,
+    APP, AUTH, BRANDS_STACK, SUBSCRIPTION_STACK,
 } from './ScreenNames';
 import AuthStack from './auth/AuthStack';
 
@@ -15,7 +15,6 @@ import Blob from '../../assets/svgs/Blob';
 import { BRAND_BLUE, DEEP_LAVENDER } from '../theme/Colors';
 import BrandLogo from '../../assets/svgs/BrandLogo';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
-import Button from '../components/Button';
 import useHasSubscription from '../screens/subscriptions/useHasSubscription';
 import SubscriptionStack from './subscription/SubscriptionStack';
 
@@ -66,8 +65,7 @@ const MainNavigator = () => {
               && (
                   <Screen name={APP} component={AppStack} />
               )}
-            {isCreator
-              && isSignedIn
+            {isSignedIn
               && !hasSubscription
               && (
                   <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />

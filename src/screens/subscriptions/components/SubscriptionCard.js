@@ -72,7 +72,7 @@ const SubscriptionCard = ({
             </TemplateBox>
             <TemplateBox height={10} />
             {loading && (
-                <TemplateBox selfCenter>
+                <TemplateBox selfCenter alignItems="center" justifyContent="center">
                     <ActivityIndicator size="small" color={BLACK} />
                 </TemplateBox>
             )}

@@ -34,22 +34,20 @@ const MainApp = () => {
     return (
         <View style={styles.container}>
             <CoreProvider config={config}>
-                <AuthProvider>
-                    <SubscriptionProvider purchase={purchase}>
-                        <ProjectsProvider>
-                            <ProjectApplicationProvider>
-                                <ActionSheetProvider>
-                                    <NavigationContainer
-                                        theme={NAVIGATION_THEME}
-                                    >
-                                        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-                                        <MainNavigator />
-                                    </NavigationContainer>
-                                </ActionSheetProvider>
-                            </ProjectApplicationProvider>
-                        </ProjectsProvider>
-                    </SubscriptionProvider>
-                </AuthProvider>
+                <SubscriptionProvider purchase={purchase}>
+                    <ProjectsProvider>
+                        <ProjectApplicationProvider>
+                            <ActionSheetProvider>
+                                <NavigationContainer
+                                    theme={NAVIGATION_THEME}
+                                >
+                                    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                    <MainNavigator />
+                                </NavigationContainer>
+                            </ActionSheetProvider>
+                        </ProjectApplicationProvider>
+                    </ProjectsProvider>
+                </SubscriptionProvider>
             </CoreProvider>
         </View>
     );
@@ -64,8 +62,10 @@ const styles = StyleSheet.create({
 });
 
 const App = () => (
-    <FeatureFlagProvider defaultFeatures={defaultFeatures}>
-        <MainApp />
-    </FeatureFlagProvider>
+    <AuthProvider>
+        <FeatureFlagProvider defaultFeatures={defaultFeatures}>
+            <MainApp />
+        </FeatureFlagProvider>
+    </AuthProvider>
 );
 export default App;

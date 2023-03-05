@@ -5,6 +5,7 @@ import getCurrencyFromPriceString from './utils/getCurrencyFromPriceString';
 import isAndroid from './utils/isAndroid';
 import roundDownNumber from './utils/roundDownNumber';
 import getIntroPeriod from './utils/getIntroPeriod';
+import useAuthContext from '../../hooks/auth/useAuthContext';
 
 export default (
     purchase,
@@ -15,6 +16,8 @@ export default (
     const sortOrder = purchase?.sortOrder || purchase;
     const [availablePackages, setAvailablePackages] = useState(null);
     const [originalAvailablePackages, setOriginalAvailablePackages] = useState(null);
+
+    const { auth } = useAuthContext();
 
     const {
         offerings, discountOfferings, introEligibility,
@@ -30,7 +33,10 @@ export default (
                 console.log('[subscriptions] Starting useGetOfferings');
                 const allOfferings = offerings?.all && Object?.values(offerings?.all);
                 const currentOffering = offerings?.current;
-                const allAvailablePackages = flatten(allOfferings?.map(({ availablePackages }) => availablePackages));
+
+                const type = auth?.profile?.type === 'brand' ? 'brands' : 'default';
+                const allPackages = flatten(allOfferings?.map(({ availablePackages }) => availablePackages));
+                const allAvailablePackages = allPackages?.filter(({ offeringIdentifier }) => offeringIdentifier === type);
 
                 if (allOfferings?.length) {
                     let sortOrderedPackages = sortOrder?.length
@@ -160,12 +166,6 @@ export default (
                             numberOfTotalIntroMonthsUnit,
                             introPeriod,
                             introPrice,
-                            // debug: {
-                            //     isIntroSale,
-                            //     isDiscountSale,
-                            //     product,
-                            //     discount,
-                            // },
                         };
                     });
 
@@ -177,7 +177,7 @@ export default (
                 console.error(error);
             }
         })();
-    }, [offerings, discountOfferings, introEligibility]);
+    }, [offerings, discountOfferings, introEligibility, auth]);
 
     return [availablePackages, originalAvailablePackages];
 };
