@@ -16,9 +16,8 @@ import {
 } from '../../theme/Colors';
 import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
-import Button from '../../components/Button';
 import SubscriptionCard from './components/SubscriptionCard';
-import useLogout from "../app/profile/useLogout";
+import useLogout from '../app/profile/useLogout';
 
 const SubscriptionScreen = () => {
     const subscription = useSubscriptionContext();
@@ -62,8 +61,6 @@ const SubscriptionScreen = () => {
             return false;
         }
     };
-
-
 
     const onRestore = async () => {
         try {
@@ -179,7 +176,7 @@ const SubscriptionScreen = () => {
                             ))
                         ) : (
                             <TemplateBox selfCenter alignItems="center" justifyContent="center">
-                                <ActivityIndicator color={BLACK} size="large" />
+                                <ActivityIndicator color={BLACK} size="small" />
                             </TemplateBox>
                         )
                     }

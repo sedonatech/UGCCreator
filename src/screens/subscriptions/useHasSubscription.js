@@ -30,10 +30,10 @@ export default (expiryLength = 7, debug = true) => {
                 if (overrideSubscription) {
                     setHasSubscription(true);
                     await updateAsync(true);
-                } else if (__DEV__ || process.env.DETOX_TEST_RUNNING) {
+                } else if (process.env.DETOX_TEST_RUNNING) {
                     setHasSubscription(false);
                 } else if (purchaserInfo !== null) {
-                    const hasPurchase = typeof purchaserInfo?.entitlements?.active?.full_access !== 'undefined';
+                    const hasPurchase = purchaserInfo?.entitlements?.active?.pro?.isActive;
                     setHasSubscription(hasPurchase);
                     await updateAsync(hasPurchase);
                 }
