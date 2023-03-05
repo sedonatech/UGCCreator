@@ -14,6 +14,10 @@ import { BRAND_BLUE, TRANSPARENT } from './src/theme/Colors';
 import { IS_ANDROID } from './src/theme/Layout';
 import { ProjectsProvider } from './src/context/ProjectsProvider';
 import { ProjectApplicationProvider } from './src/context/ProjectApplicationProvider';
+import config from './config';
+import { CoreProvider } from './src/context/core';
+import useSubscriptionConfig from './src/hooks/subscription/useSubscriptionConfig';
+import { SubscriptionProvider } from './src/screens/subscriptions/context/context';
 
 const NAVIGATION_THEME = {
     ...DefaultTheme,
@@ -22,27 +26,31 @@ const NAVIGATION_THEME = {
         background: IS_ANDROID ? TRANSPARENT : BRAND_BLUE,
     },
 };
-const App = () => {
+const MainApp = () => {
     const isDarkMode = useColorScheme() === 'dark';
+
+    const purchase = useSubscriptionConfig(true);
 
     return (
         <View style={styles.container}>
-            <FeatureFlagProvider defaultFeatures={defaultFeatures}>
+            <CoreProvider config={config}>
                 <AuthProvider>
-                    <ProjectsProvider>
-                        <ProjectApplicationProvider>
-                            <ActionSheetProvider>
-                                <NavigationContainer
-                                    theme={NAVIGATION_THEME}
-                                >
-                                    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-                                    <MainNavigator />
-                                </NavigationContainer>
-                            </ActionSheetProvider>
-                        </ProjectApplicationProvider>
-                    </ProjectsProvider>
+                    <SubscriptionProvider purchase={purchase}>
+                        <ProjectsProvider>
+                            <ProjectApplicationProvider>
+                                <ActionSheetProvider>
+                                    <NavigationContainer
+                                        theme={NAVIGATION_THEME}
+                                    >
+                                        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                        <MainNavigator />
+                                    </NavigationContainer>
+                                </ActionSheetProvider>
+                            </ProjectApplicationProvider>
+                        </ProjectsProvider>
+                    </SubscriptionProvider>
                 </AuthProvider>
-            </FeatureFlagProvider>
+            </CoreProvider>
         </View>
     );
 };
@@ -55,4 +63,9 @@ const styles = StyleSheet.create({
     },
 });
 
+const App = () => (
+    <FeatureFlagProvider defaultFeatures={defaultFeatures}>
+        <MainApp />
+    </FeatureFlagProvider>
+);
 export default App;

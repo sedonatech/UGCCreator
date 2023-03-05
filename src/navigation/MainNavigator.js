@@ -4,7 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { enableScreens } from 'react-native-screens';
 import { View } from 'react-native';
 import {
-    APP, AUTH, BRANDS_STACK, ONBOARDING,
+    APP, AUTH, BRANDS_STACK, ONBOARDING, SUBSCRIPTION_STACK,
 } from './ScreenNames';
 import AuthStack from './auth/AuthStack';
 
@@ -16,6 +16,8 @@ import { BRAND_BLUE, DEEP_LAVENDER } from '../theme/Colors';
 import BrandLogo from '../../assets/svgs/BrandLogo';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import Button from '../components/Button';
+import useHasSubscription from '../screens/subscriptions/useHasSubscription';
+import SubscriptionStack from './subscription/SubscriptionStack';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -32,6 +34,8 @@ const MainNavigator = () => {
     const isSignedIn = !loading && !!auth?.user;
 
     const showSplash = isSignedIn && !isCreator && !isBrand;
+
+    const hasSubscription = useHasSubscription();
 
     useEffect(() => {
         if (!loading || auth?.user || !showSplash) {
@@ -56,7 +60,18 @@ const MainNavigator = () => {
                 headerShown: false,
             }}
         >
-            {isCreator && isSignedIn && <Screen name={APP} component={AppStack} />}
+            {isCreator
+              && isSignedIn
+              && hasSubscription
+              && (
+                  <Screen name={APP} component={AppStack} />
+              )}
+            {isCreator
+              && isSignedIn
+              && !hasSubscription
+              && (
+                  <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />
+              )}
             {isBrand && isSignedIn && (
                 <Screen name={BRANDS_STACK} component={BrandsStack} />
             )}
