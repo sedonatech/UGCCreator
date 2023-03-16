@@ -1,21 +1,27 @@
-import React, { FC } from 'react';
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { uniq, uniqBy } from 'lodash';
 import { projectStatuses } from '../../../../consts/AppFilters/ProjectStatus';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import LineSvg from '../../../../../assets/svgs/LineSvg';
 import {
     BLACK, BLACK_50,
-    BRAND_BLUE, GREEN, GREY_30, GREY_SECONDARY, WHITE
+    BRAND_BLUE, ERROR_RED, GREEN, GREY_30, GREY_SECONDARY, WHITE,
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 
-const OverviewTab:FC = () => {
-    const overviewStatus = projectStatuses;
+const OverviewTab = ({ application }) => {
+    const overviewStatus = useMemo(() => {
+        if (!application?.status) return [];
+
+        return uniqBy(application?.status, (item) => item?.value);
+    }, [application?.status]);
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>
-            {overviewStatus.map((status, index) => (
+            {overviewStatus?.map((status, index) => (
                 <TemplateBox row key={status.value}>
                     <TemplateBox alignItems="center">
                         <TemplateBox
@@ -24,7 +30,7 @@ const OverviewTab:FC = () => {
                             backgroundColor={
                                 // eslint-disable-next-line no-nested-ternary
                                 status.status === 'completed'
-                                    ? GREEN : status.status === 'active' ? BRAND_BLUE : GREY_SECONDARY
+                                    ? GREEN : status.status === 'active' ? BRAND_BLUE : status.status === 'rejected' ? ERROR_RED : GREY_SECONDARY
                             }
                         >
                             <TemplateIcon name="checkmark-circle-outline" color={WHITE} size={20} />
@@ -66,4 +72,28 @@ const OverviewTab:FC = () => {
     );
 };
 
+OverviewTab.propTypes = {
+    application: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        creatorId: PropTypes.string,
+        status: PropTypes.shape({
+            current: {
+                name: PropTypes.string,
+                description: PropTypes.string,
+                status: PropTypes.string,
+            },
+            next: {
+                name: PropTypes.string,
+                description: PropTypes.string,
+                status: PropTypes.string,
+            },
+        }),
+        enrolledAt: PropTypes.string,
+        documents: PropTypes.arrayOf(PropTypes.string),
+    })),
+};
+
+OverviewTab.defaultProps = {
+    application: [],
+};
 export default OverviewTab;

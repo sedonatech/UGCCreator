@@ -43,6 +43,10 @@ export const ADMIN_PANEL = 'AdminPanel';
 
 export const BRANDS_PROFILE = 'BrandsProfile';
 
+export const BRAND_SETTINGS = 'BrandSettings';
+
+export const UPDATE_BRAND_PROFILE = 'UpdateBrandProfile';
+
 export const CREATORS_PROFILES = 'CreatorsProfiles';
 
 export const ADMIN_PANEL_STACK = 'AdminPanelStack';
@@ -52,6 +56,14 @@ export const BRANDS_PROFILE_STACK = 'BrandsProfileStack';
 export const CREATORS_PROFILES_STACK = 'CreatorsProfilesStack';
 
 export const ADD_PROJECT = 'AddProject';
+
+export const BRAND_PROJECTS = 'BrandProjects';
+
+export const BRAND_PROJECT_DETAILS = 'BrandProjectDetails';
+
+export const CREATOR_PROJECT_STATUS = 'CreatorProjectStatus';
+
+export const BRAND_OFFERS = 'BrandOffers';
 
 export const SUBSCRIPTION = 'Subscription';
 

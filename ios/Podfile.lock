@@ -1043,6 +1043,10 @@ PODS:
     - glog
   - react-native-blob-util (0.17.1):
     - React-Core
+  - react-native-document-picker (8.1.4):
+    - React-Core
+  - react-native-mail (6.1.1):
+    - React-Core
   - react-native-pdf (6.6.2):
     - React-Core
   - react-native-restart (0.0.27):
@@ -1257,6 +1261,8 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
+  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-mail (from `../node_modules/react-native-mail`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1380,6 +1386,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
+  react-native-document-picker:
+    :path: "../node_modules/react-native-document-picker"
+  react-native-mail:
+    :path: "../node_modules/react-native-mail"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
   react-native-restart:
@@ -1518,6 +1528,8 @@ SPEC CHECKSUMS:
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
   react-native-blob-util: 4949dcc0dd5ee25fcb5abe0687f67fa3d5cdf05a
+  react-native-document-picker: a9bd26996d1b2e4f412dd186041714c79af381d0
+  react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-pdf: 33c622cbdf776a649929e8b9d1ce2d313347c4fa
   react-native-restart: 7595693413fe3ca15893702f2c8306c62a708162
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a

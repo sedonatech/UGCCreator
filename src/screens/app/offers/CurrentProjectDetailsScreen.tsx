@@ -17,6 +17,9 @@ import ToggleCarousel from '../../../components/ToggleCarousel';
 import TemplateIcon from '../../../components/TemplateIcon';
 import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { HOME } from '../../../navigation/ScreenNames';
 
 const CURRENT_PROJECT_TABS = [
     {
@@ -35,13 +38,30 @@ interface Props {
 const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
 
+    const fromProjectDetails = route?.params?.fromProjectDetails;
+
+    const { auth } = useAuthContext();
+
+    const { profile } = auth;
+
     const [selectedTab, setSelectedTab] = useState(CURRENT_PROJECT_TABS[0]);
 
-    const currentProject = useMemo(() => {
-        if (!PROJECTS) return null;
+    const { allProjects: projects } = useProjectsContext();
 
-        return PROJECTS?.find(({ id }) => id === projectId);
-    }, [projectId, PROJECTS]);
+    const currentProject = useMemo(() => {
+        if (!projects) return null;
+
+        // @ts-ignore
+        return projects?.find(({ id }) => id === projectId);
+    }, [projectId, projects]);
+
+    const application = useMemo(() => {
+        if (!currentProject) return null;
+
+        return currentProject?.applications?.length
+            ? currentProject?.applications?.find(({ creatorId }) => creatorId === profile?.id)
+            : {};
+    }, [currentProject, profile?.id]);
 
     const pan = React.useRef(new Animated.ValueXY()).current;
 
@@ -50,7 +70,13 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
             headerLeft: () => (
                 <HeaderIconButton
                     name="arrow-back-outline"
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                        if (fromProjectDetails) {
+                            navigation.navigate(HOME);
+                            return;
+                        }
+                        navigation.goBack();
+                    }}
                     backDropColor={WHITE_40}
                     ml={WRAPPER_MARGIN}
                 />
@@ -74,14 +100,31 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
                 }
             )}
             contentContainerStyle={styles.contentContainer}
-            bounces={false}
         >
             <TemplateBox
                 height={SCREEN_HEIGHT / 2.4}
+                style={{
+                    transform: [
+                        {
+                            translateY: pan.y.interpolate({
+                                inputRange: [-1000, 0],
+                                outputRange: [-200, 0],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                        {
+                            scale: pan.y.interpolate({
+                                inputRange: [-3000, 0],
+                                outputRange: [20, 1],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                    ],
+                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage
-                    source={currentProject?.image}
+                    source={{ uri: currentProject?.image }}
                     width="100%"
                     style={styles.image}
                 />
@@ -99,7 +142,7 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
                     >
                         <TemplateText bold size={14} color={WHITE}>
                             {
-                                projectStatuses[2]?.name
+                                application?.status?.find(({ status }) => status === 'active')?.name
                             }
 
                         </TemplateText>
@@ -183,7 +226,7 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
             </TemplateBox>
             {
                 selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
-                    <OverviewTab />
+                    <OverviewTab application={application} />
                 )
             }
             {

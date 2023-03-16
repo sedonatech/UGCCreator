@@ -1,18 +1,18 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 
-import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BLACK_30, BLACK_40
+    SPACE_XLARGE
+} from '../../../../theme/Layout';
+import {
+    BLACK, BLACK_90, GREEN, WHITE
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
-import TemplateTouchable from '../../../../components/TemplateTouchable';
 import TemplateBox from '../../../../components/TemplateBox';
 
 interface Props {
-    image?: string | number;
+    image?: string | number | any;
     title?: string;
     shortDescription?: string;
     style?: any;
@@ -20,9 +20,11 @@ interface Props {
     slideInDelay?: number;
 
     onPress?: () => void;
+
+    enrolled?: boolean;
 }
 
-const CARD_WIDTH = SCREEN_WIDTH / 2.36;
+const CARD_WIDTH = 150;
 const ProjectCard: FC<Props> = ({
     image,
     style,
@@ -30,9 +32,10 @@ const ProjectCard: FC<Props> = ({
     title,
     slideInDelay,
     onPress,
+    enrolled
 }) => (
     <TemplateBox
-        mb={20}
+        mb={SPACE_XLARGE}
         style={style}
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
@@ -40,19 +43,37 @@ const ProjectCard: FC<Props> = ({
     >
         <TemplateBox
             width={CARD_WIDTH}
-            aspectRatio={1.18}
+            aspectRatio={1.12}
             onPress={onPress}
         >
             <BackgroundImage source={image} style={styles.image} width={CARD_WIDTH} />
+            {enrolled && (
+                <TemplateBox
+                    flex
+                    absolute
+                    borderRadius={10}
+                    backgroundColor={GREEN}
+                    height={30}
+                    width={CARD_WIDTH / 2}
+                    alignItems="center"
+                    justifyContent="center"
+                    top={94}
+                    left={64}
+                >
+                    <TemplateText bold size={11} color={WHITE}>Enrolled</TemplateText>
+                </TemplateBox>
+            )}
         </TemplateBox>
-        {/* @ts-ignore */}
-        <TemplateText color={BLACK} bold size={14} style={styles.text}>
-            {title}
-        </TemplateText>
-        {/* @ts-ignore */}
-        <TemplateText color={BLACK_40} size={12} style={styles.text} numberOfLines={2}>
-            {shortDescription}
-        </TemplateText>
+        <TemplateBox width={CARD_WIDTH - 8} selfCenter>
+            {/* @ts-ignore */}
+            <TemplateText color={BLACK} bold size={14} style={styles.text}>
+                {title}
+            </TemplateText>
+            {/* @ts-ignore */}
+            <TemplateText color={BLACK_90} size={12} style={styles.text} numberOfLines={2}>
+                {shortDescription}
+            </TemplateText>
+        </TemplateBox>
     </TemplateBox>
 );
 

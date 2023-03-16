@@ -67,6 +67,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
                     unfilledColor={BLACK_30}
                     borderWidth={0}
                     showsText
+                    formatText={() => `${Math.round(progress * 100)}%`}
                     thickness={4}
                     allowFontScaling
                     animated

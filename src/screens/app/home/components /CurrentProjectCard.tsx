@@ -13,6 +13,7 @@ import {
 import TemplateIcon from '../../../../components/TemplateIcon';
 import AvatarOverlaps from '../../../../components/AvatarOverlaps';
 import { DEFAULT_AVATARS } from '../../../../consts/content/Home';
+import useGetEnrolledCreatorsAvatars from '../../../brands/admin/hooks/useGetEnrolledCreatorsAvatars';
 
 interface Props {
     title?: string;
@@ -35,6 +36,7 @@ interface Props {
 
     slideInDelay?: number;
     isBrand?: boolean;
+    projectId?: string;
 
 }
 
@@ -53,8 +55,11 @@ const CurrentProjectCard: FC<Props> = ({
     width,
     slideInDelay,
     isBrand = false,
+    projectId,
 }) => {
     const color = status === 'High' ? PINK : BRAND_BLUE;
+
+    const { enrolledCreatorsAvatars } = useGetEnrolledCreatorsAvatars(projectId);
 
     return (
         <TemplateBox
@@ -120,7 +125,7 @@ const CurrentProjectCard: FC<Props> = ({
 
             <TemplateBox row alignItems="center">
                 {isBrand ? (
-                    <AvatarOverlaps imageUrls={DEFAULT_AVATARS} />
+                    <AvatarOverlaps imageUrls={enrolledCreatorsAvatars} />
                 ) : (
                     <TemplateText size={14} color={BLACK} bold>
                         {brand}

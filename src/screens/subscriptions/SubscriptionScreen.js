@@ -156,7 +156,7 @@ const SubscriptionScreen = () => {
                             packages.map((pack, index) => (
                                 <SubscriptionCard
                                     onPress={() => handleSubscription(index)}
-                                    key={pack?.id}
+                                    key={pack?.title}
                                     title={pack?.title}
                                     price={pack?.priceString}
                                     description={pack?.description}

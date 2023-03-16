@@ -15,7 +15,7 @@ const BrandsTab = (data: { data: any[]; }) => {
             {!!data?.data?.length && data?.data?.map((brand: any, index) => (
                 <BrandsCard
                     key={brand?.id}
-                    image={brand?.image}
+                    image={{ uri: brand?.image }}
                     title={brand?.name}
                     shortDescription={brand?.shortDescription}
                     style={styles.card}

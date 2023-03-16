@@ -1,21 +1,60 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import {BRANDS_PROFILE} from '../ScreenNames';
-import {SWITCH} from '../../components/header/ScreenOptions';
+import {
+    BRAND_SETTINGS,
+    BRANDS_PROFILE, FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_BRAND_PROFILE,
+} from '../ScreenNames';
+import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import BrandProfileScreen from '../../screens/brands/profile/BrandProfileScreen';
+import UpdateBrandProfileScreen from '../../screens/brands/profile/UpdateBrandProfileScreen';
+import ResetPasswordScreen from '../../screens/auth/ResetPasswordScreen';
+import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
+import BrandSettingsScreen from '../../screens/brands/profile/BrandSettingsScreen';
+import HeaderIconButton from '../../components/header/HeaderButton';
+import { WRAPPER_MARGIN } from '../../theme/Layout';
 
 const Stack = createStackNavigator();
-const {Navigator, Screen} = Stack;
+const { Navigator, Screen } = Stack;
 
 const BrandsProfileStack = () => (
-  <Navigator initialRouteName={BRANDS_PROFILE} screenOptions={SWITCH}>
-    <Screen
-      name={BRANDS_PROFILE}
-      options={{headerShown: false}}
-      component={BrandProfileScreen}
-    />
-  </Navigator>
+    <Navigator initialRouteName={BRANDS_PROFILE} screenOptions={SWITCH}>
+        <Screen
+            name={BRANDS_PROFILE}
+            options={{
+                ...TRANSPARENT_HEADER,
+                headerRight: () => (
+                    <HeaderIconButton
+                        name="settings-outline"
+                        screen={BRAND_SETTINGS}
+                        mr={WRAPPER_MARGIN}
+                    />
+                ),
+            }}
+            component={BrandProfileScreen}
+        />
+        <Screen
+            name={UPDATE_BRAND_PROFILE}
+            options={TRANSPARENT_HEADER}
+            component={UpdateBrandProfileScreen}
+        />
+        <Screen
+            name={FORGOT_PASSWORD}
+            component={ResetPasswordScreen}
+            options={TRANSPARENT_HEADER_NO_LOGO}
+        />
+        <Screen
+            name={SUBSCRIPTION}
+            component={SubscriptionScreen}
+            options={TRANSPARENT_HEADER_NO_LOGO}
+        />
+        <Screen
+            name={BRAND_SETTINGS}
+            options={TRANSPARENT_HEADER}
+            component={BrandSettingsScreen}
+        />
+
+    </Navigator>
 );
 
 export default BrandsProfileStack;

@@ -11,7 +11,7 @@ import TemplateTouchable from '../../../../components/TemplateTouchable';
 import TemplateBox from '../../../../components/TemplateBox';
 
 interface Props {
-    image?: string | number;
+    image?: string | number | any;
     title?: string;
     shortDescription?: string;
     style?: any;

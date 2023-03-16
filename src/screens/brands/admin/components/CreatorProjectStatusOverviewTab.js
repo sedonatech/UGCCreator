@@ -1,0 +1,168 @@
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { uniqBy } from 'lodash';
+import { Alert } from 'react-native';
+import TemplateBox from '../../../../components/TemplateBox';
+import TemplateIcon from '../../../../components/TemplateIcon';
+import LineSvg from '../../../../../assets/svgs/LineSvg';
+import {
+    BLACK,
+    BRAND_BLUE, ERROR_RED, GREEN, GREY_30, GREY_SECONDARY, WHITE,
+} from '../../../../theme/Colors';
+import TemplateText from '../../../../components/TemplateText';
+import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
+import useMailCompose from '../../../../hooks/documents/useMailCompose';
+
+const CreatorProjectStatusOverviewTab = ({
+    application, creatorID, currentProject, creatorEmail,
+}) => {
+    const overviewStatus = useMemo(() => {
+        if (!application?.status) return [];
+
+        return uniqBy(application?.status, (item) => item?.value);
+    }, [application?.status]);
+
+    const { updateProjectStatus } = useProjectsContext();
+
+    const { composeEmailWithAttachment } = useMailCompose();
+    const handleOnPressStatus = (status, statusIndex) => {
+        if (status.value === 'brand_approved_enrollment') {
+            Alert.alert(
+                "You'll be prompted to attach your proposal",
+                'Please attach your proposal to continue',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => composeEmailWithAttachment(creatorEmail),
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: false },
+
+            );
+            return;
+        }
+        if (status.value === 'brand_proposal_submitted') {
+            Alert.alert(
+                'Update Required by Creator',
+                'Please wait for the creator to update the status',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: false },
+            );
+            return;
+        }
+
+        if (status.status === 'active' && !!creatorID && currentProject) {
+            Alert.alert(
+                'Update Status',
+                `Are you sure you want to update the status to ${overviewStatus?.[statusIndex + 1]?.name}?`,
+                [
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'OK',
+                        onPress: async () => {
+                            await updateProjectStatus(creatorID, currentProject, statusIndex);
+                        },
+                    },
+                ],
+                { cancelable: false },
+            );
+        }
+    };
+
+    return (
+        <TemplateBox ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>
+            {overviewStatus?.map((status, index) => (
+                <TemplateBox row key={status.value}>
+                    <TemplateBox alignItems="center">
+                        <TemplateBox
+                            pAll={4}
+                            borderRadius={20}
+                            backgroundColor={
+                                // eslint-disable-next-line no-nested-ternary
+                                status.status === 'completed'
+                                    ? GREEN : status.status === 'active' ? BRAND_BLUE : status.status === 'rejected' ? ERROR_RED : GREY_SECONDARY
+                            }
+                        >
+                            <TemplateIcon name="checkmark-circle-outline" color={WHITE} size={20} />
+                        </TemplateBox>
+                        {
+                            index !== overviewStatus.length - 1 && (
+                                // @ts-ignore
+                                <LineSvg
+                                    color={
+                                        // eslint-disable-next-line no-nested-ternary
+                                        status.status === 'completed'
+                                            ? GREEN : status.status === 'active' ? BRAND_BLUE : GREY_SECONDARY
+                                    }
+                                />
+                            )
+                        }
+                    </TemplateBox>
+
+                    <TemplateBox
+                        borderRadius={10}
+                        pAll={10}
+                        backgroundColor={GREY_30}
+                        width={SCREEN_WIDTH / 1.3}
+                        mt={-18.4}
+                        ml={10}
+                        opacity={status.status === 'completed' ? 1 : status.status === 'active' ? 1 : 0.4}
+                        onPress={() => handleOnPressStatus(status, index)}
+                    >
+                        <TemplateText bold size={16} color={BLACK}>
+                            {status?.brandName}
+                        </TemplateText>
+                        <TemplateBox height={10} />
+                        <TemplateText size={12} color={BLACK}>
+                            {status?.brandDescription}
+                        </TemplateText>
+                    </TemplateBox>
+                </TemplateBox>
+            ))}
+        </TemplateBox>
+    );
+};
+
+CreatorProjectStatusOverviewTab.propTypes = {
+    application: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        creatorId: PropTypes.string,
+        status: PropTypes.shape({
+            current: {
+                name: PropTypes.string,
+                description: PropTypes.string,
+                status: PropTypes.string,
+            },
+            next: {
+                name: PropTypes.string,
+                description: PropTypes.string,
+                status: PropTypes.string,
+            },
+        }),
+        enrolledAt: PropTypes.string,
+        documents: PropTypes.arrayOf(PropTypes.string),
+    })),
+    creatorID: PropTypes.string,
+    currentProject: PropTypes.shape(),
+    creatorEmail: PropTypes.string,
+};
+
+CreatorProjectStatusOverviewTab.defaultProps = {
+    application: [],
+    creatorID: '',
+    currentProject: {},
+    creatorEmail: '',
+};
+export default CreatorProjectStatusOverviewTab;

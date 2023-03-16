@@ -1,32 +1,70 @@
-import React, { useLayoutEffect } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import {
-    LineChart,
-} from 'react-native-chart-kit';
-
+import React, { useEffect, useLayoutEffect, useMemo } from 'react';
+import { ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import moment from 'moment/moment';
+import { useIsFocused } from '@react-navigation/native';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK_SECONDARY, LAVENDER,
     WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import { ADD_PROJECT } from '../../../navigation/ScreenNames';
-import CurrentProjectsCarousel from '../../app/home/components /CurrentProjectsCarousel';
+import { ADD_PROJECT, BRAND_PROJECT_DETAILS, UPDATE_BRAND_PROFILE } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
-import { HEADER_MARGIN, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 import CurrentCreatorsCarousel from './components/CurrentCreatorsCarousel';
 import FeaturedCreatorsCarousel from './components/FeaturedCreatorsCarousel';
-import { chartConfig, chartData } from '../../../consts/content/Home';
-import { SHADOW } from '../../../theme/Shadow';
 import BrandStatsGraph from './components/BrandStatsGraph';
+import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
+import {
+    BRAND_NO_CURRENT_PROJECT_MESSAGE,
+    BRAND_NO_CURRENT_PROJECT_TITLE,
+} from '../../../consts/content/Home';
+import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
+import ProfileIncompleteModal from '../../../components/modals/ProfileIncompleteModal';
+import useRefresh from '../../../hooks/creators/useRefresh';
 
 const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
+
+    const isFocused = useIsFocused();
+
+    const { projects } = useProjectsContext();
+
+    const brandName = auth?.profile?.userName;
+
+    const modalVisible = auth?.completeProfileModalVisible;
+
+    const { refreshing, handleBrandRefresh } = useRefresh();
+
+    const closeModal = () => {
+        auth?.closeCompleteProfileModal();
+        navigation.navigate(UPDATE_BRAND_PROFILE);
+    };
+
+    const projectsCarouselData = useMemo(() => {
+        if (!projects?.length) return [];
+        return projects?.map((project) => ({
+            id: project?.id,
+            title: project?.title,
+            brand: brandName,
+            price: project?.price,
+            status: project?.applications?.length ? 'Enrolled Creators' : 'No Enrolled Creators',
+            notifications: project?.applications?.length || 0,
+            documents: project?.applications?.[0]?.documents?.length || 0,
+            daysLeft: moment.duration(moment(project?.endDate)
+                .diff(moment(project?.startDate)))
+                .asDays(),
+            onPress: () => navigation.navigate(BRAND_PROJECT_DETAILS, {
+                projectId: project?.id,
+            }),
+        }));
+    }, [projects]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -43,21 +81,58 @@ const AdminPanelScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
+    useEffect(() => {
+        if (isFocused && profile) {
+            auth?.getProfileCompleteStatus();
+        }
+    }, [
+        isFocused,
+        profile,
+    ]);
+
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            refreshControl={(
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={handleBrandRefresh}
+                />
+            )}
+        >
             <TemplateBox>
                 <Blob top color={LAVENDER} />
                 <Blob right color={LAVENDER} />
                 <Blob color={LAVENDER} bottom />
                 <Blob center />
             </TemplateBox>
-            {profile?.userName && (
-                <Greeting userName={profile?.userName} style={styles.greeting} showAvatar={false} />
+            {profile?.name && (
+                <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
             )}
-            <CurrentProjectsCarousel style={styles.carousel} isBrand />
+
+            {
+                projectsCarouselData?.length ? (
+                    <ActiveProjectsCarousel
+                        style={styles.carousel}
+                        projectsCarouselData={projectsCarouselData}
+                    />
+                ) : (
+                    <ProfileStatusCard
+                        title={BRAND_NO_CURRENT_PROJECT_TITLE}
+                        description={BRAND_NO_CURRENT_PROJECT_MESSAGE}
+                        showProgress={false}
+                        style={styles.statusCard}
+                        slideInDelay={200}
+                    />
+                )
+            }
             <CurrentCreatorsCarousel style={styles.carousel} />
             <FeaturedCreatorsCarousel style={styles.carousel} />
             <BrandStatsGraph />
+            <ProfileIncompleteModal
+                visible={modalVisible}
+                closeOnPress={closeModal}
+            />
         </ScrollView>
 
     );

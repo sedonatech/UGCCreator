@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
 });
 
 TemplateText.defaultProps = {
-    light: false,
+    light: true,
     medium: false,
     bold: false,
     black: false,

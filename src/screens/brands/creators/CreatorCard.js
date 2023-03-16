@@ -45,7 +45,7 @@ const CreatorCard = ({
                 <TemplateText
                     size={13}
                     color={BLACK_SECONDARY}
-                    numberOfLines={2}
+                    numberOfLines={3}
                 >
                     {shortDescription}
                 </TemplateText>
@@ -53,9 +53,9 @@ const CreatorCard = ({
         </TemplateBox>
         <TemplateBox
             selfCenter
-            width={300}
+            width="96%"
             height={1}
-            backgroundColor={GREY_SECONDARY}
+            backgroundColor={BLACK_40}
             mv={WRAPPER_MARGIN}
         />
 
@@ -79,7 +79,7 @@ const CreatorCard = ({
                 onPress={onPress}
                 left={buttonOffset}
             >
-                <TemplateText color={WHITE} size={14} bold>View Portfolio</TemplateText>
+                <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
             </TemplateBox>
         </TemplateBox>
     </TemplateBox>

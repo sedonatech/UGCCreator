@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment/moment';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -14,9 +15,45 @@ import {
     CURRENT_PROJECT_DETAILS,
     OFFERS, OFFERS_STACK,
 } from '../../../../navigation/ScreenNames';
+import { projectStatuses } from '../../../../consts/AppFilters/ProjectStatus';
+import useGetBrands from '../../../../hooks/creators/useGetBrands';
+import useAuthContext from '../../../../hooks/auth/useAuthContext';
 
-const CurrentProjectsCarousel = ({ style, isBrand }) => {
+const CurrentProjectsCarousel = ({ style, isBrand, data }) => {
     const navigation = useNavigation();
+
+    const { brands } = useGetBrands();
+
+    const { auth } = useAuthContext();
+
+    const profile = auth?.profile;
+
+    const cardsData = useMemo(() => {
+        if (!data) return [];
+        return data?.map((item) => {
+            const application = item?.applications?.length
+                ? item?.applications?.find(({ creatorId }) => creatorId === profile?.id)
+                : {};
+            const completedStatuses = projectStatuses?.filter(({ status }) => status === 'completed');
+
+            const progress = completedStatuses?.length
+                ? Math.round((completedStatuses?.length / projectStatuses?.length) * 10) / 10
+                : 0;
+            return {
+                ...item,
+                ...application,
+                progress,
+                id: item?.id,
+                title: item?.title,
+                brand: brands?.find(({ id }) => id === item?.brandId)?.name,
+                price: `From ${item?.priceRange?.max} to ${item?.priceRange?.min} ${item?.currency}`,
+                status: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
+                documentCount: application?.documents?.length,
+                daysLeft: moment(item?.endDate).diff(moment(), 'days'),
+                currentStatus: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
+            };
+        });
+    }, [data]);
 
     return (
         <View style={style}>
@@ -37,7 +74,7 @@ const CurrentProjectsCarousel = ({ style, isBrand }) => {
             </View>
 
             <TemplateCarousel
-                data={CURRENT_PROJECTS_CAROUSEL}
+                data={cardsData}
                 renderItem={({ item }) => (
                     <CurrentProjectCard
                         title={item?.title}

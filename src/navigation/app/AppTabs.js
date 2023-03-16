@@ -40,17 +40,6 @@ const AppTabs = () => (
                 tabBarLabel: (props) => <TabLabel {...props}>Explore</TabLabel>,
             }}
         />
-
-        <Screen
-            name={FEEDS_STACK}
-            component={FeedsStack}
-            options={{
-                tabBarIcon: ({ focused }) => (
-                    <TabButton focused={focused} icon="compass" />
-                ),
-                tabBarLabel: (props) => <TabLabel {...props}>Feeds</TabLabel>,
-            }}
-        />
         <Screen
             name={OFFERS_STACK}
             component={OffersStack}
@@ -59,6 +48,16 @@ const AppTabs = () => (
                     <TabButton focused={focused} icon="briefcase" />
                 ),
                 tabBarLabel: (props) => <TabLabel {...props}>My Projects</TabLabel>,
+            }}
+        />
+        <Screen
+            name={FEEDS_STACK}
+            component={FeedsStack}
+            options={{
+                tabBarIcon: ({ focused }) => (
+                    <TabButton focused={focused} icon="compass" />
+                ),
+                tabBarLabel: (props) => <TabLabel {...props}>Feeds</TabLabel>,
             }}
         />
         <Screen

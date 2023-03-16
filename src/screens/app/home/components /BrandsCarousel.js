@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -13,9 +13,25 @@ import TemplateCarousel from '../../../../components/carousels/TemplateCarousel'
 import TemplateBox from '../../../../components/TemplateBox';
 import { BRAND_DETAILS, EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
 import { BRANDS_TAB } from '../../explore/ExploreScreen';
+import useGetBrands from '../../../../hooks/creators/useGetBrands';
 
 const BrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
+
+    const { brands } = useGetBrands();
+
+    const brandsData = useMemo(() => {
+        if (!brands) {
+            return [];
+        }
+        return brands.map((brand) => ({
+            id: brand?.id,
+            name: brand?.name,
+            image: brand?.image,
+            shortDescription: brand?.shortDescription,
+        }));
+    }, [brands]);
+
     return (
         <TemplateBox style={style}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={20}>
@@ -39,10 +55,10 @@ const BrandsCarousel = ({ style }) => {
             </TemplateText>
 
             <TemplateCarousel
-                data={BRANDS}
+                data={brandsData}
                 renderItem={({ item }) => (
                     <BrandsCard
-                        image={item?.image}
+                        image={{ uri: item?.image }}
                         title={item?.name}
                         shortDescription={item?.shortDescription}
                         style={styles.card}

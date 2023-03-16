@@ -1,22 +1,43 @@
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import { OFFERS, OFFERS_STACK } from '../../../../navigation/ScreenNames';
+import { CREATOR_PROJECT_STATUS, OFFERS, OFFERS_STACK } from '../../../../navigation/ScreenNames';
 import { BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
-
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import CurrentCreatorsCard from './CurrentCreatorsCard';
-import useGetCreators from '../../../../hooks/brands/useGetCreators';
+import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 
 const CurrentCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
-    const { filteredCreators } = useGetCreators();
+    const { projects, getEnrolledCreators } = useProjectsContext();
+
+    const creatorIds = useMemo(() => {
+        if (!projects?.length) return [];
+
+        return projects?.reduce((acc, proj) => {
+            if (proj?.applications?.length > 0) {
+                proj?.applications?.forEach((app) => {
+                    if (app?.creatorId) {
+                        acc.push({ creatorId: app?.creatorId, projectID: proj?.id });
+                    }
+                });
+            }
+
+            return acc;
+        }, []);
+    }, [projects]);
+
+    const filteredCreators = useMemo(() => {
+        if (!creatorIds?.length) return [];
+
+        return getEnrolledCreators(creatorIds?.map(({ creatorId }) => creatorId));
+    }, [creatorIds]);
 
     return (
         <View style={style}>
@@ -44,6 +65,12 @@ const CurrentCreatorsCarousel = ({ style }) => {
                         image={item?.image}
                         shortDescription={item?.shortDescription}
                         style={styles.card}
+                        onPress={() => navigation.navigate(CREATOR_PROJECT_STATUS, {
+                            creatorID: item?.id,
+                            projectId: creatorIds
+                                ?.find(({ creatorId }) => creatorId === item?.id)?.projectID,
+                            creatorEmail: item?.contact?.email,
+                        })}
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH / 1.3}

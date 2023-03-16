@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
-    BLACK_40, GREEN, WHITE,
+    BLACK_60, GREEN, WHITE,
 } from '../../../../theme/Colors';
 import { RADIUS_SMALL, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import BackgroundImage from '../../../../components/BackgroundImage';
@@ -11,16 +11,16 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 
-const cardWidth = SCREEN_WIDTH / 1.3;
-const aspectRatio = 1;
+const defaultCardWidth = SCREEN_WIDTH / 1.3;
+const defaultAspectRatio = 1.3;
 const CurrentCreatorsCard = ({
-    image, name, shortDescription, style, onPress,
+    image, name, shortDescription, style, onPress, cardWidth, aspectRatio,
 }) => (
     <TemplateBox
         fullGradient={!!image}
         alignItems="center"
         justifyContent="center"
-        gradientColors={[BLACK_40, BLACK_40]}
+        gradientColors={[BLACK_60, BLACK_60]}
         borderRadius={RADIUS_SMALL}
         width={cardWidth}
         aspectRatio={aspectRatio}
@@ -36,11 +36,11 @@ const CurrentCreatorsCard = ({
                 color={WHITE}
                 size={16}
                 style={styles.text}
-                numberOfLines={4}
+                numberOfLines={2}
             >
                 {shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
             </TemplateText>
-            <TemplateBox height={86} />
+            <TemplateBox height={20} />
             <TemplateBox
                 alignItems="center"
                 justifyContent="center"
@@ -72,6 +72,8 @@ CurrentCreatorsCard.propTypes = {
     shortDescription: PropTypes.string,
     style: PropTypes.shape({}),
     onPress: PropTypes.func,
+    cardWidth: PropTypes.number,
+    aspectRatio: PropTypes.number,
 };
 
 CurrentCreatorsCard.defaultProps = {
@@ -80,5 +82,7 @@ CurrentCreatorsCard.defaultProps = {
     shortDescription: '',
     style: {},
     onPress: () => {},
+    cardWidth: defaultCardWidth,
+    aspectRatio: defaultAspectRatio,
 };
 export default CurrentCreatorsCard;

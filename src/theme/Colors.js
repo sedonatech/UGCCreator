@@ -1,16 +1,16 @@
 export const TRANSPARENT = 'transparent';
-export const BLACK = '#192126';
+export const BLACK = '#150b2c';
 export const BLACK_SECONDARY = '#2D3439';
-export const BLACK_50 = 'rgba(0, 0, 0, 0.5)';
-export const BLACK_10 = 'rgba(0, 0, 0, 0.1)';
-export const BLACK_20 = 'rgba(0, 0, 0, 0.2)';
-export const BLACK_30 = 'rgba(0, 0, 0, 0.3)';
-export const BLACK_40 = 'rgba(0, 0, 0, 0.4)';
-export const BLACK_60 = 'rgba(0, 0, 0, 0.6)';
-export const BLACK_70 = 'rgba(0, 0, 0, 0.7)';
-export const BLACK_80 = 'rgba(0, 0, 0, 0.8)';
-export const BLACK_90 = 'rgba(0, 0, 0, 0.9)';
-export const BLACK_0_5 = 'rgba(0, 0, 0, 0.03)';
+export const BLACK_50 = `${BLACK}50`;
+export const BLACK_10 = `${BLACK}10`;
+export const BLACK_20 = `${BLACK}20`;
+export const BLACK_30 = `${BLACK}30`;
+export const BLACK_40 = `${BLACK}40`;
+export const BLACK_60 = `${BLACK}60`;
+export const BLACK_70 = `${BLACK}70`;
+export const BLACK_80 = `${BLACK}80`;
+export const BLACK_90 = `${BLACK}90`;
+export const BLACK_0_5 = `${BLACK}0.5`;
 
 export const WHITE = 'white';
 export const WHITE_10 = 'rgba(255, 255, 255, 0.1)';

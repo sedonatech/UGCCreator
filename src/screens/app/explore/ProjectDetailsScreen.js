@@ -1,21 +1,25 @@
 import React, {
-    FC, useLayoutEffect, useMemo, useState
+    useLayoutEffect, useMemo, useRef,
 } from 'react';
 import {
+    Alert,
+    Animated,
     ScrollView, StyleSheet,
 } from 'react-native';
 
+import moment from 'moment/moment';
 import {
     BLACK,
-    BLACK_30, BLACK_50, BLACK_SECONDARY,
-    WHITE, WHITE_40
+    BLACK_30,
+    BLACK_SECONDARY, GREEN,
+    WHITE,
+    WHITE_40,
 } from '../../../theme/Colors';
 import {
     SCREEN_HEIGHT,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
-import { PROJECTS } from '../../../consts/content/Home';
 import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
 import LoadingOverlay from '../../../components/LoadingOverlay';
@@ -23,19 +27,37 @@ import HeaderIconButton from '../../../components/header/HeaderButton';
 import DescriptionRange from './components/DescriptionRange';
 import DescriptionRow from './components/DescriptionRow';
 import Button from '../../../components/Button';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
+import {
+    ageFilters,
+    countryFilters,
+    deliveryFormatFilters, genderFilters, languageFilters,
+    projectDurationFilters,
+    projectFilters, projectTypeFilters,
+} from '../../../consts/AppFilters/ProjectFilters';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 
-interface ProjectDetailsScreenProps {
-    route: any;
-    navigation: any;
-}
-const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation }) => {
+const ProjectDetailsScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
 
-    const selectedProject = useMemo(() => {
-        if (!PROJECTS) return null;
+    const { allProjects: projects, enrollToProject } = useProjectsContext();
 
-        return PROJECTS?.find(({ id }) => id === projectId);
-    }, [projectId, PROJECTS]);
+    const { auth } = useAuthContext();
+
+    const { profile } = auth;
+
+    const selectedProject = useMemo(() => {
+        if (!projects) return null;
+
+        return projects?.find(({ id }) => id === projectId);
+    }, [projectId, projects]);
+
+    const enrolled = useMemo(() => {
+        if (!selectedProject) return false;
+
+        return selectedProject?.applications?.map((app) => app?.creatorId)?.includes(profile?.id);
+    }, [selectedProject, profile]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -46,9 +68,39 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                     backDropColor={WHITE_40}
                     ml={WRAPPER_MARGIN}
                 />
-            )
+            ),
         });
     }, [navigation]);
+
+    const onEnroll = () => {
+        if (enrolled) {
+            navigation.navigate(CURRENT_PROJECT_DETAILS,
+                {
+                    projectId,
+                    fromProjectDetails: true,
+                });
+            return;
+        }
+        enrollToProject(profile?.id, selectedProject);
+        Alert.alert(
+            'Success',
+            'You have successfully enrolled to this project',
+            [
+                {
+                    text: 'OK',
+                    onPress: () => navigation.goBack(),
+                },
+            ],
+            { cancelable: false },
+        );
+    };
+
+    const pan = useRef(new Animated.ValueXY()).current;
+
+    const buttonCta = useMemo(() => {
+        if (enrolled) return 'View Project Status';
+        return 'Enroll Now';
+    }, [enrolled]);
 
     if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
 
@@ -56,17 +108,42 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
-            bouncesZoom
-            bounces={false}
+            scrollEventThrottle={1}
+            onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
+                {
+                    useNativeDriver: false,
+                },
+            )}
+            contentContainerStyle={styles.contentContainer}
+            bounces
         >
             <TemplateBox
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={[BLACK_30, BLACK_30]}
+                style={{
+                    transform: [
+                        {
+                            translateY: pan.y.interpolate({
+                                inputRange: [-1000, 0],
+                                outputRange: [-200, 0],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                        {
+                            scale: pan.y.interpolate({
+                                inputRange: [-3000, 0],
+                                outputRange: [20, 1],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                    ],
+                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage
-                    source={selectedProject?.image}
+                    source={{ uri: selectedProject?.image }}
                     width="100%"
                     style={styles.image}
                 />
@@ -85,7 +162,7 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                     </TemplateText>
                     <TemplateBox height={10} />
                     <TemplateText
-                        size={14}
+                        size={16}
                         color={WHITE}
                         numberOfLines={2}
 
@@ -93,6 +170,22 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                         {selectedProject?.shortDescription}
                     </TemplateText>
                 </TemplateBox>
+                {enrolled && (
+                    <TemplateBox
+                        flex
+                        absolute
+                        borderRadius={10}
+                        backgroundColor={GREEN}
+                        height={30}
+                        width={74}
+                        alignItems="center"
+                        justifyContent="center"
+                        top={SCREEN_HEIGHT / 2.4 - 44}
+                        left={SCREEN_HEIGHT / 2.4 - 46}
+                    >
+                        <TemplateText bold size={12} color={WHITE}>Enrolled</TemplateText>
+                    </TemplateBox>
+                )}
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN}>
@@ -105,7 +198,7 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                     Description
                 </TemplateText>
                 <TemplateText
-                    color={BLACK_50}
+                    color={BLACK}
                     size={16}
                     lineHeight={22}
                 >
@@ -122,9 +215,9 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 <DescriptionRange
                     icon="timer-outline"
                     maxSubtitle="Start Date"
-                    maxTitle={selectedProject?.startDate}
+                    maxTitle={moment(selectedProject?.startDate).format('DD MMM YYYY')}
                     minSubtitle="End Date"
-                    minTitle={selectedProject?.endDate}
+                    minTitle={moment(selectedProject?.endDate).format('DD MMM YYYY')}
                 />
                 <TemplateText
                     style={styles.title}
@@ -137,9 +230,9 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 <DescriptionRange
                     icon="wallet-outline"
                     maxSubtitle="Maximum Budget"
-                    maxTitle={`${selectedProject?.priceRange?.max} ${selectedProject?.currency}`}
+                    maxTitle={`${selectedProject?.priceRange?.max} ${selectedProject?.currency?.symbol}`}
                     minSubtitle="Minimum Budget"
-                    minTitle={`${selectedProject?.priceRange?.min} ${selectedProject?.currency}`}
+                    minTitle={`${selectedProject?.priceRange?.min} ${selectedProject?.currency?.symbol}`}
                 />
                 <TemplateText
                     style={styles.title}
@@ -149,10 +242,10 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 >
                     Content Delivery Format
                 </TemplateText>
-                {selectedProject?.deliverFormat?.map((format) => (
+                {selectedProject?.deliveryFormat?.map((format) => (
                     <DescriptionRow
-                        key={format?.value}
-                        title={format?.name}
+                        key={deliveryFormatFilters?.find(({ value }) => value === format)?.value}
+                        title={deliveryFormatFilters?.find(({ value }) => value === format)?.name}
                     />
                 ))}
                 <TemplateText
@@ -165,8 +258,10 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 </TemplateText>
                 {selectedProject?.duration?.map((duration) => (
                     <DescriptionRow
-                        key={duration?.value}
-                        title={duration?.name}
+                        key={projectDurationFilters?.find(({ value }) => value === duration)?.value}
+                        title={projectDurationFilters
+                            ?.find(({ value }) => value === duration)
+                            ?.name}
                     />
                 ))}
                 <TemplateText
@@ -179,8 +274,8 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 </TemplateText>
                 {selectedProject?.categories?.map((category) => (
                     <DescriptionRow
-                        key={category?.value}
-                        title={category?.name}
+                        key={projectFilters?.find(({ value }) => value === category)?.value}
+                        title={projectFilters?.find(({ value }) => value === category)?.name}
                     />
                 ))}
                 <TemplateText
@@ -193,8 +288,8 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 </TemplateText>
                 {selectedProject?.countries?.map((country) => (
                     <DescriptionRow
-                        key={country?.value}
-                        title={country?.name}
+                        key={countryFilters?.find(({ value }) => value === country)?.value}
+                        title={countryFilters?.find(({ value }) => value === country)?.name}
                     />
                 ))}
                 <TemplateText
@@ -207,8 +302,8 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 </TemplateText>
                 {selectedProject?.gender?.map((gender) => (
                     <DescriptionRow
-                        key={gender?.value}
-                        title={gender?.name}
+                        key={genderFilters?.find(({ value }) => value === gender)?.value}
+                        title={genderFilters?.find(({ value }) => value === gender)?.name}
                     />
                 ))}
                 <TemplateText
@@ -221,8 +316,8 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 </TemplateText>
                 {selectedProject?.languages?.map((language) => (
                     <DescriptionRow
-                        key={language?.value}
-                        title={language?.name}
+                        key={languageFilters?.find(({ value }) => value === language)?.value}
+                        title={languageFilters?.find(({ value }) => value === language)?.name}
                     />
                 ))}
                 <TemplateText
@@ -235,8 +330,8 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 </TemplateText>
                 {selectedProject?.ageRange?.map((range) => (
                     <DescriptionRow
-                        key={range?.value}
-                        title={range?.name}
+                        key={ageFilters?.find(({ value }) => value === range)?.value}
+                        title={ageFilters?.find(({ value }) => value === range)?.name}
                     />
                 ))}
                 <TemplateText
@@ -249,13 +344,18 @@ const ProjectDetailsScreen:FC<ProjectDetailsScreenProps> = ({ route, navigation 
                 </TemplateText>
                 {selectedProject?.projectType?.map((type) => (
                     <DescriptionRow
-                        key={type?.value}
-                        title={type?.name}
+                        key={projectTypeFilters?.find(({ value }) => value === type)?.value}
+                        title={projectTypeFilters?.find(({ value }) => value === type)?.name}
                     />
                 ))}
             </TemplateBox>
 
-            <Button title="Enroll Now" style={styles.button} color={BLACK_SECONDARY} />
+            <Button
+                title={buttonCta}
+                style={styles.button}
+                color={BLACK_SECONDARY}
+                onPress={onEnroll}
+            />
         </ScrollView>
     );
 };
@@ -270,11 +370,11 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: 10,
-        marginTop: WRAPPER_MARGIN * 2
+        marginTop: WRAPPER_MARGIN * 2,
     },
     button: {
         alignSelf: 'center',
-        marginVertical: WRAPPER_MARGIN * 2
-    }
+        marginVertical: WRAPPER_MARGIN * 2,
+    },
 });
 export default ProjectDetailsScreen;
