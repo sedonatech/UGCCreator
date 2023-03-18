@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
+import { APP } from '../../navigation/ScreenNames';
 
 const useNotificationInteraction = () => {
     const navigation = useNavigation();
@@ -16,7 +17,7 @@ const useNotificationInteraction = () => {
                 remoteMessage.notification,
             );
             setLoading(false);
-            navigation.navigate(remoteMessage?.data?.type);
+            navigation.navigate(APP);
         });
 
         // Check whether an initial notification is available
@@ -28,7 +29,7 @@ const useNotificationInteraction = () => {
                         'Notification caused app to open from quit state:',
                         remoteMessage.notification,
                     );
-                    navigation.navigate(remoteMessage?.data?.type);
+                    navigation.navigate(APP);
                 }
                 setLoading(false);
             });
