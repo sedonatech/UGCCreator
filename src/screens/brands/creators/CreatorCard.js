@@ -31,7 +31,7 @@ const CreatorCard = ({
         pAll={WRAPPER_MARGIN}
         selfCenter
         mt={SPACE_XXLARGE}
-        style={[SHADOW('card', GREY_SECONDARY), style]}
+        style={[SHADOW('card', WHITE), style]}
     >
 
         <TemplateBox row>
@@ -53,9 +53,9 @@ const CreatorCard = ({
         </TemplateBox>
         <TemplateBox
             selfCenter
-            width={300}
+            width="96%"
             height={1}
-            backgroundColor={GREY_SECONDARY}
+            backgroundColor={BLACK_40}
             mv={WRAPPER_MARGIN}
         />
 
@@ -70,7 +70,7 @@ const CreatorCard = ({
             </TemplateBox>
 
             <TemplateBox
-                ph={WRAPPER_MARGIN}
+                ph={WRAPPER_MARGIN - 5}
                 pv={WRAPPER_MARGIN / 2}
                 backgroundColor={BLACK}
                 borderRadius={10}
@@ -79,7 +79,7 @@ const CreatorCard = ({
                 onPress={onPress}
                 left={buttonOffset}
             >
-                <TemplateText color={WHITE} size={14} bold>View Portfolio</TemplateText>
+                <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
             </TemplateBox>
         </TemplateBox>
     </TemplateBox>

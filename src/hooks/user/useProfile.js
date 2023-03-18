@@ -109,16 +109,29 @@ const useProfile = () => {
     const createBrandProfile = async (userName, currentUser) => {
         try {
             await firestore().collection(USERS_COLLECTION).doc(currentUser?.uid).set({
-                userName,
+                name: userName,
                 email: currentUser?.email,
                 id: currentUser?.uid,
                 image: currentUser?.photoURL,
                 shortDescription: '',
                 description: '',
-                reviews: [],
+                contact: {
+                    email: '',
+                    phone: '',
+                    address: '',
+                },
                 categories: [],
-                phone: '',
-                projects: [],
+                location: {
+                    city: '',
+                    country: '',
+                },
+                socialMedia: {
+                    facebook: '',
+                    instagram: '',
+                    twitter: '',
+                    youtube: '',
+                    website: '',
+                },
                 type: 'brand',
             });
         } catch (e) {

@@ -62,7 +62,7 @@ Button.propTypes = {
     title: PropTypes.string,
     loading: PropTypes.bool,
     disabled: PropTypes.bool,
-    style: PropTypes.object,
+    style: PropTypes.shape({}),
     titleColor: PropTypes.string,
 };
 Button.defaultProps = {

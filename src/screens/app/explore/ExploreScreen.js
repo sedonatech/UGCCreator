@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+    useEffect, useMemo, useRef, useState,
+} from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
@@ -18,7 +20,6 @@ import {
 import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import BrandsTab from './components/BrandsTab';
-import ProjectsTab from './components/ProjectsTab';
 import Filter from '../../../../assets/svgs/Filter';
 import {
     ageFilters,
@@ -27,9 +28,11 @@ import {
     languageFilters, projectDurationFilters,
     projectFilters, projectTypeFilters,
 } from '../../../consts/AppFilters/ProjectFilters';
-import { BRANDS, PROJECTS } from '../../../consts/content/Home';
 import FilterCategory from './components/FilterCategory';
 import ToggleCarousel from '../../../components/ToggleCarousel';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
+import useGetBrands from '../../../hooks/creators/useGetBrands';
+import AllProjectsTab from './components/AllProjectsTab';
 
 export const BRANDS_TAB = {
     name: 'Brands',
@@ -52,6 +55,22 @@ const ExploreScreen = ({ route }) => {
     const [selectedTab, setSelectedTab] = useState(TAB_DATA[0]);
 
     const [selectedFilters, setSelectedFilters] = useState([]);
+
+    const { allProjects: projects } = useProjectsContext();
+
+    const { brands } = useGetBrands();
+
+    const brandsData = useMemo(() => {
+        if (!brands) {
+            return [];
+        }
+        return brands.map((brand) => ({
+            id: brand?.id,
+            name: brand?.name,
+            image: brand?.image,
+            shortDescription: brand?.shortDescription,
+        }));
+    }, [brands]);
 
     const onProjectFilterPress = (value) => {
         if (selectedFilters.includes(value)) {
@@ -80,18 +99,18 @@ const ExploreScreen = ({ route }) => {
     };
 
     useEffect(() => {
-        if (!!search && BRANDS?.length) {
-            const fuse = new Fuse(BRANDS, options);
+        if (!!search && brandsData?.length) {
+            const fuse = new Fuse(brandsData, options);
             const results = fuse.search(search).map(({ item }) => item);
             setSearchResults(results);
         }
 
-        if (!!search && PROJECTS?.length) {
-            const fuse = new Fuse(PROJECTS, options);
+        if (!!search && projects?.length) {
+            const fuse = new Fuse(projects, options);
             const results = fuse.search(search).map(({ item }) => item);
             setProjectsSearchResults(results);
         }
-    }, [search]);
+    }, [search, projects, brandsData]);
 
     useEffect(() => {
         if (initialTab === BRANDS_TAB) {
@@ -101,9 +120,17 @@ const ExploreScreen = ({ route }) => {
         }
     }, [initialTab]);
 
-    const filteredBrands = search?.length ? searchResults : BRANDS;
+    const filteredBrands = useMemo(() => {
+        if (!brandsData) return [];
 
-    const filteredProjects = search?.length ? projectsSearchResults : PROJECTS;
+        return search?.length ? searchResults : brandsData;
+    }, [search, brandsData]);
+
+    const filteredProjects = useMemo(() => {
+        if (!projects) return [];
+
+        return search?.length ? projectsSearchResults : projects;
+    }, [search, projects]);
 
     return (
         <ScrollView style={styles.container}>
@@ -144,7 +171,7 @@ const ExploreScreen = ({ route }) => {
                 <BrandsTab data={filteredBrands} />
             )}
             {selectedTab === PROJECTS_TAB && filteredProjects && (
-                <ProjectsTab data={filteredProjects} />
+                <AllProjectsTab projects={filteredProjects} />
             )}
 
             <RBSheet

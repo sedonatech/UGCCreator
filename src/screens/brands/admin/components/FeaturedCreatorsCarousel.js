@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import { OFFERS, OFFERS_STACK } from '../../../../navigation/ScreenNames';
+import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
 import { BLACK, BLACK_40, BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
-
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import useGetCreators from '../../../../hooks/brands/useGetCreators';
 import CreatorCard from '../../creators/CreatorCard';
@@ -23,24 +22,25 @@ const FeaturedCreatorsCarousel = ({ style }) => {
     return (
         <View style={style}>
             <View style={styles.titleContainer}>
-                <TemplateBox>
+                <TemplateBox row justifyContent="space-between">
                     <TemplateText bold size={18} color={BLACK}>
                         Featured Creators
                     </TemplateText>
-                    <TemplateBox height={10} />
-                    <TemplateText size={14} color={BLACK_40}>
-                        Based on your recent searches
-                    </TemplateText>
+                    <TemplateBox />
+                    <TemplateTouchable
+                        onPress={() => navigation.navigate(CREATORS_PROFILES)}
+                    >
+                        <TemplateText startCase size={14} underLine color={BLUE}>
+                            See All
+                        </TemplateText>
+                    </TemplateTouchable>
+
                 </TemplateBox>
-                <TemplateTouchable
-                    onPress={() => navigation.navigate(OFFERS_STACK, {
-                        screen: OFFERS,
-                    })}
-                >
-                    <TemplateText startCase size={14} underLine color={BLUE}>
-                        See All
-                    </TemplateText>
-                </TemplateTouchable>
+
+                <TemplateBox height={10} />
+                <TemplateText size={14} color={BLACK}>
+                    Based on your recent searches
+                </TemplateText>
             </View>
 
             <TemplateCarousel
@@ -56,6 +56,11 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         imageStyle={styles.image}
                         subtitleContainerWidth={80}
                         buttonOffset={50}
+                        textContainerWidth="68%"
+                        onPress={() => navigation.navigate(PROFILE, {
+                            creatorId: item?.id,
+                        })}
+
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
@@ -77,11 +82,9 @@ FeaturedCreatorsCarousel.defaultProps = {
 
 const styles = StyleSheet.create({
     titleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+
         paddingHorizontal: WRAPPER_MARGIN,
-        marginVertical: WRAPPER_MARGIN,
+        marginTop: WRAPPER_MARGIN / 2,
     },
     cardCarousel: {
         paddingHorizontal: WRAPPER_MARGIN,

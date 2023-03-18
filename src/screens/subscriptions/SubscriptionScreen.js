@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import {
     ActivityIndicator, ScrollView, StyleSheet,
 } from 'react-native';
@@ -131,7 +131,7 @@ const SubscriptionScreen = () => {
                 <TemplateBox selfCenter ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
                     <TemplateText
                         bold
-                        size={20}
+                        size={18}
                         center
                         color={BLACK}
                         lineHeight={26}
@@ -141,8 +141,8 @@ const SubscriptionScreen = () => {
                     </TemplateText>
                     <TemplateBox height={20} />
                     <TemplateText
-                        size={16}
-                        color={BLACK_40}
+                        size={14}
+                        color={BLACK}
                         center
                     >
                         Get Access To the world's largest platform for UGC Creators and brands
@@ -156,7 +156,7 @@ const SubscriptionScreen = () => {
                             packages.map((pack, index) => (
                                 <SubscriptionCard
                                     onPress={() => handleSubscription(index)}
-                                    key={pack?.id}
+                                    key={pack?.title}
                                     title={pack?.title}
                                     price={pack?.priceString}
                                     description={pack?.description}
@@ -193,7 +193,7 @@ const SubscriptionScreen = () => {
                     </TemplateText>
                 </TemplateBox>
                 <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN}>
-                    <TemplateText size={14} color={BLACK_40} center small>
+                    <TemplateText size={12} color={BLACK} center small>
                         By selecting a subscription plan you agree to our
                         {' '}
                         <TemplateText

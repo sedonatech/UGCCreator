@@ -5,7 +5,7 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import {
-    BLACK, BLACK_30, ERROR_RED, GREY_SECONDARY,
+    BLACK, BLACK_80, ERROR_RED, GREY_SECONDARY,
 } from '../../../../theme/Colors';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
@@ -33,7 +33,7 @@ const SettingsRow = ({
                         {title}
                     </TemplateText>
                     {!isLast && (
-                        <TemplateText color={BLACK_30} size={12}>{subtitle}</TemplateText>
+                        <TemplateText color={BLACK_80} size={12}>{subtitle}</TemplateText>
                     )}
                 </TemplateBox>
                 <TemplateBox flex />

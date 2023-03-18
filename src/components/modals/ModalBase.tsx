@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-import { WHITE } from '../../theme/Colors';
+import { BLACK_30 } from '../../theme/Colors';
 
 export interface ModalBaseProps {
     closeOnPress:()=>void;
@@ -25,6 +25,11 @@ const ModalBase:React.FC<ModalBaseProps> = ({
         onSwipeComplete={closeOnPress}
         onBackdropPress={closeOnPress}
         style={[styles.modal, style]}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        animationInTiming={500}
+        animationOutTiming={500}
+        backdropTransitionInTiming={500}
         {...restProps}
     >
         {children}
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
     modal: {
         flex: 1,
         margin: 0,
-        backgroundColor: WHITE,
+        backgroundColor: BLACK_30,
     },
 });
 

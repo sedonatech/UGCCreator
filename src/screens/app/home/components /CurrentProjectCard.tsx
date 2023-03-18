@@ -8,11 +8,12 @@ import {
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import {
-    RADIUS_MEDIUM, RADIUS_SMALL, RADIUS_XSMALL, SCREEN_WIDTH
+    RADIUS_MEDIUM, SCREEN_WIDTH
 } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import AvatarOverlaps from '../../../../components/AvatarOverlaps';
-import { DEFAULT_AVATARS } from '../../../../consts/content/Home';
+import useGetEnrolledCreatorsAvatars from '../../../brands/admin/hooks/useGetEnrolledCreatorsAvatars';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     title?: string;
@@ -35,6 +36,7 @@ interface Props {
 
     slideInDelay?: number;
     isBrand?: boolean;
+    projectId?: string;
 
 }
 
@@ -53,12 +55,15 @@ const CurrentProjectCard: FC<Props> = ({
     width,
     slideInDelay,
     isBrand = false,
+    projectId,
 }) => {
     const color = status === 'High' ? PINK : BRAND_BLUE;
 
+    const { enrolledCreatorsAvatars } = useGetEnrolledCreatorsAvatars(projectId);
+
     return (
         <TemplateBox
-            width={width || (SCREEN_WIDTH / 1.23)}
+            width={wp(width) || wp(SCREEN_WIDTH / 1.23)}
             borderRadius={RADIUS_MEDIUM}
             shadow
             pAll={20}
@@ -86,7 +91,7 @@ const CurrentProjectCard: FC<Props> = ({
                 <TemplateIcon color={BLACK} size={24} name="ellipsis-vertical-outline" />
             </TemplateBox>
             {/* @ts-ignore */}
-            <TemplateText size={18} bold color={BLACK} style={styles.title}>
+            <TemplateText size={16} bold color={BLACK} style={styles.title}>
                 {title}
             </TemplateText>
 
@@ -120,7 +125,7 @@ const CurrentProjectCard: FC<Props> = ({
 
             <TemplateBox row alignItems="center">
                 {isBrand ? (
-                    <AvatarOverlaps imageUrls={DEFAULT_AVATARS} />
+                    <AvatarOverlaps imageUrls={enrolledCreatorsAvatars} />
                 ) : (
                     <TemplateText size={14} color={BLACK} bold>
                         {brand}

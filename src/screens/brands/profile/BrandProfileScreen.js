@@ -1,104 +1,95 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import ViewShot from 'react-native-view-shot';
 
+import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
 import {
-    BLACK_10,
-    LAVENDER, TRANSPARENT, WHITE,
-} from '../../../theme/Colors';
-import {
-    HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
-import Blob from '../../../../assets/svgs/Blob';
-import TemplateBox from '../../../components/TemplateBox';
+    DEFAULT_CREATOR_CONTACT_INFO,
+    DEFAULT_CREATOR_DESCRIPTION,
+    DEFAULT_CREATOR_PAYPAL_LINK,
+    DEFAULT_CREATOR_RATES,
+    DEFAULT_CREATOR_SHORT_DESCRIPTION,
+    DEFAULT_CREATOR_SOCIAL,
+} from '../../../consts/content/Portfolio';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
+import useShareScreenShot from '../../../Utils/useShareScreenShot';
+import useGetCreators from '../../../hooks/brands/useGetCreators';
+import PortfolioHeader from '../../app/profile/components/PortfolioHeader';
+import AboutSection from '../../app/profile/components/AboutSection';
+import ContactSection from '../../app/profile/components/ContactSection';
 
-import { FORGOT_PASSWORD, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
-import SettingsRow from '../../app/profile/components/SettingsRow';
-import useLogout from '../../app/profile/useLogout';
+const BrandProfileScreen = ({ navigation }) => {
+    const { auth } = useAuthContext();
 
-const SettingsScreen = ({ navigation }) => {
-    const { logout: handleLogout } = useLogout();
+    const brand = auth?.profile;
 
-    const profileCompleteProgress = 0.4;
+    const userName = brand?.name;
 
-    const settings = [
-        {
-            title: 'Edit Brand Profile',
-            description: 'Update your brand profile',
-            onPress: () => navigation.navigate(UPDATE_PORTFOLIO),
-            icon: 'person-outline',
-        },
-        {
-            title: 'Change Admin Password',
-            description: 'Change your password',
-            onPress: () => navigation.navigate(FORGOT_PASSWORD, {
-                isUpdate: true,
-            }),
-            icon: 'lock-closed-outline',
-        },
-        {
-            title: 'Notifications',
-            description: 'Manage your notifications',
-            onPress: () => '',
-            icon: 'notifications-outline',
-        },
-        {
-            title: 'Privacy',
-            description: 'Manage your privacy settings',
-            onPress: () => '',
-            icon: 'lock-closed-outline',
-        },
-        {
-            title: 'Help',
-            description: 'Get help with your account',
-            onPress: () => '',
-            icon: 'help-circle-outline',
-        },
-        {
-            title: 'About',
-            description: 'Learn more about us',
-            onPress: () => '',
-            icon: 'information-circle-outline',
-        },
-        {
-            title: 'Logout',
-            description: 'Logout of your account',
-            onPress: handleLogout,
-            icon: 'log-out-outline',
-        },
+    const image = brand?.image;
 
-    ];
+    const about = brand?.about || DEFAULT_CREATOR_DESCRIPTION;
+
+    const shortDescription = brand?.shortDescription
+        || DEFAULT_CREATOR_SHORT_DESCRIPTION;
+
+    const contact = brand?.contact || DEFAULT_CREATOR_CONTACT_INFO;
+
+    const socials = brand?.socials || DEFAULT_CREATOR_SOCIAL;
+
+    const paypalLink = brand?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
+
+    const location = brand?.location?.country || 'London';
+
+    const screenshot = useRef(null);
+
+    const [shareScreenshot] = useShareScreenShot(userName, screenshot);
+
+    const handleShare = async () => {
+        await shareScreenshot();
+    };
+
+    useLayoutEffect(() => {
+        if (!brand?.id) {
+            navigation.setOptions({
+                headerLeft: () => (
+                    <HeaderIconButton
+                        name="share-outline"
+                        onPress={handleShare}
+                        backDropColor={BLACK_10}
+                        ml={WRAPPER_MARGIN}
+                    />
+                ),
+            });
+        }
+    }, [navigation, brand?.id]);
 
     return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-        >
-            <TemplateBox
-                mt={HEADER_MARGIN}
+        <ViewShot style={styles.viewShot} ref={screenshot}>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
             >
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
 
-            <TemplateBox mh={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 3}>
-                {settings.map(({
-                    title, description, onPress, icon,
-                }) => (
-                    <SettingsRow
-                        title={title}
-                        subtitle={description}
-                        onPress={onPress}
-                        icon={icon}
-                        key={title}
-                    />
-                ))}
-            </TemplateBox>
-        </ScrollView>
+                <PortfolioHeader
+                    userName={userName}
+                    location={location}
+                    creatorId={brand?.id}
+                    image={image}
+                />
+                <AboutSection
+                    about={about}
+                    shortDescription={shortDescription}
+                />
+                <ContactSection
+                    contactInfo={contact}
+                    socials={socials}
+                    paypalLink={paypalLink}
+                />
+            </ScrollView>
+        </ViewShot>
     );
 };
 
@@ -110,5 +101,8 @@ const styles = StyleSheet.create({
     contentContainer: {
         flexGrow: 1,
     },
+    viewShot: {
+        flex: 1,
+    },
 });
-export default SettingsScreen;
+export default BrandProfileScreen;

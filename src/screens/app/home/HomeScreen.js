@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
-    ScrollView, StyleSheet,
+    ScrollView, StyleSheet, RefreshControl,
 } from 'react-native';
 
+import { useIsFocused } from '@react-navigation/native';
 import {
     LAVENDER,
     WHITE,
@@ -20,22 +21,74 @@ import ProjectsCarousel from './components /ProjectsCarousel';
 import TemplateBox from '../../../components/TemplateBox';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import {
-    CURRENT_PROJECTS_CAROUSEL,
     NO_CURRENT_PROJECT_MESSAGE,
     NO_CURRENT_PROJECT_TITLE,
     PROFILE_INCOMPLETE_MESSAGE,
     PROFILE_INCOMPLETE_TITLE,
 } from '../../../consts/content/Home';
+import { UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
+import ProfileIncompleteModal from '../../../components/modals/ProfileIncompleteModal';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
+import useRefresh from '../../../hooks/creators/useRefresh';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
 
-    const profileCompleteProgress = 0.4;
+    const userId = profile?.id;
+
+    const isFocused = useIsFocused();
+
+    const modalVisible = auth?.completeProfileModalVisible;
+
+    const { refreshing, handleRefresh } = useRefresh();
+
+    const closeModal = () => {
+        auth?.closeCompleteProfileModal();
+        navigation.navigate(UPDATE_PORTFOLIO);
+    };
+
+    useEffect(() => {
+        if (isFocused && profile) {
+            auth?.getProfileCompleteStatus();
+        }
+    }, [
+        isFocused,
+        profile,
+    ]);
+
+    const { allProjects: projects } = useProjectsContext();
+
+    const userCurrentProjects = useMemo(() => {
+        if (!projects?.length) return [];
+
+        return projects.reduce((acc, project) => {
+            if (project?.applications?.length) {
+                const applicationCreatorIds = project?.applications?.map(
+                    ({ creatorId }) => creatorId,
+                );
+
+                if (applicationCreatorIds?.length && applicationCreatorIds?.includes(userId)) {
+                    acc?.push(project);
+                }
+            }
+
+            return acc;
+        }, []);
+    }, [projects, userId]);
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            refreshControl={(
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={handleRefresh}
+                />
+            )}
+        >
             <TemplateBox>
                 <Blob top color={LAVENDER} />
                 <Blob right color={LAVENDER} />
@@ -47,19 +100,8 @@ const HomeScreen = () => {
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
 
-            {
-                profileCompleteProgress < 1 && (
-                    <ProfileStatusCard
-                        title={PROFILE_INCOMPLETE_TITLE}
-                        description={PROFILE_INCOMPLETE_MESSAGE}
-                        progress={profileCompleteProgress}
-                        style={styles.statusCard}
-                        slideInDelay={100}
-                    />
-                )
-            }
-            {CURRENT_PROJECTS_CAROUSEL?.length ? (
-                <CurrentProjectsCarousel style={styles.carousel} />
+            {userCurrentProjects?.length ? (
+                <CurrentProjectsCarousel style={styles.carousel} data={userCurrentProjects} />
             )
                 : (
                     <ProfileStatusCard
@@ -73,7 +115,13 @@ const HomeScreen = () => {
 
             <ProjectsCarousel style={styles.carousel} />
             <BrandsCarousel style={styles.carousel} />
-
+            <ProfileIncompleteModal
+                visible={modalVisible}
+                closeOnPress={closeModal}
+                title={PROFILE_INCOMPLETE_TITLE}
+                subtitle={PROFILE_INCOMPLETE_MESSAGE}
+                buttonTitle="Complete Portfolio"
+            />
         </ScrollView>
     );
 };
@@ -89,10 +137,10 @@ const styles = StyleSheet.create({
         marginHorizontal: WRAPPER_MARGIN,
     },
     carousel: {
-        marginBottom: WRAPPER_MARGIN * 2,
+        marginBottom: WRAPPER_MARGIN,
     },
     statusCard: {
-        marginVertical: WRAPPER_MARGIN / 2,
+        marginBottom: WRAPPER_MARGIN * 2,
     },
 });
 export default HomeScreen;

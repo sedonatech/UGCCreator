@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TemplateBox from '../../../../components/TemplateBox';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import openUrl from '../../../../Utils/openUrl';
-import { BLACK, BLACK_0_5, BLACK_50 } from '../../../../theme/Colors';
+import { BLACK, BLACK_0_5 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
@@ -23,7 +23,7 @@ const ContactSection = ({ contactInfo, socials }) => (
             <TemplateBox pr={20}>
                 <TemplateText color={BLACK} bold>Phone Number</TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText color={BLACK_50} size={16}>{contactInfo?.phoneNumber}</TemplateText>
+                <TemplateText color={BLACK} size={16}>{contactInfo?.phoneNumber}</TemplateText>
             </TemplateBox>
             <TemplateBox flex />
         </TemplateBox>
@@ -38,7 +38,7 @@ const ContactSection = ({ contactInfo, socials }) => (
             <TemplateBox pr={20}>
                 <TemplateText color={BLACK} bold>Email</TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText color={BLACK_50} size={16}>{contactInfo?.email}</TemplateText>
+                <TemplateText color={BLACK} size={16}>{contactInfo?.email}</TemplateText>
             </TemplateBox>
             <TemplateBox flex />
         </TemplateBox>
@@ -58,7 +58,7 @@ const ContactSection = ({ contactInfo, socials }) => (
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>Instagram</TemplateText>
+                <TemplateText color={BLACK} size={16}>Instagram</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"
@@ -83,7 +83,7 @@ const ContactSection = ({ contactInfo, socials }) => (
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>FaceBook</TemplateText>
+                <TemplateText color={BLACK} size={16}>FaceBook</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"
@@ -109,7 +109,7 @@ const ContactSection = ({ contactInfo, socials }) => (
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>Twitter</TemplateText>
+                <TemplateText color={BLACK} size={16}>Twitter</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"
@@ -135,7 +135,7 @@ const ContactSection = ({ contactInfo, socials }) => (
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>LinkedIn</TemplateText>
+                <TemplateText color={BLACK} size={16}>LinkedIn</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"

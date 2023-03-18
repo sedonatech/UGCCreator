@@ -1,5 +1,6 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import {
     BLACK_10,
@@ -16,13 +17,35 @@ import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
 import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout } = useLogout();
 
-    const profileCompleteProgress = 0.4;
+    const { auth } = useAuthContext();
+
+    const isFocused = useIsFocused();
+
+    const {
+        getProfileCompleteStatus,
+        profileCompleteRatio,
+        profile,
+        user,
+    } = auth;
+
+    useEffect(() => {
+        if (isFocused) {
+            getProfileCompleteStatus();
+        }
+    }, [isFocused, profile, user]);
 
     const settings = [
+        {
+            title: 'Email',
+            description: auth?.user?.email,
+            onPress: () => '',
+            icon: 'mail-outline',
+        },
         {
             title: 'Edit Portfolio',
             description: 'Update your portfolio details',
@@ -103,7 +126,7 @@ const SettingsScreen = ({ navigation }) => {
             <ProfileStatusCard
                 title={PROFILE_INCOMPLETE_TITLE}
                 description={PROFILE_INCOMPLETE_MESSAGE}
-                progress={profileCompleteProgress}
+                progress={profileCompleteRatio}
                 style={styles.statusCard}
                 slideInDelay={100}
                 showIcon={false}

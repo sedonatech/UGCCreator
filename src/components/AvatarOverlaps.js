@@ -11,7 +11,7 @@ const AvatarOverlaps = ({ imageUrls }) => (
         mv={10}
         alignItems="center"
     >
-        {imageUrls?.map((image, index) => (
+        {!!imageUrls?.length && imageUrls?.map((image, index) => (
             <FastImage
                 key={`${index}`}
                 source={{ uri: image }}

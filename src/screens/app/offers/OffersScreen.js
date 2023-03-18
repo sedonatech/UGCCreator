@@ -1,27 +1,28 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import moment from 'moment';
+
 import TemplateText from '../../../components/TemplateText';
 import {
-    BRAND_BLUE, DEEP_PURPLE, GREEN, GREY, LAVENDER, PINK, TRANSPARENT, WHITE,
+    BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 import {
     HEADER_MARGIN,
-    IS_ANDROID,
-    SCREEN_HEIGHT, SCREEN_WIDTH, SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
+    IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
-import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import {
-    CURRENT_PROJECTS, FEED_CATEGORIES,
     NO_CURRENT_PROJECT_MESSAGE,
     NO_CURRENT_PROJECT_TITLE,
-    STATUS,
 } from '../../../consts/content/Home';
 import CurrentProjectCard from '../home/components /CurrentProjectCard';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import ToggleCarousel from '../../../components/ToggleCarousel';
 import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
+import useGetBrands from '../../../hooks/creators/useGetBrands';
+import { projectStatuses } from '../../../consts/AppFilters/ProjectStatus';
 
 const getTagColor = (status) => {
     if (status === 'backlog') {
@@ -36,13 +37,51 @@ const getTagColor = (status) => {
     return BRAND_BLUE;
 };
 const OffersScreen = ({ navigation }) => {
-    const [selectedStatus, setSelectedStatus] = useState(STATUS[0]);
+    const { allProjects: projects } = useProjectsContext();
+    const { brands } = useGetBrands();
+    const { auth } = useAuthContext();
+    const { profile } = auth;
 
-    const filteredProjects = useMemo(() => {
-        if (!CURRENT_PROJECTS) return [];
+    const enrolledProjects = useMemo(() => {
+        if (!projects) return [];
 
-        return CURRENT_PROJECTS.filter((item) => item?.currentStatus?.value === selectedStatus?.value);
-    }, [CURRENT_PROJECTS, selectedStatus]);
+        const enrolled = projects?.reduce((acc, proj) => {
+            proj?.applications?.forEach((app) => {
+                if (app?.creatorId === profile?.id) {
+                    acc.push(proj);
+                }
+            });
+
+            return acc;
+        }, []);
+
+        if (enrolled?.length) {
+            return enrolled?.map((item) => {
+                const application = item?.applications?.length
+                    ? item?.applications?.find(({ creatorId }) => creatorId === profile?.id)
+                    : {};
+                const completedStatuses = projectStatuses?.filter(({ status }) => status === 'completed');
+
+                const progress = completedStatuses?.length
+                    ? Math.round((completedStatuses?.length / projectStatuses?.length) * 10) / 10
+                    : 0;
+                return {
+                    ...item,
+                    ...application,
+                    progress,
+                    id: item?.id,
+                    title: item?.title,
+                    brand: brands?.find(({ id }) => id === item?.brandId)?.name,
+                    price: `From ${item?.priceRange?.max} to ${item?.priceRange?.min} ${item?.currency}`,
+                    status: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
+                    documentCount: application?.documents?.length,
+                    daysLeft: moment(item?.endDate).diff(moment(), 'days'),
+                    currentStatus: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
+                };
+            });
+        }
+        return [];
+    }, [projects, profile]);
 
     return (
         <ScrollView style={styles.container}>
@@ -66,28 +105,19 @@ const OffersScreen = ({ navigation }) => {
                 </TemplateText>
             </TemplateBox>
 
-            <ToggleCarousel
-                data={STATUS}
-                selectedTab={selectedStatus}
-                onChange={setSelectedStatus}
-            />
-
             {
-                filteredProjects?.length ? filteredProjects.map((item, index) => (
+                enrolledProjects?.length ? enrolledProjects.map((item, index) => (
                     <CurrentProjectCard
                         title={item?.title}
                         brand={item?.brand}
                         price={item?.price}
-                        status={item?.currentStatus?.name}
+                        status={item?.status}
                         notificationCount={item?.notifications}
                         documentCount={item?.documents}
                         daysLeft={item?.daysLeft}
-                        progress={item?.currentStatus?.value === STATUS[1].value
-                            ? item?.progress
-                            : 0}
+                        progress={item?.progress}
                         style={styles.card}
-                        cardColor={WHITE}
-                        tagColor={getTagColor(item?.currentStatus?.value)}
+                        cardColor={getTagColor(item?.currentStatus?.value)}
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                         slideInDelay={(index + 1) * 100}
                         key={item?.id}
@@ -116,12 +146,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
-    tabs: {
-        paddingHorizontal: WRAPPER_MARGIN,
-        marginVertical: SPACE_LARGE,
-    },
     card: {
         marginHorizontal: WRAPPER_MARGIN,
+        marginVertical: SPACE_LARGE,
+    },
+    statusCard: {
+        marginTop: WRAPPER_MARGIN,
         marginBottom: SPACE_LARGE,
     },
 });

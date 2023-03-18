@@ -15,16 +15,16 @@ const BrandsTab = (data: { data: any[]; }) => {
             {!!data?.data?.length && data?.data?.map((brand: any, index) => (
                 <BrandsCard
                     key={brand?.id}
-                    image={brand?.image}
+                    image={{ uri: brand?.image }}
                     title={brand?.name}
                     shortDescription={brand?.shortDescription}
                     style={styles.card}
                     cardWidth={SCREEN_WIDTH / 1.12}
                     aspectRatio={1.8}
                     slideInDelay={(index + 1) * 100}
-                    titleSize={20}
+                    titleSize={16}
                     descriptionLines={2}
-                    descriptionSize={16}
+                    descriptionSize={12}
                     // @ts-ignore
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
                 />

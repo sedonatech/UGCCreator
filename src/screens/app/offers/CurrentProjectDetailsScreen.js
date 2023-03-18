@@ -1,47 +1,61 @@
 import React, {
-    FC, useLayoutEffect, useMemo, useState
+    FC, useLayoutEffect, useMemo, useState,
 } from 'react';
 import { Animated, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK, BLACK_50, GREEN, GREY, GREY_SECONDARY, WHITE, WHITE_40
+    BLACK, BLACK_50, GREEN, GREY, GREY_SECONDARY, WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN } from '../../../theme/Layout';
-import { PROJECTS } from '../../../consts/content/Home';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
-import { projectStatuses } from '../../../consts/AppFilters/ProjectStatus';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import TemplateIcon from '../../../components/TemplateIcon';
 import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { HOME } from '../../../navigation/ScreenNames';
 
 const CURRENT_PROJECT_TABS = [
     {
         name: 'Overview',
-        value: 'overview'
+        value: 'overview',
     },
     {
         name: 'Project Notifications',
-        value: 'projectNotifications'
-    }
+        value: 'projectNotifications',
+    },
 ];
-interface Props {
-    route: any;
-    navigation: any;
-}
-const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
+
+const CurrentProjectDetailsScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
+
+    const fromProjectDetails = route?.params?.fromProjectDetails;
+
+    const { auth } = useAuthContext();
+
+    const { profile } = auth;
 
     const [selectedTab, setSelectedTab] = useState(CURRENT_PROJECT_TABS[0]);
 
-    const currentProject = useMemo(() => {
-        if (!PROJECTS) return null;
+    const { allProjects: projects } = useProjectsContext();
 
-        return PROJECTS?.find(({ id }) => id === projectId);
-    }, [projectId, PROJECTS]);
+    const currentProject = useMemo(() => {
+        if (!projects) return null;
+
+        return projects?.find(({ id }) => id === projectId);
+    }, [projectId, projects]);
+
+    const application = useMemo(() => {
+        if (!currentProject) return null;
+
+        return currentProject?.applications?.length
+            ? currentProject?.applications?.find(({ creatorId }) => creatorId === profile?.id)
+            : {};
+    }, [currentProject, profile?.id]);
 
     const pan = React.useRef(new Animated.ValueXY()).current;
 
@@ -50,11 +64,17 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
             headerLeft: () => (
                 <HeaderIconButton
                     name="arrow-back-outline"
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {
+                        if (fromProjectDetails) {
+                            navigation.navigate(HOME);
+                            return;
+                        }
+                        navigation.goBack();
+                    }}
                     backDropColor={WHITE_40}
                     ml={WRAPPER_MARGIN}
                 />
-            )
+            ),
         });
     }, [navigation]);
 
@@ -71,17 +91,33 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
                 [{ nativeEvent: { contentOffset: { y: pan.y } } }],
                 {
                     useNativeDriver: false,
-                }
+                },
             )}
             contentContainerStyle={styles.contentContainer}
-            bounces={false}
         >
             <TemplateBox
                 height={SCREEN_HEIGHT / 2.4}
+                style={{
+                    transform: [
+                        {
+                            translateY: pan.y.interpolate({
+                                inputRange: [-1000, 0],
+                                outputRange: [-200, 0],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                        {
+                            scale: pan.y.interpolate({
+                                inputRange: [-3000, 0],
+                                outputRange: [20, 1],
+                                extrapolate: 'clamp',
+                            }),
+                        },
+                    ],
+                }}
             >
-                {/* @ts-ignore */}
                 <BackgroundImage
-                    source={currentProject?.image}
+                    source={{ uri: currentProject?.image }}
                     width="100%"
                     style={styles.image}
                 />
@@ -99,7 +135,7 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
                     >
                         <TemplateText bold size={14} color={WHITE}>
                             {
-                                projectStatuses[2]?.name
+                                application?.status?.find(({ status }) => status === 'active')?.name
                             }
 
                         </TemplateText>
@@ -183,7 +219,7 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
             </TemplateBox>
             {
                 selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
-                    <OverviewTab />
+                    <OverviewTab application={application} />
                 )
             }
             {
@@ -198,7 +234,7 @@ const CurrentProjectDetailsScreen: FC<Props> = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: WHITE
+        backgroundColor: WHITE,
     },
     contentContainer: {
         flexGrow: 1,

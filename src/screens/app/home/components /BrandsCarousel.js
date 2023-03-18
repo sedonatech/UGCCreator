@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -7,15 +7,31 @@ import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { BRANDS } from '../../../../consts/content/Home';
-import { BLACK_50, BLUE } from '../../../../theme/Colors';
+import { BLACK, BLACK_50, BLUE } from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { BRAND_DETAILS, EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
 import { BRANDS_TAB } from '../../explore/ExploreScreen';
+import useGetBrands from '../../../../hooks/creators/useGetBrands';
 
 const BrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
+
+    const { brands } = useGetBrands();
+
+    const brandsData = useMemo(() => {
+        if (!brands) {
+            return [];
+        }
+        return brands.map((brand) => ({
+            id: brand?.id,
+            name: brand?.name,
+            image: brand?.image,
+            shortDescription: brand?.shortDescription,
+        }));
+    }, [brands]);
+
     return (
         <TemplateBox style={style}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={20}>
@@ -34,15 +50,15 @@ const BrandsCarousel = ({ style }) => {
                     </TemplateText>
                 </TemplateTouchable>
             </TemplateBox>
-            <TemplateText size={14} color={BLACK_50} style={styles.subtitle}>
+            <TemplateText size={14} color={BLACK} style={styles.subtitle}>
                 Check out our top brands
             </TemplateText>
 
             <TemplateCarousel
-                data={BRANDS}
+                data={brandsData}
                 renderItem={({ item }) => (
                     <BrandsCard
-                        image={item?.image}
+                        image={{ uri: item?.image }}
                         title={item?.name}
                         shortDescription={item?.shortDescription}
                         style={styles.card}

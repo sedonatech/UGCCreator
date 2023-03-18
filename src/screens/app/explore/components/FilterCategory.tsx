@@ -41,7 +41,7 @@ const FilterCategory: FC<Props> = ({
                 onPress={() => setToggleFilters((prevState) => !prevState)}
                 style={SHADOW('default', WHITE)}
             >
-                <TemplateText color={BLACK} bold size={18}>{title}</TemplateText>
+                <TemplateText color={BLACK} semiBold size={16}>{title}</TemplateText>
                 <TemplateIcon
                     name={toggleFilters
                         ? 'chevron-up-outline'

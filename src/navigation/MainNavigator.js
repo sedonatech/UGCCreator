@@ -17,6 +17,7 @@ import BrandLogo from '../../assets/svgs/BrandLogo';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import useHasSubscription from '../screens/subscriptions/useHasSubscription';
 import SubscriptionStack from './subscription/SubscriptionStack';
+import useNotificationInteraction from '../hooks/notifications/useNotificationInteraction';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -35,6 +36,8 @@ const MainNavigator = () => {
     const showSplash = isSignedIn && !isCreator && !isBrand;
 
     const hasSubscription = useHasSubscription();
+
+    useNotificationInteraction();
 
     useEffect(() => {
         if (!loading || auth?.user || !showSplash) {

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import { BLACK, BRAND_BLUE } from '../../theme/Colors';
+import { BRAND_BLUE } from '../../theme/Colors';
 import TemplateText from '../TemplateText';
 import { IS_ANDROID } from '../../theme/Layout';
 
 const TabLabel = ({ focused, children }) => (
-    <TemplateText black style={[styles.label, focused && styles.activeLabel]}>
+    <TemplateText black semiBold style={[styles.label, focused && styles.activeLabel]}>
         {children}
     </TemplateText>
 );

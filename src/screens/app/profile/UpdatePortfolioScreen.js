@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
 import {
-    BLACK_40, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE, WHITE_40,
+    BLACK,
+    BLACK_40, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
     IS_ANDROID, SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN,
@@ -15,7 +16,6 @@ import TemplateTextInput from '../../../components/TemplateTextInput';
 import TemplateText from '../../../components/TemplateText';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import useProfile from '../../../hooks/user/useProfile';
 import Wrapper from '../../../components/Wrapper';
 import { PROFILE } from '../../../navigation/ScreenNames';
 import UpdateCategories from './components/UpdateCategories';
@@ -29,9 +29,9 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
     const { auth } = useAuthContext();
 
-    const { updateProfile, loading } = useProfile();
-
-    const { profile: profileData, update } = auth;
+    const {
+        profile: profileData, update, updateProfile, loading,
+    } = auth;
 
     const handleUpdate = () => {
         updateProfile(profileData, profileData?.id);
@@ -281,10 +281,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingLeft: 16,
         marginTop: 10,
-        color: BLACK_40,
+        color: BLACK,
     },
     countryPicker: {
-        color: BLACK_40,
+        color: BLACK,
     },
 });
 export default UpdatePortfolioScreen;

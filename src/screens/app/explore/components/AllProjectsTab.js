@@ -1,21 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
 import TemplateBox from '../../../../components/TemplateBox';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import ProjectCard from '../../home/components /ProjectCard';
 import { PROJECT_DETAILS } from '../../../../navigation/ScreenNames';
+import useAuthContext from '../../../../hooks/auth/useAuthContext';
 
-const ProjectsTab = (data: { data: any[]; }) => {
+const AllProjectsTab = ({ projects }) => {
     const navigation = useNavigation();
+    const { auth } = useAuthContext();
+    const { profile } = auth;
 
     return (
-        <TemplateBox row flexWrap="wrap" ph={WRAPPER_MARGIN} justifyContent="space-between">
+        <TemplateBox row flexWrap="wrap" ph={WRAPPER_MARGIN} justifyContent="space-between" flex>
             {
-                !!data?.data?.length && data?.data?.map((item, index) => (
+                !!projects?.length && projects?.map((item, index) => (
                     <ProjectCard
                         key={item?.id}
-                        image={item?.image}
+                        image={{ uri: item?.image }}
                         title={item?.title}
                         shortDescription={item?.shortDescription}
                         slideInDelay={(index + 1) * 100}
@@ -23,6 +27,9 @@ const ProjectsTab = (data: { data: any[]; }) => {
                         onPress={() => navigation.navigate(PROJECT_DETAILS, {
                             projectId: item?.id,
                         })}
+                        enrolled={
+                            item?.applications?.map((app) => app?.creatorId)?.includes(profile?.id)
+                        }
                     />
                 ))
             }
@@ -31,4 +38,17 @@ const ProjectsTab = (data: { data: any[]; }) => {
     );
 };
 
-export default ProjectsTab;
+AllProjectsTab.propTypes = {
+    projects: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
+        title: PropTypes.string,
+        shortDescription: PropTypes.string,
+        image: PropTypes.string,
+    })),
+};
+
+AllProjectsTab.defaultProps = {
+    projects: [],
+};
+
+export default AllProjectsTab;

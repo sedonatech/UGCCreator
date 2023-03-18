@@ -26,14 +26,14 @@ const OnboardingScreen = ({ navigation }) => (
 
         <View style={styles.textContainer}>
             <View style={styles.dot} />
-            <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
+            <TemplateText size={16} color={BLACK} medium>
                 Connect with top brands as a creator
             </TemplateText>
         </View>
 
         <View style={styles.textContainer}>
             <View style={styles.dot} />
-            <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
+            <TemplateText size={16} color={BLACK} medium>
                 Connect with top creators as a brand
             </TemplateText>
         </View>
@@ -52,7 +52,7 @@ const OnboardingScreen = ({ navigation }) => (
                 })}
                 style={styles.button}
             />
-            <TemplateText italic size={16} center style={styles.loginText}>
+            <TemplateText italic size={16} center style={styles.loginText} medium>
                 Already joined?
                 {' '}
 
@@ -60,6 +60,7 @@ const OnboardingScreen = ({ navigation }) => (
                     color={BLUE}
                     underLine
                     size={16}
+                    medium
                     onPress={() => navigation.navigate(LOGIN)}
                 >
                     Login
@@ -99,17 +100,6 @@ const styles = StyleSheet.create({
     },
     loginText: {
         marginTop: 8,
-    },
-    title: {
-        marginTop: SCREEN_HEIGHT / 2,
-    },
-    subtitle: {
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
-    },
-    backgroundImage: {
-        height: '44%',
-        width: '100%',
-        top: 40,
     },
 });
 export default OnboardingScreen;

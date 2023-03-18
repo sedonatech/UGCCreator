@@ -42,9 +42,9 @@ const BrandsTabs = () => (
             component={BrandsProfileStack}
             options={{
                 tabBarIcon: ({ focused }) => (
-                    <TabButton focused={focused} icon="settings-outline" />
+                    <TabButton focused={focused} icon="people-outline" />
                 ),
-                tabBarLabel: (props) => <TabLabel {...props}>Settings</TabLabel>,
+                tabBarLabel: (props) => <TabLabel {...props}>Brand Profile</TabLabel>,
             }}
         />
     </Navigator>

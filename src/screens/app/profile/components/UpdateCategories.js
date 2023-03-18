@@ -41,7 +41,7 @@ const UpdateCategories = () => {
     return (
         <TemplateBox mv={SPACE_XLARGE}>
             <TemplateBox selfCenter mb={10}>
-                <TemplateText size={16}>Select your content categories</TemplateText>
+                <TemplateText size={16}>Select your Preferred content categories</TemplateText>
             </TemplateBox>
             <TemplateBox row flexWrap="wrap">
                 {profileData?.categories?.map((category) => (
