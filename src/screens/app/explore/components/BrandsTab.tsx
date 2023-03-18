@@ -22,9 +22,9 @@ const BrandsTab = (data: { data: any[]; }) => {
                     cardWidth={SCREEN_WIDTH / 1.12}
                     aspectRatio={1.8}
                     slideInDelay={(index + 1) * 100}
-                    titleSize={20}
+                    titleSize={16}
                     descriptionLines={2}
-                    descriptionSize={16}
+                    descriptionSize={12}
                     // @ts-ignore
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
                 />

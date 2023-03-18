@@ -51,14 +51,6 @@ export const projectStatuses : ProjectStatus[] = [
         brandDescription: 'The creator has accepted your proposal.Please prepare and send a contract for this project.',
     },
     {
-        name: 'Brand Proposal Rejected',
-        value: 'brand_proposal_rejected',
-        description: 'You have rejected the brand proposal.',
-        status: 'inactive',
-        brandName: 'Proposal Rejected',
-        brandDescription: 'The creator has rejected your proposal.',
-    },
-    {
         name: 'Brand Contract Received',
         value: 'brand_contract_received',
         description: 'Please review, sign and send the signed contract to the brand.',

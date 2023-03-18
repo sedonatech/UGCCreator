@@ -10,6 +10,7 @@ import {
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     image?: string | number | any;
@@ -24,7 +25,7 @@ interface Props {
     enrolled?: boolean;
 }
 
-const CARD_WIDTH = 150;
+const CARD_WIDTH = 166;
 const ProjectCard: FC<Props> = ({
     image,
     style,
@@ -39,10 +40,10 @@ const ProjectCard: FC<Props> = ({
         style={style}
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
-        width={CARD_WIDTH}
+        width={wp(CARD_WIDTH)}
     >
         <TemplateBox
-            width={CARD_WIDTH}
+            width={wp(CARD_WIDTH)}
             aspectRatio={1.12}
             onPress={onPress}
         >
@@ -54,17 +55,17 @@ const ProjectCard: FC<Props> = ({
                     borderRadius={10}
                     backgroundColor={GREEN}
                     height={25}
-                    width={CARD_WIDTH / 2.3}
+                    width={wp(CARD_WIDTH / 2.6)}
                     alignItems="center"
                     justifyContent="center"
-                    top={94}
-                    left={64}
+                    top={104}
+                    left={84}
                 >
                     <TemplateText bold size={8} color={WHITE}>Enrolled</TemplateText>
                 </TemplateBox>
             )}
         </TemplateBox>
-        <TemplateBox width={CARD_WIDTH - 8} selfCenter>
+        <TemplateBox width={wp(CARD_WIDTH - 8)} selfCenter>
             {/* @ts-ignore */}
             <TemplateText color={BLACK} bold size={14} style={styles.text}>
                 {title}

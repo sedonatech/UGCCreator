@@ -1,7 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { uniqBy } from 'lodash';
-import { Alert } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import LineSvg from '../../../../../assets/svgs/LineSvg';
@@ -11,111 +9,17 @@ import {
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
-import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
-import useMailCompose from '../../../../hooks/documents/useMailCompose';
+import useProjectStatus from '../hooks/useProjectStatus';
 
 const CreatorProjectStatusOverviewTab = ({
     application, creatorID, currentProject, creatorEmail,
 }) => {
-    const [currentStatusIndex, setCurrentStatusIndex] = useState();
-
-    const overviewStatus = useMemo(() => {
-        if (!application?.status) return [];
-
-        return uniqBy(application?.status, (item) => item?.value);
-    }, [application?.status]);
-
-    const { updateProjectStatus } = useProjectsContext();
-
-    const { composeEmailWithAttachment, mailEvent, setMailEvent } = useMailCompose();
-
-    useEffect(() => {
-        if (mailEvent === 'sent') {
-            Alert.alert(
-                'Proposal Sent',
-                'Please wait for the creator to approve your proposal',
-                [
-                    {
-                        text: 'OK',
-                        onPress: async () => {
-                            await updateProjectStatus(creatorID, currentProject, currentStatusIndex);
-                            setMailEvent('');
-                        },
-                        style: 'cancel',
-                    },
-                ],
-                { cancelable: false },
-            );
-        } else if (mailEvent === 'failed' || mailEvent === 'cancelled') {
-            Alert.alert(
-                'Proposal Not Sent',
-                'Please try again',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => setMailEvent(''),
-                        style: 'cancel',
-                    },
-                ],
-                { cancelable: false },
-            );
-        }
-    }, [mailEvent]);
-    const handleOnPressStatus = (status, statusIndex) => {
-        setCurrentStatusIndex(statusIndex);
-        if (status.value === 'brand_approved_enrollment') {
-            Alert.alert(
-                "You'll be prompted to attach your proposal",
-                'Please attach your proposal to continue',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => composeEmailWithAttachment(creatorEmail),
-                        style: 'cancel',
-                    },
-                ],
-                { cancelable: false },
-
-            );
-            return;
-        }
-        if (status.value === 'brand_proposal_submitted') {
-            Alert.alert(
-                'Update Required by Creator',
-                'Please wait for the creator to update the status',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel',
-                    },
-                ],
-                { cancelable: false },
-            );
-            return;
-        }
-
-        if (status.status === 'active' && !!creatorID && currentProject) {
-            Alert.alert(
-                'Update Status',
-                `Are you sure you want to update the status to ${overviewStatus?.[statusIndex + 1]?.name}?`,
-                [
-                    {
-                        text: 'Cancel',
-                        onPress: () => console.log('Cancel Pressed'),
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'OK',
-                        onPress: async () => {
-                            await updateProjectStatus(creatorID, currentProject, statusIndex);
-                        },
-                    },
-                ],
-                { cancelable: false },
-            );
-        }
-    };
+    const { overviewStatus, handleOnPressStatus } = useProjectStatus(
+        application,
+        creatorID,
+        currentProject,
+        creatorEmail,
+    );
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>

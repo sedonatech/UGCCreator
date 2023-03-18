@@ -20,7 +20,6 @@ import {
 import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import BrandsTab from './components/BrandsTab';
-import ProjectsTab from './components/ProjectsTab';
 import Filter from '../../../../assets/svgs/Filter';
 import {
     ageFilters,

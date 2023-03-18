@@ -16,7 +16,7 @@ import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../../consts/content/Home';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
-import { hp } from '../../../../Utils/getResponsiveSize';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 const ProjectsCarousel = ({ style }) => {
     const { auth } = useAuthContext();
@@ -68,7 +68,7 @@ const ProjectsCarousel = ({ style }) => {
                 Check out  new projects from trusted brands
             </TemplateText>
 
-            <TemplateBox row flexWrap="wrap" ph={WRAPPER_MARGIN} justifyContent="space-between" flex>
+            <TemplateBox row flexWrap="wrap" pr={10} pl={20} justifyContent="space-between" selfCenter>
                 {
                     !!carouselData?.length && carouselData?.map((item) => (
                         <ProjectCard
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     card: {
-        marginRight: hp(10),
+        marginRight: wp(10),
     },
     statusCard: {
         marginBottom: 20,

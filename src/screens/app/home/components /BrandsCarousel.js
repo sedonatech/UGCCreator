@@ -7,7 +7,7 @@ import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { BRANDS } from '../../../../consts/content/Home';
-import { BLACK_50, BLUE } from '../../../../theme/Colors';
+import { BLACK, BLACK_50, BLUE } from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
@@ -50,7 +50,7 @@ const BrandsCarousel = ({ style }) => {
                     </TemplateText>
                 </TemplateTouchable>
             </TemplateBox>
-            <TemplateText size={14} color={BLACK_50} style={styles.subtitle}>
+            <TemplateText size={14} color={BLACK} style={styles.subtitle}>
                 Check out our top brands
             </TemplateText>
 

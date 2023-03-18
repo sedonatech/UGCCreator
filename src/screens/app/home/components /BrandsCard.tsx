@@ -9,6 +9,7 @@ import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import TemplateBox from '../../../../components/TemplateBox';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     image?: string | number | any;
@@ -35,9 +36,9 @@ const BrandsCard: FC<Props> = ({
     cardWidth = SCREEN_WIDTH / 1.6,
     aspectRatio = 1.5,
     slideInDelay,
-    titleSize = 18,
+    titleSize = 16,
     descriptionLines = 2,
-    descriptionSize = 14,
+    descriptionSize = 12,
     onPress,
     buttonTitle = 'View Offers',
 }) => (
@@ -47,7 +48,7 @@ const BrandsCard: FC<Props> = ({
         justifyContent="center"
         gradientColors={image ? [BLACK_40, BLACK_40] : [TRANSPARENT, TRANSPARENT]}
         borderRadius={RADIUS_SMALL}
-        width={cardWidth}
+        width={wp(cardWidth)}
         aspectRatio={aspectRatio}
         style={style}
         slideIn={slideInDelay !== undefined}
@@ -87,7 +88,7 @@ const BrandsCard: FC<Props> = ({
                 style={styles.viewOffersButton}
                 onPress={onPress}
             >
-                <TemplateText color={WHITE} bold size={14}>
+                <TemplateText color={WHITE} bold size={12}>
                     {buttonTitle}
                 </TemplateText>
             </TemplateTouchable>

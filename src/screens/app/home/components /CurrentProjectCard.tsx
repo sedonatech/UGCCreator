@@ -8,12 +8,12 @@ import {
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import {
-    RADIUS_MEDIUM, RADIUS_SMALL, RADIUS_XSMALL, SCREEN_WIDTH
+    RADIUS_MEDIUM, SCREEN_WIDTH
 } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import AvatarOverlaps from '../../../../components/AvatarOverlaps';
-import { DEFAULT_AVATARS } from '../../../../consts/content/Home';
 import useGetEnrolledCreatorsAvatars from '../../../brands/admin/hooks/useGetEnrolledCreatorsAvatars';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     title?: string;
@@ -63,7 +63,7 @@ const CurrentProjectCard: FC<Props> = ({
 
     return (
         <TemplateBox
-            width={width || (SCREEN_WIDTH / 1.23)}
+            width={wp(width) || wp(SCREEN_WIDTH / 1.23)}
             borderRadius={RADIUS_MEDIUM}
             shadow
             pAll={20}
