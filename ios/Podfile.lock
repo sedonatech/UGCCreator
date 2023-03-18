@@ -630,6 +630,9 @@ PODS:
   - Firebase/Firestore (10.0.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 10.0.0)
+  - Firebase/Messaging (10.0.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 10.0.0)
   - Firebase/RemoteConfig (10.0.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.0.0)
@@ -696,6 +699,15 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
+  - FirebaseMessaging (10.0.0):
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/Reachability (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseRemoteConfig (10.0.0):
     - FirebaseABTesting (~> 10.0)
     - FirebaseCore (~> 10.0)
@@ -1167,6 +1179,11 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - React-Core
     - RNFBApp
+  - RNFBMessaging (15.7.1):
+    - Firebase/Messaging (= 10.0.0)
+    - FirebaseCoreExtension (= 10.0.0)
+    - React-Core
+    - RNFBApp
   - RNFBRemoteConfig (15.7.1):
     - Firebase/RemoteConfig (= 10.0.0)
     - React-Core
@@ -1292,6 +1309,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBCrashlytics (from `../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
+  - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - "RNFBRemoteConfig (from `../node_modules/@react-native-firebase/remote-config`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
@@ -1322,6 +1340,7 @@ SPEC REPOS:
     - FirebaseCrashlytics
     - FirebaseFirestore
     - FirebaseInstallations
+    - FirebaseMessaging
     - FirebaseRemoteConfig
     - FirebaseStorage
     - fmt
@@ -1448,6 +1467,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/crashlytics"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
+  RNFBMessaging:
+    :path: "../node_modules/@react-native-firebase/messaging"
   RNFBRemoteConfig:
     :path: "../node_modules/@react-native-firebase/remote-config"
   RNFBStorage:
@@ -1495,6 +1516,7 @@ SPEC CHECKSUMS:
   FirebaseCrashlytics: 6b0613b548fe096221b5ba6d2f7a9732b451233b
   FirebaseFirestore: 5007583f3db2129de8e87f18ee63f4c86f07e7a3
   FirebaseInstallations: 13dde135fa0524e15bddb133ccc8465c53a1b3f3
+  FirebaseMessaging: 8916bf5edb1dbfac74665a181e4d1ab3a78a08a2
   FirebaseRemoteConfig: e4431ddba74ddf705e2aabd7d356a23d5b802853
   FirebaseStorage: 8b0b0630e11b9f3e4a479a26cfccb70ec790ec50
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
@@ -1559,6 +1581,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 2b22d8cdb314b38a42e01c2cffcfa7d8c658e9da
   RNFBCrashlytics: 8b864f6efcaf5329acda78613f75da9e4fb19134
   RNFBFirestore: 9beefd81d909541e89b2888554ef7cf071fad344
+  RNFBMessaging: 70bc93859b3952d0985b0d90eb2ed85ec29f5bc0
   RNFBRemoteConfig: 554423ee3eb64cd47fb7230223035db57a00f203
   RNFBStorage: ef32a0c40f4ea7cdfde2df0a255905dd77126f81
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688

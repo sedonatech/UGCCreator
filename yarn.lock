@@ -1447,6 +1447,11 @@
   resolved "https://registry.npmjs.org/@react-native-firebase/firestore/-/firestore-15.7.1.tgz"
   integrity sha512-TEEGOA0kSND/uuPXasLhVDyv656hH3LYCWWbd2NnrmMbcEn84/Q+8DKcaNGHvGcgYjo3KPhvNFjAnYMY/5J9UQ==
 
+"@react-native-firebase/messaging@^15.7.0":
+  version "15.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-15.7.1.tgz#12640336517e345e5db0805fe4ea8605234bbd79"
+  integrity sha512-5f/YqgMu3zWLUNiXb1A4yqd6e4w3WNbBsMqKAsH18z7TLEw0O7DjEELfWF8T3x7M9o+/xSB8wLAXTlyakjq24A==
+
 "@react-native-firebase/remote-config@^15.7.0":
   version "15.7.1"
   resolved "https://registry.npmjs.org/@react-native-firebase/remote-config/-/remote-config-15.7.1.tgz"
