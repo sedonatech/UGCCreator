@@ -120,14 +120,14 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                 >
                     <TemplateText
                         bold
-                        size={24}
+                        size={22}
                         color={WHITE}
                     >
                         {selectedProject?.title}
                     </TemplateText>
                     <TemplateBox height={10} />
                     <TemplateText
-                        size={16}
+                        size={14}
                         color={WHITE}
                         numberOfLines={2}
 

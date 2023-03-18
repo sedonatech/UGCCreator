@@ -22,22 +22,25 @@ const FeaturedCreatorsCarousel = ({ style }) => {
     return (
         <View style={style}>
             <View style={styles.titleContainer}>
-                <TemplateBox>
+                <TemplateBox row justifyContent="space-between">
                     <TemplateText bold size={18} color={BLACK}>
                         Featured Creators
                     </TemplateText>
-                    <TemplateBox height={10} />
-                    <TemplateText size={14} color={BLACK_40}>
-                        Based on your recent searches
-                    </TemplateText>
+                    <TemplateBox />
+                    <TemplateTouchable
+                        onPress={() => navigation.navigate(CREATORS_PROFILES)}
+                    >
+                        <TemplateText startCase size={14} underLine color={BLUE}>
+                            See All
+                        </TemplateText>
+                    </TemplateTouchable>
+
                 </TemplateBox>
-                <TemplateTouchable
-                    onPress={() => navigation.navigate(CREATORS_PROFILES)}
-                >
-                    <TemplateText startCase size={14} underLine color={BLUE}>
-                        See All
-                    </TemplateText>
-                </TemplateTouchable>
+
+                <TemplateBox height={10} />
+                <TemplateText size={14} color={BLACK}>
+                    Based on your recent searches
+                </TemplateText>
             </View>
 
             <TemplateCarousel
@@ -79,11 +82,9 @@ FeaturedCreatorsCarousel.defaultProps = {
 
 const styles = StyleSheet.create({
     titleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+
         paddingHorizontal: WRAPPER_MARGIN,
-        marginVertical: WRAPPER_MARGIN,
+        marginTop: WRAPPER_MARGIN / 2,
     },
     cardCarousel: {
         paddingHorizontal: WRAPPER_MARGIN,

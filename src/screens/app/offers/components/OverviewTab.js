@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { uniq, uniqBy } from 'lodash';
-import { projectStatuses } from '../../../../consts/AppFilters/ProjectStatus';
+
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import LineSvg from '../../../../../assets/svgs/LineSvg';
@@ -16,7 +15,7 @@ const OverviewTab = ({ application }) => {
     const overviewStatus = useMemo(() => {
         if (!application?.status) return [];
 
-        return uniqBy(application?.status, (item) => item?.value);
+        return application?.status;
     }, [application?.status]);
 
     return (

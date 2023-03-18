@@ -12,7 +12,7 @@ import TemplateText from '../../../../components/TemplateText';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 
 const defaultCardWidth = SCREEN_WIDTH / 1.3;
-const defaultAspectRatio = 1.3;
+const defaultAspectRatio = 1.6;
 const CurrentCreatorsCard = ({
     image, name, shortDescription, style, onPress, cardWidth, aspectRatio,
 }) => (
@@ -28,13 +28,13 @@ const CurrentCreatorsCard = ({
     >
         <BackgroundImage source={{ uri: image }} style={styles.image} width="100%" />
         <TemplateBox pAll={20} onPress={onPress} mt={WRAPPER_MARGIN}>
-            <TemplateText color={WHITE} bold size={20} style={styles.text}>
+            <TemplateText color={WHITE} bold size={16} style={styles.text}>
                 {name}
             </TemplateText>
             <TemplateBox height={10} />
             <TemplateText
                 color={WHITE}
-                size={16}
+                size={14}
                 style={styles.text}
                 numberOfLines={2}
             >
@@ -46,12 +46,12 @@ const CurrentCreatorsCard = ({
                 justifyContent="center"
                 borderRadius={RADIUS_SMALL}
                 backgroundColor={GREEN}
-                width={240}
-                pv={16}
+                width={160}
+                pv={10}
                 onPress={onPress}
                 selfCenter
             >
-                <TemplateText color={WHITE} bold size={14}>
+                <TemplateText color={WHITE} bold size={12}>
                     View Project Status
                 </TemplateText>
             </TemplateBox>

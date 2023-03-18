@@ -91,7 +91,7 @@ const CurrentProjectCard: FC<Props> = ({
                 <TemplateIcon color={BLACK} size={24} name="ellipsis-vertical-outline" />
             </TemplateBox>
             {/* @ts-ignore */}
-            <TemplateText size={18} bold color={BLACK} style={styles.title}>
+            <TemplateText size={16} bold color={BLACK} style={styles.title}>
                 {title}
             </TemplateText>
 

@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 import { isAndroid } from '../Utils/Platform';
-import { BLACK_10, BLACK_50, WHITE } from './Colors';
+import {
+    BLACK_10, BLACK_50,
+} from './Colors';
 
 export const ELEVATION = 9;
-export const SHADOW_COLOR = BLACK_10;
+export const SHADOW_COLOR = BLACK_50;
 export const SHADOW_OFFSET_WIDTH = 0;
 export const SHADOW_OFFSET_HEIGHT = 2;
 export const SHADOW_RADIUS = 5;

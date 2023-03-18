@@ -11,6 +11,7 @@ import TemplateCarousel from '../../../../components/carousels/TemplateCarousel'
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import CurrentCreatorsCard from './CurrentCreatorsCard';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
+import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 
 const CurrentCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
@@ -39,7 +40,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
         return getEnrolledCreators(creatorIds?.map(({ creatorId }) => creatorId));
     }, [creatorIds]);
 
-    return (
+    return filteredCreators?.length ? (
         <View style={style}>
             <View style={styles.titleContainer}>
                 <TemplateText bold size={18}>
@@ -79,6 +80,14 @@ const CurrentCreatorsCarousel = ({ style }) => {
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>
+    ) : (
+        <ProfileStatusCard
+            title="No active creators"
+            description="You don't have any active creators at the moment"
+            showProgress={false}
+            style={styles.statusCard}
+            slideInDelay={200}
+        />
     );
 };
 
@@ -103,6 +112,10 @@ const styles = StyleSheet.create({
     },
     card: {
         marginRight: WRAPPER_MARGIN,
+        marginBottom: 10,
+    },
+    statusCard: {
+        marginTop: WRAPPER_MARGIN,
         marginBottom: 10,
     },
 });

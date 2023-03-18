@@ -53,14 +53,14 @@ const ProjectCard: FC<Props> = ({
                     absolute
                     borderRadius={10}
                     backgroundColor={GREEN}
-                    height={30}
-                    width={CARD_WIDTH / 2}
+                    height={25}
+                    width={CARD_WIDTH / 2.3}
                     alignItems="center"
                     justifyContent="center"
                     top={94}
                     left={64}
                 >
-                    <TemplateText bold size={11} color={WHITE}>Enrolled</TemplateText>
+                    <TemplateText bold size={8} color={WHITE}>Enrolled</TemplateText>
                 </TemplateBox>
             )}
         </TemplateBox>

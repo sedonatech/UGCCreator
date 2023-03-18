@@ -133,14 +133,13 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                         backgroundColor={GREEN}
                         alignItems="center"
                         justifyContent="center"
-                        height={40}
-                        mt={SCREEN_HEIGHT / 2.4 - 66}
+                        height={34}
+                        mt={SCREEN_HEIGHT / 2.4 - 56}
                     >
-                        <TemplateText bold size={14} color={WHITE}>
+                        <TemplateText bold size={10} color={WHITE}>
                             {
                                 application?.status?.find(({ status }) => status === 'active')?.name
                             }
-
                         </TemplateText>
                     </TemplateBox>
                 </TemplateBox>
@@ -161,7 +160,7 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                 <TemplateBox height={10} />
                 <TemplateText
                     size={14}
-                    color={BLACK_50}
+                    color={BLACK}
                     numberOfLines={21}
                 >
                     {currentProject?.shortDescription}

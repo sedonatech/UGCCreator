@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { uniqBy } from 'lodash';
 import { Alert } from 'react-native';
@@ -17,6 +17,8 @@ import useMailCompose from '../../../../hooks/documents/useMailCompose';
 const CreatorProjectStatusOverviewTab = ({
     application, creatorID, currentProject, creatorEmail,
 }) => {
+    const [currentStatusIndex, setCurrentStatusIndex] = useState();
+
     const overviewStatus = useMemo(() => {
         if (!application?.status) return [];
 
@@ -25,8 +27,42 @@ const CreatorProjectStatusOverviewTab = ({
 
     const { updateProjectStatus } = useProjectsContext();
 
-    const { composeEmailWithAttachment } = useMailCompose();
+    const { composeEmailWithAttachment, mailEvent, setMailEvent } = useMailCompose();
+
+    useEffect(() => {
+        if (mailEvent === 'sent') {
+            Alert.alert(
+                'Proposal Sent',
+                'Please wait for the creator to approve your proposal',
+                [
+                    {
+                        text: 'OK',
+                        onPress: async () => {
+                            await updateProjectStatus(creatorID, currentProject, currentStatusIndex);
+                            setMailEvent('');
+                        },
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: false },
+            );
+        } else if (mailEvent === 'failed' || mailEvent === 'cancelled') {
+            Alert.alert(
+                'Proposal Not Sent',
+                'Please try again',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => setMailEvent(''),
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: false },
+            );
+        }
+    }, [mailEvent]);
     const handleOnPressStatus = (status, statusIndex) => {
+        setCurrentStatusIndex(statusIndex);
         if (status.value === 'brand_approved_enrollment') {
             Alert.alert(
                 "You'll be prompted to attach your proposal",

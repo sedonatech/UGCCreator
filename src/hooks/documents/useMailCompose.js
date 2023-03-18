@@ -1,8 +1,10 @@
 import Mailer from 'react-native-mail';
 import DocumentPicker from 'react-native-document-picker';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 const useMailCompose = () => {
+    const [mailEvent, setMailEvent] = useState('');
     const sendEmailWithAttachment = async (metaData) => {
         const {
             recipients,
@@ -22,9 +24,9 @@ const useMailCompose = () => {
                 if (error) {
                     console.error(error);
                 } else if (event === 'sent') {
-                    console.log('sent');
+                    setMailEvent('sent');
                 } else if (event === 'cancelled') {
-                    console.log('cancelled');
+                    setMailEvent('cancelled');
                 }
             });
         } catch (error) {
@@ -34,10 +36,12 @@ const useMailCompose = () => {
 
     const composeEmailWithAttachment = async (recipientEmail) => {
         try {
-            const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.pdf],
+            const res = await DocumentPicker.pickSingle({
+                presentationStyle: 'fullScreen',
+                copyTo: 'cachesDirectory',
             });
-            const { uri, type, name } = res;
+            const { uri, type, name } = await res;
+
             const metaData = {
                 recipients: [recipientEmail],
                 body: '',
@@ -57,6 +61,8 @@ const useMailCompose = () => {
     return {
         sendEmailWithAttachment,
         composeEmailWithAttachment,
+        mailEvent,
+        setMailEvent,
     };
 };
 

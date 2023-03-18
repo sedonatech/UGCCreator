@@ -31,7 +31,7 @@ const CreatorCard = ({
         pAll={WRAPPER_MARGIN}
         selfCenter
         mt={SPACE_XXLARGE}
-        style={[SHADOW('card', GREY_SECONDARY), style]}
+        style={[SHADOW('card', WHITE), style]}
     >
 
         <TemplateBox row>
@@ -45,7 +45,7 @@ const CreatorCard = ({
                 <TemplateText
                     size={13}
                     color={BLACK_SECONDARY}
-                    numberOfLines={3}
+                    numberOfLines={2}
                 >
                     {shortDescription}
                 </TemplateText>
@@ -70,7 +70,7 @@ const CreatorCard = ({
             </TemplateBox>
 
             <TemplateBox
-                ph={WRAPPER_MARGIN}
+                ph={WRAPPER_MARGIN - 5}
                 pv={WRAPPER_MARGIN / 2}
                 backgroundColor={BLACK}
                 borderRadius={10}

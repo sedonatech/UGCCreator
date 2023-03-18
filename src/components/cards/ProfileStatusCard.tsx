@@ -54,7 +54,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
             <TemplateIcon
                 name={icon || 'open-outline'}
                 color={BLACK}
-                size={20}
+                size={18}
                 style={styles.icon}
             />
         )}
@@ -82,7 +82,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
             <TemplateText
                 bold
                 color={BLACK}
-                size={18}
+                size={16}
                 // @ts-ignore
                 style={styles.title}
             >

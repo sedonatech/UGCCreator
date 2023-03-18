@@ -116,14 +116,14 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                 >
                     <TemplateText
                         bold
-                        size={24}
+                        size={22}
                         color={WHITE}
                     >
                         {selectedBrand?.name}
                     </TemplateText>
                     <TemplateBox height={10} />
                     <TemplateText
-                        size={16}
+                        size={14}
                         color={WHITE}
                     >
                         {selectedBrand?.shortDescription}

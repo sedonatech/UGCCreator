@@ -17,7 +17,7 @@ const DescriptionRow: FC<DescriptionRowProps> = ({
     <TemplateBox row alignItems="center">
         <TemplateIcon name={icon} size={24} color={BRAND_BLUE} />
         <TemplateBox width={10} />
-        <TemplateText color={BLACK} size={18}>
+        <TemplateText color={BLACK} size={16}>
             {title}
         </TemplateText>
     </TemplateBox>

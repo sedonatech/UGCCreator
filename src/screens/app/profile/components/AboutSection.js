@@ -8,13 +8,13 @@ import { BLACK } from '../../../../theme/Colors';
 
 const AboutSection = ({ about, shortDescription }) => (
     <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN * 2} slideIn slideInDelay={200} slideInDirection="left">
-        <TemplateText bold color={BLACK} size={18}>About Me</TemplateText>
-        <TemplateText color={BLACK} size={16} lineHeight={18}>
+        <TemplateText bold color={BLACK} size={16}>About Me</TemplateText>
+        <TemplateText color={BLACK} size={14} lineHeight={16}>
             {'\n'}
             {shortDescription}
             {'\n'}
         </TemplateText>
-        <TemplateText color={BLACK} size={16} lineHeight={18}>
+        <TemplateText color={BLACK} size={14} lineHeight={16}>
             {about}
         </TemplateText>
     </TemplateBox>

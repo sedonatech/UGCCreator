@@ -35,7 +35,7 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 				<key>NSAllowsArbitraryLoads</key>
-                <false/>
+				<false/>
 			</dict>
 			<key>localhost</key>
 			<dict>
@@ -47,7 +47,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access your camera to upload progress images</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to your photo gallery so that you may upload your photos for your progress photos</string>
 	<key>UIAppFonts</key>
@@ -65,6 +65,27 @@
 		<string>MaterialIcons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>Montserrat-Black.ttf</string>
+		<string>Montserrat-BlackItalic.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-BoldItalic.ttf</string>
+		<string>Montserrat-ExtraBold.ttf</string>
+		<string>Montserrat-ExtraBoldItalic.ttf</string>
+		<string>Montserrat-ExtraLight.ttf</string>
+		<string>Montserrat-ExtraLightItalic.ttf</string>
+		<string>Montserrat-Italic.ttf</string>
+		<string>Montserrat-Light.ttf</string>
+		<string>Montserrat-LightItalic.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-MediumItalic.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
+		<string>Montserrat-SemiBold.ttf</string>
+		<string>Montserrat-SemiBoldItalic.ttf</string>
+		<string>Montserrat-Thin.ttf</string>
+		<string>Montserrat-ThinItalic.ttf</string>
+		<string>ShreddyIconFont.ttf</string>
+		<string>ShreddyRegular.ttf</string>
+		<string>SpaceMono-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
