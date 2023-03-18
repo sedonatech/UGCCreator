@@ -71,6 +71,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
                             projectId: creatorIds
                                 ?.find(({ creatorId }) => creatorId === item?.id)?.projectID,
                             creatorEmail: item?.contact?.email,
+                            creatorFCMToken: item?.fcmToken,
                         })}
                     />
                 )}

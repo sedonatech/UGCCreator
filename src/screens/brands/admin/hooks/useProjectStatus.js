@@ -3,9 +3,18 @@ import { Alert } from 'react-native';
 
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import useMailCompose from '../../../../hooks/documents/useMailCompose';
+import useNotifications from '../../../../hooks/notifications/useNotifications';
 
-const useProjectStatus = (application, creatorID, currentProject, creatorEmail) => {
+const useProjectStatus = (
+    application,
+    creatorID,
+    currentProject,
+    creatorEmail,
+    creatorFCMToken,
+) => {
     const [currentStatusIndex, setCurrentStatusIndex] = useState();
+
+    const { sendNotification } = useNotifications();
 
     const overviewStatus = useMemo(() => {
         if (!application?.status) return [];

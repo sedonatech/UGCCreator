@@ -30,12 +30,12 @@
 		<dict>
 			<key>New Exception Domain</key>
 			<dict>
+				<key>NSAllowsArbitraryLoads</key>
+				<false/>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 				<key>NSIncludesSubdomains</key>
 				<true/>
-				<key>NSAllowsArbitraryLoads</key>
-				<false/>
 			</dict>
 			<key>localhost</key>
 			<dict>
@@ -47,7 +47,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access your camera to upload progress images</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to your photo gallery so that you may upload your photos for your progress photos</string>
 	<key>UIAppFonts</key>
@@ -90,6 +90,8 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>external-accessory</string>
+		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

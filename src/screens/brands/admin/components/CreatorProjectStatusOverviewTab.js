@@ -12,13 +12,14 @@ import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import useProjectStatus from '../hooks/useProjectStatus';
 
 const CreatorProjectStatusOverviewTab = ({
-    application, creatorID, currentProject, creatorEmail,
+    application, creatorID, currentProject, creatorEmail, creatorFCMToken,
 }) => {
     const { overviewStatus, handleOnPressStatus } = useProjectStatus(
         application,
         creatorID,
         currentProject,
         creatorEmail,
+        creatorFCMToken,
     );
 
     return (
@@ -97,6 +98,7 @@ CreatorProjectStatusOverviewTab.propTypes = {
     creatorID: PropTypes.string,
     currentProject: PropTypes.shape(),
     creatorEmail: PropTypes.string,
+    creatorFCMToken: PropTypes.string,
 };
 
 CreatorProjectStatusOverviewTab.defaultProps = {
@@ -104,5 +106,6 @@ CreatorProjectStatusOverviewTab.defaultProps = {
     creatorID: '',
     currentProject: {},
     creatorEmail: '',
+    creatorFCMToken: '',
 };
 export default CreatorProjectStatusOverviewTab;

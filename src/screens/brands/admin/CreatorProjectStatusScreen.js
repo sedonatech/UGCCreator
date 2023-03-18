@@ -7,7 +7,7 @@ import {
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK, BLACK_50, GREEN, GREY, GREY_SECONDARY, WHITE, WHITE_40,
+    BLACK, GREEN, GREY, GREY_SECONDARY, WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN } from '../../../theme/Layout';
@@ -37,6 +37,8 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
     const creatorID = route?.params?.creatorID;
 
     const creatorEmail = route?.params?.creatorEmail;
+
+    const creatorFCMToken = route?.params?.creatorFCMToken;
 
     const fromProjectDetails = route?.params?.fromProjectDetails;
 
@@ -225,6 +227,7 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                         creatorID={creatorID}
                         currentProject={currentProject}
                         creatorEmail={creatorEmail}
+                        creatorFCMToken={creatorFCMToken}
                     />
                 )
             }

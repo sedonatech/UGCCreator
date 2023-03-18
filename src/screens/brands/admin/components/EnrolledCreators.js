@@ -44,6 +44,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                             creatorID: item?.id,
                             projectId,
                             creatorEmail: item?.contact?.email,
+                            creatorFCMToken: item?.fcmToken,
                         })}
                     />
                 ))}
