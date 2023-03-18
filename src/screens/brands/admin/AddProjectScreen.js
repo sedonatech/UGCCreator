@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import { isEmpty, reverse } from 'lodash';
+import {
+    filter, includes, isEmpty, reverse, sortBy,
+} from 'lodash';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import FastImage from 'react-native-fast-image';
 import Blob from '../../../../assets/svgs/Blob';
 import {
-    BLACK, BLACK_40, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE,
+    BLACK, BLACK_40, DEEP_PURPLE, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
 import {
@@ -30,22 +33,43 @@ import FilterCategory from '../../app/explore/components/FilterCategory';
 import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
 import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
 
-const AddProjectScreen = () => {
-    const { update, project, createProject } = useProjects();
+const AddProjectScreen = ({ route, navigation }) => {
+    // TODO: Update projecrt feature
+    const selectedProjectId = route?.params?.selectedProjectId;
+
+    const {
+        update, project, createProject, loading,
+    } = useProjects();
 
     const { onAddImage: onAddPhoto, images } = useImageStorage();
 
-    useEffect(() => {
-        if (images?.length > 0) {
-            update('image', reverse(images)[0]?.url);
-        }
+    const latestImage = useMemo(() => {
+        if (!images) return null;
+
+        const sortedImages = reverse(sortBy(filter(images, (item) => !includes(item?.contentDisposition, 'true')), 'generation'));
+
+        return sortedImages[0];
     }, [images]);
+
+    useEffect(() => {
+        if (latestImage) {
+            update('image', latestImage?.url);
+        }
+    }, [latestImage]);
 
     const handleCreateProject = () => {
         if (isEmpty(project)) {
             Alert.alert('Please fill all the fields');
         }
         createProject(project);
+        Alert.alert('Project created successfully',
+            'You can view your project in the projects section',
+            [
+                {
+                    text: 'OK',
+                    onPress: () => navigation.goBack(),
+                },
+            ]);
     };
     return (
         <Wrapper
@@ -150,7 +174,34 @@ const AddProjectScreen = () => {
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                 <TemplateText size={16}>Image</TemplateText>
                 <TemplateBox height={10} />
-                <TemplateBox onPress={() => onAddPhoto()}>
+                {latestImage?.url && (
+                    <TemplateBox height={120} width={120} borderRadius={10}>
+                        <FastImage
+                            source={{ uri: latestImage?.url }}
+                            style={{ width: 120, height: 120, borderRadius: 10 }}
+                        />
+                    </TemplateBox>
+                )}
+
+                <TemplateBox height={10} />
+                <TemplateBox onPress={() => {
+                    if (project?.image) {
+                        Alert.alert('Are you sure you want to replace the image?', '', [
+                            {
+                                text: 'Cancel',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK',
+                                onPress: () => onAddPhoto(),
+                            },
+                        ]);
+                        return;
+                    }
+                    onAddPhoto();
+                }}
+                >
                     <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} />
                 </TemplateBox>
             </TemplateBox>
@@ -190,10 +241,12 @@ const AddProjectScreen = () => {
                 <TemplateBox height={10} />
                 <CurrencyPicker
                     value={project?.currency?.code}
-                    onSelectCurrency={(value) => update('currency', {
-                        code: value.code,
-                        symbol: value.symbol,
-                    })}
+                    onSelectCurrency={(value) => {
+                        update('currency', {
+                            code: value?.code,
+                            symbol: value?.symbol,
+                        });
+                    }}
                 />
             </TemplateBox>
 
@@ -274,7 +327,7 @@ const AddProjectScreen = () => {
                 onFilterPress={(value) => {
                     if (project?.gender.includes(value)) {
                         const newGenders = project
-                            ?.languages.filter((item) => item !== value);
+                            ?.gender.filter((item) => item !== value);
                         return update('gender', newGenders);
                     }
                     update('gender',
@@ -315,7 +368,7 @@ const AddProjectScreen = () => {
                 title="Create Project"
                 onPress={handleCreateProject}
                 style={styles.button}
-                loading={false}
+                loading={loading}
                 disabled={false}
             />
         </Wrapper>
@@ -339,7 +392,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingLeft: 16,
         marginTop: 10,
-        color: BLACK_40,
+        color: DEEP_PURPLE,
     },
     button: {
         marginTop: 20,

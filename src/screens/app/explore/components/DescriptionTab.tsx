@@ -48,7 +48,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
         </TemplateText>
         <TemplateBox height={WRAPPER_MARGIN} />
         <TemplateText
-            color={BLACK_50}
+            color={BLACK}
             size={16}
             lineHeight={22}
         >
@@ -68,7 +68,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
             <TemplateBox pr={20}>
                 <TemplateText color={BLACK} bold>Address</TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText color={BLACK_50} size={16}>{address}</TemplateText>
+                <TemplateText color={BLACK} size={16}>{address}</TemplateText>
             </TemplateBox>
             <TemplateBox flex />
         </TemplateBox>
@@ -84,7 +84,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
             <TemplateBox pr={20}>
                 <TemplateText color={BLACK} bold>Phone Number</TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText color={BLACK_50} size={16}>{phone}</TemplateText>
+                <TemplateText color={BLACK} size={16}>{phone}</TemplateText>
             </TemplateBox>
             <TemplateBox flex />
         </TemplateBox>
@@ -104,7 +104,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>Instagram</TemplateText>
+                <TemplateText color={BLACK} size={16}>Instagram</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"
@@ -129,7 +129,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>FaceBook</TemplateText>
+                <TemplateText color={BLACK} size={16}>FaceBook</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"
@@ -155,7 +155,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>Twitter</TemplateText>
+                <TemplateText color={BLACK} size={16}>Twitter</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"
@@ -181,7 +181,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                     color={BLACK}
                 />
                 <TemplateBox width={10} />
-                <TemplateText color={BLACK_50} size={16}>LinkedIn</TemplateText>
+                <TemplateText color={BLACK} size={16}>LinkedIn</TemplateText>
                 <TemplateBox flex />
                 <TemplateIcon
                     name="open-outline"
@@ -198,7 +198,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
             backgroundColor={BLACK_0_5}
             borderRadius={10}
         >
-            <TemplateText color={BLACK_50}>
+            <TemplateText color={BLACK}>
                 Check out our website
             </TemplateText>
             <TemplateBox flex />

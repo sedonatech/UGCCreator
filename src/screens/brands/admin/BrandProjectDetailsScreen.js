@@ -1,53 +1,58 @@
 import React, {
-    FC, useLayoutEffect, useMemo, useState
+    useLayoutEffect, useMemo, useState,
 } from 'react';
 import {
     Animated,
-    ScrollView, StyleSheet
+    ScrollView, StyleSheet,
 } from 'react-native';
 
 import {
     BLACK_30,
-    WHITE, WHITE_40
+    WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import {
     SCREEN_HEIGHT,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
-import { BRANDS, PROJECTS } from '../../../consts/content/Home';
 import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import HeaderIconButton from '../../../components/header/HeaderButton';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import ToggleCarousel from '../../../components/ToggleCarousel';
-import DescriptionTab from './components/DescriptionTab';
-import ProjectsTab from './components/ProjectsTab';
+import BrandProjectDescriptionSection from './components/BrandProjectDescriptionSection';
+import EnrolledCreators from './components/EnrolledCreators';
 
-const BRAND_DETAILS_TABS = [
-    {
-        name: 'About',
-        value: 'about'
-    },
-    {
-        name: 'Open Projects',
-        value: 'projects'
-    }
-];
-interface BrandDetailsScreenProps {
-    route: any;
-    navigation: any;
-}
-const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) => {
-    const brandId = route?.params?.brandId;
+export const DETAILS_TAB = {
+    name: 'Details',
+    value: 'details',
+};
+export const ENROLLED_CREATORS = {
+    name: 'Enrolled Creators',
+    value: 'enrolledCreators',
+};
 
-    const [selectedTab, setSelectedTab] = useState(BRAND_DETAILS_TABS[0]);
+const TAB_DATA = [DETAILS_TAB, ENROLLED_CREATORS];
 
-    const selectedBrand = useMemo(() => {
-        if (!BRANDS) return null;
+const BrandProjectDetailsScreen = ({ route, navigation }) => {
+    const projectId = route?.params?.projectId;
 
-        return BRANDS?.find(({ id }) => id === brandId);
-    }, [brandId, BRANDS]);
+    const { projects } = useProjectsContext();
+
+    const [selectedTab, setSelectedTab] = useState(TAB_DATA[1]);
+
+    const selectedProject = useMemo(() => {
+        if (!projects) return null;
+
+        return projects?.find(({ id }) => id === projectId);
+    }, [projectId, projects]);
+
+    const enrolledCreatorIds = useMemo(() => {
+        if (!selectedProject) return null;
+
+        return selectedProject?.applications?.map(({ creatorId }) => creatorId);
+    }, [selectedProject]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -58,16 +63,15 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
                     backDropColor={WHITE_40}
                     ml={WRAPPER_MARGIN}
                 />
-            )
+            ),
         });
     }, [navigation]);
 
     const pan = React.useRef(new Animated.ValueXY()).current;
 
-    if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
+    if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
 
     return (
-
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
@@ -76,15 +80,10 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
                 [{ nativeEvent: { contentOffset: { y: pan.y } } }],
                 {
                     useNativeDriver: false,
-                }
+                },
             )}
-            contentContainerStyle={styles.contentContainer}
-            // bouncesZoom
-            // bounces={false}
         >
-
             <TemplateBox
-                animated
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={[BLACK_30, BLACK_30]}
@@ -109,7 +108,7 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
             >
                 {/* @ts-ignore */}
                 <BackgroundImage
-                    source={selectedBrand?.image}
+                    source={{ uri: selectedProject?.image }}
                     width="100%"
                     style={styles.image}
                 />
@@ -117,52 +116,45 @@ const BrandDetailsScreen:FC<BrandDetailsScreenProps> = ({ route, navigation }) =
                     absolute
                     top={(SCREEN_HEIGHT / 3.4)}
                     left={20}
+                    pr={20}
                 >
                     <TemplateText
                         bold
-                        size={24}
+                        size={22}
                         color={WHITE}
                     >
-                        {selectedBrand?.name}
+                        {selectedProject?.title}
                     </TemplateText>
                     <TemplateBox height={10} />
                     <TemplateText
-                        size={16}
+                        size={14}
                         color={WHITE}
+                        numberOfLines={2}
+
                     >
-                        {selectedBrand?.shortDescription}
+                        {selectedProject?.shortDescription}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
 
             <TemplateBox selfCenter flex>
                 <ToggleCarousel
-                    data={BRAND_DETAILS_TABS}
+                    data={TAB_DATA}
                     selectedTab={selectedTab}
                     onChange={setSelectedTab}
                 />
             </TemplateBox>
 
-            {selectedTab?.value === BRAND_DETAILS_TABS[0]?.value && (
-                <DescriptionTab
-                    description={selectedBrand?.description}
-                    profileUrl={selectedBrand?.url}
-                    phone={selectedBrand?.phone}
-                    email={selectedBrand?.email}
-                    address={selectedBrand?.address}
-                    instagram={selectedBrand?.instagram}
-                    facebook={selectedBrand?.facebook}
-                    twitter={selectedBrand?.twitter}
-                    tiktok={selectedBrand?.tiktok}
-                    linkedin={selectedBrand?.linkedin}
+            {selectedTab === DETAILS_TAB && selectedProject && (
+                <BrandProjectDescriptionSection selectedProject={selectedProject} />
+            )}
+            {selectedTab === ENROLLED_CREATORS && enrolledCreatorIds && (
+                <EnrolledCreators
+                    creatorIds={enrolledCreatorIds}
+                    projectId={projectId}
                 />
             )}
-            {selectedTab?.value === BRAND_DETAILS_TABS[1]?.value && (
-                <ProjectsTab data={PROJECTS} />
-            )}
-
         </ScrollView>
-
     );
 };
 
@@ -174,8 +166,5 @@ const styles = StyleSheet.create({
     image: {
         zIndex: -1,
     },
-    contentContainer: {
-        flexGrow: 1,
-    },
 });
-export default BrandDetailsScreen;
+export default BrandProjectDetailsScreen;

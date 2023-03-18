@@ -19,8 +19,9 @@ import {
     projectTypeFilters,
 } from '../AppFilters/ProjectFilters';
 import {
-    BLACK_20,
-    BRAND_BLUE, DEEP_PURPLE, GREEN, GREY_SECONDARY,
+    BLACK,
+    BLACK_50,
+    BRAND_BLUE,
 } from '../../theme/Colors';
 
 export const CATEGORIES = [
@@ -140,8 +141,8 @@ export const TRENDING_CATEGORIES = CATEGORIES.filter(
 
 export const STATUS = [
     {
-        name: 'Backlog',
-        value: 'backlog',
+        name: 'Enrolled',
+        value: 'erolled',
     },
     {
         name: 'In Progress',
@@ -607,14 +608,22 @@ export const STATS = [
     },
 ];
 
-export const PROFILE_INCOMPLETE_MESSAGE = 'Complete your profile fully to engage brands!';
-export const PROFILE_COMPLETE_MESSAGE = 'Your profile is complete!';
+export const PROFILE_INCOMPLETE_MESSAGE = 'Please complete your portfolio  fully to engage brands!';
+export const PROFILE_COMPLETE_MESSAGE = 'Your portfolio is complete!';
 
-export const PROFILE_INCOMPLETE_TITLE = 'Profile Incomplete';
+export const PROFILE_INCOMPLETE_TITLE = 'Portfolio Incomplete';
+
+export const BRAND_PROFILE_INCOMPLETE_TITLE = 'Profile Incomplete';
+
+export const BRAND_PROFILE_INCOMPLETE_MESSAGE = 'Complete your profile fully to engage with creators!';
 
 export const NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
 
-export const NO_CURRENT_PROJECT_MESSAGE = 'You have no current projects. Check out the projects page to find a project to work on!';
+export const NO_CURRENT_PROJECT_MESSAGE = 'You have not enrolled to any project. Check out the projects page to find a project to work on!';
+
+export const BRAND_NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
+
+export const BRAND_NO_CURRENT_PROJECT_MESSAGE = 'You have no current projects. Click  the button above to add a project!';
 
 export const FEED_CATEGORIES = [
     {
@@ -660,7 +669,7 @@ export const chartData = {
     datasets: [
         {
             data: [100, 120, 20, 40, 240, 349],
-            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+            color: (opacity = 1) => BLACK, // optional
             strokeWidth: 2, // optional
         },
     ],
@@ -668,12 +677,11 @@ export const chartData = {
 };
 
 export const chartConfig = {
-    backgroundGradientFrom: `${BRAND_BLUE}30`,
+    backgroundGradientFrom: BRAND_BLUE,
     backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: `${BRAND_BLUE}30`,
+    backgroundGradientTo: BRAND_BLUE,
     backgroundGradientToOpacity: 0.2,
-    color: (opacity = 1) => BLACK_20,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
+    color: (opacity = 1) => BLACK_50,
+    strokeWidth: 2,
     useShadowColorFromDataset: false, // optional
 };

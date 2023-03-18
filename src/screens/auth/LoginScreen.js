@@ -73,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
             >
                 Welcome back!
             </TemplateText>
-            <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
+            <TemplateText size={16} color={BLACK_SECONDARY} medium center>
                 Enter your email and password to continue
             </TemplateText>
             <TemplateTextInput
@@ -104,7 +104,7 @@ const LoginScreen = ({ navigation }) => {
                     style={styles.button}
                     loading={loading}
                 />
-                <TemplateText size={16} center italic style={styles.signupLink}>
+                <TemplateText size={16} center italic style={styles.signupLink} medium>
                     Forgot you password?
                     {' '}
 
@@ -112,13 +112,14 @@ const LoginScreen = ({ navigation }) => {
                         color={BLUE}
                         underLine
                         size={16}
+                        medium
                         onPress={() => navigation.navigate(FORGOT_PASSWORD)}
                     >
                         Reset Password
                     </TemplateText>
                 </TemplateText>
 
-                <TemplateText size={16} center italic style={styles.signupLink}>
+                <TemplateText size={16} center italic style={styles.signupLink} medium>
                     New to the UGC creator app?
                     {' '}
 
@@ -126,6 +127,7 @@ const LoginScreen = ({ navigation }) => {
                         color={BLUE}
                         underLine
                         size={16}
+                        medium
                         onPress={() => navigation.navigate(ONBOARDING)}
                     >
                         Sign Up
@@ -158,11 +160,9 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: WRAPPER_MARGIN,
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
+
     },
-    subtitle: {
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
-    },
+
     input: {
         height: 60,
         width: SCREEN_WIDTH - 32,

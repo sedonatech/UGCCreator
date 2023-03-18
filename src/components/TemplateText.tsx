@@ -67,7 +67,7 @@ const TemplateText: FC<Props> = ({
     const textStyle = {} as any;
 
     if (light) {
-        textStyle.fontWeight = '300';
+        textStyle.fontWeight = '400';
     }
 
     if (medium) {
@@ -78,7 +78,7 @@ const TemplateText: FC<Props> = ({
         textStyle.fontWeight = '700';
     }
     if (semiBold) {
-        textStyle.fontWeight = '500';
+        textStyle.fontWeight = '600';
     }
 
     if (black) {
@@ -172,14 +172,14 @@ const TemplateText: FC<Props> = ({
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: isAndroid ? 'sans-serif' : 'Arial',
+        fontFamily: 'Montserrat-Bold',
         fontSize: IS_SHORT_DEVICE ? 15 : 18,
         color: BLACK,
     },
 });
 
 TemplateText.defaultProps = {
-    light: false,
+    light: true,
     medium: false,
     bold: false,
     black: false,

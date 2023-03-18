@@ -99,7 +99,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
             >
                 {isUpdate ? 'Update your Password!' : 'Reset your Password!' }
             </TemplateText>
-            <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
+            <TemplateText size={16} color={BLACK_SECONDARY} medium>
                 Enter your email to continue
             </TemplateText>
             <TemplateTextInput
@@ -121,7 +121,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                     loading={loading}
                 />
                 {!isUpdate && (
-                    <TemplateText size={16} center italic style={styles.signupLink}>
+                    <TemplateText size={16} center italic style={styles.signupLink} medium>
                         New to the UGC creator app?
                         {' '}
 
@@ -129,6 +129,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                             color={BLUE}
                             underLine
                             size={16}
+                            medium
                             onPress={() => navigation.navigate(ONBOARDING)}
                         >
                             Sign Up
@@ -162,10 +163,6 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: WRAPPER_MARGIN,
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
-    },
-    subtitle: {
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
     },
     input: {
         height: 60,

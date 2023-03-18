@@ -54,7 +54,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
             <TemplateIcon
                 name={icon || 'open-outline'}
                 color={BLACK}
-                size={20}
+                size={18}
                 style={styles.icon}
             />
         )}
@@ -67,6 +67,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
                     unfilledColor={BLACK_30}
                     borderWidth={0}
                     showsText
+                    formatText={() => `${Math.round(progress * 100)}%`}
                     thickness={4}
                     allowFontScaling
                     animated
@@ -81,7 +82,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
             <TemplateText
                 bold
                 color={BLACK}
-                size={18}
+                size={16}
                 // @ts-ignore
                 style={styles.title}
             >

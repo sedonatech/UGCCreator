@@ -46,11 +46,11 @@ const DescriptionRange: FC<DescriptionRangeProps> = ({
                 <TemplateIcon name={icon} color={BLACK} size={24} />
             </TemplateBox>
             <TemplateBox>
-                <TemplateText color={BLACK_40} size={12}>
+                <TemplateText color={BLACK} size={10}>
                     {maxSubtitle}
                 </TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText color={BLACK} size={14} bold>
+                <TemplateText color={BLACK} size={12} bold>
                     {maxTitle}
                 </TemplateText>
 
@@ -69,11 +69,11 @@ const DescriptionRange: FC<DescriptionRangeProps> = ({
                 <TemplateIcon name={icon} color={BLACK} size={24} />
             </TemplateBox>
             <TemplateBox>
-                <TemplateText color={BLACK_40} size={12}>
+                <TemplateText color={BLACK} size={10}>
                     {minSubtitle}
                 </TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText color={BLACK} size={14} bold>
+                <TemplateText color={BLACK} size={12} bold>
                     {minTitle}
                 </TemplateText>
 

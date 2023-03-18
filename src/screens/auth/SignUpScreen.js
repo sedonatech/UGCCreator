@@ -119,7 +119,7 @@ const SignUpScreen = ({ navigation, route }) => {
             >
                 Lets Create Your Account
             </TemplateText>
-            <TemplateText size={16} color={BLACK_SECONDARY} style={styles.subtitle}>
+            <TemplateText size={16} color={BLACK_SECONDARY} medium>
                 Enter your credentials to continue
             </TemplateText>
 
@@ -167,7 +167,7 @@ const SignUpScreen = ({ navigation, route }) => {
                     loading={loading}
                     disabled={disabled}
                 />
-                <TemplateText size={14} center italic style={styles.loginText}>
+                <TemplateText size={14} center italic style={styles.loginText} medium>
                     By creating an account, you agree to our
                     {' '}
 
@@ -184,7 +184,7 @@ const SignUpScreen = ({ navigation, route }) => {
                     </TemplateText>
                 </TemplateText>
 
-                <TemplateText size={16} center style={styles.signupLink}>
+                <TemplateText size={16} center style={styles.signupLink} medium>
                     Already a member?
                     {' '}
 
@@ -192,6 +192,7 @@ const SignUpScreen = ({ navigation, route }) => {
                         color={BLUE}
                         underLine
                         size={16}
+                        medium
                         onPress={() => navigation.navigate(LOGIN)}
                     >
                         Login
@@ -230,10 +231,6 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: WRAPPER_MARGIN,
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
-    },
-    subtitle: {
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
     },
     input: {
         height: 60,

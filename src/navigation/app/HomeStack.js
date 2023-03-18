@@ -6,12 +6,13 @@ import {
     TRANSPARENT_HEADER,
 } from '../../components/header/ScreenOptions';
 import {
-    BRAND_DETAILS, CURRENT_PROJECT_DETAILS, HOME, PROJECT_DETAILS,
+    BRAND_DETAILS, CURRENT_PROJECT_DETAILS, HOME, PROJECT_DETAILS, UPDATE_PORTFOLIO,
 } from '../ScreenNames';
 import HomeScreen from '../../screens/app/home/HomeScreen';
 import BrandDetailsScreen from '../../screens/app/explore/BrandDetailsScreen';
 import ProjectDetailsScreen from '../../screens/app/explore/ProjectDetailsScreen';
 import CurrentProjectDetailsScreen from '../../screens/app/offers/CurrentProjectDetailsScreen';
+import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -37,6 +38,11 @@ const HomeStack = () => (
             name={CURRENT_PROJECT_DETAILS}
             options={TRANSPARENT_HEADER}
             component={CurrentProjectDetailsScreen}
+        />
+        <Screen
+            name={UPDATE_PORTFOLIO}
+            options={TRANSPARENT_HEADER}
+            component={UpdatePortfolioScreen}
         />
     </Navigator>
 );

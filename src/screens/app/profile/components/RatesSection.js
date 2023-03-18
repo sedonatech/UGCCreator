@@ -30,13 +30,13 @@ const RatesSection = ({ rates }) => (
                 {
                     rates?.monthlyPackage?.map(({ title, description, price }) => (
                         <TemplateBox width={SCREEN_WIDTH / 4.2} ml={14} key={title}>
-                            <TemplateText bold size={16} color={BLACK}>{title}</TemplateText>
+                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={10} />
-                            <TemplateText bold size={14} color={BLACK}>{`€${price}`}</TemplateText>
+                            <TemplateText bold size={16} color={BLACK}>{`€${price}`}</TemplateText>
                             <TemplateBox height={10} />
                             <TemplateText
-                                size={12}
-                                color={BLACK_40}
+                                size={14}
+                                color={BLACK}
                             >
                                 {description}
                             </TemplateText>
@@ -64,13 +64,13 @@ const RatesSection = ({ rates }) => (
                 {
                     rates?.videoStartingRate?.map(({ title, description, price }) => (
                         <TemplateBox width={SCREEN_WIDTH / 4.2} ml={14} key={title}>
-                            <TemplateText bold size={16} color={BLACK}>{title}</TemplateText>
+                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={10} />
-                            <TemplateText bold size={14} color={BLACK}>{`€${price}`}</TemplateText>
+                            <TemplateText bold size={16} color={BLACK}>{`€${price}`}</TemplateText>
                             <TemplateBox height={10} />
                             <TemplateText
-                                size={12}
-                                color={BLACK_40}
+                                size={14}
+                                color={BLACK}
                             >
                                 {description}
                             </TemplateText>
@@ -98,13 +98,13 @@ const RatesSection = ({ rates }) => (
                 {
                     rates?.photoStartingRate?.map(({ title, description, price }) => (
                         <TemplateBox width={SCREEN_WIDTH / 4.2} ml={14} key={title}>
-                            <TemplateText bold size={16} color={BLACK}>{title}</TemplateText>
+                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={10} />
-                            <TemplateText bold size={14} color={BLACK}>{`€${price}`}</TemplateText>
+                            <TemplateText bold size={16} color={BLACK}>{`€${price}`}</TemplateText>
                             <TemplateBox height={10} />
                             <TemplateText
-                                size={12}
-                                color={BLACK_40}
+                                size={14}
+                                color={BLACK}
                             >
                                 {description}
                             </TemplateText>
@@ -131,14 +131,14 @@ const RatesSection = ({ rates }) => (
             <TemplateBox row selfCenter justifyContent="space-between">
                 {
                     rates?.revision?.map(({ title, description, price }) => (
-                        <TemplateBox width={SCREEN_WIDTH / 4} mh={WRAPPER_MARGIN * 2.3} key={title}>
-                            <TemplateText bold size={16} color={BLACK}>{title}</TemplateText>
+                        <TemplateBox width={SCREEN_WIDTH / 4.2} ml={14} key={title}>
+                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={10} />
-                            <TemplateText bold size={14} color={BLACK}>{`€${price}`}</TemplateText>
+                            <TemplateText bold size={16} color={BLACK}>{`€${price}`}</TemplateText>
                             <TemplateBox height={10} />
                             <TemplateText
-                                size={12}
-                                color={BLACK_40}
+                                size={14}
+                                color={BLACK}
                             >
                                 {description}
                             </TemplateText>
@@ -164,14 +164,14 @@ const RatesSection = ({ rates }) => (
             <TemplateBox row selfCenter justifyContent="space-between">
                 {
                     rates?.usageRights?.map(({ title, description, price }) => (
-                        <TemplateBox width={SCREEN_WIDTH / 4} mh={WRAPPER_MARGIN * 2.3} key={title}>
-                            <TemplateText bold size={16} color={BLACK}>{title}</TemplateText>
+                        <TemplateBox width={SCREEN_WIDTH / 4.2} ml={14} key={title}>
+                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={10} />
-                            <TemplateText bold size={14} color={BLACK}>{`€${price}`}</TemplateText>
+                            <TemplateText bold size={16} color={BLACK}>{`€${price}`}</TemplateText>
                             <TemplateBox height={10} />
                             <TemplateText
-                                size={12}
-                                color={BLACK_40}
+                                size={14}
+                                color={BLACK}
                             >
                                 {description}
                             </TemplateText>
@@ -198,15 +198,14 @@ const RatesSection = ({ rates }) => (
             <TemplateBox row selfCenter justifyContent="space-between">
                 {
                     rates?.exclusiveRights?.map(({ title, description, price }) => (
-
-                        <TemplateBox width={SCREEN_WIDTH / 4} mh={WRAPPER_MARGIN * 2.3} key={title}>
-                            <TemplateText bold size={16} color={BLACK}>{title}</TemplateText>
+                        <TemplateBox width={SCREEN_WIDTH / 4.2} ml={14} key={title}>
+                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={10} />
-                            <TemplateText bold size={14} color={BLACK}>{`€${price}`}</TemplateText>
+                            <TemplateText bold size={16} color={BLACK}>{`€${price}`}</TemplateText>
                             <TemplateBox height={10} />
                             <TemplateText
-                                size={12}
-                                color={BLACK_40}
+                                size={14}
+                                color={BLACK}
                             >
                                 {description}
                             </TemplateText>
