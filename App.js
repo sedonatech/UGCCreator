@@ -1,7 +1,7 @@
-import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import {
-    StatusBar, useColorScheme, View, StyleSheet,
+    StatusBar, useColorScheme, StyleSheet,
 } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
@@ -18,6 +18,7 @@ import config from './config';
 import { CoreProvider } from './src/context/core';
 import useSubscriptionConfig from './src/hooks/subscription/useSubscriptionConfig';
 import { SubscriptionProvider } from './src/screens/subscriptions/context/context';
+import { ChatsProvider } from './src/context/ChatsProvider';
 
 const NAVIGATION_THEME = {
     ...DefaultTheme,
@@ -32,24 +33,27 @@ const MainApp = () => {
     const purchase = useSubscriptionConfig(true);
 
     return (
-        <View style={styles.container}>
+        <GestureHandlerRootView style={styles.container}>
             <CoreProvider config={config}>
                 <SubscriptionProvider purchase={purchase}>
                     <ProjectsProvider>
                         <ProjectApplicationProvider>
-                            <ActionSheetProvider>
-                                <NavigationContainer
-                                    theme={NAVIGATION_THEME}
-                                >
-                                    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-                                    <MainNavigator />
-                                </NavigationContainer>
-                            </ActionSheetProvider>
+                            <ChatsProvider>
+                                <ActionSheetProvider>
+                                    <NavigationContainer
+                                        theme={NAVIGATION_THEME}
+                                    >
+                                        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                        <MainNavigator />
+                                    </NavigationContainer>
+                                </ActionSheetProvider>
+                            </ChatsProvider>
                         </ProjectApplicationProvider>
                     </ProjectsProvider>
                 </SubscriptionProvider>
             </CoreProvider>
-        </View>
+        </GestureHandlerRootView>
+
     );
 };
 

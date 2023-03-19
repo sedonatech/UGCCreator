@@ -49,7 +49,11 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like access to your photo gallery so that you may upload your photos for your progress photos</string>
+	<string>$(PRODUCT_NAME) would like access to your photo gallery so that you may upload your photos for your portfolio</string>
+	<key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like access to your photo gallery so that you may take your photos for your portfolio</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like access to your microphone so that you may record voice messages</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

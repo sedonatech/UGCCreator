@@ -15,6 +15,8 @@ const AuthProvider = ({ children }) => {
 
     const [profile, setProfile] = useState(null);
 
+    const [idTokenResult, setIdTokenResult] = useState(null);
+
     const [brandProfileComplete, setBrandProfileComplete] = useState(false);
 
     const [creatorProfileComplete, setCreatorProfileComplete] = useState(false);
@@ -74,6 +76,19 @@ const AuthProvider = ({ children }) => {
         })();
     }, [user]);
 
+    useEffect(() => {
+        (async () => {
+            try {
+                if (user) {
+                    const tokenResult = await user.getIdTokenResult(true);
+                    setIdTokenResult(tokenResult);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        })();
+    }, [user]);
+
     const value = {
         user,
         initializing,
@@ -89,6 +104,7 @@ const AuthProvider = ({ children }) => {
         closeCompleteProfileModal: () => setCompleteModalVisible(false),
         getProfileCompleteStatus,
         profileCompleteRatio,
+        idTokenResult,
     };
 
     return (

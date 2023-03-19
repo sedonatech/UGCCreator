@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import {
     ADMIN_PANEL_STACK,
-    BRANDS_PROFILE_STACK,
+    BRANDS_PROFILE_STACK, CHATS_STACK,
     CREATORS_PROFILES_STACK,
 } from '../ScreenNames';
 import TabButton from '../../components/tabs/TabButton';
@@ -11,6 +11,7 @@ import TabLabel from '../../components/tabs/TabLabel';
 import AdminPanelStack from './AdminPanelStack';
 import CreatorsProfilesStack from './CreatorsProfilesStack';
 import BrandsProfileStack from './BrandsProfileStack';
+import ChatsStack from '../app/ChatsStack';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
@@ -35,6 +36,16 @@ const BrandsTabs = () => (
                     <TabButton focused={focused} icon="search" />
                 ),
                 tabBarLabel: (props) => <TabLabel {...props}>Explore</TabLabel>,
+            }}
+        />
+        <Screen
+            name={CHATS_STACK}
+            component={ChatsStack}
+            options={{
+                tabBarIcon: ({ focused }) => (
+                    <TabButton focused={focused} icon="chatbubbles-outline" />
+                ),
+                tabBarLabel: (props) => <TabLabel {...props}>Chats</TabLabel>,
             }}
         />
         <Screen

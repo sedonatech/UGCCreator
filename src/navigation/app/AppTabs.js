@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
+    CHATS_STACK,
     EXPLORE_STACK,
-    FEEDS_STACK,
     HOME_STACK,
     OFFERS_STACK,
     PROFILE_STACK,
@@ -10,11 +10,11 @@ import {
 import HomeStack from './HomeStack';
 import ExploreStack from './ExploreStack';
 import OffersStack from './OffersStack';
-import FeedsStack from './FeedsStack';
 import ProfileStack from './ProfileStack';
 import TabButton from '../../components/tabs/TabButton';
 import TabLabel from '../../components/tabs/TabLabel';
 import useNotificationPermissions from '../../hooks/notifications/useNotificationPermissions';
+import ChatsStack from './ChatsStack';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
@@ -55,13 +55,13 @@ const AppTabs = () => {
                 }}
             />
             <Screen
-                name={FEEDS_STACK}
-                component={FeedsStack}
+                name={CHATS_STACK}
+                component={ChatsStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="compass" />
+                        <TabButton focused={focused} icon="chatbubbles-outline" />
                     ),
-                    tabBarLabel: (props) => <TabLabel {...props}>Feeds</TabLabel>,
+                    tabBarLabel: (props) => <TabLabel {...props}>Chats</TabLabel>,
                 }}
             />
             <Screen
