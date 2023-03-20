@@ -11,7 +11,7 @@ import TabLabel from '../../components/tabs/TabLabel';
 import AdminPanelStack from './AdminPanelStack';
 import CreatorsProfilesStack from './CreatorsProfilesStack';
 import BrandsProfileStack from './BrandsProfileStack';
-import ChatsStack from '../app/ChatsStack';
+import ChatsStack from '../chats/ChatsStack';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;

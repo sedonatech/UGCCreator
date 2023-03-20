@@ -14,7 +14,7 @@ import ProfileStack from './ProfileStack';
 import TabButton from '../../components/tabs/TabButton';
 import TabLabel from '../../components/tabs/TabLabel';
 import useNotificationPermissions from '../../hooks/notifications/useNotificationPermissions';
-import ChatsStack from './ChatsStack';
+import ChatsStack from '../chats/ChatsStack';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;

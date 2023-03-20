@@ -1,11 +1,9 @@
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import {
-    StatusBar, useColorScheme, StyleSheet,
+    StatusBar, useColorScheme, StyleSheet, View,
 } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-
 import MainNavigator from './src/navigation/MainNavigator';
 import { AuthProvider } from './src/context/AuthProvider';
 import { FeatureFlagProvider } from './src/context/FeatureFlagsContext';
@@ -33,7 +31,7 @@ const MainApp = () => {
     const purchase = useSubscriptionConfig(true);
 
     return (
-        <GestureHandlerRootView style={styles.container}>
+        <View style={styles.container}>
             <CoreProvider config={config}>
                 <SubscriptionProvider purchase={purchase}>
                     <ProjectsProvider>
@@ -52,7 +50,7 @@ const MainApp = () => {
                     </ProjectsProvider>
                 </SubscriptionProvider>
             </CoreProvider>
-        </GestureHandlerRootView>
+        </View>
 
     );
 };

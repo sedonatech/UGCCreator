@@ -71,6 +71,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
                     thickness={4}
                     allowFontScaling
                     animated
+                    fill={'transparent'}
                 />
             </TemplateBox>
         )}

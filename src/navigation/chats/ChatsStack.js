@@ -9,6 +9,7 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const ChatsStack = () => (
+
     <Navigator initialRouteName={CHATS} screenOptions={SWITCH}>
         <Screen
             name={CHATS}
@@ -16,6 +17,7 @@ const ChatsStack = () => (
             component={ChatsScreen}
         />
     </Navigator>
+
 );
 
 export default ChatsStack;
