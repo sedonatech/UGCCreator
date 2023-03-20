@@ -68,3 +68,7 @@ export const BRAND_OFFERS = 'BrandOffers';
 export const SUBSCRIPTION = 'Subscription';
 
 export const SUBSCRIPTION_STACK = 'SubscriptionStack';
+
+export const CHATS = 'Chats';
+
+export const CHATS_STACK = 'ChatsStack';

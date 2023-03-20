@@ -18,6 +18,7 @@ import config from './config';
 import { CoreProvider } from './src/context/core';
 import useSubscriptionConfig from './src/hooks/subscription/useSubscriptionConfig';
 import { SubscriptionProvider } from './src/screens/subscriptions/context/context';
+import { ChatsProvider } from './src/context/ChatsProvider';
 
 const NAVIGATION_THEME = {
     ...DefaultTheme,
@@ -37,14 +38,16 @@ const MainApp = () => {
                 <SubscriptionProvider purchase={purchase}>
                     <ProjectsProvider>
                         <ProjectApplicationProvider>
-                            <ActionSheetProvider>
-                                <NavigationContainer
-                                    theme={NAVIGATION_THEME}
-                                >
-                                    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-                                    <MainNavigator />
-                                </NavigationContainer>
-                            </ActionSheetProvider>
+                            <ChatsProvider>
+                                <ActionSheetProvider>
+                                    <NavigationContainer
+                                        theme={NAVIGATION_THEME}
+                                    >
+                                        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                        <MainNavigator />
+                                    </NavigationContainer>
+                                </ActionSheetProvider>
+                            </ChatsProvider>
                         </ProjectApplicationProvider>
                     </ProjectsProvider>
                 </SubscriptionProvider>
