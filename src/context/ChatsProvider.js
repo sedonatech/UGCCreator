@@ -15,23 +15,13 @@ const ChatsProvider = ({ children }) => {
     const chatUser = useMemo(() => {
         if (profile) {
             return {
-                id: profile?.id,
+                _id: profile?.id,
                 name: profile?.userName,
-                image: profile?.image,
+                avatar: profile?.image,
             };
         }
         return null;
     }, [profile]);
-
-    const [currentUser, setCurrentUser] = useState(chatUser);
-
-    const [connecting, setConnecting] = useState(false);
-
-    const [activeChannel, setActiveChannel] = useState(null);
-
-    const [activeChannelId, setActiveChannelId] = useState(null);
-
-    const [selectedUser, setSelectedUser] = useState(null);
 
     const [error, setError] = useState(null);
 
@@ -41,16 +31,9 @@ const ChatsProvider = ({ children }) => {
 
     const [unreadThreads, setUnreadThreads] = useState(0);
 
-    const value = {
+    const [messages, setMessages] = useState([]);
 
-        currentUser,
-        setCurrentUser,
-        activeChannel,
-        setActiveChannel,
-        activeChannelId,
-        setActiveChannelId,
-        selectedUser,
-        setSelectedUser,
+    const value = {
         error,
         setError,
         directChannel,
@@ -59,8 +42,9 @@ const ChatsProvider = ({ children }) => {
         setUnreadMessages,
         unreadThreads,
         setUnreadThreads,
-        connecting,
-        setConnecting,
+        chatUser,
+        messages,
+        setMessages,
     };
 
     return (
