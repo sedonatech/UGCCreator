@@ -79,6 +79,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
     }, [search]);
 
     const filteredCreators = search?.length ? searchResults : creators;
+
     return (
         <ScrollView
             style={styles.scroll}

@@ -3,12 +3,21 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import useAuthContext from '../hooks/auth/useAuthContext';
+import useChatRooms from '../hooks/chats/useChatRooms';
 
 const ChatsContext = createContext();
 const { Provider, Consumer: ChatsConsumer } = ChatsContext;
 
 const ChatsProvider = ({ children }) => {
     const { auth } = useAuthContext();
+
+    const [messages, setMessages] = useState([]);
+
+    const {
+        chatRooms,
+        loading,
+        createChatRoom,
+    } = useChatRooms();
 
     const { profile } = auth;
 
@@ -25,24 +34,13 @@ const ChatsProvider = ({ children }) => {
 
     const [error, setError] = useState(null);
 
-    const [directChannel, setDirectChannel] = useState(null);
-
-    const [unreadMessages, setUnreadMessages] = useState(0);
-
-    const [unreadThreads, setUnreadThreads] = useState(0);
-
-    const [messages, setMessages] = useState([]);
-
     const value = {
         error,
         setError,
-        directChannel,
-        setDirectChannel,
-        unreadMessages,
-        setUnreadMessages,
-        unreadThreads,
-        setUnreadThreads,
         chatUser,
+        chatRooms,
+        loading,
+        createChatRoom,
         messages,
         setMessages,
     };

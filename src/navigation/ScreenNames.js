@@ -72,3 +72,5 @@ export const SUBSCRIPTION_STACK = 'SubscriptionStack';
 export const CHATS = 'Chats';
 
 export const CHATS_STACK = 'ChatsStack';
+
+export const CHAT_ROOM = 'ChatRoom';
