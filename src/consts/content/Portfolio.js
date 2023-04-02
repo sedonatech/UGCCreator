@@ -78,3 +78,5 @@ export const DEFAULT_CREATOR_RATES = {
         },
     ],
 };
+
+export const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1549490316-686f9b5d359f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njd8fGdyZWVufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60';

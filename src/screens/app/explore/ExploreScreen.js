@@ -33,6 +33,7 @@ import ToggleCarousel from '../../../components/ToggleCarousel';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useGetBrands from '../../../hooks/creators/useGetBrands';
 import AllProjectsTab from './components/AllProjectsTab';
+import FeedsTab from './components/FeedsTab';
 
 export const BRANDS_TAB = {
     name: 'Brands',
@@ -43,7 +44,11 @@ export const PROJECTS_TAB = {
     value: 'projects',
 };
 
-const TAB_DATA = [BRANDS_TAB, PROJECTS_TAB];
+export const FEEDS_TAB = {
+    name: 'Feeds',
+    value: 'feeds',
+};
+const TAB_DATA = [BRANDS_TAB, PROJECTS_TAB, FEEDS_TAB];
 
 const ExploreScreen = ({ route }) => {
     const initialTab = route?.params?.initialTab || TAB_DATA[0];
@@ -173,7 +178,9 @@ const ExploreScreen = ({ route }) => {
             {selectedTab === PROJECTS_TAB && filteredProjects && (
                 <AllProjectsTab projects={filteredProjects} />
             )}
-
+            {selectedTab === FEEDS_TAB && filteredProjects && (
+                <FeedsTab />
+            )}
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown
