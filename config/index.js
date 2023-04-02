@@ -1,6 +1,6 @@
 const overrideEntitlements = false;
 
-const overrideSubscription = true;
+const overrideSubscription = __DEV__;
 
 const overrideProfileUpdateModal = true;
 const revenueCat = 'appl_gKgUgJLyYmYOxsOgRIltrYVOswb';
