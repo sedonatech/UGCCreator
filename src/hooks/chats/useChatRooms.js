@@ -6,13 +6,21 @@ const useChatRooms = () => {
     const [chatRooms, setChatRooms] = useState([]);
 
     const [loading, setLoading] = useState(false);
-    const createChatRoom = async (name) => {
+
+    const [chatRoomCreated, setChatRoomCreated] = useState(false);
+    const createChatRoom = async (name, creatorId, brandId) => {
         try {
             setLoading(true);
-            await firestore().collection(CHAT_ROOMS).add({
+            const response = await firestore().collection(CHAT_ROOMS).add({
                 name,
+                creatorId,
+                brandId,
                 createdAt: firestore.FieldValue.serverTimestamp(),
             });
+
+            if (response) {
+                setChatRoomCreated(true);
+            }
         } catch (error) {
             console.log('[CREATE CHAT ROOM ERROR]', error);
         }
@@ -37,6 +45,7 @@ const useChatRooms = () => {
         chatRooms,
         loading,
         createChatRoom,
+        chatRoomCreated,
     };
 };
 

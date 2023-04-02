@@ -14,7 +14,7 @@ import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 
 const ChatsScreen = ({ route }) => {
-    const chatRoomName = route.params?.chatRoomName;
+    const chatRoomId = route.params?.chatRoomId;
 
     const {
         chatRooms, chatUser, messages, setMessages,
@@ -23,11 +23,10 @@ const ChatsScreen = ({ route }) => {
     const selectedChatRoom = useMemo(() => {
         if (!chatRooms) return null;
 
-        return chatRooms?.find((chat) => chat?.name === chatRoomName);
-    }, [chatRooms]);
-    console.log('-> selectedChatRoom', selectedChatRoom);
+        return chatRooms?.find((chat) => chat?.id === chatRoomId);
+    }, [chatRooms, chatRoomId]);
 
-    const { onSendMessage } = useChatMessages(selectedChatRoom);
+    const { onSendMessage } = useChatMessages();
 
     useEffect(() => {
         const unsubscribe = firestore()
@@ -55,11 +54,11 @@ const ChatsScreen = ({ route }) => {
                 alignItems="center"
                 justifyContent="center"
             >
-                <TemplateText bold size={16}>{chatRoomName}</TemplateText>
+                <TemplateText bold size={16}>{selectedChatRoom?.name}</TemplateText>
             </TemplateBox>
             <GiftedChat
                 messages={messages}
-                onSend={(newMessages) => onSendMessage(newMessages)}
+                onSend={(newMessages) => onSendMessage(newMessages, selectedChatRoom)}
                 user={chatUser}
                 placeholder="Type your message here..."
                 alwaysShowSend

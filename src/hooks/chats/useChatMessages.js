@@ -1,15 +1,14 @@
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 import { CHAT_ROOMS } from './useChatRooms';
 
 export const MESSAGES = 'messages';
-const useChatMessages = (chatRoom) => {
-    console.log('-> chatRoom', chatRoom);
-    const onSendMessage = (newMessage) => {
+const useChatMessages = () => {
+    const onSendMessage = (newMessage, chatRoom) => {
         const formattedMessages = newMessage?.map((message) => ({
             ...message,
-            createdAt: firestore.FieldValue.serverTimestamp(),
+            createdAt: moment().format('YYYY-MM-DD HH:mm'),
         }));
-        console.log('-> formattedMessages', JSON.stringify(formattedMessages, null, 2));
 
         firestore()
             .collection(CHAT_ROOMS)

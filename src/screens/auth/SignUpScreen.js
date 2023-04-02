@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,7 +12,7 @@ import {
     ERROR_RED,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
-import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
+import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { LOGIN } from '../../navigation/ScreenNames';
 import TemplateTextInput from '../../components/TemplateTextInput';
@@ -22,7 +22,6 @@ import { emailValid, passwordValid, isEmpty } from '../../Utils/validation';
 import useProfile from '../../hooks/user/useProfile';
 import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
-import { isIOS } from '../../Utils/Platform';
 
 const CREATOR_PLACEHOLDER = 'Creator';
 const BRAND_PLACEHOLDER = 'Brand';
@@ -66,6 +65,10 @@ const SignUpScreen = ({ navigation, route }) => {
       || loading
       || !!error
     ), [email, password, name, loading, error]);
+
+    useEffect(() => {
+        setError(null);
+    }, []);
 
     const { createCreatorProfile, createBrandProfile } = useProfile();
 

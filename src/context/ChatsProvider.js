@@ -2,8 +2,10 @@ import React, {
     createContext, useMemo, useState,
 } from 'react';
 import PropTypes from 'prop-types';
+
 import useAuthContext from '../hooks/auth/useAuthContext';
 import useChatRooms from '../hooks/chats/useChatRooms';
+import { DEFAULT_AVATAR } from '../consts/content/Portfolio';
 
 const ChatsContext = createContext();
 const { Provider, Consumer: ChatsConsumer } = ChatsContext;
@@ -17,6 +19,7 @@ const ChatsProvider = ({ children }) => {
         chatRooms,
         loading,
         createChatRoom,
+        chatRoomCreated,
     } = useChatRooms();
 
     const { profile } = auth;
@@ -25,8 +28,8 @@ const ChatsProvider = ({ children }) => {
         if (profile) {
             return {
                 _id: profile?.id,
-                name: profile?.userName,
-                avatar: profile?.image,
+                name: profile?.userName || profile?.name || 'Brand',
+                avatar: profile?.image || profile?.avatar || DEFAULT_AVATAR,
             };
         }
         return null;
@@ -43,6 +46,7 @@ const ChatsProvider = ({ children }) => {
         createChatRoom,
         messages,
         setMessages,
+        chatRoomCreated,
     };
 
     return (
