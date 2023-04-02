@@ -3,12 +3,13 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BLACK_30, BRAND_BLUE, TRANSPARENT, WHITE_30, BLACK_40
+    BLACK, WHITE, BLACK_30, BRAND_BLUE, TRANSPARENT, WHITE_30, BLACK_40, BLACK_60
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     image?: string | number;
@@ -49,9 +50,9 @@ const FeedCard: FC<Props> = ({
         fullGradient={showGradient}
         alignItems="center"
         justifyContent="center"
-        gradientColors={[BLACK_40, BLACK_40]}
+        gradientColors={[BLACK_60, BLACK_60]}
         borderRadius={RADIUS_SMALL}
-        width={cardWidth}
+        width={wp(cardWidth)}
         aspectRatio={aspectRatio}
         style={style}
         slideIn={slideInDelay !== undefined}
@@ -79,7 +80,7 @@ const FeedCard: FC<Props> = ({
                 </TemplateBox>
             )}
             {/* @ts-ignore */}
-            <TemplateText color={WHITE} bold size={20} style={styles.text}>
+            <TemplateText color={WHITE} bold size={18} style={styles.text}>
                 {title}
             </TemplateText>
 
@@ -90,7 +91,7 @@ const FeedCard: FC<Props> = ({
                 </TemplateText>
             )}
             {/* @ts-ignore */}
-            <TemplateText color={WHITE} size={16} style={styles.text} numberOfLines={2}>
+            <TemplateText color={WHITE} size={14} style={styles.text} numberOfLines={2}>
                 {shortDescription}
             </TemplateText>
         </TemplateBox>

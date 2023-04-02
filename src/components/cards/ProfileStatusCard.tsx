@@ -78,6 +78,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
         <TemplateBox
             flexWrap="wrap"
             flex
+            onPress={onPress}
         >
             <TemplateText
                 bold
