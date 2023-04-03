@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
     CHATS_STACK,
     EXPLORE_STACK,
-    FEEDS_STACK,
     HOME_STACK,
     OFFERS_STACK,
     PROFILE_STACK,
@@ -11,7 +10,6 @@ import {
 import HomeStack from './HomeStack';
 import ExploreStack from './ExploreStack';
 import OffersStack from './OffersStack';
-import FeedsStack from './FeedsStack';
 import ProfileStack from './ProfileStack';
 import TabButton from '../../components/tabs/TabButton';
 import TabLabel from '../../components/tabs/TabLabel';

@@ -33,7 +33,7 @@ const MainNavigator = () => {
 
     const isSignedIn = !loading && !!auth?.user;
 
-    const showSplash = isSignedIn && !isCreator && !isBrand;
+    const showSplash = !isCreator && !isBrand;
 
     const hasSubscription = useHasSubscription();
 
