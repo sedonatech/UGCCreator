@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
-import { uniq, uniqBy } from 'lodash';
+import { uniqBy } from 'lodash';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
 import Blob from '../../../assets/svgs/Blob';
@@ -15,8 +15,6 @@ import useChatsContext from '../../hooks/chats/useChatsContext';
 import useGetCreators from '../../hooks/brands/useGetCreators';
 
 const ChatRoomsScreen = ({ navigation }) => {
-    const [createdChatRoom, setCreatedChatRoom] = useState();
-
     const { auth } = useAuthContext();
 
     const { creators } = useGetCreators();
@@ -25,7 +23,9 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const isBrand = auth?.profile?.type !== 'creator';
 
-    const { createChatRoom, chatRooms, chatRoomCreated } = useChatsContext();
+    const {
+        createChatRoom, chatRooms, chatRoomCreated, createdChatRoom, setCreatedChatRoom,
+    } = useChatsContext();
 
     const chatRoomData = useMemo(() => {
         if (!chatRooms?.length) return [];

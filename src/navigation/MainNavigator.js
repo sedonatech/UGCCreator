@@ -45,7 +45,7 @@ const MainNavigator = () => {
         }
     }, [loading, auth?.user, showSplash]);
 
-    if (showSplash) {
+    if (!auth?.profile) {
         return (
             <View style={styles.container}>
                 <Blob color={DEEP_LAVENDER} top />
