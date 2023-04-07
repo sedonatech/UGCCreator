@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useLogout = () => {
     const logout = () => {
@@ -16,8 +17,11 @@ const useLogout = () => {
                     text: 'OK',
                     onPress: async () => {
                         try {
-                            const response = await auth().signOut();
-                            console.log('-> response', response);
+                            const allKeys = await AsyncStorage.getAllKeys();
+                            if (allKeys?.length > 0) {
+                                await AsyncStorage.multiRemove(allKeys);
+                            }
+                            await auth().signOut();
                         } catch (e) {
                             console.error(e);
                         }
