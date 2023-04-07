@@ -29,6 +29,7 @@ const MainNavigator = () => {
     const loading = auth?.initializing;
 
     const isCreator = auth?.profile?.type && auth?.profile?.type === 'creator';
+
     const isBrand = !!auth?.profile?.type && auth?.profile?.type === 'brand';
 
     const isSignedIn = !loading && !!auth?.user;
@@ -45,7 +46,7 @@ const MainNavigator = () => {
         }
     }, [loading, auth?.user, showSplash]);
 
-    if (showSplash) {
+    if (showSplash && isSignedIn) {
         return (
             <View style={styles.container}>
                 <Blob color={DEEP_LAVENDER} top />

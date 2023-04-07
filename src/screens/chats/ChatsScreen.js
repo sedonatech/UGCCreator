@@ -14,7 +14,9 @@ import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 
 const ChatsScreen = ({ route }) => {
-    const chatRoomId = route.params?.chatRoomId;
+    const { createdChatRoom } = useChatsContext();
+
+    const chatRoomId = route.params?.chatRoomId || createdChatRoom?.id;
 
     const {
         chatRooms, chatUser, messages, setMessages,

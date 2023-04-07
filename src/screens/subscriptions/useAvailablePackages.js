@@ -131,7 +131,7 @@ export default (
                         const savingPercent = isDiscountSale ? discountPercent : isIntroSale ? introSavingPercent : null;
 
                         // gets the original identifier to show correct metaData
-                        const originalIdentifier = sortOrder.find((sortIdentifier) => purchase?.metaData[sortIdentifier]?.discountKey === identifier);
+                        const originalIdentifier = sortOrder?.find((sortIdentifier) => purchase?.metaData[sortIdentifier]?.discountKey === identifier);
 
                         const {
                             discountIntroPriceString,

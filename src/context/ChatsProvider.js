@@ -15,6 +15,8 @@ const ChatsProvider = ({ children }) => {
 
     const [messages, setMessages] = useState([]);
 
+    const [createdChatRoom, setCreatedChatRoom] = useState();
+
     const {
         chatRooms,
         loading,
@@ -47,6 +49,8 @@ const ChatsProvider = ({ children }) => {
         messages,
         setMessages,
         chatRoomCreated,
+        createdChatRoom,
+        setCreatedChatRoom,
     };
 
     return (
