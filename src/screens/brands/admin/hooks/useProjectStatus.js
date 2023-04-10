@@ -40,6 +40,16 @@ const useProjectStatus = (
                                 currentProject,
                                 currentStatusIndex,
                             );
+                            await sendNotification(
+                                creatorFCMToken,
+                                'Project Status Updated',
+                                `The status of your project has been updated to ${overviewStatus?.[currentStatusIndex]?.name}`,
+                                {
+                                    type: 'project_status',
+                                    projectID: currentProject?.id,
+                                    applicationID: application?.id,
+                                },
+                            );
                             setMailEvent('');
                         },
                         style: 'cancel',
@@ -117,7 +127,7 @@ const useProjectStatus = (
                                 {
                                     type: 'project_status',
                                     projectID: currentProject?.id,
-                                    status: overviewStatus?.[statusIndex + 1]?.name,
+                                    applicationID: application?.id,
                                 },
                             );
                         },
@@ -146,7 +156,7 @@ const useProjectStatus = (
             );
             return;
         }
-        if (status.status === 'active' && !!creatorID && currentProject) {
+        if (!!creatorID && currentProject) {
             Alert.alert(
                 'Update Status',
                 `Are you sure you want to update the status to ${overviewStatus?.[statusIndex + 1]?.name}?`,
@@ -166,6 +176,8 @@ const useProjectStatus = (
                                 `The status of your project has been updated to ${overviewStatus?.[statusIndex + 1]?.name}`,
                                 {
                                     type: 'project_status',
+                                    projectID: currentProject?.id,
+                                    applicationID: application?.id,
                                 },
                             );
                         },
