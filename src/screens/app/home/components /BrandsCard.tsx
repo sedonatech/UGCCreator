@@ -38,7 +38,7 @@ const BrandsCard: FC<Props> = ({
     descriptionLines = 2,
     descriptionSize = 12,
     onPress,
-    buttonTitle = 'View Offers',
+    buttonTitle = 'View Brand Offers',
 }) => (
     <TemplateBox
         fullGradient={!!image}

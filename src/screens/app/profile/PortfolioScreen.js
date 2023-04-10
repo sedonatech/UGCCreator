@@ -51,7 +51,7 @@ const PortfolioScreen = ({ navigation, route }) => {
     const socials = creator?.socials || DEFAULT_CREATOR_SOCIAL;
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
     const location = creator?.location?.country || 'London';
-    const rates = DEFAULT_CREATOR_RATES;
+    const rates = creator?.rates || DEFAULT_CREATOR_RATES;
 
     const screenshot = useRef(null);
 
@@ -83,7 +83,6 @@ const PortfolioScreen = ({ navigation, route }) => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-
                 <PortfolioHeader
                     userName={userName}
                     location={location}

@@ -21,7 +21,6 @@ const RecommendedBrandsCarousel = ({ style }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
-    console.log('-> profile', JSON.stringify(profile, null, 2));
 
     const userSelectedCategories = useMemo(() => {
         if (!profile?.categories) {

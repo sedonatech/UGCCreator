@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {
-    get, isEmpty, map, size, filter, uniq,
-} from 'lodash';
 
 import { ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
@@ -12,57 +9,17 @@ import {
 import TemplateText from '../../../../components/TemplateText';
 import AddButtonLargeSvg from '../../../../../assets/svgs/AddButtonLargeSvg';
 import {
-    BLACK, BLACK_40, WHITE, WHITE_96,
+    BLACK, WHITE, WHITE_96,
 } from '../../../../theme/Colors';
-import useImageStorage from '../../../../hooks/Portfolio/useImageStorage';
-import useFirebaseDeleteStorage from '../../../../hooks/imageUpload/useFirebaseDeleteStorage';
 import AddSampleWorkItem from './AddSampleWorkItem';
 
-const imageLimit = 1;
 const UpdateWorkExamples = () => {
     const refRBSheet = useRef();
-
-    const [customOptions, setCustomOptions] = useState({ maxFiles: imageLimit, multiple: true });
-
-    const [images, setImages] = useState(Array.from(Array(imageLimit).keys()).map(() => null));
-
-    const { onAddImage: onAddPhoto, images: imagesFromStorage } = useImageStorage();
-
-    const { deleteImage } = useFirebaseDeleteStorage();
-
-    useEffect(() => {
-        const newImages = [...images];
-        const newImagesFromStorage = [...imagesFromStorage];
-        const filteredImages = filter(newImagesFromStorage,
-            (item) => !isEmpty(item)
-            && !isEmpty(item?.url)
-            && !item?.url?.includes('true'));
-        const uniqImages = uniq(filteredImages);
-        const newImagesFromStorageSize = size(uniqImages);
-        const newImagesSize = size(newImages);
-        const newImagesFromStorageWithNull = Array.from(Array(
-            newImagesSize - newImagesFromStorageSize,
-        )?.keys())?.map(() => null);
-        const newImagesFromStorageWithNullAndImages = [
-            ...uniqImages,
-            ...newImagesFromStorageWithNull,
-        ];
-        setImages(newImagesFromStorageWithNullAndImages);
-    }, [imagesFromStorage]);
-
-    const handleClearImage = async (index, item) => {
-        const newImages = [...images];
-        newImages.splice(index, 1);
-        newImages.push(null);
-        setCustomOptions({ ...customOptions, maxFiles: customOptions.maxFiles + 1 });
-        setImages(newImages);
-        await deleteImage({ item, skipAlert: false });
-    };
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XLARGE}>
             <TemplateBox selfCenter>
-                <TemplateText size={16} startCase>Upload your sample photos/videos</TemplateText>
+                <TemplateText size={16} startCase bold>Upload your sample photos/videos</TemplateText>
             </TemplateBox>
             <TemplateBox height={10} />
             <TemplateBox
@@ -89,7 +46,7 @@ const UpdateWorkExamples = () => {
                         backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
                         paddingTop: 10,
                         paddingBottom: 40,
-                        height: 700,
+                        height: 800,
                     },
                     draggableIcon: {
                         backgroundColor: BLACK,
@@ -101,7 +58,7 @@ const UpdateWorkExamples = () => {
                         <TemplateBox selfCenter alignItems="center">
                             <TemplateText
                                 bold
-                                size={18}
+                                size={16}
                                 color={BLACK}
                                 center
                             >
@@ -110,27 +67,20 @@ const UpdateWorkExamples = () => {
                             <TemplateBox height={10} />
                             <TemplateText
                                 size={12}
-                                color={BLACK_40}
+                                color={BLACK}
                                 center
                             >
-                                You can upload up to 4 variants of your work
+                                You can upload up to 4 variants of your links to your sample photos on your social media
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox pAll={WRAPPER_MARGIN}>
-                            {!!images?.length && !isEmpty(images) && map(images, ((item, index) => (
-                                <AddSampleWorkItem
-                                    key={index}
-                                    image={get(item, 'url', null)}
-                                    index={index}
-                                    onSelectImage={() => {
-                                        console.log('item', item);
-                                        if (!get(item, 'url', null)) onAddPhoto();
-                                    }}
-                                    handleClearImage={() => handleClearImage(index, item)}
-                                    onClose={() => refRBSheet.current.close()}
-                                    style={styles.addButton}
-                                />
-                            )))}
+
+                            <AddSampleWorkItem
+                                onClose={() => refRBSheet.current.close()}
+                                style={styles.addButton}
+                                type="photo"
+                            />
+
                         </TemplateBox>
                     </TemplateBox>
 
@@ -147,27 +97,19 @@ const UpdateWorkExamples = () => {
                             <TemplateBox height={10} />
                             <TemplateText
                                 size={12}
-                                color={BLACK_40}
+                                color={BLACK}
                                 center
                             >
-                                You can upload up to 4 variants of your video samples
+                                You can upload up to 4 variants of your links to your sample videos on your social media
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox pAll={WRAPPER_MARGIN}>
-                            {!!images?.length && !isEmpty(images) && map(images, ((item, index) => (
-                                <AddSampleWorkItem
-                                    key={index}
-                                    image={get(item, 'url', null)}
-                                    index={index}
-                                    onSelectImage={() => {
-                                        console.log('item', item);
-                                        if (!get(item, 'url', null)) onAddPhoto();
-                                    }}
-                                    handleClearImage={() => handleClearImage(index, item)}
-                                    onClose={() => refRBSheet.current.close()}
-                                    style={styles.addButton}
-                                />
-                            )))}
+
+                            <AddSampleWorkItem
+                                onClose={() => refRBSheet.current.close()}
+                                style={styles.addButton}
+                                type="video"
+                            />
                         </TemplateBox>
                     </TemplateBox>
                 </ScrollView>

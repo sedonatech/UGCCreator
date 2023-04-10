@@ -31,7 +31,7 @@ const UpdateBrandsWorkedWith = () => {
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XLARGE}>
             <TemplateBox selfCenter>
-                <TemplateText size={16} startCase>Add Brands You have Worked With</TemplateText>
+                <TemplateText size={16} startCase bold>Add Brands You have Worked With</TemplateText>
             </TemplateBox>
             <TemplateBox height={10} />
             <TemplateBox selfCenter mb={10}>

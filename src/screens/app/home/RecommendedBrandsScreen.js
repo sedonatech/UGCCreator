@@ -71,7 +71,7 @@ const RecommendedBrandsScreen = ({ route }) => {
                     startCase
                     center
                 >
-                    Weekly AI recommended Brands based on your Portfolio
+                    Weekly Brands based on your Portfolio and powered by AI
                 </TemplateText>
             </TemplateBox>
             <TemplateBox selfCenter flex>

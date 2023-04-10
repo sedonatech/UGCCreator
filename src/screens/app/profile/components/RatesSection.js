@@ -5,7 +5,7 @@ import TemplateBox from '../../../../components/TemplateBox';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import {
-    BLACK, BLACK_10, BLACK_20, BRAND_BLUE,
+    BLACK, BLACK_20, BRAND_BLUE,
 } from '../../../../theme/Colors';
 
 const RatesSection = ({ rates }) => (

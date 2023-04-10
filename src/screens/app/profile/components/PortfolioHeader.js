@@ -6,10 +6,9 @@ import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import {
-    BLACK, BLACK_40, BRAND_BLUE, GREEN, LAVENDER, WHITE,
+    BLACK, BLACK_40, BRAND_BLUE, GREEN, WHITE,
 } from '../../../../theme/Colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
-import Blob from '../../../../../assets/svgs/Blob';
 import Avatar from '../../../../components/Avatar';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
@@ -24,11 +23,6 @@ const PortfolioHeader = ({
             borderBottomLeftRadius={20}
             borderBottomRightRadius={20}
         >
-
-            <Blob top color={LAVENDER} />
-            <Blob right color={LAVENDER} />
-            <Blob color={LAVENDER} bottom />
-            <Blob center />
             <TemplateBox
                 absolute
                 top={SCREEN_HEIGHT * 0.14}
