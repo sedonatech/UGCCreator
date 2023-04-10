@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import {
@@ -42,12 +42,16 @@ const SettingsScreen = ({ navigation }) => {
     }, [isFocused, profile, user]);
 
     const settings = [
-        // {
-        //     title: 'Open AI',
-        //     description: 'Explore the Open AI platform',
-        //     onPress: () => navigation.navigate(UGCAI),
-        //     icon: 'trending-up-outline',
-        // },
+        {
+            title: 'Automations',
+            description: 'Explore our automations platform powered by OpenAI',
+            onPress: () => {
+                Alert.alert('Coming Soon in the next version', ''
+                    + 'You will be able to explore the Open AI platform and '
+                    + 'see how you can use seamlessly manage your content creation tasks');
+            },
+            icon: 'trending-up-outline',
+        },
         {
             title: 'Email',
             description: auth?.user?.email,

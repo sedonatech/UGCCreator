@@ -7,7 +7,7 @@ import { sortBy } from 'lodash';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import { BLACK, BLUE } from '../../../../theme/Colors';
+import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateBox from '../../../../components/TemplateBox';
 import ProjectCard from './ProjectCard';
 import { EXPLORE, EXPLORE_STACK, PROJECT_DETAILS } from '../../../../navigation/ScreenNames';
@@ -58,7 +58,7 @@ const ProjectsCarousel = ({ style }) => {
                     },
                 })}
                 >
-                    <TemplateText startCase size={14} underLine color={BLUE}>
+                    <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                         See All
                     </TemplateText>
                 </TemplateTouchable>

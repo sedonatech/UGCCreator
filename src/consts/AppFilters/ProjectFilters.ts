@@ -5,23 +5,6 @@ export interface ProjectFilters {
 
 export const projectFilters: ProjectFilters[] = [
     {
-        name: 'Skin Care Products',
-        value: 'skin-care-products',
-    },
-    {
-        name: 'SkinCare Tools',
-        value: 'skin-care-tools',
-    },
-    {
-        name: 'Makeup',
-        value: 'makeup',
-    },
-
-    {
-        name: 'Makeup Tools',
-        value: 'makeup-tools',
-    },
-    {
         name: 'Fitness/Wellness',
         value: 'fitness-wellness',
     },
@@ -38,22 +21,6 @@ export const projectFilters: ProjectFilters[] = [
         value: 'travel',
     },
     {
-        name: 'Family',
-        value: 'family',
-    },
-    {
-        name: 'Kids',
-        value: 'kids',
-    },
-    {
-        name: 'Pets',
-        value: 'pets',
-    },
-    {
-        name: 'Parenting',
-        value: 'parenting',
-    },
-    {
         name: 'DIY',
         value: 'diy',
     },
@@ -62,88 +29,16 @@ export const projectFilters: ProjectFilters[] = [
         value: 'apps-tech',
     },
     {
-        name: 'Gaming',
-        value: 'gaming',
-    },
-    {
         name: 'Fashion',
         value: 'fashion',
-    },
-    {
-        name: 'Home Decor',
-        value: 'home-decor',
-    },
-    {
-        name: 'Home Essentials',
-        value: 'home-essentials',
     },
     {
         name: 'Business',
         value: 'business',
     },
     {
-        name: 'Food & Cooking',
-        value: 'food-cooking',
-    },
-    {
         name: 'Real Estate',
         value: 'real-estate',
-    },
-    {
-        name: 'AirBnB',
-        value: 'airbnb',
-    },
-    {
-        name: 'Education & Learning',
-        value: 'education-learning',
-    },
-    {
-        name: 'Sustainability',
-        value: 'sustainability',
-    },
-    {
-        name: 'Kitchen Tools',
-        value: 'kitchen-tools',
-    },
-    {
-        name: 'Perfumes',
-        value: 'perfumes',
-    },
-    {
-        name: 'Jewelry',
-        value: 'jewelry',
-    },
-    {
-        name: 'Books',
-        value: 'books',
-    },
-    {
-        name: 'Restaurants',
-        value: 'restaurants',
-    },
-    {
-        name: 'Coffee Shops',
-        value: 'coffee-shops',
-    },
-    {
-        name: 'Hotels',
-        value: 'hotels',
-    },
-    {
-        name: 'Beauty Salons',
-        value: 'beauty-salons',
-    },
-    {
-        name: 'Hair Care',
-        value: 'hair-care',
-    },
-    {
-        name: 'NFTs',
-        value: 'nfts',
-    },
-    {
-        name: 'Crypto',
-        value: 'crypto',
     },
     {
         name: 'Art',
@@ -162,32 +57,12 @@ export const projectFilters: ProjectFilters[] = [
         value: 'entertainment',
     },
     {
-        name: 'Furniture',
-        value: 'furniture',
-    },
-    {
         name: 'Photography',
         value: 'photography',
     },
     {
-        name: 'Pregnancy',
-        value: 'pregnancy',
-    },
-    {
-        name: 'Toys',
-        value: 'toys',
-    },
-    {
-        name: 'Gardening',
-        value: 'gardening',
-    },
-    {
         name: 'Cigars and Tobacco',
         value: 'cigars-and-tobacco',
-    },
-    {
-        name: 'Health & Wellness',
-        value: 'health-wellness',
     }
 ];
 

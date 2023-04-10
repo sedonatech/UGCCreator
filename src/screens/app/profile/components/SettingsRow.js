@@ -23,7 +23,7 @@ const SettingsRow = ({
             >
                 <TemplateIcon name={icon} size={24} color={isLast ? ERROR_RED : BLACK} />
                 <TemplateBox width={WRAPPER_MARGIN} />
-                <TemplateBox>
+                <TemplateBox width={SCREEN_WIDTH - 100}>
                     <TemplateText
                         bold
                         color={isLast ? ERROR_RED : BLACK}
