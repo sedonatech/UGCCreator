@@ -51,7 +51,7 @@ target 'UGCCreatorApp' do
     installer.generated_projects.each do |project|
             project.targets.each do |target|
                 target.build_configurations.each do |config|
-                    config.build_settings["DEVELOPMENT_TEAM"] = "WNPQJT5Z28"
+                    config.build_settings["DEVELOPMENT_TEAM"] = "XW576HXDLG"
                  end
             end
           end

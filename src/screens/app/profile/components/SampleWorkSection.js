@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
+import { LinkPreview } from '@flyerhq/react-native-link-preview';
 import TemplateBox from '../../../../components/TemplateBox';
-import { BRANDS } from '../../../../consts/content/Home';
 
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
@@ -9,11 +9,14 @@ import SampleWorkCard from './SampleWorkCard';
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import TemplateText from '../../../../components/TemplateText';
 import { BLACK } from '../../../../theme/Colors';
+import useAuthContext from '../../../../hooks/auth/useAuthContext';
+import openUrl from '../../../../Utils/openUrl';
+import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
 const getIconByType = (type) => {
-    if (type === 'videoLessons') {
+    if (type === 'videos') {
         return 'videocam-outline';
-    } if (type === 'photoEditing') {
+    } if (type === 'photos') {
         return 'camera-outline';
     }
     return 'article';
@@ -28,6 +31,28 @@ const SampleWorkSection = () => {
         return feed?.feeds?.filter((item) => item?.type === 'videoLessons' || item?.type === 'photoEditing');
     }, [feed]);
 
+    const { auth } = useAuthContext();
+
+    const profile = auth?.profile;
+    const sampleVideos = profile?.sampleVideos;
+    const samplePhotos = profile?.samplePhotos;
+
+    const mergedWork = useMemo(() => {
+        if (!sampleVideos?.length && !samplePhotos?.length) return [];
+
+        const videos = sampleVideos?.map((item) => ({
+            ...item,
+            type: 'videos',
+        }));
+
+        const photos = samplePhotos?.map((item) => ({
+            ...item,
+            type: 'photos',
+        }));
+
+        return [...videos, ...photos];
+    }, [sampleVideos, samplePhotos]);
+
     return (
         <TemplateBox flex mt={WRAPPER_MARGIN * 2}>
             <TemplateBox ml={WRAPPER_MARGIN} mb={10}>
@@ -35,15 +60,30 @@ const SampleWorkSection = () => {
             </TemplateBox>
 
             <TemplateCarousel
-                data={filteredFeed}
+                data={mergedWork}
                 renderItem={({ item }) => (
-                    <SampleWorkCard
-                        image={{ uri: item?.thumbnail }}
-                        title={item?.title}
-                        shortDescription={item?.description}
-                        style={styles.card}
-                        onPress={() => ''}
-                        icon={getIconByType(item?.type)}
+                    <LinkPreview
+                        text={item?.link}
+                        enableAnimation
+                        renderLinkPreview={({
+                            previewData,
+                        }) => (
+                            <SampleWorkCard
+                                image={{
+                                    uri:
+                                        previewData?.image?.url
+                                        || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE,
+                                }}
+                                title={previewData?.title || item?.title}
+                                shortDescription={previewData?.description || item?.description}
+                                style={styles.card}
+                                onPress={() => openUrl(item?.link)}
+                                icon={getIconByType(item?.type)}
+                                titleSize={13}
+                                descriptionSize={12}
+                                titleLines={2}
+                            />
+                        )}
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}

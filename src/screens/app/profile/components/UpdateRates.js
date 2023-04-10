@@ -27,7 +27,7 @@ const UpdateRates = () => {
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XLARGE}>
             <TemplateBox selfCenter>
-                <TemplateText size={16} startCase>Update your rates</TemplateText>
+                <TemplateText size={16} startCase bold>Update your rates</TemplateText>
 
             </TemplateBox>
             <TemplateBox height={10} />
@@ -45,7 +45,6 @@ const UpdateRates = () => {
                 closeOnPressMask
                 customStyles={{
                     wrapper: {
-
                         blurType: 'dark',
                         blurAmount: 10,
                     },
@@ -55,7 +54,7 @@ const UpdateRates = () => {
                         backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
                         paddingTop: 10,
                         paddingBottom: 40,
-                        height: 700,
+                        height: 800,
                     },
                     draggableIcon: {
                         backgroundColor: BLACK,
@@ -67,7 +66,7 @@ const UpdateRates = () => {
                         ml={SCREEN_WIDTH - (WRAPPER_MARGIN * 4)}
                         onPress={handleUpdate}
                     >
-                        <TemplateText size={14} color={IOS_BLUE} bold>Update</TemplateText>
+                        <TemplateText size={16} color={IOS_BLUE} bold>Update</TemplateText>
                     </TemplateBox>
                     <TemplateBox mb={WRAPPER_MARGIN}>
                         <TemplateBox selfCenter mt={WRAPPER_MARGIN}>
@@ -82,21 +81,22 @@ const UpdateRates = () => {
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox height={10} />
-                        {profileData?.rates?.monthlyPackage?.map((item) => (
+                        {profileData?.rates?.monthlyPackage?.map((item, index) => (
                             <RateItem
-                                key={item.title}
+                                key={`${item.title}-${index}`}
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={(text) => {
+                                    let selected = profileData?.rates?.monthlyPackage?.find((i) => i?.description === item?.description);
+                                    selected = {
+                                        ...selected,
+                                        price: text,
+                                    };
+                                    profileData?.rates?.monthlyPackage?.splice(index, 1, selected);
                                     update('rates.monthlyPackage',
                                         [
                                             ...profileData?.rates?.monthlyPackage,
-                                            {
-                                                title: item?.title,
-                                                description: item?.description,
-                                                price: text,
-                                            },
                                         ]);
                                 }}
                             />
@@ -116,21 +116,22 @@ const UpdateRates = () => {
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox height={10} />
-                        {profileData?.rates?.videoStartingRate?.map((item) => (
+                        {profileData?.rates?.videoStartingRate?.map((item, index) => (
                             <RateItem
-                                key={item.title}
+                                key={`${item.title}-${index}`}
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={(text) => {
-                                    update('rates.videoStartingRate',
+                                    let selected = profileData?.rates?.videoStartingRate?.find((i) => i?.description === item?.description);
+                                    selected = {
+                                        ...selected,
+                                        price: text,
+                                    };
+                                    profileData?.rates?.videoStartingRate?.splice(index, 1, selected);
+                                    update('rates.monthlyPackage',
                                         [
                                             ...profileData?.rates?.videoStartingRate,
-                                            {
-                                                title: item?.title,
-                                                description: item?.description,
-                                                price: text,
-                                            },
                                         ]);
                                 }}
                             />
@@ -149,21 +150,22 @@ const UpdateRates = () => {
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox height={10} />
-                        {profileData?.rates?.photoStartingRate?.map((item) => (
+                        {profileData?.rates?.photoStartingRate?.map((item, index) => (
                             <RateItem
-                                key={item.title}
+                                key={`${item.title}-${index}`}
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={(text) => {
-                                    update('rates.photoStartingRate',
+                                    let selected = profileData?.rates?.photoStartingRate?.find((i) => i?.description === item?.description);
+                                    selected = {
+                                        ...selected,
+                                        price: text,
+                                    };
+                                    profileData?.rates?.photoStartingRate?.splice(index, 1, selected);
+                                    update('rates.monthlyPackage',
                                         [
                                             ...profileData?.rates?.photoStartingRate,
-                                            {
-                                                title: item?.title,
-                                                description: item?.description,
-                                                price: text,
-                                            },
                                         ]);
                                 }}
                             />
@@ -182,21 +184,22 @@ const UpdateRates = () => {
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox height={10} />
-                        {profileData?.rates?.revision?.map((item) => (
+                        {profileData?.rates?.revision?.map((item, index) => (
                             <RateItem
-                                key={item.title}
+                                key={`${item.title}-${index}`}
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={(text) => {
-                                    update('rates.revision',
+                                    let selected = profileData?.rates?.revision?.find((i) => i?.description === item?.description);
+                                    selected = {
+                                        ...selected,
+                                        price: text,
+                                    };
+                                    profileData?.rates?.revision?.splice(index, 1, selected);
+                                    update('rates.monthlyPackage',
                                         [
                                             ...profileData?.rates?.revision,
-                                            {
-                                                title: item?.title,
-                                                description: item?.description,
-                                                price: text,
-                                            },
                                         ]);
                                 }}
                             />
@@ -215,21 +218,22 @@ const UpdateRates = () => {
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox height={10} />
-                        {profileData?.rates?.usageRights?.map((item) => (
+                        {profileData?.rates?.usageRights?.map((item, index) => (
                             <RateItem
-                                key={item.title}
+                                key={`${item.title}-${index}`}
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={(text) => {
-                                    update('rates.usageRights',
+                                    let selected = profileData?.rates?.usageRights?.find((i) => i?.description === item?.description);
+                                    selected = {
+                                        ...selected,
+                                        price: text,
+                                    };
+                                    profileData?.rates?.usageRights?.splice(index, 1, selected);
+                                    update('rates.monthlyPackage',
                                         [
                                             ...profileData?.rates?.usageRights,
-                                            {
-                                                title: item?.title,
-                                                description: item?.description,
-                                                price: text,
-                                            },
                                         ]);
                                 }}
                             />
@@ -248,21 +252,22 @@ const UpdateRates = () => {
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox height={10} />
-                        {profileData?.rates?.exclusiveRights?.map((item) => (
+                        {profileData?.rates?.exclusiveRights?.map((item, index) => (
                             <RateItem
-                                key={item.title}
+                                key={`${item.title}-${index}`}
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={(text) => {
-                                    update('rates.exclusiveRights',
+                                    let selected = profileData?.rates?.exclusiveRights?.find((i) => i?.description === item?.description);
+                                    selected = {
+                                        ...selected,
+                                        price: text,
+                                    };
+                                    profileData?.rates?.exclusiveRights?.splice(index, 1, selected);
+                                    update('rates.monthlyPackage',
                                         [
                                             ...profileData?.rates?.exclusiveRights,
-                                            {
-                                                title: item?.title,
-                                                description: item?.description,
-                                                price: text,
-                                            },
                                         ]);
                                 }}
                             />

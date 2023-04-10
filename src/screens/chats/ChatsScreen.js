@@ -2,11 +2,9 @@ import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { GiftedChat } from 'react-native-gifted-chat';
-
 import firestore from '@react-native-firebase/firestore';
 import TemplateBox from '../../components/TemplateBox';
-import Blob from '../../../assets/svgs/Blob';
-import { LAVENDER, WHITE } from '../../theme/Colors';
+import { WHITE } from '../../theme/Colors';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import TemplateText from '../../components/TemplateText';
 import { HEADER_MARGIN } from '../../theme/Layout';
@@ -71,14 +69,6 @@ const ChatsScreen = ({ route }) => {
                 isLoadingEarlier={false}
                 infiniteScroll
             />
-
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
-
         </View>
     );
 };

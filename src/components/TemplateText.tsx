@@ -29,7 +29,6 @@ interface Props {
     color?: string | null,
     size?: number | null,
     lineThrough?: boolean,
-
     numberOfLines?: number | null,
     startCase?: boolean,
     italic?: boolean,

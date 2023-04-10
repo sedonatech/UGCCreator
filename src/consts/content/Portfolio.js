@@ -80,3 +80,6 @@ export const DEFAULT_CREATOR_RATES = {
 };
 
 export const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1549490316-686f9b5d359f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njd8fGdyZWVufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60';
+export const DEFAULT_BRAND_COVER = 'https://images.unsplash.com/photo-1495106245177-55dc6f43e83f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGJyYW5kJTIwaWRlbnRpdHl8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60';
+
+export const DEFAULT_CREATOR_WORK_SAMPLE_IMAGE = 'https://images.unsplash.com/photo-1557683311-eac922347aa1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGxhaW4lMjBibHVlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60';

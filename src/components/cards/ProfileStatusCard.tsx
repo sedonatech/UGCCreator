@@ -13,16 +13,13 @@ interface ProfileStatusCardProps {
     progress: number;
     title: string;
     description: string;
-
     style?: any;
     onPress?: () => void;
     showProgress?: boolean;
-
     slideInDelay?: number;
-
     showIcon?: boolean;
-
     icon?: string;
+    descriptionLines?: number;
 }
 // @ts-ignore
 const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
@@ -35,6 +32,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
     slideInDelay,
     showIcon = true,
     icon,
+    descriptionLines,
 }) => (
     <TemplateBox
         width={SCREEN_WIDTH - 40}
@@ -44,7 +42,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
         row
         alignItems="center"
         selfCenter
-        style={[style, SHADOW('default', BRAND_BLUE)]}
+        style={[style, SHADOW('card', BRAND_BLUE)]}
         onPress={onPress}
         slideIn
         slideInDelay={slideInDelay}
@@ -92,7 +90,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
             <TemplateText
                 color={BLACK}
                 size={14}
-
+                numberOfLines={descriptionLines}
             >
                 {description}
             </TemplateText>

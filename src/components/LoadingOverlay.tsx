@@ -4,7 +4,7 @@ import TemplateBox from './TemplateBox';
 import TemplateText from './TemplateText';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import {
-    BLACK, LAVENDER, WHITE_30
+    BLACK, BLACK_20, LAVENDER, WHITE_30
 } from '../theme/Colors';
 import Blob from '../../assets/svgs/Blob';
 
@@ -18,20 +18,11 @@ const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0 }) => (
         width={SCREEN_WIDTH}
         alignItems="center"
         justifyContent="center"
-        backgroundColor={WHITE_30}
+        backgroundColor={BLACK_20}
         absolute
         ml={ml}
-
+        flex
     >
-        <TemplateBox>
-            {/* @ts-ignore */}
-            <Blob top color={LAVENDER} />
-            {/* @ts-ignore */}
-            <Blob right color={LAVENDER} />
-            {/* @ts-ignore */}
-            <Blob color={LAVENDER} bottom />
-            <Blob center />
-        </TemplateBox>
         <TemplateText color={BLACK} size={20} bold center>
             {message}
         </TemplateText>

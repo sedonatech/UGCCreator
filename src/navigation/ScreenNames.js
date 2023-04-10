@@ -76,3 +76,5 @@ export const CHATS_STACK = 'ChatsStack';
 export const CHAT_ROOM = 'ChatRoom';
 
 export const UGCAI = 'Ugcai';
+
+export const RECOMMENDED_BRANDS = 'RecommendedBrands';

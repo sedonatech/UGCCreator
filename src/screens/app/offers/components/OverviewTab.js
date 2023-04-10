@@ -10,13 +10,24 @@ import {
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import useProjectStatus from '../../../brands/admin/hooks/useProjectStatus';
 
-const OverviewTab = ({ application }) => {
+const OverviewTab = ({
+    application, currentProject, creatorID, brandEmail, brandFCMToken,
+}) => {
     const overviewStatus = useMemo(() => {
         if (!application?.status) return [];
 
         return application?.status;
     }, [application?.status]);
+
+    const { handleOnPressCreatorStatus } = useProjectStatus(
+        application,
+        creatorID,
+        currentProject,
+        brandEmail,
+        brandFCMToken,
+    );
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>
@@ -56,6 +67,7 @@ const OverviewTab = ({ application }) => {
                         mt={-18.4}
                         ml={10}
                         opacity={status.status === 'completed' ? 1 : status.status === 'active' ? 1 : 0.4}
+                        onPress={() => handleOnPressCreatorStatus(status, index)}
                     >
                         <TemplateText bold size={16} color={BLACK}>
                             {status.name}
@@ -90,9 +102,17 @@ OverviewTab.propTypes = {
         enrolledAt: PropTypes.string,
         documents: PropTypes.arrayOf(PropTypes.string),
     })),
+    currentProject: PropTypes.shape({}),
+    brandEmail: PropTypes.string,
+    brandFCMToken: PropTypes.string,
+    creatorID: PropTypes.string,
 };
 
 OverviewTab.defaultProps = {
     application: [],
+    currentProject: {},
+    brandEmail: '',
+    brandFCMToken: '',
+    creatorID: '',
 };
 export default OverviewTab;

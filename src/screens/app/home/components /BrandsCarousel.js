@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import { BRANDS } from '../../../../consts/content/Home';
-import { BLACK, BLACK_50, BLUE } from '../../../../theme/Colors';
+
+import { BLACK, BLUE, IOS_BLUE } from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
@@ -35,7 +35,7 @@ const BrandsCarousel = ({ style }) => {
     return (
         <TemplateBox style={style}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={20}>
-                <TemplateText size={18} bold>Top Brands </TemplateText>
+                <TemplateText size={18} bold>Brands on our Platform</TemplateText>
                 <TemplateBox flex />
                 <TemplateTouchable
                     onPress={() => navigation.navigate(EXPLORE_STACK, {
@@ -45,15 +45,15 @@ const BrandsCarousel = ({ style }) => {
                         },
                     })}
                 >
-                    <TemplateText startCase size={14} underLine color={BLUE}>
+                    <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                         See All
                     </TemplateText>
                 </TemplateTouchable>
             </TemplateBox>
-            <TemplateText size={14} color={BLACK} style={styles.subtitle}>
-                Check out our top brands
-            </TemplateText>
 
+            <TemplateText size={14} color={BLACK} style={styles.subtitle}>
+                Check out the brands currently on our platform
+            </TemplateText>
             <TemplateCarousel
                 data={brandsData}
                 renderItem={({ item }) => (

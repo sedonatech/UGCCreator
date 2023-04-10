@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import messaging from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
-import { APP } from '../../navigation/ScreenNames';
+import { APP_TABS } from '../../navigation/ScreenNames';
 
 const useNotificationInteraction = () => {
     const navigation = useNavigation();
@@ -17,7 +17,11 @@ const useNotificationInteraction = () => {
                 remoteMessage.notification,
             );
             setLoading(false);
-            navigation.navigate(APP);
+            navigation.reset({
+                index: 0,
+                routes: [{ name: APP_TABS }],
+
+            });
         });
 
         // Check whether an initial notification is available
@@ -26,10 +30,14 @@ const useNotificationInteraction = () => {
             .then((remoteMessage) => {
                 if (remoteMessage) {
                     console.log(
-                        'Notification caused app to open from quit state:',
-                        remoteMessage.notification,
+                        'Notification caused app to open from quit state:  ',
+                        remoteMessage,
                     );
-                    navigation.navigate(APP);
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: APP_TABS }],
+
+                    });
                 }
                 setLoading(false);
             });

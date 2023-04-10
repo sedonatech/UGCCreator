@@ -116,7 +116,7 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                 >
                     <TemplateText
                         bold
-                        size={22}
+                        size={18}
                         color={WHITE}
                     >
                         {selectedBrand?.name}

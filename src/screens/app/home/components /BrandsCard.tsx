@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BLACK_30, BLACK_40, BRAND_BLUE, TRANSPARENT
+    BLACK, WHITE, BLACK_40, BRAND_BLUE, TRANSPARENT
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -22,9 +22,7 @@ interface Props {
     titleSize?: number;
     descriptionLines?: number;
     descriptionSize?: number;
-
     onPress?: () => void;
-
     buttonTitle?: string;
 }
 
@@ -40,7 +38,7 @@ const BrandsCard: FC<Props> = ({
     descriptionLines = 2,
     descriptionSize = 12,
     onPress,
-    buttonTitle = 'View Offers',
+    buttonTitle = 'View Brand Offers',
 }) => (
     <TemplateBox
         fullGradient={!!image}
@@ -68,7 +66,7 @@ const BrandsCard: FC<Props> = ({
                 />
             )
         }
-        <TemplateBox pAll={20} onPress={onPress}>
+        <TemplateBox pAll={20} onPress={onPress} selfCenter alignItems="center">
             {/* @ts-ignore */}
             <TemplateText color={WHITE} bold size={titleSize} style={styles.text}>
                 {title}
@@ -106,8 +104,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 10,
-        marginTop: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginTop: 40,
+        alignSelf: 'center',
     },
     text: {
         marginBottom: 5,

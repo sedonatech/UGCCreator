@@ -28,27 +28,10 @@ export const projectStatuses : ProjectStatus[] = [
     {
         name: 'Brand Approved Enrollment',
         value: 'brand_approved_enrollment',
-        description: 'The brand has approved your enrollment request.',
+        description: 'The brand has approved your enrollment request. Please wait for theme to send a contract.',
         status: 'inactive',
-        brandName: 'Submit a Proposal',
-        brandDescription: 'Please submit a proposal for this project.',
-    },
-
-    {
-        name: 'Brand Proposal Submitted',
-        value: 'brand_proposal_submitted',
-        description: 'Please review and approve or reject the brand proposal.',
-        status: 'inactive',
-        brandName: 'Pending Approval',
-        brandDescription: 'Please wait for the creator to review and approve your proposal.',
-    },
-    {
-        name: 'Brand Proposal Accepted',
-        value: 'brand_proposal_accepted',
-        description: 'You have accepted the proposal. The brand will send you a contract for this project.',
-        status: 'inactive',
-        brandName: 'Proposal Accepted',
-        brandDescription: 'The creator has accepted your proposal.Please prepare and send a contract for this project.',
+        brandName: 'Submit a Contract',
+        brandDescription: 'Please submit a contract for the creator to review.',
     },
     {
         name: 'Brand Contract Received',
@@ -64,7 +47,7 @@ export const projectStatuses : ProjectStatus[] = [
         description: 'You have signed and uploaded the contract.',
         status: 'inactive',
         brandName: 'Signed Contract Received',
-        brandDescription: 'The creator has sent you a signed contract. Please make the first payment for this project.'
+        brandDescription: 'The creator has sent you a signed contract. Please review and make the first payment for this project.'
     },
     {
         name: 'First Payment Received',
@@ -77,7 +60,7 @@ export const projectStatuses : ProjectStatus[] = [
     {
         name: 'Project Started',
         value: 'project_started',
-        description: 'Work has started on this project.Please upload the first deliverable.',
+        description: 'Work has started on this project.Please upload the deliverables to your socials or with WeTransfer once its ready.',
         status: 'inactive',
         brandName: 'Project Started',
         brandDescription: 'The creator has started working on this project.',
