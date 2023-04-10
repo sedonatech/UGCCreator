@@ -1,23 +1,23 @@
 import React, {
-    FC, useLayoutEffect, useMemo, useState,
+    useLayoutEffect, useMemo, useState,
 } from 'react';
 import { Animated, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK, BLACK_50, GREEN, GREY, GREY_SECONDARY, WHITE, WHITE_40,
+    BLACK, GREEN, WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
 import ToggleCarousel from '../../../components/ToggleCarousel';
-import TemplateIcon from '../../../components/TemplateIcon';
 import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { HOME } from '../../../navigation/ScreenNames';
+import useGetBrands from '../../../hooks/creators/useGetBrands';
 
 const CURRENT_PROJECT_TABS = [
     {
@@ -43,6 +43,8 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
 
     const { allProjects: projects } = useProjectsContext();
 
+    const { brands } = useGetBrands();
+
     const currentProject = useMemo(() => {
         if (!projects) return null;
 
@@ -56,6 +58,14 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
             ? currentProject?.applications?.find(({ creatorId }) => creatorId === profile?.id)
             : {};
     }, [currentProject, profile?.id]);
+
+    const currentProjectBrand = useMemo(() => {
+        if (!brands) return null;
+
+        return brands?.find(({ id }) => id === currentProject?.brandId);
+    }, [currentProject?.brandId, brands]);
+
+    console.log('-> currentProjectBrand', JSON.stringify(currentProjectBrand, null, 2));
 
     const pan = React.useRef(new Animated.ValueXY()).current;
 
@@ -79,8 +89,6 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
     }, [navigation]);
 
     if (!currentProject) return <LoadingOverlay message="Loading project details..." />;
-
-    // TODO: Add the empty states of the document pickers
 
     return (
         <ScrollView
@@ -158,57 +166,13 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
                 <TemplateBox height={10} />
                 <TemplateText
                     size={14}
-                    color={BLACK_50}
+                    color={BLACK}
                     numberOfLines={21}
-
                 >
                     {currentProject?.shortDescription}
                 </TemplateText>
             </TemplateBox>
 
-            <TemplateBox
-                ph={WRAPPER_MARGIN}
-                pt={WRAPPER_MARGIN * 2}
-            >
-                <TemplateText color={GREY_SECONDARY} bold size={16}>Attached  Files</TemplateText>
-                <TemplateBox height={10} />
-                <TemplateBox
-                    flexWrap="wrap"
-                    row
-                    justifyContent="space-between"
-                >
-                    <TemplateBox
-                        pAll={10}
-                        borderRadius={10}
-                        mr={20}
-                        backgroundColor={GREY_SECONDARY}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
-                    </TemplateBox>
-                    <TemplateBox
-                        pAll={10}
-                        borderRadius={10}
-                        mr={20}
-                        backgroundColor={GREY_SECONDARY}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
-                    </TemplateBox>
-                    <TemplateBox
-                        pAll={10}
-                        borderRadius={10}
-                        mr={20}
-                        backgroundColor={GREY_SECONDARY}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
-                    </TemplateBox>
-                </TemplateBox>
-            </TemplateBox>
             <TemplateBox height={100}>
                 <ToggleCarousel
                     data={CURRENT_PROJECT_TABS}
@@ -219,7 +183,13 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
             </TemplateBox>
             {
                 selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
-                    <OverviewTab application={application} />
+                    <OverviewTab
+                        application={application}
+                        currentProject={currentProject}
+                        creatorID={profile?.id}
+                        brandEmail={currentProjectBrand?.email}
+                        brandFCMToken={currentProjectBrand?.fcmToken}
+                    />
                 )
             }
             {

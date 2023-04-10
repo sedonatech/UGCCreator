@@ -163,54 +163,10 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                 <TemplateText
                     size={14}
                     color={BLACK}
-                    numberOfLines={21}
+                    numberOfLines={2}
                 >
                     {currentProject?.shortDescription}
                 </TemplateText>
-            </TemplateBox>
-
-            <TemplateBox
-                ph={WRAPPER_MARGIN}
-                pt={WRAPPER_MARGIN * 2}
-            >
-                <TemplateText color={GREY_SECONDARY} bold size={16}>Attached  Files</TemplateText>
-                <TemplateBox height={10} />
-                <TemplateBox
-                    flexWrap="wrap"
-                    row
-                    justifyContent="space-between"
-                >
-                    <TemplateBox
-                        pAll={10}
-                        borderRadius={10}
-                        mr={20}
-                        backgroundColor={GREY_SECONDARY}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
-                    </TemplateBox>
-                    <TemplateBox
-                        pAll={10}
-                        borderRadius={10}
-                        mr={20}
-                        backgroundColor={GREY_SECONDARY}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
-                    </TemplateBox>
-                    <TemplateBox
-                        pAll={10}
-                        borderRadius={10}
-                        mr={20}
-                        backgroundColor={GREY_SECONDARY}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateIcon color={GREY} name="file-tray-full-outline" size={36} />
-                    </TemplateBox>
-                </TemplateBox>
             </TemplateBox>
             <TemplateBox height={100}>
                 <ToggleCarousel

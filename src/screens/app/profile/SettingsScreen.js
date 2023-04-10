@@ -45,7 +45,7 @@ const SettingsScreen = ({ navigation }) => {
             description: 'Explore our automations platform powered by OpenAI',
             onPress: () => {
                 Alert.alert('Coming Soon in the next version', ''
-                    + 'You will be able to explore the Open AI platform and '
+                    + 'You will be able to explore our automations platform powered by OpenAI and '
                     + 'see how you can use seamlessly manage your content creation tasks');
             },
             icon: 'trending-up-outline',

@@ -76,7 +76,6 @@ const HomeScreen = () => {
                     onRefresh={handleRefresh}
                 />
             )}
-            bounces={false}
         >
 
             {!!profile?.userName && (

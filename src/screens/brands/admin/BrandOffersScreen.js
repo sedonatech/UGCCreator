@@ -6,7 +6,6 @@ import TemplateText from '../../../components/TemplateText';
 import {
     BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
-import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 import {
     HEADER_MARGIN,
@@ -62,12 +61,6 @@ const BrandOffersScreen = ({ navigation }) => {
 
     return (
         <ScrollView style={styles.container}>
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
             <TemplateBox
                 mt={HEADER_MARGIN}
                 alignItems="center"

@@ -17,7 +17,11 @@ const useNotificationInteraction = () => {
                 remoteMessage.notification,
             );
             setLoading(false);
-            navigation.navigate(APP);
+            navigation.reset({
+                index: 0,
+                routes: [{ name: APP }],
+
+            });
         });
 
         // Check whether an initial notification is available
@@ -29,7 +33,11 @@ const useNotificationInteraction = () => {
                         'Notification caused app to open from quit state:',
                         remoteMessage.notification,
                     );
-                    navigation.navigate(APP);
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: APP }],
+
+                    });
                 }
                 setLoading(false);
             });

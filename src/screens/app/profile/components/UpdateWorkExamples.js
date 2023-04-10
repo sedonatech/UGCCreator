@@ -19,7 +19,13 @@ const UpdateWorkExamples = () => {
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XLARGE}>
             <TemplateBox selfCenter>
-                <TemplateText size={16} startCase bold>Upload your sample photos/videos</TemplateText>
+                <TemplateText
+                    size={16}
+                    startCase
+                    bold
+                >
+                    Upload your sample photos/videos
+                </TemplateText>
             </TemplateBox>
             <TemplateBox height={10} />
             <TemplateBox
@@ -70,7 +76,8 @@ const UpdateWorkExamples = () => {
                                 color={BLACK}
                                 center
                             >
-                                You can upload up to 4 variants of your links to your sample photos on your social media
+                                You can upload up to 4 variants of
+                                your links to your sample photos on your social media
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox pAll={WRAPPER_MARGIN}>
@@ -100,7 +107,8 @@ const UpdateWorkExamples = () => {
                                 color={BLACK}
                                 center
                             >
-                                You can upload up to 4 variants of your links to your sample videos on your social media
+                                You can upload up to 4 variants of your links
+                                to your sample videos on your social media
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox pAll={WRAPPER_MARGIN}>

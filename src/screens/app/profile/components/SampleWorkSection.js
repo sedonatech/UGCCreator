@@ -11,6 +11,7 @@ import TemplateText from '../../../../components/TemplateText';
 import { BLACK } from '../../../../theme/Colors';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import openUrl from '../../../../Utils/openUrl';
+import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
 const getIconByType = (type) => {
     if (type === 'videos') {
@@ -68,7 +69,11 @@ const SampleWorkSection = () => {
                             previewData,
                         }) => (
                             <SampleWorkCard
-                                image={{ uri: previewData?.image?.url || 'https://images.unsplash.com/photo-1557683311-eac922347aa1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGxhaW4lMjBibHVlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60' }}
+                                image={{
+                                    uri:
+                                        previewData?.image?.url
+                                        || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE,
+                                }}
                                 title={previewData?.title || item?.title}
                                 shortDescription={previewData?.description || item?.description}
                                 style={styles.card}
