@@ -67,7 +67,7 @@ export const FeatureFlagProvider:React.FC<FeatureFlagProviderProps> = ({
                     console.log('[Firebase Config Provider] - updated Config', parsedConfigs);
                 }
 
-                setConfig(parsedConfigs);
+                setConfig(defaultFeatures);
                 return;
             }
             setConfig(defaultFeatures);
