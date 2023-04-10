@@ -14,7 +14,6 @@ import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { FORGOT_PASSWORD, ONBOARDING } from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
-import { isIOS } from '../../Utils/Platform';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';

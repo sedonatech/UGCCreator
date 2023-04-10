@@ -115,13 +115,13 @@ const HomeScreen = ({ navigation }) => {
 
             <ProjectsCarousel style={styles.carousel} />
             <BrandsCarousel style={styles.carousel} />
-            <ProfileIncompleteModal
-                visible={modalVisible}
-                closeOnPress={closeModal}
-                title={PROFILE_INCOMPLETE_TITLE}
-                subtitle={PROFILE_INCOMPLETE_MESSAGE}
-                buttonTitle="Complete Portfolio"
-            />
+            {/* <ProfileIncompleteModal */}
+            {/*    visible={modalVisible} */}
+            {/*    closeOnPress={closeModal} */}
+            {/*    title={PROFILE_INCOMPLETE_TITLE} */}
+            {/*    subtitle={PROFILE_INCOMPLETE_MESSAGE} */}
+            {/*    buttonTitle="Complete Portfolio" */}
+            {/* /> */}
         </ScrollView>
     );
 };

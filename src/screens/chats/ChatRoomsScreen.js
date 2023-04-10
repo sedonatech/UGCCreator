@@ -41,9 +41,11 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (chatRoomCreated) {
-            navigation.navigate(CHATS, {
-                chatRoomId: createdChatRoom?.id,
-            });
+            setTimeout(() => {
+                navigation.navigate(CHATS, {
+                    chatRoomId: createdChatRoom?.id,
+                });
+            }, 1000);
         }
     }, [chatRoomCreated]);
 

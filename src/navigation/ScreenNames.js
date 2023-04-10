@@ -74,3 +74,5 @@ export const CHATS = 'Chats';
 export const CHATS_STACK = 'ChatsStack';
 
 export const CHAT_ROOM = 'ChatRoom';
+
+export const UGCAI = 'Ugcai';
