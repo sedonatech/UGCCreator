@@ -129,10 +129,10 @@ const AdminPanelScreen = ({ navigation }) => {
             <CurrentCreatorsCarousel style={styles.carousel} />
             <FeaturedCreatorsCarousel style={styles.carousel} />
             <BrandStatsGraph />
-            <ProfileIncompleteModal
-                visible={modalVisible}
-                closeOnPress={closeModal}
-            />
+            {/* <ProfileIncompleteModal */}
+            {/*    visible={modalVisible} */}
+            {/*    closeOnPress={closeModal} */}
+            {/* /> */}
         </ScrollView>
 
     );
