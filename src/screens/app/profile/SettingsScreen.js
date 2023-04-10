@@ -16,7 +16,9 @@ import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
-import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
+import {
+    FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO,
+} from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const SettingsScreen = ({ navigation }) => {
@@ -40,6 +42,12 @@ const SettingsScreen = ({ navigation }) => {
     }, [isFocused, profile, user]);
 
     const settings = [
+        // {
+        //     title: 'Open AI',
+        //     description: 'Explore the Open AI platform',
+        //     onPress: () => navigation.navigate(UGCAI),
+        //     icon: 'trending-up-outline',
+        // },
         {
             title: 'Email',
             description: auth?.user?.email,
