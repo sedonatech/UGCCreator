@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../../components/TemplateBox';
@@ -36,6 +36,7 @@ const FeedsTab = () => {
 
         return feed?.feeds;
     }, [feed]);
+    console.log('-> filteredFeed', JSON.stringify(filteredFeed, null, 2));
 
     return (
         <TemplateBox>
@@ -62,10 +63,7 @@ const FeedsTab = () => {
                         slideInDelay={(index + 1) * 100}
                         showVideoButton={item?.type === 'videoLessons'}
                         onPress={() => {
-                            console.log('item', item?.videoUrl);
-                            if (item?.type === 'videoLessons') {
-                                setSelectedVideoUrl(item?.videoUrl);
-                            }
+                            Alert.alert('Coming soon');
                         }}
                     />
                 ))

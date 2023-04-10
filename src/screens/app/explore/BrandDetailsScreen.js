@@ -143,8 +143,8 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                 <DescriptionTab
                     description={selectedBrand?.description}
                     profileUrl={selectedBrand?.url}
-                    phone={selectedBrand?.contact?.phoneNumber}
-                    email={selectedBrand?.email}
+                    phone={selectedBrand?.contact?.phone}
+                    email={selectedBrand?.contact?.email}
                     address={selectedBrand?.contact?.address}
                     instagram={selectedBrand?.socialMedia?.instagram}
                     facebook={selectedBrand?.socialMedia?.facebook}

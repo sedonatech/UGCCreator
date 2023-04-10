@@ -11,8 +11,7 @@ import AuthStack from './auth/AuthStack';
 import AppStack from './app/AppStack';
 import useAuthContext from '../hooks/auth/useAuthContext';
 import BrandsStack from './brands/BrandsStack';
-import Blob from '../../assets/svgs/Blob';
-import { BRAND_BLUE, DEEP_LAVENDER } from '../theme/Colors';
+import { BRAND_BLUE } from '../theme/Colors';
 import BrandLogo from '../../assets/svgs/BrandLogo';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import useHasSubscription from '../screens/subscriptions/useHasSubscription';
@@ -49,9 +48,6 @@ const MainNavigator = () => {
     if (showSplash && isSignedIn) {
         return (
             <View style={styles.container}>
-                <Blob color={DEEP_LAVENDER} top />
-                <Blob right />
-                <Blob color={DEEP_LAVENDER} bottom />
                 <BrandLogo height={SCREEN_HEIGHT / 2} width={SCREEN_WIDTH / 1.2} />
             </View>
         );
