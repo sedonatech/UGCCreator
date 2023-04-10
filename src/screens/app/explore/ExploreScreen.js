@@ -7,10 +7,9 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK, BRAND_BLUE, LAVENDER, TRANSPARENT, WHITE, WHITE_96,
+    BLACK, BRAND_BLUE, TRANSPARENT, WHITE, WHITE_96,
 } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
-import Blob from '../../../../assets/svgs/Blob';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import {
     HEADER_MARGIN,
@@ -139,12 +138,6 @@ const ExploreScreen = ({ route }) => {
 
     return (
         <ScrollView style={styles.container}>
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
 
             <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                 <TemplateText size={18} bold startCase>Explore Brands and Projects</TemplateText>

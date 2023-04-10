@@ -3,22 +3,19 @@ import PropTypes from 'prop-types';
 
 import { Alert, StyleSheet } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
-import AddCustomImageButton from '../../../../components/AddCustomImageButton';
 import TemplateText from '../../../../components/TemplateText';
 import {
+    BLACK,
     BLACK_40, BLACK_SECONDARY, GREY_SECONDARY, WHITE,
 } from '../../../../theme/Colors';
 import TemplateTextInput from '../../../../components/TemplateTextInput';
-import { WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 
 const AddSampleWorkItem = ({
-    image,
-    index,
-    onSelectImage,
-    handleClearImage,
     onClose,
+    type,
 }) => {
     const [info, setInfo] = useState({
         title: '',
@@ -28,19 +25,27 @@ const AddSampleWorkItem = ({
     const { auth } = useAuthContext();
 
     const { profile: profileData, update } = auth;
-    const handleUpdate = () => {
-        if (!image || !info.title || !info.description) {
+    const handleUpdatePhotos = () => {
+        if (!info.title || !info.description || !info.link) {
             Alert.alert('Please fill all fields');
             return;
         }
-        if (profileData?.samplePhotos?.length >= 4) {
-            Alert.alert('You can only add 4 sample works');
+        if (type === 'video') {
+            update('samplePhotos', [
+                ...profileData?.sampleVideos,
+                {
+                    link: info.link,
+                    title: info.title,
+                    description: info.description,
+                },
+            ]);
+            onClose();
             return;
         }
         update('samplePhotos', [
             ...profileData?.samplePhotos,
             {
-                image,
+                link: info.link,
                 title: info.title,
                 description: info.description,
             },
@@ -48,15 +53,25 @@ const AddSampleWorkItem = ({
         onClose();
     };
     return (
-        <TemplateBox mb={30}>
-            <TemplateBox row alignItems="center">
-                <AddCustomImageButton
-                    image={image}
-                    index={index}
-                    onPress={onSelectImage}
-                    handleClearImage={handleClearImage}
-                />
+        <TemplateBox mb={30} alignItems="center" justifyContent="center">
+            <TemplateBox>
                 <TemplateBox mt={10}>
+                    <TemplateBox mv={10}>
+                        <TemplateText size={12} bold>Link</TemplateText>
+                        <TemplateTextInput
+                            placeholder="Link"
+                            placeholderTextColor={BLACK_40}
+                            style={styles.shortInput}
+                            value={info.link}
+                            onChangeText={(text) => {
+                                setInfo({
+                                    ...info,
+                                    link: text,
+                                });
+                            }}
+                            autoCapitalize="none"
+                        />
+                    </TemplateBox>
                     <TemplateBox mv={10}>
                         <TemplateText size={12} bold>Title</TemplateText>
                         <TemplateTextInput
@@ -72,9 +87,8 @@ const AddSampleWorkItem = ({
                             }}
                             autoCapitalize="none"
                         />
-
                     </TemplateBox>
-                    <TemplateBox>
+                    <TemplateBox mv={10}>
                         <TemplateText size={12} bold>Description</TemplateText>
                         <TemplateTextInput
                             placeholder="Description"
@@ -99,11 +113,11 @@ const AddSampleWorkItem = ({
                 alignItems="center"
                 backgroundColor={BLACK_SECONDARY}
                 borderRadius={10}
-                ml={104}
                 mt={WRAPPER_MARGIN}
-                onPress={handleUpdate}
-                ph={WRAPPER_MARGIN}
+                onPress={handleUpdatePhotos}
+                ph={WRAPPER_MARGIN * 2}
                 pv={5}
+                selfCenter
             >
                 <TemplateIcon name="add-outline" color={WHITE} size={16} />
                 <TemplateBox width={5} />
@@ -116,28 +130,21 @@ const AddSampleWorkItem = ({
 const styles = StyleSheet.create({
     shortInput: {
         height: 40,
-        width: 250,
+        width: SCREEN_WIDTH - (WRAPPER_MARGIN * 2),
         borderWidth: 1,
         borderColor: GREY_SECONDARY,
         borderRadius: 10,
         paddingLeft: 16,
         marginTop: 5,
-        color: BLACK_40,
+        color: BLACK,
     },
 });
 AddSampleWorkItem.propTypes = {
-    image: PropTypes.string,
-    index: PropTypes.number,
-    onSelectImage: PropTypes.func,
-    handleClearImage: PropTypes.func,
     onClose: PropTypes.func,
+    type: PropTypes.string.isRequired,
 };
 
 AddSampleWorkItem.defaultProps = {
-    image: '',
-    index: 0,
-    onSelectImage: () => {},
-    handleClearImage: () => {},
     onClose: () => {},
 };
 

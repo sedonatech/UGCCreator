@@ -40,6 +40,16 @@ const useProjectStatus = (
                                 currentProject,
                                 currentStatusIndex,
                             );
+                            await sendNotification(
+                                creatorFCMToken,
+                                'Project Status Updated',
+                                `The status of your project has been updated to ${overviewStatus?.[currentStatusIndex]?.name}`,
+                                {
+                                    type: 'project_status',
+                                    projectID: currentProject?.id,
+                                    applicationID: application?.id,
+                                },
+                            );
                             setMailEvent('');
                         },
                         style: 'cancel',
@@ -66,8 +76,8 @@ const useProjectStatus = (
         setCurrentStatusIndex(statusIndex);
         if (status.value === 'brand_approved_enrollment') {
             Alert.alert(
-                "You'll be prompted to attach your proposal",
-                'Please attach your proposal to continue',
+                "You'll be prompted to attach your contract",
+                'Please attach your contract to continue',
                 [
                     {
                         text: 'OK',
@@ -110,6 +120,66 @@ const useProjectStatus = (
                         text: 'OK',
                         onPress: async () => {
                             await updateProjectStatus(creatorID, currentProject, statusIndex);
+                            await sendNotification(
+                                creatorFCMToken,
+                                'Project Status Updated',
+                                `The status of your project has been updated to ${overviewStatus?.[statusIndex + 1]?.name}`,
+                                {
+                                    type: 'project_status',
+                                    projectID: currentProject?.id,
+                                    applicationID: application?.id,
+                                },
+                            );
+                        },
+                    },
+                ],
+                { cancelable: false },
+            );
+        }
+    };
+
+    const handleOnPressCreatorStatus = (status, statusIndex) => {
+        setCurrentStatusIndex(statusIndex);
+        if (status.value === 'brand_contract_received') {
+            Alert.alert(
+                "You'll be prompted to attach your signed contract",
+                'Please attach your signed contract to continue',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => composeEmailWithAttachment(creatorEmail),
+                        style: 'cancel',
+                    },
+                ],
+                { cancelable: false },
+
+            );
+            return;
+        }
+        if (!!creatorID && currentProject) {
+            Alert.alert(
+                'Update Status',
+                `Are you sure you want to update the status to ${overviewStatus?.[statusIndex + 1]?.name}?`,
+                [
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'OK',
+                        onPress: async () => {
+                            await updateProjectStatus(creatorID, currentProject, statusIndex);
+                            await sendNotification(
+                                creatorFCMToken,
+                                'Project Status Updated',
+                                `The status of your project has been updated to ${overviewStatus?.[statusIndex + 1]?.name}`,
+                                {
+                                    type: 'project_status',
+                                    projectID: currentProject?.id,
+                                    applicationID: application?.id,
+                                },
+                            );
                         },
                     },
                 ],
@@ -121,6 +191,7 @@ const useProjectStatus = (
     return {
         overviewStatus,
         handleOnPressStatus,
+        handleOnPressCreatorStatus,
     };
 };
 

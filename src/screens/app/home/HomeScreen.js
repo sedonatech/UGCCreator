@@ -5,7 +5,6 @@ import {
 
 import { useIsFocused } from '@react-navigation/native';
 import {
-    LAVENDER,
     WHITE,
 } from '../../../theme/Colors';
 import {
@@ -14,24 +13,19 @@ import {
 } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import Blob from '../../../../assets/svgs/Blob';
 import CurrentProjectsCarousel from './components /CurrentProjectsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
-import TemplateBox from '../../../components/TemplateBox';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import {
     NO_CURRENT_PROJECT_MESSAGE,
     NO_CURRENT_PROJECT_TITLE,
-    PROFILE_INCOMPLETE_MESSAGE,
-    PROFILE_INCOMPLETE_TITLE,
 } from '../../../consts/content/Home';
-import { UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
-import ProfileIncompleteModal from '../../../components/modals/ProfileIncompleteModal';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useRefresh from '../../../hooks/creators/useRefresh';
+import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
@@ -40,14 +34,7 @@ const HomeScreen = ({ navigation }) => {
 
     const isFocused = useIsFocused();
 
-    const modalVisible = auth?.completeProfileModalVisible;
-
     const { refreshing, handleRefresh } = useRefresh();
-
-    const closeModal = () => {
-        auth?.closeCompleteProfileModal();
-        navigation.navigate(UPDATE_PORTFOLIO);
-    };
 
     useEffect(() => {
         if (isFocused && profile) {
@@ -81,6 +68,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <ScrollView
             style={styles.container}
+            contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}
             refreshControl={(
                 <RefreshControl
@@ -89,12 +77,6 @@ const HomeScreen = ({ navigation }) => {
                 />
             )}
         >
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
 
             {!!profile?.userName && (
                 <Greeting userName={profile?.userName} style={styles.greeting} />
@@ -112,16 +94,9 @@ const HomeScreen = ({ navigation }) => {
                         slideInDelay={200}
                     />
                 )}
-
             <ProjectsCarousel style={styles.carousel} />
+            <RecommendedBrandsCarousel style={styles.carousel} />
             <BrandsCarousel style={styles.carousel} />
-            {/* <ProfileIncompleteModal */}
-            {/*    visible={modalVisible} */}
-            {/*    closeOnPress={closeModal} */}
-            {/*    title={PROFILE_INCOMPLETE_TITLE} */}
-            {/*    subtitle={PROFILE_INCOMPLETE_MESSAGE} */}
-            {/*    buttonTitle="Complete Portfolio" */}
-            {/* /> */}
         </ScrollView>
     );
 };
@@ -130,6 +105,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: WHITE,
+
+    },
+    contentContainer: {
+        flexGrow: 1,
     },
     greeting: {
         marginTop: HEADER_MARGIN,
@@ -137,6 +116,7 @@ const styles = StyleSheet.create({
         marginHorizontal: WRAPPER_MARGIN,
     },
     carousel: {
+        flex: 1,
         marginBottom: WRAPPER_MARGIN,
     },
     statusCard: {

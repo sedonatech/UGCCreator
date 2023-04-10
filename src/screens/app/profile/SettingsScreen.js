@@ -1,15 +1,13 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import {
-    BLACK_10,
-    LAVENDER, TRANSPARENT, WHITE,
+    BLACK_10, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
     HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
-import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 import useLogout from './useLogout';
 import HeaderIconButton from '../../../components/header/HeaderButton';
@@ -42,12 +40,16 @@ const SettingsScreen = ({ navigation }) => {
     }, [isFocused, profile, user]);
 
     const settings = [
-        // {
-        //     title: 'Open AI',
-        //     description: 'Explore the Open AI platform',
-        //     onPress: () => navigation.navigate(UGCAI),
-        //     icon: 'trending-up-outline',
-        // },
+        {
+            title: 'Automations',
+            description: 'Explore our automations platform powered by OpenAI',
+            onPress: () => {
+                Alert.alert('Coming Soon in the next version', ''
+                    + 'You will be able to explore our automations platform powered by OpenAI and '
+                    + 'see how you can use seamlessly manage your content creation tasks');
+            },
+            icon: 'trending-up-outline',
+        },
         {
             title: 'Email',
             description: auth?.user?.email,
@@ -55,7 +57,7 @@ const SettingsScreen = ({ navigation }) => {
             icon: 'mail-outline',
         },
         {
-            title: 'Edit Portfolio',
+            title: 'Update Portfolio',
             description: 'Update your portfolio details',
             onPress: () => navigation.navigate(UPDATE_PORTFOLIO),
             icon: 'person-outline',
@@ -125,12 +127,6 @@ const SettingsScreen = ({ navigation }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
             <ProfileStatusCard
                 title={PROFILE_INCOMPLETE_TITLE}
                 description={PROFILE_INCOMPLETE_MESSAGE}

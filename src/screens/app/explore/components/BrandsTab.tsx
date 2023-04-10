@@ -6,6 +6,7 @@ import TemplateBox from '../../../../components/TemplateBox';
 import BrandsCard from '../../home/components /BrandsCard';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import { BRAND_DETAILS } from '../../../../navigation/ScreenNames';
+import RecommendedBrandsCarousel from '../../home/components /RecommendedBrandsCarousel';
 
 const BrandsTab = (data: { data: any[]; }) => {
     const navigation = useNavigation();
@@ -29,6 +30,7 @@ const BrandsTab = (data: { data: any[]; }) => {
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
                 />
             ))}
+            <RecommendedBrandsCarousel style={styles.carousel} />
         </TemplateBox>
     );
 };
@@ -37,6 +39,9 @@ const styles = StyleSheet.create({
     card: {
         marginBottom: WRAPPER_MARGIN,
         alignSelf: 'center',
+    },
+    carousel: {
+        marginVertical: WRAPPER_MARGIN,
     }
 });
 

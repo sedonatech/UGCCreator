@@ -22,10 +22,9 @@ interface Props {
     titleSize?: number;
     descriptionLines?: number;
     descriptionSize?: number;
-
     onPress?: () => void;
-
     icon?: string;
+    titleLines?: number;
 }
 
 const SampleWorkCard: FC<Props> = ({
@@ -40,7 +39,8 @@ const SampleWorkCard: FC<Props> = ({
     descriptionLines = 2,
     descriptionSize = 14,
     onPress,
-    icon
+    icon,
+    titleLines
 }) => (
     <TemplateBox
         fullGradient
@@ -56,24 +56,29 @@ const SampleWorkCard: FC<Props> = ({
     >
         <BackgroundImage source={image} style={styles.image} width="100%" />
         <TemplateBox pAll={20} onPress={onPress}>
-
             {icon && (
                 <TemplateBox
                     height={30}
                     width={30}
                     absolute
-                    top={-16}
+                    top={-12}
                     left={SCREEN_WIDTH - 190}
                     borderRadius={10}
                     backgroundColor={WHITE_30}
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <TemplateIcon name={icon} size={20} color={BLACK} />
+                    <TemplateIcon name={icon} size={18} color={BLACK} />
                 </TemplateBox>
             )}
             {/* @ts-ignore */}
-            <TemplateText color={WHITE} bold size={titleSize} style={styles.text}>
+            <TemplateText
+                color={WHITE}
+                bold
+                size={titleSize}
+                style={styles.text}
+                numberOfLines={titleLines}
+            >
                 {title}
             </TemplateText>
             {/* @ts-ignore */}

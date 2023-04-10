@@ -120,7 +120,7 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                 >
                     <TemplateText
                         bold
-                        size={22}
+                        size={18}
                         color={WHITE}
                     >
                         {selectedProject?.title}

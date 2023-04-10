@@ -4,19 +4,16 @@ import moment from 'moment/moment';
 import { useIsFocused } from '@react-navigation/native';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK_SECONDARY, LAVENDER,
+    BLACK_SECONDARY,
     WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import { ADD_PROJECT, BRAND_PROJECT_DETAILS, UPDATE_BRAND_PROFILE } from '../../../navigation/ScreenNames';
+import { ADD_PROJECT, BRAND_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
 import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../../theme/Layout';
-import Blob from '../../../../assets/svgs/Blob';
-import TemplateBox from '../../../components/TemplateBox';
 import CurrentCreatorsCarousel from './components/CurrentCreatorsCarousel';
 import FeaturedCreatorsCarousel from './components/FeaturedCreatorsCarousel';
-import BrandStatsGraph from './components/BrandStatsGraph';
 import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import {
@@ -24,7 +21,6 @@ import {
     BRAND_NO_CURRENT_PROJECT_TITLE,
 } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import ProfileIncompleteModal from '../../../components/modals/ProfileIncompleteModal';
 import useRefresh from '../../../hooks/creators/useRefresh';
 
 const AdminPanelScreen = ({ navigation }) => {
@@ -38,14 +34,7 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const brandName = auth?.profile?.userName;
 
-    const modalVisible = auth?.completeProfileModalVisible;
-
     const { refreshing, handleBrandRefresh } = useRefresh();
-
-    const closeModal = () => {
-        auth?.closeCompleteProfileModal();
-        navigation.navigate(UPDATE_BRAND_PROFILE);
-    };
 
     const projectsCarouselData = useMemo(() => {
         if (!projects?.length) return [];
@@ -100,12 +89,6 @@ const AdminPanelScreen = ({ navigation }) => {
                 />
             )}
         >
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
             {profile?.name && (
                 <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
             )}
@@ -128,11 +111,6 @@ const AdminPanelScreen = ({ navigation }) => {
             }
             <CurrentCreatorsCarousel style={styles.carousel} />
             <FeaturedCreatorsCarousel style={styles.carousel} />
-            <BrandStatsGraph />
-            {/* <ProfileIncompleteModal */}
-            {/*    visible={modalVisible} */}
-            {/*    closeOnPress={closeModal} */}
-            {/* /> */}
         </ScrollView>
 
     );

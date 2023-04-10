@@ -5,7 +5,7 @@ const useNotifications = () => {
     const sendNotification = async (registrationIds, title, body, data) => {
         try {
             const message = {
-                registration_ids: registrationIds,
+                registration_ids: [registrationIds],
                 notification: {
                     title,
                     body,
@@ -18,6 +18,7 @@ const useNotifications = () => {
                 },
                 data,
             };
+
             const headers = new Headers({
                 'Content-Type': 'application/json',
                 Authorization: `key=${firebaseServerKey}`,

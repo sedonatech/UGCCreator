@@ -1,0 +1,210 @@
+{
+  "recommendation": [
+    {
+      "name":"Fitness/Wellness",
+      "value":"fitness-wellness",
+      "imageUrl": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTh8fGZpdG5lc3MlMjBhZCUyMHdlbGxuZXNzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "data":[
+        {
+          "name":"Taylor Rae Almont",
+            "description":"American fitness trainer and creator of the Fit with Taylor program, known for her bodyweight workouts and focus on mental health and wellness.",
+            "handle":"@taylorrae_fit"
+        },
+        {
+          "name":"Karlene Karst",
+          "description":"Canadian fitness coach and nutritionist, known for her plant-based meal plans and focus on holistic health.",
+          "handle":"@karlenekarst"
+        },
+        {
+          "name":"Kyla Ritchie",
+          "description":"American fitness influencer and creator of the KGFit workout program, known for her motivational messaging and accessible workout videos.",
+          "handle":"@kylagetsfit_"
+        },
+        {
+          "name":"Alexia Clark",
+          "description":"American fitness coach and creator of the Alexia Clark workout program, known for her high-intensity strength training routines and use of unconventional workout equipment.",
+          "handle":"@alexia_clark"
+        },
+        {
+          "name":"Hannah Eden",
+          "description":"British fitness trainer and creator of the Hannah Eden Fitness program, known for her intense, high-energy workouts and focus on functional fitness.",
+          "handle":"@hannaheden_fitness"
+        }
+      ]
+    },
+    {
+      "name":"Food/Beverages",
+      "value":"food-beverages",
+      "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60",
+      "data":[
+        {
+          "name":"Sohla El-Waylly",
+          "description":"American chef and food writer, known for her inventive recipes and commitment to inclusivity and diversity in the food industry.",
+          "handle":"@sohlae"
+        },
+        {
+          "name":"Hetty McKinnon ",
+          "description":"Australian chef and cookbook author, known for her plant-based recipes and focus on sustainable, local ingredients.",
+          "handle":"@hettymckinnon"
+        },
+        {
+          "name":"Rachel Ama",
+          "description":"British chef and cookbook author, known for her vegan recipes and emphasis on Caribbean and West African flavors.",
+          "handle":"@rachelama_"
+        },
+        {
+          "name":"Lorena Salinas",
+          "description":"Mexican-American food blogger, known for her traditional Mexican recipes and focus on sharing her family's culinary heritage.",
+          "handle":"@lorenasalinas"
+        },
+        {
+          "name":"Sabrina Ghayour",
+          "description":"Iranian-British chef and cookbook author, known for her Middle Eastern-inspired recipes and modern twist on classic dishes.",
+          "handle":"@sabrinaghayour"
+        }
+      ]
+    },
+    {
+      "name":"Beauty",
+      "value":"beauty",
+      "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8YmVhdXR5fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+        {
+          "name":"Nyma Tang",
+          "description":"American beauty influencer and YouTuber, known for her focus on inclusivity and representation in the beauty industry, particularly for those with darker skin tones.",
+          "handle":"@nymatang"
+        },
+        {
+          "name":"Hyram Yarbro",
+          "description":"American skincare influencer and YouTuber, known for his skincare tips and recommendations, and his focus on affordable, accessible skincare.",
+          "handle":"@skincarebyhyram"
+        },
+        {
+          "name":"Ashley Strong",
+          "description":"American makeup artist and beauty influencer, known for her colorful, creative makeup looks and tutorials.",
+          "handle":"@strashme"
+        },
+        {
+          "name":"Eris Tran",
+          "description":"Vietnamese-American beauty influencer and makeup artist, known for her dramatic makeup looks and use of bold, bright colors.",
+          "handle":"@byeris"
+        },
+        {
+          "name":"RawBeautyKristi",
+          "description":"American YouTuber and beauty influencer, known for her unfiltered and honest reviews of makeup products and her inspiring message of self-acceptance.",
+          "handle":"@rawbeautykristi"
+        }
+      ]
+    },
+    {
+      "name":"Travel",
+      "value":"travel",
+      "data": [
+        {
+          "name":"Elona Karafin",
+          "description":"American travel blogger and influencer, known for her stunning photography and adventurous spirit, as well as her focus on sustainable and responsible travel practices.",
+          "handle":"@elonatheexplorer"
+        },
+        {
+          "name":"Gabby Beckford",
+          "description":"American travel blogger and influencer, known for her informative guides on budget travel and her emphasis on promoting diversity and inclusion in the travel industry.",
+          "handle":"@skincarebyhyram"
+        },
+        {
+          "name":"Meagan Faye",
+          "description":"Canadian travel blogger and influencer, known for her breathtaking landscape photography and her focus on exploring lesser-known destinations off the beaten path.",
+          "handle":"@meaganfaye"
+        },
+        {
+          "name":"Daniel James",
+          "description":"British travel blogger and influencer, known for his immersive and insightful travel content, as well as his advocacy for mental health awareness and wellness while traveling.",
+          "handle":"@danflyingsolo"
+        },
+        {
+          "name":"Paulina Kajankova",
+          "description":"Slovakian travel blogger and influencer, known for her vibrant and colorful travel content, as well as her focus on sustainable tourism and eco-friendly travel practices.",
+          "handle":"@paulinakajankova"
+        }
+      ]
+    },
+    {
+      "name":"DIY",
+      "value":"diy",
+      "imageUrl": "https://images.unsplash.com/photo-1540103711724-ebf833bde8d1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGRpeXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Apps/Tech",
+      "value":"apps-tech",
+      "imageUrl": "https://images.unsplash.com/photo-1480694313141-fce5e697ee25?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8dGVjaCUyMGFuZCUyMGFwcHN8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Fashion",
+      "value":"fashion",
+      "imageUrl": "https://images.unsplash.com/photo-1557777586-f6682739fcf3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGZhc2hpb258ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Business",
+      "value":"business",
+      "imageUrl": "https://images.unsplash.com/39/lIZrwvbeRuuzqOoWJUEn_Photoaday_CSD%20%281%20of%201%29-5.jpg?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzl8fGJ1c2luZXNzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Real Estate",
+      "value":"real-estate",
+      "imageUrl": "https://images.unsplash.com/photo-1565402170291-8491f14678db?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Art",
+      "value":"art",
+      "imageUrl":"https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YXJ0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+      ]
+    },
+    {
+      "name":"Music",
+      "value":"music",
+      "imageUrl":"https://images.unsplash.com/photo-1477233534935-f5e6fe7c1159?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fG11c2ljfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Sports",
+      "value":"sports",
+      "imageUrl":"https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHNwb3J0c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Entertainment",
+      "value":"entertainment",
+      "imageUrl":"https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8ZnVufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    },
+    {
+      "name":"Photography",
+      "value":"photography",
+      "imageUrl":"https://images.unsplash.com/photo-1506241537529-eefea1fbe44d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHBob3RvZ3JhcGh5fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "data": [
+
+      ]
+    }
+  ]
+}

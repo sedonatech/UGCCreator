@@ -4,8 +4,7 @@ import React, { useEffect, useMemo } from 'react';
 import { uniqBy } from 'lodash';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
-import Blob from '../../../assets/svgs/Blob';
-import { LAVENDER, WHITE } from '../../theme/Colors';
+import { WHITE } from '../../theme/Colors';
 import useGetBrands from '../../hooks/creators/useGetBrands';
 import ProfileStatusCard from '../../components/cards/ProfileStatusCard';
 import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../theme/Layout';
@@ -54,13 +53,6 @@ const ChatRoomsScreen = ({ navigation }) => {
             style={styles.container}
             showsVerticalScrollIndicator={false}
         >
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
-
             <TemplateBox
                 mt={HEADER_MARGIN}
                 alignItems="center"
