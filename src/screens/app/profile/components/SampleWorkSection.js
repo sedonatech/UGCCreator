@@ -51,7 +51,6 @@ const SampleWorkSection = () => {
 
         return [...videos, ...photos];
     }, [sampleVideos, samplePhotos]);
-    console.log('-> mergedWork', mergedWork);
 
     return (
         <TemplateBox flex mt={WRAPPER_MARGIN * 2}>
@@ -67,22 +66,19 @@ const SampleWorkSection = () => {
                         enableAnimation
                         renderLinkPreview={({
                             previewData,
-                        }) => {
-                            console.log('-> previewData', JSON.stringify(previewData, null, 2));
-                            return (
-                                <SampleWorkCard
-                                    image={{ uri: previewData?.image?.url || 'https://images.unsplash.com/photo-1557683311-eac922347aa1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGxhaW4lMjBibHVlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60' }}
-                                    title={previewData?.title || item?.title}
-                                    shortDescription={previewData?.description || item?.description}
-                                    style={styles.card}
-                                    onPress={() => openUrl(item?.link)}
-                                    icon={getIconByType(item?.type)}
-                                    titleSize={13}
-                                    descriptionSize={12}
-                                    titleLines={2}
-                                />
-                            );
-                        }}
+                        }) => (
+                            <SampleWorkCard
+                                image={{ uri: previewData?.image?.url || 'https://images.unsplash.com/photo-1557683311-eac922347aa1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGxhaW4lMjBibHVlJTIwYmFja2dyb3VuZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60' }}
+                                title={previewData?.title || item?.title}
+                                shortDescription={previewData?.description || item?.description}
+                                style={styles.card}
+                                onPress={() => openUrl(item?.link)}
+                                icon={getIconByType(item?.type)}
+                                titleSize={13}
+                                descriptionSize={12}
+                                titleLines={2}
+                            />
+                        )}
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
