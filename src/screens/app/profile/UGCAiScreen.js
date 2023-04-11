@@ -1,74 +1,85 @@
 import React, { useState } from 'react';
 import functions from '@react-native-firebase/functions';
 
-import { ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
-    IS_ANDROID, SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN,
+    HEADER_MARGIN,
+    IS_ANDROID, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import {
-    BLACK, BLACK_40, GREY_SECONDARY, TRANSPARENT, WHITE,
+    TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
-import TemplateTextInput from '../../../components/TemplateTextInput';
-import Button from '../../../components/Button';
+import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 
 const UGCAiScreen = () => {
-    const [categoryInput, setCategoryInput] = useState('');
-    const [result, setResult] = useState();
-    const [loading, setLoading] = useState(false);
-    console.log('-> open AI result', result);
-
-    const onSubmit = async () => {
-        try {
-            setLoading(true);
-            const response = await fetch(`https://us-central1-ugccreatorappopenaiapi.cloudfunctions.net/generateBrands?category=${categoryInput}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            console.log('-> response', response);
-
-            const data = await response.json();
-            if (response.status !== 200) {
-                throw data.error || new Error(`Request failed with status ${response.status}`);
-            }
-
-            setResult(data.result);
-            setCategoryInput('');
-        } catch (error) {
-            // Consider implementing your own error handling logic here
-            console.error(error);
-            alert(error.message);
-        }
-        setLoading(false);
-    };
+    const creatorTools = [
+        {
+            title: 'Content Suggester',
+            description: 'This tool will suggest content for you to create based on your project requirements.',
+            onPress: () => Alert.alert('Coming Soon'),
+            icon: 'analytics-outline',
+        },
+        {
+            title: 'Hook Generator',
+            description: 'This tool will help you generate hooks for your project.',
+            onPress: () => '',
+            icon: 'color-wand-outline',
+        },
+        {
+            title: 'Email Generator',
+            description: 'This tool will help you generate catchy emails to reach out to potential brands in a powerful way based on their needs.',
+            onPress: () => '',
+            icon: 'mail-unread-outline',
+        },
+        {
+            title: 'Scripts Generator',
+            description: 'This tool will help you generate scripts for your videos based on your project requirements.',
+            onPress: () => '',
+            icon: 'receipt-outline',
+        },
+    ];
 
     return (
         <ScrollView
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox>
-                <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16}>Enter Category</TemplateText>
-                    <TemplateTextInput
-                        placeholder="Category"
-                        placeholderTextColor={BLACK_40}
-                        style={styles.input}
-                        value={categoryInput}
-                        onChangeText={(text) => setCategoryInput(text)}
-                        autoCapitalize="none"
-                    />
+            <TemplateBox
+                mt={HEADER_MARGIN}
+                mh={WRAPPER_MARGIN}
+                alignItems="center"
+                justifyContent="center"
+            >
+                <TemplateText
+                    size={18}
+                    bold
+                    startCase
+                    center
+                >
+                    Explore our Creator Tools
+                </TemplateText>
+                <TemplateBox mh={WRAPPER_MARGIN}>
+                    {
+                        creatorTools.map((item, index) => (
+                            <ProfileStatusCard
+                                key={`creator-tool-${index}`}
+                                title={item.title}
+                                description={item.description}
+                                showProgress={false}
+                                style={styles.statusCard}
+                                slideInDelay={(index + 1) * 100}
+                                descriptionLines={3}
+                                icon={item.icon}
+                                onPress={() => {
+                                    Alert.alert('Coming Soon');
+                                }}
+                            />
+                        ))
+                    }
+
                 </TemplateBox>
-                <TemplateBox height={100} />
-                <Button
-                    title="Submit"
-                    onPress={onSubmit}
-                    style={styles.button}
-                    loading={loading}
-                />
             </TemplateBox>
         </ScrollView>
     );
@@ -85,20 +96,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    input: {
-        height: 60,
-        borderWidth: 1,
-        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
-        borderColor: GREY_SECONDARY,
-        borderRadius: 10,
-        paddingLeft: 16,
-        marginTop: 10,
-        color: BLACK,
-    },
-    button: {
-        marginTop: 24,
-        marginBottom: 16,
-        alignSelf: 'center',
+    statusCard: {
+        marginVertical: 20,
     },
 });
 export default UGCAiScreen;

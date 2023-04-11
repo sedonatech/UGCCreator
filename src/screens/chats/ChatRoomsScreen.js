@@ -57,6 +57,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                 mt={HEADER_MARGIN}
                 alignItems="center"
                 justifyContent="center"
+                mh={WRAPPER_MARGIN}
             >
                 <TemplateText
                     size={18}

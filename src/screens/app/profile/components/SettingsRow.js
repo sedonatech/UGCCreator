@@ -21,13 +21,13 @@ const SettingsRow = ({
                 alignItems="center"
                 onPress={onPress}
             >
-                <TemplateIcon name={icon} size={24} color={isLast ? ERROR_RED : BLACK} />
+                <TemplateIcon name={icon} size={20} color={isLast ? ERROR_RED : BLACK} />
                 <TemplateBox width={WRAPPER_MARGIN} />
                 <TemplateBox width={SCREEN_WIDTH - 100}>
                     <TemplateText
                         bold
                         color={isLast ? ERROR_RED : BLACK}
-                        size={18}
+                        size={16}
                         lineHeight={24}
                     >
                         {title}
@@ -38,7 +38,7 @@ const SettingsRow = ({
                 </TemplateBox>
                 <TemplateBox flex />
                 {!isLast && (
-                    <TemplateIcon name="chevron-forward-outline" size={24} color={BLACK} />
+                    <TemplateIcon name="chevron-forward-outline" size={20} color={BLACK} />
                 )}
             </TemplateBox>
             {!isLast && (

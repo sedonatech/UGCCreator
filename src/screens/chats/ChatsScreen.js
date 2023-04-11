@@ -7,7 +7,7 @@ import TemplateBox from '../../components/TemplateBox';
 import { WHITE } from '../../theme/Colors';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import TemplateText from '../../components/TemplateText';
-import { HEADER_MARGIN } from '../../theme/Layout';
+import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../theme/Layout';
 import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 
@@ -50,11 +50,12 @@ const ChatsScreen = ({ route }) => {
             style={styles.container}
         >
             <TemplateBox
-                mt={HEADER_MARGIN / 1.2}
+                mt={HEADER_MARGIN}
                 alignItems="center"
                 justifyContent="center"
+                mh={WRAPPER_MARGIN}
             >
-                <TemplateText bold size={16}>{selectedChatRoom?.name}</TemplateText>
+                <TemplateText bold size={16} center>{selectedChatRoom?.name}</TemplateText>
             </TemplateBox>
             <GiftedChat
                 messages={messages}

@@ -49,7 +49,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
         <TemplateBox height={WRAPPER_MARGIN} />
         <TemplateText
             color={BLACK}
-            size={16}
+            size={14}
             lineHeight={22}
         >
             {description}

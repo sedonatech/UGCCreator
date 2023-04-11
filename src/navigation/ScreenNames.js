@@ -78,3 +78,5 @@ export const CHAT_ROOM = 'ChatRoom';
 export const UGCAI = 'Ugcai';
 
 export const RECOMMENDED_BRANDS = 'RecommendedBrands';
+
+export const FEED_DETAILS = 'FeedDetails';

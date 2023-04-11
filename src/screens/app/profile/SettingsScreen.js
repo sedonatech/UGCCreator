@@ -15,7 +15,7 @@ import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
 import {
-    FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO,
+    FORGOT_PASSWORD, SUBSCRIPTION, UGCAI, UPDATE_PORTFOLIO,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 
@@ -41,13 +41,9 @@ const SettingsScreen = ({ navigation }) => {
 
     const settings = [
         {
-            title: 'Automations',
-            description: 'Explore our automations platform powered by OpenAI',
-            onPress: () => {
-                Alert.alert('Coming Soon in the next version', ''
-                    + 'You will be able to explore our automations platform powered by OpenAI and '
-                    + 'see how you can use seamlessly manage your content creation tasks');
-            },
+            title: 'UGC Creator Tools',
+            description: 'Explore our creator tools powered by OpenAI',
+            onPress: () => navigation.navigate(UGCAI),
             icon: 'trending-up-outline',
         },
         {

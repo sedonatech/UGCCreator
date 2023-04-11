@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
     card: {
         marginRight: WRAPPER_MARGIN,
-        marginBottom: 10,
+        marginVertical: 12,
     },
 });
 
