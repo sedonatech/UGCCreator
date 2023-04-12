@@ -51,7 +51,7 @@ const BrandsCard: FC<Props> = ({
         style={style}
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
-
+        shadow
     >
         {
             image ? (

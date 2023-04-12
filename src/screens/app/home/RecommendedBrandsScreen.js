@@ -60,7 +60,7 @@ const RecommendedBrandsScreen = ({ route }) => {
             showsVerticalScrollIndicator={false}
         >
             <TemplateBox
-                mt={HEADER_MARGIN - 20}
+                mt={HEADER_MARGIN}
                 mh={WRAPPER_MARGIN}
                 alignItems="center"
                 justifyContent="center"

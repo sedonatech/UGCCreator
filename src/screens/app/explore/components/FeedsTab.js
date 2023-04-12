@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Alert, StyleSheet } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../../components/TemplateBox';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
@@ -8,6 +9,7 @@ import VideoOverlay from '../../../../components/VideoOverlay';
 import FeedCard from './FeedCard';
 import { BLACK } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
+import { FEED_DETAILS, FEEDS_STACK } from '../../../../navigation/ScreenNames';
 
 const getIconByType = (type) => {
     if (type === 'ideas') {
@@ -29,14 +31,13 @@ const getIconByType = (type) => {
 const FeedsTab = () => {
     const { feed } = useFeatureFlags();
 
-    const [selectedVideoUrl, setSelectedVideoUrl] = useState();
+    const navigation = useNavigation();
 
     const filteredFeed = useMemo(() => {
         if (!feed?.feeds?.length) return [];
 
         return feed?.feeds;
     }, [feed]);
-    console.log('-> filteredFeed', JSON.stringify(filteredFeed, null, 2));
 
     return (
         <TemplateBox>
@@ -61,17 +62,14 @@ const FeedsTab = () => {
                         cardWidth={SCREEN_WIDTH / 1.12}
                         aspectRatio={1.8}
                         slideInDelay={(index + 1) * 100}
-                        showVideoButton={item?.type === 'videoLessons'}
                         onPress={() => {
-                            Alert.alert('Coming soon');
+                            navigation.navigate(FEED_DETAILS, {
+                                selectedFeed: item,
+                            });
                         }}
                     />
                 ))
             }
-            <VideoOverlay
-                url={selectedVideoUrl}
-                onClose={() => setSelectedVideoUrl(null)}
-            />
         </TemplateBox>
     );
 };

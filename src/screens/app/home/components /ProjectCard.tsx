@@ -25,7 +25,7 @@ interface Props {
     enrolled?: boolean;
 }
 
-const CARD_WIDTH = 166;
+const CARD_WIDTH = wp(174);
 const ProjectCard: FC<Props> = ({
     image,
     style,
@@ -41,6 +41,7 @@ const ProjectCard: FC<Props> = ({
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
         width={wp(CARD_WIDTH)}
+        shadow
     >
         <TemplateBox
             width={wp(CARD_WIDTH)}

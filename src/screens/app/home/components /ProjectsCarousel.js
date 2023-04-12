@@ -68,7 +68,7 @@ const ProjectsCarousel = ({ style }) => {
                 Check out  new projects from trusted brands
             </TemplateText>
 
-            <TemplateBox row flexWrap="wrap" pr={10} pl={20} justifyContent="space-between" selfCenter>
+            <TemplateBox row flexWrap="wrap" pl={20} justifyContent="space-between">
                 {
                     !!carouselData?.length && carouselData?.map((item) => (
                         <ProjectCard
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     card: {
-        marginRight: wp(10),
+        marginRight: wp(12),
     },
     statusCard: {
         marginBottom: 20,
