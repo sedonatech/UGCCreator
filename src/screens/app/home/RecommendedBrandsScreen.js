@@ -12,6 +12,7 @@ import ToggleCarousel from '../../../components/ToggleCarousel';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
 import openUrl from '../../../Utils/openUrl';
+import useWebview from '../../../hooks/webview/useWebview';
 
 const RecommendedBrandsScreen = ({ route }) => {
     const selectedCategory = route?.params?.selectedCategory;
@@ -52,6 +53,8 @@ const RecommendedBrandsScreen = ({ route }) => {
     const [selectedBrand, setSelectedBrand] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
+
+    const { openLink } = useWebview();
 
     return (
         <ScrollView
@@ -112,7 +115,7 @@ const RecommendedBrandsScreen = ({ route }) => {
                     setModalVisible(false);
                 }}
                 closeOnPress={() => {
-                    openUrl(selectedBrand?.url);
+                    openLink(selectedBrand?.url);
                     setModalVisible(false);
                 }}
                 onSecondaryButtonPress={() => {

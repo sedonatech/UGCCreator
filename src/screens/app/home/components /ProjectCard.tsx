@@ -25,7 +25,7 @@ interface Props {
     enrolled?: boolean;
 }
 
-const CARD_WIDTH = wp(174);
+const CARD_WIDTH = wp(170);
 const ProjectCard: FC<Props> = ({
     image,
     style,
