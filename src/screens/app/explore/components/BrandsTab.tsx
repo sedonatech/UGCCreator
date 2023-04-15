@@ -7,20 +7,21 @@ import BrandsCard from '../../home/components /BrandsCard';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import { BRAND_DETAILS } from '../../../../navigation/ScreenNames';
 import RecommendedBrandsCarousel from '../../home/components /RecommendedBrandsCarousel';
+import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
 const BrandsTab = (data: { data: any[]; }) => {
     const navigation = useNavigation();
 
     return (
-        <TemplateBox>
+        <TemplateBox ph={WRAPPER_MARGIN}>
             {!!data?.data?.length && data?.data?.map((brand: any, index) => (
                 <BrandsCard
                     key={brand?.id}
-                    image={{ uri: brand?.image }}
+                    image={{ uri: brand?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                     title={brand?.name}
                     shortDescription={brand?.shortDescription}
                     style={styles.card}
-                    cardWidth={SCREEN_WIDTH / 1.12}
+                    cardWidth={SCREEN_WIDTH - 2 * WRAPPER_MARGIN}
                     aspectRatio={1.8}
                     slideInDelay={(index + 1) * 100}
                     titleSize={16}

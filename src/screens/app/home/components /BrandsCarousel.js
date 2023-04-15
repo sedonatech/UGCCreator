@@ -7,13 +7,14 @@ import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 
-import { BLACK, BLUE, IOS_BLUE } from '../../../../theme/Colors';
+import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { BRAND_DETAILS, EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
 import { BRANDS_TAB } from '../../explore/ExploreScreen';
 import useGetBrands from '../../../../hooks/creators/useGetBrands';
+import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
 const BrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
@@ -58,7 +59,7 @@ const BrandsCarousel = ({ style }) => {
                 data={brandsData}
                 renderItem={({ item }) => (
                     <BrandsCard
-                        image={{ uri: item?.image }}
+                        image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                         title={item?.name}
                         shortDescription={item?.shortDescription}
                         style={styles.card}

@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import {
-    FORGOT_PASSWORD, PROFILE, SETTINGS, SUBSCRIPTION, UGCAI, UPDATE_PORTFOLIO,
+    FORGOT_PASSWORD, PROFILE, SETTINGS, SUBSCRIPTION, UGCAI, UPDATE_PORTFOLIO, WEBVIEW,
 } from '../ScreenNames';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import SettingsScreen from '../../screens/app/profile/SettingsScreen';
@@ -13,6 +13,7 @@ import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScre
 import ResetPasswordScreen from '../../screens/auth/ResetPasswordScreen';
 import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
 import UGCAiScreen from '../../screens/app/profile/UGCAiScreen';
+import WebviewScreen from '../../screens/webview/WebviewScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -57,6 +58,11 @@ const ProfileStack = () => (
             name={UGCAI}
             options={TRANSPARENT_HEADER}
             component={UGCAiScreen}
+        />
+        <Screen
+            name={WEBVIEW}
+            options={TRANSPARENT_HEADER}
+            component={WebviewScreen}
         />
     </Navigator>
 );

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 
 import {
+    SCREEN_WIDTH,
     SPACE_XLARGE
 } from '../../../../theme/Layout';
 import {
@@ -25,7 +26,7 @@ interface Props {
     enrolled?: boolean;
 }
 
-const CARD_WIDTH = wp(174);
+const CARD_WIDTH = (SCREEN_WIDTH / 2) - 28;
 const ProjectCard: FC<Props> = ({
     image,
     style,
@@ -40,12 +41,12 @@ const ProjectCard: FC<Props> = ({
         style={style}
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
-        width={wp(CARD_WIDTH)}
+        width={CARD_WIDTH}
         shadow
     >
         <TemplateBox
-            width={wp(CARD_WIDTH)}
-            aspectRatio={1.12}
+            width={CARD_WIDTH}
+            aspectRatio={0.95}
             onPress={onPress}
         >
             <BackgroundImage source={image} style={styles.image} width={CARD_WIDTH} />
@@ -56,17 +57,17 @@ const ProjectCard: FC<Props> = ({
                     borderRadius={10}
                     backgroundColor={GREEN}
                     height={25}
-                    width={wp(CARD_WIDTH / 2.6)}
+                    width={CARD_WIDTH / 2.6}
                     alignItems="center"
                     justifyContent="center"
-                    top={104}
-                    left={84}
+                    top={140}
+                    left={88}
                 >
                     <TemplateText bold size={8} color={WHITE}>Enrolled</TemplateText>
                 </TemplateBox>
             )}
         </TemplateBox>
-        <TemplateBox width={wp(CARD_WIDTH - 8)} selfCenter>
+        <TemplateBox width={CARD_WIDTH - 8} selfCenter>
             {/* @ts-ignore */}
             <TemplateText color={BLACK} bold size={14} style={styles.text}>
                 {title}

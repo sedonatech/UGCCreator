@@ -44,6 +44,7 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const userName = creator?.userName;
     const image = creator?.image;
+    const portfolioLink = creator?.portfolioLink;
     const about = creator?.about || DEFAULT_CREATOR_DESCRIPTION;
     const shortDescription = creator?.shortDescription
       || DEFAULT_CREATOR_SHORT_DESCRIPTION;
@@ -52,6 +53,7 @@ const PortfolioScreen = ({ navigation, route }) => {
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
     const location = creator?.location?.country || 'London';
     const rates = creator?.rates || DEFAULT_CREATOR_RATES;
+    const email = creator?.email;
 
     const screenshot = useRef(null);
 
@@ -92,6 +94,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                 <AboutSection
                     about={about}
                     shortDescription={shortDescription}
+                    portfolioLink={portfolioLink}
                 />
                 <SampleWorkSection />
                 <RatesSection rates={rates} />
@@ -99,6 +102,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                     contactInfo={contact}
                     socials={socials}
                     paypalLink={paypalLink}
+                    email={email}
                 />
                 {
                     creatorId

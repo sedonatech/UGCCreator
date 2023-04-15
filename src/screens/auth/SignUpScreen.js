@@ -8,7 +8,6 @@ import {
     BLACK_SECONDARY,
     BLUE,
     BRAND_BLUE,
-    DEEP_LAVENDER,
     ERROR_RED,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
@@ -20,11 +19,10 @@ import Wrapper from '../../components/Wrapper';
 import Error from '../../components/Error';
 import { emailValid, passwordValid, isEmpty } from '../../Utils/validation';
 import useProfile from '../../hooks/user/useProfile';
-import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 
-const CREATOR_PLACEHOLDER = 'Creator';
-const BRAND_PLACEHOLDER = 'Brand';
+const CREATOR_PLACEHOLDER = 'Your Name';
+const BRAND_PLACEHOLDER = 'Your Brand Name';
 const SignUpScreen = ({ navigation, route }) => {
     const type = route.params?.type;
     const isCreator = type === 'creator';
@@ -108,9 +106,6 @@ const SignUpScreen = ({ navigation, route }) => {
             keyboard
         >
             <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} style={styles.logo} />
-            <Blob color={DEEP_LAVENDER} top />
-            <Blob right />
-            <Blob color={DEEP_LAVENDER} bottom />
 
             <TemplateText
                 size={18}
@@ -139,7 +134,7 @@ const SignUpScreen = ({ navigation, route }) => {
                 } `}
             </Error>
             <TemplateTextInput
-                placeholder="Email"
+                placeholder="Your Email"
                 style={[styles.input, showEmailError && styles.error]}
                 value={email}
                 onChangeText={(text) => setEmail(text)}

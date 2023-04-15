@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import {
@@ -135,13 +135,15 @@ const SettingsScreen = ({ navigation }) => {
                 {settings.map(({
                     title, description, onPress, icon,
                 }) => (
-                    <SettingsRow
-                        title={title}
-                        subtitle={description}
-                        onPress={onPress}
-                        icon={icon}
-                        key={title}
-                    />
+                    <TouchableOpacity onPress={onPress}>
+                        <SettingsRow
+                            title={title}
+                            subtitle={description}
+                            onPress={onPress}
+                            icon={icon}
+                            key={title}
+                        />
+                    </TouchableOpacity>
                 ))}
             </TemplateBox>
         </ScrollView>

@@ -1,5 +1,7 @@
 export const WELCOME = 'Welcome';
 export const ONBOARDING = 'onboarding';
+
+export const ONBOARDING_EDUCATION = 'onboardingEducation';
 export const AUTH = 'Auth';
 export const SIGN_UP = 'SignUp';
 export const LOGIN = 'Login';
@@ -80,3 +82,5 @@ export const UGCAI = 'Ugcai';
 export const RECOMMENDED_BRANDS = 'RecommendedBrands';
 
 export const FEED_DETAILS = 'FeedDetails';
+
+export const WEBVIEW = 'WebView';

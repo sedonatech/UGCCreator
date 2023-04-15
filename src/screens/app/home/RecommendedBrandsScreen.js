@@ -11,7 +11,9 @@ import TemplateBox from '../../../components/TemplateBox';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
-import openUrl from '../../../Utils/openUrl';
+import useWebview from '../../../hooks/webview/useWebview';
+import useMailCompose from '../../../hooks/documents/useMailCompose';
+import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 
 const RecommendedBrandsScreen = ({ route }) => {
     const selectedCategory = route?.params?.selectedCategory;
@@ -53,6 +55,16 @@ const RecommendedBrandsScreen = ({ route }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
 
+    const { openLink } = useWebview();
+
+    const { sendEmailWithAttachment, mailEvent } = useMailCompose();
+
+    useEffect(() => {
+        if (mailEvent) {
+            setModalVisible(false);
+        }
+    }, [mailEvent]);
+
     return (
         <ScrollView
             style={styles.container}
@@ -72,6 +84,13 @@ const RecommendedBrandsScreen = ({ route }) => {
                     center
                 >
                     Weekly Brands based on your Portfolio and powered by AI
+                </TemplateText>
+                <TemplateBox height={10} />
+                <TemplateText
+                    size={16}
+                    center
+                >
+                    These brands may npt be on our platform yet, but you can request them to be added and collaborate with them.
                 </TemplateText>
             </TemplateBox>
             <TemplateBox selfCenter flex>
@@ -112,16 +131,21 @@ const RecommendedBrandsScreen = ({ route }) => {
                     setModalVisible(false);
                 }}
                 closeOnPress={() => {
-                    openUrl(selectedBrand?.url);
+                    openLink(selectedBrand?.url);
                     setModalVisible(false);
                 }}
                 onSecondaryButtonPress={() => {
-                    Alert.alert('Available Only in Live App',
-                        'This feature will be available when the app is live! Brands will receive an invitation to collaborate with you', [
+                    Alert.alert('Reach Out to Brand',
+                        `Send an email to ${selectedBrand?.name} to invite them to collaborate with you on this platform. You'll be notified when they accept your request`, [
                             {
                                 text: 'OK',
                                 onPress: () => {
-                                    setModalVisible(false);
+                                    sendEmailWithAttachment({
+                                        recipients: [selectedBrand?.email],
+                                        subject: warmReachOutEmail.subject,
+                                        body: warmReachOutEmail.body,
+                                    });
+                                    // setModalVisible(false);
                                 },
                             },
                         ]);

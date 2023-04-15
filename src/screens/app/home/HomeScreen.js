@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import {
     ScrollView, StyleSheet, RefreshControl,
 } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 import {
+    BLACK_10,
     WHITE,
 } from '../../../theme/Colors';
 import {
@@ -24,8 +25,10 @@ import {
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
+import HeaderIconButton from '../../../components/header/HeaderButton';
+import { UGCAI } from '../../../navigation/ScreenNames';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
@@ -64,6 +67,19 @@ const HomeScreen = () => {
             return acc;
         }, []);
     }, [projects, userId]);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <HeaderIconButton
+                    title="Creator tools"
+                    onPress={() => navigation.navigate(UGCAI)}
+                    backDropColor={BLACK_10}
+                    mr={WRAPPER_MARGIN}
+                />
+            ),
+        });
+    }, [navigation]);
 
     return (
         <ScrollView

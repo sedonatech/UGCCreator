@@ -44,7 +44,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                 navigation.navigate(CHATS, {
                     chatRoomId: createdChatRoom?.id,
                 });
-            }, 1000);
+            }, 1500);
         }
     }, [chatRoomCreated]);
 

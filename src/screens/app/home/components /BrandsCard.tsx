@@ -3,13 +3,12 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BLACK_40, BRAND_BLUE, TRANSPARENT
+    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, BLACK_50
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import TemplateBox from '../../../../components/TemplateBox';
-import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     image?: string | number | any;
@@ -44,9 +43,9 @@ const BrandsCard: FC<Props> = ({
         fullGradient={!!image}
         alignItems="center"
         justifyContent="center"
-        gradientColors={image ? [BLACK_40, BLACK_40] : [TRANSPARENT, TRANSPARENT]}
+        gradientColors={image ? [BLACK_50, BLACK_50] : [TRANSPARENT, TRANSPARENT]}
         borderRadius={RADIUS_SMALL}
-        width={wp(cardWidth)}
+        width={cardWidth}
         aspectRatio={aspectRatio}
         style={style}
         slideIn={slideInDelay !== undefined}
