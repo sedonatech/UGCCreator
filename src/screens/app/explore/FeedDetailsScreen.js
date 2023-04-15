@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import {
     Animated,
-    ScrollView, StyleSheet,
+    ScrollView, StyleSheet, View,
 } from 'react-native';
 
 import {
@@ -121,14 +121,14 @@ const FeedDetailsScreen = ({ route, navigation }) => {
 
                 {
                     selectedFeed?.data?.length > 0 && selectedFeed?.data?.map((item, index) => (
-                        <>
+                        <View key={`${item}-${index}`}>
                             <TemplateText size={14}>
                                 {
                                     `${index + 1}. ${item}`
                                 }
                             </TemplateText>
                             <TemplateBox height={20} />
-                        </>
+                        </View>
                     ))
                 }
             </TemplateBox>

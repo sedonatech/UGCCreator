@@ -7,16 +7,14 @@ import {
     BLACK_SECONDARY,
     BLUE,
     BRAND_BLUE,
-    DEEP_LAVENDER, WHITE_40,
+    WHITE_40,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { ONBOARDING } from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
-import { isIOS } from '../../Utils/Platform';
 import TemplateTextInput from '../../components/TemplateTextInput';
-import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
 import HeaderIconButton from '../../components/header/HeaderButton';
@@ -85,9 +83,6 @@ const ResetPasswordScreen = ({ navigation, route }) => {
             keyboard
         >
             <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} />
-            <Blob color={DEEP_LAVENDER} top />
-            <Blob right />
-            <Blob color={DEEP_LAVENDER} bottom />
 
             <TemplateText
                 size={18}

@@ -1,5 +1,5 @@
 import React, {
-    useState, forwardRef, LegacyRef, MutableRefObject
+    forwardRef, LegacyRef, MutableRefObject
 } from 'react';
 import {
     StyleSheet, FlatList, FlatListProps, ViewStyle,
@@ -18,11 +18,13 @@ export interface TemplateCarouselProps extends FlatListProps<any> { // Fix <any>
     paginationSize?: number,
     refField?: MutableRefObject<any> | null
     onShowAllPress?: (()=>void) | null,
+    activeIndex: number,
+    setActiveIndex: (index: number) => void,
 }
 
 type RefType = LegacyRef<FlatList>;
 
-const TemplateCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
+const OnboardingCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
     style,
     showPagination,
     children,
@@ -31,11 +33,12 @@ const TemplateCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
     snapToInterval,
     refField,
     onShowAllPress,
+    activeIndex,
+    setActiveIndex,
     ...restProps
-}, ref:RefType) => {
-    const [activeIndex, setActiveIndex] = useState(0);
+}, ref:RefType) =>
     // @ts-ignore
-    return (
+    (
         <TemplateBox flex={flex}>
             <FlatList
                 ref={refField || ref}
@@ -63,12 +66,9 @@ const TemplateCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
             )}
 
         </TemplateBox>
-    );
-});
+    ));
 
-export default TemplateCarousel;
-
-TemplateCarousel.defaultProps = {
+OnboardingCarousel.defaultProps = {
     flex: false,
     showPagination: false,
     contentContainerStyle: {},
@@ -78,6 +78,7 @@ TemplateCarousel.defaultProps = {
 
 const styles = StyleSheet.create({
     container: {
-        // width: '100%',
     },
 });
+
+export default OnboardingCarousel;

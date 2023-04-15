@@ -13,12 +13,12 @@ export type HeaderIconButtonProps = {
     name: string;
     screen?: any;
     onPress?: () => void;
-
     backDropColor?: string
-
     mr?: number;
     ml?: number;
     title?: string;
+    titleSize?: number;
+    titleColor?: string;
 };
 
 const HeaderIconButton:React.FC<HeaderIconButtonProps> = ({
@@ -28,7 +28,10 @@ const HeaderIconButton:React.FC<HeaderIconButtonProps> = ({
     backDropColor = BLACK_10,
     mr,
     ml,
-    title
+    title,
+    titleSize = 10,
+    titleColor = BLACK,
+
 }) => {
     const { navigate } = useNavigation();
     // @ts-ignore
@@ -45,7 +48,7 @@ const HeaderIconButton:React.FC<HeaderIconButtonProps> = ({
             borderRadius={10}
         >
             {title ? (
-                <TemplateText color={BLACK} size={10} bold caps>{title}</TemplateText>
+                <TemplateText color={BLACK} size={9} bold caps>{title}</TemplateText>
             ) : (
                 <TemplateIcon
                     name={name}

@@ -143,6 +143,18 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                    <TemplateText size={16} bold>Portfolio Link</TemplateText>
+                    <TemplateTextInput
+                        placeholder="Portfolio Link"
+                        placeholderTextColor={BLACK_40}
+                        style={styles.input}
+                        value={profileData?.portfolioLink}
+                        onChangeText={(text) => update('portfolioLink', text)}
+                        autoCapitalize="none"
+                    />
+                </TemplateBox>
+
+                <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>Instagram</TemplateText>
                     <TemplateTextInput
                         placeholder="Instagram Link"

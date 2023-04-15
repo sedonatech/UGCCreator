@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     card: {
-        marginRight: wp(12),
+        marginRight: 15,
     },
     statusCard: {
         marginBottom: 20,

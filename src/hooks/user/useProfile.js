@@ -29,6 +29,7 @@ const useProfile = () => {
                     },
                     sampleVideos: [],
                     samplePhotos: [],
+                    portfolioLink: '',
                     rates: {
                         monthlyPackage: [
                             { title: 'Basic', price: 0, description: 'Only Short form photos or videos ' },

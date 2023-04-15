@@ -15,7 +15,7 @@ const SettingsRow = ({
     const isLast = title === 'Logout';
 
     return (
-        <TemplateBox>
+        <TemplateBox onPress={onPress}>
             <TemplateBox
                 row
                 alignItems="center"
@@ -23,7 +23,7 @@ const SettingsRow = ({
             >
                 <TemplateIcon name={icon} size={20} color={isLast ? ERROR_RED : BLACK} />
                 <TemplateBox width={WRAPPER_MARGIN} />
-                <TemplateBox width={SCREEN_WIDTH - 100}>
+                <TemplateBox width={SCREEN_WIDTH - 100} onPress={onPress}>
                     <TemplateText
                         bold
                         color={isLast ? ERROR_RED : BLACK}

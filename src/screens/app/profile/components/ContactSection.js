@@ -8,7 +8,7 @@ import { BLACK, BLACK_0_5 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
-const ContactSection = ({ contactInfo, socials }) => (
+const ContactSection = ({ contactInfo, socials, email }) => (
     <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN * 2}>
         <TemplateText bold color={BLACK} size={18}>Contact Information</TemplateText>
         <TemplateBox height={10} />
@@ -38,7 +38,7 @@ const ContactSection = ({ contactInfo, socials }) => (
             <TemplateBox pr={20}>
                 <TemplateText color={BLACK} bold>Email</TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText color={BLACK} size={16}>{contactInfo?.email}</TemplateText>
+                <TemplateText color={BLACK} size={14}>{contactInfo?.email || email }</TemplateText>
             </TemplateBox>
             <TemplateBox flex />
         </TemplateBox>

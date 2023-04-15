@@ -3,13 +3,12 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BLACK_30, BRAND_BLUE, TRANSPARENT, WHITE_30, BLACK_40, BLACK_60
+    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, WHITE_30, BLACK_60
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
-import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     image?: string | number;
@@ -52,7 +51,7 @@ const FeedCard: FC<Props> = ({
         justifyContent="center"
         gradientColors={[BLACK_60, BLACK_60]}
         borderRadius={RADIUS_SMALL}
-        width={wp(cardWidth)}
+        width={cardWidth}
         aspectRatio={aspectRatio}
         style={style}
         slideIn={slideInDelay !== undefined}

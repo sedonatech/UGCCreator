@@ -1,42 +1,23 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
-    BLACK,
-    BLACK_SECONDARY,
     BLUE,
     BRAND_BLUE,
-    DEEP_LAVENDER,
-    WHITE,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
-import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
+import {
+    HEADER_MARGIN, SCREEN_WIDTH,
+} from '../../theme/Layout';
 import Button from '../../components/Button';
 import { LOGIN, SIGN_UP } from '../../navigation/ScreenNames';
-import Blob from '../../../assets/svgs/Blob';
-
-import { isIOS } from '../../Utils/Platform';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
+import TemplateBox from '../../components/TemplateBox';
 
 const OnboardingScreen = ({ navigation }) => (
     <View style={styles.container}>
+        <TemplateBox height={HEADER_MARGIN} />
         <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} />
-        <Blob color={DEEP_LAVENDER} top />
-        <Blob right />
-        <Blob color={DEEP_LAVENDER} bottom />
 
-        <View style={styles.textContainer}>
-            <View style={styles.dot} />
-            <TemplateText size={16} color={BLACK} medium>
-                Connect with top brands as a creator
-            </TemplateText>
-        </View>
-
-        <View style={styles.textContainer}>
-            <View style={styles.dot} />
-            <TemplateText size={16} color={BLACK} medium>
-                Connect with top creators as a brand
-            </TemplateText>
-        </View>
         <View style={styles.buttonContainer}>
             <Button
                 title="Register as a Creator"
@@ -75,20 +56,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: BRAND_BLUE,
         alignItems: 'center',
-    },
-    dot: {
-        backgroundColor: BLACK,
-        width: 6,
-        height: 6,
-        borderRadius: 4,
-        marginHorizontal: 8,
-    },
-    textContainer: {
-        flexDirection: 'row',
-        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
-        marginTop: WRAPPER_MARGIN,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     buttonContainer: {
         position: 'absolute',
