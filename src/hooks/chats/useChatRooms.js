@@ -8,7 +8,7 @@ const useChatRooms = () => {
     const [loading, setLoading] = useState(false);
 
     const [chatRoomCreated, setChatRoomCreated] = useState(false);
-    const createChatRoom = async (name, creatorId, brandId) => {
+    const createChatRoom = async (name, creatorId, brandId, creatorFCMToken, brandFCMToken) => {
         try {
             setLoading(true);
             const response = await firestore().collection(CHAT_ROOMS).add({
@@ -16,6 +16,8 @@ const useChatRooms = () => {
                 creatorId,
                 brandId,
                 createdAt: firestore.FieldValue.serverTimestamp(),
+                creatorFCMToken,
+                brandFCMToken,
             });
 
             if (response) {

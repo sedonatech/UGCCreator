@@ -12,6 +12,7 @@ import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import CurrentCreatorsCard from './CurrentCreatorsCard';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
+import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
 const CurrentCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
@@ -63,7 +64,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
                 renderItem={({ item }) => (
                     <CurrentCreatorsCard
                         name={item?.userName}
-                        image={item?.image}
+                        image={item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE}
                         shortDescription={item?.shortDescription}
                         style={styles.card}
                         onPress={() => navigation.navigate(CREATOR_PROJECT_STATUS, {

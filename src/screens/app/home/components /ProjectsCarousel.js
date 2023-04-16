@@ -16,7 +16,6 @@ import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../../consts/content/Home';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
-import { wp } from '../../../../Utils/getResponsiveSize';
 
 const ProjectsCarousel = ({ style }) => {
     const { auth } = useAuthContext();
@@ -65,7 +64,7 @@ const ProjectsCarousel = ({ style }) => {
             </TemplateBox>
             {/* @ts-ignore */}
             <TemplateText size={14} color={BLACK} style={styles.subtitle}>
-                Check out  new projects from trusted brands
+                Check out  new projects from trusted brands based on your interests and location
             </TemplateText>
 
             <TemplateBox row flexWrap="wrap" pl={20} justifyContent="space-between">

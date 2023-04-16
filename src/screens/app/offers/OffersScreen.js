@@ -98,38 +98,40 @@ const OffersScreen = ({ navigation }) => {
                 </TemplateText>
             </TemplateBox>
 
-            {
-                enrolledProjects?.length ? enrolledProjects.map((item, index) => (
-                    <CurrentProjectCard
-                        title={item?.title}
-                        brand={item?.brand}
-                        price={item?.price}
-                        status={item?.status}
-                        notificationCount={item?.notifications}
-                        documentCount={item?.documents}
-                        daysLeft={item?.daysLeft}
-                        progress={item?.progress}
-                        style={styles.card}
-                        cardColor={getTagColor(item?.currentStatus?.value)}
-                        width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
-                        slideInDelay={(index + 1) * 100}
-                        key={item?.id}
-                        onPress={
-                            () => navigation.navigate(CURRENT_PROJECT_DETAILS,
-                                { projectId: item?.id })
-                        }
-                    />
-                )) : (
-                    <ProfileStatusCard
-                        title={NO_CURRENT_PROJECT_TITLE}
-                        description={NO_CURRENT_PROJECT_MESSAGE}
-                        showProgress={false}
-                        style={styles.statusCard}
-                        slideInDelay={200}
-                        showIcon={false}
-                    />
-                )
-            }
+            <TemplateBox ph={WRAPPER_MARGIN}>
+                {
+                    enrolledProjects?.length ? enrolledProjects.map((item, index) => (
+                        <CurrentProjectCard
+                            title={item?.title}
+                            brand={item?.brand}
+                            price={item?.price}
+                            status={item?.status}
+                            notificationCount={item?.notifications}
+                            documentCount={item?.documents}
+                            daysLeft={item?.daysLeft}
+                            progress={item?.progress}
+                            style={styles.card}
+                            cardColor={getTagColor(item?.currentStatus?.value)}
+                            width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
+                            slideInDelay={(index + 1) * 100}
+                            key={item?.id}
+                            onPress={
+                                () => navigation.navigate(CURRENT_PROJECT_DETAILS,
+                                    { projectId: item?.id })
+                            }
+                        />
+                    )) : (
+                        <ProfileStatusCard
+                            title={NO_CURRENT_PROJECT_TITLE}
+                            description={NO_CURRENT_PROJECT_MESSAGE}
+                            showProgress={false}
+                            style={styles.statusCard}
+                            slideInDelay={200}
+                            showIcon={false}
+                        />
+                    )
+                }
+            </TemplateBox>
         </ScrollView>
     );
 };
@@ -140,8 +142,8 @@ const styles = StyleSheet.create({
         backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     card: {
-        marginHorizontal: WRAPPER_MARGIN,
         marginVertical: SPACE_LARGE,
+        alignSelf: 'center',
     },
     statusCard: {
         marginTop: WRAPPER_MARGIN,
