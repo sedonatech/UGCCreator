@@ -7,10 +7,10 @@ import TemplateText from '../../../components/TemplateText';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
-    BLACK, BLACK_40, BLACK_SECONDARY, GREY_SECONDARY, WHITE,
+    BLACK, BLACK_40, BLACK_SECONDARY, BRAND_BLUE, WHITE,
 } from '../../../theme/Colors';
-import { DEFAULT_AVATARS } from '../../../consts/content/Home';
 import { SHADOW } from '../../../theme/Shadow';
+import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 
 const CreatorCard = ({
     name,
@@ -31,19 +31,19 @@ const CreatorCard = ({
         pAll={WRAPPER_MARGIN}
         selfCenter
         mt={SPACE_XXLARGE}
-        style={[SHADOW('card', WHITE), style]}
+        style={[SHADOW('card', BRAND_BLUE), style]}
     >
 
         <TemplateBox row>
             <FastImage
-                source={{ uri: imageUrl || DEFAULT_AVATARS[1] }}
+                source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                 style={[styles.image, imageStyle]}
             />
             <TemplateBox width={textContainerWidth}>
-                <TemplateText size={20} bold color={BLACK}>{name}</TemplateText>
+                <TemplateText size={18} bold color={BLACK}>{name}</TemplateText>
                 <TemplateBox height={10} />
                 <TemplateText
-                    size={13}
+                    size={12}
                     color={BLACK_SECONDARY}
                     numberOfLines={2}
                 >

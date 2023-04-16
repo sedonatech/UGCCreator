@@ -82,6 +82,9 @@ const ChatRoomsScreen = ({ navigation }) => {
                         onPress={async () => {
                             try {
                                 const chatRoomName = `BRAND: ${brand?.name} - CREATOR:${auth?.profile?.userName} conversation`;
+                                const brandFCMToken = brand?.fcmToken;
+                                const creatorFCMToken = auth?.profile?.fcmToken;
+
                                 if (chatRoomData?.length > 0
                                     && chatRoomData?.find(
                                         (room) => room?.creatorId === auth?.profile?.id
@@ -95,7 +98,11 @@ const ChatRoomsScreen = ({ navigation }) => {
                                     });
                                     return;
                                 }
-                                await createChatRoom(chatRoomName, auth?.profile?.id, brand?.id);
+                                await createChatRoom(chatRoomName,
+                                    auth?.profile?.id,
+                                    brand?.id,
+                                    creatorFCMToken,
+                                    brandFCMToken);
 
                                 if (chatRoomCreated) {
                                     setCreatedChatRoom(chatRoomData?.find(
@@ -122,6 +129,9 @@ const ChatRoomsScreen = ({ navigation }) => {
                         onPress={async () => {
                             try {
                                 const chatRoomName = `BRAND: ${auth?.profile?.name} - CREATOR:${creator?.userName} conversation`;
+                                const brandFCMToken = auth?.profile?.fcmToken;
+                                const creatorFCMToken = creator?.fcmToken;
+
                                 if (chatRoomData?.length > 0
                                     && chatRoomData?.find(
                                         (room) => room?.creatorId === creator?.id
@@ -135,13 +145,21 @@ const ChatRoomsScreen = ({ navigation }) => {
                                     });
                                     return;
                                 }
-                                await createChatRoom(chatRoomName, creator?.id, auth?.profile?.id);
-                                if (chatRoomCreated) {
-                                    setCreatedChatRoom(chatRoomData?.find(
-                                        (room) => room?.creatorId === creator?.id
-                                        && room?.brandId === auth?.profile?.id,
-                                    ));
-                                }
+
+                                await createChatRoom(chatRoomName,
+                                    creator?.id,
+                                    auth?.profile?.id,
+                                    creatorFCMToken,
+                                    brandFCMToken);
+
+                                setTimeout(() => {
+                                    if (chatRoomCreated) {
+                                        setCreatedChatRoom(chatRoomData?.find(
+                                            (room) => room?.creatorId === creator?.id
+                                                && room?.brandId === auth?.profile?.id,
+                                        ));
+                                    }
+                                }, 1500);
                             } catch (e) {
                                 console.log('[ERROR IN CHAT ROOMS SCREEN]', e.message);
                             }

@@ -160,12 +160,12 @@ ContactSection.propTypes = {
         twitter: PropTypes.string,
         linkedin: PropTypes.string,
     }),
-    paypalLink: PropTypes.string,
+    email: PropTypes.string,
 };
 
 ContactSection.defaultProps = {
     contactInfo: {},
     socials: {},
-    paypalLink: '',
+    email: '',
 };
 export default ContactSection;

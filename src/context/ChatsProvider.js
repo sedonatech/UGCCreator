@@ -32,6 +32,7 @@ const ChatsProvider = ({ children }) => {
                 _id: profile?.id,
                 name: profile?.userName || profile?.name || 'Brand',
                 avatar: profile?.image || profile?.avatar || DEFAULT_AVATAR,
+                type: profile?.type,
             };
         }
         return null;

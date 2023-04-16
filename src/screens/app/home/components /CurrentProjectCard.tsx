@@ -63,7 +63,7 @@ const CurrentProjectCard: FC<Props> = ({
 
     return (
         <TemplateBox
-            width={wp(width) || wp(SCREEN_WIDTH / 1.23)}
+            width={width || (SCREEN_WIDTH / 1.23)}
             borderRadius={RADIUS_MEDIUM}
             shadow
             pAll={20}

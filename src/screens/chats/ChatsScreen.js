@@ -10,9 +10,14 @@ import TemplateText from '../../components/TemplateText';
 import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../theme/Layout';
 import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
+import useAuthContext from '../../hooks/auth/useAuthContext';
 
 const ChatsScreen = ({ route }) => {
     const { createdChatRoom } = useChatsContext();
+
+    const { auth } = useAuthContext();
+
+    const isCreator = auth?.profile?.type === 'creator';
 
     const chatRoomId = route.params?.chatRoomId || createdChatRoom?.id;
 
@@ -59,7 +64,11 @@ const ChatsScreen = ({ route }) => {
             </TemplateBox>
             <GiftedChat
                 messages={messages}
-                onSend={(newMessages) => onSendMessage(newMessages, selectedChatRoom)}
+                onSend={(newMessages) => onSendMessage(newMessages,
+                    selectedChatRoom,
+                    isCreator
+                        ? selectedChatRoom?.brandFCMToken
+                        : selectedChatRoom?.creatorFCMToken)}
                 user={chatUser}
                 placeholder="Type your message here..."
                 alwaysShowSend
