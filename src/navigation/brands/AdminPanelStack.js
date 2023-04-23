@@ -8,7 +8,7 @@ import {
     BRAND_PROJECT_DETAILS,
     BRAND_PROJECTS,
     CREATOR_PROJECT_STATUS, PROFILE,
-    UPDATE_BRAND_PROFILE,
+    UPDATE_BRAND_PROFILE, WEBVIEW,
 } from '../ScreenNames';
 import {
     SWITCH,
@@ -22,6 +22,7 @@ import UpdateBrandProfileScreen from '../../screens/brands/profile/UpdateBrandPr
 import CreatorProjectStatusScreen from '../../screens/brands/admin/CreatorProjectStatusScreen';
 import BrandOffersScreen from '../../screens/brands/admin/BrandOffersScreen';
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
+import WebviewScreen from '../../screens/webview/WebviewScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -67,6 +68,11 @@ const AdminPanelStack = () => (
             name={PROFILE}
             options={TRANSPARENT_HEADER}
             component={PortfolioScreen}
+        />
+        <Screen
+            name={WEBVIEW}
+            options={TRANSPARENT_HEADER}
+            component={WebviewScreen}
         />
     </Navigator>
 );
