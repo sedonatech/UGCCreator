@@ -233,6 +233,14 @@ packagingOptions {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+                    if (project.hasProperty('UGCCREATORAPP_UPLOAD_STORE_FILE')) {
+                        storeFile file(UGCCREATORAPP_UPLOAD_STORE_FILE)
+                        storePassword UGCCREATORAPP_UPLOAD_STORE_PASSWORD
+                        keyAlias UGCCREATORAPP_UPLOAD_KEY_ALIAS
+                        keyPassword UGCCREATORAPP_UPLOAD_KEY_PASSWORD
+                    }
+                }
     }
     buildTypes {
         debug {
