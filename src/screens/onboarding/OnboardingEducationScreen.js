@@ -16,6 +16,7 @@ import { SHADOW } from '../../theme/Shadow';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 import OnboardingCarousel from '../../components/carousels/OnboardingCarousel';
 import { ONBOARDING } from '../../navigation/ScreenNames';
+import { isAndroid } from '../../Utils/Platform';
 
 const OnboardingEducationScreen = ({ navigation }) => {
     const { onboardingEducation } = useFeatureFlags();
@@ -46,7 +47,7 @@ const OnboardingEducationScreen = ({ navigation }) => {
                 height={300}
                 width={SCREEN_WIDTH - 40}
                 borderRadius={30}
-                top={(SCREEN_HEIGHT / 1.8)}
+                top={(SCREEN_HEIGHT / (isAndroid ? 2.2 : 1.8))}
                 left={20}
                 style={SHADOW('card', ACCENT)}
                 pv={40}

@@ -22,7 +22,7 @@ import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const BrandSettingsScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
-    const { logout: handleLogout } = useLogout();
+    const { logout: handleLogout, deleteAccount } = useLogout();
 
     const {
         auth,
@@ -79,6 +79,12 @@ const BrandSettingsScreen = ({ navigation }) => {
             description: 'Learn more about us',
             onPress: () => '',
             icon: 'information-circle-outline',
+        },
+        {
+            title: 'Delete Account',
+            description: 'Delete your account',
+            onPress: deleteAccount,
+            icon: 'trash-outline',
         },
         {
             title: 'Logout',
