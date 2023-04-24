@@ -20,7 +20,7 @@ import {
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const SettingsScreen = ({ navigation }) => {
-    const { logout: handleLogout } = useLogout();
+    const { logout: handleLogout, deleteAccount } = useLogout();
 
     const { auth } = useAuthContext();
 
@@ -95,6 +95,12 @@ const SettingsScreen = ({ navigation }) => {
             description: 'Manage Subscription settings',
             onPress: () => navigation.navigate(SUBSCRIPTION),
             icon: 'card-outline',
+        },
+        {
+            title: 'Delete Account',
+            description: 'Delete your account',
+            onPress: deleteAccount,
+            icon: 'trash-outline',
         },
         {
             title: 'Logout',

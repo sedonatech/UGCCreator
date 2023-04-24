@@ -65,8 +65,6 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
         return brands?.find(({ id }) => id === currentProject?.brandId);
     }, [currentProject?.brandId, brands]);
 
-    console.log('-> currentProjectBrand', JSON.stringify(currentProjectBrand, null, 2));
-
     const pan = React.useRef(new Animated.ValueXY()).current;
 
     useLayoutEffect(() => {

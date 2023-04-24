@@ -116,9 +116,6 @@ const SubscriptionScreen = () => {
             style={styles.container}
             showsVerticalScrollIndicator={false}
         >
-            <Blob color={DEEP_LAVENDER} top />
-            <Blob right />
-            <Blob color={DEEP_LAVENDER} bottom />
             <TemplateBox selfCenter>
                 <BrandLogo height={SCREEN_HEIGHT / 4} width={SCREEN_WIDTH / 1.9} />
             </TemplateBox>

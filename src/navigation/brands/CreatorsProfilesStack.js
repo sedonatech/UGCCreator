@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { CREATORS_PROFILES, PROFILE } from '../ScreenNames';
+import { CREATORS_PROFILES, PROFILE, WEBVIEW } from '../ScreenNames';
 import {
     SWITCH,
     TRANSPARENT_HEADER,
@@ -10,6 +10,7 @@ import {
 import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfilesScreen';
 
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
+import WebviewScreen from '../../screens/webview/WebviewScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -25,6 +26,11 @@ const CreatorsProfilesStack = () => (
             name={PROFILE}
             options={TRANSPARENT_HEADER}
             component={PortfolioScreen}
+        />
+        <Screen
+            name={WEBVIEW}
+            options={TRANSPARENT_HEADER}
+            component={WebviewScreen}
         />
     </Navigator>
 );
