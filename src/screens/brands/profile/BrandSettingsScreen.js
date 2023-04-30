@@ -15,13 +15,16 @@ import {
     BRAND_PROFILE_INCOMPLETE_MESSAGE,
     BRAND_PROFILE_INCOMPLETE_TITLE,
 } from '../../../consts/content/Home';
-import { FORGOT_PASSWORD, UPDATE_BRAND_PROFILE } from '../../../navigation/ScreenNames';
+import { FORGOT_PASSWORD, UPDATE_BRAND_PROFILE, WEBVIEW } from '../../../navigation/ScreenNames';
 import SettingsRow from '../../app/profile/components/SettingsRow';
 import useLogout from '../../app/profile/useLogout';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { useConfig } from '../../../context/core';
 
 const BrandSettingsScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
+
+    const { mainDomain } = useConfig();
     const { logout: handleLogout, deleteAccount } = useLogout();
 
     const {
@@ -71,13 +74,33 @@ const BrandSettingsScreen = ({ navigation }) => {
         {
             title: 'Help',
             description: 'Get help with your account',
-            onPress: () => '',
+            onPress: () => {
+                if (mainDomain) {
+                    navigation.navigate(
+                        WEBVIEW,
+                        {
+                            url: mainDomain,
+
+                        },
+                    );
+                }
+            },
             icon: 'help-circle-outline',
         },
         {
             title: 'About',
             description: 'Learn more about us',
-            onPress: () => '',
+            onPress: () => {
+                if (mainDomain) {
+                    navigation.navigate(
+                        WEBVIEW,
+                        {
+                            url: mainDomain,
+
+                        },
+                    );
+                }
+            },
             icon: 'information-circle-outline',
         },
         {

@@ -15,12 +15,15 @@ import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
 import {
-    FORGOT_PASSWORD, SUBSCRIPTION, UGCAI, UPDATE_PORTFOLIO,
+    FORGOT_PASSWORD, SUBSCRIPTION, UGCAI, UPDATE_PORTFOLIO, WEBVIEW,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { useConfig } from '../../../context/core';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();
+
+    const { mainDomain } = useConfig();
 
     const { auth } = useAuthContext();
 
@@ -75,13 +78,33 @@ const SettingsScreen = ({ navigation }) => {
         {
             title: 'Privacy',
             description: 'Manage your privacy settings',
-            onPress: () => '',
+            onPress: () => {
+                if (mainDomain) {
+                    navigation.navigate(
+                        WEBVIEW,
+                        {
+                            url: mainDomain,
+
+                        },
+                    );
+                }
+            },
             icon: 'lock-closed-outline',
         },
         {
             title: 'Help',
             description: 'Get help with your account',
-            onPress: () => '',
+            onPress: () => {
+                if (mainDomain) {
+                    navigation.navigate(
+                        WEBVIEW,
+                        {
+                            url: mainDomain,
+
+                        },
+                    );
+                }
+            },
             icon: 'help-circle-outline',
         },
         {

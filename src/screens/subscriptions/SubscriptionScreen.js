@@ -12,17 +12,20 @@ import {
     SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../theme/Layout';
 import {
-    BLACK, BLACK_40, DEEP_LAVENDER, IOS_BLUE, WHITE,
+    BLACK, IOS_BLUE, WHITE,
 } from '../../theme/Colors';
-import Blob from '../../../assets/svgs/Blob';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import SubscriptionCard from './components/SubscriptionCard';
 import useLogout from '../app/profile/useLogout';
+import { useConfig } from '../../context/core';
+import { WEBVIEW } from '../../navigation/ScreenNames';
 
-const SubscriptionScreen = () => {
+const SubscriptionScreen = ({ navigation }) => {
     const subscription = useSubscriptionContext();
 
     const { logout: handleLogout } = useLogout();
+
+    const { mainDomain } = useConfig();
 
     const [loading, setLoading] = useState(false);
 
@@ -198,7 +201,13 @@ const SubscriptionScreen = () => {
                             black
                             size={14}
                             underLine
-                            onPress={() => ''}
+                            onPress={() => {
+                                if (mainDomain) {
+                                    navigation.navigate(WEBVIEW, {
+                                        url: mainDomain,
+                                    });
+                                }
+                            }}
                         >
                             terms and conditions
                         </TemplateText>
@@ -217,7 +226,13 @@ const SubscriptionScreen = () => {
                             semiBold
                             size={14}
                             underLine
-                            onPress={() => ''}
+                            onPress={() => {
+                                if (mainDomain) {
+                                    navigation.navigate(WEBVIEW, {
+                                        url: mainDomain,
+                                    });
+                                }
+                            }}
                         >
                             privacy policy.
                             {' '}

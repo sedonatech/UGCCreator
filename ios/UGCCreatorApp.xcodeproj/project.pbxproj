@@ -31,7 +31,6 @@
 		B6BEDDF82AC3FBA2BFE97CA5 /* Pods_UGCCreatorApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8318B060410635D651085517 /* Pods_UGCCreatorApp.framework */; };
 		BD9412D33BD14B639E07C64C /* Montserrat-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E52AFA6E412C47E29F15FA7D /* Montserrat-BlackItalic.ttf */; };
 		C493D72D971D43E68CCEE66C /* Montserrat-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3516F8F233064E6DB37C6776 /* Montserrat-LightItalic.ttf */; };
-		C806DE12298D8047008B405B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C806DE11298D8046008B405B /* GoogleService-Info.plist */; };
 		C8BB7251294E359C00149E9D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7242294E359C00149E9D /* Octicons.ttf */; };
 		C8BB7252294E359C00149E9D /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7243294E359C00149E9D /* MaterialCommunityIcons.ttf */; };
 		C8BB7253294E359C00149E9D /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7244294E359C00149E9D /* FontAwesome5_Solid.ttf */; };
@@ -48,6 +47,7 @@
 		C8BB725E294E359C00149E9D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB724F294E359C00149E9D /* Foundation.ttf */; };
 		C8BB725F294E359C00149E9D /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7250294E359C00149E9D /* Fontisto.ttf */; };
 		D9DE0C3EB6CC4B5BAD676CA7 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D685EEC143E4B8A93677261 /* Montserrat-Black.ttf */; };
+		DAFF4BCD29FD020F0079A748 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAFF4BCC29FD020F0079A748 /* GoogleService-Info.plist */; };
 		EA1523869DA847FD89DFDD13 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C2C19C739F5482F81E597E4 /* Montserrat-Medium.ttf */; };
 		EC8C54A731074163AD358219 /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D2A56AB15094EBBB9FDDD55 /* Montserrat-SemiBoldItalic.ttf */; };
 		EFCAECB566D7465E8CEF0B84 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A431180C4B7E45B6A3177D74 /* Montserrat-Regular.ttf */; };
@@ -94,7 +94,6 @@
 		A431180C4B7E45B6A3177D74 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		BCF2BC54EDE51F5D632E5B61 /* Pods-UGCCreatorApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp.release.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp.release.xcconfig"; sourceTree = "<group>"; };
 		C0CA37A01C75D94DD88FFBCC /* Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp-UGCCreatorAppTests/Pods-UGCCreatorApp-UGCCreatorAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		C806DE11298D8046008B405B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C860832929C5B81100F26392 /* UGCCreatorAppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = UGCCreatorAppRelease.entitlements; path = UGCCreatorApp/UGCCreatorAppRelease.entitlements; sourceTree = "<group>"; };
 		C868EEE0298449E400FD226C /* UGCCreatorAppDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = UGCCreatorAppDebug.entitlements; path = UGCCreatorApp/UGCCreatorAppDebug.entitlements; sourceTree = "<group>"; };
 		C8BB7242294E359C00149E9D /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Octicons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -114,6 +113,7 @@
 		C8BB7250294E359C00149E9D /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		C95D07D410D849568DC1F532 /* ShreddyRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = ShreddyRegular.ttf; path = ../assets/fonts/ShreddyRegular.ttf; sourceTree = "<group>"; };
 		D5323AC5A502407DA906C83C /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../assets/fonts/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		DAFF4BCC29FD020F0079A748 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DFD619BF2ECBA36117DF9503 /* Pods-UGCCreatorApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E19741A058AC7451CA788EEE /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp_UGCCreatorAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52AFA6E412C47E29F15FA7D /* Montserrat-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BlackItalic.ttf"; path = "../assets/fonts/Montserrat-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -222,7 +222,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				C806DE11298D8046008B405B /* GoogleService-Info.plist */,
+				DAFF4BCC29FD020F0079A748 /* GoogleService-Info.plist */,
 				C8BB7241294E34B700149E9D /* Fonts */,
 				13B07FAE1A68108700A75B9A /* UGCCreatorApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -384,7 +384,6 @@
 				C8BB725F294E359C00149E9D /* Fontisto.ttf in Resources */,
 				C8BB7251294E359C00149E9D /* Octicons.ttf in Resources */,
 				C8BB725B294E359C00149E9D /* Entypo.ttf in Resources */,
-				C806DE12298D8047008B405B /* GoogleService-Info.plist in Resources */,
 				C8BB7259294E359C00149E9D /* MaterialIcons.ttf in Resources */,
 				C8BB7252294E359C00149E9D /* MaterialCommunityIcons.ttf in Resources */,
 				C8BB725D294E359C00149E9D /* FontAwesome.ttf in Resources */,
@@ -400,6 +399,7 @@
 				ABFCBCEA493346BFB2F467B7 /* Montserrat-ExtraLight.ttf in Resources */,
 				A87C554E91DD44DB9E643D9C /* Montserrat-ExtraLightItalic.ttf in Resources */,
 				40C4B2CFFFF548068C8D5B95 /* Montserrat-Italic.ttf in Resources */,
+				DAFF4BCD29FD020F0079A748 /* GoogleService-Info.plist in Resources */,
 				6384132D2DE54274A7BE562A /* Montserrat-Light.ttf in Resources */,
 				C493D72D971D43E68CCEE66C /* Montserrat-LightItalic.ttf in Resources */,
 				EA1523869DA847FD89DFDD13 /* Montserrat-Medium.ttf in Resources */,
@@ -653,6 +653,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XW576HXDLG;
 				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = UGCCreatorApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
