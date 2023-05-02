@@ -84,7 +84,7 @@ const SubscriptionCard = ({
             </TemplateText>
             <TemplateBox height={7} />
             <TemplateText
-                size={9}
+                size={12}
                 color={selected ? WHITE : BLACK_SECONDARY}
             >
                 {freeTrial?.copy}
@@ -106,7 +106,7 @@ const SubscriptionCard = ({
                     alignItems="center"
                 >
                     <TemplateText
-                        size={10}
+                        size={12}
                         color={WHITE}
                     >
                         {recommendedCopy}
