@@ -47,7 +47,7 @@ const SubscriptionCard = ({
             >
                 <TemplateText
                     bold
-                    size={16}
+                    size={15}
                     color={selected ? WHITE : BLACK_SECONDARY}
                 >
                     {title?.split(' ')[0]}
@@ -56,7 +56,7 @@ const SubscriptionCard = ({
                 </TemplateText>
                 <TemplateText
                     bold
-                    size={16}
+                    size={15}
                     color={selected ? WHITE : BLACK_SECONDARY}
                 >
                     {price}
@@ -64,7 +64,7 @@ const SubscriptionCard = ({
                 </TemplateText>
                 <TemplateText
                     bold
-                    size={16}
+                    size={15}
                     color={selected ? WHITE : BLACK_SECONDARY}
                 >
                     {billed}
@@ -77,14 +77,14 @@ const SubscriptionCard = ({
                 </TemplateBox>
             )}
             <TemplateText
-                size={14}
+                size={13}
                 color={selected ? WHITE : BLACK_SECONDARY}
             >
                 {description}
             </TemplateText>
             <TemplateBox height={7} />
             <TemplateText
-                size={12}
+                size={9}
                 color={selected ? WHITE : BLACK_SECONDARY}
             >
                 {freeTrial?.copy}
@@ -106,7 +106,7 @@ const SubscriptionCard = ({
                     alignItems="center"
                 >
                     <TemplateText
-                        size={12}
+                        size={10}
                         color={WHITE}
                     >
                         {recommendedCopy}
@@ -130,7 +130,7 @@ const SubscriptionCard = ({
                     alignItems="center"
                 >
                     <TemplateText
-                        size={12}
+                        size={10}
                         color={WHITE}
                     >
                         {popularCopy}
