@@ -137,7 +137,7 @@ const SubscriptionScreen = ({ navigation }) => {
                         lineHeight={26}
                         startCase
                     >
-                        Choose your plan and get unlimited access with  a 7 day free trial
+                        Choose your plan and get unlimited access
                     </TemplateText>
                     <TemplateBox height={20} />
                     <TemplateText

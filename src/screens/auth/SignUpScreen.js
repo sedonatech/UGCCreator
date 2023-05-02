@@ -13,18 +13,22 @@ import {
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
-import { LOGIN } from '../../navigation/ScreenNames';
+import { LOGIN, WEBVIEW } from '../../navigation/ScreenNames';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import Wrapper from '../../components/Wrapper';
 import Error from '../../components/Error';
 import { emailValid, passwordValid, isEmpty } from '../../Utils/validation';
 import useProfile from '../../hooks/user/useProfile';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
+import { useConfig } from '../../context/core';
 
 const CREATOR_PLACEHOLDER = 'Your Name';
 const BRAND_PLACEHOLDER = 'Your Brand Name';
 const SignUpScreen = ({ navigation, route }) => {
+    const { mainDomain } = useConfig();
+
     const type = route.params?.type;
+
     const isCreator = type === 'creator';
 
     const namePlaceholder = useMemo(() => {
@@ -165,11 +169,35 @@ const SignUpScreen = ({ navigation, route }) => {
                     loading={loading}
                     disabled={disabled}
                 />
-                <TemplateText size={14} center italic style={styles.loginText} medium>
+                <TemplateText
+                    size={14}
+                    center
+                    italic
+                    style={styles.loginText}
+                    medium
+                    onPress={() => {
+                        if (mainDomain) {
+                            navigation.navigate(WEBVIEW, {
+                                url: mainDomain,
+                            });
+                        }
+                    }}
+                >
                     By creating an account, you agree to our
                     {' '}
 
-                    <TemplateText semiBold underLine size={16}>
+                    <TemplateText
+                        semiBold
+                        underLine
+                        size={16}
+                        onPress={() => {
+                            if (mainDomain) {
+                                navigation.navigate(WEBVIEW, {
+                                    url: mainDomain,
+                                });
+                            }
+                        }}
+                    >
                         Terms of Service
                         {' '}
 
