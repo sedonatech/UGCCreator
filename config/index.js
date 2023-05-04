@@ -2,7 +2,7 @@ import { isAndroid } from '../src/Utils/Platform';
 
 const overrideEntitlements = false;
 
-const overrideSubscription = !__DEV__;
+const overrideSubscription = __DEV__;
 
 const overrideProfileUpdateModal = true;
 const revenueCat = isAndroid ? 'goog_VloSDFYRLkZcXLeXTMxYfNiEtbu' : 'appl_gKgUgJLyYmYOxsOgRIltrYVOswb';
