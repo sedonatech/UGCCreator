@@ -40,7 +40,7 @@ const CreatorCard = ({
                 style={[styles.image, imageStyle]}
             />
             <TemplateBox width={textContainerWidth}>
-                <TemplateText size={18} bold color={BLACK}>{name}</TemplateText>
+                <TemplateText size={18} bold color={BLACK} numberOfLines={1}>{name}</TemplateText>
                 <TemplateBox height={10} />
                 <TemplateText
                     size={12}

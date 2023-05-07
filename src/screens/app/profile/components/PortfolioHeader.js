@@ -67,7 +67,7 @@ const PortfolioHeader = ({
         { !isUpdate ? (
             <TemplateBox selfCenter slideIn slideInDelay={100} slideInDirection="left">
                 <TemplateBox row mt={120} alignItems="center" mb={6}>
-                    <TemplateText bold size={24} color={BLACK}>{userName}</TemplateText>
+                    <TemplateText bold size={20} color={BLACK} center>{userName}</TemplateText>
                     <TemplateIcon
                         name="check-decagram"
                         family="MaterialCommunity"

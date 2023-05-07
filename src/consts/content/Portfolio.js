@@ -7,14 +7,14 @@ export const DEFAULT_CREATOR_DESCRIPTION = ''
 export const DEFAULT_CREATOR_SHORT_DESCRIPTION = 'I am a UGC content creator. I produce primarily video, photography, and lifestyle content for brands like you!🌴🌵🏜.';
 
 export const DEFAULT_CREATOR_SOCIAL = {
-    facebook: 'www.facebook.com/yourfacebookpage',
-    instagram: 'www.instagram.com/yourinstagrampage',
-    twitter: 'www.twitter.com/yourtwitterpage',
-    youtube: 'www.youtube.com/youryoutubepage',
-    tiktok: 'www.tiktok.com/yourtiktokpage',
-    twitch: 'www.twitch.com/yourtwitchpage',
-    linkedin: 'www.linkedin.com/yourlinkedinpage',
-    website: 'www.yourwebsite.com',
+    facebook: 'https://www.facebook.com',
+    instagram: 'https://www.instagram.com',
+    twitter: 'https://www.twitter.com',
+    youtube: 'https://www.youtube.co',
+    tiktok: 'https://www.tiktok.com',
+    twitch: 'https://www.twitch.com',
+    linkedin: 'https://www.linkedin.com',
+    website: 'https://www.yourwebsite.com',
 };
 
 export const DEFAULT_CREATOR_CONTACT_INFO = {

@@ -151,6 +151,7 @@ const AddProjectScreen = ({ route, navigation }) => {
                             update('startDate', currentDate);
                         }}
                         textColor={BLACK_40}
+                        themeVariant="light"
                     />
                 </TemplateBox>
             </TemplateBox>
@@ -167,6 +168,7 @@ const AddProjectScreen = ({ route, navigation }) => {
                             update('endDate', currentDate);
                         }}
                         textColor={BLACK_40}
+                        themeVariant="light"
                     />
                 </TemplateBox>
             </TemplateBox>

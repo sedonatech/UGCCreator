@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
@@ -16,26 +16,26 @@ const UGCAiScreen = () => {
     const creatorTools = [
         {
             title: 'Content Suggester',
-            description: 'This tool will suggest content for you to create based on your project requirements.',
-            onPress: () => Alert.alert('Coming Soon'),
+            description: 'This tool  suggests content for you to create based on your project requirements.',
+            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
             icon: 'analytics-outline',
         },
         {
             title: 'Hook Generator',
-            description: 'This tool will help you generate hooks for your project.',
-            onPress: () => '',
+            description: 'This tool helps you generate hooks for your project.',
+            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
             icon: 'color-wand-outline',
         },
         {
             title: 'Email Generator',
-            description: 'This tool will help you generate catchy emails to reach out to potential brands in a powerful way based on their needs.',
-            onPress: () => '',
+            description: 'This tool helps you generate catchy emails to reach out to potential brands in a powerful way based on their needs.',
+            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
             icon: 'mail-unread-outline',
         },
         {
             title: 'Scripts Generator',
-            description: 'This tool will help you generate scripts for your videos based on your project requirements.',
-            onPress: () => '',
+            description: 'This tool helps you generate scripts for your videos based on your project requirements.',
+            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
             icon: 'receipt-outline',
         },
     ];

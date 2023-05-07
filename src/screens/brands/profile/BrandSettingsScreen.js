@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 import {
@@ -15,17 +15,29 @@ import {
     BRAND_PROFILE_INCOMPLETE_MESSAGE,
     BRAND_PROFILE_INCOMPLETE_TITLE,
 } from '../../../consts/content/Home';
-import { FORGOT_PASSWORD, UPDATE_BRAND_PROFILE, WEBVIEW } from '../../../navigation/ScreenNames';
+import {
+    FORGOT_PASSWORD,
+    SUBSCRIPTION,
+    UPDATE_BRAND_PROFILE,
+    WEBVIEW,
+} from '../../../navigation/ScreenNames';
 import SettingsRow from '../../app/profile/components/SettingsRow';
 import useLogout from '../../app/profile/useLogout';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useConfig } from '../../../context/core';
+import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
 
 const BrandSettingsScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
 
     const { mainDomain } = useConfig();
+
     const { logout: handleLogout, deleteAccount } = useLogout();
+
+    const {
+        checkApplicationPermissions,
+        isAuthorized,
+    } = useNotificationPermissions();
 
     const {
         auth,
@@ -68,8 +80,32 @@ const BrandSettingsScreen = ({ navigation }) => {
         {
             title: 'Notifications',
             description: 'Manage your notifications settings',
-            onPress: () => '',
+            onPress: () => {
+                if (isAuthorized) {
+                    Alert.alert(
+                        'Notifications',
+                        'You have already granted permission to receive notifications. If you would like to change your notification settings, please go to your phone settings.',
+                        [
+                            {
+                                text: 'Cancel',
+                                onPress: () => {},
+                                style: 'cancel',
+                            },
+                        ],
+                    );
+                } else {
+                    checkApplicationPermissions();
+                }
+            },
             icon: 'notifications-outline',
+        },
+        {
+            title: 'Subscription',
+            description: 'Manage Subscription settings',
+            onPress: () => navigation.navigate(SUBSCRIPTION, {
+                fromSettings: true,
+            }),
+            icon: 'card-outline',
         },
         {
             title: 'Help',
