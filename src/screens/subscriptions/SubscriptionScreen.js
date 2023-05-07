@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
     ActivityIndicator, ScrollView, StyleSheet,
 } from 'react-native';
@@ -12,15 +12,17 @@ import {
     SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../theme/Layout';
 import {
-    BLACK, IOS_BLUE, WHITE,
+    BLACK, BLACK_10, IOS_BLUE, WHITE,
 } from '../../theme/Colors';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import SubscriptionCard from './components/SubscriptionCard';
 import useLogout from '../app/profile/useLogout';
 import { useConfig } from '../../context/core';
 import { WEBVIEW } from '../../navigation/ScreenNames';
+import HeaderIconButton from '../../components/header/HeaderButton';
 
-const SubscriptionScreen = ({ navigation }) => {
+const SubscriptionScreen = ({ navigation, route }) => {
+    const fromSettings = route?.params?.fromSettings;
     const subscription = useSubscriptionContext();
 
     const { logout: handleLogout } = useLogout();
@@ -114,6 +116,20 @@ const SubscriptionScreen = ({ navigation }) => {
         return `${saving}%`;
     };
 
+    useLayoutEffect(() => {
+        if (fromSettings) {
+            navigation.setOptions({
+                headerLeft: () => (
+                    <HeaderIconButton
+                        name="chevron-back-outline"
+                        onPress={() => navigation.goBack()}
+                        backDropColor={BLACK_10}
+                        ml={WRAPPER_MARGIN}
+                    />
+                ),
+            });
+        }
+    }, [fromSettings, navigation]);
     return (
         <ScrollView
             style={styles.container}

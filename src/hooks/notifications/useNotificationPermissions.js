@@ -8,22 +8,26 @@ const useNotificationPermissions = () => {
     const { createFCMToken } = useFCMToken();
 
     const checkApplicationPermissions = async () => {
-        const authorizationStatus = await messaging().requestPermission(
-            {
-                alert: true,
-                announcement: true,
-                badge: true,
-                carPlay: false,
-                criticalAlert: false,
-                provisional: false,
-                sound: true,
-            },
-        );
+        try {
+            const authorizationStatus = await messaging().requestPermission(
+                {
+                    alert: true,
+                    announcement: true,
+                    badge: true,
+                    carPlay: false,
+                    criticalAlert: false,
+                    provisional: false,
+                    sound: true,
+                },
+            );
 
-        if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-            setIsAuthorized(true);
-        } else {
-            setIsAuthorized(false);
+            if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+                setIsAuthorized(true);
+            } else {
+                setIsAuthorized(false);
+            }
+        } catch (error) {
+            console.log('error', error);
         }
     };
 
@@ -49,6 +53,7 @@ const useNotificationPermissions = () => {
 
     return {
         checkApplicationPermissions,
+        isAuthorized,
     };
 };
 
