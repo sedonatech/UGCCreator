@@ -71,9 +71,7 @@ const UGCAiScreen = () => {
                                 slideInDelay={(index + 1) * 100}
                                 descriptionLines={3}
                                 icon={item.icon}
-                                onPress={() => {
-                                    Alert.alert('Coming Soon');
-                                }}
+                                onPress={item.onPress}
                             />
                         ))
                     }
