@@ -47,6 +47,7 @@
 		C8BB725E294E359C00149E9D /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB724F294E359C00149E9D /* Foundation.ttf */; };
 		C8BB725F294E359C00149E9D /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8BB7250294E359C00149E9D /* Fontisto.ttf */; };
 		D9DE0C3EB6CC4B5BAD676CA7 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D685EEC143E4B8A93677261 /* Montserrat-Black.ttf */; };
+		DA7C5EFF2A0624D100814993 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C5EFE2A0624D100814993 /* StoreKit.framework */; };
 		DAFF4BCD29FD020F0079A748 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAFF4BCC29FD020F0079A748 /* GoogleService-Info.plist */; };
 		EA1523869DA847FD89DFDD13 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C2C19C739F5482F81E597E4 /* Montserrat-Medium.ttf */; };
 		EC8C54A731074163AD358219 /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D2A56AB15094EBBB9FDDD55 /* Montserrat-SemiBoldItalic.ttf */; };
@@ -113,6 +114,7 @@
 		C8BB7250294E359C00149E9D /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		C95D07D410D849568DC1F532 /* ShreddyRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = ShreddyRegular.ttf; path = ../assets/fonts/ShreddyRegular.ttf; sourceTree = "<group>"; };
 		D5323AC5A502407DA906C83C /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../assets/fonts/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		DA7C5EFE2A0624D100814993 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		DAFF4BCC29FD020F0079A748 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DFD619BF2ECBA36117DF9503 /* Pods-UGCCreatorApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UGCCreatorApp.debug.xcconfig"; path = "Target Support Files/Pods-UGCCreatorApp/Pods-UGCCreatorApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E19741A058AC7451CA788EEE /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UGCCreatorApp_UGCCreatorAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6BEDDF82AC3FBA2BFE97CA5 /* Pods_UGCCreatorApp.framework in Frameworks */,
+				DA7C5EFF2A0624D100814993 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +180,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DA7C5EFE2A0624D100814993 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				8318B060410635D651085517 /* Pods_UGCCreatorApp.framework */,
 				E19741A058AC7451CA788EEE /* Pods_UGCCreatorApp_UGCCreatorAppTests.framework */,
@@ -650,7 +654,7 @@
 				CODE_SIGN_ENTITLEMENTS = UGCCreatorApp/UGCCreatorAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = XW576HXDLG;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
@@ -659,7 +663,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -684,7 +688,7 @@
 				CODE_SIGN_ENTITLEMENTS = UGCCreatorApp/UGCCreatorAppRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_TEAM = XW576HXDLG;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = UGCCreatorApp/Info.plist;
@@ -692,7 +696,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

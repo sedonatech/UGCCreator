@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import functions from '@react-native-firebase/functions';
 
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';

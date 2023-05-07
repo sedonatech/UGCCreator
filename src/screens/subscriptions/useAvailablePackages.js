@@ -34,7 +34,7 @@ export default (
                 const allOfferings = offerings?.all && Object?.values(offerings?.all);
                 const currentOffering = offerings?.current;
 
-                const type = auth?.profile?.type === 'brand' ? 'brands' : 'default';
+                const type = auth?.profile?.type === 'brand' ? 'Brands' : 'Creators';
                 const allPackages = flatten(allOfferings?.map(({ availablePackages }) => availablePackages));
                 const allAvailablePackages = allPackages?.filter(({ offeringIdentifier }) => offeringIdentifier === type);
 

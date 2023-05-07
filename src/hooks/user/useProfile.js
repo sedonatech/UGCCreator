@@ -101,6 +101,7 @@ const useProfile = () => {
                     currentProjects: [],
                     paypalLink: '',
                     type: 'creator',
+                    hasSubscription: false,
                 });
         } catch (e) {
             console.log(e);
@@ -134,6 +135,7 @@ const useProfile = () => {
                     website: '',
                 },
                 type: 'brand',
+                hasSubscription: false,
             });
         } catch (e) {
             console.log(e);

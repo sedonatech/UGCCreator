@@ -3,12 +3,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import useSubscriptionContext from './useSubscriptionContext';
 import { CoreContext } from '../../context/core';
+import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
 const storageKey = '@hasSubscription';
 
 export default (expiryLength = 7, debug = true) => {
-    const { overrideSubscription, overrideSubscriptionStorage } = useContext(CoreContext);
+    const { overrideSubscriptionStorage } = useContext(CoreContext);
     const { purchaserInfo, hasSubscription, update } = useSubscriptionContext();
+
+    const { features } = useFeatureFlags();
+
+    const overrideSubscription = features?.subscription?.overrideSubscription;
 
     const setHasSubscription = (value) => update('hasSubscription', value);
 

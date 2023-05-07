@@ -1,3 +1,7 @@
 {
-  "openAIScreen": false
+  "openAIScreen": false,
+  "subscription": {
+    "overrideSubscription": true,
+    "overrideEntitlements": false
+  }
 }
