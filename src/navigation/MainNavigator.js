@@ -36,6 +36,7 @@ const MainNavigator = () => {
     const showSplash = !isCreator && !isBrand;
 
     const hasSubscription = useHasSubscription();
+    console.log('hasSubscription', hasSubscription);
 
     useNotificationInteraction();
 

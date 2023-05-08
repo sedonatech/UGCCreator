@@ -28,7 +28,7 @@ const CreatorCard = ({
     <TemplateBox
         width={width}
         borderRadius={20}
-        pAll={WRAPPER_MARGIN}
+        pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
         style={[SHADOW('card', BRAND_BLUE), style]}
@@ -40,7 +40,7 @@ const CreatorCard = ({
                 style={[styles.image, imageStyle]}
             />
             <TemplateBox width={textContainerWidth}>
-                <TemplateText size={18} bold color={BLACK} numberOfLines={1}>{name}</TemplateText>
+                <TemplateText size={16} bold color={BLACK} numberOfLines={1}>{name}</TemplateText>
                 <TemplateBox height={10} />
                 <TemplateText
                     size={12}
@@ -51,15 +51,8 @@ const CreatorCard = ({
                 </TemplateText>
             </TemplateBox>
         </TemplateBox>
-        <TemplateBox
-            selfCenter
-            width="96%"
-            height={1}
-            backgroundColor={BLACK_40}
-            mv={WRAPPER_MARGIN}
-        />
 
-        <TemplateBox row alignItems="center">
+        <TemplateBox row alignItems="center" mt={20}>
             <TemplateBox width={subtitleContainerWidth}>
                 <TemplateBox row alignItems="center">
                     <TemplateIcon name="location-outline" color={BLACK_40} size={20} />

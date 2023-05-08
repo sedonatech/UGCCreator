@@ -46,7 +46,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                 });
             }, 1500);
         }
-    }, [chatRoomCreated]);
+    }, [chatRoomCreated, navigation, createdChatRoom]);
 
     return (
         <ScrollView

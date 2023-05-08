@@ -16,6 +16,8 @@ import Wrapper from '../../components/Wrapper';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
+import TemplateTouchable from '../../components/TemplateTouchable';
+import TemplateIcon from '../../components/TemplateIcon';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
@@ -25,6 +27,8 @@ const LoginScreen = ({ navigation }) => {
     const [error, setError] = useState(null);
 
     const [loading, setLoading] = useState(false);
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const handleLogin = async () => {
         setLoading(true);
@@ -79,15 +83,28 @@ const LoginScreen = ({ navigation }) => {
                 autoCapitalize="none"
                 returnKeyType="next"
             />
-            <TemplateTextInput
-                placeholder="Password"
-                style={styles.input}
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-                secureTextEntry
-                autoCapitalize="none"
-                returnKeyType="next"
-            />
+            <View style={styles.passwordContainer}>
+                <TemplateTextInput
+                    placeholder="Password"
+                    style={styles.input}
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    secureTextEntry={!passwordVisible}
+                    autoCapitalize="none"
+                    returnKeyType="next"
+                />
+                <TemplateTouchable
+                    onPress={() => setPasswordVisible((prevState) => !prevState)}
+                    style={styles.passwordIcon}
+                >
+                    <TemplateIcon
+                        name={passwordVisible ? 'eye-off-outline' : 'eye-outline'}
+                        size={20}
+                        color={BLACK}
+                        family="Ionicons"
+                    />
+                </TemplateTouchable>
+            </View>
             <Error show={!!error} style={styles.generalError}>
                 {error}
             </Error>
@@ -169,6 +186,15 @@ const styles = StyleSheet.create({
     generalError: {
         marginVertical: 10,
         alignSelf: 'center',
+    },
+    passwordIcon: {
+        bottom: 20,
+        right: 20,
+        position: 'absolute',
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 export default LoginScreen;

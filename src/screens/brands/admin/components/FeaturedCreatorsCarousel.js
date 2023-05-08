@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
-import { BLACK, BLACK_40, BLUE } from '../../../../theme/Colors';
+import { BLACK, BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import useGetCreators from '../../../../hooks/brands/useGetCreators';
@@ -57,6 +57,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         subtitleContainerWidth={80}
                         buttonOffset={50}
                         textContainerWidth="68%"
+                        location={item?.location?.country || item?.location?.city}
                         onPress={() => navigation.navigate(PROFILE, {
                             creatorId: item?.id,
                         })}
@@ -82,7 +83,6 @@ FeaturedCreatorsCarousel.defaultProps = {
 
 const styles = StyleSheet.create({
     titleContainer: {
-
         paddingHorizontal: WRAPPER_MARGIN,
         marginTop: WRAPPER_MARGIN / 2,
     },
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     card: {
         marginRight: WRAPPER_MARGIN,
         marginBottom: 10,
+        height: 180,
     },
     image: {
         height: 60,

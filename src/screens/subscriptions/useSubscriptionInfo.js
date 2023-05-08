@@ -1,4 +1,3 @@
-import Purchases from 'react-native-purchases';
 import { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 import { STATUSES } from './consts';

@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     },
     card: {
         marginRight: 15,
+
     },
     statusCard: {
         marginBottom: 20,

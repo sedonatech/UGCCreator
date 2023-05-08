@@ -35,7 +35,7 @@ const useLogout = () => {
 
     const deleteAccount = () => {
         Alert.alert(
-            'Logout',
+            'Delete Account Permanently',
             'Are you sure you want to delete your account?',
             [
                 {

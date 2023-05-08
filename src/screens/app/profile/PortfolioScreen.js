@@ -45,11 +45,11 @@ const PortfolioScreen = ({ navigation, route }) => {
     const userName = creator?.userName;
     const image = creator?.image;
     const portfolioLink = creator?.portfolioLink;
-    const about = creator?.about || DEFAULT_CREATOR_DESCRIPTION;
+    const about = creator?.description || DEFAULT_CREATOR_DESCRIPTION;
     const shortDescription = creator?.shortDescription
       || DEFAULT_CREATOR_SHORT_DESCRIPTION;
     const contact = creator?.contact || DEFAULT_CREATOR_CONTACT_INFO;
-    const socials = creator?.socials || DEFAULT_CREATOR_SOCIAL;
+    const socials = creator?.socialMedia || DEFAULT_CREATOR_SOCIAL;
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
     const location = creator?.location?.country || 'London';
     const rates = creator?.rates || DEFAULT_CREATOR_RATES;
