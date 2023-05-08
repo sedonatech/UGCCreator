@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, BLACK_50
+    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, BLACK_50, DEFAULT_GRADIENT,
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -43,7 +43,7 @@ const BrandsCard: FC<Props> = ({
         fullGradient={!!image}
         alignItems="center"
         justifyContent="center"
-        gradientColors={image ? [BLACK_50, BLACK_50] : [TRANSPARENT, TRANSPARENT]}
+        gradientColors={image ? DEFAULT_GRADIENT : [TRANSPARENT, TRANSPARENT]}
         borderRadius={RADIUS_SMALL}
         width={cardWidth}
         aspectRatio={aspectRatio}

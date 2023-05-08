@@ -7,7 +7,7 @@ import {
     SPACE_XLARGE
 } from '../../../../theme/Layout';
 import {
-    BLACK, BLACK_60, BLACK_90, GREEN, WHITE, YELLOW,
+    BLACK, BLACK_60, BLACK_90, DEFAULT_GRADIENT, GREEN, WHITE, YELLOW,
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -49,41 +49,43 @@ const ProjectCard: FC<Props> = ({
         style={[styles.container, style]}
         onPress={onPress}
     >
-        {enrolled && (
+        {enrolled ? (
             <TemplateBox
                 flex
                 absolute
-                borderRadius={10}
+                borderRadius={8}
                 backgroundColor={GREEN}
                 height={25}
                 width={CARD_WIDTH / 2.6}
                 alignItems="center"
                 justifyContent="center"
-                top={140}
-                left={88}
+                top={52}
+                left={16}
+                zIndex={2}
             >
-                <TemplateText bold size={8} color={WHITE}>Enrolled</TemplateText>
+                <TemplateText semiBold size={9} color={BLACK} caps>active</TemplateText>
             </TemplateBox>
-        )}
-
-        <TemplateBox
-            flex
-            absolute
-            borderRadius={8}
-            backgroundColor={YELLOW}
-            height={26}
-            width={CARD_WIDTH / 2.6}
-            alignItems="center"
-            justifyContent="center"
-            top={16}
-            left={16}
-            zIndex={2}
-        >
-            <TemplateText size={10} color={BLACK} caps semiBold>New</TemplateText>
-        </TemplateBox>
+        )
+            : (
+                <TemplateBox
+                    flex
+                    absolute
+                    borderRadius={8}
+                    backgroundColor={YELLOW}
+                    height={25}
+                    width={CARD_WIDTH / 2.6}
+                    alignItems="center"
+                    justifyContent="center"
+                    top={16}
+                    left={16}
+                    zIndex={2}
+                >
+                    <TemplateText size={9} color={BLACK} caps semiBold>New</TemplateText>
+                </TemplateBox>
+            )}
 
         <LinearGradient
-            colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.6)']}
+            colors={DEFAULT_GRADIENT}
             style={styles.linearGradient}
         />
         <Image style={styles.image} source={image} />
@@ -96,10 +98,10 @@ const ProjectCard: FC<Props> = ({
                 <TemplateIcon
                     name="trending-up-outline"
                     color={WHITE}
-                    size={14}
+                    size={12}
                     style={styles.icon}
                 />
-                <TemplateText color={WHITE} size={12} semiBold>
+                <TemplateText color={WHITE} size={10} semiBold>
                     {projectType}
                 </TemplateText>
             </TemplateBox>
@@ -107,10 +109,10 @@ const ProjectCard: FC<Props> = ({
                 <TemplateIcon
                     name="calendar-outline"
                     color={WHITE}
-                    size={14}
+                    size={12}
                     style={styles.icon}
                 />
-                <TemplateText color={WHITE} size={12} semiBold>
+                <TemplateText color={WHITE} size={10} semiBold>
                     {duration}
                 </TemplateText>
             </TemplateBox>
