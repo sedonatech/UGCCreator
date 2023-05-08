@@ -30,6 +30,8 @@ const AllProjectsTab = ({ projects }) => {
                         enrolled={
                             item?.applications?.map((app) => app?.creatorId)?.includes(profile?.id)
                         }
+                        duration={item?.duration}
+                        projectType={item?.projectType}
                     />
                 ))
             }

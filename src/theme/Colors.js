@@ -62,3 +62,5 @@ export const GREY_30 = 'rgba(227, 231, 236, 0.3)';
 export const PRIMARY_GRADIENT = [BLACK_10, BLACK_20, BLACK_50];
 
 export const SECONDARY_GRADIENT = [BLACK_20, BLACK_30, BLACK_60];
+
+export const YELLOW = '#FFF27C';

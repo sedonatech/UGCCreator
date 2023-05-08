@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
+import LinearGradient from 'react-native-linear-gradient';
 import {
     SCREEN_WIDTH,
     SPACE_XLARGE
 } from '../../../../theme/Layout';
 import {
-    BLACK, BLACK_90, GREEN, WHITE
+    BLACK, BLACK_60, BLACK_90, GREEN, WHITE, YELLOW,
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
 import { wp } from '../../../../Utils/getResponsiveSize';
+import TemplateIcon from '../../../../components/TemplateIcon';
+import TemplateTouchable from '../../../../components/TemplateTouchable';
 
 interface Props {
     image?: string | number | any;
@@ -24,6 +27,10 @@ interface Props {
     onPress?: () => void;
 
     enrolled?: boolean;
+
+    duration?: string;
+
+    projectType?: string;
 }
 
 const CARD_WIDTH = (SCREEN_WIDTH / 2) - 28;
@@ -34,59 +41,110 @@ const ProjectCard: FC<Props> = ({
     title,
     slideInDelay,
     onPress,
-    enrolled
+    enrolled,
+    duration,
+    projectType
 }) => (
-    <TemplateBox
-        mb={SPACE_XLARGE}
-        style={style}
-        slideIn={slideInDelay !== undefined}
-        slideInDelay={slideInDelay}
-        width={CARD_WIDTH}
-        shadow
+    <TemplateTouchable
+        style={[styles.container, style]}
+        onPress={onPress}
     >
+        {enrolled && (
+            <TemplateBox
+                flex
+                absolute
+                borderRadius={10}
+                backgroundColor={GREEN}
+                height={25}
+                width={CARD_WIDTH / 2.6}
+                alignItems="center"
+                justifyContent="center"
+                top={140}
+                left={88}
+            >
+                <TemplateText bold size={8} color={WHITE}>Enrolled</TemplateText>
+            </TemplateBox>
+        )}
+
         <TemplateBox
-            width={CARD_WIDTH}
-            aspectRatio={0.95}
-            onPress={onPress}
+            flex
+            absolute
+            borderRadius={8}
+            backgroundColor={YELLOW}
+            height={26}
+            width={CARD_WIDTH / 2.6}
+            alignItems="center"
+            justifyContent="center"
+            top={16}
+            left={16}
+            zIndex={2}
         >
-            <BackgroundImage source={image} style={styles.image} width={CARD_WIDTH} />
-            {enrolled && (
-                <TemplateBox
-                    flex
-                    absolute
-                    borderRadius={10}
-                    backgroundColor={GREEN}
-                    height={25}
-                    width={CARD_WIDTH / 2.6}
-                    alignItems="center"
-                    justifyContent="center"
-                    top={140}
-                    left={88}
-                >
-                    <TemplateText bold size={8} color={WHITE}>Enrolled</TemplateText>
-                </TemplateBox>
-            )}
+            <TemplateText size={10} color={BLACK} caps semiBold>New</TemplateText>
         </TemplateBox>
-        <TemplateBox width={CARD_WIDTH - 8} selfCenter>
+
+        <LinearGradient
+            colors={['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.6)']}
+            style={styles.linearGradient}
+        />
+        <Image style={styles.image} source={image} />
+        <TemplateBox width={CARD_WIDTH - 8} selfCenter top={110} left={16}>
             {/* @ts-ignore */}
-            <TemplateText color={BLACK} bold size={14} style={styles.text}>
+            <TemplateText color={WHITE} bold size={16} caps style={styles.text}>
                 {title}
             </TemplateText>
-            {/* @ts-ignore */}
-            <TemplateText color={BLACK_90} size={12} style={styles.text} numberOfLines={2}>
-                {shortDescription}
-            </TemplateText>
+            <TemplateBox row alignItems="center">
+                <TemplateIcon
+                    name="trending-up-outline"
+                    color={WHITE}
+                    size={14}
+                    style={styles.icon}
+                />
+                <TemplateText color={WHITE} size={12}>
+                    {projectType}
+                </TemplateText>
+            </TemplateBox>
+            <TemplateBox row alignItems="center">
+                <TemplateIcon
+                    name="calendar-outline"
+                    color={WHITE}
+                    size={14}
+                    style={styles.icon}
+                />
+                <TemplateText color={WHITE} size={12}>
+                    {duration}
+                </TemplateText>
+            </TemplateBox>
         </TemplateBox>
-    </TemplateBox>
+
+    </TemplateTouchable>
 );
 
 const styles = StyleSheet.create({
-    image: {
-        borderRadius: 10,
-        width: '100%',
-    },
     text: {
-        marginTop: 4,
+        marginTop: 40,
+        width: 140
+    },
+    container: {
+        width: CARD_WIDTH,
+        height: 240,
+        borderRadius: 16,
+    },
+    linearGradient: {
+        position: 'absolute',
+        width: CARD_WIDTH,
+        height: 240,
+        borderRadius: 16,
+    },
+    image: {
+        width: CARD_WIDTH,
+        height: 240,
+        borderRadius: 16,
+        position: 'absolute',
+        resizeMode: 'cover',
+        zIndex: -1,
+    },
+    icon: {
+        marginRight: 5
     }
 });
 

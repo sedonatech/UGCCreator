@@ -5,6 +5,8 @@ import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
+import { sortBy } from 'lodash';
+import moment from 'moment/moment';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK, BRAND_BLUE, TRANSPARENT, WHITE, WHITE_96,
@@ -62,6 +64,19 @@ const ExploreScreen = ({ route }) => {
 
     const { allProjects: projects } = useProjectsContext();
 
+    const projectsCarouselData = useMemo(() => {
+        if (!projects) return [];
+
+        return sortBy(projects?.map((item) => ({
+            id: item?.id,
+            image: item?.image,
+            title: item?.title,
+            shortDescription: item?.shortDescription,
+            duration: `${moment(item?.endDate).diff(moment(item?.startDate), 'weeks') || 3} weeks`,
+            projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
+        }))?.slice(0, 4), 'createdAt');
+    }, [projects]);
+
     const { brands } = useGetBrands();
 
     const brandsData = useMemo(() => {
@@ -109,12 +124,12 @@ const ExploreScreen = ({ route }) => {
             setSearchResults(results);
         }
 
-        if (!!search && projects?.length) {
-            const fuse = new Fuse(projects, options);
+        if (!!search && projectsCarouselData?.length) {
+            const fuse = new Fuse(projectsCarouselData, options);
             const results = fuse.search(search).map(({ item }) => item);
             setProjectsSearchResults(results);
         }
-    }, [search, projects, brandsData]);
+    }, [search, projectsCarouselData, brandsData]);
 
     useEffect(() => {
         if (initialTab === BRANDS_TAB) {
@@ -131,10 +146,10 @@ const ExploreScreen = ({ route }) => {
     }, [search, brandsData]);
 
     const filteredProjects = useMemo(() => {
-        if (!projects) return [];
+        if (!projectsCarouselData) return [];
 
-        return search?.length ? projectsSearchResults : projects;
-    }, [search, projects]);
+        return search?.length ? projectsSearchResults : projectsCarouselData;
+    }, [search, projectsCarouselData]);
 
     return (
         <ScrollView style={styles.container}>
