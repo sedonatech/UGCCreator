@@ -59,7 +59,7 @@ const ProjectCard: FC<Props> = ({
                 width={CARD_WIDTH / 2.6}
                 alignItems="center"
                 justifyContent="center"
-                top={52}
+                top={16}
                 left={16}
                 zIndex={2}
             >
