@@ -99,7 +99,7 @@ const ProjectCard: FC<Props> = ({
                     size={14}
                     style={styles.icon}
                 />
-                <TemplateText color={WHITE} size={12}>
+                <TemplateText color={WHITE} size={12} semiBold>
                     {projectType}
                 </TemplateText>
             </TemplateBox>
@@ -110,7 +110,7 @@ const ProjectCard: FC<Props> = ({
                     size={14}
                     style={styles.icon}
                 />
-                <TemplateText color={WHITE} size={12}>
+                <TemplateText color={WHITE} size={12} semiBold>
                     {duration}
                 </TemplateText>
             </TemplateBox>
