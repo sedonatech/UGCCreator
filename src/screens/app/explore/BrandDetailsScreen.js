@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 import {
-    BLACK_30,
+    BLACK_30, DEFAULT_GRADIENT,
     WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import {
@@ -83,7 +83,7 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                 animated
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
-                gradientColors={[BLACK_30, BLACK_30]}
+                gradientColors={DEFAULT_GRADIENT}
                 style={{
                     transform: [
                         {

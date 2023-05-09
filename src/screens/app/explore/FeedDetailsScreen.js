@@ -1,5 +1,5 @@
 import React, {
-    useLayoutEffect, useMemo, useState, useRef,
+    useLayoutEffect, useRef,
 } from 'react';
 import {
     Animated,
@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 import {
-    BLACK_30,
+    DEFAULT_GRADIENT,
     WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import {
@@ -17,23 +17,7 @@ import {
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
-import LoadingOverlay from '../../../components/LoadingOverlay';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import ToggleCarousel from '../../../components/ToggleCarousel';
-import DescriptionTab from './components/DescriptionTab';
-import ProjectsTab from './components/ProjectsTab';
-import useGetBrands from '../../../hooks/creators/useGetBrands';
-
-const BRAND_DETAILS_TABS = [
-    {
-        name: 'About',
-        value: 'about',
-    },
-    {
-        name: 'Open Projects',
-        value: 'projects',
-    },
-];
 
 const FeedDetailsScreen = ({ route, navigation }) => {
     const selectedFeed = route.params?.selectedFeed;
@@ -71,7 +55,7 @@ const FeedDetailsScreen = ({ route, navigation }) => {
                 animated
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
-                gradientColors={[BLACK_30, BLACK_30]}
+                gradientColors={DEFAULT_GRADIENT}
                 style={{
                     transform: [
                         {
