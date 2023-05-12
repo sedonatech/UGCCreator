@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import { Alert } from 'react-native';
 
 export const CHAT_ROOMS = 'chatRooms';
 const useChatRooms = () => {
@@ -25,6 +26,14 @@ const useChatRooms = () => {
             }
         } catch (error) {
             console.log('[CREATE CHAT ROOM ERROR]', error);
+            if (error.message) {
+                Alert.alert('Error creating chat room, the user may not be available at the moment',
+                    'Please try again later',
+                    [{
+                        text: 'OK',
+                        onPress: () => {},
+                    }], { cancelable: false });
+            }
         }
         setLoading(false);
     };

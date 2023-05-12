@@ -29,7 +29,7 @@ const ChatsScreen = ({ route }) => {
         if (!chatRooms) return null;
 
         return chatRooms?.find((chat) => chat?.id === chatRoomId);
-    }, [chatRooms, chatRoomId]);
+    }, [chatRooms, chatRoomId, createdChatRoom]);
 
     const { onSendMessage } = useChatMessages();
 
