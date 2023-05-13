@@ -16,6 +16,8 @@ export const lightGreen = '#34C759';
 
 export const lightOrange = 'rgba(255, 45, 85, 0.4)';
 
+export const PAYWALL_PRIMARY_BACKGROUND = 'rgba(235, 235, 245, 0.05)';
+
 export const WHITE = 'white';
 export const WHITE_10 = 'rgba(255, 255, 255, 0.1)';
 export const WHITE_20 = 'rgba(255, 255, 255, 0.2)';

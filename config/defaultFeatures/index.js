@@ -3,6 +3,7 @@ import features from './defaults/features.json';
 import recommendedBrands from './defaults/recommendedBrands.json';
 import recommendedCreators from './defaults/recommendedCreators.json';
 import onboardingEducation from './defaults/onboardingEducation.json';
+import subscriptionBenefits from './defaults/subscriptionBenefits.json';
 
 export default {
     feed,
@@ -10,4 +11,5 @@ export default {
     recommendedBrands,
     recommendedCreators,
     onboardingEducation,
+    subscriptionBenefits,
 };

@@ -1,113 +1,106 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ActivityIndicator } from 'react-native';
+import { includes } from 'lodash';
 import {
-    BLACK,
-    BLACK_SECONDARY, DEEP_LAVENDER, GREY_SECONDARY, WHITE,
+    BLACK, BLACK_70, IOS_BLUE, WHITE,
 } from '../../../theme/Colors';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
-import { SHADOW } from '../../../theme/Shadow';
+import SelectedSvg from '../../../../assets/svgs/SelectedSvg';
+import UnSelectedSvg from '../../../../assets/svgs/UnselectedSvg';
 
 const SubscriptionCard = ({
     selected,
     onPress,
     title,
     price,
-    description,
     billed,
-    freeTrial,
     recommended,
     recommendedCopy,
     popularCopy,
-    loading,
     index,
 }) => (
     <TemplateBox
-        backgroundColor={selected
-            ? DEEP_LAVENDER
-            : GREY_SECONDARY}
-        borderRadius={10}
+        backgroundColor={WHITE}
+        borderRadius={16}
         mt={WRAPPER_MARGIN * 2}
         width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
-        pAll={WRAPPER_MARGIN}
-        style={SHADOW('card', selected
-            ? DEEP_LAVENDER
-            : GREY_SECONDARY)}
+        pAll={16}
         slideIn
         slideInDelay={(index + 1) * 100}
+        borderWidth={2}
+        borderColor={selected ? IOS_BLUE : 'transparent'}
+        onPress={onPress}
+        row
+        alignItems="center"
     >
-
-        <TemplateBox onPress={onPress}>
+        <TemplateBox mr={10}>
+            {
+                selected ? (
+                    <SelectedSvg />
+                ) : (
+                    <UnSelectedSvg />
+                )
+            }
+        </TemplateBox>
+        <TemplateBox
+            onPress={onPress}
+        >
+            <TemplateText
+                bold
+                size={15}
+                color={BLACK}
+                onPress={onPress}
+            >
+                {/* eslint-disable-next-line no-nested-ternary */}
+                {includes(title, 'Annual')
+                    ? 'Annual'
+                    : includes(title, 'Quarterly')
+                        ? 'Quarterly'
+                        : 'Monthly'}
+            </TemplateText>
+            <TemplateBox height={8} />
             <TemplateBox
                 row
                 justifyContent="space-between"
                 alignItems="center"
             >
                 <TemplateText
-                    bold
                     size={15}
-                    color={selected ? WHITE : BLACK_SECONDARY}
-                >
-                    {title?.split(' ')[0]}
-                    {' '}
-
-                </TemplateText>
-                <TemplateText
-                    bold
-                    size={15}
-                    color={selected ? WHITE : BLACK_SECONDARY}
+                    color={BLACK_70}
                 >
                     {price}
                     {' '}
                 </TemplateText>
                 <TemplateText
-                    bold
                     size={15}
-                    color={selected ? WHITE : BLACK_SECONDARY}
+                    color={BLACK_70}
                 >
                     {billed}
                 </TemplateText>
             </TemplateBox>
-            <TemplateBox height={10} />
-            {loading && (
-                <TemplateBox selfCenter alignItems="center" justifyContent="center">
-                    <ActivityIndicator size="small" color={BLACK} />
-                </TemplateBox>
-            )}
-            <TemplateText
-                size={13}
-                color={selected ? WHITE : BLACK_SECONDARY}
-            >
-                {description}
-            </TemplateText>
-            <TemplateBox height={7} />
-            <TemplateText
-                size={12}
-                color={selected ? WHITE : BLACK_SECONDARY}
-            >
-                {freeTrial?.copy}
-            </TemplateText>
         </TemplateBox>
+        <TemplateBox flex />
 
         {
             recommended && (
                 <TemplateBox
-                    backgroundColor={selected ? BLACK : BLACK_SECONDARY}
+                    backgroundColor={IOS_BLUE}
                     borderRadius={10}
                     pv={7}
                     ph={12}
-                    absolute
-                    left={230}
-                    top={-15}
                     width={110}
                     height={30}
                     alignItems="center"
+                    onPress={onPress}
                 >
                     <TemplateText
                         size={12}
                         color={WHITE}
+                        bold
+                        caps
                     >
                         {recommendedCopy}
                     </TemplateText>
@@ -118,20 +111,20 @@ const SubscriptionCard = ({
         {
             !!popularCopy && (
                 <TemplateBox
-                    backgroundColor={selected ? BLACK : BLACK_SECONDARY}
+                    backgroundColor={IOS_BLUE}
                     borderRadius={10}
                     pv={7}
                     ph={12}
-                    absolute
-                    left={230}
-                    top={-15}
-                    width={110}
+                    width={130}
                     height={30}
                     alignItems="center"
+                    onPress={onPress}
                 >
                     <TemplateText
-                        size={10}
+                        size={12}
                         color={WHITE}
+                        bold
+                        caps
                     >
                         {popularCopy}
                     </TemplateText>
@@ -146,7 +139,6 @@ SubscriptionCard.propTypes = {
     onPress: PropTypes.func,
     title: PropTypes.string,
     price: PropTypes.string,
-    description: PropTypes.string,
     billed: PropTypes.string,
     freeTrial: PropTypes.shape({
         copy: PropTypes.string,
@@ -154,7 +146,6 @@ SubscriptionCard.propTypes = {
     recommended: PropTypes.bool,
     recommendedCopy: PropTypes.string,
     popularCopy: PropTypes.string,
-    loading: PropTypes.bool,
     index: PropTypes.number,
 };
 
@@ -163,7 +154,6 @@ SubscriptionCard.defaultProps = {
     onPress: () => {},
     title: '',
     price: '',
-    description: '',
     billed: '',
     freeTrial: {
         copy: '',
@@ -171,7 +161,6 @@ SubscriptionCard.defaultProps = {
     recommended: false,
     recommendedCopy: '',
     popularCopy: '',
-    loading: false,
     index: 0,
 };
 export default SubscriptionCard;

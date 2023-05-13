@@ -45,11 +45,6 @@ const BrandsProfileStack = () => (
             options={TRANSPARENT_HEADER_NO_LOGO}
         />
         <Screen
-            name={SUBSCRIPTION}
-            component={SubscriptionScreen}
-            options={TRANSPARENT_HEADER_NO_LOGO}
-        />
-        <Screen
             name={BRAND_SETTINGS}
             options={TRANSPARENT_HEADER}
             component={BrandSettingsScreen}
