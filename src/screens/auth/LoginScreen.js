@@ -33,6 +33,9 @@ const LoginScreen = ({ navigation }) => {
     const handleLogin = async () => {
         setLoading(true);
         try {
+            if (error) {
+                setError(null);
+            }
             await auth().signInWithEmailAndPassword(email, password);
             // eslint-disable-next-line @typescript-eslint/no-shadow
         } catch (error) {
