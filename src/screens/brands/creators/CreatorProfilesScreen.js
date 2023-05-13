@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+    useEffect, useMemo, useRef, useState,
+} from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
+import { sortBy } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 
 import { hp } from '../../../Utils/getResponsiveSize';
@@ -40,6 +43,19 @@ import { PROFILE } from '../../../navigation/ScreenNames';
 const CreatorProfilesScreen = ({ navigation }) => {
     const { creators } = useGetCreators();
 
+    const creatorsData = useMemo(() => {
+        if (!creators?.length) return [];
+
+        return creators?.map((creator) => ({
+            ...creator,
+            isActive: creator?.image !== ''
+                && (!!creator?.location?.city || !!creator?.location?.country)
+                && (!!creator?.socialMedia?.instagram
+                    || !!creator?.socialMedia?.facebook
+                    || !!creator?.socialMedia?.twitter),
+        }));
+    }, [creators]);
+
     const refRBSheet = useRef();
 
     const [search, setSearch] = useState(null);
@@ -67,18 +83,21 @@ const CreatorProfilesScreen = ({ navigation }) => {
             'userName',
             'title',
             'shortDescription',
+            'location.country',
+            'location.city',
+            'email',
         ],
     };
 
     useEffect(() => {
-        if (!!search && creators?.length) {
-            const fuse = new Fuse(creators, options);
+        if (!!search && creatorsData?.length) {
+            const fuse = new Fuse(creatorsData, options);
             const results = fuse.search(search).map(({ item }) => item);
             setSearchResults(results);
         }
     }, [search]);
 
-    const filteredCreators = search?.length ? searchResults : creators;
+    const filteredCreators = search?.length ? searchResults : creatorsData;
 
     return (
         <ScrollView
@@ -116,7 +135,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
             </TemplateBox>
 
             {
-                filteredCreators?.length > 0 && filteredCreators?.map((creator) => (
+                filteredCreators?.length > 0 && sortBy(filteredCreators, 'isActive')?.reverse()?.map((creator) => (
                     <CreatorCard
                         key={creator?.id}
                         name={creator?.userName}
@@ -126,6 +145,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         location={creator?.location?.country}
                         email={creator?.email}
                         onPress={() => navigation.navigate(PROFILE, { creatorId: creator?.id })}
+                        active={creator?.isActive}
                     />
                 ))
             }

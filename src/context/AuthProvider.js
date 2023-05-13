@@ -26,7 +26,17 @@ const AuthProvider = ({ children }) => {
     const overrideProfileUpdateModal = config?.overrideProfileUpdateModal;
 
     const getProfileCompleteStatus = () => {
-        const profileValues = values(profile);
+        const profileCheckParamsObject = {
+            email: profile?.email,
+            name: profile?.name || profile?.userName,
+            profileImage: profile?.image,
+            socials: profile?.socialMedia?.instagram
+               || profile?.socialMedia?.facebook
+               || profile?.socialMedia?.twitter || profile?.socialMedia?.youtube,
+            location: profile?.location?.city || profile?.location?.country,
+
+        };
+        const profileValues = values(profileCheckParamsObject);
         const offset = profileValues?.length;
         const completeCount = profileValues?.filter((value) => !isEmpty(value))?.length;
         const completeRatio = completeCount / offset;

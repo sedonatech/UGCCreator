@@ -1,5 +1,5 @@
-import { Alert, ScrollView, StyleSheet } from 'react-native';
-import React, { useEffect, useMemo } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import React, { useMemo } from 'react';
 
 import { uniqBy } from 'lodash';
 import useAuthContext from '../../hooks/auth/useAuthContext';
@@ -107,29 +107,14 @@ const ChatRoomsScreen = ({ navigation }) => {
                                                 && room?.name === chatRoomName,
                                         ));
                                         setTimeout(() => {
-                                            Alert.alert('Chat room created successfully',
-                                                'You can now start chatting with the brand',
-                                                [{
-                                                    text: 'OK',
-                                                    onPress: () => {
-                                                        setTimeout(() => {
-                                                            navigation.navigate(CHATS, {
-                                                                chatRoomId: createdChatRoom?.id,
-                                                            });
-                                                        }, 1000);
-                                                    },
-                                                }], { cancelable: false });
+                                            navigation.navigate(CHATS, {
+                                                chatRoomId: createdChatRoom?.id,
+                                            });
                                         }, 1000);
                                     }
                                 });
                             } catch (e) {
                                 console.log('[ERROR IN CHAT ROOMS SCREEN]', e.message);
-                                Alert.alert('Error creating chat room, the brand may not be available at the moment',
-                                    'Please try again later',
-                                    [{
-                                        text: 'OK',
-                                        onPress: () => {},
-                                    }], { cancelable: false });
                             }
                         }}
                     />
@@ -176,30 +161,14 @@ const ChatRoomsScreen = ({ navigation }) => {
                                                 && room?.name === chatRoomName,
                                         ));
                                         setTimeout(() => {
-                                            Alert.alert('Chat room created successfully',
-                                                'You can now start chatting with the creator',
-                                                [{
-                                                    text: 'OK',
-                                                    onPress: () => {
-                                                        setTimeout(() => {
-                                                            navigation.navigate(CHATS, {
-                                                                chatRoomId: createdChatRoom?.id,
-                                                            });
-                                                        }, 1000);
-                                                    },
-                                                }], { cancelable: false });
+                                            navigation.navigate(CHATS, {
+                                                chatRoomId: createdChatRoom?.id,
+                                            });
                                         }, 1000);
                                     }
                                 });
                             } catch (e) {
-                                if (e.message) {
-                                    Alert.alert('Error creating chat room, the creator may not be available at the moment',
-                                        'Please try again later',
-                                        [{
-                                            text: 'OK',
-                                            onPress: () => {},
-                                        }], { cancelable: false });
-                                }
+                                console.log('[ERROR IN CHAT ROOMS SCREEN]', e.message);
                             }
                         }}
                     />

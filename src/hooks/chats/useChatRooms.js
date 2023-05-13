@@ -21,13 +21,14 @@ const useChatRooms = () => {
                 brandFCMToken,
             });
 
+            console.log('[CREATE CHAT ROOM RESPONSE]', response);
             if (response) {
                 setChatRoomCreated(true);
             }
         } catch (error) {
             console.log('[CREATE CHAT ROOM ERROR]', error);
             if (error.message) {
-                Alert.alert('Error creating chat room, the user may not be available at the moment',
+                Alert.alert('The user may not be available at the moment',
                     'Please try again later',
                     [{
                         text: 'OK',
@@ -50,7 +51,7 @@ const useChatRooms = () => {
                 setChatRooms(newChatRooms);
             });
         return () => unsubscribe();
-    }, []);
+    }, [chatRoomCreated]);
 
     return {
         chatRooms,

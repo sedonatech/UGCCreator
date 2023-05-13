@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
+import { sortBy } from 'lodash';
 import TemplateBox from '../../../../components/TemplateBox';
 import BrandsCard from '../../home/components /BrandsCard';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
@@ -9,12 +10,12 @@ import { BRAND_DETAILS } from '../../../../navigation/ScreenNames';
 import RecommendedBrandsCarousel from '../../home/components /RecommendedBrandsCarousel';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
-const BrandsTab = (data: { data: any[]; }) => {
+const BrandsTab = ({ data }) => {
     const navigation = useNavigation();
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN}>
-            {!!data?.data?.length && data?.data?.map((brand: any, index) => (
+            {!!data?.length && sortBy(data, 'isActive')?.reverse()?.map((brand: any, index) => (
                 <BrandsCard
                     key={brand?.id}
                     image={{ uri: brand?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
@@ -29,6 +30,8 @@ const BrandsTab = (data: { data: any[]; }) => {
                     descriptionSize={12}
                     // @ts-ignore
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
+                    showActive
+                    active={brand?.isActive}
                 />
             ))}
             <RecommendedBrandsCarousel style={styles.carousel} />

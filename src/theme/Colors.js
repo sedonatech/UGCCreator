@@ -12,6 +12,10 @@ export const BLACK_80 = `${BLACK}80`;
 export const BLACK_90 = `${BLACK}90`;
 export const BLACK_0_5 = `${BLACK}0.5`;
 
+export const lightGreen = '#34C759';
+
+export const lightOrange = 'rgba(255, 45, 85, 0.4)';
+
 export const WHITE = 'white';
 export const WHITE_10 = 'rgba(255, 255, 255, 0.1)';
 export const WHITE_20 = 'rgba(255, 255, 255, 0.2)';

@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
+import { sortBy } from 'lodash';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
@@ -18,6 +19,19 @@ const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
     const { filteredCreators } = useGetCreators();
+
+    const creatorsData = useMemo(() => {
+        if (!filteredCreators?.length) return [];
+
+        return filteredCreators?.map((creator) => ({
+            ...creator,
+            isActive: creator?.image !== ''
+                && (!!creator?.location?.city || !!creator?.location?.country)
+                && (!!creator?.socialMedia?.instagram
+                    || !!creator?.socialMedia?.facebook
+                    || !!creator?.socialMedia?.twitter),
+        }));
+    }, [filteredCreators]);
 
     return (
         <View style={style}>
@@ -44,7 +58,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
             </View>
 
             <TemplateCarousel
-                data={filteredCreators}
+                data={sortBy(creatorsData, 'isActive').reverse()}
                 renderItem={({ item }) => (
                     <CreatorCard
                         name={item?.userName}
@@ -54,14 +68,17 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         style={styles.card}
                         width={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
                         imageStyle={styles.image}
-                        subtitleContainerWidth={80}
+                        subtitleContainerWidth={94}
                         buttonOffset={50}
                         textContainerWidth="68%"
-                        location={item?.location?.country || item?.location?.city}
+                        location={item?.location?.city || item?.location?.country}
                         onPress={() => navigation.navigate(PROFILE, {
                             creatorId: item?.id,
                         })}
-
+                        active={item?.userName
+                            && item?.image
+                            && item?.shortDescription
+                            && (item?.location?.country || item?.location?.city)}
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
@@ -92,7 +109,6 @@ const styles = StyleSheet.create({
     card: {
         marginRight: WRAPPER_MARGIN,
         marginBottom: 10,
-        height: 180,
     },
     image: {
         height: 60,

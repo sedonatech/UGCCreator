@@ -88,6 +88,7 @@ const ExploreScreen = ({ route }) => {
             name: brand?.name,
             image: brand?.image,
             shortDescription: brand?.shortDescription,
+            isActive: brand?.shortDescription && brand?.image,
         }));
     }, [brands]);
 

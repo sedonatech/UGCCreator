@@ -51,7 +51,7 @@ const PortfolioScreen = ({ navigation, route }) => {
     const contact = creator?.contact || DEFAULT_CREATOR_CONTACT_INFO;
     const socials = creator?.socialMedia || DEFAULT_CREATOR_SOCIAL;
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
-    const location = creator?.location?.country || 'London';
+    const location = creator?.location?.country || creator?.location?.city || 'London';
     const rates = creator?.rates || DEFAULT_CREATOR_RATES;
     const email = creator?.email;
 

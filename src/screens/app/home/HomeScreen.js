@@ -5,7 +5,7 @@ import {
 
 import { useIsFocused } from '@react-navigation/native';
 import {
-    BLACK_10,
+    BLACK_10, lightOrange,
     WHITE,
 } from '../../../theme/Colors';
 import {
@@ -20,7 +20,7 @@ import ProjectsCarousel from './components /ProjectsCarousel';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import {
     NO_CURRENT_PROJECT_MESSAGE,
-    NO_CURRENT_PROJECT_TITLE,
+    NO_CURRENT_PROJECT_TITLE, PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE,
 } from '../../../consts/content/Home';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useRefresh from '../../../hooks/creators/useRefresh';
@@ -32,6 +32,8 @@ const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
+
+    const profileCompleteRatio = auth?.profileCompleteRatio;
 
     const userId = profile?.id;
 
@@ -98,6 +100,17 @@ const HomeScreen = ({ navigation }) => {
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
 
+            { profileCompleteRatio < 1 && (
+                <ProfileStatusCard
+                    title={PROFILE_INCOMPLETE_TITLE}
+                    description={PROFILE_INCOMPLETE_MESSAGE}
+                    progress={profileCompleteRatio}
+                    style={styles.statusCard}
+                    slideInDelay={40}
+                    showIcon={false}
+                    backgroundColor={profileCompleteRatio < 0.5 ? lightOrange : WHITE}
+                />
+            )}
             {userCurrentProjects?.length ? (
                 <CurrentProjectsCarousel style={styles.carousel} data={userCurrentProjects} />
             )
@@ -135,7 +148,7 @@ const styles = StyleSheet.create({
         marginBottom: WRAPPER_MARGIN,
     },
     statusCard: {
-        marginBottom: WRAPPER_MARGIN * 2,
+        marginBottom: WRAPPER_MARGIN,
     },
 });
 export default HomeScreen;
