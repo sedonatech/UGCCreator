@@ -41,7 +41,6 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const [subscribing, setSubscribing] = useState(null);
 
     const [selected, setSelectedPackage] = useState(0);
-    console.log('[SubscriptionScreen] - selected', selected);
 
     const [error, setError] = useState(null);
 
@@ -110,9 +109,15 @@ const SubscriptionScreen = ({ navigation, route }) => {
             setSubscribing(index);
             await onSubscribe(index);
             setSubscribing(false);
+            if (fromSettings) {
+                navigation.goBack();
+            }
         } catch (er) {
             alert(er.message);
             setSubscribing(false);
+            if (fromSettings) {
+                navigation.goBack();
+            }
         }
     };
     const getSavings = (pack) => {
