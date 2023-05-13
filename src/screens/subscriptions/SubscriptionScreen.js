@@ -153,8 +153,8 @@ const SubscriptionScreen = ({ navigation, route }) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox selfCenter>
-                <BrandLogo height={SCREEN_HEIGHT / 4} width={SCREEN_WIDTH / 1.9} />
+            <TemplateBox selfCenter mt={40}>
+                <BrandLogo height={SCREEN_HEIGHT / 5.4} width={SCREEN_WIDTH / 1.9} />
             </TemplateBox>
             <TemplateBox
                 flex
@@ -166,7 +166,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         size={18}
                         center
                         color={BLACK}
-                        lineHeight={26}
+                        lineHeight={22}
                         startCase
                     >
                         {subscriptionBenefits?.title}
