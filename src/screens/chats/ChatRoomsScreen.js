@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet } from 'react-native';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { uniqBy } from 'lodash';
 import useAuthContext from '../../hooks/auth/useAuthContext';
@@ -12,18 +12,30 @@ import TemplateText from '../../components/TemplateText';
 import { CHATS } from '../../navigation/ScreenNames';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import useGetCreators from '../../hooks/brands/useGetCreators';
+import LoadingOverlay from '../../components/LoadingOverlay';
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
-    const { creators } = useGetCreators();
+    const { creators: creatorsData } = useGetCreators();
+
+    const creators = useMemo(() => {
+        if (!creatorsData?.length) return [];
+
+        return creatorsData?.filter((creator) => creator?.fcmToken);
+    }, [creatorsData]);
 
     const isCreator = auth?.profile?.type === 'creator';
 
     const isBrand = auth?.profile?.type !== 'creator';
 
     const {
-        createChatRoom, chatRooms, chatRoomCreated, createdChatRoom, setCreatedChatRoom,
+        createChatRoom,
+        chatRooms,
+        chatRoomCreated,
+        createdChatRoom,
+        setCreatedChatRoom,
+        loading: chatRoomsLoading,
     } = useChatsContext();
 
     const chatRoomData = useMemo(() => {
@@ -36,48 +48,45 @@ const ChatRoomsScreen = ({ navigation }) => {
         }));
     }, [chatRooms]);
 
-    const { brands } = useGetBrands();
+    const { brands: brandsData } = useGetBrands();
 
-    useEffect(() => {
-        if (chatRoomCreated) {
-            setTimeout(() => {
-                navigation.navigate(CHATS, {
-                    chatRoomId: createdChatRoom?.id,
-                });
-            }, 1500);
-        }
-    }, [chatRoomCreated]);
+    const brands = useMemo(() => {
+        if (!brandsData?.length) return [];
+
+        return brandsData?.filter((brand) => brand?.fcmToken);
+    }, [brandsData]);
 
     return (
-        <ScrollView
-            style={styles.container}
-            showsVerticalScrollIndicator={false}
-        >
-            <TemplateBox
-                mt={HEADER_MARGIN}
-                alignItems="center"
-                justifyContent="center"
-                mh={WRAPPER_MARGIN}
+        <>
+            <ScrollView
+                style={styles.container}
+                showsVerticalScrollIndicator={false}
             >
-                <TemplateText
-                    size={18}
-                    startCase
-                    bold
-                    center
+                <TemplateBox
+                    mt={HEADER_MARGIN}
+                    alignItems="center"
+                    justifyContent="center"
+                    mh={WRAPPER_MARGIN}
                 >
-                    {`Start a conversation with a ${isCreator ? 'brand' : 'creator'} you're interested in`}
-                </TemplateText>
-                <TemplateBox height={WRAPPER_MARGIN} />
-            </TemplateBox>
-            { isCreator && brands?.length > 0
-                && brands?.map((brand) => (
+                    <TemplateText
+                        size={18}
+                        startCase
+                        bold
+                        center
+                    >
+                        {`Start a conversation with a ${isCreator ? 'brand' : 'creator'} you're interested in`}
+                    </TemplateText>
+                    <TemplateBox height={WRAPPER_MARGIN} />
+                </TemplateBox>
+                { isCreator && brands?.length > 0
+                && brands?.map((brand, index) => (
                     <ProfileStatusCard
                         key={brand?.id}
                         title={brand?.name}
                         description={`Start a conversation with ${brand?.name}`}
                         showProgress={false}
                         style={styles.statusCard}
-                        slideInDelay={200}
+                        slideInDelay={200 + (index * 100)}
                         showIcon={false}
                         onPress={async () => {
                             try {
@@ -102,29 +111,35 @@ const ChatRoomsScreen = ({ navigation }) => {
                                     auth?.profile?.id,
                                     brand?.id,
                                     creatorFCMToken,
-                                    brandFCMToken);
-
-                                if (chatRoomCreated) {
-                                    setCreatedChatRoom(chatRoomData?.find(
-                                        (room) => room?.creatorId === auth?.profile?.id
-                                        && room?.brandId === brand?.id,
-                                    ));
-                                }
+                                    brandFCMToken).then(() => {
+                                    if (chatRoomCreated && !chatRoomsLoading) {
+                                        setCreatedChatRoom(chatRoomData?.find(
+                                            (room) => room?.name === auth?.profile?.id
+                                                && room?.brandId === brand?.id
+                                                && room?.name === chatRoomName,
+                                        ));
+                                        setTimeout(() => {
+                                            navigation.navigate(CHATS, {
+                                                chatRoomId: createdChatRoom?.id,
+                                            });
+                                        }, 1000);
+                                    }
+                                });
                             } catch (e) {
                                 console.log('[ERROR IN CHAT ROOMS SCREEN]', e.message);
                             }
                         }}
                     />
                 ))}
-            { isBrand && creators?.length > 0
-                && uniqBy(creators, 'id')?.map((creator) => (
+                { isBrand && creators?.length > 0
+                && uniqBy(creators, 'id')?.map((creator, index) => (
                     <ProfileStatusCard
                         key={creator?.id}
                         title={creator?.userName}
                         description={`Start a conversation with ${creator?.userName}`}
                         showProgress={false}
                         style={styles.statusCard}
-                        slideInDelay={200}
+                        slideInDelay={200 + (index * 100)}
                         showIcon={false}
                         onPress={async () => {
                             try {
@@ -150,23 +165,31 @@ const ChatRoomsScreen = ({ navigation }) => {
                                     creator?.id,
                                     auth?.profile?.id,
                                     creatorFCMToken,
-                                    brandFCMToken);
-
-                                setTimeout(() => {
-                                    if (chatRoomCreated) {
+                                    brandFCMToken).then(() => {
+                                    if (chatRoomCreated && !chatRoomsLoading) {
                                         setCreatedChatRoom(chatRoomData?.find(
                                             (room) => room?.creatorId === creator?.id
-                                                && room?.brandId === auth?.profile?.id,
+                                                && room?.brandId === auth?.profile?.id
+                                                && room?.name === chatRoomName,
                                         ));
+                                        setTimeout(() => {
+                                            navigation.navigate(CHATS, {
+                                                chatRoomId: createdChatRoom?.id,
+                                            });
+                                        }, 1000);
                                     }
-                                }, 1500);
+                                });
                             } catch (e) {
                                 console.log('[ERROR IN CHAT ROOMS SCREEN]', e.message);
                             }
                         }}
                     />
                 ))}
-        </ScrollView>
+            </ScrollView>
+            {chatRoomsLoading && (
+                <LoadingOverlay message="Creating chat rooom...." />
+            )}
+        </>
     );
 };
 

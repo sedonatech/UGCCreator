@@ -3,6 +3,7 @@ import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 import {
+    BLACK_60,
     LAVENDER, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
@@ -26,6 +27,8 @@ import useLogout from '../../app/profile/useLogout';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
+import TemplateText from '../../../components/TemplateText';
+import useGetAppVersion from '../../../Utils/useGetAppVersion';
 
 const BrandSettingsScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
@@ -33,6 +36,8 @@ const BrandSettingsScreen = ({ navigation }) => {
     const { mainDomain } = useConfig();
 
     const { logout: handleLogout, deleteAccount } = useLogout();
+
+    const { nativeAppVersion } = useGetAppVersion();
 
     const {
         checkApplicationPermissions,
@@ -192,6 +197,9 @@ const BrandSettingsScreen = ({ navigation }) => {
                         key={title}
                     />
                 ))}
+                <TemplateBox selfCenter mv={20}>
+                    <TemplateText size={14} color={BLACK_60}>{`App Version: ${nativeAppVersion}`}</TemplateText>
+                </TemplateBox>
             </TemplateBox>
         </ScrollView>
     );

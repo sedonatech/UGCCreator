@@ -1,0 +1,27 @@
+{
+  "benefits": [
+    {
+      "title": "Get Connected",
+      "description": "Get matched as a UGC content creator with brands based on your preferences.",
+      "icon": "vault"
+    },
+    {
+      "title": "Innovative",
+      "description": "Get  brand recommendations based on your profile preferences and powered by AI.",
+      "icon": "innovative"
+    },
+    {
+      "title": "AI UGC Tools",
+      "description": "Simplify your UGC content creation process with our AI tools designed for creators.",
+      "icon": "lightning"
+    },
+    {
+      "title": "Transparent and Efficient",
+      "description": "Manage your UGC content creation right in the app in a transparent and efficient way.",
+      "icon": "brush"
+    }
+  ],
+  "buttonCta": "Start My Free Trial",
+  "title": "Choose a plan that works suits you and get unlimited access",
+  "subtitle": "7 days free trial with free cancellation."
+}

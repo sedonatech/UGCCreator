@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 
@@ -9,13 +9,11 @@ import {
     DEFAULT_CREATOR_CONTACT_INFO,
     DEFAULT_CREATOR_DESCRIPTION,
     DEFAULT_CREATOR_PAYPAL_LINK,
-    DEFAULT_CREATOR_RATES,
     DEFAULT_CREATOR_SHORT_DESCRIPTION,
     DEFAULT_CREATOR_SOCIAL,
 } from '../../../consts/content/Portfolio';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import useShareScreenShot from '../../../Utils/useShareScreenShot';
-import useGetCreators from '../../../hooks/brands/useGetCreators';
 import PortfolioHeader from '../../app/profile/components/PortfolioHeader';
 import AboutSection from '../../app/profile/components/AboutSection';
 import ContactSection from '../../app/profile/components/ContactSection';
@@ -29,14 +27,14 @@ const BrandProfileScreen = ({ navigation }) => {
 
     const image = brand?.image;
 
-    const about = brand?.about || DEFAULT_CREATOR_DESCRIPTION;
+    const about = brand?.description || DEFAULT_CREATOR_DESCRIPTION;
 
     const shortDescription = brand?.shortDescription
         || DEFAULT_CREATOR_SHORT_DESCRIPTION;
 
     const contact = brand?.contact || DEFAULT_CREATOR_CONTACT_INFO;
 
-    const socials = brand?.socials || DEFAULT_CREATOR_SOCIAL;
+    const socials = brand?.socialMedia || DEFAULT_CREATOR_SOCIAL;
 
     const paypalLink = brand?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
 

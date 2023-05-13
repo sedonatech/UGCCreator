@@ -50,11 +50,6 @@ const ProfileStack = () => (
             options={TRANSPARENT_HEADER_NO_LOGO}
         />
         <Screen
-            name={SUBSCRIPTION}
-            component={SubscriptionScreen}
-            options={TRANSPARENT_HEADER_NO_LOGO}
-        />
-        <Screen
             name={UGCAI}
             options={TRANSPARENT_HEADER}
             component={UGCAiScreen}

@@ -4,18 +4,25 @@ import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { sortBy } from 'lodash';
 
-import { WRAPPER_MARGIN } from '../../../../theme/Layout';
+import moment from 'moment';
+import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateBox from '../../../../components/TemplateBox';
 import ProjectCard from './ProjectCard';
-import { EXPLORE, EXPLORE_STACK, PROJECT_DETAILS } from '../../../../navigation/ScreenNames';
+import {
+    EXPLORE,
+    EXPLORE_STACK,
+    PROJECT_DETAILS,
+} from '../../../../navigation/ScreenNames';
 import { PROJECTS_TAB } from '../../explore/ExploreScreen';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../../consts/content/Home';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
+import { projectTypeFilters } from '../../../../consts/AppFilters/ProjectFilters';
+import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 
 const ProjectsCarousel = ({ style }) => {
     const { auth } = useAuthContext();
@@ -32,7 +39,9 @@ const ProjectsCarousel = ({ style }) => {
             image: item?.image,
             title: item?.title,
             shortDescription: item?.shortDescription,
+            duration: `${moment(item?.endDate).diff(moment(item?.startDate), 'weeks') || 3} weeks`,
             enrolled: item?.applications?.map((app) => app?.creatorId)?.includes(profile?.id),
+            projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
         }))?.slice(0, 4), 'createdAt');
     }, [projects]);
 
@@ -67,24 +76,27 @@ const ProjectsCarousel = ({ style }) => {
                 Check out  new projects from trusted brands based on your interests and location
             </TemplateText>
 
-            <TemplateBox row flexWrap="wrap" pl={20} justifyContent="space-between">
-                {
-                    !!carouselData?.length && carouselData?.map((item) => (
-                        <ProjectCard
-                            key={item?.id}
-                            image={{ uri: item?.image }}
-                            title={item?.title}
-                            shortDescription={item?.shortDescription}
-                            // @ts-ignore
-                            onPress={() => navigation.navigate(PROJECT_DETAILS, {
-                                projectId: item?.id,
-                            })}
-                            enrolled={item?.enrolled}
-                            style={styles.card}
-                        />
-                    ))
-                }
-            </TemplateBox>
+            <TemplateCarousel
+                data={carouselData}
+                renderItem={({ item }) => (
+                    <ProjectCard
+                        key={item?.id}
+                        image={{ uri: item?.image }}
+                        title={item?.title}
+                        shortDescription={item?.shortDescription}
+                        // @ts-ignore
+                        onPress={() => navigation.navigate(PROJECT_DETAILS, {
+                            projectId: item?.id,
+                        })}
+                        enrolled={item?.enrolled}
+                        style={styles.card}
+                        projectType={item?.projectType}
+                        duration={item?.duration}
+                    />
+                )}
+                contentContainerStyle={styles.cardCarousel}
+                snapToInterval={(SCREEN_WIDTH / 2) - 28}
+            />
         </TemplateBox>
     );
 };
@@ -104,6 +116,10 @@ const styles = StyleSheet.create({
     },
     card: {
         marginRight: 15,
+
+    },
+    cardCarousel: {
+        paddingHorizontal: WRAPPER_MARGIN,
     },
     statusCard: {
         marginBottom: 20,

@@ -194,7 +194,11 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
             row
             pAll={10}
             alignItems="center"
-            onPress={() => openUrl(profileUrl)}
+            onPress={() => {
+                if (profileUrl) {
+                    openUrl(profileUrl);
+                }
+            }}
             backgroundColor={BLACK_0_5}
             borderRadius={10}
         >

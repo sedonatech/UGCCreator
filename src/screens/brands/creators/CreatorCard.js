@@ -7,7 +7,7 @@ import TemplateText from '../../../components/TemplateText';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
-    BLACK, BLACK_40, BLACK_SECONDARY, BRAND_BLUE, WHITE,
+    BLACK, BLACK_60, BLACK_SECONDARY, BRAND_BLUE, lightGreen, lightOrange, WHITE,
 } from '../../../theme/Colors';
 import { SHADOW } from '../../../theme/Shadow';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
@@ -24,11 +24,12 @@ const CreatorCard = ({
     textContainerWidth,
     subtitleContainerWidth,
     buttonOffset,
+    active,
 }) => (
     <TemplateBox
         width={width}
         borderRadius={20}
-        pAll={WRAPPER_MARGIN}
+        pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
         style={[SHADOW('card', BRAND_BLUE), style]}
@@ -39,8 +40,8 @@ const CreatorCard = ({
                 source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                 style={[styles.image, imageStyle]}
             />
-            <TemplateBox width={textContainerWidth}>
-                <TemplateText size={18} bold color={BLACK} numberOfLines={1}>{name}</TemplateText>
+            <TemplateBox width={textContainerWidth} height={60}>
+                <TemplateText size={16} bold color={BLACK} numberOfLines={1}>{name}</TemplateText>
                 <TemplateBox height={10} />
                 <TemplateText
                     size={12}
@@ -51,20 +52,12 @@ const CreatorCard = ({
                 </TemplateText>
             </TemplateBox>
         </TemplateBox>
-        <TemplateBox
-            selfCenter
-            width="96%"
-            height={1}
-            backgroundColor={BLACK_40}
-            mv={WRAPPER_MARGIN}
-        />
 
-        <TemplateBox row alignItems="center">
+        <TemplateBox row alignItems="center" mt={20}>
             <TemplateBox width={subtitleContainerWidth}>
                 <TemplateBox row alignItems="center">
-                    <TemplateIcon name="location-outline" color={BLACK_40} size={20} />
-                    <TemplateBox width={5} />
-                    <TemplateText size={14} color={BLACK}>{location || 'South Africa'}</TemplateText>
+                    <TemplateIcon name="location-outline" color={BLACK_60} size={14} />
+                    <TemplateText size={10} color={BLACK_60} semiBold>{location || 'London'}</TemplateText>
                 </TemplateBox>
 
             </TemplateBox>
@@ -82,6 +75,17 @@ const CreatorCard = ({
                 <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
             </TemplateBox>
         </TemplateBox>
+        <TemplateBox
+            ph={8}
+            pv={4}
+            backgroundColor={active ? lightGreen : lightOrange}
+            borderRadius={6}
+            alignItems="center"
+            justifyContent="center"
+
+        >
+            <TemplateText color={WHITE} size={9} bold caps>{active ? 'Active' : 'Inactive'}</TemplateText>
+        </TemplateBox>
     </TemplateBox>
 );
 
@@ -97,6 +101,7 @@ CreatorCard.propTypes = {
     textContainerWidth: PropTypes.number,
     subtitleContainerWidth: PropTypes.number,
     buttonOffset: PropTypes.number,
+    active: PropTypes.bool,
 };
 
 CreatorCard.defaultProps = {
@@ -111,6 +116,7 @@ CreatorCard.defaultProps = {
     textContainerWidth: 190,
     subtitleContainerWidth: 100,
     buttonOffset: 80,
+    active: true,
 };
 
 const styles = StyleSheet.create({

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Video from 'react-native-video';
 import {
     BLACK,
     BLACK_10,
@@ -21,6 +22,8 @@ import { emailValid, passwordValid, isEmpty } from '../../Utils/validation';
 import useProfile from '../../hooks/user/useProfile';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import { useConfig } from '../../context/core';
+import TemplateTouchable from '../../components/TemplateTouchable';
+import TemplateIcon from '../../components/TemplateIcon';
 
 const CREATOR_PLACEHOLDER = 'Your Name';
 const BRAND_PLACEHOLDER = 'Your Brand Name';
@@ -59,6 +62,8 @@ const SignUpScreen = ({ navigation, route }) => {
     const showNameError = useMemo(() => nameTouched && isEmpty(name), [name, nameTouched]);
 
     const [loading, setLoading] = useState(false);
+
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const disabled = useMemo(() => (
         !emailValid(email)
@@ -147,15 +152,29 @@ const SignUpScreen = ({ navigation, route }) => {
                 autoCapitalize="none"
             />
             <Error show={showEmailError}>Please enter a valid email</Error>
-            <TemplateTextInput
-                placeholder="Password"
-                style={[styles.input, showPasswordError && styles.error]}
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-                onBlur={() => setPasswordTouched(true)}
-                secureTextEntry
-                autoCapitalize="none"
-            />
+
+            <View style={styles.passwordContainer}>
+                <TemplateTextInput
+                    placeholder="Password"
+                    style={[styles.input, showPasswordError && styles.error]}
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    onBlur={() => setPasswordTouched(true)}
+                    secureTextEntry={!passwordVisible}
+                    autoCapitalize="none"
+                />
+                <TemplateTouchable
+                    onPress={() => setPasswordVisible((prevState) => !prevState)}
+                    style={styles.passwordIcon}
+                >
+                    <TemplateIcon
+                        name={passwordVisible ? 'eye-off-outline' : 'eye-outline'}
+                        size={20}
+                        color={BLACK}
+                        family="Ionicons"
+                    />
+                </TemplateTouchable>
+            </View>
             <Error show={showPasswordError}>Please enter a valid password</Error>
 
             <View style={styles.buttonContainer}>
@@ -273,6 +292,15 @@ const styles = StyleSheet.create({
     generalError: {
         marginVertical: 10,
         alignSelf: 'center',
+    },
+    passwordIcon: {
+        bottom: 20,
+        right: 20,
+        position: 'absolute',
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 export default SignUpScreen;

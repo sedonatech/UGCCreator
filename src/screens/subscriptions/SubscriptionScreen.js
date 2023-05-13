@@ -9,10 +9,10 @@ import usePurchase from './usePurchase';
 import useAvailablePackages from './useAvailablePackages';
 import TemplateBox from '../../components/TemplateBox';
 import {
-    SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN,
+    SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../theme/Layout';
 import {
-    BLACK, BLACK_10, IOS_BLUE, WHITE,
+    BLACK, BLACK_10, BLACK_60, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND, WHITE,
 } from '../../theme/Colors';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import SubscriptionCard from './components/SubscriptionCard';
@@ -20,9 +20,16 @@ import useLogout from '../app/profile/useLogout';
 import { useConfig } from '../../context/core';
 import { WEBVIEW } from '../../navigation/ScreenNames';
 import HeaderIconButton from '../../components/header/HeaderButton';
+import InnovativeSvg from '../../../assets/svgs/InnovativeSvg';
+import VaultSvg from '../../../assets/svgs/VaultSvg';
+import LightningSvg from '../../../assets/svgs/LightningSvg';
+import BrushSvg from '../../../assets/svgs/BrushSvg';
+import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
+import Button from '../../components/Button';
 
 const SubscriptionScreen = ({ navigation, route }) => {
     const fromSettings = route?.params?.fromSettings;
+
     const subscription = useSubscriptionContext();
 
     const { logout: handleLogout } = useLogout();
@@ -34,6 +41,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const [subscribing, setSubscribing] = useState(null);
 
     const [selected, setSelectedPackage] = useState(0);
+    console.log('[SubscriptionScreen] - selected', selected);
 
     const [error, setError] = useState(null);
 
@@ -42,6 +50,15 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const [packages, originalPackages] = useAvailablePackages(subscription?.purchase);
 
     const purchase = usePurchase();
+
+    const { subscriptionBenefits } = useFeatureFlags();
+
+    const subscriptionBenefitsIconsMap = {
+        innovative: InnovativeSvg(),
+        vault: VaultSvg(),
+        lightning: LightningSvg(),
+        brush: BrushSvg(),
+    };
 
     const onSubscribe = async (i) => {
         setLoading(true);
@@ -134,36 +151,81 @@ const SubscriptionScreen = ({ navigation, route }) => {
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox selfCenter>
-                <BrandLogo height={SCREEN_HEIGHT / 4} width={SCREEN_WIDTH / 1.9} />
+            <TemplateBox selfCenter mt={40}>
+                <BrandLogo height={SCREEN_HEIGHT / 5.4} width={SCREEN_WIDTH / 1.9} />
             </TemplateBox>
             <TemplateBox
                 flex
-                backgroundColor={WHITE}
-                borderTopLeftRadius={20}
-                borderTopRightRadius={20}
+                backgroundColor={PAYWALL_PRIMARY_BACKGROUND}
             >
-                <TemplateBox selfCenter ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
+                <TemplateBox selfCenter ph={WRAPPER_MARGIN}>
                     <TemplateText
                         bold
                         size={18}
                         center
                         color={BLACK}
-                        lineHeight={26}
+                        lineHeight={22}
                         startCase
                     >
-                        Choose your plan and get unlimited access
+                        {subscriptionBenefits?.title}
                     </TemplateText>
                     <TemplateBox height={20} />
-                    <TemplateText
-                        size={14}
-                        color={BLACK}
-                        center
-                    >
-                        Get Access To the world's largest platform for UGC Creators and brands
-                    </TemplateText>
+                    <TemplateBox selfCenter>
+                        <TemplateText
+                            size={14}
+                            color={BLACK}
+                            center
+                        >
+                            {subscriptionBenefits?.subtitle}
+                        </TemplateText>
+                    </TemplateBox>
                     <TemplateBox height={10} />
+                </TemplateBox>
+
+                <TemplateBox
+                    backgroundColor={WHITE}
+                    borderRadius={16}
+                    mh={WRAPPER_MARGIN}
+                    mt={WRAPPER_MARGIN}
+                    mb={WRAPPER_MARGIN}
+                >
+                    {subscriptionBenefits?.benefits?.map((benefit) => (
+                        <TemplateBox
+                            key={benefit?.title}
+                            row
+                            alignItems="center"
+                            justifyContent="space-between"
+                            ph={WRAPPER_MARGIN}
+                            pv={WRAPPER_MARGIN}
+                            borderBottomWidth={1}
+                            borderBottomColor={BLACK_10}
+                            width={WRAPPED_SCREEN_WIDTH}
+                        >
+                            <TemplateBox row alignItems="center">
+                                {subscriptionBenefitsIconsMap[benefit?.icon]}
+                                <TemplateBox width={10} />
+                                <TemplateBox width={WRAPPED_SCREEN_WIDTH - (WRAPPER_MARGIN * 5.5)}>
+                                    <TemplateText
+                                        size={16}
+                                        color={BLACK}
+                                        semiBold
+                                    >
+                                        {benefit?.title}
+                                    </TemplateText>
+                                    <TemplateText
+                                        size={13}
+                                        color={BLACK}
+                                    >
+                                        {benefit?.description}
+                                    </TemplateText>
+                                </TemplateBox>
+
+                            </TemplateBox>
+                        </TemplateBox>
+
+                    ))}
                 </TemplateBox>
 
                 <TemplateBox mh={WRAPPER_MARGIN}>
@@ -171,7 +233,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         packages?.length ? (
                             packages.map((pack, index) => (
                                 <SubscriptionCard
-                                    onPress={() => handleSubscription(index)}
+                                    onPress={() => setSelected(index)}
                                     key={pack?.title}
                                     title={pack?.title}
                                     price={pack?.priceString}
@@ -187,7 +249,6 @@ const SubscriptionScreen = ({ navigation, route }) => {
                                     recommended={pack?.recommended}
                                     recommendedCopy={pack?.recommendedCopy}
                                     popularCopy={pack?.popularCopy}
-                                    loading={index === subscribing}
                                 />
                             ))
                         ) : (
@@ -198,22 +259,27 @@ const SubscriptionScreen = ({ navigation, route }) => {
                     }
 
                 </TemplateBox>
+                <Button
+                    title={subscriptionBenefits?.buttonCta}
+                    onPress={() => handleSubscription(selected)}
+                    style={styles.button}
+                    loading={loading}
+                />
                 <TemplateBox
                     onPress={onRestore}
                     selfCenter
                     mv={WRAPPER_MARGIN}
                     mh={WRAPPER_MARGIN}
                 >
-                    <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
-                        restore subscription
+                    <TemplateText color={IOS_BLUE} semiBold size={16}>
+                        Restore Subscription
                     </TemplateText>
                 </TemplateBox>
                 <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN}>
-                    <TemplateText size={12} color={BLACK} center small>
+                    <TemplateText size={12} color={BLACK_60} center small>
                         By selecting a subscription plan you agree to our
                         {' '}
                         <TemplateText
-                            semiBold
                             black
                             size={14}
                             underLine
@@ -239,7 +305,6 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         </TemplateText>
                         <TemplateText
                             black
-                            semiBold
                             size={14}
                             underLine
                             onPress={() => {
@@ -279,6 +344,17 @@ const SubscriptionScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: BLACK_10,
+    },
+    contentContainer: {
+        backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
+    },
+    button: {
+        marginTop: 40,
+        alignSelf: 'center',
+        borderRadius: 16,
+        backgroundColor: IOS_BLUE,
+
     },
 });
 export default SubscriptionScreen;

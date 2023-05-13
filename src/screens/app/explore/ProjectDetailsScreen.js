@@ -10,8 +10,7 @@ import {
 import moment from 'moment/moment';
 import {
     BLACK,
-    BLACK_30,
-    BLACK_SECONDARY, GREEN,
+    BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN,
     WHITE,
     WHITE_40,
 } from '../../../theme/Colors';
@@ -121,7 +120,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
             <TemplateBox
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
-                gradientColors={[BLACK_30, BLACK_30]}
+                gradientColors={DEFAULT_GRADIENT}
                 style={{
                     transform: [
                         {

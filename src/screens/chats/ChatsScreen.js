@@ -13,23 +13,25 @@ import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 
 const ChatsScreen = ({ route }) => {
-    const { createdChatRoom } = useChatsContext();
+    const {
+        chatRooms,
+        chatUser,
+        messages,
+        setMessages,
+        createdChatRoom,
+    } = useChatsContext();
 
     const { auth } = useAuthContext();
 
     const isCreator = auth?.profile?.type === 'creator';
 
-    const chatRoomId = route.params?.chatRoomId || createdChatRoom?.id;
-
-    const {
-        chatRooms, chatUser, messages, setMessages,
-    } = useChatsContext();
+    const chatRoomId = route.params?.chatRoomId;
 
     const selectedChatRoom = useMemo(() => {
         if (!chatRooms) return null;
 
         return chatRooms?.find((chat) => chat?.id === chatRoomId);
-    }, [chatRooms, chatRoomId]);
+    }, [chatRooms, chatRoomId, createdChatRoom]);
 
     const { onSendMessage } = useChatMessages();
 

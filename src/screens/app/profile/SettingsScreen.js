@@ -5,7 +5,7 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 
 import {
-    BLACK_10, TRANSPARENT, WHITE,
+    BLACK_10, BLACK_60, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
     HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN,
@@ -22,9 +22,13 @@ import {
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
+import useGetAppVersion from '../../../Utils/useGetAppVersion';
+import TemplateText from '../../../components/TemplateText';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();
+
+    const { nativeAppVersion } = useGetAppVersion();
 
     const { mainDomain } = useConfig();
 
@@ -200,6 +204,9 @@ const SettingsScreen = ({ navigation }) => {
                         />
                     </TouchableOpacity>
                 ))}
+                <TemplateBox selfCenter mv={20}>
+                    <TemplateText size={14} color={BLACK_60}>{`App Version: ${nativeAppVersion}`}</TemplateText>
+                </TemplateBox>
             </TemplateBox>
         </ScrollView>
     );

@@ -4,7 +4,7 @@ import moment from 'moment/moment';
 import { useIsFocused } from '@react-navigation/native';
 import TemplateText from '../../../components/TemplateText';
 import {
-    BLACK_SECONDARY,
+    BLACK_SECONDARY, lightOrange,
     WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
@@ -18,7 +18,8 @@ import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import {
     BRAND_NO_CURRENT_PROJECT_MESSAGE,
-    BRAND_NO_CURRENT_PROJECT_TITLE,
+    BRAND_NO_CURRENT_PROJECT_TITLE, BRAND_PROFILE_INCOMPLETE_MESSAGE,
+    BRAND_PROFILE_INCOMPLETE_TITLE,
 } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import useRefresh from '../../../hooks/creators/useRefresh';
@@ -27,6 +28,8 @@ const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
+
+    const profileCompleteRatio = auth?.profileCompleteRatio;
 
     const isFocused = useIsFocused();
 
@@ -92,6 +95,17 @@ const AdminPanelScreen = ({ navigation }) => {
             {profile?.name && (
                 <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
             )}
+            { profileCompleteRatio < 1 && (
+                <ProfileStatusCard
+                    title={BRAND_PROFILE_INCOMPLETE_TITLE}
+                    description={BRAND_PROFILE_INCOMPLETE_MESSAGE}
+                    progress={profileCompleteRatio}
+                    style={styles.statusCard}
+                    slideInDelay={40}
+                    showIcon={false}
+                    backgroundColor={profileCompleteRatio < 0.5 ? lightOrange : WHITE}
+                />
+            )}
 
             {
                 projectsCarouselData?.length ? (
@@ -136,6 +150,9 @@ const styles = StyleSheet.create({
         marginHorizontal: WRAPPER_MARGIN,
     },
     carousel: {
+        marginBottom: WRAPPER_MARGIN,
+    },
+    statusCard: {
         marginBottom: WRAPPER_MARGIN,
     },
 });

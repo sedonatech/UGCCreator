@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import {
-    BLACK, BLACK_40, BRAND_BLUE, GREEN, WHITE,
+    BLACK, BLACK_60, BRAND_BLUE, GREEN, WHITE,
 } from '../../../../theme/Colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
 import Avatar from '../../../../components/Avatar';
@@ -72,16 +72,16 @@ const PortfolioHeader = ({
                         name="check-decagram"
                         family="MaterialCommunity"
                         color={GREEN}
-                        size={20}
+                        size={14}
                         style={styles.icon}
                     />
                 </TemplateBox>
                 <TemplateBox row alignItems="center">
-                    <TemplateText size={12} bold color={BLACK_40}>{`@${userName}`}</TemplateText>
+                    <TemplateText size={12} color={BLACK_60}>{`@${userName}`}</TemplateText>
                     <TemplateBox width={10} />
                     <TemplateBox row alignItems="center">
-                        <TemplateIcon size={12} color={BLACK_40} name="location-outline" />
-                        <TemplateText size={12} bold color={BLACK_40}>{location}</TemplateText>
+                        <TemplateIcon size={12} color={BLACK_60} name="location-outline" />
+                        <TemplateText size={12} color={BLACK_60}>{location}</TemplateText>
                     </TemplateBox>
                 </TemplateBox>
             </TemplateBox>

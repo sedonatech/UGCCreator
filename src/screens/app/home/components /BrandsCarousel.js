@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
+import { sortBy } from 'lodash';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -30,6 +31,7 @@ const BrandsCarousel = ({ style }) => {
             name: brand?.name,
             image: brand?.image,
             shortDescription: brand?.shortDescription,
+            isActive: brand?.shortDescription && brand?.image,
         }));
     }, [brands]);
 
@@ -56,7 +58,7 @@ const BrandsCarousel = ({ style }) => {
                 Check out the brands currently on our platform
             </TemplateText>
             <TemplateCarousel
-                data={brandsData}
+                data={sortBy(brandsData, 'isActive')?.reverse()}
                 renderItem={({ item }) => (
                     <BrandsCard
                         image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
@@ -64,6 +66,8 @@ const BrandsCarousel = ({ style }) => {
                         shortDescription={item?.shortDescription}
                         style={styles.card}
                         onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
+                        active={item?.isActive}
+                        showActive
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}

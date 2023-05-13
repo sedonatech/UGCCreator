@@ -13,7 +13,7 @@ export default (expiryLength = 7, debug = true) => {
 
     const { features } = useFeatureFlags();
 
-    const overrideSubscription = features?.subscription?.overrideSubscription;
+    const overrideSubscription = __DEV__ ? true : features?.subscription?.overrideSubscription;
 
     const setHasSubscription = (value) => update('hasSubscription', value);
 

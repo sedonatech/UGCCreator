@@ -20,6 +20,7 @@ interface ProfileStatusCardProps {
     showIcon?: boolean;
     icon?: string;
     descriptionLines?: number;
+    backgroundColor?: string;
 }
 // @ts-ignore
 const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
@@ -33,16 +34,17 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
     showIcon = true,
     icon,
     descriptionLines,
+    backgroundColor = BRAND_BLUE,
 }) => (
     <TemplateBox
         width={SCREEN_WIDTH - 40}
         pAll={20}
-        backgroundColor={BRAND_BLUE}
+        backgroundColor={backgroundColor}
         borderRadius={RADIUS_MEDIUM}
         row
         alignItems="center"
         selfCenter
-        style={[style, SHADOW('card', BRAND_BLUE)]}
+        style={[style, SHADOW('card', backgroundColor)]}
         onPress={onPress}
         slideIn
         slideInDelay={slideInDelay}

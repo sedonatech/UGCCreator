@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, BLACK_50
+    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, BLACK_50, DEFAULT_GRADIENT, lightGreen, lightOrange,
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -23,6 +23,8 @@ interface Props {
     descriptionSize?: number;
     onPress?: () => void;
     buttonTitle?: string;
+    active?: boolean;
+    showActive?: boolean;
 }
 
 const BrandsCard: FC<Props> = ({
@@ -31,19 +33,21 @@ const BrandsCard: FC<Props> = ({
     shortDescription,
     title,
     cardWidth = SCREEN_WIDTH / 1.6,
-    aspectRatio = 1.5,
+    aspectRatio = 1.36,
     slideInDelay,
     titleSize = 16,
     descriptionLines = 2,
     descriptionSize = 12,
     onPress,
     buttonTitle = 'View Brand Offers',
+    active,
+    showActive = false
 }) => (
     <TemplateBox
         fullGradient={!!image}
         alignItems="center"
         justifyContent="center"
-        gradientColors={image ? [BLACK_50, BLACK_50] : [TRANSPARENT, TRANSPARENT]}
+        gradientColors={image ? DEFAULT_GRADIENT : [TRANSPARENT, TRANSPARENT]}
         borderRadius={RADIUS_SMALL}
         width={cardWidth}
         aspectRatio={aspectRatio}
@@ -65,6 +69,28 @@ const BrandsCard: FC<Props> = ({
                 />
             )
         }
+        {showActive && (
+            <TemplateBox
+                mt={shortDescription ? 20 : 4}
+                mb={-10}
+                ph={8}
+                pv={4}
+                mr={-(cardWidth / 1.6)}
+                backgroundColor={active ? lightGreen : lightOrange}
+                borderRadius={6}
+                alignItems="center"
+                justifyContent="center"
+            >
+                <TemplateText
+                    color={WHITE}
+                    size={9}
+                    bold
+                    caps
+                >
+                    {active ? 'Active' : 'Inactive'}
+                </TemplateText>
+            </TemplateBox>
+        )}
         <TemplateBox pAll={20} onPress={onPress} selfCenter alignItems="center">
             {/* @ts-ignore */}
             <TemplateText color={WHITE} bold size={titleSize} style={styles.text}>
@@ -109,7 +135,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     text: {
-        marginBottom: 5,
+
     },
 });
 
