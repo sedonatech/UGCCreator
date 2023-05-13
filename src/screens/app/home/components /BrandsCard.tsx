@@ -71,7 +71,7 @@ const BrandsCard: FC<Props> = ({
         }
         {showActive && (
             <TemplateBox
-                mt={20}
+                mt={shortDescription ? 20 : 4}
                 mb={-10}
                 ph={8}
                 pv={4}

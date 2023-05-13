@@ -17,7 +17,13 @@ import LoadingOverlay from '../../components/LoadingOverlay';
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
-    const { creators } = useGetCreators();
+    const { creators: creatorsData } = useGetCreators();
+
+    const creators = useMemo(() => {
+        if (!creatorsData?.length) return [];
+
+        return creatorsData?.filter((creator) => creator?.fcmToken);
+    }, [creatorsData]);
 
     const isCreator = auth?.profile?.type === 'creator';
 
@@ -42,7 +48,13 @@ const ChatRoomsScreen = ({ navigation }) => {
         }));
     }, [chatRooms]);
 
-    const { brands } = useGetBrands();
+    const { brands: brandsData } = useGetBrands();
+
+    const brands = useMemo(() => {
+        if (!brandsData?.length) return [];
+
+        return brandsData?.filter((brand) => brand?.fcmToken);
+    }, [brandsData]);
 
     return (
         <>
