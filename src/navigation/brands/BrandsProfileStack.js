@@ -3,13 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import {
     BRAND_SETTINGS,
-    BRANDS_PROFILE, FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW,
+    BRANDS_PROFILE, FORGOT_PASSWORD, UPDATE_BRAND_PROFILE, WEBVIEW,
 } from '../ScreenNames';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import BrandProfileScreen from '../../screens/brands/profile/BrandProfileScreen';
 import UpdateBrandProfileScreen from '../../screens/brands/profile/UpdateBrandProfileScreen';
 import ResetPasswordScreen from '../../screens/auth/ResetPasswordScreen';
-import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
 import BrandSettingsScreen from '../../screens/brands/profile/BrandSettingsScreen';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import { WRAPPER_MARGIN } from '../../theme/Layout';

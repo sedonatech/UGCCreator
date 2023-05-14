@@ -103,7 +103,7 @@ const AdminPanelScreen = ({ navigation }) => {
                     style={styles.statusCard}
                     slideInDelay={40}
                     showIcon={false}
-                    backgroundColor={profileCompleteRatio < 0.5 ? lightOrange : WHITE}
+                    backgroundColor={lightOrange}
                 />
             )}
 

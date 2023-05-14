@@ -1,4 +1,6 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, {
+    useState, useEffect, createContext, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import { isEmpty, values } from 'lodash';
 
@@ -25,7 +27,7 @@ const AuthProvider = ({ children }) => {
 
     const overrideProfileUpdateModal = config?.overrideProfileUpdateModal;
 
-    const getProfileCompleteStatus = () => {
+    const getProfileCompleteStatus = useCallback(() => {
         const profileCheckParamsObject = {
             email: profile?.email,
             name: profile?.name || profile?.userName,
@@ -51,7 +53,7 @@ const AuthProvider = ({ children }) => {
             setCreatorProfileComplete(completeCount === offset);
             setCompleteModalVisible(!overrideProfileUpdateModal ? completeCount !== offset : false);
         }
-    };
+    }, [profile]);
 
     const {
         createCreatorProfile,
@@ -70,6 +72,7 @@ const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        console.log('[Profile] Auth Provider: Profile changed: ', profile);
         (async () => {
             try {
                 if (user) {

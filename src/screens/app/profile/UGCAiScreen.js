@@ -5,40 +5,50 @@ import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
     HEADER_MARGIN,
-    IS_ANDROID, WRAPPER_MARGIN,
+    IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import {
+    PAYWALL_PRIMARY_BACKGROUND,
     TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
+import ScriptsSvg from '../../../../assets/svgs/ScriptsSvg';
+import SuggestorSvg from '../../../../assets/svgs/SuggestorSvg';
+import HooksSvg from '../../../../assets/svgs/HooksSvg';
+import TemplateTouchable from '../../../components/TemplateTouchable';
+import {
+    CONTENT_SUGGESTOR,
+    HOOKS_GENERATOR,
+    SCRIPTS_GENERATOR,
+} from '../../../navigation/ScreenNames';
 
-const UGCAiScreen = () => {
+const UGCAiScreen = ({ navigation }) => {
     const creatorTools = [
+        {
+            title: 'Scripts Generator',
+            description: 'This tool helps you generate scripts for your videos based on your project requirements.',
+            screen: SCRIPTS_GENERATOR,
+            icon: 'scripts',
+        },
         {
             title: 'Content Suggester',
             description: 'This tool  suggests content for you to create based on your project requirements.',
-            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
-            icon: 'analytics-outline',
+            screen: CONTENT_SUGGESTOR,
+            icon: 'suggestor',
         },
         {
             title: 'Hook Generator',
             description: 'This tool helps you generate hooks for your project.',
-            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
-            icon: 'color-wand-outline',
-        },
-        {
-            title: 'Email Generator',
-            description: 'This tool helps you generate catchy emails to reach out to potential brands in a powerful way based on their needs.',
-            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
-            icon: 'mail-unread-outline',
-        },
-        {
-            title: 'Scripts Generator',
-            description: 'This tool helps you generate scripts for your videos based on your project requirements.',
-            onPress: () => Alert.alert('Available to Users on a Quarterly or Yearly Plan'),
-            icon: 'receipt-outline',
+            screen: HOOKS_GENERATOR,
+            icon: 'hooks',
         },
     ];
+
+    const iconMap = {
+        scripts: ScriptsSvg(),
+        suggestor: SuggestorSvg(),
+        hooks: HooksSvg(),
+    };
 
     return (
         <ScrollView
@@ -46,7 +56,6 @@ const UGCAiScreen = () => {
             contentContainerStyle={styles.contentContainer}
         >
             <TemplateBox
-                mt={HEADER_MARGIN}
                 mh={WRAPPER_MARGIN}
                 alignItems="center"
                 justifyContent="center"
@@ -62,17 +71,29 @@ const UGCAiScreen = () => {
                 <TemplateBox mh={WRAPPER_MARGIN}>
                     {
                         creatorTools.map((item, index) => (
-                            <ProfileStatusCard
-                                key={`creator-tool-${index}`}
-                                title={item.title}
-                                description={item.description}
-                                showProgress={false}
-                                style={styles.statusCard}
-                                slideInDelay={(index + 1) * 100}
-                                descriptionLines={3}
-                                icon={item.icon}
-                                onPress={item.onPress}
-                            />
+                            <TemplateBox
+                                row
+                                alignItems="center"
+                                backgroundColor={WHITE}
+                                borderRadius={16}
+                                pAll={20}
+                                width={WRAPPED_SCREEN_WIDTH}
+                                mt={WRAPPER_MARGIN}
+                                key={`${item.title}-${index}`}
+                                onPress={() => navigation.navigate(item.screen)}
+                            >
+                                {iconMap[item.icon]}
+                                <TemplateBox width={16} />
+                                <TemplateBox
+                                    width={SCREEN_WIDTH / 1.6}
+                                    onPress={() => navigation.navigate(item.screen)}
+                                >
+                                    <TemplateText bold size={16}>{item.title}</TemplateText>
+                                    <TemplateBox height={10} />
+                                    <TemplateText size={13}>{item.description}</TemplateText>
+                                </TemplateBox>
+                            </TemplateBox>
+
                         ))
                     }
 
@@ -85,16 +106,14 @@ const UGCAiScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
+        backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
 
     },
     contentContainer: {
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    statusCard: {
-        marginVertical: 20,
+        backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
     },
 });
 export default UGCAiScreen;

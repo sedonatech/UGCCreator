@@ -84,3 +84,11 @@ export const RECOMMENDED_BRANDS = 'RecommendedBrands';
 export const FEED_DETAILS = 'FeedDetails';
 
 export const WEBVIEW = 'WebView';
+
+export const CONTENT_SUGGESTOR = 'ContentSuggestor';
+
+export const SCRIPTS_GENERATOR = 'ScriptsGenerator';
+
+export const HOOKS_GENERATOR = 'HooksGenerator';
+
+export const CREATOR_TOOLS_RESULTS = 'CreatorToolsResults';

@@ -43,9 +43,10 @@ const HeaderIconButton:React.FC<HeaderIconButtonProps> = ({
             onPress={onNavigationPress}
             mr={mr}
             ml={ml}
-            pAll={6}
+            pv={6}
+            ph={10}
             backgroundColor={backDropColor}
-            borderRadius={10}
+            borderRadius={8}
         >
             {title ? (
                 <TemplateText color={BLACK} size={9} bold caps>{title}</TemplateText>

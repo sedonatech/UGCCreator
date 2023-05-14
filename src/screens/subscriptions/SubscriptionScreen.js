@@ -359,7 +359,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 16,
         backgroundColor: IOS_BLUE,
-
     },
 });
 export default SubscriptionScreen;
