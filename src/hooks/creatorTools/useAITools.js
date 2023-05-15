@@ -55,7 +55,7 @@ const useAITools = (toolType = 'scripts') => {
             // eslint-disable-next-line no-nested-ternary
             const prompt = toolType === 'scripts' ? scriptPrompt : toolType === 'hooks' ? hooksPrompt : contentSuggestionsPrompt;
 
-            const responseData = await fetch('http://localhost:3000/ugcCreatorAppApi', {
+            const responseData = await fetch('https://ugc-creator-app.herokuapp.com/ugcCreatorAppApi', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
