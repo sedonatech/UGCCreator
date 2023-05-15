@@ -27,9 +27,12 @@ import useRefresh from '../../../hooks/creators/useRefresh';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { UGCAI } from '../../../navigation/ScreenNames';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
+
+    const { features } = useFeatureFlags();
 
     const profile = auth?.profile;
 
@@ -70,18 +73,20 @@ const HomeScreen = ({ navigation }) => {
         }, []);
     }, [projects, userId]);
 
+    const creatorToolsEnabled = features?.openAIScreen;
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <HeaderIconButton
                     title="Creator tools"
-                    onPress={() => navigation.navigate(UGCAI)}
+                    onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
                     backDropColor={LIGHT_GREEN}
                     mr={WRAPPER_MARGIN}
                 />
             ),
         });
-    }, [navigation]);
+    }, [navigation, creatorToolsEnabled]);
 
     return (
         <ScrollView

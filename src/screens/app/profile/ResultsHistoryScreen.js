@@ -86,6 +86,7 @@ const ResultsHistoryScreen = ({ navigation }) => {
                                             title: `${startCase(item?.type)} Results Successfully Fetched 🎉🎊`,
                                             subTitle: `You can now copy the ${item?.type} to your clipboard!`,
                                             results: item?.result,
+                                            fromHistory: true,
                                         });
                                     }}
                                 >
@@ -98,6 +99,7 @@ const ResultsHistoryScreen = ({ navigation }) => {
                                                 title: `${startCase(item?.type)} Results Successfully Fetched 🎉🎊`,
                                                 subTitle: `You can now copy the ${item?.type} to your clipboard!`,
                                                 results: item?.result,
+                                                fromHistory: true,
                                             });
                                         }}
                                     >

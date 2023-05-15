@@ -21,6 +21,7 @@ import {
     SCRIPTS_GENERATOR,
 } from '../../../navigation/ScreenNames';
 import Button from '../../../components/Button';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const UGCAiScreen = ({ navigation }) => {
     const creatorTools = [
@@ -55,6 +56,7 @@ const UGCAiScreen = ({ navigation }) => {
         suggestor: SuggestorSvg(),
         hooks: HooksSvg(),
     };
+    const { trackEvent } = useTrackEvent();
 
     return (
         <ScrollView
@@ -86,21 +88,29 @@ const UGCAiScreen = ({ navigation }) => {
                                 width={WRAPPED_SCREEN_WIDTH}
                                 mt={WRAPPER_MARGIN}
                                 key={`${item.title}-${index}`}
-                                onPress={() => navigation.navigate(SCRIPTS_GENERATOR,
-                                    {
+                                onPress={() => {
+                                    navigation.navigate(SCRIPTS_GENERATOR, {
                                         type: item.type,
                                         title: item.screenTitle,
-                                    })}
+                                    });
+                                    trackEvent('creator_tool_viewed', {
+                                        creator_tool_name: item.title,
+                                    });
+                                }}
                             >
                                 {iconMap[item.icon]}
                                 <TemplateBox width={16} />
                                 <TemplateBox
                                     width={SCREEN_WIDTH / 1.6}
-                                    onPress={() => navigation.navigate(SCRIPTS_GENERATOR,
-                                        {
+                                    onPress={() => {
+                                        navigation.navigate(SCRIPTS_GENERATOR, {
                                             type: item.type,
                                             title: item.screenTitle,
-                                        })}
+                                        });
+                                        trackEvent('creator_tool_viewed', {
+                                            creator_tool_name: item.title,
+                                        });
+                                    }}
                                 >
                                     <TemplateText bold size={16}>{item.title}</TemplateText>
                                     <TemplateBox height={10} />

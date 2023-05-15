@@ -20,6 +20,7 @@ import LoadingOverlay from '../../../components/LoadingOverlay';
 import PortfolioHeader from '../../app/profile/components/PortfolioHeader';
 import UpdateCategories from '../../app/profile/components/UpdateCategories';
 import { BRANDS_PROFILE } from '../../../navigation/ScreenNames';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const UpdateBrandProfileScreen = ({ navigation }) => {
     const [countryPickerVisible, setCountryPickerVisible] = useState(false);
@@ -30,8 +31,11 @@ const UpdateBrandProfileScreen = ({ navigation }) => {
         profile: profileData, update, updateProfile, loading,
     } = auth;
 
+    const { trackEvent } = useTrackEvent();
+
     const handleUpdate = useCallback(() => {
         updateProfile(profileData, profileData?.id);
+        trackEvent('update_brand_profile');
         setTimeout(() => {
             navigation.navigate(BRANDS_PROFILE);
         }, 1000);

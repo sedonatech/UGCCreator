@@ -1,7 +1,7 @@
 import React, {
     useEffect, useMemo, useRef, useState,
 } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { FlatList, ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
 import { sortBy } from 'lodash';
@@ -134,21 +134,38 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 </TemplateTouchable>
             </TemplateBox>
 
-            {
-                filteredCreators?.length > 0 && sortBy(filteredCreators, 'isActive')?.reverse()?.map((creator) => (
+            {/* { */}
+            {/*     filteredCreators?.length > 0 && sortBy(filteredCreators, 'isActive')?.reverse()?.map((creator) => ( */}
+            {/*         <CreatorCard */}
+            {/*             key={creator?.id} */}
+            {/*             name={creator?.userName} */}
+            {/*             imageUrl={creator?.image} */}
+            {/*             shortDescription={creator?.shortDescription */}
+            {/*               || DEFAULT_CREATOR_SHORT_DESCRIPTION} */}
+            {/*             location={creator?.location?.country} */}
+            {/*             email={creator?.email} */}
+            {/*             onPress={() => navigation.navigate(PROFILE, { creatorId: creator?.id })} */}
+            {/*             active={creator?.isActive} */}
+            {/*         /> */}
+            {/*     )) */}
+            {/* } */}
+            <FlatList
+                data={sortBy(filteredCreators, 'isActive')?.reverse()}
+                renderItem={({ item }) => (
                     <CreatorCard
-                        key={creator?.id}
-                        name={creator?.userName}
-                        imageUrl={creator?.image}
-                        shortDescription={creator?.shortDescription
-                          || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-                        location={creator?.location?.country}
-                        email={creator?.email}
-                        onPress={() => navigation.navigate(PROFILE, { creatorId: creator?.id })}
-                        active={creator?.isActive}
+                        key={item?.id}
+                        name={item?.userName}
+                        imageUrl={item?.image}
+                        shortDescription={item?.shortDescription
+                            || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                        location={item?.location?.country}
+                        email={item?.email}
+                        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+                        active={item?.isActive}
                     />
-                ))
-            }
+                )}
+                showVerticalScrollIndicator={false}
+            />
 
             <RBSheet
                 ref={refRBSheet}

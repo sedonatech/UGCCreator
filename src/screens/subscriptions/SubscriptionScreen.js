@@ -87,6 +87,9 @@ const SubscriptionScreen = ({ navigation, route }) => {
         try {
             setLoading(true);
             await restorePurchases();
+            if (fromSettings) {
+                navigation.goBack();
+            }
         } catch (e) {
             console.log('[onRestore] - error', e);
             alert(e?.message);
@@ -331,16 +334,18 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         devices and you may choose to add additional devices as you require.
                     </TemplateText>
                 </TemplateBox>
-                <TemplateBox
-                    selfCenter
-                    mb={WRAPPER_MARGIN * 2}
-                    mh={WRAPPER_MARGIN}
-                    onPress={() => handleLogout()}
-                >
-                    <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
-                        logout
-                    </TemplateText>
-                </TemplateBox>
+                {!fromSettings && (
+                    <TemplateBox
+                        selfCenter
+                        mb={WRAPPER_MARGIN * 2}
+                        mh={WRAPPER_MARGIN}
+                        onPress={() => handleLogout()}
+                    >
+                        <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
+                            logout
+                        </TemplateText>
+                    </TemplateBox>
+                )}
             </TemplateBox>
         </ScrollView>
     );

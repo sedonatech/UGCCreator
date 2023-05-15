@@ -1,5 +1,5 @@
 {
-  "openAIScreen": false,
+  "openAIScreen": true,
   "subscription": {
     "overrideSubscription": true,
     "overrideEntitlements": false
