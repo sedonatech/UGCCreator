@@ -5,7 +5,7 @@ import {
 
 import { useIsFocused } from '@react-navigation/native';
 import {
-    BLACK_10, lightOrange,
+    BLACK_10, LIGHT_GREEN, lightOrange,
     WHITE,
 } from '../../../theme/Colors';
 import {
@@ -76,7 +76,7 @@ const HomeScreen = ({ navigation }) => {
                 <HeaderIconButton
                     title="Creator tools"
                     onPress={() => navigation.navigate(UGCAI)}
-                    backDropColor={BLACK_10}
+                    backDropColor={LIGHT_GREEN}
                     mr={WRAPPER_MARGIN}
                 />
             ),
@@ -108,7 +108,7 @@ const HomeScreen = ({ navigation }) => {
                     style={styles.statusCard}
                     slideInDelay={40}
                     showIcon={false}
-                    backgroundColor={profileCompleteRatio < 0.5 ? lightOrange : WHITE}
+                    backgroundColor={lightOrange}
                 />
             )}
             {userCurrentProjects?.length ? (

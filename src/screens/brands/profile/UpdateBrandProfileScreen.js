@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
@@ -30,10 +30,12 @@ const UpdateBrandProfileScreen = ({ navigation }) => {
         profile: profileData, update, updateProfile, loading,
     } = auth;
 
-    const handleUpdate = () => {
+    const handleUpdate = useCallback(() => {
         updateProfile(profileData, profileData?.id);
-        navigation.navigate(BRANDS_PROFILE);
-    };
+        setTimeout(() => {
+            navigation.navigate(BRANDS_PROFILE);
+        }, 1000);
+    }, [updateProfile, profileData]);
 
     useLayoutEffect(() => {
         navigation.setOptions({

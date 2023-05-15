@@ -608,14 +608,14 @@ export const STATS = [
     },
 ];
 
-export const PROFILE_INCOMPLETE_MESSAGE = 'Please complete your portfolio  fully to engage brands!';
+export const PROFILE_INCOMPLETE_MESSAGE = 'Please complete your portfolio for brands to notice you!';
 export const PROFILE_COMPLETE_MESSAGE = 'Your portfolio is complete!';
 
 export const PROFILE_INCOMPLETE_TITLE = 'Portfolio Incomplete';
 
 export const BRAND_PROFILE_INCOMPLETE_TITLE = 'Profile Incomplete';
 
-export const BRAND_PROFILE_INCOMPLETE_MESSAGE = 'Complete your profile fully to engage with creators!';
+export const BRAND_PROFILE_INCOMPLETE_MESSAGE = 'Complete your profile for creators to notice you!';
 
 export const NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
 
