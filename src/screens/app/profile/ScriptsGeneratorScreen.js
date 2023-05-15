@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { startCase } from 'lodash';
+
 import TemplateBox from '../../../components/TemplateBox';
-import { BLACK_10, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND } from '../../../theme/Colors';
+import {
+    BLACK_10, BLACK_50, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND,
+} from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
 import {
     HEADER_MARGIN,
@@ -16,7 +20,11 @@ import useAITools from '../../../hooks/creatorTools/useAITools';
 import Button from '../../../components/Button';
 import { CREATOR_TOOLS_RESULTS } from '../../../navigation/ScreenNames';
 
-const ScriptsGeneratorScreen = ({ navigation }) => {
+const ScriptsGeneratorScreen = ({ navigation, route }) => {
+    const title = route.params?.title;
+
+    const toolType = route.params?.type;
+
     const {
         brandName,
         setBrandName,
@@ -33,20 +41,20 @@ const ScriptsGeneratorScreen = ({ navigation }) => {
         onCategoriesPress,
         handleSaveAndSubmit,
         responseMessage,
-    } = useAITools();
+    } = useAITools(toolType);
 
     useEffect(() => {
         if (responseMessage) {
             Alert.alert(
-                'Successfully created script🎉',
-                'You can now copy the script to your clipboard!',
+                `Successfully created ${toolType} 🎉`,
+                `You can now copy the ${toolType} to your clipboard!`,
                 [
                     {
                         text: 'OK',
                         onPress: () => {
                             navigation.navigate(CREATOR_TOOLS_RESULTS, {
-                                title: 'Script Results Successfully Created 🎉🎊',
-                                subTitle: 'You can now copy the script to your clipboard!',
+                                title: `${startCase(toolType)} Results Successfully Created 🎉🎊`,
+                                subTitle: `You can now copy the ${toolType} to your clipboard!`,
                                 results: responseMessage,
                             });
                         },
@@ -69,7 +77,7 @@ const ScriptsGeneratorScreen = ({ navigation }) => {
                     startCase
                     center
                 >
-                    Create Engaging Scripts With AI in minutes
+                    {title}
                 </TemplateText>
                 <TemplateBox height={20} />
                 <TemplateBox selfCenter>
@@ -88,6 +96,8 @@ const ScriptsGeneratorScreen = ({ navigation }) => {
                     onChangeText={(text) => setBrandName(text)}
                     autoCapitalize="none"
                     returnKeyType="next"
+                    placeholderStyle={styles.placeholderStyle}
+                    placeholderTextColor={BLACK_50}
                 />
                 <TemplateTextInput
                     placeholder="Enter product name (required)"
@@ -96,6 +106,8 @@ const ScriptsGeneratorScreen = ({ navigation }) => {
                     onChangeText={(text) => setProductName(text)}
                     autoCapitalize="none"
                     returnKeyType="next"
+                    placeholderStyle={styles.placeholderStyle}
+                    placeholderTextColor={BLACK_50}
                 />
                 <TemplateTextInput
                     placeholder="Enter short description of the product (required)"
@@ -104,6 +116,8 @@ const ScriptsGeneratorScreen = ({ navigation }) => {
                     onChangeText={(text) => setProductDescription(text)}
                     autoCapitalize="none"
                     returnKeyType="next"
+                    placeholderStyle={styles.placeholderStyle}
+                    placeholderTextColor={BLACK_50}
                 />
                 <TemplateTextInput
                     placeholder="Enter the value proposition (optional)"
@@ -112,6 +126,8 @@ const ScriptsGeneratorScreen = ({ navigation }) => {
                     onChangeText={(text) => setValueProposition(text)}
                     autoCapitalize="none"
                     returnKeyType="next"
+                    placeholderStyle={styles.placeholderStyle}
+                    placeholderTextColor={BLACK_50}
                 />
                 <TemplateTextInput
                     placeholder="Enter target audience persona (optional)"
@@ -120,6 +136,8 @@ const ScriptsGeneratorScreen = ({ navigation }) => {
                     onChangeText={(text) => setPersona(text)}
                     autoCapitalize="none"
                     returnKeyType="next"
+                    placeholderStyle={styles.placeholderStyle}
+                    placeholderTextColor={BLACK_50}
                 />
                 <TemplateBox width={WRAPPED_SCREEN_WIDTH}>
                     <FilterCategory
@@ -167,6 +185,9 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         backgroundColor: IOS_BLUE,
         width: WRAPPED_SCREEN_WIDTH,
+    },
+    placeholderStyle: {
+        fontSize: 13,
     },
 });
 export default ScriptsGeneratorScreen;

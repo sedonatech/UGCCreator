@@ -4,10 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import {
-    CONTENT_SUGGESTOR, CREATOR_TOOLS_RESULTS,
+    CREATOR_TOOLS_RESULTS,
     FORGOT_PASSWORD,
-    HOOKS_GENERATOR,
-    PROFILE, SCRIPTS_GENERATOR,
+    PROFILE, RESULTS_HISTORY, SCRIPTS_GENERATOR,
     SETTINGS,
     UGCAI,
     UPDATE_PORTFOLIO,
@@ -20,10 +19,9 @@ import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScre
 import ResetPasswordScreen from '../../screens/auth/ResetPasswordScreen';
 import UGCAiScreen from '../../screens/app/profile/UGCAiScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
-import ContentSuggestorScreen from '../../screens/app/profile/ContentSuggestorScreen';
-import HooksGeneratorScreen from '../../screens/app/profile/HooksGeneratorScreen';
 import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorScreen';
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
+import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -70,16 +68,6 @@ const ProfileStack = () => (
             component={WebviewScreen}
         />
         <Screen
-            name={CONTENT_SUGGESTOR}
-            options={TRANSPARENT_HEADER}
-            component={ContentSuggestorScreen}
-        />
-        <Screen
-            name={HOOKS_GENERATOR}
-            options={TRANSPARENT_HEADER}
-            component={HooksGeneratorScreen}
-        />
-        <Screen
             name={SCRIPTS_GENERATOR}
             options={TRANSPARENT_HEADER}
             component={ScriptsGeneratorScreen}
@@ -88,6 +76,11 @@ const ProfileStack = () => (
             name={CREATOR_TOOLS_RESULTS}
             options={TRANSPARENT_HEADER}
             component={CreatorToolsResultsScreen}
+        />
+        <Screen
+            name={RESULTS_HISTORY}
+            options={TRANSPARENT_HEADER}
+            component={ResultsHistoryScreen}
         />
     </Navigator>
 );
