@@ -72,3 +72,5 @@ export const SECONDARY_GRADIENT = [BLACK_20, BLACK_30, BLACK_60];
 export const YELLOW = '#FFF27C';
 
 export const DEFAULT_GRADIENT = ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.6)'];
+
+export const LIGHT_GREEN = 'rgba(52, 199, 89, 0.3)';

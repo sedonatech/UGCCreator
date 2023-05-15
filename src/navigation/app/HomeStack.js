@@ -6,7 +6,15 @@ import {
     TRANSPARENT_HEADER,
 } from '../../components/header/ScreenOptions';
 import {
-    BRAND_DETAILS, CURRENT_PROJECT_DETAILS, HOME, PROJECT_DETAILS, RECOMMENDED_BRANDS, UGCAI, UPDATE_PORTFOLIO, WEBVIEW,
+    BRAND_DETAILS,
+    CREATOR_TOOLS_RESULTS,
+    CURRENT_PROJECT_DETAILS,
+    HOME,
+    PROJECT_DETAILS,
+    RECOMMENDED_BRANDS, RESULTS_HISTORY, SCRIPTS_GENERATOR,
+    UGCAI,
+    UPDATE_PORTFOLIO,
+    WEBVIEW,
 } from '../ScreenNames';
 import HomeScreen from '../../screens/app/home/HomeScreen';
 import BrandDetailsScreen from '../../screens/app/explore/BrandDetailsScreen';
@@ -16,6 +24,9 @@ import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScre
 import RecommendedBrandsScreen from '../../screens/app/home/RecommendedBrandsScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import UGCAiScreen from '../../screens/app/profile/UGCAiScreen';
+import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorScreen';
+import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
+import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -61,6 +72,22 @@ const HomeStack = () => (
             name={UGCAI}
             options={TRANSPARENT_HEADER}
             component={UGCAiScreen}
+        />
+
+        <Screen
+            name={SCRIPTS_GENERATOR}
+            options={TRANSPARENT_HEADER}
+            component={ScriptsGeneratorScreen}
+        />
+        <Screen
+            name={CREATOR_TOOLS_RESULTS}
+            options={TRANSPARENT_HEADER}
+            component={CreatorToolsResultsScreen}
+        />
+        <Screen
+            name={RESULTS_HISTORY}
+            options={TRANSPARENT_HEADER}
+            component={ResultsHistoryScreen}
         />
     </Navigator>
 );

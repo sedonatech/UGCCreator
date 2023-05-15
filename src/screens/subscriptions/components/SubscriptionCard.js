@@ -68,14 +68,14 @@ const SubscriptionCard = ({
                 alignItems="center"
             >
                 <TemplateText
-                    size={15}
+                    size={13}
                     color={BLACK_70}
                 >
                     {price}
                     {' '}
                 </TemplateText>
                 <TemplateText
-                    size={15}
+                    size={13}
                     color={BLACK_70}
                 >
                     {billed}
