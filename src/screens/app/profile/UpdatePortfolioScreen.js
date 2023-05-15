@@ -22,6 +22,7 @@ import LoadingOverlay from '../../../components/LoadingOverlay';
 import UpdateBrandsWorkedWith from './components/UpdateBrandsWorkedWith';
 import UpdateWorkExamples from './components/UpdateWorkExamples';
 import UpdateRates from './components/UpdateRates';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const UpdatePortfolioScreen = ({ navigation }) => {
     const [countryPickerVisible, setCountryPickerVisible] = useState(false);
@@ -32,8 +33,11 @@ const UpdatePortfolioScreen = ({ navigation }) => {
         profile: profileData, update, updateProfile, loading,
     } = auth;
 
+    const { trackEvent } = useTrackEvent();
+
     const handleUpdate = useCallback(() => {
         updateProfile(profileData, profileData?.id);
+        trackEvent('update_profile');
         setTimeout(() => {
             navigation.navigate(PROFILE);
         }, 1000);

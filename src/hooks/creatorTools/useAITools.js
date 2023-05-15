@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const AI_TOOLS_ENDPOINT = 'https://ugc-creator-app.herokuapp.com/ugcCreatorAppApi';
 const useAITools = (toolType = 'scripts') => {
     const [brandName, setBrandName] = useState();
 
@@ -55,7 +56,7 @@ const useAITools = (toolType = 'scripts') => {
             // eslint-disable-next-line no-nested-ternary
             const prompt = toolType === 'scripts' ? scriptPrompt : toolType === 'hooks' ? hooksPrompt : contentSuggestionsPrompt;
 
-            const responseData = await fetch('https://ugc-creator-app.herokuapp.com/ugcCreatorAppApi', {
+            const responseData = await fetch(AI_TOOLS_ENDPOINT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
