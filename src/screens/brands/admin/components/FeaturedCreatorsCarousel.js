@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { sortBy } from 'lodash';
+import { sampleSize, sortBy } from 'lodash';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
@@ -58,7 +58,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
             </View>
 
             <TemplateCarousel
-                data={sortBy(creatorsData, 'isActive').reverse()}
+                data={sampleSize(sortBy(creatorsData, 'isActive').reverse(), 6)}
                 renderItem={({ item }) => (
                     <CreatorCard
                         name={item?.userName}
@@ -83,7 +83,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
                 showPagination
-                paginationSize={filteredCreators?.length}
+                paginationSize={sampleSize(sortBy(creatorsData, 'isActive').reverse(), 6)?.length}
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>

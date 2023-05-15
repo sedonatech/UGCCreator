@@ -18,6 +18,8 @@ const CreatorToolsResultsScreen = ({ navigation, route }) => {
 
     const subtitle = route?.params?.subTitle;
 
+    const fromHistory = route?.params?.fromHistory;
+
     const {
         responseMessage,
     } = useAITools();
@@ -95,12 +97,14 @@ const CreatorToolsResultsScreen = ({ navigation, route }) => {
                     style={styles.copyToClipboardButton}
                     loading={false}
                 />
-                <Button
-                    title="View Results History"
-                    onPress={() => navigation.navigate(RESULTS_HISTORY)}
-                    style={styles.button}
-                    loading={false}
-                />
+                {!fromHistory && (
+                    <Button
+                        title="View Results History"
+                        onPress={() => navigation.navigate(RESULTS_HISTORY)}
+                        style={styles.button}
+                        loading={false}
+                    />
+                )}
             </TemplateBox>
         </ScrollView>
     );

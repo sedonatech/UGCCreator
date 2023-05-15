@@ -24,6 +24,7 @@ import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
 import useGetAppVersion from '../../../Utils/useGetAppVersion';
 import TemplateText from '../../../components/TemplateText';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();
@@ -35,6 +36,8 @@ const SettingsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const isFocused = useIsFocused();
+
+    const { features } = useFeatureFlags();
 
     const {
         checkApplicationPermissions,
@@ -54,11 +57,13 @@ const SettingsScreen = ({ navigation }) => {
         }
     }, [isFocused, profile, user]);
 
+    const creatorToolsEnabled = features?.openAIScreen;
+
     const settings = [
         {
             title: 'UGC Creator Tools',
             description: 'Explore our creator tools powered by OpenAI',
-            onPress: () => navigation.navigate(UGCAI),
+            onPress: () => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null),
             icon: 'trending-up-outline',
         },
         {

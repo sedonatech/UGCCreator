@@ -19,6 +19,7 @@ import FilterCategory from '../explore/components/FilterCategory';
 import useAITools from '../../../hooks/creatorTools/useAITools';
 import Button from '../../../components/Button';
 import { CREATOR_TOOLS_RESULTS } from '../../../navigation/ScreenNames';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const ScriptsGeneratorScreen = ({ navigation, route }) => {
     const title = route.params?.title;
@@ -43,6 +44,8 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
         responseMessage,
     } = useAITools(toolType);
 
+    const { trackEvent } = useTrackEvent();
+
     useEffect(() => {
         if (responseMessage) {
             Alert.alert(
@@ -56,6 +59,9 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                                 title: `${startCase(toolType)} Results Successfully Created 🎉🎊`,
                                 subTitle: `You can now copy the ${toolType} to your clipboard!`,
                                 results: responseMessage,
+                            });
+                            trackEvent('creator_tool_results_viewed', {
+                                tool_type: toolType,
                             });
                         },
                     },

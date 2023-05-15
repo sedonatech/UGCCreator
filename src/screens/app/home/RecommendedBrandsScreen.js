@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 
+import { sampleSize } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 import {
     HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, WRAPPER_MARGIN,
@@ -14,6 +15,7 @@ import RecommendedBrandModal from '../../../components/modals/RecommendedBrandMo
 import useWebview from '../../../hooks/webview/useWebview';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const RecommendedBrandsScreen = ({ route }) => {
     const selectedCategory = route?.params?.selectedCategory;
@@ -65,6 +67,8 @@ const RecommendedBrandsScreen = ({ route }) => {
         }
     }, [mailEvent]);
 
+    const { trackEvent } = useTrackEvent();
+
     return (
         <ScrollView
             style={styles.container}
@@ -102,7 +106,7 @@ const RecommendedBrandsScreen = ({ route }) => {
             </TemplateBox>
             <TemplateBox mh={WRAPPER_MARGIN} flex>
                 {
-                    brandData?.map((brand, index) => (
+                    sampleSize(brandData, 4)?.map((brand, index) => (
                         <ProfileStatusCard
                             key={brand?.id}
                             title={brand?.name}
@@ -132,6 +136,9 @@ const RecommendedBrandsScreen = ({ route }) => {
                 }}
                 closeOnPress={() => {
                     openLink(selectedBrand?.url);
+                    trackEvent('recommendation_site_viewed', {
+                        brand: selectedBrand?.name,
+                    });
                     setModalVisible(false);
                 }}
                 onSecondaryButtonPress={() => {
@@ -144,6 +151,9 @@ const RecommendedBrandsScreen = ({ route }) => {
                                         recipients: [selectedBrand?.email],
                                         subject: warmReachOutEmail.subject,
                                         body: warmReachOutEmail.body,
+                                    });
+                                    trackEvent('recommendation_message_sent', {
+                                        brand: selectedBrand?.name,
                                     });
                                     // setModalVisible(false);
                                 },
