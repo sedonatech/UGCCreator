@@ -67,7 +67,6 @@ export interface Props {
     onPress?:(() => void) | null,
     activeOpacity?:number,
     hGradient?:boolean,
-
     fullGradient?:boolean,
     vGradient?:boolean,
     gradientColors?:string[],
