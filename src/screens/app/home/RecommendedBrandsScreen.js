@@ -94,7 +94,7 @@ const RecommendedBrandsScreen = ({ route }) => {
                     size={16}
                     center
                 >
-                    These brands may npt be on our platform yet, but you can request them to be added and collaborate with them.
+                    These brands may not be on our platform yet, but you can request them to be added and collaborate with them.
                 </TemplateText>
             </TemplateBox>
             <TemplateBox selfCenter flex>

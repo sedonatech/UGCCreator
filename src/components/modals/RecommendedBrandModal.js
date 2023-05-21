@@ -18,6 +18,8 @@ const RecommendedBrandModal = ({
     secondaryButtonTitle,
     onSecondaryButtonPress,
     onClose,
+    height,
+    width,
 }) => (
     <ModalBase
         visible={visible}
@@ -30,8 +32,8 @@ const RecommendedBrandModal = ({
             pAll={WRAPPER_MARGIN}
             selfCenter
             backgroundColor={WHITE}
-            height="60%"
-            width="88%"
+            height={height}
+            width={width}
         >
             <TemplateText color={BLACK} size={20} bold>
                 {title}
@@ -41,11 +43,13 @@ const RecommendedBrandModal = ({
                 {subtitle}
             </TemplateText>
             <TemplateBox height={20} />
-            <Button
-                title={buttonTitle}
-                onPress={closeOnPress}
-                style={styles.button}
-            />
+            {!!closeOnPress && (
+                <Button
+                    title={buttonTitle}
+                    onPress={closeOnPress}
+                    style={styles.button}
+                />
+            )}
 
             <Button
                 title={secondaryButtonTitle}
@@ -66,12 +70,13 @@ RecommendedBrandModal.propTypes = {
     secondaryButtonTitle: PropTypes.string,
     onSecondaryButtonPress: PropTypes.func,
     onClose: PropTypes.func,
+    height: PropTypes.string,
+    width: PropTypes.string,
 };
 
 RecommendedBrandModal.defaultProps = {
     visible: false,
-    closeOnPress: () => {
-    },
+    closeOnPress: null,
     title: 'Profile Incomplete',
     subtitle: 'Please complete your profile before you can use the features of the app .',
     buttonTitle: 'Complete Profile',
@@ -80,6 +85,8 @@ RecommendedBrandModal.defaultProps = {
     },
     onClose: () => {
     },
+    height: '60%',
+    width: '88%',
 };
 
 const styles = StyleSheet.create({

@@ -1,7 +1,13 @@
 {
+  "brand": true,
+  "creators": false,
   "openAIScreen": true,
   "subscription": {
     "overrideSubscription": true,
-    "overrideEntitlements": false
+    "overrideEntitlements": true
+  },
+  "brandsCatalogue": {
+    "visible": true,
+    "activeList": 10
   }
 }

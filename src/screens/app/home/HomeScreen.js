@@ -5,11 +5,11 @@ import {
 
 import { useIsFocused } from '@react-navigation/native';
 import {
-    BLACK_10, LIGHT_GREEN, lightOrange,
+    LIGHT_GREEN,
     WHITE,
 } from '../../../theme/Colors';
 import {
-    HEADER_MARGIN,
+    HEADER_MARGIN, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
@@ -20,23 +20,27 @@ import ProjectsCarousel from './components /ProjectsCarousel';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import {
     NO_CURRENT_PROJECT_MESSAGE,
-    NO_CURRENT_PROJECT_TITLE, PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE,
+    NO_CURRENT_PROJECT_TITLE,
 } from '../../../consts/content/Home';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { UGCAI } from '../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, UGCAI } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+import TemplateBox from '../../../components/TemplateBox';
+import TemplateText from '../../../components/TemplateText';
+import CatalogueSvg from '../../../../assets/svgs/CatalogueSvg';
+import { SHADOW } from '../../../theme/Shadow';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const { features } = useFeatureFlags();
 
-    const profile = auth?.profile;
+    const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
 
-    const profileCompleteRatio = auth?.profileCompleteRatio;
+    const profile = auth?.profile;
 
     const userId = profile?.id;
 
@@ -105,16 +109,32 @@ const HomeScreen = ({ navigation }) => {
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
 
-            { profileCompleteRatio < 1 && (
-                <ProfileStatusCard
-                    title={PROFILE_INCOMPLETE_TITLE}
-                    description={PROFILE_INCOMPLETE_MESSAGE}
-                    progress={profileCompleteRatio}
-                    style={styles.statusCard}
-                    slideInDelay={40}
-                    showIcon={false}
-                    backgroundColor={lightOrange}
-                />
+            {brandsCatalogueEnabled && (
+                <TemplateBox
+                    row
+                    alignItems="center"
+                    backgroundColor={WHITE}
+                    borderRadius={16}
+                    pAll={20}
+                    width={WRAPPED_SCREEN_WIDTH}
+                    mt={WRAPPER_MARGIN}
+                    onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
+                    style={SHADOW('card', WHITE)}
+                    selfCenter
+                >
+                    <CatalogueSvg />
+                    <TemplateBox width={16} />
+                    <TemplateBox
+                        width={SCREEN_WIDTH / 1.6}
+                        onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
+                    >
+                        <TemplateText bold size={16}>Brands Catalogue</TemplateText>
+                        <TemplateBox height={10} />
+                        <TemplateText size={13}>
+                            Discover and explore our extensive catalogue of hundreds of brands
+                        </TemplateText>
+                    </TemplateBox>
+                </TemplateBox>
             )}
             {userCurrentProjects?.length ? (
                 <CurrentProjectsCarousel style={styles.carousel} data={userCurrentProjects} />
@@ -145,7 +165,7 @@ const styles = StyleSheet.create({
     },
     greeting: {
         marginTop: HEADER_MARGIN,
-        marginBottom: WRAPPER_MARGIN,
+        marginBottom: 10,
         marginHorizontal: WRAPPER_MARGIN,
     },
     carousel: {
