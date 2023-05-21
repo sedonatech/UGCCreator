@@ -19,7 +19,6 @@ const ContactSection = ({ contactInfo, socials, email }) => {
             <TemplateBox height={10} />
             <TemplateBox
                 row
-                pAll={10}
                 alignItems="center"
                 backgroundColor={BLACK_0_5}
                 borderRadius={10}
@@ -34,7 +33,6 @@ const ContactSection = ({ contactInfo, socials, email }) => {
             </TemplateBox>
             <TemplateBox
                 row
-                pAll={10}
                 alignItems="center"
                 backgroundColor={BLACK_0_5}
                 borderRadius={10}
