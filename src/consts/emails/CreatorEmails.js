@@ -28,6 +28,11 @@ export const warmReachOutEmail = {
         + '\n'
         + 'Thank you for your time and consideration.\n'
         + '\n'
+        + 'You can collaborate with me on ugc creator app.\n'
+        + '\n'
+        + 'Android play store link: https://play.google.com/store/apps/details?id=com.ugccreatorapp\n'
+        + '\n'
+        + 'iOS app store link: https://apps.apple.com/us/app/ugccreatorapp/id6446017566\n'
         + 'Best regards,\n'
         + '[Your Name]',
 };
