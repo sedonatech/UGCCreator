@@ -9,6 +9,7 @@ const storageKey = '@hasSubscription';
 
 export default (expiryLength = 7, debug = true) => {
     const { overrideSubscriptionStorage } = useContext(CoreContext);
+
     const { purchaserInfo, hasSubscription, update } = useSubscriptionContext();
 
     const { features } = useFeatureFlags();
@@ -87,5 +88,5 @@ export default (expiryLength = 7, debug = true) => {
         })();
     }, [purchaserInfo, hasSubscription, overrideSubscriptionStorage]);
 
-    return hasSubscription;
+    return { hasSubscription, purchaserInfo };
 };

@@ -94,3 +94,5 @@ export const HOOKS_GENERATOR = 'HooksGenerator';
 export const CREATOR_TOOLS_RESULTS = 'CreatorToolsResults';
 
 export const RESULTS_HISTORY = 'ResultsHistory';
+
+export const BRANDS_CATALOGUE = 'BrandsCatalogue';

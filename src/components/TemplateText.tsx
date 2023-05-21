@@ -173,7 +173,7 @@ const TemplateText: FC<Props> = ({
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: 'Montserrat-Bold',
+        fontFamily: 'Montserrat',
         fontSize: IS_SHORT_DEVICE ? 15 : 18,
         color: BLACK,
     },
