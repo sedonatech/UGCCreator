@@ -2,7 +2,9 @@ import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { ScrollView, StyleSheet, Linking } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 
-import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import {
+    BLACK_10, lightOrange, TRANSPARENT, WHITE,
+} from '../../../theme/Colors';
 import { IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
 import PortfolioHeader from './components/PortfolioHeader';
 import AboutSection from './components/AboutSection';
@@ -23,9 +25,13 @@ import useShareScreenShot from '../../../Utils/useShareScreenShot';
 import useGetCreators from '../../../hooks/brands/useGetCreators';
 import TemplateBox from '../../../components/TemplateBox';
 import Button from '../../../components/Button';
+import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
+import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 
 const PortfolioScreen = ({ navigation, route }) => {
     const creatorId = route?.params?.creatorId;
+
+    console.log('-> creatorId', creatorId);
 
     const { creators } = useGetCreators();
 
@@ -39,6 +45,8 @@ const PortfolioScreen = ({ navigation, route }) => {
     ]);
 
     const { auth } = useAuthContext();
+
+    const profileCompleteRatio = auth?.profileCompleteRatio;
 
     const creator = selectedCreator || auth?.profile;
 
@@ -91,6 +99,17 @@ const PortfolioScreen = ({ navigation, route }) => {
                     creatorId={creatorId}
                     image={image}
                 />
+                { profileCompleteRatio < 1 && !creatorId && (
+                    <ProfileStatusCard
+                        title={PROFILE_INCOMPLETE_TITLE}
+                        description={PROFILE_INCOMPLETE_MESSAGE}
+                        progress={profileCompleteRatio}
+                        style={styles.statusCard}
+                        slideInDelay={40}
+                        showIcon={false}
+                        backgroundColor={lightOrange}
+                    />
+                )}
                 <AboutSection
                     about={about}
                     shortDescription={shortDescription}
@@ -137,6 +156,9 @@ const styles = StyleSheet.create({
     },
     viewShot: {
         flex: 1,
+    },
+    statusCard: {
+        marginTop: WRAPPER_MARGIN * 2,
     },
 });
 export default PortfolioScreen;
