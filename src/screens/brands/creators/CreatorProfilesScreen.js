@@ -48,6 +48,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
         return creators?.map((creator) => ({
             ...creator,
+            hasImage: creator?.image !== '',
             isActive: creator?.image !== ''
                 && (!!creator?.location?.city || !!creator?.location?.country)
                 && (!!creator?.socialMedia?.instagram
@@ -150,7 +151,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
             {/*     )) */}
             {/* } */}
             <FlatList
-                data={sortBy(filteredCreators, 'isActive')?.reverse()}
+                data={sortBy(filteredCreators, 'hasImage')?.reverse()}
                 renderItem={({ item }) => (
                     <CreatorCard
                         key={item?.id}

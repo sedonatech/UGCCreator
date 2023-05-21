@@ -13,7 +13,6 @@ interface Props {
     light?: boolean,
     medium?: boolean,
     bold?: boolean,
-
     black?: boolean,
     white?: boolean,
     title?: boolean,
@@ -34,8 +33,9 @@ interface Props {
     italic?: boolean,
     children?: string | React.ReactChild | null | (string | React.ReactChild | null)[]
     lineHeight?: number | null,
-
     style?: any,
+    adjustsFontSizeToFit?: boolean,
+    allowFontScaling?: boolean,
 }
 const TemplateText: FC<Props> = ({
     light,
@@ -61,6 +61,8 @@ const TemplateText: FC<Props> = ({
     startCase,
     italic,
     lineHeight,
+    adjustsFontSizeToFit,
+    allowFontScaling,
     ...restProps
 }) => {
     const textStyle = {} as any;

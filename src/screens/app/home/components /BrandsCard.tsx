@@ -9,6 +9,7 @@ import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import TemplateBox from '../../../../components/TemplateBox';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     image?: string | number | any;
@@ -71,15 +72,17 @@ const BrandsCard: FC<Props> = ({
         }
         {showActive && (
             <TemplateBox
-                mt={shortDescription ? 20 : 4}
-                mb={-10}
                 ph={8}
                 pv={4}
-                mr={-(cardWidth / 1.6)}
                 backgroundColor={active ? lightGreen : lightOrange}
                 borderRadius={6}
                 alignItems="center"
                 justifyContent="center"
+                height={wp(20)}
+                width={wp(70)}
+                absolute
+                top={wp(12)}
+                left={wp(12)}
             >
                 <TemplateText
                     color={WHITE}
@@ -93,7 +96,15 @@ const BrandsCard: FC<Props> = ({
         )}
         <TemplateBox pAll={20} onPress={onPress} selfCenter alignItems="center">
             {/* @ts-ignore */}
-            <TemplateText color={WHITE} bold size={titleSize} style={styles.text}>
+            <TemplateText
+                color={WHITE}
+                bold
+                size={titleSize}
+                style={styles.text}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                allowFontScaling
+            >
                 {title}
             </TemplateText>
             {/* @ts-ignore */}
@@ -103,6 +114,8 @@ const BrandsCard: FC<Props> = ({
                 // @ts-ignore
                 style={styles.text}
                 numberOfLines={descriptionLines}
+                adjustsFontSizeToFit
+                allowFontScaling
             >
                 {shortDescription}
             </TemplateText>
@@ -133,6 +146,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 40,
         alignSelf: 'center',
+        position: 'absolute',
+        bottom: -26,
     },
     text: {
 

@@ -34,6 +34,8 @@ const BrandProfileScreen = ({ navigation }) => {
 
     const contact = brand?.contact || DEFAULT_CREATOR_CONTACT_INFO;
 
+    const email = brand?.email;
+
     const socials = brand?.socialMedia || DEFAULT_CREATOR_SOCIAL;
 
     const paypalLink = brand?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
@@ -85,6 +87,7 @@ const BrandProfileScreen = ({ navigation }) => {
                     contactInfo={contact}
                     socials={socials}
                     paypalLink={paypalLink}
+                    email={email}
                 />
             </ScrollView>
         </ViewShot>
