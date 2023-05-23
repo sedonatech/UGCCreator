@@ -85,7 +85,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                 <FlatList
                     data={brandsCatalogue?.brands}
                     renderItem={({ item, index }) => {
-                        const isActive = hasActiveSubscription || index <= activeCatalogueList;
+                        const isActive = index <= activeCatalogueList;
                         return (
                             <TemplateBox
                                 row

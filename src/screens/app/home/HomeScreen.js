@@ -144,7 +144,7 @@ const HomeScreen = ({ navigation }) => {
                         title={NO_CURRENT_PROJECT_TITLE}
                         description={NO_CURRENT_PROJECT_MESSAGE}
                         showProgress={false}
-                        style={styles.statusCard}
+                        style={styles.emptyStatusCard}
                         slideInDelay={200}
                     />
                 )}
@@ -174,6 +174,9 @@ const styles = StyleSheet.create({
     },
     statusCard: {
         marginBottom: WRAPPER_MARGIN,
+    },
+    emptyStatusCard: {
+        marginVertical: WRAPPER_MARGIN,
     },
 });
 export default HomeScreen;
