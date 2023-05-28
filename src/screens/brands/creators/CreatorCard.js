@@ -39,6 +39,7 @@ const CreatorCard = ({
             <FastImage
                 source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                 style={[styles.image, imageStyle]}
+                resizeMode="cover"
             />
             <TemplateBox width={textContainerWidth} height={60}>
                 <TemplateText size={16} bold color={BLACK} numberOfLines={1}>{name}</TemplateText>

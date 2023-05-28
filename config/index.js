@@ -15,6 +15,13 @@ const stream = {
     apiSecret: 'c3vabn4y94fssbgc9fmj4rpp4479nz9dt7s52cn53ktj2yefxdsxfe6gxb4uunsp',
     appId: 1236778,
 };
+
+const reviewPromptProps = {
+    AppleAppId: '6446017566',
+    GooglePackageName: 'com.ugccreatorapp',
+    link: mainDomain,
+};
+
 export default {
     overrideEntitlements,
     overrideSubscription,
@@ -23,4 +30,5 @@ export default {
     stream,
     firebaseServerKey,
     mainDomain,
+    reviewPromptProps,
 };

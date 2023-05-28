@@ -17,8 +17,11 @@ import useShareScreenShot from '../../../Utils/useShareScreenShot';
 import PortfolioHeader from '../../app/profile/components/PortfolioHeader';
 import AboutSection from '../../app/profile/components/AboutSection';
 import ContactSection from '../../app/profile/components/ContactSection';
+import useAppReview from '../../../hooks/useAppReview';
 
 const BrandProfileScreen = ({ navigation }) => {
+    useAppReview();
+
     const { auth } = useAuthContext();
 
     const brand = auth?.profile;

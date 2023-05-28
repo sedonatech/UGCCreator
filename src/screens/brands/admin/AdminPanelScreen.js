@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
-import { ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import {
+    ScrollView, StyleSheet, RefreshControl, Alert,
+} from 'react-native';
 import moment from 'moment/moment';
 import { useIsFocused } from '@react-navigation/native';
 import TemplateText from '../../../components/TemplateText';
@@ -8,7 +10,7 @@ import {
     WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import { ADD_PROJECT, BRAND_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
+import { ADD_PROJECT, BRAND_PROJECT_DETAILS, PROFILE_STACK } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
 import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../../theme/Layout';
@@ -28,6 +30,8 @@ const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
+
+    const profileImage = profile?.image;
 
     const profileCompleteRatio = auth?.profileCompleteRatio;
 
@@ -82,6 +86,20 @@ const AdminPanelScreen = ({ navigation }) => {
         profile,
     ]);
 
+    useEffect(() => {
+        if (!profileImage) {
+            Alert.alert(
+                'Profile image',
+                'Please upload a profile image to continue',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate(PROFILE_STACK),
+                    },
+                ],
+            );
+        }
+    }, [profileImage]);
     return (
         <ScrollView
             style={styles.container}
