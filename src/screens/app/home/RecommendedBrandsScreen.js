@@ -16,6 +16,7 @@ import useWebview from '../../../hooks/webview/useWebview';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
+import useAppReview from '../../../hooks/useAppReview';
 
 const RecommendedBrandsScreen = ({ route }) => {
     const selectedCategory = route?.params?.selectedCategory;
@@ -68,6 +69,8 @@ const RecommendedBrandsScreen = ({ route }) => {
     }, [mailEvent]);
 
     const { trackEvent } = useTrackEvent();
+
+    useAppReview();
 
     return (
         <ScrollView

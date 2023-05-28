@@ -27,11 +27,12 @@ import TemplateBox from '../../../components/TemplateBox';
 import Button from '../../../components/Button';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
+import useAppReview from '../../../hooks/useAppReview';
 
 const PortfolioScreen = ({ navigation, route }) => {
-    const creatorId = route?.params?.creatorId;
+    useAppReview();
 
-    console.log('-> creatorId', creatorId);
+    const creatorId = route?.params?.creatorId;
 
     const { creators } = useGetCreators();
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UGCCreatorApp</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">0335231e-fd9b-4ea0-ab1d-f9c77377b375</string>
 </resources>

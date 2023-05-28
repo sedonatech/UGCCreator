@@ -39,8 +39,11 @@ import {
 import CreatorCard from './CreatorCard';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../consts/content/Portfolio';
 import { PROFILE } from '../../../navigation/ScreenNames';
+import useAppReview from '../../../hooks/useAppReview';
 
 const CreatorProfilesScreen = ({ navigation }) => {
+    useAppReview();
+
     const { creators } = useGetCreators();
 
     const creatorsData = useMemo(() => {
@@ -135,21 +138,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 </TemplateTouchable>
             </TemplateBox>
 
-            {/* { */}
-            {/*     filteredCreators?.length > 0 && sortBy(filteredCreators, 'isActive')?.reverse()?.map((creator) => ( */}
-            {/*         <CreatorCard */}
-            {/*             key={creator?.id} */}
-            {/*             name={creator?.userName} */}
-            {/*             imageUrl={creator?.image} */}
-            {/*             shortDescription={creator?.shortDescription */}
-            {/*               || DEFAULT_CREATOR_SHORT_DESCRIPTION} */}
-            {/*             location={creator?.location?.country} */}
-            {/*             email={creator?.email} */}
-            {/*             onPress={() => navigation.navigate(PROFILE, { creatorId: creator?.id })} */}
-            {/*             active={creator?.isActive} */}
-            {/*         /> */}
-            {/*     )) */}
-            {/* } */}
             <FlatList
                 data={sortBy(filteredCreators, 'hasImage')?.reverse()}
                 renderItem={({ item }) => (

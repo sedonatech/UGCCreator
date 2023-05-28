@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import {
-    ScrollView, StyleSheet, RefreshControl,
+    ScrollView, StyleSheet, RefreshControl, Alert,
 } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
@@ -26,7 +26,7 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { BRANDS_CATALOGUE, UGCAI } from '../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -41,6 +41,10 @@ const HomeScreen = ({ navigation }) => {
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
 
     const profile = auth?.profile;
+
+    const profileImage = profile?.image;
+
+    console.log('profileImage', profileImage);
 
     const userId = profile?.id;
 
@@ -91,6 +95,21 @@ const HomeScreen = ({ navigation }) => {
             ),
         });
     }, [navigation, creatorToolsEnabled]);
+
+    useEffect(() => {
+        if (!profileImage) {
+            Alert.alert(
+                'Profile image',
+                'Please upload a profile image to continue',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate(PROFILE_STACK),
+                    },
+                ],
+            );
+        }
+    }, [profileImage]);
 
     return (
         <ScrollView

@@ -20,8 +20,11 @@ import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 import useHasSubscription from '../../subscriptions/useHasSubscription';
+import useAppReview from '../../../hooks/useAppReview';
 
 const BrandsCatalogueScreen = ({ navigation }) => {
+    useAppReview();
+
     const { brandsCatalogue, features } = useFeatureFlags();
 
     const { purchaserInfo } = useHasSubscription();
@@ -57,7 +60,6 @@ const BrandsCatalogueScreen = ({ navigation }) => {
         >
             <TemplateBox
                 mt={HEADER_MARGIN}
-
             >
                 <TemplateBox
                     selfCenter
@@ -165,11 +167,13 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                                     <TemplateBox height={5} />
                                     <TemplateText size={13}>{`Instagram: ${item?.Instagram}`}</TemplateText>
                                     <TemplateBox height={5} />
-                                    <TemplateText size={13}>{`Email: ${item?.['Mail Address']}`}</TemplateText>
+                                    <TemplateText size={13}>{`Press to reach out to ${item?.['Brand Name']} for a potential UGC collaboration`}</TemplateText>
                                 </TemplateBox>
                             </TemplateBox>
                         );
                     }}
+                    keyExtractor={(item) => item?.['Brand Name']}
+                    contentContainerStyle={styles.brandsListContentContainer}
                 />
             </TemplateBox>
             <RecommendedBrandModal
@@ -211,6 +215,9 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+    },
+    brandsListContentContainer: {
+        alignSelf: 'center',
     },
 });
 export default BrandsCatalogueScreen;
