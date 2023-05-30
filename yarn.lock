@@ -2888,7 +2888,7 @@ co@^4.6.0:
   resolved "https://registry.npmjs.org/co/-/co-4.6.0.tgz"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
-code-push@^4.1.0:
+code-push@^4.0.5:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/code-push/-/code-push-4.1.3.tgz#19b17c816e5126d0684b5da60dfd61f744aa256b"
   integrity sha512-41lYevIV3DU127foa6NVPVBiGdkgqM5oQgIEF6vcX37lDLCGkyWvlKDWJSI/1y5lMt2ClNeKf6ydy8KpNP3KSQ==
@@ -7856,12 +7856,12 @@ react-native-circular-progress@^1.3.8:
   dependencies:
     prop-types "^15.8.1"
 
-react-native-code-push@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-8.0.2.tgz#cf86a68232ba98d64588d4f45d7b393d46335587"
-  integrity sha512-0ATo6n2HZ+xAXjuM7MfL5BBul/MhOyUpO0DGUelzFOmvxVfjS+yURQYscRWMhg9nurlIbJz3zGcsbOopF1ZIgw==
+react-native-code-push@7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-7.0.4.tgz#13a9d3cc12bee24cb317defb6560caddcb937b71"
+  integrity sha512-zBCj1vUnyLCG6tt2x5rXzoyYjvgFVEpTnwJUFbs24C5TUKjRw6BJVq1bWsOQklEUWpFYoqhAaZXz/iq3pbqa7g==
   dependencies:
-    code-push "^4.1.0"
+    code-push "^4.0.5"
     glob "^7.1.7"
     hoist-non-react-statics "^3.3.2"
     inquirer "^8.1.5"

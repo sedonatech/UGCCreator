@@ -6,6 +6,7 @@ import moment from 'moment/moment';
 import { useIsFocused } from '@react-navigation/native';
 import TemplateText from '../../../components/TemplateText';
 import {
+    BLACK,
     BLACK_SECONDARY, lightOrange,
     WHITE,
 } from '../../../theme/Colors';
@@ -13,7 +14,7 @@ import TemplateTouchable from '../../../components/TemplateTouchable';
 import { ADD_PROJECT, BRAND_PROJECT_DETAILS, PROFILE_STACK } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
-import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { HEADER_MARGIN, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import CurrentCreatorsCarousel from './components/CurrentCreatorsCarousel';
 import FeaturedCreatorsCarousel from './components/FeaturedCreatorsCarousel';
 import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
@@ -25,6 +26,11 @@ import {
 } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import useRefresh from '../../../hooks/creators/useRefresh';
+import TemplateBox from '../../../components/TemplateBox';
+import { SHADOW } from '../../../theme/Shadow';
+import { wp } from '../../../Utils/getResponsiveSize';
+import TemplateIcon from '../../../components/TemplateIcon';
+import useAppReview from '../../../hooks/useAppReview';
 
 const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -100,6 +106,9 @@ const AdminPanelScreen = ({ navigation }) => {
             );
         }
     }, [profileImage]);
+
+    const { previousResponse, handleRate } = useAppReview();
+
     return (
         <ScrollView
             style={styles.container}
@@ -112,6 +121,36 @@ const AdminPanelScreen = ({ navigation }) => {
         >
             {profile?.name && (
                 <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
+            )}
+            {previousResponse === null && (
+                <TemplateBox
+                    row
+                    backgroundColor={WHITE}
+                    borderRadius={16}
+                    pAll={16}
+                    width={WRAPPED_SCREEN_WIDTH}
+                    mv={WRAPPER_MARGIN}
+                    onPress={handleRate}
+                    style={SHADOW('card', WHITE)}
+                    selfCenter
+                >
+                    <TemplateText size={13} onPress={handleRate}>
+                        Please take a moment to rate our app
+                    </TemplateText>
+                    <TemplateBox
+                        onPress={handleRate}
+                        ml={wp(60)}
+                        mt={-wp(8)}
+                    >
+                        <TemplateIcon
+                            name="close-outline"
+                            size={20}
+                            color={BLACK}
+
+                        />
+                    </TemplateBox>
+
+                </TemplateBox>
             )}
             { profileCompleteRatio < 1 && (
                 <ProfileStatusCard

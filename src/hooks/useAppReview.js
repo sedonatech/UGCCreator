@@ -1,10 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Rate, { AndroidMarket } from 'react-native-rate';
 import { useConfig } from '../context/core';
 
+const reviewResponse = {
+    positive: 'POSITIVE',
+    negative: 'NEGATIVE',
+};
 const useAppReview = () => {
     const { reviewPromptProps } = useConfig();
+
+    const [previousResponse, setPreviousResponse] = useState();
 
     const setResponse = async (value) => {
         try {
@@ -17,29 +23,44 @@ const useAppReview = () => {
     useEffect(() => {
         (async () => {
             try {
-                const reviewed = await AsyncStorage.getItem('reviewed');
+                const value = await AsyncStorage.getItem('reviewed');
 
-                if (reviewed) {
-                    return;
+                if (value === null) {
+                    setPreviousResponse(null);
                 }
-                const options = {
-                    AppleAppId: reviewPromptProps.AppleAppId,
-                    GooglePackageName: reviewPromptProps.GooglePackageName,
-                    preferInApp: true,
-                    preferredAndroidMarket: AndroidMarket.Google,
-                };
-                Rate.rate(options, (success) => {
-                    if (success) {
-                        setResponse('true');
-                    } else {
-                        setResponse('false');
-                    }
-                });
+                if (value === reviewResponse.positive) {
+                    setPreviousResponse(reviewResponse.positive);
+                }
+                if (value === reviewResponse.negative) {
+                    setPreviousResponse(reviewResponse.negative);
+                }
             } catch (error) {
                 console.log(error);
             }
         })();
     }, []);
+
+    const handleRate = () => {
+        const options = {
+            AppleAppId: reviewPromptProps.AppleAppId,
+            GooglePackageName: reviewPromptProps.GooglePackageName,
+            preferInApp: true,
+            preferredAndroidMarket: AndroidMarket.Google,
+        };
+
+        Rate.rate(options, (success) => {
+            if (success) {
+                setResponse(reviewResponse.positive);
+            } else {
+                setResponse(reviewResponse.negative);
+            }
+        });
+    };
+
+    return {
+        handleRate,
+        previousResponse,
+    };
 };
 
 export default useAppReview;

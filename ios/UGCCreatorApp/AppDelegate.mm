@@ -7,6 +7,7 @@
 #import <React/RCTAppSetupUtils.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
+#import <CodePush/CodePush.h>
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -15,7 +16,7 @@
 #import <React/RCTSurfacePresenter.h>
 #import <React/RCTSurfacePresenterBridgeAdapter.h>
 #import <ReactCommon/RCTTurboModuleManager.h>
-#import <CodePush/CodePush.h>
+
 
 
 #import <react/config/ReactNativeConfig.h>

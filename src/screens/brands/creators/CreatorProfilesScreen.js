@@ -39,11 +39,8 @@ import {
 import CreatorCard from './CreatorCard';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../consts/content/Portfolio';
 import { PROFILE } from '../../../navigation/ScreenNames';
-import useAppReview from '../../../hooks/useAppReview';
 
 const CreatorProfilesScreen = ({ navigation }) => {
-    useAppReview();
-
     const { creators } = useGetCreators();
 
     const creatorsData = useMemo(() => {

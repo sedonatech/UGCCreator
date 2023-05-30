@@ -20,11 +20,8 @@ import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 import useHasSubscription from '../../subscriptions/useHasSubscription';
-import useAppReview from '../../../hooks/useAppReview';
 
 const BrandsCatalogueScreen = ({ navigation }) => {
-    useAppReview();
-
     const { brandsCatalogue, features } = useFeatureFlags();
 
     const { purchaserInfo } = useHasSubscription();
