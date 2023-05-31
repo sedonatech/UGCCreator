@@ -688,7 +688,7 @@
 				CODE_SIGN_ENTITLEMENTS = UGCCreatorApp/UGCCreatorAppRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 0;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XW576HXDLG;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				INFOPLIST_FILE = UGCCreatorApp/Info.plist;

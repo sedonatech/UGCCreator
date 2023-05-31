@@ -132,7 +132,7 @@ const HomeScreen = ({ navigation }) => {
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
 
-            {previousResponse !== null && (
+            {previousResponse === null && (
                 <TemplateBox
                     row
                     backgroundColor={WHITE}
