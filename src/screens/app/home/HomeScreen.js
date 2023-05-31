@@ -5,6 +5,7 @@ import {
 
 import { useIsFocused } from '@react-navigation/native';
 import {
+    BLACK,
     LIGHT_GREEN,
     WHITE,
 } from '../../../theme/Colors';
@@ -32,6 +33,9 @@ import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import CatalogueSvg from '../../../../assets/svgs/CatalogueSvg';
 import { SHADOW } from '../../../theme/Shadow';
+import useAppReview from '../../../hooks/useAppReview';
+import TemplateIcon from '../../../components/TemplateIcon';
+import { wp } from '../../../Utils/getResponsiveSize';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -43,8 +47,6 @@ const HomeScreen = ({ navigation }) => {
     const profile = auth?.profile;
 
     const profileImage = profile?.image;
-
-    console.log('profileImage', profileImage);
 
     const userId = profile?.id;
 
@@ -111,6 +113,8 @@ const HomeScreen = ({ navigation }) => {
         }
     }, [profileImage]);
 
+    const { previousResponse, handleRate } = useAppReview();
+
     return (
         <ScrollView
             style={styles.container}
@@ -128,6 +132,37 @@ const HomeScreen = ({ navigation }) => {
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
 
+            {previousResponse === null && (
+                <TemplateBox
+                    row
+                    backgroundColor={WHITE}
+                    borderRadius={16}
+                    pAll={16}
+                    width={WRAPPED_SCREEN_WIDTH}
+                    mt={WRAPPER_MARGIN}
+                    onPress={handleRate}
+                    style={SHADOW('card', WHITE)}
+                    selfCenter
+                >
+                    <TemplateText size={13} onPress={handleRate}>
+                        Please take a moment to rate our app
+                    </TemplateText>
+                    <TemplateBox
+                        onPress={handleRate}
+                        absolute
+                        left={SCREEN_WIDTH - wp(70)}
+                        top={wp(8)}
+                    >
+                        <TemplateIcon
+                            name="close-outline"
+                            size={20}
+                            color={BLACK}
+
+                        />
+                    </TemplateBox>
+
+                </TemplateBox>
+            )}
             {brandsCatalogueEnabled && (
                 <TemplateBox
                     row
