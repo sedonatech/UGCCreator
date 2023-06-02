@@ -49,11 +49,8 @@ const CreatorProfilesScreen = ({ navigation }) => {
         return creators?.map((creator) => ({
             ...creator,
             hasImage: creator?.image !== '',
-            isActive: creator?.image !== ''
-                && (!!creator?.location?.city || !!creator?.location?.country)
-                && (!!creator?.socialMedia?.instagram
-                    || !!creator?.socialMedia?.facebook
-                    || !!creator?.socialMedia?.twitter),
+            isActive: !!creator?.image,
+
         }));
     }, [creators]);
 

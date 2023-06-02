@@ -31,7 +31,7 @@ const BrandsCarousel = ({ style }) => {
             name: brand?.name,
             image: brand?.image,
             shortDescription: brand?.shortDescription,
-            isActive: brand?.shortDescription && brand?.image,
+            isActive: brand?.image,
         }));
     }, [brands]);
 
@@ -58,7 +58,7 @@ const BrandsCarousel = ({ style }) => {
                 Check out the brands currently on our platform
             </TemplateText>
             <TemplateCarousel
-                data={sortBy(brandsData, 'isActive')?.reverse()}
+                data={sortBy(sortBy(brandsData, 'name'), 'isActive')}
                 renderItem={({ item }) => (
                     <BrandsCard
                         image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}

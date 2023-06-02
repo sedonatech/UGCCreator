@@ -25,11 +25,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
 
         return filteredCreators?.map((creator) => ({
             ...creator,
-            isActive: creator?.image !== ''
-                && (!!creator?.location?.city || !!creator?.location?.country)
-                && (!!creator?.socialMedia?.instagram
-                    || !!creator?.socialMedia?.facebook
-                    || !!creator?.socialMedia?.twitter),
+            isActive: !!creator?.image,
         }));
     }, [filteredCreators]);
 
@@ -75,10 +71,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         onPress={() => navigation.navigate(PROFILE, {
                             creatorId: item?.id,
                         })}
-                        active={item?.userName
-                            && item?.image
-                            && item?.shortDescription
-                            && (item?.location?.country || item?.location?.city)}
+                        active={item?.isActive}
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
