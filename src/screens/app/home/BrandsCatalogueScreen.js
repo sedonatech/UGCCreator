@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-    StyleSheet, ScrollView, FlatList, Alert,
+    StyleSheet, View, FlatList, Alert,
 } from 'react-native';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { WHITE } from '../../../theme/Colors';
@@ -20,11 +20,17 @@ import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 import useHasSubscription from '../../subscriptions/useHasSubscription';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const BrandsCatalogueScreen = ({ navigation }) => {
     const { brandsCatalogue, features } = useFeatureFlags();
 
-    const { purchaserInfo } = useHasSubscription();
+    const { auth } = useAuthContext();
+
+    const userEmail = auth?.user?.email;
+
+    // TODO: Investigate why this is not working
+    const { purchaserInfo, hasSubscription } = useHasSubscription();
 
     const hasActiveSubscription = purchaserInfo?.activeSubscriptions?.length > 0;
 
@@ -32,9 +38,10 @@ const BrandsCatalogueScreen = ({ navigation }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
 
-    const activeCatalogueList = features?.brandsCatalogue?.activeList;
+    const { unlockedUsers, activeList: activeCatalogueList } = features?.brandsCatalogue;
 
-    const unlockAllBrands = features?.brandsCatalogue?.unlockAllBrands;
+    // Check if the  user's  email is in the unlockedUsers list
+    const isUnlockedUser = unlockedUsers?.includes(userEmail);
 
     const title = brandsCatalogue?.title || 'Brands Catalogue';
 
@@ -51,7 +58,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
     }, [mailEvent]);
 
     return (
-        <ScrollView
+        <View
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
         >
@@ -81,6 +88,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                         {subtitle}
                     </TemplateText>
                 </TemplateBox>
+
                 <FlatList
                     data={brandsCatalogue?.brands}
                     renderItem={({ item, index }) => {
@@ -95,7 +103,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                                 width={WRAPPED_SCREEN_WIDTH}
                                 mt={WRAPPER_MARGIN}
                                 onPress={() => {
-                                    if (!isActive && !unlockAllBrands) {
+                                    if (!isUnlockedUser && !isActive) {
                                         Alert.alert(
                                             'Activate Subscription',
                                             'You need to have at least a monthly subscription to unlock all the brands',
@@ -125,14 +133,14 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                                 style={SHADOW('card', WHITE)}
                                 selfCenter
                                 mh={WRAPPER_MARGIN}
-                                opacity={isActive ? 1 : 0.5}
+                                opacity={(isActive || isUnlockedUser) ? 1 : 0.5}
                             >
                                 <CatalogueSvg />
                                 <TemplateBox width={16} />
                                 <TemplateBox
                                     width={SCREEN_WIDTH / 1.6}
                                     onPress={() => {
-                                        if (!isActive && !unlockAllBrands) {
+                                        if (!isUnlockedUser && !isActive) {
                                             Alert.alert(
                                                 'Activate Subscription to Unlock All Brands',
                                                 'You need to have at least a monthly subscription to unlock all the brands',
@@ -201,7 +209,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                         ]);
                 }}
             />
-        </ScrollView>
+        </View>
     );
 };
 
