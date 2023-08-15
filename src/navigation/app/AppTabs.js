@@ -15,7 +15,7 @@ import TabButton from '../../components/tabs/TabButton';
 import TabLabel from '../../components/tabs/TabLabel';
 import useNotificationPermissions from '../../hooks/notifications/useNotificationPermissions';
 import ChatsStack from '../chats/ChatsStack';
-import { ANIMATION_DISABLED_HEADER } from '../../consts/navigation/headers';
+import { ANIMATION_DISABLED_HEADER } from '../../components/header/ScreenOptions';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
