@@ -148,6 +148,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     />
                 )}
                 showVerticalScrollIndicator={false}
+                keyExtractor={(item) => item?.id}
             />
 
             <RBSheet

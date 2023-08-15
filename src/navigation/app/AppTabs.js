@@ -23,7 +23,7 @@ const AppTabs = () => {
     useNotificationPermissions();
 
     return (
-        <Navigator screenOptions={{ headerShown: false }}>
+        <Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
             <Screen
                 name={HOME_STACK}
                 component={HomeStack}

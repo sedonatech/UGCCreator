@@ -135,6 +135,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 }}
                             />
                         )}
+                        keyExtractor={(item) => item?.id}
                     />
                 )}
                 { isBrand && creators?.length > 0
@@ -194,6 +195,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 }}
                             />
                         )}
+                        keyExtractor={(item) => item?.id}
                     />
                 )}
             </ScrollView>
