@@ -19,11 +19,16 @@ import ChatsStack from '../chats/ChatsStack';
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
 
+export const ANIMATION_DISABLED_HEADER = {
+    headerShown: false,
+    animationEnabled: false
+};    
+
 const AppTabs = () => {
     useNotificationPermissions();
 
     return (
-        <Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+        <Navigator screenOptions={ANIMATION_DISABLED_HEADER}>
             <Screen
                 name={HOME_STACK}
                 component={HomeStack}
