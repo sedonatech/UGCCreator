@@ -7,7 +7,7 @@
 * a brief list of changes made.
 
 
-### JIRA:
+### GitHub Issue(s):
 * [GitHub Project ID]("GitHub Project link")
 
 ### Testing:
