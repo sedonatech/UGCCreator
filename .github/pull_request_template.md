@@ -8,7 +8,7 @@
 
 
 ### JIRA:
-- [[TEAM]-XXXX](https://genflow.atlassian.net/browse/[TEAM]-XXXX)
+* [GitHub Project ID]("GitHub Project link")
 
 ### Testing:
 | N/A                      | Done                     | Task                          | Notes |
