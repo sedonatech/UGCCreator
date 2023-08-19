@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, } from 'react-native';
 import React, { useMemo } from 'react';
 
 import { uniqBy } from 'lodash';
@@ -58,7 +58,7 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     return (
         <>
-            <ScrollView
+            <SafeAreaView
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
             >
@@ -198,7 +198,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                         keyExtractor={(item) => item?.id}
                     />
                 )}
-            </ScrollView>
+            </SafeAreaView>
             {chatRoomsLoading && (
                 <LoadingOverlay message="Creating chat rooom...." />
             )}
