@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, StyleSheet, } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import React, { useMemo } from 'react';
 
 import { uniqBy } from 'lodash';
