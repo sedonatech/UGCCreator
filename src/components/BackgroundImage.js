@@ -19,7 +19,7 @@ const BackgroundImage = ({
 BackgroundImage.propTypes = {
     style: PropTypes.shape({}),
     source: PropTypes.object || PropTypes.number,
-    width: PropTypes.string,
+    width: PropTypes.number,
 };
 
 BackgroundImage.defaultProps = {

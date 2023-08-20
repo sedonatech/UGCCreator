@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
-import { StyleSheet } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import TemplateText from '../../../../components/TemplateText';
 import { BLACK, BLACK_40, GREY_SECONDARY } from '../../../../theme/Colors';
-import { WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 
 interface DescriptionRangeProps {
     icon: string
@@ -32,7 +31,7 @@ const DescriptionRange: FC<DescriptionRangeProps> = ({
         justifyContent="space-between"
         alignItems="center"
         style={style}
-        width="100%"
+        width={SCREEN_WIDTH}
     >
         <TemplateBox row alignItems="center">
             <TemplateBox

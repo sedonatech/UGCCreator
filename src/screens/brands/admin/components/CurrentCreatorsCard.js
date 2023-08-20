@@ -26,7 +26,7 @@ const CurrentCreatorsCard = ({
         aspectRatio={aspectRatio}
         style={style}
     >
-        <BackgroundImage source={{ uri: image }} style={styles.image} width="100%" />
+        <BackgroundImage source={{ uri: image }} style={styles.image} width={SCREEN_WIDTH} />
         <TemplateBox pAll={20} onPress={onPress} mt={WRAPPER_MARGIN}>
             <TemplateText color={WHITE} bold size={16} style={styles.text}>
                 {name}

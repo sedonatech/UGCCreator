@@ -12,6 +12,7 @@ import {
 } from '../../../theme/Colors';
 import {
     SCREEN_HEIGHT,
+    SCREEN_WIDTH,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
@@ -106,7 +107,7 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                 {/* @ts-ignore */}
                 <BackgroundImage
                     source={{ uri: selectedBrand?.image }}
-                    width="100%"
+                    width={SCREEN_WIDTH}
                     style={styles.image}
                 />
                 <TemplateBox

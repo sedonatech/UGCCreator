@@ -54,7 +54,7 @@ const SampleWorkCard: FC<Props> = ({
         slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
     >
-        <BackgroundImage source={image} style={styles.image} width="100%" />
+        <BackgroundImage source={image} style={styles.image} width={SCREEN_WIDTH} />
         <TemplateBox pAll={20} onPress={onPress}>
             {icon && (
                 <TemplateBox
