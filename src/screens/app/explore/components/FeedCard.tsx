@@ -60,7 +60,7 @@ const FeedCard: FC<Props> = ({
 
     >
 
-        {image && <BackgroundImage source={image} style={styles.image} width="100%" />}
+        {image && <BackgroundImage source={image} style={styles.image} width={SCREEN_WIDTH} />}
 
         <TemplateBox pAll={20} onPress={onPress}>
             {icon && (

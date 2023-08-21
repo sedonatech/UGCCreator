@@ -6,15 +6,12 @@ import {
 } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
-import {
-    BLACK, GREEN, GREY, GREY_SECONDARY, WHITE, WHITE_40,
-} from '../../../theme/Colors';
+import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { SCREEN_HEIGHT, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
 import ToggleCarousel from '../../../components/ToggleCarousel';
-import TemplateIcon from '../../../components/TemplateIcon';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import { HOME } from '../../../navigation/ScreenNames';
 import CreatorProjectStatusOverviewTab from './components/CreatorProjectStatusOverviewTab';
@@ -123,7 +120,7 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                 {/* @ts-ignore */}
                 <BackgroundImage
                     source={{ uri: currentProject?.image }}
-                    width="100%"
+                    width={SCREEN_WIDTH}
                     style={styles.image}
                 />
                 <TemplateBox

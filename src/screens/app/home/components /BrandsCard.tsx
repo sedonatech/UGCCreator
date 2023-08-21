@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, BLACK_50, DEFAULT_GRADIENT, lightGreen, lightOrange,
+    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, DEFAULT_GRADIENT, lightGreen, lightOrange,
 } from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
@@ -59,7 +59,7 @@ const BrandsCard: FC<Props> = ({
     >
         {
             image ? (
-                <BackgroundImage source={image} style={styles.image} width="100%" />
+                <BackgroundImage source={image} style={styles.image} width={SCREEN_WIDTH} />
             ) : (
                 <TemplateBox
                     backgroundColor={BRAND_BLUE}

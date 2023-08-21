@@ -18,7 +18,7 @@ const BackgroundImage = ({
 
 BackgroundImage.propTypes = {
     style: PropTypes.shape({}),
-    source: PropTypes.number || PropTypes.object,
+    source: PropTypes.shape({}) || PropTypes.number,
     width: PropTypes.number,
 };
 
