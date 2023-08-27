@@ -10,7 +10,15 @@ import { BRAND_DETAILS } from '../../../../navigation/ScreenNames';
 import RecommendedBrandsCarousel from '../../home/components /RecommendedBrandsCarousel';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
-const BrandsTab = ({ data }) => {
+interface Props {
+    id?: string;
+    name?: string
+    image?: string;
+    shortDescription?: string;
+    isActive?: boolean;
+};
+
+const BrandsTab = ({ data }: { data: Array<Props>}) => {
     const navigation = useNavigation();
 
     return (

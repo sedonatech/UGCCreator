@@ -97,6 +97,22 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const filteredCreators = search?.length ? searchResults : creatorsData;
 
+    const renderItem = ({ item }) => (
+        <CreatorCard
+            key={item?.id}
+            name={item?.userName}
+            imageUrl={item?.image}
+            shortDescription={item?.shortDescription
+                || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+            location={item?.location?.country}
+            email={item?.email}
+            onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+            active={item?.isActive}
+        />
+    );
+
+    const keyExtractor = (item) => item?.id;
+
     return (
         <ScrollView
             style={styles.scroll}
@@ -134,21 +150,9 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
             <FlatList
                 data={sortBy(filteredCreators, 'hasImage')?.reverse()}
-                renderItem={({ item }) => (
-                    <CreatorCard
-                        key={item?.id}
-                        name={item?.userName}
-                        imageUrl={item?.image}
-                        shortDescription={item?.shortDescription
-                            || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-                        location={item?.location?.country}
-                        email={item?.email}
-                        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-                        active={item?.isActive}
-                    />
-                )}
+                renderItem={renderItem}
                 showVerticalScrollIndicator={false}
-                keyExtractor={(item) => item?.id}
+                keyExtractor={keyExtractor}
             />
 
             <RBSheet
