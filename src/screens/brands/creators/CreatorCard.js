@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -128,4 +128,4 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
 });
-export default CreatorCard;
+export default memo(CreatorCard);

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import * as Progress from 'react-native-progress';
 
 import { StyleSheet } from 'react-native';
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     }
 });
-export default ProfileStatusCard;
+export default memo(ProfileStatusCard);

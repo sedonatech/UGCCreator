@@ -127,6 +127,8 @@ const ChatRoomsScreen = ({ navigation }) => {
         }
     );
 
+    const renderBrandItem = renderItem('brand');
+    const renderCreatorItem = renderItem('creator');
     const keyExtractor = (item) => item?.id;
 
     return (
@@ -160,7 +162,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                             {length: WRAPPER_MARGIN, offset: WRAPPER_MARGIN * index, index}
                         )}
                         showsVerticalScrollIndicator={false}
-                        renderItem={renderItem('brand')}
+                        renderItem={renderBrandItem}
                         keyExtractor={keyExtractor}
                     />
                 )}
@@ -173,7 +175,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                             {length: WRAPPER_MARGIN, offset: WRAPPER_MARGIN * index, index}
                         )}
                         showsVerticalScrollIndicator={false}
-                        renderItem={renderItem('creator')}
+                        renderItem={renderCreatorItem}
                         keyExtractor={keyExtractor}
                     />
                 )}
