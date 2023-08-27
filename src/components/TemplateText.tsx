@@ -6,7 +6,6 @@ import { Text, StyleSheet } from 'react-native';
 import { startCase as startCaseFunc } from 'lodash';
 
 import { BLACK, PRIMARY, WHITE } from '../theme/Colors';
-import { isAndroid } from '../Utils/Platform';
 import { IS_SHORT_DEVICE } from '../theme/Layout';
 
 interface Props {
@@ -31,7 +30,7 @@ interface Props {
     numberOfLines?: number | null,
     startCase?: boolean,
     italic?: boolean,
-    children?: string | React.ReactChild | null | (string | React.ReactChild | null)[]
+    children?: string | React.ReactNode | null | (string | React.ReactNode | null)[]
     lineHeight?: number | null,
     style?: any,
     adjustsFontSizeToFit?: boolean,
