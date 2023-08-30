@@ -11,6 +11,7 @@ import {
 } from '../../../theme/Colors';
 import { SHADOW } from '../../../theme/Shadow';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
+import { wp } from '../../../Utils/getResponsiveSize';
 
 const CreatorCard = ({
     name,
@@ -23,25 +24,35 @@ const CreatorCard = ({
     imageStyle,
     textContainerWidth,
     subtitleContainerWidth,
-    buttonOffset,
     active,
 }) => (
+
     <TemplateBox
         width={width}
+        height={wp(200)}
         borderRadius={20}
         pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
         style={[SHADOW('card', BRAND_BLUE), style]}
+        onPress={onPress}
+
     >
 
-        <TemplateBox row>
+        <TemplateBox
+            row
+            onPress={onPress}
+        >
             <FastImage
                 source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                 style={[styles.image, imageStyle]}
-                resizeMode="cover"
+
             />
-            <TemplateBox width={textContainerWidth} height={60}>
+            <TemplateBox
+                width={textContainerWidth}
+                height={60}
+                onPress={onPress}
+            >
                 <TemplateText size={16} bold color={BLACK} numberOfLines={1}>{name}</TemplateText>
                 <TemplateBox height={10} />
                 <TemplateText
@@ -54,8 +65,16 @@ const CreatorCard = ({
             </TemplateBox>
         </TemplateBox>
 
-        <TemplateBox row alignItems="center" mt={20}>
-            <TemplateBox width={subtitleContainerWidth}>
+        <TemplateBox
+            row
+            alignItems="center"
+            mt={20}
+            onPress={onPress}
+        >
+            <TemplateBox
+                width={subtitleContainerWidth}
+                onPress={onPress}
+            >
                 <TemplateBox row alignItems="center">
                     <TemplateIcon name="location-outline" color={BLACK_60} size={14} />
                     <TemplateText size={10} color={BLACK_60} semiBold>{location || 'London'}</TemplateText>
@@ -71,7 +90,7 @@ const CreatorCard = ({
                 alignItems="center"
                 justifyContent="center"
                 onPress={onPress}
-                left={buttonOffset}
+
             >
                 <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
             </TemplateBox>
@@ -83,11 +102,13 @@ const CreatorCard = ({
             borderRadius={6}
             alignItems="center"
             justifyContent="center"
+            onPress={onPress}
 
         >
             <TemplateText color={WHITE} size={9} bold caps>{active ? 'Active' : 'Inactive'}</TemplateText>
         </TemplateBox>
     </TemplateBox>
+
 );
 
 CreatorCard.propTypes = {
