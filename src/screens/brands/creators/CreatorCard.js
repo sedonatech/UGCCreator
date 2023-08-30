@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -11,7 +11,6 @@ import {
 } from '../../../theme/Colors';
 import { SHADOW } from '../../../theme/Shadow';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
-import TemplateTouchable from '../../../components/TemplateTouchable';
 import { wp } from '../../../Utils/getResponsiveSize';
 
 const CreatorCard = ({
@@ -25,7 +24,6 @@ const CreatorCard = ({
     imageStyle,
     textContainerWidth,
     subtitleContainerWidth,
-    buttonOffset,
     active,
 }) => (
 
