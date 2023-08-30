@@ -4,23 +4,16 @@ import {
 } from 'react-native';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { WHITE } from '../../../theme/Colors';
-import {
-    HEADER_MARGIN,
-    SCREEN_WIDTH,
-    WRAPPED_SCREEN_WIDTH,
-    WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateText from '../../../components/TemplateText';
 import TemplateBox from '../../../components/TemplateBox';
-import { SHADOW } from '../../../theme/Shadow';
-import CatalogueSvg from '../../../../assets/svgs/CatalogueSvg';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
-import { SUBSCRIPTION } from '../../../navigation/ScreenNames';
 import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 import useHasSubscription from '../../subscriptions/useHasSubscription';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import BrandsCatalogueCard from './BrandsCatalogueCard';
 
 const BrandsCatalogueScreen = ({ navigation }) => {
     const { brandsCatalogue, features } = useFeatureFlags();
@@ -37,6 +30,8 @@ const BrandsCatalogueScreen = ({ navigation }) => {
     const [selectedBrand, setSelectedBrand] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
+
+    const [limit, setLimit] = useState(10);
 
     const { unlockedUsers, activeList: activeCatalogueList } = features?.brandsCatalogue;
 
@@ -56,6 +51,22 @@ const BrandsCatalogueScreen = ({ navigation }) => {
             setModalVisible(false);
         }
     }, [mailEvent]);
+
+    const renderItem = ({ item, index }) => {
+        const isActive = index <= activeCatalogueList;
+        return (
+            <BrandsCatalogueCard
+                navigation={navigation}
+                isActive={isActive}
+                isUnlockedUser={isUnlockedUser}
+                item={item}
+                setModalVisible={setModalVisible}
+                setSelectedBrand={setSelectedBrand}
+            />
+        );
+    };
+
+    const keyExtractor = (item) => item?.['Brand Name'];
 
     return (
         <View
@@ -91,94 +102,14 @@ const BrandsCatalogueScreen = ({ navigation }) => {
 
                 <FlatList
                     data={brandsCatalogue?.brands}
-                    renderItem={({ item, index }) => {
-                        const isActive = index <= activeCatalogueList;
-                        return (
-                            <TemplateBox
-                                row
-                                alignItems="center"
-                                backgroundColor={WHITE}
-                                borderRadius={16}
-                                pAll={20}
-                                width={WRAPPED_SCREEN_WIDTH}
-                                mt={WRAPPER_MARGIN}
-                                onPress={() => {
-                                    if (!isUnlockedUser && !isActive) {
-                                        Alert.alert(
-                                            'Activate Subscription',
-                                            'You need to have at least a monthly subscription to unlock all the brands',
-                                            [
-                                                {
-                                                    text: 'OK',
-                                                    onPress: () => navigation.navigate(
-                                                        SUBSCRIPTION, {
-                                                            fromSettings: true,
-                                                        },
-                                                        trackEvent('access_subscription_from_brand_catalogue', {
-                                                            brandName: item['Brand Name'],
-                                                        }),
-                                                    ),
-                                                    style: 'cancel',
-                                                },
-                                            ],
-                                            { cancelable: false },
-                                        );
-                                    } else {
-                                        setSelectedBrand(item);
-                                        setTimeout(() => {
-                                            setModalVisible(true);
-                                        }, 100);
-                                    }
-                                }}
-                                style={SHADOW('card', WHITE)}
-                                selfCenter
-                                mh={WRAPPER_MARGIN}
-                                opacity={(isActive || isUnlockedUser) ? 1 : 0.5}
-                            >
-                                <CatalogueSvg />
-                                <TemplateBox width={16} />
-                                <TemplateBox
-                                    width={SCREEN_WIDTH / 1.6}
-                                    onPress={() => {
-                                        if (!isUnlockedUser && !isActive) {
-                                            Alert.alert(
-                                                'Activate Subscription to Unlock All Brands',
-                                                'You need to have at least a monthly subscription to unlock all the brands',
-                                                [
-                                                    {
-                                                        text: 'OK',
-                                                        onPress: () => navigation.navigate(
-                                                            SUBSCRIPTION, {
-                                                                fromSettings: true,
-                                                            },
-                                                            trackEvent('access_subscription_from_brand_catalogue', {
-                                                                brandName: item['Brand Name'],
-                                                            }),
-                                                        ),
-                                                        style: 'cancel',
-                                                    },
-                                                ],
-                                                { cancelable: false },
-                                            );
-                                        } else {
-                                            setSelectedBrand(item);
-                                            setTimeout(() => {
-                                                setModalVisible(true);
-                                            }, 100);
-                                        }
-                                    }}
-                                >
-                                    <TemplateText bold size={16}>{item?.['Brand Name']}</TemplateText>
-                                    <TemplateBox height={5} />
-                                    <TemplateText size={13}>{`Instagram: ${item?.Instagram}`}</TemplateText>
-                                    <TemplateBox height={5} />
-                                    <TemplateText size={13}>{`Press to reach out to ${item?.['Brand Name']} for a potential UGC collaboration`}</TemplateText>
-                                </TemplateBox>
-                            </TemplateBox>
-                        );
-                    }}
-                    keyExtractor={(item) => item?.['Brand Name']}
+                    getItemLayout={(data, index) => (
+                        {length: 5, offset: 5 * index, index}
+                    )}
+                    renderItem={renderItem}
+                    keyExtractor={keyExtractor}
                     contentContainerStyle={styles.brandsListContentContainer}
+                    onEndReachedThreshold={0}
+                    onEndReached={() => { setLimit((prevLimit) => prevLimit + 4); }}
                 />
             </TemplateBox>
             <RecommendedBrandModal

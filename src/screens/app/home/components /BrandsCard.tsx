@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
@@ -154,4 +154,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BrandsCard;
+export default memo(BrandsCard);
