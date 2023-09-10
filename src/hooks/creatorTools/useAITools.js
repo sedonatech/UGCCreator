@@ -71,7 +71,7 @@ const useAITools = (toolType = 'scripts') => {
 
             const contentGenerationResultsFromLocalStorage = await AsyncStorage.getItem('contentGenerationResults');
 
-            const contentGenerationResultsHistoryParsed = JSON.parse(contentGenerationResultsFromLocalStorage)
+            const contentGenerationResultsHistoryParsed = await JSON.parse(contentGenerationResultsFromLocalStorage)
                 || [];
 
             await AsyncStorage.setItem('contentGenerationResults', JSON.stringify([...contentGenerationResultsHistoryParsed, {

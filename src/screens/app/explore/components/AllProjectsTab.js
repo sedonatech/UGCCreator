@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import ProjectCard from '../../home/components /ProjectCard';
 import { PROJECT_DETAILS } from '../../../../navigation/ScreenNames';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 const AllProjectsTab = ({ projects }) => {
     const navigation = useNavigation();
@@ -32,6 +34,7 @@ const AllProjectsTab = ({ projects }) => {
                         }
                         duration={item?.duration}
                         projectType={item?.projectType}
+                        style={styles.container}
                     />
                 ))
             }
@@ -52,5 +55,11 @@ AllProjectsTab.propTypes = {
 AllProjectsTab.defaultProps = {
     projects: [],
 };
+
+const styles = StyleSheet.create({
+    container: {
+        marginBottom: wp(20),
+    },
+});
 
 export default AllProjectsTab;
