@@ -89,7 +89,7 @@ const SettingsScreen = ({ navigation }) => {
         {
             title: 'Notifications',
             description: 'Manage your notifications',
-            onPress: () => {
+            onPress: async () => {
                 if (isAuthorized) {
                     Alert.alert(
                         'Notifications',
@@ -103,7 +103,7 @@ const SettingsScreen = ({ navigation }) => {
                         ],
                     );
                 } else {
-                    checkApplicationPermissions();
+                    await checkApplicationPermissions();
                 }
             },
             icon: 'notifications-outline',

@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
-import { Alert } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
-import openUrl from '../../../../Utils/openUrl';
 import { BLACK, BLACK_0_5 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
@@ -13,9 +11,10 @@ import { WEBVIEW } from '../../../../navigation/ScreenNames';
 
 const ContactSection = ({ contactInfo, socials, email }) => {
     const navigation = useNavigation();
+
     return (
         <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN * 2}>
-            <TemplateText bold color={BLACK} size={18}>Contact Information</TemplateText>
+            <TemplateText bold color={BLACK} size={16}>Contact Information</TemplateText>
             <TemplateBox height={10} />
             <TemplateBox
                 row
@@ -25,7 +24,7 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                 mb={WRAPPER_MARGIN}
             >
                 <TemplateBox pr={20}>
-                    <TemplateText color={BLACK} bold>Phone Number</TemplateText>
+                    <TemplateText color={BLACK} semiBold size={16}>Phone Number</TemplateText>
                     <TemplateBox height={10} />
                     <TemplateText color={BLACK} size={16}>{contactInfo?.phoneNumber}</TemplateText>
                 </TemplateBox>
@@ -39,7 +38,7 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                 mb={WRAPPER_MARGIN}
             >
                 <TemplateBox pr={20}>
-                    <TemplateText color={BLACK} bold>Email</TemplateText>
+                    <TemplateText color={BLACK} semiBold size={16}>Email</TemplateText>
                     <TemplateBox height={10} />
                     <TemplateText color={BLACK} size={14}>{contactInfo?.email || email }</TemplateText>
                 </TemplateBox>
@@ -65,7 +64,7 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                         color={BLACK}
                     />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} size={16}>Instagram</TemplateText>
+                    <TemplateText color={BLACK} semiBold size={16}>Instagram</TemplateText>
                     <TemplateBox flex />
                     <TemplateIcon
                         name="open-outline"
@@ -94,7 +93,7 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                         color={BLACK}
                     />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} size={16}>FaceBook</TemplateText>
+                    <TemplateText color={BLACK} size={16} semiBold>FaceBook</TemplateText>
                     <TemplateBox flex />
                     <TemplateIcon
                         name="open-outline"
@@ -124,7 +123,7 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                         color={BLACK}
                     />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} size={16}>Twitter</TemplateText>
+                    <TemplateText color={BLACK} size={16} semiBold>Twitter</TemplateText>
                     <TemplateBox flex />
                     <TemplateIcon
                         name="open-outline"
@@ -154,7 +153,7 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                         color={BLACK}
                     />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} size={16}>LinkedIn</TemplateText>
+                    <TemplateText color={BLACK} size={16} semiBold>LinkedIn</TemplateText>
                     <TemplateBox flex />
                     <TemplateIcon
                         name="open-outline"

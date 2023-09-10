@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AI_TOOLS_ENDPOINT = 'https://ugc-creator-app.herokuapp.com/ugcCreatorAppApi';
+
 const useAITools = (toolType = 'scripts') => {
     const [brandName, setBrandName] = useState();
 
@@ -69,7 +70,9 @@ const useAITools = (toolType = 'scripts') => {
             setResponseMessage(response?.message?.message?.content);
 
             const contentGenerationResultsFromLocalStorage = await AsyncStorage.getItem('contentGenerationResults');
-            const contentGenerationResultsHistoryParsed = JSON.parse(contentGenerationResultsFromLocalStorage) || [];
+
+            const contentGenerationResultsHistoryParsed = JSON.parse(contentGenerationResultsFromLocalStorage)
+                || [];
 
             await AsyncStorage.setItem('contentGenerationResults', JSON.stringify([...contentGenerationResultsHistoryParsed, {
                 type: toolType,
@@ -78,7 +81,7 @@ const useAITools = (toolType = 'scripts') => {
 
             setLoading(false);
         } catch (error) {
-            console.log(error);
+            console.log('SCRIPTS GENERATOR ERROR: ', error);
             setLoading(false);
             Alert.alert('Something went wrong');
         }
@@ -93,7 +96,7 @@ const useAITools = (toolType = 'scripts') => {
                 setContentGenerationResultsHistory(JSON.parse(contentGenerationResults));
             }
         } catch (error) {
-            console.log(error);
+            console.log('SCRIPTS GENERATOR HISTORY ERROR', error);
         }
         setLoadingHistory(false);
     };

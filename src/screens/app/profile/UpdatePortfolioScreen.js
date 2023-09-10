@@ -127,7 +127,6 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         multiline
                         numberOfLines={6}
-                        maxLength={60}
                     />
                 </TemplateBox>
 
@@ -142,7 +141,6 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         multiline
                         numberOfLines={26}
-                        maxLength={160}
                     />
                 </TemplateBox>
 
