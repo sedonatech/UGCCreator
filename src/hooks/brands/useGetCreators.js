@@ -6,6 +6,12 @@ const USERS_COLLECTION = 'users';
 const useGetCreators = () => {
     const [creators, setCreators] = useState([]);
 
+    const [fcmCreators, setFcmCreators] = useState([]);
+
+    const fcmCreatorsRef = firestore().collection(USERS_COLLECTION)
+        .where('type', '==', 'creator')
+        .where('fcmToken', '!=', '');
+
     const creatorsRef = firestore().collection(USERS_COLLECTION)
         .where('type', '==', 'creator');
 
@@ -13,7 +19,7 @@ const useGetCreators = () => {
         const subscriber = creatorsRef
             .onSnapshot((querySnapshot) => {
                 const creatorsData = querySnapshot?.docs
-                    ?.forEach((doc) => ({
+                    ?.map((doc) => ({
                         id: doc?.id,
                         isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
                         ...doc?.data(),
@@ -25,9 +31,26 @@ const useGetCreators = () => {
         return () => subscriber();
     }, []);
 
+    useEffect(() => {
+        const subscriber = fcmCreatorsRef
+            .onSnapshot((querySnapshot) => {
+                const creatorsData = querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
+                        ...doc?.data(),
+                    }));
+                setFcmCreators(creatorsData);
+            });
+
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+    }, []);
+
     return {
         creators,
         filteredCreators: creators,
+        fcmCreators,
     };
 };
 

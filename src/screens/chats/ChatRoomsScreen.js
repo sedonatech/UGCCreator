@@ -48,13 +48,7 @@ const ChatRoomsScreen = ({ navigation }) => {
         }));
     }, [chatRooms]);
 
-    const { brands: brandsData } = useGetBrands();
-
-    const brands = useMemo(() => {
-        if (!brandsData?.length) return [];
-
-        return brandsData?.filter((brand) => brand?.fcmToken);
-    }, [brandsData]);
+    const { fcmBrands: brands } = useGetBrands();
 
     return (
         <>
@@ -137,65 +131,65 @@ const ChatRoomsScreen = ({ navigation }) => {
                             )}
                         />
                     )}
-                { isBrand && creators?.length > 0
-                    && (
-                        <FlatList
-                            data={uniqBy(creators, 'id')}
-                            showsVerticalScrollIndicator={false}
-                            renderItem={({ item, index }) => (
-                                <ProfileStatusCard
-                                    key={item?.id}
-                                    title={item?.userName}
-                                    description={`Start a conversation with ${item?.userName}`}
-                                    showProgress={false}
-                                    style={styles.statusCard}
-                                    slideInDelay={200 + (index * 100)}
-                                    showIcon={false}
-                                    onPress={async () => {
-                                        try {
-                                            const chatRoomName = `BRAND: ${auth?.profile?.name} - CREATOR:${item?.userName} conversation`;
-                                            const brandFCMToken = auth?.profile?.fcmToken;
-                                            const creatorFCMToken = item?.fcmToken;
+                {/* { isBrand && creators?.length > 0 */}
+                {/*     && ( */}
+                {/*         <FlatList */}
+                {/*             data={uniqBy(creators, 'id')} */}
+                {/*             showsVerticalScrollIndicator={false} */}
+                {/*             renderItem={({ item, index }) => ( */}
+                {/*                 <ProfileStatusCard */}
+                {/*                     key={item?.id} */}
+                {/*                     title={item?.userName} */}
+                {/*                     description={`Start a conversation with ${item?.userName}`} */}
+                {/*                     showProgress={false} */}
+                {/*                     style={styles.statusCard} */}
+                {/*                     slideInDelay={200 + (index * 100)} */}
+                {/*                     showIcon={false} */}
+                {/*                     onPress={async () => { */}
+                {/*                         try { */}
+                {/*                             const chatRoomName = `BRAND: ${auth?.profile?.name} - CREATOR:${item?.userName} conversation`; */}
+                {/*                             const brandFCMToken = auth?.profile?.fcmToken; */}
+                {/*                             const creatorFCMToken = item?.fcmToken; */}
 
-                                            if (chatRoomData?.length > 0
-                                                && chatRoomData?.find(
-                                                    (room) => room?.creatorId === item?.id
-                                                        && room?.brandId === auth?.profile?.id,
-                                                )) {
-                                                navigation.navigate(CHATS, {
-                                                    chatRoomId: chatRoomData?.find(
-                                                        (room) => room?.creatorId === item?.id
-                                                            && room?.brandId === auth?.profile?.id,
-                                                    )?.id,
-                                                });
-                                                return;
-                                            }
-                                            await createChatRoom(chatRoomName,
-                                                item?.id,
-                                                auth?.profile?.id,
-                                                creatorFCMToken,
-                                                brandFCMToken).then(() => {
-                                                if (chatRoomCreated && !chatRoomsLoading) {
-                                                    setCreatedChatRoom(chatRoomData?.find(
-                                                        (room) => room?.creatorId === item?.id
-                                                            && room?.brandId === auth?.profile?.id
-                                                            && room?.name === chatRoomName,
-                                                    ));
-                                                    setTimeout(() => {
-                                                        navigation.navigate(CHATS, {
-                                                            chatRoomId: createdChatRoom?.id,
-                                                        });
-                                                    }, 1000);
-                                                }
-                                            });
-                                        } catch (e) {
-                                            console.log('[ERROR IN CHAT ROOMS SCREEN]', e.message);
-                                        }
-                                    }}
-                                />
-                            )}
-                        />
-                    )}
+                {/*                             if (chatRoomData?.length > 0 */}
+                {/*                                 && chatRoomData?.find( */}
+                {/*                                     (room) => room?.creatorId === item?.id */}
+                {/*                                         && room?.brandId === auth?.profile?.id, */}
+                {/*                                 )) { */}
+                {/*                                 navigation.navigate(CHATS, { */}
+                {/*                                     chatRoomId: chatRoomData?.find( */}
+                {/*                                         (room) => room?.creatorId === item?.id */}
+                {/*                                             && room?.brandId === auth?.profile?.id, */}
+                {/*                                     )?.id, */}
+                {/*                                 }); */}
+                {/*                                 return; */}
+                {/*                             } */}
+                {/*                             await createChatRoom(chatRoomName, */}
+                {/*                                 item?.id, */}
+                {/*                                 auth?.profile?.id, */}
+                {/*                                 creatorFCMToken, */}
+                {/*                                 brandFCMToken).then(() => { */}
+                {/*                                 if (chatRoomCreated && !chatRoomsLoading) { */}
+                {/*                                     setCreatedChatRoom(chatRoomData?.find( */}
+                {/*                                         (room) => room?.creatorId === item?.id */}
+                {/*                                             && room?.brandId === auth?.profile?.id */}
+                {/*                                             && room?.name === chatRoomName, */}
+                {/*                                     )); */}
+                {/*                                     setTimeout(() => { */}
+                {/*                                         navigation.navigate(CHATS, { */}
+                {/*                                             chatRoomId: createdChatRoom?.id, */}
+                {/*                                         }); */}
+                {/*                                     }, 1000); */}
+                {/*                                 } */}
+                {/*                             }); */}
+                {/*                         } catch (e) { */}
+                {/*                             console.log('[ERROR IN CHAT ROOMS SCREEN]', e.message); */}
+                {/*                         } */}
+                {/*                     }} */}
+                {/*                 /> */}
+                {/*             )} */}
+                {/*         /> */}
+                {/*     )} */}
             </ScrollView>
             {chatRoomsLoading && (
                 <LoadingOverlay message="Creating chat rooom...." />
