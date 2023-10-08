@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
