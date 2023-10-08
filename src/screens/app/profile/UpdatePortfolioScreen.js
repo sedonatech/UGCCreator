@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
@@ -35,13 +35,13 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
     const { trackEvent } = useTrackEvent();
 
-    const handleUpdate = useCallback(() => {
+    const handleUpdate = async () => {
         updateProfile(profileData, profileData?.id);
-        trackEvent('update_profile');
+        await trackEvent('update_profile');
         setTimeout(() => {
             navigation.navigate(PROFILE);
         }, 1000);
-    }, [updateProfile, profileData]);
+    };
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -127,7 +127,6 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         multiline
                         numberOfLines={6}
-                        maxLength={60}
                     />
                 </TemplateBox>
 
@@ -142,7 +141,6 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                         autoCapitalize="none"
                         multiline
                         numberOfLines={26}
-                        maxLength={160}
                     />
                 </TemplateBox>
 

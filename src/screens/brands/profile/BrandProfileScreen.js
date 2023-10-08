@@ -6,10 +6,9 @@ import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import {
+    DEFAULT_BRAND_DESCRIPTION, DEFAULT_BRAND_SHORT_DESCRIPTION,
     DEFAULT_CREATOR_CONTACT_INFO,
-    DEFAULT_CREATOR_DESCRIPTION,
     DEFAULT_CREATOR_PAYPAL_LINK,
-    DEFAULT_CREATOR_SHORT_DESCRIPTION,
     DEFAULT_CREATOR_SOCIAL,
 } from '../../../consts/content/Portfolio';
 import HeaderIconButton from '../../../components/header/HeaderButton';
@@ -27,10 +26,10 @@ const BrandProfileScreen = ({ navigation }) => {
 
     const image = brand?.image;
 
-    const about = brand?.description || DEFAULT_CREATOR_DESCRIPTION;
+    const about = brand?.description || DEFAULT_BRAND_DESCRIPTION;
 
     const shortDescription = brand?.shortDescription
-        || DEFAULT_CREATOR_SHORT_DESCRIPTION;
+        || DEFAULT_BRAND_SHORT_DESCRIPTION;
 
     const contact = brand?.contact || DEFAULT_CREATOR_CONTACT_INFO;
 

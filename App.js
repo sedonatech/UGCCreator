@@ -71,6 +71,9 @@ const App = () => (
         </FeatureFlagProvider>
     </AuthProvider>
 );
-export default codePush({
-    checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-})(App);
+
+export default App;
+// TODO: uncomment this when we are ready to use codepush
+// export default codePush({
+//     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+// })(App);
