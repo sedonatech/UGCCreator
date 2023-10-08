@@ -18,16 +18,7 @@ import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Po
 const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
-    const { filteredCreators } = useGetCreators();
-
-    const creatorsData = useMemo(() => {
-        if (!filteredCreators?.length) return [];
-
-        return filteredCreators?.map((creator) => ({
-            ...creator,
-            isActive: !!creator?.image,
-        }));
-    }, [filteredCreators]);
+    const { filteredCreators: creatorsData, limit } = useGetCreators();
 
     return (
         <View style={style}>
@@ -54,7 +45,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
             </View>
 
             <TemplateCarousel
-                data={sampleSize(sortBy(creatorsData, 'isActive').reverse(), 6)}
+                data={sampleSize(creatorsData, limit)}
                 renderItem={({ item }) => (
                     <CreatorCard
                         name={item?.userName}
@@ -76,7 +67,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
                 showPagination
-                paginationSize={sampleSize(sortBy(creatorsData, 'isActive').reverse(), 6)?.length}
+                paginationSize={sampleSize(creatorsData, limit)?.length}
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>

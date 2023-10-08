@@ -34,7 +34,7 @@ const CreatorCard = ({
         pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
-        style={[SHADOW('card', BRAND_BLUE), style]}
+        style={[SHADOW('card', WHITE), style]}
         onPress={onPress}
 
     >

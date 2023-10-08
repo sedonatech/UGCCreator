@@ -1,25 +1,27 @@
 import React, {
-    useEffect, useMemo, useRef, useState,
+    useEffect, useRef, useState,
 } from 'react';
-import { FlatList, ScrollView, StyleSheet } from 'react-native';
+import {
+    ActivityIndicator,
+    FlatList, ScrollView, StyleSheet, View,
+} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
 import { sortBy } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 
-import { hp } from '../../../Utils/getResponsiveSize';
+import { hp, wp } from '../../../Utils/getResponsiveSize';
 import {
     HEADER_MARGIN,
     IS_ANDROID,
     SCREEN_HEIGHT,
-    SPACE_LARGE,
+    SPACE_LARGE, SPACE_MEDIUM,
     SPACE_XSMALL,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import {
-    BLACK, BRAND_BLUE, WHITE, WHITE_96,
+    BLACK, BRAND_BLUE, IOS_BLUE, WHITE, WHITE_96,
 } from '../../../theme/Colors';
-import Blob from '../../../../assets/svgs/Blob';
 import useGetCreators from '../../../hooks/brands/useGetCreators';
 
 import TemplateBox from '../../../components/TemplateBox';
@@ -39,20 +41,10 @@ import {
 import CreatorCard from './CreatorCard';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../consts/content/Portfolio';
 import { PROFILE } from '../../../navigation/ScreenNames';
+import TemplateSafeAreaView from '../../../components/TemplateSafeAreaView';
 
 const CreatorProfilesScreen = ({ navigation }) => {
-    const { creators } = useGetCreators();
-
-    const creatorsData = useMemo(() => {
-        if (!creators?.length) return [];
-
-        return creators?.map((creator) => ({
-            ...creator,
-            hasImage: creator?.image !== '',
-            isActive: !!creator?.image,
-
-        }));
-    }, [creators]);
+    const { creators: creatorsData } = useGetCreators();
 
     const refRBSheet = useRef();
 
@@ -111,18 +103,8 @@ const CreatorProfilesScreen = ({ navigation }) => {
         />
     );
 
-    const keyExtractor = (item) => item?.id;
-
-    return (
-        <ScrollView
-            style={styles.scroll}
-            contentContainerStyle={styles.scrollContainer}
-            showsVerticalScrollIndicator={false}
-        >
-            <Blob top />
-            <Blob right />
-            <Blob bottom />
-            <Blob center />
+    const ListHeader = () => (
+        <>
             <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                 <TemplateText
                     size={18}
@@ -147,14 +129,42 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     <Filter />
                 </TemplateTouchable>
             </TemplateBox>
+        </>
+    );
+
+    const ListFooter = () => (
+        <View style={styles.listFooter}>
+            <TemplateSafeAreaView ios />
+        </View>
+    );
+
+    const ListEmptyComponent = () => (
+        <TemplateBox
+            flex={1}
+            alignItems="center"
+            justifyContent="center"
+            mt={SPACE_LARGE}
+            center
+            selfCenter
+        >
+            <ActivityIndicator size="large" color={IOS_BLUE} />
+        </TemplateBox>
+    );
+
+    return (
+        <>
 
             <FlatList
-                data={sortBy(filteredCreators, 'hasImage')?.reverse()}
+                data={sortBy(filteredCreators, 'isActive')?.reverse()}
                 renderItem={renderItem}
                 showVerticalScrollIndicator={false}
-                keyExtractor={keyExtractor}
+                keyExtractor={(item, index) => (`${item?.id}-${index}`)}
+                ListHeaderComponent={ListHeader}
+                ListFooterComponent={ListFooter}
+                initialNumToRender={10}
+                onEndReachedThreshold={0.5}
+                ListEmptyComponent={ListEmptyComponent}
             />
-
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown
@@ -270,21 +280,11 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 </ScrollView>
 
             </RBSheet>
-        </ScrollView>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    scroll: {
-        flex: 1,
-        backgroundColor: WHITE,
-    },
-    scrollContainer: {
-        paddingTop: hp(SPACE_LARGE),
-        paddingBottom: hp(SPACE_LARGE),
-        flexGrow: 1,
-        backgroundColor: WHITE,
-    },
     input: {
         width: '100%',
         height: 50,
@@ -302,6 +302,9 @@ const styles = StyleSheet.create({
     },
     applyText: {
         marginLeft: WRAPPER_MARGIN,
+    },
+    listFooter: {
+        paddingBottom: wp(SPACE_MEDIUM),
     },
 });
 export default CreatorProfilesScreen;

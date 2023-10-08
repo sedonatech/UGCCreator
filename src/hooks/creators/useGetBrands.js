@@ -2,18 +2,23 @@ import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 
 const USERS_COLLECTION = 'users';
+
 const useGetBrands = () => {
     const [brands, setBrands] = useState([]);
 
+    const brandsRef = firestore().collection(USERS_COLLECTION)
+        .where('type', '==', 'brand');
+
     useEffect(() => {
-        const subscriber = firestore()
-            .collection(USERS_COLLECTION)
+        const subscriber = brandsRef
             .onSnapshot((querySnapshot) => {
-                setBrands(
-                    querySnapshot?.docs
-                        ?.map((doc) => doc?.data())
-                        ?.filter(({ type }) => type === 'brand'),
-                );
+                const brandsData = querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        isActive: doc?.data()?.shortDescription && doc?.data()?.image,
+                        ...doc?.data(),
+                    }));
+                setBrands(brandsData);
             });
 
         // Stop listening for updates when no longer required
@@ -33,7 +38,6 @@ const useGetBrands = () => {
     return {
         brands,
         fetchBrands,
-        filteredBrandsByBrandImage: brands?.filter(({ image }) => image !== ''),
     };
 };
 

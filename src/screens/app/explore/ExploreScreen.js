@@ -77,20 +77,7 @@ const ExploreScreen = ({ route }) => {
         }))?.slice(0, 4), 'createdAt');
     }, [projects]);
 
-    const { brands } = useGetBrands();
-
-    const brandsData = useMemo(() => {
-        if (!brands) {
-            return [];
-        }
-        return brands.map((brand) => ({
-            id: brand?.id,
-            name: brand?.name,
-            image: brand?.image,
-            shortDescription: brand?.shortDescription,
-            isActive: brand?.shortDescription && brand?.image,
-        }));
-    }, [brands]);
+    const { brands: brandsData } = useGetBrands();
 
     const onProjectFilterPress = (value) => {
         if (selectedFilters.includes(value)) {
