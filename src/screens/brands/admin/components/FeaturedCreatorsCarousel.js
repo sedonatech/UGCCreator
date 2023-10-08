@@ -1,9 +1,10 @@
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
-import React, { useMemo } from 'react';
+
 import PropTypes from 'prop-types';
 
-import { sampleSize, sortBy } from 'lodash';
+import { sampleSize } from 'lodash';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
@@ -15,10 +16,12 @@ import CreatorCard from '../../creators/CreatorCard';
 import TemplateBox from '../../../../components/TemplateBox';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 
+const SAMPLE_SIZE = 8;
+
 const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
-    const { filteredCreators: creatorsData, limit } = useGetCreators();
+    const { filteredCreators: creatorsData } = useGetCreators();
 
     return (
         <View style={style}>
@@ -45,7 +48,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
             </View>
 
             <TemplateCarousel
-                data={sampleSize(creatorsData, limit)}
+                data={sampleSize(creatorsData, SAMPLE_SIZE)}
                 renderItem={({ item }) => (
                     <CreatorCard
                         name={item?.userName}
@@ -67,7 +70,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
                 showPagination
-                paginationSize={sampleSize(creatorsData, limit)?.length}
+                paginationSize={sampleSize(creatorsData, SAMPLE_SIZE)?.length}
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>
