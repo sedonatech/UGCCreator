@@ -53,6 +53,44 @@ const useFirebaseSetStorage = () => {
         }
     });
 
+    const handlePermissionStatus = (status, name) => {
+        switch (status) {
+            case RESULTS.GRANTED:
+                break;
+            case RESULTS.BLOCKED:
+                Alert.alert(
+                    `${name} permission`,
+                    `You have ${status} ${name} permission`,
+                    [{ text: 'OK' }],
+                );
+                break;
+            case RESULTS.DENIED:
+                Alert.alert(
+                    `${name} permission`,
+                    `You have ${status} ${name} permission`,
+                    [{ text: 'OK' }],
+                );
+                break;
+
+            case RESULTS.LIMITED:
+                Alert.alert(
+                    `${name} permission`,
+                    `Your device  ${name} is has ${status} capabilities`,
+                    [{ text: 'OK' }],
+                );
+                break;
+            case RESULTS.UNAVAILABLE:
+                Alert.alert(
+                    `${name} permission`,
+                    `Your device  ${name} is ${status}`,
+                    [{ text: 'OK' }],
+                );
+                break;
+            default:
+                break;
+        }
+    };
+
     const takeAPicture = async ({
         saveAutomatically = false,
         isAvatar = false,
@@ -86,55 +124,23 @@ const useFirebaseSetStorage = () => {
             })
             .catch((err) => {
                 console.log('[Image library] - take a picture error:', err.code);
-                if (err.code === 'E_PERMISSION_MISSING') {
-                    const error = new Error('User has not granted permissions');
-                    error.code = 'PERMISSIONS';
-                    throw error;
+                if (err.code === 'E_NO_LIBRARY_PERMISSION') {
+                    // Get the permission status
+                    request(isIOS
+                        ? PERMISSIONS.IOS.PHOTO_LIBRARY
+                        : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE)
+                        .then((result) => {
+                            handlePermissionStatus(result, 'Photo library');
+                        });
                 }
-
                 if (err.code === 'E_NO_CAMERA_PERMISSION') {
-                    let permissionStatus;
-                    request(isIOS ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then((result) => {
-                        permissionStatus = result
-                    });
-
-                    __DEV__ && console.log("something")
-
-                    switch (permissionStatus) {
-                        case RESULTS.GRANTED:
-                            break;
-                        case RESULTS.BLOCKED:
-                            Alert.alert(
-                                'Camera permission',
-                                `You have ${permissionStatus} camera permission`,
-                                [{ text: 'OK' }]
-                            );
-                            break;
-                        case RESULTS.DENIED:
-                            Alert.alert(
-                                'Camera permission',
-                                `You have ${permissionStatus} camera permission`,
-                                [{ text: 'OK' }]
-                            );
-                            break;
-
-                        case RESULTS.LIMITED:
-                            Alert.alert(
-                                'Camera permission',
-                                `Your device camera is has ${permissionStatus} capabilities`,
-                                [{ text: 'OK' }]
-                            );
-                            break;
-                        case RESULTS.UNAVAILABLE:
-                            Alert.alert(
-                                'Camera permission',
-                                `Your device camera is ${permissionStatus}`,
-                                [{ text: 'OK' }]
-                            );
-                            break;
-                        default:
-                            break;
-                    }
+                    // Get the permission status
+                    request(isIOS
+                        ? PERMISSIONS.IOS.CAMERA
+                        : PERMISSIONS.ANDROID.CAMERA)
+                        .then((result) => {
+                            handlePermissionStatus(result, 'Camera');
+                        });
                 }
             });
     };
