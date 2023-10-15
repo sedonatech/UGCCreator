@@ -35,6 +35,7 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useGetBrands from '../../../hooks/creators/useGetBrands';
 import AllProjectsTab from './components/AllProjectsTab';
 import FeedsTab from './components/FeedsTab';
+import RecommendedBrandsCarousel from '../home/components /RecommendedBrandsCarousel';
 
 export const BRANDS_TAB = {
     name: 'Brands',
@@ -49,7 +50,13 @@ export const FEEDS_TAB = {
     name: 'Feeds',
     value: 'feeds',
 };
-const TAB_DATA = [BRANDS_TAB, PROJECTS_TAB, FEEDS_TAB];
+
+export const RECOMMENDED_TAB = {
+    name: 'Recommended',
+    value: 'recommended',
+};
+
+const TAB_DATA = [BRANDS_TAB, RECOMMENDED_TAB, PROJECTS_TAB, FEEDS_TAB];
 
 const ExploreScreen = ({ route }) => {
     const initialTab = route?.params?.initialTab || TAB_DATA[0];
@@ -140,8 +147,11 @@ const ExploreScreen = ({ route }) => {
     }, [search, projectsCarouselData]);
 
     return (
-        <ScrollView style={styles.container}>
-
+        <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            alwaysBounceVertical={false}
+        >
             <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                 <TemplateText size={18} bold startCase>Explore Brands and Projects</TemplateText>
             </TemplateBox>
@@ -177,6 +187,9 @@ const ExploreScreen = ({ route }) => {
             {selectedTab === FEEDS_TAB && filteredProjects && (
                 <FeedsTab />
             )}
+            {selectedTab === RECOMMENDED_TAB && (
+                <RecommendedBrandsCarousel style={styles.carousel} />
+            )}
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown
@@ -201,7 +214,10 @@ const ExploreScreen = ({ route }) => {
                 }}
             >
 
-                <ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    alwaysBounceVertical={false}
+                >
                     <TemplateBox
                         mb={WRAPPER_MARGIN}
                         mt={SPACE_XSMALL}
@@ -319,6 +335,9 @@ const styles = StyleSheet.create({
     },
     applyText: {
         marginLeft: WRAPPER_MARGIN,
+    },
+    carousel: {
+        marginVertical: WRAPPER_MARGIN,
     },
 });
 export default ExploreScreen;
