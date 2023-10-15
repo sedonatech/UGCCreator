@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { Platform, Alert } from 'react-native';
 import { get } from 'lodash';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import { request, PERMISSIONS } from 'react-native-permissions';
+
 import {
     options,
     optionsLandscapeMode,
@@ -90,6 +93,22 @@ const useFirebaseSetStorage = () => {
                     const error = new Error('User has not granted permissions');
                     error.code = 'PERMISSIONS';
                     throw error;
+                }
+
+                if (err.code === 'E_NO_CAMERA_PERMISSION') {
+                    let permissionStatus;
+                    request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then((result) => {
+                        permissionStatus = result
+                    });
+
+                    if (permissionStatus !== 'granted') {
+                        Alert.alert(
+                            'Camera permission',
+                            'You denied camera permission',
+                            [{ text: 'OK' }]
+                        );
+                        throw new Error('User has not granted camera permissions');
+                    }
                 }
             });
     };
