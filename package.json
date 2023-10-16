@@ -59,6 +59,7 @@
     "react-native-mail": "^6.1.1",
     "react-native-modal": "^13.0.1",
     "react-native-pdf": "^6.6.2",
+    "react-native-permissions": "^3.10.0",
     "react-native-progress": "^5.0.0",
     "react-native-purchases": "^4.5.2",
     "react-native-rate": "^1.2.12",
