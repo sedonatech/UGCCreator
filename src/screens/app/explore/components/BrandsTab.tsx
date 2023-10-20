@@ -16,9 +16,9 @@ interface Props {
     image?: string;
     shortDescription?: string;
     isActive?: boolean;
-};
+}
 
-const BrandsTab = ({ data }: { data: Array<Props>}) => {
+const BrandsTab = ({ data }: { data: Array<Props> }) => {
     const navigation = useNavigation();
 
     return (
@@ -32,7 +32,6 @@ const BrandsTab = ({ data }: { data: Array<Props>}) => {
                     style={styles.card}
                     cardWidth={SCREEN_WIDTH - 2 * WRAPPER_MARGIN}
                     aspectRatio={1.8}
-                    slideInDelay={(index + 1) * 100}
                     titleSize={16}
                     descriptionLines={2}
                     descriptionSize={12}
@@ -40,9 +39,10 @@ const BrandsTab = ({ data }: { data: Array<Props>}) => {
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
                     showActive
                     active={brand?.isActive}
+
                 />
             ))}
-            <RecommendedBrandsCarousel style={styles.carousel} />
+
         </TemplateBox>
     );
 };
@@ -52,9 +52,6 @@ const styles = StyleSheet.create({
         marginBottom: WRAPPER_MARGIN,
         alignSelf: 'center',
     },
-    carousel: {
-        marginVertical: WRAPPER_MARGIN,
-    }
 });
 
 export default BrandsTab;

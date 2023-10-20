@@ -36,11 +36,15 @@ const UpdatePortfolioScreen = ({ navigation }) => {
     const { trackEvent } = useTrackEvent();
 
     const handleUpdate = async () => {
-        updateProfile(profileData, profileData?.id);
-        await trackEvent('update_profile');
-        setTimeout(() => {
-            navigation.navigate(PROFILE);
-        }, 1000);
+        try {
+            updateProfile(profileData, profileData?.id);
+            await trackEvent('update_profile');
+            setTimeout(() => {
+                navigation.navigate(PROFILE);
+            }, 1000);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     useLayoutEffect(() => {
