@@ -1,15 +1,10 @@
 import React, { FC } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-
+import { Image, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
-    SCREEN_WIDTH,
-    SPACE_XLARGE
-} from '../../../../theme/Layout';
-import {
-    BLACK, BLACK_60, BLACK_90, DEFAULT_GRADIENT, GREEN, WHITE, YELLOW,
+    BLACK, DEFAULT_GRADIENT, GREEN, WHITE, YELLOW,
 } from '../../../../theme/Colors';
-import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
 import { wp } from '../../../../Utils/getResponsiveSize';

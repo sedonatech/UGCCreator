@@ -118,6 +118,7 @@ const AdminPanelScreen = ({ navigation }) => {
                     onRefresh={handleBrandRefresh}
                 />
             )}
+            showsVerticalScrollIndicator={false}
         >
             {profile?.name && (
                 <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />

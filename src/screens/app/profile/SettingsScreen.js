@@ -89,7 +89,7 @@ const SettingsScreen = ({ navigation }) => {
         {
             title: 'Notifications',
             description: 'Manage your notifications',
-            onPress: () => {
+            onPress: async () => {
                 if (isAuthorized) {
                     Alert.alert(
                         'Notifications',
@@ -103,7 +103,7 @@ const SettingsScreen = ({ navigation }) => {
                         ],
                     );
                 } else {
-                    checkApplicationPermissions();
+                    await checkApplicationPermissions();
                 }
             },
             icon: 'notifications-outline',
@@ -198,14 +198,14 @@ const SettingsScreen = ({ navigation }) => {
             <TemplateBox mh={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 3}>
                 {settings.map(({
                     title, description, onPress, icon,
-                }) => (
+                }, i) => (
                     <TouchableOpacity onPress={onPress}>
                         <SettingsRow
                             title={title}
                             subtitle={description}
                             onPress={onPress}
                             icon={icon}
-                            key={title}
+                            key={i}
                         />
                     </TouchableOpacity>
                 ))}

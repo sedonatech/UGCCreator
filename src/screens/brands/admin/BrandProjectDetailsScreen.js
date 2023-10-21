@@ -13,6 +13,7 @@ import {
 import {
     SCREEN_HEIGHT,
     WRAPPER_MARGIN,
+    SCREEN_WIDTH
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
@@ -109,7 +110,7 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                 {/* @ts-ignore */}
                 <BackgroundImage
                     source={{ uri: selectedProject?.image }}
-                    width="100%"
+                    width={SCREEN_WIDTH}
                     style={styles.image}
                 />
                 <TemplateBox

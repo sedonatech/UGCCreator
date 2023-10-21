@@ -12,6 +12,16 @@ const useChatRooms = () => {
     const createChatRoom = async (name, creatorId, brandId, creatorFCMToken, brandFCMToken) => {
         try {
             setLoading(true);
+            // Create a new chat room only if the user is available to receive messages
+            if (!creatorFCMToken || !brandFCMToken) {
+                Alert.alert('The user may not be available at the moment',
+                    'Please try again later',
+                    [{
+                        text: 'OK',
+                        onPress: () => {},
+                    }], { cancelable: false });
+                return;
+            }
             const response = await firestore().collection(CHAT_ROOMS).add({
                 name,
                 creatorId,
@@ -39,6 +49,11 @@ const useChatRooms = () => {
         setLoading(false);
     };
 
+    const chatRoomFiters = '';
+    const chatRoomRef = firestore()
+        .collection(CHAT_ROOMS)
+        .orderBy('createdAt', 'desc')
+        .where('creatorId', '==', 'creatorId');
     useEffect(() => {
         const unsubscribe = firestore()
             .collection(CHAT_ROOMS)

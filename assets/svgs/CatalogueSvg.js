@@ -3,7 +3,6 @@ import Svg, { G, Rect, Path, Defs, ClipPath } from "react-native-svg"
 
 function CatalogueSvg({
     size=48,
-    style,
     ...props
 }) {
     return (

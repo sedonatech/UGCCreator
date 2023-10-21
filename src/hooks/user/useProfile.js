@@ -2,7 +2,11 @@
 
 import firestore from '@react-native-firebase/firestore';
 import { useState } from 'react';
-import { DEFAULT_CREATOR_DESCRIPTION, DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../consts/content/Portfolio';
+import {
+    DEFAULT_BRAND_DESCRIPTION,
+    DEFAULT_CREATOR_DESCRIPTION,
+    DEFAULT_CREATOR_SHORT_DESCRIPTION,
+} from '../../consts/content/Portfolio';
 
 const USERS_COLLECTION = 'users';
 
@@ -116,7 +120,7 @@ const useProfile = () => {
                 id: currentUser?.uid,
                 image: currentUser?.photoURL,
                 shortDescription: '',
-                description: '',
+                description: DEFAULT_BRAND_DESCRIPTION,
                 contact: {
                     email: '',
                     phone: '',

@@ -5,8 +5,6 @@ import {
 } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import codePush from 'react-native-code-push';
-
 import MainNavigator from './src/navigation/MainNavigator';
 import { AuthProvider } from './src/context/AuthProvider';
 import { FeatureFlagProvider } from './src/context/FeatureFlagsContext';
@@ -71,6 +69,9 @@ const App = () => (
         </FeatureFlagProvider>
     </AuthProvider>
 );
-export default codePush({
-    checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-})(App);
+
+export default App;
+// TODO: uncomment this when we are ready to use codepush
+// export default codePush({
+//     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+// })(App);

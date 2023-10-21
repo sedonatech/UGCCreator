@@ -2,18 +2,45 @@ import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 
 const USERS_COLLECTION = 'users';
+
 const useGetCreators = () => {
     const [creators, setCreators] = useState([]);
 
+    const [fcmCreators, setFcmCreators] = useState([]);
+
+    const fcmCreatorsRef = firestore().collection(USERS_COLLECTION)
+        .where('type', '==', 'creator')
+        .where('fcmToken', '!=', '');
+
+    const creatorsRef = firestore().collection(USERS_COLLECTION)
+        .where('type', '==', 'creator');
+
     useEffect(() => {
-        const subscriber = firestore()
-            .collection(USERS_COLLECTION)
+        const subscriber = creatorsRef
             .onSnapshot((querySnapshot) => {
-                setCreators(
-                    querySnapshot?.docs
-                        ?.map((doc) => doc?.data())
-                        ?.filter(({ type }) => type === 'creator'),
-                );
+                const creatorsData = querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
+                        ...doc?.data(),
+                    }));
+                setCreators(creatorsData);
+            });
+
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+    }, []);
+
+    useEffect(() => {
+        const subscriber = fcmCreatorsRef
+            .onSnapshot((querySnapshot) => {
+                const creatorsData = querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
+                        ...doc?.data(),
+                    }));
+                setFcmCreators(creatorsData);
             });
 
         // Stop listening for updates when no longer required
@@ -22,7 +49,8 @@ const useGetCreators = () => {
 
     return {
         creators,
-        filteredCreators: creators?.filter(({ image }) => image !== ''),
+        filteredCreators: creators,
+        fcmCreators,
     };
 };
 

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react-native/no-inline-styles */
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef, memo } from 'react';
 import {
     TouchableOpacity, View, StyleSheet, Animated
 } from 'react-native';
@@ -426,4 +426,4 @@ TemplateBox.defaultProps = {
     slideInDelay: 0,
     opacity: 1,
 };
-export default TemplateBox;
+export default memo(TemplateBox);

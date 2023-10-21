@@ -10,7 +10,15 @@ import { BRAND_DETAILS } from '../../../../navigation/ScreenNames';
 import RecommendedBrandsCarousel from '../../home/components /RecommendedBrandsCarousel';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
-const BrandsTab = ({ data }) => {
+interface Props {
+    id?: string;
+    name?: string
+    image?: string;
+    shortDescription?: string;
+    isActive?: boolean;
+}
+
+const BrandsTab = ({ data }: { data: Array<Props> }) => {
     const navigation = useNavigation();
 
     return (
@@ -24,7 +32,6 @@ const BrandsTab = ({ data }) => {
                     style={styles.card}
                     cardWidth={SCREEN_WIDTH - 2 * WRAPPER_MARGIN}
                     aspectRatio={1.8}
-                    slideInDelay={(index + 1) * 100}
                     titleSize={16}
                     descriptionLines={2}
                     descriptionSize={12}
@@ -32,9 +39,10 @@ const BrandsTab = ({ data }) => {
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
                     showActive
                     active={brand?.isActive}
+
                 />
             ))}
-            <RecommendedBrandsCarousel style={styles.carousel} />
+
         </TemplateBox>
     );
 };
@@ -44,9 +52,6 @@ const styles = StyleSheet.create({
         marginBottom: WRAPPER_MARGIN,
         alignSelf: 'center',
     },
-    carousel: {
-        marginVertical: WRAPPER_MARGIN,
-    }
 });
 
 export default BrandsTab;

@@ -1,25 +1,27 @@
 import React, {
-    useEffect, useMemo, useRef, useState,
+    useEffect, useRef, useState,
 } from 'react';
-import { FlatList, ScrollView, StyleSheet } from 'react-native';
+import {
+    ActivityIndicator,
+    FlatList, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, View,
+} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
 import { sortBy } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 
-import { hp } from '../../../Utils/getResponsiveSize';
+import { wp } from '../../../Utils/getResponsiveSize';
 import {
     HEADER_MARGIN,
     IS_ANDROID,
     SCREEN_HEIGHT,
-    SPACE_LARGE,
+    SPACE_LARGE, SPACE_MEDIUM,
     SPACE_XSMALL,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import {
-    BLACK, BRAND_BLUE, WHITE, WHITE_96,
+    BLACK, BRAND_BLUE, IOS_BLUE, WHITE, WHITE_96,
 } from '../../../theme/Colors';
-import Blob from '../../../../assets/svgs/Blob';
 import useGetCreators from '../../../hooks/brands/useGetCreators';
 
 import TemplateBox from '../../../components/TemplateBox';
@@ -39,20 +41,11 @@ import {
 import CreatorCard from './CreatorCard';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../consts/content/Portfolio';
 import { PROFILE } from '../../../navigation/ScreenNames';
+import TemplateSafeAreaView from '../../../components/TemplateSafeAreaView';
+import { isIOS } from '../../../Utils/Platform';
 
 const CreatorProfilesScreen = ({ navigation }) => {
-    const { creators } = useGetCreators();
-
-    const creatorsData = useMemo(() => {
-        if (!creators?.length) return [];
-
-        return creators?.map((creator) => ({
-            ...creator,
-            hasImage: creator?.image !== '',
-            isActive: !!creator?.image,
-
-        }));
-    }, [creators]);
+    const { creators: creatorsData } = useGetCreators();
 
     const refRBSheet = useRef();
 
@@ -71,19 +64,14 @@ const CreatorProfilesScreen = ({ navigation }) => {
     };
 
     const options = {
+        isCaseSensitive: false,
+        includeScore: true,
         shouldSort: true,
-        threshold: 0.6,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
         minMatchCharLength: 1,
+        threshold: 0.4,
+        useExtendedSearch: true,
         keys: [
             'userName',
-            'title',
-            'shortDescription',
-            'location.country',
-            'location.city',
-            'email',
         ],
     };
 
@@ -97,59 +85,79 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const filteredCreators = search?.length ? searchResults : creatorsData;
 
+    const renderItem = ({ item }) => (
+        <CreatorCard
+            key={item?.id}
+            name={item?.userName}
+            imageUrl={item?.image}
+            shortDescription={item?.shortDescription
+                || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+            location={item?.location?.country}
+            email={item?.email}
+            onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+            active={item?.isActive}
+        />
+    );
+
     return (
-        <ScrollView
-            style={styles.scroll}
-            contentContainerStyle={styles.scrollContainer}
-            showsVerticalScrollIndicator={false}
+        <KeyboardAvoidingView
+            behavior={isIOS ? 'padding' : 'height'}
+            style={styles.mainContainer}
         >
-            <Blob top />
-            <Blob right />
-            <Blob bottom />
-            <Blob center />
-            <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
-                <TemplateText
-                    size={18}
-                    bold
-                    startCase
-                >
-                    Find the perfect creator
-                </TemplateText>
-            </TemplateBox>
-            <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
-                <TemplateTextInput
-                    placeholder="Search"
-                    style={[styles.input, SHADOW('default', WHITE)]}
-                    value={search}
-                    onChangeText={(text) => setSearch(text)}
-                    autoCapitalize="none"
-                />
-                <TemplateTouchable
-                    onPress={() => refRBSheet.current.open()}
-                    style={styles.filterButton}
-                >
-                    <Filter />
-                </TemplateTouchable>
-            </TemplateBox>
-
+            <StatusBar barStyle="default" />
             <FlatList
-                data={sortBy(filteredCreators, 'hasImage')?.reverse()}
-                renderItem={({ item }) => (
-                    <CreatorCard
-                        key={item?.id}
-                        name={item?.userName}
-                        imageUrl={item?.image}
-                        shortDescription={item?.shortDescription
-                            || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-                        location={item?.location?.country}
-                        email={item?.email}
-                        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-                        active={item?.isActive}
-                    />
-                )}
+                data={sortBy(filteredCreators, 'isActive')?.reverse()}
+                renderItem={renderItem}
                 showVerticalScrollIndicator={false}
+                keyExtractor={(item, index) => (`${item?.id}-${index}`)}
+                ListHeaderComponent={(
+                    <>
+                        <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
+                            <TemplateText
+                                size={18}
+                                bold
+                                startCase
+                            >
+                                Find the perfect creator
+                            </TemplateText>
+                        </TemplateBox>
+                        <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
+                            <TemplateTextInput
+                                placeholder="Search"
+                                style={[styles.input, SHADOW('default', WHITE)]}
+                                value={search}
+                                onChangeText={(text) => setSearch(text)}
+                                autoCapitalize="none"
+                            />
+                            <TemplateTouchable
+                                onPress={() => refRBSheet.current.open()}
+                                style={styles.filterButton}
+                            >
+                                <Filter />
+                            </TemplateTouchable>
+                        </TemplateBox>
+                    </>
+                )}
+                ListFooterComponent={(
+                    <View style={styles.listFooter}>
+                        <TemplateSafeAreaView ios />
+                    </View>
+                )}
+                ListEmptyComponent={(
+                    <TemplateBox
+                        flex={1}
+                        alignItems="center"
+                        justifyContent="center"
+                        mt={SPACE_LARGE}
+                        center
+                        selfCenter
+                    >
+                        <ActivityIndicator size="large" color={IOS_BLUE} />
+                    </TemplateBox>
+                )}
+                initialNumToRender={5}
+                onEndReachedThreshold={0.5}
             />
-
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown
@@ -265,20 +273,13 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 </ScrollView>
 
             </RBSheet>
-        </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
 const styles = StyleSheet.create({
-    scroll: {
+    mainContainer: {
         flex: 1,
-        backgroundColor: WHITE,
-    },
-    scrollContainer: {
-        paddingTop: hp(SPACE_LARGE),
-        paddingBottom: hp(SPACE_LARGE),
-        flexGrow: 1,
-        backgroundColor: WHITE,
     },
     input: {
         width: '100%',
@@ -297,6 +298,9 @@ const styles = StyleSheet.create({
     },
     applyText: {
         marginLeft: WRAPPER_MARGIN,
+    },
+    listFooter: {
+        paddingBottom: wp(SPACE_MEDIUM),
     },
 });
 export default CreatorProfilesScreen;

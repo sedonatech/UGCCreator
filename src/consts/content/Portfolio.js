@@ -6,6 +6,10 @@ export const DEFAULT_CREATOR_DESCRIPTION = ''
 
 export const DEFAULT_CREATOR_SHORT_DESCRIPTION = 'I am a UGC content creator. I produce primarily video, photography, and lifestyle content for brands like you!🌴🌵🏜.';
 
+export const DEFAULT_BRAND_DESCRIPTION = 'Where innovation meets style. We are a leading brand dedicated to crafting exceptional products that elevate your everyday experiences. Our commitment to quality, sustainability, and cutting-edge design sets us apart. Discover a world of possibilities with us and redefine your lifestyle today.';
+
+export const DEFAULT_BRAND_SHORT_DESCRIPTION = 'We are a leading brand dedicated to crafting exceptional products that elevate your everyday experiences.';
+
 export const DEFAULT_CREATOR_SOCIAL = {
     facebook: 'https://www.facebook.com',
     instagram: 'https://www.instagram.com',

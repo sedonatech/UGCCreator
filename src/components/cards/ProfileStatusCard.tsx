@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import * as Progress from 'react-native-progress';
 
 import { StyleSheet } from 'react-native';
@@ -8,6 +8,7 @@ import { RADIUS_MEDIUM, SCREEN_WIDTH } from '../../theme/Layout';
 import { BLACK, BLACK_30, BRAND_BLUE } from '../../theme/Colors';
 import { SHADOW } from '../../theme/Shadow';
 import TemplateIcon from '../TemplateIcon';
+import { wp } from '../../Utils/getResponsiveSize';
 
 interface ProfileStatusCardProps {
     progress: number;
@@ -21,6 +22,7 @@ interface ProfileStatusCardProps {
     icon?: string;
     descriptionLines?: number;
     backgroundColor?: string;
+    titleSize?: number;
 }
 // @ts-ignore
 const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
@@ -35,6 +37,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
     icon,
     descriptionLines,
     backgroundColor = BRAND_BLUE,
+    titleSize,
 }) => (
     <TemplateBox
         width={SCREEN_WIDTH - 40}
@@ -83,7 +86,7 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
             <TemplateText
                 bold
                 color={BLACK}
-                size={16}
+                size={titleSize || wp(16)}
                 // @ts-ignore
                 style={styles.title}
             >
@@ -110,4 +113,5 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     }
 });
-export default ProfileStatusCard;
+
+export default memo(ProfileStatusCard);
