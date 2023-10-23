@@ -47,6 +47,8 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to your photo gallery so that you may upload your photos for your progress photos</string>
+	<key>NSAppleMusicUsageDescription</key>
+    <string>We need access to your Apple Music library to create personalized playlists based on your music preferences.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
