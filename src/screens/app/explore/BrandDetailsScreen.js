@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 import {
-    BLACK_30, DEFAULT_GRADIENT,
+    DEFAULT_GRADIENT,
     WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import {
@@ -39,15 +39,9 @@ const BRAND_DETAILS_TABS = [
 const BrandDetailsScreen = ({ route, navigation }) => {
     const brandId = route?.params?.brandId;
 
-    const { brands } = useGetBrands();
+    const { selectedBrand } = useGetBrands(brandId);
 
     const [selectedTab, setSelectedTab] = useState(BRAND_DETAILS_TABS[0]);
-
-    const selectedBrand = useMemo(() => {
-        if (!brands?.length) return null;
-
-        return brands?.find(({ id }) => id === brandId);
-    }, [brandId, brands]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -143,6 +137,7 @@ const BrandDetailsScreen = ({ route, navigation }) => {
             {selectedTab?.value === BRAND_DETAILS_TABS[0]?.value && (
                 <DescriptionTab
                     description={selectedBrand?.description}
+                    name={selectedBrand?.name}
                     profileUrl={selectedBrand?.url}
                     phone={selectedBrand?.contact?.phone}
                     email={selectedBrand?.contact?.email}
@@ -152,6 +147,8 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                     twitter={selectedBrand?.socialMedia?.twitter}
                     tiktok={selectedBrand?.socialMedia?.tiktok}
                     linkedin={selectedBrand?.socialMedia?.linkedin}
+                    brandFCMToken={selectedBrand?.fcmToken}
+                    brandId={selectedBrand?.id}
                 />
             )}
             {selectedTab?.value === BRAND_DETAILS_TABS[1]?.value && (

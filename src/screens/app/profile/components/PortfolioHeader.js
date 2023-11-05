@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import {
-    BLACK, BLACK_60, BRAND_BLUE, GREEN, WHITE,
+    BLACK, BLACK_60, BRAND_BLUE, GREEN, IOS_BLUE, WHITE,
 } from '../../../../theme/Colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
 import Avatar from '../../../../components/Avatar';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
 const PortfolioHeader = ({
-    userName, location, isUpdate, image,
+    userName, location, isUpdate, image, creatorId,
 }) => (
     <TemplateBox>
         <TemplateBox
@@ -36,8 +36,8 @@ const PortfolioHeader = ({
                 alignItems="center"
             >
 
-                {image ? (
-                    <FastImage source={{ uri: image }} style={styles.image} />
+                {creatorId ? (
+                    image ? <FastImage source={{ uri: image || '' }} style={styles.image} /> : <ActivityIndicator color={IOS_BLUE} size="small" />
                 ) : (
                     <Avatar height={176} width={196} borderRadius={40} />
                 )}
@@ -76,14 +76,16 @@ const PortfolioHeader = ({
                         style={styles.icon}
                     />
                 </TemplateBox>
-                <TemplateBox row alignItems="center">
-                    <TemplateText size={12} color={BLACK_60}>{`@${userName}`}</TemplateText>
-                    <TemplateBox width={10} />
+                {location && (
                     <TemplateBox row alignItems="center">
-                        <TemplateIcon size={12} color={BLACK_60} name="location-outline" />
-                        <TemplateText size={12} color={BLACK_60}>{location}</TemplateText>
+                        <TemplateText size={12} color={BLACK_60}>{`@${userName}`}</TemplateText>
+                        <TemplateBox width={10} />
+                        <TemplateBox row alignItems="center">
+                            <TemplateIcon size={12} color={BLACK_60} name="location-outline" />
+                            <TemplateText size={12} color={BLACK_60}>{location}</TemplateText>
+                        </TemplateBox>
                     </TemplateBox>
-                </TemplateBox>
+                )}
             </TemplateBox>
         ) : (
             <TemplateBox mt={135} alignItems="center" mb={6} selfCenter>
@@ -98,6 +100,7 @@ PortfolioHeader.propTypes = {
     location: PropTypes.string,
     isUpdate: PropTypes.bool,
     image: PropTypes.string,
+    creatorId: PropTypes.string,
 };
 
 PortfolioHeader.defaultProps = {
@@ -105,6 +108,7 @@ PortfolioHeader.defaultProps = {
     userName: '',
     location: '',
     image: '',
+    creatorId: '',
 };
 
 const styles = StyleSheet.create({

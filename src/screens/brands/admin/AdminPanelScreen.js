@@ -176,6 +176,7 @@ const AdminPanelScreen = ({ navigation }) => {
                         title={BRAND_NO_CURRENT_PROJECT_TITLE}
                         description={BRAND_NO_CURRENT_PROJECT_MESSAGE}
                         showProgress={false}
+                        showIcon={false}
                         style={styles.statusCard}
                         slideInDelay={200}
                     />

@@ -40,7 +40,7 @@ const BrandsCard: FC<Props> = ({
     descriptionLines = 2,
     descriptionSize = 12,
     onPress,
-    buttonTitle = 'View Brand Offers',
+    buttonTitle = 'View brand details',
     active,
     showActive = false
 }) => (

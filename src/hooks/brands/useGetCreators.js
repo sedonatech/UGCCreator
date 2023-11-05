@@ -3,10 +3,15 @@ import firestore from '@react-native-firebase/firestore';
 
 const USERS_COLLECTION = 'users';
 
-const useGetCreators = () => {
+const useGetCreators = (creatorId = '') => {
     const [creators, setCreators] = useState([]);
 
     const [fcmCreators, setFcmCreators] = useState([]);
+
+    const selectedCreatorRef = firestore().collection(USERS_COLLECTION)
+        .doc(creatorId);
+
+    const [selectedCreator, setSelectedCreator] = useState({});
 
     const fcmCreatorsRef = firestore().collection(USERS_COLLECTION)
         .where('type', '==', 'creator')
@@ -47,10 +52,25 @@ const useGetCreators = () => {
         return () => subscriber();
     }, []);
 
+    // Fetch selected creator
+    useEffect(() => {
+        const subscriber = selectedCreatorRef
+            .onSnapshot((doc) => {
+                setSelectedCreator({
+                    id: doc?.id,
+                    ...doc?.data(),
+                });
+            });
+
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+    }, [creatorId]);
+
     return {
         creators,
         filteredCreators: creators,
         fcmCreators,
+        selectedCreator,
     };
 };
 

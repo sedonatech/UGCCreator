@@ -18,10 +18,6 @@ const useLogout = () => {
                     text: 'OK',
                     onPress: async () => {
                         try {
-                            const allKeys = await AsyncStorage.getAllKeys();
-                            if (allKeys?.length > 0) {
-                                await AsyncStorage.multiRemove(allKeys);
-                            }
                             await auth().signOut();
                         } catch (e) {
                             console.error(e);
@@ -51,7 +47,24 @@ const useLogout = () => {
                             if (allKeys?.length > 0) {
                                 await AsyncStorage.multiRemove(allKeys);
                             }
-                            await auth().currentUser?.delete();
+                            auth().currentUser?.delete();
+                            Alert.alert(
+                                'Account Deleted',
+                                'Your account has been deleted successfully.',
+                                [
+                                    {
+                                        text: 'OK',
+                                        onPress: async () => {
+                                            try {
+                                                await auth().signOut();
+                                            } catch (e) {
+                                                console.error(e);
+                                            }
+                                        },
+                                    },
+                                ],
+                                { cancelable: false },
+                            );
                         } catch (e) {
                             console.error(e);
                         }
