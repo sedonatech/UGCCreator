@@ -44,8 +44,7 @@ const RateItem = ({
         </TemplateText>
         <TemplateBox height={10} />
         <TemplateTextInput
-            placeholder="Enter Price"
-            keyboardType="numeric"
+            placeholder="Enter rate"
             onChangeText={onChangeText}
             value={value}
             style={styles.input}
