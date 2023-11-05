@@ -1,9 +1,17 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Configuration, OpenAIApi } from "openai-edge"
+import "react-native-url-polyfill/auto"; 
 
-const US_ENDPOINT = 'https://ugc-creator-app.herokuapp.com/ugcCreatorAppApi';
-const EU_ENDPOINT = 'https://ugcserver.onrender.com/ugcCreatorAppApi';
+const OPENAI_API_KEY = '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';
+
+// Create an OpenAI API client (that's edge friendly!)
+const configuration = new Configuration({
+  apiKey: OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
 
 const useAITools = (toolType = 'scripts') => {
     const [brandName, setBrandName] = useState();
@@ -58,25 +66,24 @@ const useAITools = (toolType = 'scripts') => {
             // eslint-disable-next-line no-nested-ternary
             const prompt = toolType === 'scripts' ? scriptPrompt : toolType === 'hooks' ? hooksPrompt : contentSuggestionsPrompt;
 
-            const responseData = await Promise.any([
-                fetch(US_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ prompt }),
-                }),
-                fetch(EU_ENDPOINT, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ prompt }),
-                })    
-              ])
-
-            const response = await responseData.json();
-            setResponseMessage(response?.message?.content);
+            const completion = await openai.createChatCompletion({
+                model: 'gpt-4',
+                stream: false,
+                messages: [
+                {
+                    role: "system",
+                    content: `You are a great UGC creator and you are working for a brand ${data.brandName} that ${data.productDescription}. You are tasked with creating a script for a UGC video. `
+                },
+                {
+                    role: "user",
+                    content: prompt
+                },
+                ],
+            });
+        
+            const response = await completion.json();
+  
+            setResponseMessage(response?.choices[0]?.message?.content);
 
             const contentGenerationResultsFromLocalStorage = await AsyncStorage.getItem('contentGenerationResults');
 
