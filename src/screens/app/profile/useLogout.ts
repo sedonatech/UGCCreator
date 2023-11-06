@@ -46,7 +46,7 @@ const useLogout = () => {
                             if (allKeys?.length > 0) {
                                 await AsyncStorage.multiRemove(allKeys);
                             }
-                            auth().currentUser?.delete();
+                            await auth().currentUser?.delete();
                             Alert.alert(
                                 'Account Deleted',
                                 'Your account has been deleted successfully.',
