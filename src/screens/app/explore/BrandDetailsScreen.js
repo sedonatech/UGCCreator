@@ -1,5 +1,5 @@
 import React, {
-    useLayoutEffect, useMemo, useState, useRef,
+    useLayoutEffect, useState, useRef,
 } from 'react';
 import {
     Animated,

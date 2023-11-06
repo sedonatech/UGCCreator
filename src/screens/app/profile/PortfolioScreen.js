@@ -1,6 +1,6 @@
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import {
-    ScrollView, StyleSheet, Linking, ActivityIndicator,
+    ScrollView, StyleSheet, ActivityIndicator,
 } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 
@@ -13,14 +13,7 @@ import {
 import PortfolioHeader from './components/PortfolioHeader';
 import AboutSection from './components/AboutSection';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import {
-    DEFAULT_CREATOR_CONTACT_INFO,
-    DEFAULT_CREATOR_DESCRIPTION,
-    DEFAULT_CREATOR_PAYPAL_LINK,
-    DEFAULT_CREATOR_RATES,
-    DEFAULT_CREATOR_SHORT_DESCRIPTION,
-    DEFAULT_CREATOR_SOCIAL,
-} from '../../../consts/content/Portfolio';
+import { DEFAULT_CREATOR_PAYPAL_LINK } from '../../../consts/content/Portfolio';
 import ContactSection from './components/ContactSection';
 import SampleWorkSection from './components/SampleWorkSection';
 import RatesSection from './components/RatesSection';

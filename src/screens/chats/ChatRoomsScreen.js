@@ -1,6 +1,5 @@
 import { FlatList, StyleSheet, RefreshControl } from 'react-native';
 import React from 'react';
-import { uniqBy } from 'lodash';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
 import { WHITE } from '../../theme/Colors';
