@@ -16,7 +16,7 @@ import CreatorCard from '../../creators/CreatorCard';
 import TemplateBox from '../../../../components/TemplateBox';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 
-const SAMPLE_SIZE = 8;
+const SAMPLE_SIZE = 5;
 
 const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();

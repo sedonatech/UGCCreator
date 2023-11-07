@@ -150,9 +150,10 @@ const AdminPanelScreen = ({ navigation }) => {
 
                         />
                     </TemplateBox>
-
                 </TemplateBox>
             )}
+            <CurrentCreatorsCarousel style={styles.carousel} />
+            <FeaturedCreatorsCarousel style={styles.carousel} />
             { profileCompleteRatio < 1 && (
                 <ProfileStatusCard
                     title={BRAND_PROFILE_INCOMPLETE_TITLE}
@@ -182,8 +183,6 @@ const AdminPanelScreen = ({ navigation }) => {
                     />
                 )
             }
-            <CurrentCreatorsCarousel style={styles.carousel} />
-            <FeaturedCreatorsCarousel style={styles.carousel} />
         </ScrollView>
 
     );

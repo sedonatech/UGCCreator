@@ -1,14 +1,15 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import {
-    ScrollView, StyleSheet, ActivityIndicator,
+    ScrollView, StyleSheet,
 } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 
+import { isEmpty } from 'lodash';
 import {
     BLACK_10, lightOrange, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
-    IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN,
+    IS_ANDROID, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import PortfolioHeader from './components/PortfolioHeader';
 import AboutSection from './components/AboutSection';
@@ -25,6 +26,8 @@ import Button from '../../../components/Button';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import useChatsContext from '../../../hooks/chats/useChatsContext';
+import CreatorDetailsHeader from './components/CreatorDetailsHeader';
+import LoadingOverlay from '../../../components/LoadingOverlay';
 
 const PortfolioScreen = ({ navigation, route }) => {
     const creatorId = route?.params?.creatorId;
@@ -33,7 +36,7 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const { auth } = useAuthContext();
 
-    const isCreator = auth?.profile?.type === 'creator';
+    const isBrand = auth?.profile?.type === 'brand';
 
     const profileCompleteRatio = auth?.profileCompleteRatio;
 
@@ -91,52 +94,60 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
 
+    const loading = isEmpty(selectedCreator) && isBrand;
+
     return (
         <ViewShot style={styles.viewShot} ref={screenshot}>
-            {!selectedCreator || (isCreator && !auth?.profile) ? (
-                <TemplateBox absolute top={SCREEN_HEIGHT / 2.2} left={SCREEN_WIDTH / 2.2}>
-                    <ActivityIndicator size="large" />
-                </TemplateBox>
-            ) : (
-                <ScrollView
-                    style={styles.container}
-                    contentContainerStyle={styles.contentContainer}
-                    showsVerticalScrollIndicator={false}
-                >
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+            >
+                {loading && (
+                    <LoadingOverlay message="Fetching the creators portfolio...." />
+                )}
+                {creatorId ? (
+                    <CreatorDetailsHeader
+                        userName={userName}
+                        location={location}
+                        image={image}
+                    />
+                ) : (
                     <PortfolioHeader
                         userName={userName}
                         location={location}
                         creatorId={creatorId}
                         image={image}
                     />
-                    { profileCompleteRatio < 1 && !creatorId && (
-                        <ProfileStatusCard
-                            title={PROFILE_INCOMPLETE_TITLE}
-                            description={PROFILE_INCOMPLETE_MESSAGE}
-                            progress={profileCompleteRatio}
-                            style={styles.statusCard}
-                            slideInDelay={40}
-                            showIcon={false}
-                            backgroundColor={lightOrange}
-                        />
-                    )}
-                    {about && (
-                        <AboutSection
-                            about={about}
-                            shortDescription={shortDescription}
-                            portfolioLink={portfolioLink}
-                        />
-                    )}
-                    <SampleWorkSection />
-                    <RatesSection rates={rates} />
-                    <ContactSection
-                        contactInfo={contact}
-                        socials={socials}
-                        paypalLink={paypalLink}
-                        email={email}
+                )}
+                { profileCompleteRatio < 1 && !creatorId && (
+                    <ProfileStatusCard
+                        title={PROFILE_INCOMPLETE_TITLE}
+                        description={PROFILE_INCOMPLETE_MESSAGE}
+                        progress={profileCompleteRatio}
+                        style={styles.statusCard}
+                        slideInDelay={40}
+                        showIcon={false}
+                        backgroundColor={lightOrange}
                     />
-                    {
-                        creatorId
+                )}
+                {about && (
+                    <AboutSection
+                        about={about}
+                        shortDescription={shortDescription}
+                        portfolioLink={portfolioLink}
+                    />
+                )}
+                <SampleWorkSection />
+                <RatesSection rates={rates} />
+                <ContactSection
+                    contactInfo={contact}
+                    socials={socials}
+                    paypalLink={paypalLink}
+                    email={email}
+                />
+                {
+                    creatorId
                         && (
                             <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                                 <Button
@@ -159,9 +170,9 @@ const PortfolioScreen = ({ navigation, route }) => {
                                 />
                             </TemplateBox>
                         )
-                    }
-                </ScrollView>
-            )}
+                }
+            </ScrollView>
+
         </ViewShot>
     );
 };

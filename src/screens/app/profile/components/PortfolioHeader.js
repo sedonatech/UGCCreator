@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import {
-    BLACK, BLACK_60, BRAND_BLUE, GREEN, IOS_BLUE, WHITE,
+    BLACK, BLACK_60, BRAND_BLUE, GREEN, WHITE,
 } from '../../../../theme/Colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
 import Avatar from '../../../../components/Avatar';
@@ -37,7 +37,7 @@ const PortfolioHeader = ({
             >
 
                 {creatorId ? (
-                    image ? <FastImage source={{ uri: image || '' }} style={styles.image} /> : <ActivityIndicator color={IOS_BLUE} size="small" />
+                    <FastImage source={{ uri: image }} style={styles.image} />
                 ) : (
                     <Avatar height={176} width={196} borderRadius={40} />
                 )}

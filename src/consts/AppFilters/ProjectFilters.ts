@@ -43,26 +43,6 @@ export const projectFilters: ProjectFilters[] = [
     {
         name: 'Art',
         value: 'art',
-    },
-    {
-        name: 'Music',
-        value: 'music',
-    },
-    {
-        name: 'Sports',
-        value: 'sports',
-    },
-    {
-        name: 'Entertainment',
-        value: 'entertainment',
-    },
-    {
-        name: 'Photography',
-        value: 'photography',
-    },
-    {
-        name: 'Cigars and Tobacco',
-        value: 'cigars-and-tobacco',
     }
 ];
 
@@ -271,7 +251,6 @@ export const languageFilters: ProjectFilters[] = [
 ];
 
 export const genderFilters: ProjectFilters[] = [
-
     {
         name: 'Male',
         value: 'male',
@@ -327,20 +306,8 @@ export const projectTypeFilters: ProjectFilters[] = [
         value: 'sponsored',
     },
     {
-        name: 'Influencer',
-        value: 'influencer',
-    },
-    {
         name: 'Paid Collaboration',
         value: 'paidCollaboration',
-    },
-    {
-        name: 'Paid Post',
-        value: 'paidPost',
-    },
-    {
-        name: 'Sponsored Post',
-        value: 'sponsoredPost',
     },
     {
         name: 'Gifted Collaboration',

@@ -1,5 +1,5 @@
 import React, {
-    useEffect, useRef, useState,
+    useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
     ActivityIndicator,
@@ -57,11 +57,21 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const onProjectFilterPress = (value) => {
         if (selectedFilters.includes(value)) {
-            setSelectedFilters(selectedFilters.filter((filter) => filter !== value));
+            setSelectedFilters(selectedFilters?.filter((filter) => filter !== value));
         } else {
             setSelectedFilters([...selectedFilters, value]);
         }
     };
+
+    // TODO: make filtering logic exclusive
+    const filteredCreators = useMemo(() => {
+        if (!selectedFilters.length) return creatorsData;
+        // filter by selected filters
+        const filtered = creatorsData?.filter(
+            (creator) => selectedFilters.every((filter) => creator?.categories?.includes(filter)),
+        );
+        if (filtered?.length) return filtered;
+    }, [selectedFilters, creatorsData]);
 
     const options = {
         isCaseSensitive: false,
@@ -76,14 +86,14 @@ const CreatorProfilesScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-        if (!!search && creatorsData?.length) {
-            const fuse = new Fuse(creatorsData, options);
+        if (!!search && filteredCreators?.length) {
+            const fuse = new Fuse(filteredCreators, options);
             const results = fuse.search(search).map(({ item }) => item);
             setSearchResults(results);
         }
     }, [search]);
 
-    const filteredCreators = search?.length ? searchResults : creatorsData;
+    const filteredSearchedCreators = search?.length ? searchResults : filteredCreators;
 
     const renderItem = ({ item }) => (
         <CreatorCard
@@ -106,7 +116,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
         >
             <StatusBar barStyle="default" />
             <FlatList
-                data={sortBy(filteredCreators, 'isActive')?.reverse()}
+                data={sortBy(filteredSearchedCreators, 'isActive')?.reverse()}
                 renderItem={renderItem}
                 showVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}
@@ -174,7 +184,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
                         paddingTop: 10,
                         paddingBottom: 40,
-                        height: SCREEN_HEIGHT * 0.7,
+                        height: SCREEN_HEIGHT * 0.9,
                     },
                     draggableIcon: {
                         backgroundColor: BLACK,

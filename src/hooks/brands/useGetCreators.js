@@ -68,7 +68,7 @@ const useGetCreators = (creatorId = '') => {
 
     return {
         creators,
-        filteredCreators: creators,
+        filteredCreators: creators?.filter((creator) => creator?.image !== '' && !!creator?.portfolioLink),
         fcmCreators,
         selectedCreator,
     };
