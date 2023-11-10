@@ -38,7 +38,6 @@ const useGetBrands = (brandId = '') => {
                 const brandsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.shortDescription && doc?.data()?.image,
                         ...doc?.data(),
                     }));
                 setBrands(brandsData);
@@ -54,7 +53,6 @@ const useGetBrands = (brandId = '') => {
                 const brandsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.shortDescription && doc?.data()?.image,
                         ...doc?.data(),
                     }));
                 setFcmBrands(brandsData);

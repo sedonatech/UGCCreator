@@ -29,8 +29,7 @@ const BrandsCarousel = ({ style }) => {
             id: brand?.id,
             name: brand?.name,
             image: brand?.image,
-            shortDescription: brand?.shortDescription,
-            isActive: brand?.image,
+            shortDescription: brand?.shortDescription
         }));
     }, [brands]);
 
@@ -58,7 +57,7 @@ const BrandsCarousel = ({ style }) => {
             </TemplateText>
             <TemplateCarousel
                 
-                data={brandsData.sort((a,b) => a.name.localeCompare(b.name)).sort((a,b) => (a.isActive === b.isActive) ? 0 : a ? -1 : 1)}
+                data={brandsData.sort((a,b) => a.name.localeCompare(b.name)).sort((a,b) => a?.name?.localeCompare(b?.name))}
                 renderItem={({ item }) => (
                     <BrandsCard
                         image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
@@ -66,8 +65,6 @@ const BrandsCarousel = ({ style }) => {
                         shortDescription={item?.shortDescription}
                         style={styles.card}
                         onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
-                        active={item?.isActive}
-                        showActive
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
