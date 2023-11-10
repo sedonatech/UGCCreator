@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 
 import PropTypes from 'prop-types';
 
-import { sampleSize } from 'lodash';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
@@ -22,6 +21,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
     const { filteredCreators: creatorsData } = useGetCreators();
+    const creatorsDataSample = creatorsData.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE)
 
     return (
         <View style={style}>
@@ -48,7 +48,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
             </View>
 
             <TemplateCarousel
-                data={sampleSize(creatorsData, SAMPLE_SIZE)}
+                data={creatorsDataSample}
                 renderItem={({ item }) => (
                     <CreatorCard
                         name={item?.userName}
@@ -70,7 +70,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
                 showPagination
-                paginationSize={sampleSize(creatorsData, SAMPLE_SIZE)?.length}
+                paginationSize={creatorsDataSample?.length}
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>

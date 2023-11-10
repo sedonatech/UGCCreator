@@ -2,12 +2,10 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import { sortBy } from 'lodash';
 import TemplateBox from '../../../../components/TemplateBox';
 import BrandsCard from '../../home/components /BrandsCard';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import { BRAND_DETAILS } from '../../../../navigation/ScreenNames';
-import RecommendedBrandsCarousel from '../../home/components /RecommendedBrandsCarousel';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
 interface Props {
@@ -23,7 +21,7 @@ const BrandsTab = ({ data }: { data: Array<Props> }) => {
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN}>
-            {!!data?.length && sortBy(data, 'isActive')?.reverse()?.map((brand: any, index) => (
+            {!!data?.length && data.sort((a,b) => (a.isActive === b.isActive) ? 0 : a ? -1 : 1)?.reverse()?.map((brand: any, index) => (
                 <BrandsCard
                     key={brand?.id}
                     image={{ uri: brand?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}

@@ -1,11 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import {
-    filter, includes, isEmpty, reverse, sortBy,
-} from 'lodash';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
 import FastImage from 'react-native-fast-image';
+
 import Blob from '../../../../assets/svgs/Blob';
 import {
     BLACK, BLACK_40, DEEP_PURPLE, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE,
@@ -46,7 +43,7 @@ const AddProjectScreen = ({ route, navigation }) => {
     const latestImage = useMemo(() => {
         if (!images) return null;
 
-        const sortedImages = reverse(sortBy(filter(images, (item) => !includes(item?.contentDisposition, 'true')), 'generation'));
+        const sortedImages = images.filter((item) => !!item?.contentDisposition).sort((a,b) => (a.generation.localeCompare(b.generation))).reverse();
 
         return sortedImages[0];
     }, [images]);
@@ -58,7 +55,7 @@ const AddProjectScreen = ({ route, navigation }) => {
     }, [latestImage]);
 
     const handleCreateProject = () => {
-        if (isEmpty(project)) {
+        if (Object.keys(project).length === 0) {
             Alert.alert('Please fill all the fields');
         }
         createProject(project);

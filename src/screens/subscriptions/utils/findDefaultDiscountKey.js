@@ -1,4 +1,3 @@
-import { toLower } from 'lodash';
 import { SUBSCRIPTION_IOS_DISCOUNT_YEARLY, SUBSCRIPTION_IOS_DISCOUNT_QUARTERLY, SUBSCRIPTION_IOS_DISCOUNT_MONTHLY } from '../consts';
 
 export default (product) => {
@@ -7,7 +6,7 @@ export default (product) => {
     }
 
     if (
-        (typeof product?.title === 'string' && toLower(product?.title).includes('monthly'))
+        (typeof product?.title === 'string' && product?.title.toLowerCase().includes('monthly'))
         || (typeof product?.identifier === 'string' && toLower(product?.identifier).includes('monthly'))
     ) {
         return SUBSCRIPTION_IOS_DISCOUNT_MONTHLY;

@@ -5,7 +5,6 @@ import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
-import { sortBy } from 'lodash';
 import moment from 'moment/moment';
 import TemplateText from '../../../components/TemplateText';
 import {
@@ -72,16 +71,16 @@ const ExploreScreen = ({ route }) => {
     const { allProjects: projects } = useProjectsContext();
 
     const projectsCarouselData = useMemo(() => {
-        if (!projects) return [];
+        if (!projects || projects.length === 0) return [];
 
-        return sortBy(projects?.map((item) => ({
+        return projects?.sort((a,b) => (a.createdAt - b.createdAt)).map((item) => ({
             id: item?.id,
             image: item?.image,
             title: item?.title,
             shortDescription: item?.shortDescription,
             duration: `${moment(item?.endDate).diff(moment(item?.startDate), 'weeks') || 3} weeks`,
             projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
-        }))?.slice(0, 4), 'createdAt');
+        }))?.slice(0, 4);
     }, [projects]);
 
     const { brands: brandsData } = useGetBrands();

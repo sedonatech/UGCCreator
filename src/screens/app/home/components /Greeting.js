@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
-import { startCase } from 'lodash';
 import PropTypes from 'prop-types';
 
 import TemplateText from '../../../../components/TemplateText';
@@ -37,7 +36,7 @@ const Greeting = ({ userName, style, showAvatar }) => {
 
                 </TemplateText>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
-                    {`${startCase(userName)}!`}
+                    {`${userName.replace(/-/g, ' ').toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}!`}
                 </TemplateText>
                 <TemplateText
                     size={13}

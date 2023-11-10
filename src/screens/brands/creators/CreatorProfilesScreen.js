@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
-import { sortBy } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 
 import { wp } from '../../../Utils/getResponsiveSize';
@@ -116,7 +115,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
         >
             <StatusBar barStyle="default" />
             <FlatList
-                data={sortBy(filteredSearchedCreators, 'isActive')?.reverse()}
+                data={filteredSearchedCreators.sort((a,b) => Number(b.isActive) - Number(a.isActive)).reverse()}
                 renderItem={renderItem}
                 showVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}

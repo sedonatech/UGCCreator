@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { sortBy } from 'lodash';
 import { ProjectFilters } from '../../../../consts/AppFilters/ProjectFilters';
 import {
     RADIUS_SMALL, SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL, SPACE_XSMALL, WRAPPED_SCREEN_WIDTH
@@ -53,7 +52,7 @@ const FilterCategory: FC<Props> = ({
             {toggleFilters && (
                 <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
                     {
-                        sortBy(filters, 'name').map(({ value, name }, index) => (
+                        filters.sort((a,b) => a.name.localeCompare(b.name)).map(({ value, name }, index) => (
                             <FilterPill
                                 onPress={() => onFilterPress(value)}
                                 key={value}

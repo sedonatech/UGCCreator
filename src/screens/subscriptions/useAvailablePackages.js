@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { flatten } from 'lodash';
 import useSubscriptionContext from './useSubscriptionContext';
 import getCurrencyFromPriceString from './utils/getCurrencyFromPriceString';
 import isAndroid from './utils/isAndroid';
@@ -35,7 +34,7 @@ export default (
                 const currentOffering = offerings?.current;
 
                 const type = auth?.profile?.type === 'brand' ? 'Brands' : 'Creators';
-                const allPackages = flatten(allOfferings?.map(({ availablePackages }) => availablePackages));
+                const allPackages = allOfferings?.map(({ availablePackages }) => availablePackages).flat();
                 const allAvailablePackages = allPackages?.filter(({ offeringIdentifier }) => offeringIdentifier === type);
 
                 if (allOfferings?.length) {

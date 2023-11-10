@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { isArray, keys } from 'lodash';
 import { Platform } from 'react-native';
 import useFeatureFlags from '../featureFlags/useFeatureFlags';
 import useAuthContext from '../auth/useAuthContext';
@@ -11,12 +10,12 @@ const buildPurchaseConfig = (subKeys, purchase) => {
     const newPurchase = {
         ...purchase,
     };
-    if (newPurchase?.sortOrder && isArray(newPurchase?.sortOrder)) {
+    if (newPurchase?.sortOrder && Array.isArray(newPurchase?.sortOrder)) {
         newPurchase.sortOrder = newPurchase?.sortOrder?.map((key) => subKeys?.main[key]);
     }
     if (newPurchase?.metaData && subKeys?.discount) {
         const newMetaData = {};
-        keys(subKeys.main).forEach((metaDataKey) => {
+        Object.keys(subKeys.main).forEach((metaDataKey) => {
             newMetaData[subKeys.main[metaDataKey]] = {
                 ...newPurchase.metaData[metaDataKey],
                 discountKey: subKeys.discount[Platform.OS][metaDataKey],

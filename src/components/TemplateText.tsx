@@ -3,7 +3,6 @@
 /* @ts-ignore */
 import React, { FC } from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { startCase as startCaseFunc } from 'lodash';
 
 import { BLACK, PRIMARY, WHITE } from '../theme/Colors';
 import { IS_SHORT_DEVICE } from '../theme/Layout';
@@ -146,7 +145,7 @@ const TemplateText: FC<Props> = ({
 
     if (startCase) {
         // @ts-ignore
-        content = startCaseFunc(children);
+        content = children.replace(/-/g, ' ').toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
 
     return (

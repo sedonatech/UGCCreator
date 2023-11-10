@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { isArray, keys } from 'lodash';
 import { Platform } from 'react-native';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
@@ -11,13 +10,13 @@ const buildPurchaseConfig = (subKeys, purchase) => {
         ...purchase,
     };
     // adds the sort order to the purchase object
-    if (newPurchase?.sortOrder && isArray(newPurchase?.sortOrder)) {
+    if (newPurchase?.sortOrder && Array.isArray(newPurchase?.sortOrder)) {
         newPurchase.sortOrder = newPurchase?.sortOrder?.map((key) => subKeys?.main[key]);
     }
     // adds the discount key to the metaData object in the purchase object
     if (newPurchase?.metaData && subKeys?.discount) {
         const newMetaData = {};
-        keys(subKeys.main).forEach((metaDataKey) => {
+        Object.keys(subKeys.main).forEach((metaDataKey) => {
             newMetaData[subKeys.main[metaDataKey]] = {
                 ...newPurchase.metaData[metaDataKey],
                 discountKey: subKeys.discount[Platform.OS][metaDataKey],

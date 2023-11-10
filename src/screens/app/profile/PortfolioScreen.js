@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import ViewShot from 'react-native-view-shot';
 
-import { isEmpty } from 'lodash';
 import {
     BLACK_10, lightOrange, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
@@ -94,7 +93,7 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
 
-    const loading = isEmpty(selectedCreator) && isBrand;
+    const loading = (Object.keys(selectedCreator).length === 0) && isBrand;
 
     return (
         <ViewShot style={styles.viewShot} ref={screenshot}>

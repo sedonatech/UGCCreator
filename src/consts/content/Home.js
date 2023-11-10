@@ -1,4 +1,3 @@
-import { sampleSize } from 'lodash';
 import productOne from '../../../assets/images/product.jpg';
 import productTwo from '../../../assets/images/product2.jpg';
 import productThree from '../../../assets/images/product3.jpg';
@@ -332,6 +331,12 @@ export const BRANDS = [
     },
 
 ];
+
+const sampleSize = (arr, n) => {
+    const shuffled = arr.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, n)
+}
+
 
 export const PROJECTS = [
     {

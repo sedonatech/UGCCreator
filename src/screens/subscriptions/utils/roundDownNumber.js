@@ -1,5 +1,3 @@
-import { parseInt } from 'lodash';
-
 export default (num, roundDown) => {
     if (!num) {
         return null;

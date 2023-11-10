@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
-import { sortBy } from 'lodash';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -58,7 +57,8 @@ const BrandsCarousel = ({ style }) => {
                 Check out the brands currently on our platform
             </TemplateText>
             <TemplateCarousel
-                data={sortBy(sortBy(brandsData, 'name'), 'isActive')}
+                
+                data={brandsData.sort((a,b) => a.name.localeCompare(b.name)).sort((a,b) => (a.isActive === b.isActive) ? 0 : a ? -1 : 1)}
                 renderItem={({ item }) => (
                     <BrandsCard
                         image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
