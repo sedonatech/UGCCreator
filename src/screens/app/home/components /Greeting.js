@@ -36,7 +36,7 @@ const Greeting = ({ userName, style, showAvatar }) => {
 
                 </TemplateText>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
-                    {`${userName.replace(/-/g, ' ').toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}!`}
+                    {`${userName?.replace(/-/g, ' ')?.toLowerCase()?.split(' ')?.map((word) => word?.charAt(0)?.toUpperCase() + word?.slice(1))?.join(' ')}!`}
                 </TemplateText>
                 <TemplateText
                     size={13}

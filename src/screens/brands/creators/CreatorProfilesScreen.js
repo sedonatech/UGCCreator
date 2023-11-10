@@ -104,7 +104,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
             location={item?.location?.country}
             email={item?.email}
             onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-            active={item?.isActive}
         />
     );
 
@@ -115,7 +114,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
         >
             <StatusBar barStyle="default" />
             <FlatList
-                data={filteredSearchedCreators.sort((a,b) => Number(b.isActive) - Number(a.isActive)).reverse()}
+                data={filteredSearchedCreators?.sort((a,b) => a?.userName?.localeCompare(b?.userName))}
                 renderItem={renderItem}
                 showVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}

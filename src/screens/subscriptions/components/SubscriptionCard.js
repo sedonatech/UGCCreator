@@ -54,9 +54,9 @@ const SubscriptionCard = ({
                 onPress={onPress}
             >
                 {/* eslint-disable-next-line no-nested-ternary */}
-                {title.includes('Annual')
+                {title?.includes('Annual')
                     ? 'Annual'
-                    : title.includes('Quarterly')
+                    : title?.includes('Quarterly')
                         ? 'Quarterly'
                         : 'Monthly'}
             </TemplateText>

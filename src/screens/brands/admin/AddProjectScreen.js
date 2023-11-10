@@ -43,7 +43,7 @@ const AddProjectScreen = ({ route, navigation }) => {
     const latestImage = useMemo(() => {
         if (!images) return null;
 
-        const sortedImages = images.filter((item) => !!item?.contentDisposition).sort((a,b) => (a.generation.localeCompare(b.generation))).reverse();
+        const sortedImages = images?.filter((item) => !!item?.contentDisposition).sort((a,b) => (a?.generation?.localeCompare(b?.generation)));
 
         return sortedImages[0];
     }, [images]);

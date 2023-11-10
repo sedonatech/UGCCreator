@@ -33,7 +33,7 @@ const ProjectsCarousel = ({ style }) => {
     const carouselData = useMemo(() => {
         if (!projects || projects.length === 0) return [];
 
-        return projects?.sort((a,b) => (a.createdAt - b.createdAt)).map((item) => ({
+        return projects?.sort((a,b) => (a?.createdAt - b?.createdAt)).map((item) => ({
             id: item?.id,
             image: item?.image,
             title: item?.title,

@@ -6,7 +6,7 @@ export default (product) => {
     }
 
     if (
-        (typeof product?.title === 'string' && product?.title.toLowerCase().includes('monthly'))
+        (typeof product?.title === 'string' && product?.title?.toLowerCase().includes('monthly'))
         || (typeof product?.identifier === 'string' && toLower(product?.identifier).includes('monthly'))
     ) {
         return SUBSCRIPTION_IOS_DISCOUNT_MONTHLY;

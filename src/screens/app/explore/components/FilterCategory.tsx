@@ -52,7 +52,7 @@ const FilterCategory: FC<Props> = ({
             {toggleFilters && (
                 <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
                     {
-                        filters.sort((a,b) => a.name.localeCompare(b.name)).map(({ value, name }, index) => (
+                        filters?.sort((a,b) => a?.name?.localeCompare(b.name)).map(({ value, name }, index) => (
                             <FilterPill
                                 onPress={() => onFilterPress(value)}
                                 key={value}

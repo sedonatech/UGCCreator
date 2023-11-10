@@ -13,7 +13,6 @@ interface Props {
     name?: string
     image?: string;
     shortDescription?: string;
-    isActive?: boolean;
 }
 
 const BrandsTab = ({ data }: { data: Array<Props> }) => {
@@ -21,7 +20,7 @@ const BrandsTab = ({ data }: { data: Array<Props> }) => {
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN}>
-            {!!data?.length && data.sort((a,b) => (a.isActive === b.isActive) ? 0 : a ? -1 : 1)?.reverse()?.map((brand: any, index) => (
+            {!!data?.length && data?.sort((a,b) => a?.name.localeCompare(b?.name))?.map((brand: any, index) => (
                 <BrandsCard
                     key={brand?.id}
                     image={{ uri: brand?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
@@ -35,9 +34,6 @@ const BrandsTab = ({ data }: { data: Array<Props> }) => {
                     descriptionSize={12}
                     // @ts-ignore
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
-                    showActive
-                    active={brand?.isActive}
-
                 />
             ))}
 

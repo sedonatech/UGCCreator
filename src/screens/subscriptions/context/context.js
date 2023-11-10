@@ -58,6 +58,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
                 }
 
                 try {
+                    // THIS IS DEPRECATED !
                     await Purchases.addAttributionData({}, Purchases.ATTRIBUTION_NETWORKS.FACEBOOK);
                     await Purchases.setAttributes({ $email: userEmail });
                 } catch (e) {
@@ -89,7 +90,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
         (async () => {
             if (ready && store?.offerings) {
                 const allOfferings = store?.offerings?.all && Object?.values(store?.offerings?.all);
-                const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages).flat();
+                const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages)?.flat();
                 const productIdentifiers = allAvailablePackages?.map(({ product }) => product?.identifier);
                 const introEligibility = await Purchases.checkTrialOrIntroductoryPriceEligibility(productIdentifiers);
                 update('introEligibility', Object.fromEntries(
@@ -106,7 +107,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
             if (!isAndroid && Object.keys(store?.introEligibility)?.length) {
                 // get the available packages
                 const allOfferings = store?.offerings?.all && Object?.values(store?.offerings?.all);
-                const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages).flat().filter(({ product }) => !store?.introEligibility[product?.identifier]);
+                const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages)?.flat().filter(({ product }) => !store?.introEligibility[product?.identifier]);
                 const discountOfferings = await Promise.all(allAvailablePackages.map(async ({ product }, index) => {
                     // map over the packages to check if discount is available
                     try {

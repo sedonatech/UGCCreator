@@ -24,8 +24,8 @@ const useFirebaseSetStorage = () => {
         setProgress(0);
 
         try {
-            const path = response.path;
-            const filename = response.filename;
+            const path = response?.path;
+            const filename = response?.filename;
             const isProgressPicture = filename || randomFileName();
             const imageName = isAvatar || isProgressPicture;
             const metadata = { customMetadata };

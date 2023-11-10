@@ -145,7 +145,7 @@ const TemplateText: FC<Props> = ({
 
     if (startCase) {
         // @ts-ignore
-        content = children.replace(/-/g, ' ').toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        content = children?.replace(/-/g, ' ')?.toLowerCase()?.split(' ')?.map((word) => word?.charAt(0).toUpperCase() + word?.slice(1))?.join(' ');
     }
 
     return (

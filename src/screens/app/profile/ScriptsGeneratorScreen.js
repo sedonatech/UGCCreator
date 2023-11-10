@@ -55,7 +55,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                         text: 'OK',
                         onPress: () => {
                             navigation.navigate(CREATOR_TOOLS_RESULTS, {
-                                title: `${toolType.capitalize()} Results Successfully Created 🎉🎊`,
+                                title: `${toolType?.capitalize()} Results Successfully Created 🎉🎊`,
                                 subTitle: `You can now copy the ${toolType} to your clipboard!`,
                                 results: responseMessage,
                             });

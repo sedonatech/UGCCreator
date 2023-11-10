@@ -26,7 +26,6 @@ const useGetCreators = (creatorId = '') => {
                 const creatorsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
                         ...doc?.data(),
                     }));
                 setCreators(creatorsData);
@@ -42,7 +41,6 @@ const useGetCreators = (creatorId = '') => {
                 const creatorsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
                         ...doc?.data(),
                     }));
                 setFcmCreators(creatorsData);

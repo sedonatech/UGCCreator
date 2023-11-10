@@ -9,7 +9,7 @@ export default (product, discount, isDiscountSale) => {
     // if (introPriceString == null || periodNumberOfUnits === 0) return null;
 
     if (periodNumberOfUnits > 1) {
-        introPricePeriodUnit = `${introPricePeriodUnit.toUpperCase()}S`;
+        introPricePeriodUnit = `${introPricePeriodUnit?.toUpperCase()}S`;
     }
 
     const numberOfTotalIntroMonths = periodNumberOfUnits * introPriceCycle;
@@ -24,15 +24,15 @@ export default (product, discount, isDiscountSale) => {
         numberOfTotalIntroMonthsUnit,
     };
 
-    if (introPricePeriodUnit === 'YEAR' || introPricePeriodUnit.toLowerCase() === 'year') {
+    if (introPricePeriodUnit === 'YEAR' || introPricePeriodUnit?.toLowerCase() === 'year') {
         return {
             ...additionalInfo,
-            introPeriod: `${introPriceString === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString}`} for ${numberOfTotalIntroMonths} ${introPricePeriodUnit.toLowerCase()}`,
+            introPeriod: `${introPriceString === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString}`} for ${numberOfTotalIntroMonths} ${introPricePeriodUnit?.toLowerCase()}`,
         };
     }
 
     return {
         ...additionalInfo,
-        introPeriod: `${introPrice === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString} every ${periodNumberOfUnits > 1 ? periodNumberOfUnits : ''}${periodNumberOfUnits > 1 ? ' ' : ''}${introPricePeriodUnit.toLowerCase()} for ${numberOfTotalIntroMonths} ${numberOfTotalIntroMonthsUnit}`} `,
+        introPeriod: `${introPrice === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString} every ${periodNumberOfUnits > 1 ? periodNumberOfUnits : ''}${periodNumberOfUnits > 1 ? ' ' : ''}${introPricePeriodUnit?.toLowerCase()} for ${numberOfTotalIntroMonths} ${numberOfTotalIntroMonthsUnit}`} `,
     };
 };

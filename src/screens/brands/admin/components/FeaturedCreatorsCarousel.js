@@ -21,7 +21,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
     const { filteredCreators: creatorsData } = useGetCreators();
-    const creatorsDataSample = creatorsData.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE)
+    const creatorsDataSample = creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE)
 
     return (
         <View style={style}>
@@ -65,7 +65,6 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         onPress={() => navigation.navigate(PROFILE, {
                             creatorId: item?.id,
                         })}
-                        active={item?.isActive}
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
