@@ -135,7 +135,7 @@ CreatorCard.defaultProps = {
     imageStyle: {},
     textContainerWidth: wp(190),
     subtitleContainerWidth: wp(100),
-    lastLoginTime: 'A week ago'
+    lastLoginTime: 'a week ago'
 };
 
 const styles = StyleSheet.create({
