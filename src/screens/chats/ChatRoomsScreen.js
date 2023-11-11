@@ -32,8 +32,6 @@ const ChatRoomsScreen = ({ navigation }) => {
         fetchingChatRooms,
     } = useChatsContext();
 
-    console.log('chatRooms', chatRooms);
-
     const getCreatorNameAndImage = (selectedId) => {
         if (isCreator && !creators?.length) return null;
 
