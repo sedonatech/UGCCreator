@@ -47,12 +47,11 @@ const ProfileStatusCard: FC<ProfileStatusCardProps> = ({
         row
         alignItems="center"
         selfCenter
-        style={[style, SHADOW('card', backgroundColor)]}
+        style={style}
         onPress={onPress}
         slideIn
         slideInDelay={slideInDelay}
     >
-
         {showIcon && (
             <TemplateIcon
                 name={icon || 'open-outline'}

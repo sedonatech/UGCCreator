@@ -1,4 +1,5 @@
 import { Alert } from 'react-native';
+import RNRestart from 'react-native-restart';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,6 +19,7 @@ const useLogout = () => {
                     onPress: async () => {
                         try {
                             await auth().signOut();
+                            RNRestart.Restart();
                         } catch (e) {
                             console.error(e);
                         }
@@ -47,23 +49,7 @@ const useLogout = () => {
                                 await AsyncStorage.multiRemove(allKeys);
                             }
                             await auth().currentUser?.delete();
-                            Alert.alert(
-                                'Account Deleted',
-                                'Your account has been deleted successfully.',
-                                [
-                                    {
-                                        text: 'OK',
-                                        onPress: async () => {
-                                            try {
-                                                await auth().signOut();
-                                            } catch (e) {
-                                                console.error(e);
-                                            }
-                                        },
-                                    },
-                                ],
-                                { cancelable: false },
-                            );
+                            RNRestart.Restart();
                         } catch (e) {
                             console.error(e);
                         }

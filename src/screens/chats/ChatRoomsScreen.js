@@ -54,7 +54,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                     description={`Continue your  conversation with ${item?.name}`}
                     showProgress={false}
                     style={styles.statusCard}
-                    slideInDelay={200 + (index * 100)}
+                    slideInDelay={(index + 1) * 100}
                     showIcon={false}
                     onPress={() => {
                         navigation.navigate(CHATS, {

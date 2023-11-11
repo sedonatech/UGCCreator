@@ -11,7 +11,9 @@ import {
     WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
-import { ADD_PROJECT, BRAND_PROJECT_DETAILS, PROFILE_STACK } from '../../../navigation/ScreenNames';
+import {
+    ADD_PROJECT, BRAND_PROJECT_DETAILS, PROFILE_STACK, UPDATE_BRAND_PROFILE,
+} from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
 import { HEADER_MARGIN, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
@@ -163,6 +165,7 @@ const AdminPanelScreen = ({ navigation }) => {
                     slideInDelay={40}
                     showIcon={false}
                     backgroundColor={lightOrange}
+                    onPress={() => navigation.navigate(UPDATE_BRAND_PROFILE)}
                 />
             )}
 
@@ -192,6 +195,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: WHITE,
+        paddingBottom: wp(60),
     },
     addButton: {
         marginRight: 20,

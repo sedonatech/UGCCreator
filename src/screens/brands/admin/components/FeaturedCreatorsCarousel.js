@@ -1,13 +1,12 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
-
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
-import { BLACK, BLUE } from '../../../../theme/Colors';
+import { BLACK, BLUE, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import useGetCreators from '../../../../hooks/brands/useGetCreators';
@@ -21,9 +20,9 @@ const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
     const { filteredCreators: creatorsData } = useGetCreators();
-    const creatorsDataSample = creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE)
+    const creatorsDataSample = creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE);
 
-    return (
+    return creatorsDataSample?.length ? (
         <View style={style}>
             <View style={styles.titleContainer}>
                 <TemplateBox row justifyContent="space-between">
@@ -73,6 +72,8 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>
+    ) : (
+        <ActivityIndicator color={IOS_BLUE} size="large" />
     );
 };
 
