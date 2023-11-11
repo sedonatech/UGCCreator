@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 
-import PropTypes from 'prop-types';
-import { startCase } from 'lodash';
 // @ts-ignore
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 // @ts-ignore
@@ -77,7 +75,7 @@ interface Props {
 const TemplateIcon: FC<Props> = ({
     name, family = 'Ionicons', size = 15, color = BLUE_SECONDARY, style, ...rest
 }) => {
-    const Icon = getIcon(startCase(family));
+    const Icon = getIcon(family);
 
     return <Icon name={name} size={size} color={color} style={style} {...rest} />;
 };

@@ -13,7 +13,7 @@ import Avatar from '../../../../components/Avatar';
 import TemplateIcon from '../../../../components/TemplateIcon';
 
 const PortfolioHeader = ({
-    userName, location, isUpdate, image,
+    userName, location, isUpdate, image, creatorId,
 }) => (
     <TemplateBox>
         <TemplateBox
@@ -36,7 +36,7 @@ const PortfolioHeader = ({
                 alignItems="center"
             >
 
-                {image ? (
+                {creatorId ? (
                     <FastImage source={{ uri: image }} style={styles.image} />
                 ) : (
                     <Avatar height={176} width={196} borderRadius={40} />
@@ -76,14 +76,16 @@ const PortfolioHeader = ({
                         style={styles.icon}
                     />
                 </TemplateBox>
-                <TemplateBox row alignItems="center">
-                    <TemplateText size={12} color={BLACK_60}>{`@${userName}`}</TemplateText>
-                    <TemplateBox width={10} />
+                {location && (
                     <TemplateBox row alignItems="center">
-                        <TemplateIcon size={12} color={BLACK_60} name="location-outline" />
-                        <TemplateText size={12} color={BLACK_60}>{location}</TemplateText>
+                        <TemplateText size={12} color={BLACK_60}>{`@${userName}`}</TemplateText>
+                        <TemplateBox width={10} />
+                        <TemplateBox row alignItems="center">
+                            <TemplateIcon size={12} color={BLACK_60} name="location-outline" />
+                            <TemplateText size={12} color={BLACK_60}>{location}</TemplateText>
+                        </TemplateBox>
                     </TemplateBox>
-                </TemplateBox>
+                )}
             </TemplateBox>
         ) : (
             <TemplateBox mt={135} alignItems="center" mb={6} selfCenter>
@@ -98,6 +100,7 @@ PortfolioHeader.propTypes = {
     location: PropTypes.string,
     isUpdate: PropTypes.bool,
     image: PropTypes.string,
+    creatorId: PropTypes.string,
 };
 
 PortfolioHeader.defaultProps = {
@@ -105,6 +108,7 @@ PortfolioHeader.defaultProps = {
     userName: '',
     location: '',
     image: '',
+    creatorId: '',
 };
 
 const styles = StyleSheet.create({

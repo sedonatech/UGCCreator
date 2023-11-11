@@ -22,6 +22,8 @@ const ChatsProvider = ({ children }) => {
         loading,
         createChatRoom,
         chatRoomCreated,
+        fetchChatRooms,
+        fetchingChatRooms,
     } = useChatRooms();
 
     const { profile } = auth;
@@ -52,6 +54,8 @@ const ChatsProvider = ({ children }) => {
         chatRoomCreated,
         createdChatRoom,
         setCreatedChatRoom,
+        fetchChatRooms,
+        fetchingChatRooms,
     };
 
     return (

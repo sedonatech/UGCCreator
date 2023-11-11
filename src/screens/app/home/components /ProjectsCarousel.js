@@ -2,9 +2,8 @@ import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import { sortBy } from 'lodash';
-
 import moment from 'moment';
+
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -32,9 +31,9 @@ const ProjectsCarousel = ({ style }) => {
     const { allProjects: projects } = useProjectsContext();
 
     const carouselData = useMemo(() => {
-        if (!projects) return [];
+        if (!projects || projects.length === 0) return [];
 
-        return sortBy(projects?.map((item) => ({
+        return projects?.sort((a,b) => (a?.createdAt - b?.createdAt)).map((item) => ({
             id: item?.id,
             image: item?.image,
             title: item?.title,
@@ -42,7 +41,7 @@ const ProjectsCarousel = ({ style }) => {
             duration: `${moment(item?.endDate).diff(moment(item?.startDate), 'weeks') || 3} weeks`,
             enrolled: item?.applications?.map((app) => app?.creatorId)?.includes(profile?.id),
             projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
-        }))?.slice(0, 4), 'createdAt');
+        }))?.slice(0, 4);
     }, [projects]);
 
     return !carouselData ? (

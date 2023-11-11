@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
-import { get } from 'lodash';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
@@ -25,8 +24,8 @@ const useFirebaseSetStorage = () => {
         setProgress(0);
 
         try {
-            const path = get(response, 'path');
-            const filename = get(response, 'filename');
+            const path = response?.path;
+            const filename = response?.filename;
             const isProgressPicture = filename || randomFileName();
             const imageName = isAvatar || isProgressPicture;
             const metadata = { customMetadata };

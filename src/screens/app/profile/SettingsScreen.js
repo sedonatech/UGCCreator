@@ -1,16 +1,9 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import {
-    Alert, FlatList, ScrollView, StyleSheet, TouchableOpacity,
-} from 'react-native';
+import { Alert, FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-import {
-    BLACK_10, BLACK_60, TRANSPARENT, WHITE,
-} from '../../../theme/Colors';
-import {
-    HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
-import TemplateBox from '../../../components/TemplateBox';
+import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
 import useLogout from './useLogout';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
@@ -22,15 +15,11 @@ import {
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
-import useGetAppVersion from '../../../Utils/useGetAppVersion';
-import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import {wp} from "../../../Utils/getResponsiveSize";
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();
-
-    const { nativeAppVersion } = useGetAppVersion();
 
     const { mainDomain } = useConfig();
 

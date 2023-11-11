@@ -2,10 +2,8 @@ import React, {
     useState, useEffect, createContext,
 } from 'react';
 import Purchases from 'react-native-purchases';
-import {
-    flatten, toPairs, fromPairs, keys,
-} from 'lodash';
 import PropTypes from 'prop-types';
+
 import useInitPurchases from '../useInitPurchases';
 import isAndroid from '../utils/isAndroid';
 import findDefaultDiscountKey from '../utils/findDefaultDiscountKey';
@@ -41,7 +39,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
 
     // when purchase is updated from remote config, update the store with the purchase object and ready state
     useEffect(() => {
-        if (keys(purchase)?.length && ready) {
+        if (Object.keys(purchase)?.length && ready) {
             update('purchase', purchase);
             update('ready', ready);
         }
@@ -60,6 +58,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
                 }
 
                 try {
+                    // THIS IS DEPRECATED !
                     await Purchases.addAttributionData({}, Purchases.ATTRIBUTION_NETWORKS.FACEBOOK);
                     await Purchases.setAttributes({ $email: userEmail });
                 } catch (e) {
@@ -91,11 +90,11 @@ const SubscriptionProvider = ({ children, purchase }) => {
         (async () => {
             if (ready && store?.offerings) {
                 const allOfferings = store?.offerings?.all && Object?.values(store?.offerings?.all);
-                const allAvailablePackages = flatten(allOfferings?.map(({ availablePackages }) => availablePackages));
+                const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages)?.flat();
                 const productIdentifiers = allAvailablePackages?.map(({ product }) => product?.identifier);
                 const introEligibility = await Purchases.checkTrialOrIntroductoryPriceEligibility(productIdentifiers);
-                update('introEligibility', fromPairs(
-                    toPairs(introEligibility).map((pair) => [pair[0], pair[1]?.status === 2]),
+                update('introEligibility', Object.fromEntries(
+                    Object.entries(introEligibility).map((pair) => [pair[0], pair[1]?.status === 2]),
                 ));
             }
         })();
@@ -105,10 +104,10 @@ const SubscriptionProvider = ({ children, purchase }) => {
     useEffect(() => {
         (async () => {
             // if the user is eligible and they are not a new customer, check for discounts and map it to discountOfferings
-            if (!isAndroid && keys(store?.introEligibility)?.length) {
+            if (!isAndroid && Object.keys(store?.introEligibility)?.length) {
                 // get the available packages
                 const allOfferings = store?.offerings?.all && Object?.values(store?.offerings?.all);
-                const allAvailablePackages = flatten(allOfferings?.map(({ availablePackages }) => availablePackages)).filter(({ product }) => !store?.introEligibility[product?.identifier]);
+                const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages)?.flat().filter(({ product }) => !store?.introEligibility[product?.identifier]);
                 const discountOfferings = await Promise.all(allAvailablePackages.map(async ({ product }, index) => {
                     // map over the packages to check if discount is available
                     try {

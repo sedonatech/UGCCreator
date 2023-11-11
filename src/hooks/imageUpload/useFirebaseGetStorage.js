@@ -1,7 +1,5 @@
 import storage from '@react-native-firebase/storage';
 
-import { get, has, orderBy } from 'lodash';
-
 const useFirebaseGetStorage = () => {
     const getAvatar = async (uuid) => {
         try {
@@ -25,7 +23,7 @@ const useFirebaseGetStorage = () => {
         try {
             const reference = storage().ref(`users/${uuid}`);
             const referenceList = await reference.list();
-            const items = get(referenceList, 'items', []);
+            const items = referenceList?.items ?? [];
             const data = items.map(async (ref) => {
                 if (ref.fullPath === `users/${uuid}/avatar`) {
                     return null;
@@ -37,9 +35,9 @@ const useFirebaseGetStorage = () => {
             });
             const awaitedData = await Promise.all(data);
             const filteredData = awaitedData.filter((data) => data);
-            const newData = has(filteredData, '[0].customMetadata.date')
-                ? orderBy(filteredData, ['customMetadata.date'], ['desc'])
-                : orderBy(filteredData, ['updated'], ['desc']);
+            const newData = filteredData[0]?.customMetadata?.date
+                ? filteredData?.sort((a,b) => b?.customMetadata?.date?.localeCompare(a?.customMetadata?.date)) // sort in descending order
+                : filteredData?.sort((a,b) => b?.updated?.localeCompare(a?.updated)) // sort in descending order
             console.log('[IMAGE-LIBRARY] getImages data', newData);
             return newData;
         } catch (error) {

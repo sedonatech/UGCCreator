@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
+import RNRestart from 'react-native-restart';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const useLogout = () => {
     const logout = () => {
@@ -18,11 +18,8 @@ const useLogout = () => {
                     text: 'OK',
                     onPress: async () => {
                         try {
-                            const allKeys = await AsyncStorage.getAllKeys();
-                            if (allKeys?.length > 0) {
-                                await AsyncStorage.multiRemove(allKeys);
-                            }
                             await auth().signOut();
+                            RNRestart.Restart();
                         } catch (e) {
                             console.error(e);
                         }
@@ -52,6 +49,7 @@ const useLogout = () => {
                                 await AsyncStorage.multiRemove(allKeys);
                             }
                             await auth().currentUser?.delete();
+                            RNRestart.Restart();
                         } catch (e) {
                             console.error(e);
                         }

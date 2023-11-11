@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -7,7 +7,7 @@ import TemplateText from '../../../components/TemplateText';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
-    BLACK, BLACK_60, BLACK_SECONDARY, BRAND_BLUE, lightGreen, lightOrange, WHITE,
+    BLACK, BLACK_60, BLACK_SECONDARY, WHITE,
 } from '../../../theme/Colors';
 import { SHADOW } from '../../../theme/Shadow';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
@@ -24,19 +24,17 @@ const CreatorCard = ({
     imageStyle,
     textContainerWidth,
     subtitleContainerWidth,
-    active,
 }) => (
 
     <TemplateBox
         width={width}
-        height={wp(200)}
+        height={wp(180)}
         borderRadius={20}
         pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
         style={[SHADOW('card', WHITE), style]}
         onPress={onPress}
-
     >
 
         <TemplateBox
@@ -95,18 +93,6 @@ const CreatorCard = ({
                 <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
             </TemplateBox>
         </TemplateBox>
-        <TemplateBox
-            ph={8}
-            pv={4}
-            backgroundColor={active ? lightGreen : lightOrange}
-            borderRadius={6}
-            alignItems="center"
-            justifyContent="center"
-            onPress={onPress}
-
-        >
-            <TemplateText color={WHITE} size={9} bold caps>{active ? 'Active' : 'Inactive'}</TemplateText>
-        </TemplateBox>
     </TemplateBox>
 
 );
@@ -122,8 +108,6 @@ CreatorCard.propTypes = {
     imageStyle: PropTypes.shape({}),
     textContainerWidth: PropTypes.number,
     subtitleContainerWidth: PropTypes.number,
-    buttonOffset: PropTypes.number,
-    active: PropTypes.bool,
 };
 
 CreatorCard.defaultProps = {
@@ -135,18 +119,16 @@ CreatorCard.defaultProps = {
     style: {},
     width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
     imageStyle: {},
-    textContainerWidth: 190,
-    subtitleContainerWidth: 100,
-    buttonOffset: 80,
-    active: true,
+    textContainerWidth: wp(190),
+    subtitleContainerWidth: wp(100),
 };
 
 const styles = StyleSheet.create({
     image: {
-        width: 90,
-        height: 90,
-        borderRadius: 20,
-        marginRight: 20,
+        width: wp(90),
+        height: wp(90),
+        borderRadius: wp(20),
+        marginRight: wp(20),
     },
 });
-export default CreatorCard;
+export default memo(CreatorCard);

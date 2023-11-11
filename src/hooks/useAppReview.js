@@ -46,6 +46,7 @@ const useAppReview = () => {
             GooglePackageName: reviewPromptProps.GooglePackageName,
             preferInApp: true,
             preferredAndroidMarket: AndroidMarket.Google,
+            openAppStoreIfInAppFails: false,
         };
 
         Rate.rate(options, (success) => {

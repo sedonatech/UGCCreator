@@ -4,9 +4,9 @@ import TemplateBox from './TemplateBox';
 import TemplateText from './TemplateText';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import {
-    BLACK, BLACK_20, LAVENDER, WHITE_30
+    BLACK, BLACK_20, IOS_BLUE
 } from '../theme/Colors';
-import Blob from '../../assets/svgs/Blob';
+import { wp } from '../Utils/getResponsiveSize';
 
 interface LoadingOverlayProps {
     message?: string
@@ -23,11 +23,12 @@ const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0 }) => (
         ml={ml}
         flex
     >
+        <ActivityIndicator color={IOS_BLUE} size="large" />
+        <TemplateBox height={wp(20)} />
         <TemplateText color={BLACK} size={20} bold center>
             {message}
         </TemplateText>
-        <TemplateBox height={40} />
-        <ActivityIndicator color={BLACK} size="large" />
+
     </TemplateBox>
 );
 

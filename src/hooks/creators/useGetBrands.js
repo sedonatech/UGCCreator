@@ -3,8 +3,10 @@ import firestore from '@react-native-firebase/firestore';
 
 const USERS_COLLECTION = 'users';
 
-const useGetBrands = () => {
+const useGetBrands = (brandId = '') => {
     const [brands, setBrands] = useState([]);
+
+    const [selectedBrand, setSelectedBrand] = useState({});
 
     const [fcmBrands, setFcmBrands] = useState([]);
 
@@ -14,13 +16,28 @@ const useGetBrands = () => {
     const fcmBrandsRef = firestore().collection(USERS_COLLECTION)
         .where('type', '==', 'brand');
 
+    const selectedBrandRef = firestore().collection(USERS_COLLECTION)
+        .doc(brandId);
+
+    // Fetch selected brand
+
+    useEffect(() => {
+        const subscriber = selectedBrandRef
+            .onSnapshot((querySnapshot) => {
+                const brandData = querySnapshot?.data();
+                setSelectedBrand(brandData);
+            });
+
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+    }, []);
+
     useEffect(() => {
         const subscriber = brandsRef
             .onSnapshot((querySnapshot) => {
                 const brandsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.shortDescription && doc?.data()?.image,
                         ...doc?.data(),
                     }));
                 setBrands(brandsData);
@@ -36,7 +53,6 @@ const useGetBrands = () => {
                 const brandsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.shortDescription && doc?.data()?.image,
                         ...doc?.data(),
                     }));
                 setFcmBrands(brandsData);
@@ -62,6 +78,7 @@ const useGetBrands = () => {
         brands,
         fetchBrands,
         fcmBrands,
+        selectedBrand,
     };
 };
 

@@ -1,5 +1,5 @@
 import React, {
-    useEffect, useRef, useState,
+    useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
     ActivityIndicator,
@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
-import { sortBy } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 
 import { wp } from '../../../Utils/getResponsiveSize';
@@ -57,11 +56,21 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const onProjectFilterPress = (value) => {
         if (selectedFilters.includes(value)) {
-            setSelectedFilters(selectedFilters.filter((filter) => filter !== value));
+            setSelectedFilters(selectedFilters?.filter((filter) => filter !== value));
         } else {
             setSelectedFilters([...selectedFilters, value]);
         }
     };
+
+    // TODO: make filtering logic exclusive
+    const filteredCreators = useMemo(() => {
+        if (!selectedFilters.length) return creatorsData;
+        // filter by selected filters
+        const filtered = creatorsData?.filter(
+            (creator) => selectedFilters.every((filter) => creator?.categories?.includes(filter)),
+        );
+        if (filtered?.length) return filtered;
+    }, [selectedFilters, creatorsData]);
 
     const options = {
         isCaseSensitive: false,
@@ -76,14 +85,14 @@ const CreatorProfilesScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-        if (!!search && creatorsData?.length) {
-            const fuse = new Fuse(creatorsData, options);
+        if (!!search && filteredCreators?.length) {
+            const fuse = new Fuse(filteredCreators, options);
             const results = fuse.search(search).map(({ item }) => item);
             setSearchResults(results);
         }
     }, [search]);
 
-    const filteredCreators = search?.length ? searchResults : creatorsData;
+    const filteredSearchedCreators = search?.length ? searchResults : filteredCreators;
 
     const renderItem = ({ item }) => (
         <CreatorCard
@@ -95,7 +104,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
             location={item?.location?.country}
             email={item?.email}
             onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-            active={item?.isActive}
         />
     );
 
@@ -106,7 +114,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
         >
             <StatusBar barStyle="default" />
             <FlatList
-                data={sortBy(filteredCreators, 'isActive')?.reverse()}
+                data={filteredSearchedCreators?.sort((a, b) => a?.userName?.localeCompare(b?.userName))}
                 renderItem={renderItem}
                 showVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}
@@ -130,12 +138,37 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 autoCapitalize="none"
                             />
                             <TemplateTouchable
-                                onPress={() => refRBSheet.current.open()}
+                                onPress={() => refRBSheet?.current?.open()}
                                 style={styles.filterButton}
                             >
                                 <Filter />
                             </TemplateTouchable>
                         </TemplateBox>
+                        {!!selectedFilters?.length && (
+                            <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN * 1.5}>
+                                <TemplateText size={14} bold>
+                                    Filters:
+                                    {' '}
+                                </TemplateText>
+                                <TemplateText size={14} semiBold>
+                                    {selectedFilters?.join(', ')}
+                                </TemplateText>
+                                {!!selectedFilters?.length && (
+                                    <TemplateText
+                                        size={14}
+                                        bold
+                                        color={IOS_BLUE}
+                                        style={styles.clearFiltersTextButton}
+                                        onPress={() => {
+                                            setSelectedFilters([]);
+                                        }}
+                                    >
+                                        Clear Filters
+                                    </TemplateText>
+                                )}
+                            </TemplateBox>
+                        )}
+
                     </>
                 )}
                 ListFooterComponent={(
@@ -174,7 +207,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
                         paddingTop: 10,
                         paddingBottom: 40,
-                        height: SCREEN_HEIGHT * 0.7,
+                        height: SCREEN_HEIGHT * 0.9,
                     },
                     draggableIcon: {
                         backgroundColor: BLACK,
@@ -198,7 +231,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 color={BRAND_BLUE}
                                 style={styles.applyText}
                                 onPress={() => {
-                                    refRBSheet.current.close();
+                                    refRBSheet?.current?.close();
                                 }}
                             >
                                 Apply Filters
@@ -212,13 +245,25 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 style={styles.applyText}
                                 onPress={() => {
                                     setSelectedFilters([]);
-                                    refRBSheet.current.close();
+                                    refRBSheet?.current?.close();
                                 }}
                             >
                                 Clear Filters
                             </TemplateText>
                         )}
                     </TemplateBox>
+
+                    {!!selectedFilters?.length && (
+                        <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN * 1.5} mb={WRAPPER_MARGIN}>
+                            <TemplateText size={14} bold>
+                                Filters:
+                                {' '}
+                            </TemplateText>
+                            <TemplateText size={14} semiBold>
+                                {selectedFilters?.join(', ')}
+                            </TemplateText>
+                        </TemplateBox>
+                    )}
 
                     <FilterCategory
                         title="Project Category"
@@ -301,6 +346,9 @@ const styles = StyleSheet.create({
     },
     listFooter: {
         paddingBottom: wp(SPACE_MEDIUM),
+    },
+    clearFiltersTextButton: {
+        marginLeft: SPACE_XSMALL,
     },
 });
 export default CreatorProfilesScreen;

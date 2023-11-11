@@ -16,34 +16,38 @@ const ContactSection = ({ contactInfo, socials, email }) => {
         <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN * 2}>
             <TemplateText bold color={BLACK} size={16}>Contact Information</TemplateText>
             <TemplateBox height={10} />
-            <TemplateBox
-                row
-                alignItems="center"
-                backgroundColor={BLACK_0_5}
-                borderRadius={10}
-                mb={WRAPPER_MARGIN}
-            >
-                <TemplateBox pr={20}>
-                    <TemplateText color={BLACK} semiBold size={16}>Phone Number</TemplateText>
-                    <TemplateBox height={10} />
-                    <TemplateText color={BLACK} size={16}>{contactInfo?.phoneNumber}</TemplateText>
+            {contactInfo?.phoneNumber && (
+                <TemplateBox
+                    row
+                    alignItems="center"
+                    backgroundColor={BLACK_0_5}
+                    borderRadius={10}
+                    mb={WRAPPER_MARGIN}
+                >
+                    <TemplateBox pr={20}>
+                        <TemplateText color={BLACK} semiBold size={16}>Phone Number</TemplateText>
+                        <TemplateBox height={10} />
+                        <TemplateText color={BLACK} size={16}>{contactInfo?.phoneNumber}</TemplateText>
+                    </TemplateBox>
+                    <TemplateBox flex />
                 </TemplateBox>
-                <TemplateBox flex />
-            </TemplateBox>
-            <TemplateBox
-                row
-                alignItems="center"
-                backgroundColor={BLACK_0_5}
-                borderRadius={10}
-                mb={WRAPPER_MARGIN}
-            >
-                <TemplateBox pr={20}>
-                    <TemplateText color={BLACK} semiBold size={16}>Email</TemplateText>
-                    <TemplateBox height={10} />
-                    <TemplateText color={BLACK} size={14}>{contactInfo?.email || email }</TemplateText>
+            )}
+            {(contactInfo?.email || email) && (
+                <TemplateBox
+                    row
+                    alignItems="center"
+                    backgroundColor={BLACK_0_5}
+                    borderRadius={10}
+                    mb={WRAPPER_MARGIN}
+                >
+                    <TemplateBox pr={20}>
+                        <TemplateText color={BLACK} semiBold size={16}>Email</TemplateText>
+                        <TemplateBox height={10} />
+                        <TemplateText color={BLACK} size={14}>{contactInfo?.email || email}</TemplateText>
+                    </TemplateBox>
+                    <TemplateBox flex />
                 </TemplateBox>
-                <TemplateBox flex />
-            </TemplateBox>
+            )}
             {socials?.instagram && (
                 <TemplateBox
                     row

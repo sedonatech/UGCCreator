@@ -1,22 +1,19 @@
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
-import { ScrollView, StyleSheet, Linking } from 'react-native';
+import React, { useLayoutEffect, useRef } from 'react';
+import {
+    ScrollView, StyleSheet,
+} from 'react-native';
 import ViewShot from 'react-native-view-shot';
 
 import {
     BLACK_10, lightOrange, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
-import { IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
+import {
+    IS_ANDROID, WRAPPER_MARGIN,
+} from '../../../theme/Layout';
 import PortfolioHeader from './components/PortfolioHeader';
 import AboutSection from './components/AboutSection';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import {
-    DEFAULT_CREATOR_CONTACT_INFO,
-    DEFAULT_CREATOR_DESCRIPTION,
-    DEFAULT_CREATOR_PAYPAL_LINK,
-    DEFAULT_CREATOR_RATES,
-    DEFAULT_CREATOR_SHORT_DESCRIPTION,
-    DEFAULT_CREATOR_SOCIAL,
-} from '../../../consts/content/Portfolio';
+import { DEFAULT_CREATOR_PAYPAL_LINK } from '../../../consts/content/Portfolio';
 import ContactSection from './components/ContactSection';
 import SampleWorkSection from './components/SampleWorkSection';
 import RatesSection from './components/RatesSection';
@@ -27,22 +24,19 @@ import TemplateBox from '../../../components/TemplateBox';
 import Button from '../../../components/Button';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
+import useChatsContext from '../../../hooks/chats/useChatsContext';
+import CreatorDetailsHeader from './components/CreatorDetailsHeader';
+import LoadingOverlay from '../../../components/LoadingOverlay';
+import { UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
 
 const PortfolioScreen = ({ navigation, route }) => {
     const creatorId = route?.params?.creatorId;
 
-    const { creators } = useGetCreators();
-
-    const selectedCreator = useMemo(() => {
-        if (!creators || !creatorId) return null;
-
-        return creators?.find(({ id }) => id === creatorId);
-    }, [
-        creators,
-        creatorId,
-    ]);
+    const { selectedCreator } = useGetCreators(creatorId);
 
     const { auth } = useAuthContext();
+
+    const isBrand = auth?.profile?.type === 'brand';
 
     const profileCompleteRatio = auth?.profileCompleteRatio;
 
@@ -51,14 +45,14 @@ const PortfolioScreen = ({ navigation, route }) => {
     const userName = creator?.userName;
     const image = creator?.image;
     const portfolioLink = creator?.portfolioLink;
-    const about = creator?.description || DEFAULT_CREATOR_DESCRIPTION;
+    const about = creator?.description || '';
     const shortDescription = creator?.shortDescription
-      || DEFAULT_CREATOR_SHORT_DESCRIPTION;
-    const contact = creator?.contact || DEFAULT_CREATOR_CONTACT_INFO;
-    const socials = creator?.socialMedia || DEFAULT_CREATOR_SOCIAL;
+      || '';
+    const contact = creator?.contact || '';
+    const socials = creator?.socialMedia || '';
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
-    const location = creator?.location?.country || creator?.location?.city || 'London';
-    const rates = creator?.rates || DEFAULT_CREATOR_RATES;
+    const location = creator?.location?.country || creator?.location?.city;
+    const rates = creator?.rates;
     const email = creator?.email;
 
     const screenshot = useRef(null);
@@ -84,6 +78,24 @@ const PortfolioScreen = ({ navigation, route }) => {
         }
     }, [navigation, creatorId]);
 
+    const {
+        createChatRoom,
+    } = useChatsContext();
+
+    const creatorFCMToken = creator?.fcmToken;
+
+    const creatorName = creator?.userName;
+
+    const brandId = auth?.profile?.id;
+
+    const brandFCMToken = auth?.profile?.fcmToken;
+
+    const brandName = auth?.profile?.userName;
+
+    const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
+
+    const loading = (Object.keys(selectedCreator).length === 0) && isBrand;
+
     return (
         <ViewShot style={styles.viewShot} ref={screenshot}>
             <ScrollView
@@ -91,12 +103,23 @@ const PortfolioScreen = ({ navigation, route }) => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <PortfolioHeader
-                    userName={userName}
-                    location={location}
-                    creatorId={creatorId}
-                    image={image}
-                />
+                {loading && (
+                    <LoadingOverlay message="Fetching the creators portfolio...." />
+                )}
+                {creatorId ? (
+                    <CreatorDetailsHeader
+                        userName={userName}
+                        location={location}
+                        image={image}
+                    />
+                ) : (
+                    <PortfolioHeader
+                        userName={userName}
+                        location={location}
+                        creatorId={creatorId}
+                        image={image}
+                    />
+                )}
                 { profileCompleteRatio < 1 && !creatorId && (
                     <ProfileStatusCard
                         title={PROFILE_INCOMPLETE_TITLE}
@@ -106,13 +129,16 @@ const PortfolioScreen = ({ navigation, route }) => {
                         slideInDelay={40}
                         showIcon={false}
                         backgroundColor={lightOrange}
+                        onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
                     />
                 )}
-                <AboutSection
-                    about={about}
-                    shortDescription={shortDescription}
-                    portfolioLink={portfolioLink}
-                />
+                {about && (
+                    <AboutSection
+                        about={about}
+                        shortDescription={shortDescription}
+                        portfolioLink={portfolioLink}
+                    />
+                )}
                 <SampleWorkSection />
                 <RatesSection rates={rates} />
                 <ContactSection
@@ -123,23 +149,31 @@ const PortfolioScreen = ({ navigation, route }) => {
                 />
                 {
                     creatorId
-                  && creator?.email
-                  && (
-                      <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
-                          <Button
-                              title="Contact Creator"
-                              onPress={async () => {
-                                  try {
-                                      await Linking.openURL(`mailto:${creator?.email}`);
-                                  } catch (e) {
-                                      console.log('-> e', e);
-                                  }
-                              }}
-                          />
-                      </TemplateBox>
-                  )
+                        && (
+                            <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
+                                <Button
+                                    title="Contact Creator"
+                                    onPress={async () => {
+                                        try {
+                                            if (creatorId && brandId && creatorFCMToken && brandFCMToken && chatRoomName) {
+                                                await createChatRoom(
+                                                    chatRoomName,
+                                                    creatorId,
+                                                    brandId,
+                                                    creatorFCMToken,
+                                                    brandFCMToken,
+                                                );
+                                            }
+                                        } catch (e) {
+                                            console.log('-> e', e);
+                                        }
+                                    }}
+                                />
+                            </TemplateBox>
+                        )
                 }
             </ScrollView>
+
         </ViewShot>
     );
 };

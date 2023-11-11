@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-
 import { ScrollView, StyleSheet } from 'react-native';
-import { startCase } from 'lodash';
+
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
@@ -83,7 +82,7 @@ const ResultsHistoryScreen = ({ navigation }) => {
                                     key={`${item.title}-${index}`}
                                     onPress={() => {
                                         navigation.navigate(CREATOR_TOOLS_RESULTS, {
-                                            title: `${startCase(item?.type)} Results Successfully Fetched 🎉🎊`,
+                                            title: `${item?.type?.capitalize()} Results Successfully Fetched 🎉🎊`,
                                             subTitle: `You can now copy the ${item?.type} to your clipboard!`,
                                             results: item?.result,
                                             fromHistory: true,
@@ -96,7 +95,7 @@ const ResultsHistoryScreen = ({ navigation }) => {
                                         width={SCREEN_WIDTH / 1.6}
                                         onPress={() => {
                                             navigation.navigate(CREATOR_TOOLS_RESULTS, {
-                                                title: `${startCase(item?.type)} Results Successfully Fetched 🎉🎊`,
+                                                title: `${item?.type?.capitalize()} Results Successfully Fetched 🎉🎊`,
                                                 subTitle: `You can now copy the ${item?.type} to your clipboard!`,
                                                 results: item?.result,
                                                 fromHistory: true,

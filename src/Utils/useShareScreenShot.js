@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import { startCase } from 'lodash';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
@@ -50,7 +49,7 @@ export default (title, viewRef) => {
                 const nameToChange = uriArray[uriArray.length - 1];
                 const date = moment().format('D-M-YYYY-hh-mm-ss');
                 const prefix = appName ? `${appName}-` : null;
-                const baseName = `${startCase(title)}-${date}.png`;
+                const baseName = `${title?.capitalize()}-${date}.png`;
                 const newName = (prefix ? `${prefix}${baseName}` : baseName).replace(/\s/g, '-');
                 const uri = tempUri.replace(nameToChange, newName);
                 const shareTitle = appName ? `Today's ${appName} workout'` : "Today's workout";
