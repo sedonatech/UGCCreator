@@ -47,7 +47,7 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const { projects } = useProjectsContext();
 
-    const brandName = auth?.profile?.userName;
+    const brandName = profile?.name;
 
     const { refreshing, handleBrandRefresh } = useRefresh();
 

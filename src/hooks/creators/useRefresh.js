@@ -17,7 +17,6 @@ const useRefresh = () => {
             setRefreshing(true);
             await getAllProjects();
             await getBrands();
-            await getAllCreators();
         } catch (error) {
             setRefreshing(false);
         }
@@ -25,8 +24,14 @@ const useRefresh = () => {
     };
 
     const handleBrandRefresh = async () => {
-        setRefreshing(true);
-        await getAllProjects();
+        try {
+            setRefreshing(true);
+            await getAllProjects();
+            // await getAllCreators();
+        } catch (error) {
+            console.log('REFRESHING ERROR: ', error);
+        }
+
         setRefreshing(false);
     };
     return {
