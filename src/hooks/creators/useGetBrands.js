@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 
 const USERS_COLLECTION = 'users';
 
@@ -39,6 +40,7 @@ const useGetBrands = (brandId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'A week ago'
                     }));
                 setBrands(brandsData);
             });
@@ -54,6 +56,7 @@ const useGetBrands = (brandId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'A week ago'
                     }));
                 setFcmBrands(brandsData);
             });
