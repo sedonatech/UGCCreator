@@ -14,7 +14,7 @@ import {
     HEADER_MARGIN,
     IS_ANDROID,
     SCREEN_HEIGHT,
-    SPACE_LARGE, SPACE_MEDIUM,
+    SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL,
     SPACE_XSMALL,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
@@ -42,6 +42,7 @@ import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../consts/content/Portf
 import { PROFILE } from '../../../navigation/ScreenNames';
 import TemplateSafeAreaView from '../../../components/TemplateSafeAreaView';
 import { isIOS } from '../../../Utils/Platform';
+import FilterPill from '../../app/explore/components/FilterPill';
 
 const CreatorProfilesScreen = ({ navigation }) => {
     const { creators: creatorsData } = useGetCreators();
@@ -145,30 +146,19 @@ const CreatorProfilesScreen = ({ navigation }) => {
                             </TemplateTouchable>
                         </TemplateBox>
                         {!!selectedFilters?.length && (
-                            <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN * 1.5}>
-                                <TemplateText size={14} bold>
-                                    Filters:
-                                    {' '}
-                                </TemplateText>
-                                <TemplateText size={14} semiBold>
-                                    {selectedFilters?.join(', ')}
-                                </TemplateText>
-                                {!!selectedFilters?.length && (
-                                    <TemplateText
-                                        size={14}
-                                        bold
-                                        color={IOS_BLUE}
-                                        style={styles.clearFiltersTextButton}
+                            <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
+                                {selectedFilters?.map((filter) => (
+                                    <FilterPill
+                                        key={filter}
+                                        title={filter}
                                         onPress={() => {
-                                            setSelectedFilters([]);
+                                            setSelectedFilters(selectedFilters?.filter((f) => f !== filter));
                                         }}
-                                    >
-                                        Clear Filters
-                                    </TemplateText>
-                                )}
+                                        selected
+                                    />
+                                ))}
                             </TemplateBox>
                         )}
-
                     </>
                 )}
                 ListFooterComponent={(
@@ -185,7 +175,9 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         center
                         selfCenter
                     >
-                        <ActivityIndicator size="large" color={IOS_BLUE} />
+                        {!creatorsData?.length && <ActivityIndicator size="large" color={IOS_BLUE} />}
+                        {(creatorsData?.length > 0 && !filteredSearchedCreators?.length)
+                            && <TemplateText semiBold>No results found</TemplateText>}
                     </TemplateBox>
                 )}
                 initialNumToRender={5}
@@ -207,7 +199,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
                         paddingTop: 10,
                         paddingBottom: 40,
-                        height: SCREEN_HEIGHT * 0.9,
+                        height: wp(SCREEN_HEIGHT * 0.84),
                     },
                     draggableIcon: {
                         backgroundColor: BLACK,
@@ -225,7 +217,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     >
                         <TemplateText size={18} bold>Select Filters</TemplateText>
 
-                        {selectedFilters.length > 0 && (
+                        {selectedFilters?.length > 0 && (
                             <TemplateText
                                 size={14}
                                 color={BRAND_BLUE}
@@ -254,14 +246,17 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     </TemplateBox>
 
                     {!!selectedFilters?.length && (
-                        <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN * 1.5} mb={WRAPPER_MARGIN}>
-                            <TemplateText size={14} bold>
-                                Filters:
-                                {' '}
-                            </TemplateText>
-                            <TemplateText size={14} semiBold>
-                                {selectedFilters?.join(', ')}
-                            </TemplateText>
+                        <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
+                            {selectedFilters?.map((filter) => (
+                                <FilterPill
+                                    key={filter}
+                                    title={filter}
+                                    onPress={() => {
+                                        setSelectedFilters(selectedFilters?.filter((f) => f !== filter));
+                                    }}
+                                    selected
+                                />
+                            ))}
                         </TemplateBox>
                     )}
 

@@ -26,7 +26,6 @@ const CreatorCard = ({
     subtitleContainerWidth,
     lastLoginTime,
 }) => (
-
     <TemplateBox
         width={width}
         height={wp(180)}
@@ -34,7 +33,7 @@ const CreatorCard = ({
         pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
-        style={[SHADOW('card', WHITE), style]}
+        style={[style, { backgroundColor: WHITE }]}
         onPress={onPress}
     >
 
@@ -82,16 +81,16 @@ const CreatorCard = ({
             </TemplateBox>
 
             <TemplateBox
-                ph={WRAPPER_MARGIN - 5}
-                pv={WRAPPER_MARGIN / 2}
+                ph={wp(WRAPPER_MARGIN - 5)}
+                pv={wp(WRAPPER_MARGIN / 2)}
                 backgroundColor={BLACK}
-                borderRadius={10}
+                borderRadius={wp(10)}
                 alignItems="center"
                 justifyContent="center"
                 onPress={onPress}
-
+                ml={wp(10)}
             >
-                <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
+                <TemplateText color={WHITE} size={wp(12)} bold>View Portfolio</TemplateText>
             </TemplateBox>
         </TemplateBox>
         <TemplateBox
