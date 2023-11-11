@@ -27,6 +27,7 @@ import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../c
 import useChatsContext from '../../../hooks/chats/useChatsContext';
 import CreatorDetailsHeader from './components/CreatorDetailsHeader';
 import LoadingOverlay from '../../../components/LoadingOverlay';
+import { UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
 
 const PortfolioScreen = ({ navigation, route }) => {
     const creatorId = route?.params?.creatorId;
@@ -128,6 +129,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                         slideInDelay={40}
                         showIcon={false}
                         backgroundColor={lightOrange}
+                        onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
                     />
                 )}
                 {about && (
