@@ -13,6 +13,7 @@ interface Props {
     name?: string
     image?: string;
     shortDescription?: string;
+    lastLoginTime?: string;
 }
 
 const BrandsTab = ({ data }: { data: Array<Props> }) => {
@@ -34,6 +35,7 @@ const BrandsTab = ({ data }: { data: Array<Props> }) => {
                     descriptionSize={12}
                     // @ts-ignore
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
+                    lastLoginTime={brand?.lastLoginTime}
                 />
             ))}
 

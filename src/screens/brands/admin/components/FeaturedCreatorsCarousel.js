@@ -65,6 +65,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         onPress={() => navigation.navigate(PROFILE, {
                             creatorId: item?.id,
                         })}
+                        lastLoginTime={item?.lastLoginTime}
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}

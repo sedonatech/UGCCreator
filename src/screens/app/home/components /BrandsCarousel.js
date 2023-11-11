@@ -29,7 +29,8 @@ const BrandsCarousel = ({ style }) => {
             id: brand?.id,
             name: brand?.name,
             image: brand?.image,
-            shortDescription: brand?.shortDescription
+            shortDescription: brand?.shortDescription,
+            lastLoginTime: brand?.lastLoginTime
         }));
     }, [brands]);
 
@@ -65,6 +66,7 @@ const BrandsCarousel = ({ style }) => {
                         shortDescription={item?.shortDescription}
                         style={styles.card}
                         onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
+                        lastLoginTime={item?.lastLoginTime}
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}

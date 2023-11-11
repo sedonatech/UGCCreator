@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 
 const USERS_COLLECTION = 'users';
 
@@ -27,6 +28,7 @@ const useGetCreators = (creatorId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'a week ago'
                     }));
                 setCreators(creatorsData);
             });
@@ -42,6 +44,7 @@ const useGetCreators = (creatorId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'a week ago'
                     }));
                 setFcmCreators(creatorsData);
             });

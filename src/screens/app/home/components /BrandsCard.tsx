@@ -2,11 +2,14 @@ import React, { FC, memo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
-import { BLACK, WHITE, BRAND_BLUE, TRANSPARENT, DEFAULT_GRADIENT } from '../../../../theme/Colors';
+import {
+    BLACK, WHITE, BRAND_BLUE, TRANSPARENT, DEFAULT_GRADIENT, lightGreen, lightOrange,
+} from '../../../../theme/Colors';
 import BackgroundImage from '../../../../components/BackgroundImage';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import TemplateBox from '../../../../components/TemplateBox';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     image?: string | number | any;
@@ -21,6 +24,7 @@ interface Props {
     descriptionSize?: number;
     onPress?: () => void;
     buttonTitle?: string;
+    lastLoginTime?: string; 
 }
 
 const BrandsCard: FC<Props> = ({
@@ -35,7 +39,8 @@ const BrandsCard: FC<Props> = ({
     descriptionLines = 2,
     descriptionSize = 12,
     onPress,
-    buttonTitle = 'View brand details'
+    buttonTitle = 'View brand details',
+    lastLoginTime
 }) => (
     <TemplateBox
         fullGradient={!!image}
@@ -63,6 +68,27 @@ const BrandsCard: FC<Props> = ({
                 />
             )
         }
+        {lastLoginTime && (<TemplateBox
+            ph={8}
+            pv={4}
+            backgroundColor={lightGreen}
+            borderRadius={6}
+            alignItems="center"
+            justifyContent="center"
+            height={wp(20)}
+            width={wp(70)}
+            absolute
+            top={wp(12)}
+            left={wp(12)}
+        >
+            <TemplateText
+                color={WHITE}
+                size={9}
+                bold
+            >
+                { `Active ${lastLoginTime}` }
+            </TemplateText>
+        </TemplateBox>)}
         <TemplateBox pAll={20} onPress={onPress} selfCenter alignItems="center">
             {/* @ts-ignore */}
             <TemplateText

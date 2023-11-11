@@ -24,6 +24,7 @@ const CreatorCard = ({
     imageStyle,
     textContainerWidth,
     subtitleContainerWidth,
+    lastLoginTime,
 }) => (
 
     <TemplateBox
@@ -93,6 +94,18 @@ const CreatorCard = ({
                 <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
             </TemplateBox>
         </TemplateBox>
+        <TemplateBox
+            ph={8}
+            pv={4}
+            backgroundColor={lightGreen}
+            borderRadius={6}
+            alignItems="center"
+            justifyContent="center"
+            onPress={onPress}
+
+        >
+            <TemplateText color={WHITE} size={9} bold caps>{ `Active ${lastLoginTime}` }</TemplateText>
+        </TemplateBox>
     </TemplateBox>
 
 );
@@ -108,6 +121,7 @@ CreatorCard.propTypes = {
     imageStyle: PropTypes.shape({}),
     textContainerWidth: PropTypes.number,
     subtitleContainerWidth: PropTypes.number,
+    lastLoginTime: PropTypes.string,
 };
 
 CreatorCard.defaultProps = {
@@ -121,6 +135,7 @@ CreatorCard.defaultProps = {
     imageStyle: {},
     textContainerWidth: wp(190),
     subtitleContainerWidth: wp(100),
+    lastLoginTime: 'a week ago'
 };
 
 const styles = StyleSheet.create({
