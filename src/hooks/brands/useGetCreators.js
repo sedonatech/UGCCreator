@@ -64,11 +64,24 @@ const useGetCreators = (creatorId = '') => {
         return () => subscriber();
     }, [creatorId]);
 
+    // Fetch  a list of creators without snapshot.get function
+
+    const getAllCreators = async () => {
+        const querySnapshot = await creatorsRef.get();
+        const creatorsData = querySnapshot?.docs
+            ?.map((doc) => ({
+                id: doc?.id,
+                ...doc?.data(),
+            }));
+        setCreators(creatorsData);
+    };
+
     return {
         creators,
         filteredCreators: creators?.filter((creator) => creator?.image !== '' && !!creator?.portfolioLink),
         fcmCreators,
         selectedCreator,
+        getAllCreators,
     };
 };
 

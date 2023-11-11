@@ -28,14 +28,13 @@ const CreatorCard = ({
 
     <TemplateBox
         width={width}
-        height={wp(200)}
+        height={wp(180)}
         borderRadius={20}
         pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
         style={[SHADOW('card', WHITE), style]}
         onPress={onPress}
-
     >
 
         <TemplateBox
@@ -109,7 +108,6 @@ CreatorCard.propTypes = {
     imageStyle: PropTypes.shape({}),
     textContainerWidth: PropTypes.number,
     subtitleContainerWidth: PropTypes.number,
-    buttonOffset: PropTypes.number,
 };
 
 CreatorCard.defaultProps = {
@@ -121,17 +119,16 @@ CreatorCard.defaultProps = {
     style: {},
     width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
     imageStyle: {},
-    textContainerWidth: 190,
-    subtitleContainerWidth: 100,
-    buttonOffset: 80,
+    textContainerWidth: wp(190),
+    subtitleContainerWidth: wp(100),
 };
 
 const styles = StyleSheet.create({
     image: {
-        width: 90,
-        height: 90,
-        borderRadius: 20,
-        marginRight: 20,
+        width: wp(90),
+        height: wp(90),
+        borderRadius: wp(20),
+        marginRight: wp(20),
     },
 });
 export default memo(CreatorCard);

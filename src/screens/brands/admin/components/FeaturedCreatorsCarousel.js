@@ -13,6 +13,7 @@ import useGetCreators from '../../../../hooks/brands/useGetCreators';
 import CreatorCard from '../../creators/CreatorCard';
 import TemplateBox from '../../../../components/TemplateBox';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 const SAMPLE_SIZE = 5;
 
@@ -98,9 +99,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     image: {
-        height: 60,
-        width: 60,
-        borderRadius: 10,
+        width: wp(80),
+        height: wp(80),
+        borderRadius: wp(16),
+        marginRight: wp(14),
     },
 });
 export default FeaturedCreatorsCarousel;
