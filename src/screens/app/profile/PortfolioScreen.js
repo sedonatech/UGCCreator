@@ -94,7 +94,7 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
 
-    const loading = (Object.keys(selectedCreator).length === 0) && isBrand;
+    const loading = (Object.keys(selectedCreator)?.length === 0) && isBrand;
 
     return (
         <ViewShot style={styles.viewShot} ref={screenshot}>

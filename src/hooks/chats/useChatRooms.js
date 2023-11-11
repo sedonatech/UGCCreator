@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import useAuthContext from '../auth/useAuthContext';
+import { CHATS_STACK } from '../../navigation/ScreenNames';
 
 export const CHAT_ROOMS = 'chatRooms';
 
 const useChatRooms = () => {
+    const navigation = useNavigation();
     const [chatRooms, setChatRooms] = useState([]);
 
     const [loading, setLoading] = useState(false);
@@ -42,7 +45,7 @@ const useChatRooms = () => {
                     'You can check the chats tab and continue chatting',
                     [{
                         text: 'OK',
-                        onPress: () => {},
+                        onPress: () => navigation.navigate(CHATS_STACK),
                     }], { cancelable: false });
                 return;
             }
@@ -61,7 +64,7 @@ const useChatRooms = () => {
                     'You can check the chats tab and continue chatting',
                     [{
                         text: 'OK',
-                        onPress: () => {},
+                        onPress: () => navigation.navigate(CHATS_STACK),
                     }], { cancelable: false });
             }
         } catch (error) {

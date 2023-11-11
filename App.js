@@ -36,16 +36,17 @@ const MainApp = () => {
                 <SubscriptionProvider purchase={purchase}>
                     <ProjectsProvider>
                         <ProjectApplicationProvider>
-                            <ChatsProvider>
-                                <ActionSheetProvider>
-                                    <NavigationContainer
-                                        theme={NAVIGATION_THEME}
-                                    >
-                                        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                            <ActionSheetProvider>
+                                <NavigationContainer
+                                    theme={NAVIGATION_THEME}
+                                >
+                                    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                    <ChatsProvider>
                                         <MainNavigator />
-                                    </NavigationContainer>
-                                </ActionSheetProvider>
-                            </ChatsProvider>
+                                    </ChatsProvider>
+                                </NavigationContainer>
+                            </ActionSheetProvider>
+
                         </ProjectApplicationProvider>
                     </ProjectsProvider>
                 </SubscriptionProvider>
