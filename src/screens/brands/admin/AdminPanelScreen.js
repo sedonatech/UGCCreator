@@ -33,6 +33,7 @@ import { SHADOW } from '../../../theme/Shadow';
 import { wp } from '../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../components/TemplateIcon';
 import useAppReview from '../../../hooks/useAppReview';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 
 const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -50,6 +51,8 @@ const AdminPanelScreen = ({ navigation }) => {
     const brandName = auth?.profile?.userName;
 
     const { refreshing, handleBrandRefresh } = useRefresh();
+
+    const { features } = useFeatureFlags();
 
     const projectsCarouselData = useMemo(() => {
         if (!projects?.length) return [];
@@ -125,7 +128,7 @@ const AdminPanelScreen = ({ navigation }) => {
             {profile?.name && (
                 <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
             )}
-            {previousResponse === null && (
+            {previousResponse === null && features?.showReviewPrompt && (
                 <TemplateBox
                     row
                     backgroundColor={WHITE}
@@ -194,7 +197,6 @@ const AdminPanelScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: WHITE,
         paddingBottom: wp(60),
     },
     addButton: {
