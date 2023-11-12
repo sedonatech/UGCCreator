@@ -24,7 +24,7 @@ const UpdateWorkExamples = () => {
                     startCase
                     bold
                 >
-                    Upload your sample photos/videos
+                    Upload your sample photos
                 </TemplateText>
             </TemplateBox>
             <TemplateBox height={10} />
@@ -88,36 +88,6 @@ const UpdateWorkExamples = () => {
                                 type="photo"
                             />
 
-                        </TemplateBox>
-                    </TemplateBox>
-
-                    <TemplateBox>
-                        <TemplateBox selfCenter alignItems="center">
-                            <TemplateText
-                                bold
-                                size={18}
-                                color={BLACK}
-                                center
-                            >
-                                Upload sample videos
-                            </TemplateText>
-                            <TemplateBox height={10} />
-                            <TemplateText
-                                size={12}
-                                color={BLACK}
-                                center
-                            >
-                                You can upload up to 4 variants of your links
-                                to your sample videos on your social media
-                            </TemplateText>
-                        </TemplateBox>
-                        <TemplateBox pAll={WRAPPER_MARGIN}>
-
-                            <AddSampleWorkItem
-                                onClose={() => refRBSheet.current.close()}
-                                style={styles.addButton}
-                                type="video"
-                            />
                         </TemplateBox>
                     </TemplateBox>
                 </ScrollView>

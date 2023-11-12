@@ -24,10 +24,11 @@ const CreatorCard = ({
     textContainerWidth,
     subtitleContainerWidth,
     lastLoginTime,
+    height = wp(180),
 }) => (
     <TemplateBox
         width={width}
-        height={wp(180)}
+        height={height}
         borderRadius={20}
         pAll={16}
         selfCenter
@@ -127,6 +128,7 @@ CreatorCard.propTypes = {
     textContainerWidth: PropTypes.number,
     subtitleContainerWidth: PropTypes.number,
     lastLoginTime: PropTypes.string,
+    height: PropTypes.number,
 };
 
 CreatorCard.defaultProps = {
@@ -141,6 +143,7 @@ CreatorCard.defaultProps = {
     textContainerWidth: wp(190),
     subtitleContainerWidth: wp(100),
     lastLoginTime: 'days ago',
+    height: wp(180),
 };
 
 const styles = StyleSheet.create({

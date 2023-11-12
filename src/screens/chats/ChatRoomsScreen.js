@@ -128,7 +128,7 @@ const ChatRoomsScreen = ({ navigation }) => {
         lastLoginTime,
     }) => (
         <TemplateBox
-            width={wp(WRAPPED_SCREEN_WIDTH) - wp(WRAPPER_MARGIN * 1.4)}
+            width={wp(354)}
             borderRadius={wp(20)}
             pAll={wp(16)}
             selfCenter

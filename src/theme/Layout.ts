@@ -18,10 +18,14 @@ export const SCREEN_WIDTH:number = Dimensions.get('screen').width;
 export const WRAPPER_MARGIN = 20;
 export const WRAPPED_SCREEN_WIDTH:number = SCREEN_WIDTH - wp(WRAPPER_MARGIN * 2);
 
-export const IS_SMALL_DEVICE:boolean = SCREEN_WIDTH < 375;
+export const IS_SMALL_DEVICE:boolean = SCREEN_WIDTH <= 375;
 export const IS_SHORT_DEVICE:boolean = SCREEN_HEIGHT < 700;
 
 export const STATUS_BAR_HEIGHT:number = getStatusBarHeight();
+
+console.log('-> STATUS_BAR_HEIGHT', STATUS_BAR_HEIGHT);
+console.log('-> SCREEN_HEIGHT', SCREEN_HEIGHT);
+console.log('-> SCREEN_WIDTH', SCREEN_WIDTH);
 
 export const IS_ANDROID:boolean = Platform.OS === 'android';
 
@@ -66,4 +70,6 @@ export const OFFER_CARD_WIDTH = IS_SMALL_DEVICE
 // eslint-disable-next-line no-nested-ternary
 const HEADER_MARGIN_OFFSET = IS_ANDROID ? 2.2 : IS_IOS_16 ? 5 : 2.6;
 
-export const HEADER_MARGIN = STATUS_BAR_HEIGHT + (WRAPPER_MARGIN * HEADER_MARGIN_OFFSET);
+export const HEADER_MARGIN = (IS_SMALL_DEVICE
+    ? wp(22)
+    : wp(44)) + (WRAPPER_MARGIN * HEADER_MARGIN_OFFSET);

@@ -76,9 +76,6 @@ const PortfolioScreen = ({ navigation, route }) => {
             contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}
         >
-            {loading && (
-                <LoadingOverlay message="Fetching the creators portfolio...." />
-            )}
             {creatorId ? (
                 <CreatorDetailsHeader
                     userName={userName}
@@ -128,7 +125,11 @@ const PortfolioScreen = ({ navigation, route }) => {
                                 title="Contact Creator"
                                 onPress={async () => {
                                     try {
-                                        if (creatorId && brandId && creatorFCMToken && brandFCMToken && chatRoomName) {
+                                        if (creatorId
+                                            && brandId
+                                            && creatorFCMToken
+                                            && brandFCMToken
+                                            && chatRoomName) {
                                             await createChatRoom(
                                                 chatRoomName,
                                                 creatorId,
@@ -145,6 +146,9 @@ const PortfolioScreen = ({ navigation, route }) => {
                         </TemplateBox>
                     )
             }
+            {loading && (
+                <LoadingOverlay message="" />
+            )}
         </ScrollView>
     );
 };
