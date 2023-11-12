@@ -62,7 +62,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
         }
     };
 
-    // TODO: make filtering logic exclusive
     const filteredCreators = useMemo(() => {
         if (!selectedFilters.length) return creatorsData;
         // filter by selected filters
@@ -99,7 +98,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
             behavior={isIOS ? 'padding' : 'height'}
             style={styles.mainContainer}
         >
-            <StatusBar barStyle="default" />
+            <StatusBar barStyle="dark-content" />
             <FlatList
                 data={filteredSearchedCreators?.sort((a, b) => b?.image?.localeCompare(a?.image))}
                 renderItem={({ item }) => (

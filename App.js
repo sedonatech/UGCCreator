@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {
-    StatusBar, useColorScheme, View, StyleSheet,
+    StatusBar, View, StyleSheet,
 } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
@@ -26,8 +26,6 @@ const NAVIGATION_THEME = {
     },
 };
 const MainApp = () => {
-    const isDarkMode = useColorScheme() === 'dark';
-
     const purchase = useSubscriptionConfig(true);
 
     return (
@@ -40,7 +38,7 @@ const MainApp = () => {
                                 <NavigationContainer
                                     theme={NAVIGATION_THEME}
                                 >
-                                    <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+                                    <StatusBar barStyle="dark-content" />
                                     <ChatsProvider>
                                         <MainNavigator />
                                     </ChatsProvider>
