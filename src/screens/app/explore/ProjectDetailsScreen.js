@@ -215,9 +215,9 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 <DescriptionRange
                     icon="timer-outline"
                     maxSubtitle="Start Date"
-                    maxTitle={format(new Date(selectedProject?.startDate), 'DD MMM YYYY')}
+                    maxTitle={format(new Date(selectedProject?.startDate), 'dd MMM yyyy')}
                     minSubtitle="End Date"
-                    minTitle={format(new Date(selectedProject?.endDate), 'DD MMM YYYY')}
+                    minTitle={format(new Date(selectedProject?.endDate), 'dd MMM yyyy')}
                 />
                 <TemplateText
                     style={styles.title}

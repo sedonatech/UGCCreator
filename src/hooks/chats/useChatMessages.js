@@ -11,7 +11,7 @@ const useChatMessages = () => {
         try {
             const formattedMessages = newMessage?.map((message) => ({
                 ...message,
-                createdAt: format(new Date(), 'YYYY-MM-DD HH:mm'),
+                createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
             }));
 
             await firestore()
