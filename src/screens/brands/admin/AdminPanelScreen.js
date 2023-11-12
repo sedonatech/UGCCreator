@@ -12,7 +12,7 @@ import {
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import {
-    ADD_PROJECT, BRAND_PROJECT_DETAILS, PROFILE_STACK, UPDATE_BRAND_PROFILE,
+    ADD_PROJECT, BRAND_PROJECT_DETAILS, BRANDS_PROFILE_STACK, UPDATE_BRAND_PROFILE,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
@@ -103,7 +103,12 @@ const AdminPanelScreen = ({ navigation }) => {
                 [
                     {
                         text: 'OK',
-                        onPress: () => navigation.navigate(PROFILE_STACK),
+                        onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, {
+                            screen: UPDATE_BRAND_PROFILE,
+                            params: {
+                                fromAdminPanel: true,
+                            },
+                        }),
                     },
                 ],
             );
@@ -166,7 +171,12 @@ const AdminPanelScreen = ({ navigation }) => {
                     slideInDelay={40}
                     showIcon={false}
                     backgroundColor={lightOrange}
-                    onPress={() => navigation.navigate(UPDATE_BRAND_PROFILE)}
+                    onPress={() => navigation.navigate(BRANDS_PROFILE_STACK, {
+                        screen: UPDATE_BRAND_PROFILE,
+                        params: {
+                            fromAdminPanel: true,
+                        },
+                    })}
                 />
             )}
 

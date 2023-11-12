@@ -34,9 +34,10 @@ const AuthProvider = ({ children }) => {
                || profile?.socialMedia?.facebook
                || profile?.socialMedia?.twitter || profile?.socialMedia?.youtube,
         };
+
         const profileValues = Object.values(profileCheckParamsObject);
         const offset = profileValues?.length;
-        const completeCount = profileValues?.filter((value) => value === false)?.length;
+        const completeCount = profileValues?.filter((value) => !!value)?.length;
         const completeRatio = completeCount / offset;
         const roundedCompleteRatio = Math.round(completeRatio * 10) / 10;
 
