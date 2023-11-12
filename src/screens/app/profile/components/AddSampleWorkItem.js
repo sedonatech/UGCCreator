@@ -15,7 +15,6 @@ import useAuthContext from '../../../../hooks/auth/useAuthContext';
 
 const AddSampleWorkItem = ({
     onClose,
-    type,
 }) => {
     const [info, setInfo] = useState({
         title: '',
@@ -28,18 +27,6 @@ const AddSampleWorkItem = ({
     const handleUpdatePhotos = () => {
         if (!info.title || !info.description || !info.link) {
             Alert.alert('Please fill all fields');
-            return;
-        }
-        if (type === 'video') {
-            update('samplePhotos', [
-                ...profileData?.sampleVideos,
-                {
-                    link: info.link,
-                    title: info.title,
-                    description: info.description,
-                },
-            ]);
-            onClose();
             return;
         }
         update('samplePhotos', [

@@ -111,6 +111,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         location={item?.location?.country}
                         email={item?.email}
                         onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+                        height={wp(194)}
                     />
                 )}
                 showVerticalScrollIndicator={false}
