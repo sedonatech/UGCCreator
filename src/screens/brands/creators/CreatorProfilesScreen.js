@@ -30,7 +30,6 @@ import TemplateTouchable from '../../../components/TemplateTouchable';
 import Filter from '../../../../assets/svgs/Filter';
 import FilterCategory from '../../app/explore/components/FilterCategory';
 import {
-    ageFilters,
     countryFilters, deliveryFormatFilters,
     genderFilters,
     languageFilters, projectDurationFilters,
@@ -95,19 +94,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const filteredSearchedCreators = search?.length ? searchResults : filteredCreators;
 
-    const renderItem = ({ item }) => (
-        <CreatorCard
-            key={item?.id}
-            name={item?.userName}
-            imageUrl={item?.image}
-            shortDescription={item?.shortDescription
-                || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-            location={item?.location?.country}
-            email={item?.email}
-            onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-        />
-    );
-
     return (
         <KeyboardAvoidingView
             behavior={isIOS ? 'padding' : 'height'}
@@ -115,8 +101,19 @@ const CreatorProfilesScreen = ({ navigation }) => {
         >
             <StatusBar barStyle="default" />
             <FlatList
-                data={filteredSearchedCreators?.sort((a, b) => a?.userName?.localeCompare(b?.userName))}
-                renderItem={renderItem}
+                data={filteredSearchedCreators?.sort((a, b) => b?.image?.localeCompare(a?.image))}
+                renderItem={({ item }) => (
+                    <CreatorCard
+                        key={item?.id}
+                        name={item?.userName}
+                        imageUrl={item?.image}
+                        shortDescription={item?.shortDescription
+                        || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                        location={item?.location?.country}
+                        email={item?.email}
+                        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+                    />
+                )}
                 showVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}
                 ListHeaderComponent={(
@@ -286,12 +283,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Age Group"
-                        filters={ageFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
                         title="Project Type"
                         filters={projectTypeFilters}
                         onFilterPress={onProjectFilterPress}
@@ -323,11 +314,10 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '100%',
-        height: 50,
-        borderRadius: 10,
-        paddingRight: 30,
-        paddingLeft: 10,
-        fontSize: 16,
+        height: wp(50),
+        borderRadius: wp(10),
+        paddingHorizontal: wp(12),
+        fontSize: wp(16),
         color: BLACK,
     },
     filterButton: {
@@ -341,9 +331,6 @@ const styles = StyleSheet.create({
     },
     listFooter: {
         paddingBottom: wp(SPACE_MEDIUM),
-    },
-    clearFiltersTextButton: {
-        marginLeft: SPACE_XSMALL,
     },
 });
 export default CreatorProfilesScreen;

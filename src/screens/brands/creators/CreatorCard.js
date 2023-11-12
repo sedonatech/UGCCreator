@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -7,9 +7,8 @@ import TemplateText from '../../../components/TemplateText';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
-    BLACK, BLACK_60, BLACK_SECONDARY, WHITE,
+    BLACK, BLACK_60, BLACK_SECONDARY, lightGreen, WHITE,
 } from '../../../theme/Colors';
-import { SHADOW } from '../../../theme/Shadow';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 import { wp } from '../../../Utils/getResponsiveSize';
 
@@ -56,7 +55,7 @@ const CreatorCard = ({
                 <TemplateText
                     size={12}
                     color={BLACK_SECONDARY}
-                    numberOfLines={2}
+                    numberOfLines={3}
                 >
                     {shortDescription}
                 </TemplateText>
@@ -79,7 +78,25 @@ const CreatorCard = ({
                 </TemplateBox>
 
             </TemplateBox>
+        </TemplateBox>
+        <TemplateBox
+            row
+            alignItems="center"
+            justifyContent="space-between"
+            width={width - wp(32)}
+        >
+            <TemplateBox
+                ph={8}
+                pv={4}
+                backgroundColor={lightGreen}
+                borderRadius={6}
+                alignItems="center"
+                justifyContent="center"
+                onPress={onPress}
 
+            >
+                <TemplateText color={WHITE} size={wp(9)} semiBold>{ `Active ${lastLoginTime}` }</TemplateText>
+            </TemplateBox>
             <TemplateBox
                 ph={wp(WRAPPER_MARGIN - 5)}
                 pv={wp(WRAPPER_MARGIN / 2)}
@@ -88,22 +105,11 @@ const CreatorCard = ({
                 alignItems="center"
                 justifyContent="center"
                 onPress={onPress}
-                ml={wp(10)}
+                alignSelf="flex-end"
+                mb={wp(13)}
             >
-                <TemplateText color={WHITE} size={wp(12)} bold>View Portfolio</TemplateText>
+                <TemplateText color={WHITE} size={wp(10)} bold>View Portfolio</TemplateText>
             </TemplateBox>
-        </TemplateBox>
-        <TemplateBox
-            ph={8}
-            pv={4}
-            backgroundColor={lightGreen}
-            borderRadius={6}
-            alignItems="center"
-            justifyContent="center"
-            onPress={onPress}
-
-        >
-            <TemplateText color={WHITE} size={9} bold caps>{ `Active ${lastLoginTime}` }</TemplateText>
         </TemplateBox>
     </TemplateBox>
 
@@ -134,7 +140,7 @@ CreatorCard.defaultProps = {
     imageStyle: {},
     textContainerWidth: wp(190),
     subtitleContainerWidth: wp(100),
-    lastLoginTime: 'a week ago'
+    lastLoginTime: 'a week ago',
 };
 
 const styles = StyleSheet.create({
@@ -145,4 +151,4 @@ const styles = StyleSheet.create({
         marginRight: wp(20),
     },
 });
-export default memo(CreatorCard);
+export default CreatorCard;
