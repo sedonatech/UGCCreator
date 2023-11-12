@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
+import { format } from 'date-fns'
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
@@ -47,7 +47,7 @@ export default (title, viewRef) => {
                 setTempFileUri(tempUri);
                 const uriArray = tempUri.split('/');
                 const nameToChange = uriArray[uriArray.length - 1];
-                const date = moment().format('D-M-YYYY-hh-mm-ss');
+                const date = format(new Date(),'D-M-YYYY-hh-mm-ss');
                 const prefix = appName ? `${appName}-` : null;
                 const baseName = `${title?.capitalize()}-${date}.png`;
                 const newName = (prefix ? `${prefix}${baseName}` : baseName).replace(/\s/g, '-');

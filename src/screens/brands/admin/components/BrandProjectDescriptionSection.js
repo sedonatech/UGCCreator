@@ -1,5 +1,5 @@
-import moment from 'moment/moment';
 import React from 'react';
+import { format } from 'date-fns'
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -47,9 +47,9 @@ const BrandProjectDescriptionSection = ({
         <DescriptionRange
             icon="timer-outline"
             maxSubtitle="Start Date"
-            maxTitle={moment(selectedProject?.startDate).format('DD MMM YYYY')}
+            maxTitle={format(new Date(selectedProject?.startDate), 'DD MMM YYYY')}
             minSubtitle="End Date"
-            minTitle={moment(selectedProject?.endDate).format('DD MMM YYYY')}
+            minTitle={format(new Date(selectedProject?.endDate), 'DD MMM YYYY')}
         />
         <TemplateText
             style={styles.title}

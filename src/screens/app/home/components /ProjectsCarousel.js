@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment';
-
+import differenceInWeeks from 'date-fns/differenceInWeeks';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -38,7 +37,7 @@ const ProjectsCarousel = ({ style }) => {
             image: item?.image,
             title: item?.title,
             shortDescription: item?.shortDescription,
-            duration: `${moment(item?.endDate).diff(moment(item?.startDate), 'weeks') || 3} weeks`,
+            duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
             enrolled: item?.applications?.map((app) => app?.creatorId)?.includes(profile?.id),
             projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
         }))?.slice(0, 4);
