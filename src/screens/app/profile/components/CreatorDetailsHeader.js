@@ -10,6 +10,7 @@ import {
 } from '../../../../theme/Colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 const CreatorDetailsHeader = ({
     userName, location, image,
@@ -21,6 +22,7 @@ const CreatorDetailsHeader = ({
             height={SCREEN_HEIGHT * 0.24}
             borderBottomLeftRadius={20}
             borderBottomRightRadius={20}
+            mb={userName ? 0 : wp(100)}
         >
             <TemplateBox
                 absolute
@@ -39,19 +41,20 @@ const CreatorDetailsHeader = ({
             </TemplateBox>
         </TemplateBox>
         <TemplateBox selfCenter slideIn slideInDelay={100} slideInDirection="left">
-            <TemplateBox row mt={120} alignItems="center" mb={6}>
-                <TemplateText bold size={20} color={BLACK} center>{userName}</TemplateText>
-                <TemplateIcon
-                    name="check-decagram"
-                    family="MaterialCommunity"
-                    color={GREEN}
-                    size={14}
-                    style={styles.icon}
-                />
-            </TemplateBox>
+            {userName && (
+                <TemplateBox row mt={120} alignItems="center" mb={6}>
+                    <TemplateText bold size={20} color={BLACK} center>{userName}</TemplateText>
+                    <TemplateIcon
+                        name="check-decagram"
+                        family="MaterialCommunity"
+                        color={GREEN}
+                        size={14}
+                        style={styles.icon}
+                    />
+                </TemplateBox>
+            )}
             {location && (
                 <TemplateBox row alignItems="center">
-                    <TemplateText size={12} color={BLACK_60}>{`@${userName}`}</TemplateText>
                     <TemplateBox width={10} />
                     <TemplateBox row alignItems="center">
                         <TemplateIcon size={12} color={BLACK_60} name="location-outline" />

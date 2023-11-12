@@ -28,7 +28,7 @@ const useGetCreators = (creatorId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
-                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'a week ago'
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
                     }));
                 setCreators(creatorsData);
             });
@@ -44,7 +44,7 @@ const useGetCreators = (creatorId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
-                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'a week ago'
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
                     }));
                 setFcmCreators(creatorsData);
             });

@@ -40,7 +40,7 @@ const useGetBrands = (brandId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
-                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'a week ago'
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
                     }));
                 setBrands(brandsData);
             });
@@ -56,7 +56,7 @@ const useGetBrands = (brandId = '') => {
                     ?.map((doc) => ({
                         id: doc?.id,
                         ...doc?.data(),
-                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'a week ago'
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
                     }));
                 setFcmBrands(brandsData);
             });
