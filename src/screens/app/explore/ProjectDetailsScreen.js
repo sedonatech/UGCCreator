@@ -7,7 +7,7 @@ import {
     ScrollView, StyleSheet,
 } from 'react-native';
 
-import moment from 'moment/moment';
+import { format } from 'date-fns'
 import {
     BLACK,
     BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN,
@@ -215,9 +215,9 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 <DescriptionRange
                     icon="timer-outline"
                     maxSubtitle="Start Date"
-                    maxTitle={moment(selectedProject?.startDate).format('DD MMM YYYY')}
+                    maxTitle={format(new Date(selectedProject?.startDate), 'dd MMM yyyy')}
                     minSubtitle="End Date"
-                    minTitle={moment(selectedProject?.endDate).format('DD MMM YYYY')}
+                    minTitle={format(new Date(selectedProject?.endDate), 'dd MMM yyyy')}
                 />
                 <TemplateText
                     style={styles.title}

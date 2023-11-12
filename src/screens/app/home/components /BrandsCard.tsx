@@ -76,7 +76,7 @@ const BrandsCard: FC<Props> = ({
             alignItems="center"
             justifyContent="center"
             height={wp(20)}
-            width={wp(70)}
+            width={wp(140)}
             absolute
             top={wp(12)}
             left={wp(12)}

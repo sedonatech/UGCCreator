@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from 'moment';
 import useSubscriptionContext from './useSubscriptionContext';
 import { CoreContext } from '../../context/core';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
@@ -20,9 +19,11 @@ export default (expiryLength = 7, debug = true) => {
 
     const updateAsync = async (hasLocalSubscription = false, expiryDate) => {
         try {
+            const now = new Date();
+            now.setDate(now.getDate() + expiryLength);
             await AsyncStorage.setItem(storageKey, JSON.stringify({
                 hasSubscription: hasLocalSubscription,
-                expiryDate: expiryDate || moment().add(expiryLength, 'days').format(),
+                expiryDate: expiryDate || now.toISOString(),
             }));
             if (debug)console.log('[subscriptions] - updateAsyncStore:', { hasLocalSubscription, expiryDate });
         } catch (e) {
@@ -69,7 +70,7 @@ export default (expiryLength = 7, debug = true) => {
                     const localHasSubscription = localJsonCheck?.hasSubscription;
                     const localExpiry = localJsonCheck?.expiryDate;
                     // check expiry date, if before today set and update to storage details
-                    if (moment().isBefore(moment(localExpiry))) {
+                    if (new Date() < new Date(localExpiry)) {
                         setHasSubscription(localHasSubscription);
                         await updateAsync(localHasSubscription);
                     } else {

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import moment from 'moment';
+import { format } from 'date-fns'
+import startOfDay from 'date-fns/startOfDay';
 import PropTypes from 'prop-types';
 
 import TemplateText from '../../../../components/TemplateText';
@@ -9,11 +10,12 @@ import { BLACK_SECONDARY } from '../../../../theme/Colors';
 import Avatar from '../../../../components/Avatar';
 
 const Greeting = ({ userName, style, showAvatar }) => {
-    const hour = moment().hour();
+    const hour = new Date().getHours();
 
-    const today = useMemo(() => moment().startOf('day'), []);
+    const start = startOfDay(new Date())
+    const today = useMemo(() => start, []);
 
-    const activeDay = useMemo(() => today.format('MMMM Do YYYY'), [today]);
+    const activeDay = useMemo(() => format(start, 'MMMM dd yyyy'), [today]);
 
     const getTimeGreeting = (hour) => {
         if (hour > 16) {

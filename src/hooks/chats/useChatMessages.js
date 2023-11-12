@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import moment from 'moment';
+import { format } from 'date-fns'
 import { CHAT_ROOMS } from './useChatRooms';
 import useNotifications from '../notifications/useNotifications';
 import { CHATS } from '../../navigation/ScreenNames';
@@ -11,7 +11,7 @@ const useChatMessages = () => {
         try {
             const formattedMessages = newMessage?.map((message) => ({
                 ...message,
-                createdAt: moment().format('YYYY-MM-DD HH:mm'),
+                createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
             }));
 
             await firestore()

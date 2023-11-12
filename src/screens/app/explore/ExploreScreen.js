@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
-import moment from 'moment/moment';
+import differenceInWeeks from 'date-fns/differenceInWeeks';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK, BRAND_BLUE, TRANSPARENT, WHITE, WHITE_96,
@@ -78,7 +78,7 @@ const ExploreScreen = ({ route }) => {
             image: item?.image,
             title: item?.title,
             shortDescription: item?.shortDescription,
-            duration: `${moment(item?.endDate).diff(moment(item?.startDate), 'weeks') || 3} weeks`,
+            duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
             projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
         }))?.slice(0, 4);
     }, [projects]);
