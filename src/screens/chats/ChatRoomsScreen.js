@@ -1,16 +1,21 @@
 import {
-    FlatList, StyleSheet, RefreshControl, KeyboardAvoidingView, StatusBar, View,
+    FlatList, StyleSheet, RefreshControl, KeyboardAvoidingView, StatusBar, View, Alert, ActivityIndicator,
 } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+    useEffect, useMemo, useState, useRef,
+} from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
+import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 
 import Fuse from 'fuse.js';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
-import { BLACK, WHITE } from '../../theme/Colors';
 import {
-    HEADER_MARGIN, SPACE_MEDIUM, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
+    ERROR_RED, WHITE, BLACK, IOS_BLUE, GREY,
+} from '../../theme/Colors';
+import {
+    HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../theme/Layout';
 import TemplateText from '../../components/TemplateText';
 import { CHATS } from '../../navigation/ScreenNames';
@@ -19,6 +24,7 @@ import { wp } from '../../Utils/getResponsiveSize';
 import useGetCreators from '../../hooks/brands/useGetCreators';
 import useGetBrands from '../../hooks/creators/useGetBrands';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../consts/content/Portfolio';
+import TemplateIcon from '../../components/TemplateIcon';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import { SHADOW } from '../../theme/Shadow';
 import { isIOS } from '../../Utils/Platform';
@@ -31,12 +37,15 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const { brands } = useGetBrands();
 
+    const swipeRef = useRef(null);
+
     const isCreator = auth?.profile?.type === 'creator';
 
     const {
         chatRooms,
         fetchChatRooms,
         fetchingChatRooms,
+        deleteChatRoom,
     } = useChatsContext();
 
     const [search, setSearch] = useState('');
@@ -67,30 +76,56 @@ const ChatRoomsScreen = ({ navigation }) => {
         ? searchResults
         : chatRooms), [search, searchResults, chatRooms]);
 
-    const getCreatorNameAndImage = (selectedId) => {
+    const getCreatorDetails = (selectedId) => {
         if (isCreator && !creators?.length) return null;
 
         const creator = creators?.find(({ id }) => id === selectedId);
         return {
             name: creator?.userName,
             image: creator?.image,
+            lastLoginTime: creator?.lastLoginTime,
         };
     };
 
-    const getBrandNameAndImage = (selectedId) => {
+    const getBrandDetails = (selectedId) => {
         if (!brands?.length && !isCreator) return null;
         const brand = brands?.find(({ id }) => id === selectedId);
 
         return {
             name: brand?.userName,
             image: brand?.image,
+            lastLoginTime: brand?.lastLoginTime,
         };
     };
 
+    // Handle chat room deletion
+    const handleDeleteChat = (chatRoomId) => {
+        Alert.alert(
+            'Delete Chat',
+            'Are you sure you want to delete this chat?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => swipeRef?.current?.close(),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Delete',
+                    onPress: () => {
+                        deleteChatRoom(chatRoomId);
+                        swipeRef?.current?.close();
+                        fetchChatRooms();
+                    },
+                    style: 'destructive',
+                },
+            ],
+        );
+    };
     const ChatRoomCard = ({
         name,
         imageUrl,
         onPress,
+        lastLoginTime,
     }) => (
         <TemplateBox
             width={wp(WRAPPED_SCREEN_WIDTH) - wp(WRAPPER_MARGIN * 1.4)}
@@ -108,9 +143,17 @@ const ChatRoomsScreen = ({ navigation }) => {
                 style={styles.image}
             />
 
-            <TemplateText bold size={wp(16)}>
-                {name}
-            </TemplateText>
+            <TemplateBox>
+                <TemplateText bold size={wp(16)}>
+                    {name}
+                </TemplateText>
+                <TemplateBox height={wp(5)} />
+                {lastLoginTime && (
+                    <TemplateText size={wp(10)} color={GREY}>
+                        {`Last active ${lastLoginTime}`}
+                    </TemplateText>
+                )}
+            </TemplateBox>
         </TemplateBox>
     );
 
@@ -118,6 +161,7 @@ const ChatRoomsScreen = ({ navigation }) => {
         name: PropTypes.string.isRequired,
         imageUrl: PropTypes.string.isRequired,
         onPress: PropTypes.func.isRequired,
+        lastLoginTime: PropTypes.string.isRequired,
     };
 
     return (
@@ -159,19 +203,56 @@ const ChatRoomsScreen = ({ navigation }) => {
                     </>
                 )}
                 renderItem={({ item }) => (
-                    <ChatRoomCard
-                        name={isCreator
-                            ? getBrandNameAndImage(item?.brandId)?.name
-                            : getCreatorNameAndImage(item?.creatorId)?.name}
-                        imageUrl={isCreator
-                            ? getBrandNameAndImage(item?.brandId)?.image
-                            : getCreatorNameAndImage(item?.creatorId)?.image}
-                        onPress={() => {
-                            navigation.navigate(CHATS, {
-                                chatRoomId: item?.id,
-                            });
-                        }}
-                    />
+                    <GestureHandlerRootView>
+                        <Swipeable
+                            ref={swipeRef}
+                            friction={2}
+                            containerStyle={styles.swipeContainer}
+                            useNativeAnimations
+                            renderRightActions={
+                                () => (
+                                    <TemplateBox
+                                        center
+                                        selfCenter
+                                        mr={wp(WRAPPER_MARGIN)}
+                                        mt={wp(SPACE_SMALL)}
+                                        onPress={() => handleDeleteChat(item?.id)}
+                                    >
+                                        <TemplateIcon
+                                            name="trash"
+                                            size={wp(24)}
+                                            color={ERROR_RED}
+                                            style={styles.deleteIcon}
+                                        />
+                                        <TemplateText
+                                            color={ERROR_RED}
+                                            size={wp(9)}
+                                            bold
+                                        >
+                                            Delete
+                                        </TemplateText>
+                                    </TemplateBox>
+                                )
+                            }
+                        >
+                            <ChatRoomCard
+                                name={isCreator
+                                    ? getBrandDetails(item?.brandId)?.name
+                                    : getCreatorDetails(item?.creatorId)?.name}
+                                imageUrl={isCreator
+                                    ? getBrandDetails(item?.brandId)?.image
+                                    : getCreatorDetails(item?.creatorId)?.image}
+                                lastLoginTime={isCreator
+                                    ? getBrandDetails(item?.brandId)?.lastLoginTime
+                                    : getCreatorDetails(item?.creatorId)?.lastLoginTime}
+                                onPress={() => {
+                                    navigation.navigate(CHATS, {
+                                        chatRoomId: item?.id,
+                                    });
+                                }}
+                            />
+                        </Swipeable>
+                    </GestureHandlerRootView>
                 )}
                 ListEmptyComponent={() => (
                     <TemplateBox
@@ -180,12 +261,17 @@ const ChatRoomsScreen = ({ navigation }) => {
                         justifyContent="center"
                         mh={WRAPPER_MARGIN}
                     >
-                        <TemplateText
-                            size={wp(16)}
-                            center
-                        >
-                            There are no conversations yet
-                        </TemplateText>
+                        {fetchingChatRooms
+                            ? <ActivityIndicator size="large" color={IOS_BLUE} />
+                            : (
+                                <TemplateText
+                                    size={wp(16)}
+                                    center
+                                >
+                                    There are no conversations yet
+                                </TemplateText>
+                            )}
+
                         <TemplateBox height={WRAPPER_MARGIN} />
                     </TemplateBox>
                 )}
@@ -232,6 +318,12 @@ const styles = StyleSheet.create({
     },
     listFooter: {
         paddingBottom: wp(SPACE_MEDIUM),
+    },
+    swipeContainer: {
+        overflow: 'visible',
+    },
+    deleteIcon: {
+        marginLeft: wp(4),
     },
 });
 
