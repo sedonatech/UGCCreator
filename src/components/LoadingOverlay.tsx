@@ -4,7 +4,7 @@ import TemplateBox from './TemplateBox';
 import TemplateText from './TemplateText';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import {
-    BLACK, BLACK_20, IOS_BLUE
+    BLACK, BLACK_40, IOS_BLUE
 } from '../theme/Colors';
 import { wp } from '../Utils/getResponsiveSize';
 
@@ -18,7 +18,7 @@ const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0 }) => (
         width={SCREEN_WIDTH}
         alignItems="center"
         justifyContent="center"
-        backgroundColor={BLACK_20}
+        backgroundColor={BLACK_40}
         absolute
         ml={ml}
         flex

@@ -103,9 +103,6 @@ const PortfolioScreen = ({ navigation, route }) => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-                {loading && (
-                    <LoadingOverlay message="Fetching the creators portfolio...." />
-                )}
                 {creatorId ? (
                     <CreatorDetailsHeader
                         userName={userName}
@@ -172,8 +169,11 @@ const PortfolioScreen = ({ navigation, route }) => {
                             </TemplateBox>
                         )
                 }
-            </ScrollView>
 
+                {loading && (
+                    <LoadingOverlay message="" />
+                )}
+            </ScrollView>
         </ViewShot>
     );
 };

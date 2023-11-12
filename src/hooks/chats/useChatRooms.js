@@ -27,7 +27,7 @@ const useChatRooms = () => {
         try {
             setLoading(true);
             // Create a new chat room only if the user is available to receive messages
-            if (!creatorFCMToken || !brandFCMToken) {
+            if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId || !name) {
                 Alert.alert('The user may not be available at the moment',
                     'Please try again later',
                     [{
@@ -36,6 +36,7 @@ const useChatRooms = () => {
                     }], { cancelable: false });
                 return;
             }
+
             // Check if the chat room already exists
             const existingChatRoom = chatRooms?.find((chatRoom) => (
                 chatRoom?.creatorId === creatorId && chatRoom?.brandId === brandId
