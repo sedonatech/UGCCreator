@@ -9,9 +9,12 @@ export const CHAT_ROOMS = 'chatRooms';
 
 const useChatRooms = () => {
     const navigation = useNavigation();
+
     const [chatRooms, setChatRooms] = useState([]);
 
     const [loading, setLoading] = useState(false);
+
+    const [deleteChatRoomLoading, setDeleteChatRoomLoading] = useState(false);
 
     const [fetchingChatRooms, setFetchingChatRooms] = useState(false);
 
@@ -123,6 +126,20 @@ const useChatRooms = () => {
         setFetchingChatRooms(false);
     };
 
+    // Delete chat room
+    const deleteChatRoom = async (chatRoomId) => {
+        try {
+            setDeleteChatRoomLoading(true);
+            await firestore()
+                .collection(CHAT_ROOMS)
+                .doc(chatRoomId)
+                .delete();
+        } catch (error) {
+            console.log('[DELETE CHAT ROOM ERROR]', error);
+        }
+        setDeleteChatRoomLoading(false);
+    };
+
     return {
         chatRooms,
         loading,
@@ -130,6 +147,8 @@ const useChatRooms = () => {
         chatRoomCreated,
         fetchChatRooms,
         fetchingChatRooms,
+        deleteChatRoom,
+        deleteChatRoomLoading,
     };
 };
 
