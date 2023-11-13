@@ -30,7 +30,7 @@ const BrandsCarousel = ({ style }) => {
             name: brand?.name,
             image: brand?.image,
             shortDescription: brand?.shortDescription,
-            lastLoginTime: brand?.lastLoginTime
+            lastLoginTime: brand?.lastLoginTime,
         }));
     }, [brands]);
 
@@ -57,8 +57,7 @@ const BrandsCarousel = ({ style }) => {
                 Check out the brands currently on our platform
             </TemplateText>
             <TemplateCarousel
-                
-                data={brandsData?.sort((a,b) => a?.name?.localeCompare(b?.name))}
+                data={brandsData?.sort((a, b) => a?.image?.localeCompare(b?.image))}
                 renderItem={({ item }) => (
                     <BrandsCard
                         image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
