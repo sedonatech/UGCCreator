@@ -57,7 +57,11 @@ const BrandsCarousel = ({ style }) => {
                 Check out the brands currently on our platform
             </TemplateText>
             <TemplateCarousel
-                data={brandsData?.sort((a, b) => a?.image?.localeCompare(b?.image))}
+                data={brandsData?.sort((a, b) => {
+                    const imageA = a?.image ?? '';
+                    const imageB = b?.image ?? '';
+                    return imageB.localeCompare(imageA)
+                })}
                 renderItem={({ item }) => (
                     <BrandsCard
                         image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
