@@ -4,14 +4,12 @@ import PillTag from '../../../../components/PillTag';
 interface Props {
     title: string
     onPress: () => void
-
     fadeInDelay?: number
-
     selected: boolean
-
+    noMargin?: boolean
 }
 const FilterPill: FC<Props> = ({
-    title, onPress, fadeInDelay, selected
+    title, onPress, fadeInDelay, selected, noMargin = false,
 }) => {
     const handelPress = () => {
         onPress();
@@ -20,7 +18,7 @@ const FilterPill: FC<Props> = ({
     return (
         <PillTag
             primaryTransparent={!selected}
-            noMargin={false}
+            noMargin={noMargin}
             onPress={handelPress}
             showClose={selected}
             fadeInDelay={fadeInDelay}

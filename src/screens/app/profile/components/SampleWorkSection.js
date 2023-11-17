@@ -53,7 +53,7 @@ const SampleWorkSection = () => {
         return [...videos, ...photos];
     }, [sampleVideos, samplePhotos]);
 
-    return (
+    return !!mergedWork?.length && (
         <TemplateBox flex mt={WRAPPER_MARGIN * 2}>
             <TemplateBox ml={WRAPPER_MARGIN} mb={10}>
                 <TemplateText bold color={BLACK} size={18}>My Work Examples</TemplateText>

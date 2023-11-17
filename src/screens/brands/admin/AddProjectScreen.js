@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import {
-    filter, includes, isEmpty, reverse, sortBy,
-} from 'lodash';
+import { Alert, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
 import FastImage from 'react-native-fast-image';
-import Blob from '../../../../assets/svgs/Blob';
+
 import {
-    BLACK, BLACK_40, DEEP_PURPLE, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE,
+    BLACK, BLACK_40, DEEP_PURPLE, GREY_SECONDARY, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
 import {
+    HEADER_MARGIN,
     IS_ANDROID,
     SCREEN_WIDTH, SPACE_XXLARGE,
     WRAPPER_MARGIN,
@@ -23,7 +20,6 @@ import useProjects from '../../../hooks/brands/useProjects';
 import Wrapper from '../../../components/Wrapper';
 import CurrencyPicker from '../../../components/CurrencyPicker';
 import {
-    ageFilters,
     countryFilters,
     deliveryFormatFilters, genderFilters,
     languageFilters, projectDurationFilters, projectFilters,
@@ -32,10 +28,11 @@ import {
 import FilterCategory from '../../app/explore/components/FilterCategory';
 import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
 import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
+import { wp } from '../../../Utils/getResponsiveSize';
 
-const AddProjectScreen = ({ route, navigation }) => {
-    // TODO: Update projecrt feature
-    const selectedProjectId = route?.params?.selectedProjectId;
+const AddProjectScreen = ({ navigation }) => {
+    // TODO: Update project feature
+    // const selectedProjectId = route?.params?.selectedProjectId;
 
     const {
         update, project, createProject, loading,
@@ -46,7 +43,7 @@ const AddProjectScreen = ({ route, navigation }) => {
     const latestImage = useMemo(() => {
         if (!images) return null;
 
-        const sortedImages = reverse(sortBy(filter(images, (item) => !includes(item?.contentDisposition, 'true')), 'generation'));
+        const sortedImages = images?.filter((item) => !!item?.contentDisposition).sort((a, b) => (a?.generation?.localeCompare(b?.generation)));
 
         return sortedImages[0];
     }, [images]);
@@ -58,7 +55,7 @@ const AddProjectScreen = ({ route, navigation }) => {
     }, [latestImage]);
 
     const handleCreateProject = () => {
-        if (isEmpty(project)) {
+        if (Object.keys(project).length === 0) {
             Alert.alert('Please fill all the fields');
         }
         createProject(project);
@@ -78,13 +75,7 @@ const AddProjectScreen = ({ route, navigation }) => {
             keyboard
             safe={false}
         >
-            <View>
-                <Blob top />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </View>
-            <TemplateBox height={100} />
+            <TemplateBox height={HEADER_MARGIN} />
             <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                 <TemplateText
                     bold
@@ -139,9 +130,9 @@ const AddProjectScreen = ({ route, navigation }) => {
                 />
             </TemplateBox>
 
-            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE} selfCenter>
                 <TemplateText size={16}>Start Date</TemplateText>
-                <TemplateBox width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}>
+                <TemplateBox width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)} selfCenter>
                     <DateTimePicker
                         value={project?.startDate || new Date()}
                         mode="date"
@@ -156,9 +147,9 @@ const AddProjectScreen = ({ route, navigation }) => {
                 </TemplateBox>
             </TemplateBox>
 
-            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE} selfCenter>
                 <TemplateText size={16}>End Date</TemplateText>
-                <TemplateBox width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}>
+                <TemplateBox width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)} selfCenter>
                     <DateTimePicker
                         value={project?.endDate || new Date()}
                         mode="date"
@@ -180,29 +171,31 @@ const AddProjectScreen = ({ route, navigation }) => {
                     <TemplateBox height={120} width={120} borderRadius={10}>
                         <FastImage
                             source={{ uri: latestImage?.url }}
-                            style={{ width: 120, height: 120, borderRadius: 10 }}
+                            style={styles.image}
                         />
                     </TemplateBox>
                 )}
 
                 <TemplateBox height={10} />
-                <TemplateBox onPress={() => {
-                    if (project?.image) {
-                        Alert.alert('Are you sure you want to replace the image?', '', [
-                            {
-                                text: 'Cancel',
-                                onPress: () => console.log('Cancel Pressed'),
-                                style: 'cancel',
-                            },
-                            {
-                                text: 'OK',
-                                onPress: () => onAddPhoto(),
-                            },
-                        ]);
-                        return;
-                    }
-                    onAddPhoto();
-                }}
+                <TemplateBox
+                    onPress={() => {
+                        if (project?.image) {
+                            Alert.alert('Are you sure you want to replace the image?', '', [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: () => onAddPhoto(),
+                                },
+                            ]);
+                            return;
+                        }
+                        onAddPhoto();
+                    }}
+                    mt={SPACE_XXLARGE}
                 >
                     <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} />
                 </TemplateBox>
@@ -338,21 +331,6 @@ const AddProjectScreen = ({ route, navigation }) => {
                 selectedFilters={project?.gender}
             />
             <FilterCategory
-                title="Age Group"
-                filters={ageFilters}
-                onFilterPress={(value) => {
-                    if (project?.ageRange.includes(value)) {
-                        const newAgeRange = project
-                            ?.ageRange.filter((item) => item !== value);
-                        return update('ageRange', newAgeRange);
-                    }
-                    update('ageRange',
-                        [...project?.ageRange, value]);
-                }}
-                selectedFilters={project?.ageRange}
-            />
-
-            <FilterCategory
                 title="Project Duration"
                 filters={projectDurationFilters}
                 onFilterPress={(value) => {
@@ -400,6 +378,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 50,
         alignSelf: 'center',
+    },
+    image: {
+        width: wp(120),
+        height: wp(120),
+        borderRadius: wp(10),
     },
 });
 export default AddProjectScreen;

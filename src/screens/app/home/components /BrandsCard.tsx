@@ -24,8 +24,7 @@ interface Props {
     descriptionSize?: number;
     onPress?: () => void;
     buttonTitle?: string;
-    active?: boolean;
-    showActive?: boolean;
+    lastLoginTime?: string; 
 }
 
 const BrandsCard: FC<Props> = ({
@@ -40,9 +39,8 @@ const BrandsCard: FC<Props> = ({
     descriptionLines = 2,
     descriptionSize = 12,
     onPress,
-    buttonTitle = 'View Brand Offers',
-    active,
-    showActive = false
+    buttonTitle = 'View brand details',
+    lastLoginTime
 }) => (
     <TemplateBox
         fullGradient={!!image}
@@ -70,30 +68,27 @@ const BrandsCard: FC<Props> = ({
                 />
             )
         }
-        {showActive && (
-            <TemplateBox
-                ph={8}
-                pv={4}
-                backgroundColor={active ? lightGreen : lightOrange}
-                borderRadius={6}
-                alignItems="center"
-                justifyContent="center"
-                height={wp(20)}
-                width={wp(70)}
-                absolute
-                top={wp(12)}
-                left={wp(12)}
+        {lastLoginTime && (<TemplateBox
+            ph={8}
+            pv={4}
+            backgroundColor={lightGreen}
+            borderRadius={6}
+            alignItems="center"
+            justifyContent="center"
+            height={wp(20)}
+            width={wp(140)}
+            absolute
+            top={wp(12)}
+            left={wp(12)}
+        >
+            <TemplateText
+                color={WHITE}
+                size={9}
+                bold
             >
-                <TemplateText
-                    color={WHITE}
-                    size={9}
-                    bold
-                    caps
-                >
-                    {active ? 'Active' : 'Inactive'}
-                </TemplateText>
-            </TemplateBox>
-        )}
+                { `Active ${lastLoginTime}` }
+            </TemplateText>
+        </TemplateBox>)}
         <TemplateBox pAll={20} onPress={onPress} selfCenter alignItems="center">
             {/* @ts-ignore */}
             <TemplateText

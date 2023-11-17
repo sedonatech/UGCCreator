@@ -26,6 +26,7 @@ import LightningSvg from '../../../assets/svgs/LightningSvg';
 import BrushSvg from '../../../assets/svgs/BrushSvg';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 import Button from '../../components/Button';
+import useAuthContext from '../../hooks/auth/useAuthContext';
 
 const SubscriptionScreen = ({ navigation, route }) => {
     const fromSettings = route?.params?.fromSettings;
@@ -155,6 +156,13 @@ const SubscriptionScreen = ({ navigation, route }) => {
             });
         }
     }, [fromSettings, navigation]);
+
+    const { auth } = useAuthContext();
+
+    const isBrand = auth?.profile?.type === 'brand';
+
+    const appBenefits = isBrand ? subscriptionBenefits?.brandBenefits : subscriptionBenefits?.benefits;
+
     return (
         <ScrollView
             style={styles.container}
@@ -199,7 +207,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
                     mt={WRAPPER_MARGIN}
                     mb={WRAPPER_MARGIN}
                 >
-                    {subscriptionBenefits?.benefits?.map((benefit) => (
+                    {appBenefits?.map((benefit) => (
                         <TemplateBox
                             key={benefit?.title}
                             row

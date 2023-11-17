@@ -85,8 +85,9 @@ const CurrentCreatorsCarousel = ({ style }) => {
     ) : (
         <ProfileStatusCard
             title="No active creators"
-            description="You don't have any active creators at the moment"
+            description="You don't have any active creators that you are working with at the moment"
             showProgress={false}
+            showIcon={false}
             style={styles.statusCard}
             slideInDelay={200}
         />

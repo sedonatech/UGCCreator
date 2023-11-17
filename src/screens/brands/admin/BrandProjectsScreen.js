@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import moment from 'moment/moment';
+import differenceInDays from 'date-fns/differenceInDays';
 import TemplateText from '../../../components/TemplateText';
 import {
     BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE,
@@ -50,7 +50,7 @@ const BrandProjectsScreen = ({ navigation }) => {
             status: project?.applications?.length ? 'Enrolled Creators' : 'No Enrolled Creators',
             notifications: project?.applications?.length || 0,
             documents: project?.applications?.[0]?.documents?.length || 0,
-            daysLeft: moment.duration(moment(project?.endDate).diff(moment(project?.startDate))).asDays(),
+            daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
         }));
     }, [projects]);
 

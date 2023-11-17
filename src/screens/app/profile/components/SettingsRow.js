@@ -10,9 +10,9 @@ import {
 import TemplateIcon from '../../../../components/TemplateIcon';
 
 const SettingsRow = ({
-    title, icon, subtitle, onPress,
+    title, icon, subtitle, onPress, isLast, isFirst,
 }) => {
-    const isLast = title === 'Logout';
+    const showChevronIcon = !isLast && !isFirst;
 
     return (
         <TemplateBox onPress={onPress}>
@@ -37,7 +37,7 @@ const SettingsRow = ({
                     )}
                 </TemplateBox>
                 <TemplateBox flex />
-                {!isLast && (
+                {showChevronIcon && (
                     <TemplateIcon name="chevron-forward-outline" size={20} color={BLACK} />
                 )}
             </TemplateBox>
@@ -61,6 +61,8 @@ SettingsRow.propTypes = {
     icon: PropTypes.string,
     subtitle: PropTypes.string,
     onPress: PropTypes.func,
+    isLast: PropTypes.bool,
+    isFirst: PropTypes.bool,
 };
 
 SettingsRow.defaultProps = {
@@ -68,5 +70,7 @@ SettingsRow.defaultProps = {
     icon: '',
     subtitle: '',
     onPress: () => {},
+    isLast: false,
+    isFirst: false,
 };
 export default SettingsRow;

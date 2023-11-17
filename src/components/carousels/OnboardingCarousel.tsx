@@ -4,7 +4,6 @@ import React, {
 import {
     StyleSheet, FlatList, FlatListProps, ViewStyle,
 } from 'react-native';
-import { get } from 'lodash';
 import TemplatePagination from './TemplatePagination';
 
 import TemplateBox from '../TemplateBox';
@@ -51,7 +50,8 @@ const OnboardingCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
                 style={[styles.container, style]}
                 scrollEventThrottle={16}
                 onScroll={(event) => {
-                    const newIndex = get(event, 'nativeEvent.contentOffset.x', 0) / (snapToInterval || SCREEN_WIDTH);
+                    const { nativeEvent: { contentOffset: { x: offset = 0 }} } = event;
+                    const newIndex = offset / (snapToInterval || SCREEN_WIDTH);
                     setActiveIndex(Math.round(newIndex));
                 }}
                 // eslint-disable-next-line react/jsx-props-no-spreading

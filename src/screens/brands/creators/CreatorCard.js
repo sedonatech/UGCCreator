@@ -7,9 +7,8 @@ import TemplateText from '../../../components/TemplateText';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
-    BLACK, BLACK_60, BLACK_SECONDARY, BRAND_BLUE, lightGreen, lightOrange, WHITE,
+    BLACK, BLACK_60, BLACK_SECONDARY, lightGreen, WHITE,
 } from '../../../theme/Colors';
-import { SHADOW } from '../../../theme/Shadow';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 import { wp } from '../../../Utils/getResponsiveSize';
 
@@ -24,19 +23,18 @@ const CreatorCard = ({
     imageStyle,
     textContainerWidth,
     subtitleContainerWidth,
-    active,
+    lastLoginTime,
+    height = wp(180),
 }) => (
-
     <TemplateBox
         width={width}
-        height={wp(200)}
+        height={height}
         borderRadius={20}
         pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
-        style={[SHADOW('card', WHITE), style]}
+        style={[style, { backgroundColor: WHITE }]}
         onPress={onPress}
-
     >
 
         <TemplateBox
@@ -58,7 +56,7 @@ const CreatorCard = ({
                 <TemplateText
                     size={12}
                     color={BLACK_SECONDARY}
-                    numberOfLines={2}
+                    numberOfLines={3}
                 >
                     {shortDescription}
                 </TemplateText>
@@ -81,31 +79,38 @@ const CreatorCard = ({
                 </TemplateBox>
 
             </TemplateBox>
-
+        </TemplateBox>
+        <TemplateBox
+            row
+            alignItems="center"
+            justifyContent="space-between"
+            width={width - wp(32)}
+        >
             <TemplateBox
-                ph={WRAPPER_MARGIN - 5}
-                pv={WRAPPER_MARGIN / 2}
-                backgroundColor={BLACK}
-                borderRadius={10}
+                ph={8}
+                pv={4}
+                backgroundColor={lightGreen}
+                borderRadius={6}
                 alignItems="center"
                 justifyContent="center"
                 onPress={onPress}
 
             >
-                <TemplateText color={WHITE} size={12} bold>View Portfolio</TemplateText>
+                <TemplateText color={WHITE} size={wp(9)} semiBold>{ `Active ${lastLoginTime}` }</TemplateText>
             </TemplateBox>
-        </TemplateBox>
-        <TemplateBox
-            ph={8}
-            pv={4}
-            backgroundColor={active ? lightGreen : lightOrange}
-            borderRadius={6}
-            alignItems="center"
-            justifyContent="center"
-            onPress={onPress}
-
-        >
-            <TemplateText color={WHITE} size={9} bold caps>{active ? 'Active' : 'Inactive'}</TemplateText>
+            <TemplateBox
+                ph={wp(WRAPPER_MARGIN - 5)}
+                pv={wp(WRAPPER_MARGIN / 2)}
+                backgroundColor={BLACK}
+                borderRadius={wp(10)}
+                alignItems="center"
+                justifyContent="center"
+                onPress={onPress}
+                alignSelf="flex-end"
+                mb={wp(13)}
+            >
+                <TemplateText color={WHITE} size={wp(10)} bold>View Portfolio</TemplateText>
+            </TemplateBox>
         </TemplateBox>
     </TemplateBox>
 
@@ -122,8 +127,8 @@ CreatorCard.propTypes = {
     imageStyle: PropTypes.shape({}),
     textContainerWidth: PropTypes.number,
     subtitleContainerWidth: PropTypes.number,
-    buttonOffset: PropTypes.number,
-    active: PropTypes.bool,
+    lastLoginTime: PropTypes.string,
+    height: PropTypes.number,
 };
 
 CreatorCard.defaultProps = {
@@ -135,18 +140,18 @@ CreatorCard.defaultProps = {
     style: {},
     width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
     imageStyle: {},
-    textContainerWidth: 190,
-    subtitleContainerWidth: 100,
-    buttonOffset: 80,
-    active: true,
+    textContainerWidth: wp(190),
+    subtitleContainerWidth: wp(100),
+    lastLoginTime: 'days ago',
+    height: wp(180),
 };
 
 const styles = StyleSheet.create({
     image: {
-        width: 90,
-        height: 90,
-        borderRadius: 20,
-        marginRight: 20,
+        width: wp(90),
+        height: wp(90),
+        borderRadius: wp(20),
+        marginRight: wp(20),
     },
 });
 export default CreatorCard;

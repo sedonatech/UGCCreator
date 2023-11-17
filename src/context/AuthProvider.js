@@ -2,7 +2,6 @@ import React, {
     useState, useEffect, createContext, useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty, values } from 'lodash';
 
 import useAuthState from '../hooks/auth/useAuthState';
 import useProfile from '../hooks/user/useProfile';
@@ -35,9 +34,10 @@ const AuthProvider = ({ children }) => {
                || profile?.socialMedia?.facebook
                || profile?.socialMedia?.twitter || profile?.socialMedia?.youtube,
         };
-        const profileValues = values(profileCheckParamsObject);
+
+        const profileValues = Object.values(profileCheckParamsObject);
         const offset = profileValues?.length;
-        const completeCount = profileValues?.filter((value) => !isEmpty(value))?.length;
+        const completeCount = profileValues?.filter((value) => !!value)?.length;
         const completeRatio = completeCount / offset;
         const roundedCompleteRatio = Math.round(completeRatio * 10) / 10;
 

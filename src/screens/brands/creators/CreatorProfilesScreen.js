@@ -1,5 +1,5 @@
 import React, {
-    useEffect, useRef, useState,
+    useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
     ActivityIndicator,
@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Fuse from 'fuse.js';
-import { sortBy } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 
 import { wp } from '../../../Utils/getResponsiveSize';
@@ -15,7 +14,7 @@ import {
     HEADER_MARGIN,
     IS_ANDROID,
     SCREEN_HEIGHT,
-    SPACE_LARGE, SPACE_MEDIUM,
+    SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL,
     SPACE_XSMALL,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
@@ -31,7 +30,6 @@ import TemplateTouchable from '../../../components/TemplateTouchable';
 import Filter from '../../../../assets/svgs/Filter';
 import FilterCategory from '../../app/explore/components/FilterCategory';
 import {
-    ageFilters,
     countryFilters, deliveryFormatFilters,
     genderFilters,
     languageFilters, projectDurationFilters,
@@ -43,6 +41,7 @@ import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../consts/content/Portf
 import { PROFILE } from '../../../navigation/ScreenNames';
 import TemplateSafeAreaView from '../../../components/TemplateSafeAreaView';
 import { isIOS } from '../../../Utils/Platform';
+import FilterPill from '../../app/explore/components/FilterPill';
 
 const CreatorProfilesScreen = ({ navigation }) => {
     const { creators: creatorsData } = useGetCreators();
@@ -57,11 +56,20 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const onProjectFilterPress = (value) => {
         if (selectedFilters.includes(value)) {
-            setSelectedFilters(selectedFilters.filter((filter) => filter !== value));
+            setSelectedFilters(selectedFilters?.filter((filter) => filter !== value));
         } else {
             setSelectedFilters([...selectedFilters, value]);
         }
     };
+
+    const filteredCreators = useMemo(() => {
+        if (!selectedFilters.length) return creatorsData;
+        // filter by selected filters
+        const filtered = creatorsData?.filter(
+            (creator) => selectedFilters.every((filter) => creator?.categories?.includes(filter)),
+        );
+        if (filtered?.length) return filtered;
+    }, [selectedFilters, creatorsData]);
 
     const options = {
         isCaseSensitive: false,
@@ -76,38 +84,36 @@ const CreatorProfilesScreen = ({ navigation }) => {
     };
 
     useEffect(() => {
-        if (!!search && creatorsData?.length) {
-            const fuse = new Fuse(creatorsData, options);
+        if (!!search && filteredCreators?.length) {
+            const fuse = new Fuse(filteredCreators, options);
             const results = fuse.search(search).map(({ item }) => item);
             setSearchResults(results);
         }
     }, [search]);
 
-    const filteredCreators = search?.length ? searchResults : creatorsData;
-
-    const renderItem = ({ item }) => (
-        <CreatorCard
-            key={item?.id}
-            name={item?.userName}
-            imageUrl={item?.image}
-            shortDescription={item?.shortDescription
-                || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-            location={item?.location?.country}
-            email={item?.email}
-            onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-            active={item?.isActive}
-        />
-    );
+    const filteredSearchedCreators = search?.length ? searchResults : filteredCreators;
 
     return (
         <KeyboardAvoidingView
             behavior={isIOS ? 'padding' : 'height'}
             style={styles.mainContainer}
         >
-            <StatusBar barStyle="default" />
+            <StatusBar barStyle="dark-content" />
             <FlatList
-                data={sortBy(filteredCreators, 'isActive')?.reverse()}
-                renderItem={renderItem}
+                data={filteredSearchedCreators?.sort((a, b) => b?.image?.localeCompare(a?.image))}
+                renderItem={({ item }) => (
+                    <CreatorCard
+                        key={item?.id}
+                        name={item?.userName}
+                        imageUrl={item?.image}
+                        shortDescription={item?.shortDescription
+                        || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                        location={item?.location?.country}
+                        email={item?.email}
+                        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+                        height={wp(194)}
+                    />
+                )}
                 showVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}
                 ListHeaderComponent={(
@@ -130,12 +136,26 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 autoCapitalize="none"
                             />
                             <TemplateTouchable
-                                onPress={() => refRBSheet.current.open()}
+                                onPress={() => refRBSheet?.current?.open()}
                                 style={styles.filterButton}
                             >
                                 <Filter />
                             </TemplateTouchable>
                         </TemplateBox>
+                        {!!selectedFilters?.length && (
+                            <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
+                                {selectedFilters?.map((filter) => (
+                                    <FilterPill
+                                        key={filter}
+                                        title={filter}
+                                        onPress={() => {
+                                            setSelectedFilters(selectedFilters?.filter((f) => f !== filter));
+                                        }}
+                                        selected
+                                    />
+                                ))}
+                            </TemplateBox>
+                        )}
                     </>
                 )}
                 ListFooterComponent={(
@@ -152,7 +172,9 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         center
                         selfCenter
                     >
-                        <ActivityIndicator size="large" color={IOS_BLUE} />
+                        {!creatorsData?.length && <ActivityIndicator size="large" color={IOS_BLUE} />}
+                        {(creatorsData?.length > 0 && !filteredSearchedCreators?.length)
+                            && <TemplateText semiBold>No results found</TemplateText>}
                     </TemplateBox>
                 )}
                 initialNumToRender={5}
@@ -174,7 +196,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
                         paddingTop: 10,
                         paddingBottom: 40,
-                        height: SCREEN_HEIGHT * 0.7,
+                        height: wp(SCREEN_HEIGHT * 0.84),
                     },
                     draggableIcon: {
                         backgroundColor: BLACK,
@@ -192,13 +214,13 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     >
                         <TemplateText size={18} bold>Select Filters</TemplateText>
 
-                        {selectedFilters.length > 0 && (
+                        {selectedFilters?.length > 0 && (
                             <TemplateText
                                 size={14}
                                 color={BRAND_BLUE}
                                 style={styles.applyText}
                                 onPress={() => {
-                                    refRBSheet.current.close();
+                                    refRBSheet?.current?.close();
                                 }}
                             >
                                 Apply Filters
@@ -212,13 +234,28 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 style={styles.applyText}
                                 onPress={() => {
                                     setSelectedFilters([]);
-                                    refRBSheet.current.close();
+                                    refRBSheet?.current?.close();
                                 }}
                             >
                                 Clear Filters
                             </TemplateText>
                         )}
                     </TemplateBox>
+
+                    {!!selectedFilters?.length && (
+                        <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
+                            {selectedFilters?.map((filter) => (
+                                <FilterPill
+                                    key={filter}
+                                    title={filter}
+                                    onPress={() => {
+                                        setSelectedFilters(selectedFilters?.filter((f) => f !== filter));
+                                    }}
+                                    selected
+                                />
+                            ))}
+                        </TemplateBox>
+                    )}
 
                     <FilterCategory
                         title="Project Category"
@@ -242,12 +279,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     <FilterCategory
                         title="Gender"
                         filters={genderFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
-                        title="Age Group"
-                        filters={ageFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
@@ -283,11 +314,10 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '100%',
-        height: 50,
-        borderRadius: 10,
-        paddingRight: 30,
-        paddingLeft: 10,
-        fontSize: 16,
+        height: wp(50),
+        borderRadius: wp(10),
+        paddingHorizontal: wp(12),
+        fontSize: wp(16),
         color: BLACK,
     },
     filterButton: {

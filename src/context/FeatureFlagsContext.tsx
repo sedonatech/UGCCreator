@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 import remoteConfig from '@react-native-firebase/remote-config';
-import { keys } from 'lodash';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 /**
@@ -46,7 +45,7 @@ export const FeatureFlagProvider:React.FC<FeatureFlagProviderProps> = ({
             const allConfigs = await remoteConfig().getAll();
 
             if (allConfigs) {
-                const parsedConfigs = keys(allConfigs).reduce((a, key) => {
+                const parsedConfigs = Object.keys(allConfigs).reduce((a, key) => {
                     // @ts-ignore
                     // eslint-disable-next-line no-underscore-dangle
                     const value = allConfigs[key]?._value;

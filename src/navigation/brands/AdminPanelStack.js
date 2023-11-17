@@ -6,7 +6,7 @@ import {
     ADMIN_PANEL,
     BRAND_OFFERS,
     BRAND_PROJECT_DETAILS,
-    BRAND_PROJECTS,
+    BRAND_PROJECTS, CHAT_ROOM,
     CREATOR_PROJECT_STATUS, CREATORS_PROFILES, PROFILE,
     UPDATE_BRAND_PROFILE, WEBVIEW,
 } from '../ScreenNames';
@@ -24,6 +24,7 @@ import BrandOffersScreen from '../../screens/brands/admin/BrandOffersScreen';
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfilesScreen';
+import ChatsStack from '../chats/ChatsStack';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -79,6 +80,11 @@ const AdminPanelStack = () => (
             name={WEBVIEW}
             options={TRANSPARENT_HEADER}
             component={WebviewScreen}
+        />
+        <Screen
+            name={CHAT_ROOM}
+            options={TRANSPARENT_HEADER}
+            component={ChatsStack}
         />
     </Navigator>
 );

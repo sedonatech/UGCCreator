@@ -22,7 +22,9 @@ import UpdateCategories from '../../app/profile/components/UpdateCategories';
 import { BRANDS_PROFILE } from '../../../navigation/ScreenNames';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
-const UpdateBrandProfileScreen = ({ navigation }) => {
+const UpdateBrandProfileScreen = ({ navigation, route }) => {
+    const fromAdminPanel = route?.params?.fromAdminPanel;
+
     const [countryPickerVisible, setCountryPickerVisible] = useState(false);
 
     const { auth } = useAuthContext();
@@ -37,6 +39,10 @@ const UpdateBrandProfileScreen = ({ navigation }) => {
         updateProfile(profileData, profileData?.id);
         await trackEvent('update_brand_profile');
         setTimeout(() => {
+            if (fromAdminPanel) {
+                navigation.goBack();
+                return;
+            }
             navigation.navigate(BRANDS_PROFILE);
         }, 1000);
     };

@@ -1,4 +1,3 @@
-import { sampleSize } from 'lodash';
 import productOne from '../../../assets/images/product.jpg';
 import productTwo from '../../../assets/images/product2.jpg';
 import productThree from '../../../assets/images/product3.jpg';
@@ -333,6 +332,12 @@ export const BRANDS = [
 
 ];
 
+const sampleSize = (arr, n) => {
+    if (!arr) return [];
+    const shuffled = arr?.sort(() => 0.5 - Math.random());
+    return shuffled?.slice(0, n);
+};
+
 export const PROJECTS = [
     {
         id: 1,
@@ -623,7 +628,7 @@ export const NO_CURRENT_PROJECT_MESSAGE = 'You have not enrolled to any project.
 
 export const BRAND_NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
 
-export const BRAND_NO_CURRENT_PROJECT_MESSAGE = 'You have no current projects. Click  the button above to add a project!';
+export const BRAND_NO_CURRENT_PROJECT_MESSAGE = 'You have no current UGC projects with any creator on this platform. Click  the button above to add a project!';
 
 export const FEED_CATEGORIES = [
     {

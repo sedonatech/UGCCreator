@@ -4,7 +4,6 @@ import React, {
 import Video from 'react-native-video';
 // @ts-ignore
 import VideoPlayer from 'react-native-video-controls';
-import { get } from 'lodash';
 import { StyleSheet, } from 'react-native';
 import Modal from 'react-native-modal';
 
@@ -24,7 +23,8 @@ const VideoOverlay:FC<Props> = ({ url, onClose }) => {
         setSource(url);
     }, [url]);
     useEffect(() => {
-        if (get(videoRef, 'current', false) && source) {
+        const { current } = videoRef;
+        if (current && source) {
             if (!IS_ANDROID) {
                 setTimeout(() => {
                     // @ts-ignore

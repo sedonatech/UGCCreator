@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActivityIndicator } from 'react-native';
-import { includes } from 'lodash';
+
 import {
     BLACK, BLACK_70, IOS_BLUE, WHITE,
 } from '../../../theme/Colors';
@@ -55,9 +54,9 @@ const SubscriptionCard = ({
                 onPress={onPress}
             >
                 {/* eslint-disable-next-line no-nested-ternary */}
-                {includes(title, 'Annual')
+                {title?.includes('Annual')
                     ? 'Annual'
-                    : includes(title, 'Quarterly')
+                    : title?.includes('Quarterly')
                         ? 'Quarterly'
                         : 'Monthly'}
             </TemplateText>

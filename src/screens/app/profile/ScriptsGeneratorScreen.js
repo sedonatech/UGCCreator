@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
-import { startCase } from 'lodash';
 
 import TemplateBox from '../../../components/TemplateBox';
 import {
@@ -56,7 +55,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                         text: 'OK',
                         onPress: () => {
                             navigation.navigate(CREATOR_TOOLS_RESULTS, {
-                                title: `${startCase(toolType)} Results Successfully Created 🎉🎊`,
+                                title: `${toolType[0]?.toUpperCase() + toolType?.slice(1)} Results Successfully Created 🎉🎊`,
                                 subTitle: `You can now copy the ${toolType} to your clipboard!`,
                                 results: responseMessage,
                             });

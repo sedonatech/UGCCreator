@@ -18,6 +18,7 @@ import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
 import TemplateTouchable from '../../components/TemplateTouchable';
 import TemplateIcon from '../../components/TemplateIcon';
+import useProfile from '../../hooks/user/useProfile';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
@@ -30,6 +31,8 @@ const LoginScreen = ({ navigation }) => {
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
+    const { updateProfile, getProfile } = useProfile();
+
     const handleLogin = async () => {
         setLoading(true);
         try {
@@ -37,6 +40,9 @@ const LoginScreen = ({ navigation }) => {
                 setError(null);
             }
             await auth().signInWithEmailAndPassword(email, password);
+            const profile = await getProfile(auth().currentUser.uid);
+
+            await updateProfile({lastLoginTime: new Date().toISOString()}, profile?.id)
             // eslint-disable-next-line @typescript-eslint/no-shadow
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {

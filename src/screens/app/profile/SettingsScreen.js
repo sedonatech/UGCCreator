@@ -1,16 +1,9 @@
 import React, { useEffect, useLayoutEffect } from 'react';
-import {
-    Alert, ScrollView, StyleSheet, TouchableOpacity,
-} from 'react-native';
+import { Alert, FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
-import {
-    BLACK_10, BLACK_60, TRANSPARENT, WHITE,
-} from '../../../theme/Colors';
-import {
-    HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
-import TemplateBox from '../../../components/TemplateBox';
+import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
 import useLogout from './useLogout';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
@@ -22,14 +15,11 @@ import {
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
-import useGetAppVersion from '../../../Utils/useGetAppVersion';
-import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+import {wp} from "../../../Utils/getResponsiveSize";
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();
-
-    const { nativeAppVersion } = useGetAppVersion();
 
     const { mainDomain } = useConfig();
 
@@ -61,16 +51,15 @@ const SettingsScreen = ({ navigation }) => {
 
     const settings = [
         {
+            title: 'Email',
+            description: auth?.user?.email,
+            onPress: () => '',
+        },
+        {
             title: 'UGC Creator Tools',
             description: 'Explore our creator tools powered by OpenAI',
             onPress: () => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null),
             icon: 'trending-up-outline',
-        },
-        {
-            title: 'Email',
-            description: auth?.user?.email,
-            onPress: () => '',
-            icon: 'mail-outline',
         },
         {
             title: 'Update Portfolio',
@@ -183,37 +172,33 @@ const SettingsScreen = ({ navigation }) => {
     }, [navigation]);
 
     return (
-        <ScrollView
+        <FlatList
+            showsVerticalScrollIndicator={false}
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
-        >
-            <ProfileStatusCard
-                title={PROFILE_INCOMPLETE_TITLE}
-                description={PROFILE_INCOMPLETE_MESSAGE}
-                progress={profileCompleteRatio}
-                style={styles.statusCard}
-                slideInDelay={100}
-                showIcon={false}
-            />
-            <TemplateBox mh={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 3}>
-                {settings.map(({
-                    title, description, onPress, icon,
-                }, i) => (
-                    <TouchableOpacity onPress={onPress}>
-                        <SettingsRow
-                            title={title}
-                            subtitle={description}
-                            onPress={onPress}
-                            icon={icon}
-                            key={i}
-                        />
-                    </TouchableOpacity>
-                ))}
-                <TemplateBox selfCenter mv={20}>
-                    <TemplateText size={14} color={BLACK_60}>{`App Version: ${nativeAppVersion}`}</TemplateText>
-                </TemplateBox>
-            </TemplateBox>
-        </ScrollView>
+            data={settings}
+            renderItem={({ item }) => (
+                <SettingsRow
+                    title={item.title}
+                    subtitle={item.description}
+                    onPress={item.onPress}
+                    icon={item.icon}
+                    isLast={item.title === 'Logout'}
+                    isFirst={item.title === 'Email'}
+                />
+            )}
+            keyExtractor={(item) => item.title}
+            ListHeaderComponent={() => (
+                <ProfileStatusCard
+                    title={PROFILE_INCOMPLETE_TITLE}
+                    description={PROFILE_INCOMPLETE_MESSAGE}
+                    progress={profileCompleteRatio}
+                    style={styles.statusCard}
+                    slideInDelay={100}
+                    showIcon={false}
+                />
+            )}
+        />
     );
 };
 
@@ -224,6 +209,8 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+        paddingBottom: wp(100),
+        paddingHorizontal: wp(WRAPPER_MARGIN),
     },
     statusCard: {
         marginTop: HEADER_MARGIN + WRAPPER_MARGIN,

@@ -106,6 +106,7 @@ const useProfile = () => {
                     paypalLink: '',
                     type: 'creator',
                     hasSubscription: false,
+                    lastLoginTime: new Date().toISOString(),
                 });
         } catch (e) {
             console.log(e);
@@ -140,6 +141,7 @@ const useProfile = () => {
                 },
                 type: 'brand',
                 hasSubscription: false,
+                lastLoginTime: new Date().toISOString(),
             });
         } catch (e) {
             console.log(e);

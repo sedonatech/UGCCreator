@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import moment from 'moment';
+import differenceInDays from 'date-fns/differenceInDays';
 import { STATUSES } from './consts';
 import { CoreContext } from '../../context/core';
 import useSubscriptionContext from './useSubscriptionContext';
@@ -19,7 +19,7 @@ export default () => {
             try {
                 console.log('purchaserInfo: ', purchaserInfo);
                 const entitlement = purchaserInfo?.entitlements?.all?.full_access;
-                console.log('expiration: ', moment(entitlement?.expirationDate).diff(moment(), 'days'));
+                console.log('expiration: ', differenceInDays(new Date(entitlement?.expirationDate), new Date()));
 
                 if (entitlement == null) {
                     // If no entitlement at all, set NO_PURCHASES
@@ -27,7 +27,7 @@ export default () => {
                 } else if (!entitlement?.isActive) {
                     // If had entitle and expired, set expired
                     setStatus(EXPIRED);
-                } else if (!entitlement?.willRenew && moment(entitlement?.expirationDate).diff(moment(), 'days') < 30) {
+                } else if (!entitlement?.willRenew && differenceInDays(new Date(entitlement?.expirationDate), new Date()) < 30) {
                     // If has entitlement but isn't renewing, set cancelled
                     // Note: lifetime subs are actually subs for ~200 years, so are always !willRenew
                     // Only show cancellation if the expiration date is in the next 30 days

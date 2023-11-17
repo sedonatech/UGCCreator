@@ -24,6 +24,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>CodePushDeploymentKey</key>
     <string>ec225a24-847e-4141-9f7b-ad5ee93e2eb0</string>
+    <key>UIUserInterfaceStyle</key>
+     <string>Light</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -45,6 +47,8 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to your photo gallery so that you may upload your photos for your progress photos</string>
+	<key>NSAppleMusicUsageDescription</key>
+    <string>We need access to your Apple Music library to create personalized playlists based on your music preferences.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

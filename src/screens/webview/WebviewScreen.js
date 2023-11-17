@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { WebView } from 'react-native-webview';
-import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import {
+    Alert, ScrollView, StyleSheet,
+} from 'react-native';
 import { HEADER_MARGIN, IS_ANDROID } from '../../theme/Layout';
-import { IOS_BLUE, TRANSPARENT, WHITE } from '../../theme/Colors';
-import TemplateBox from '../../components/TemplateBox';
+import { TRANSPARENT, WHITE } from '../../theme/Colors';
 
-const WebviewScreen = ({ route }) => {
+const urlPattern = new RegExp('^(https?:\\/\\/)?' // validate protocol
+    + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // validate domain name
+    + '((\\d{1,3}\\.){3}\\d{1,3}))' // validate OR ip (v4) address
+    + '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' // validate port and path
+    + '(\\?[;&a-z\\d%_.~+=-]*)?' // validate query string
+    + '(\\#[-a-z\\d_]*)?$', 'i');
+
+const WebviewScreen = ({ route, navigation }) => {
     const url = route?.params?.url;
 
-    if (!url) {
-        return (
-            <TemplateBox alignItems="center" justifyContent="center" selfCenter>
-                <ActivityIndicator size="large" color={IOS_BLUE} />
-            </TemplateBox>
-        );
-    }
+    // Check if url is valid
+    useEffect(() => {
+        if (!urlPattern.test(url)) {
+            Alert.alert('Error', 'Something went wrong with this link. Please try again later.', [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        navigation.goBack();
+                    },
+                },
+            ]);
+        }
+    }, []);
 
     return (
         <ScrollView
@@ -25,6 +39,7 @@ const WebviewScreen = ({ route }) => {
             <WebView
                 source={{ uri: url }}
                 style={{ marginTop: HEADER_MARGIN }}
+                onError={() => Alert.alert('Error', 'Something went wrong with this link. Please try again later.')}
             />
         </ScrollView>
     );

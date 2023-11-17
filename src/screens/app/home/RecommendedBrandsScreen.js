@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 
-import { sampleSize } from 'lodash';
 import TemplateText from '../../../components/TemplateText';
 import {
     HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, WRAPPER_MARGIN,
@@ -106,7 +105,7 @@ const RecommendedBrandsScreen = ({ route }) => {
             </TemplateBox>
             <TemplateBox mh={WRAPPER_MARGIN} flex>
                 {
-                    sampleSize(brandData, 4)?.map((brand, index) => (
+                    brandData.sort(() => 0.5 - Math.random()).slice(0, 4)?.map((brand, index) => (
                         <ProfileStatusCard
                             key={brand?.id}
                             title={brand?.name}

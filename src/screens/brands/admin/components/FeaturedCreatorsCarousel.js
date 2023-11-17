@@ -1,29 +1,29 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
-
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { sampleSize } from 'lodash';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
-import { BLACK, BLUE } from '../../../../theme/Colors';
+import { BLACK, BLUE, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import useGetCreators from '../../../../hooks/brands/useGetCreators';
 import CreatorCard from '../../creators/CreatorCard';
 import TemplateBox from '../../../../components/TemplateBox';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
-const SAMPLE_SIZE = 8;
+const SAMPLE_SIZE = 5;
 
 const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
     const { filteredCreators: creatorsData } = useGetCreators();
+    const creatorsDataSample = creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE);
 
-    return (
+    return creatorsDataSample?.length ? (
         <View style={style}>
             <View style={styles.titleContainer}>
                 <TemplateBox row justifyContent="space-between">
@@ -48,7 +48,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
             </View>
 
             <TemplateCarousel
-                data={sampleSize(creatorsData, SAMPLE_SIZE)}
+                data={creatorsDataSample}
                 renderItem={({ item }) => (
                     <CreatorCard
                         name={item?.userName}
@@ -65,15 +65,17 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         onPress={() => navigation.navigate(PROFILE, {
                             creatorId: item?.id,
                         })}
-                        active={item?.isActive}
+                        lastLoginTime={item?.lastLoginTime}
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
                 showPagination
-                paginationSize={sampleSize(creatorsData, SAMPLE_SIZE)?.length}
+                paginationSize={creatorsDataSample?.length}
                 contentContainerStyle={styles.cardCarousel}
             />
         </View>
+    ) : (
+        <ActivityIndicator color={IOS_BLUE} size="large" />
     );
 };
 
@@ -98,9 +100,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     image: {
-        height: 60,
-        width: 60,
-        borderRadius: 10,
+        width: wp(80),
+        height: wp(80),
+        borderRadius: wp(16),
+        marginRight: wp(14),
     },
 });
 export default FeaturedCreatorsCarousel;

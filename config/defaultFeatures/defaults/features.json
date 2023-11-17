@@ -9,5 +9,6 @@
   "brandsCatalogue": {
     "visible": true,
     "activeList": 10
-  }
+  },
+  "showReviewPrompt": false
 }

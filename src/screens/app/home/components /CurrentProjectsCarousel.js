@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment/moment';
+import differenceInDays from 'date-fns/differenceInDays';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -49,7 +49,7 @@ const CurrentProjectsCarousel = ({ style, isBrand, data }) => {
                 price: `From ${item?.priceRange?.max} to ${item?.priceRange?.min} ${item?.currency}`,
                 status: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
                 documentCount: application?.documents?.length,
-                daysLeft: moment(item?.endDate).diff(moment(), 'days'),
+                daysLeft: differenceInDays(new Date(item?.endDate), new Date()),
                 currentStatus: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
             };
         });

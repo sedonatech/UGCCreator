@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 
 const USERS_COLLECTION = 'users';
 
-const useGetCreators = () => {
+const useGetCreators = (creatorId = '') => {
     const [creators, setCreators] = useState([]);
 
     const [fcmCreators, setFcmCreators] = useState([]);
+
+    const selectedCreatorRef = firestore().collection(USERS_COLLECTION)
+        .doc(creatorId);
+
+    const [selectedCreator, setSelectedCreator] = useState({});
 
     const fcmCreatorsRef = firestore().collection(USERS_COLLECTION)
         .where('type', '==', 'creator')
@@ -21,8 +27,8 @@ const useGetCreators = () => {
                 const creatorsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
                         ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
                     }));
                 setCreators(creatorsData);
             });
@@ -37,8 +43,8 @@ const useGetCreators = () => {
                 const creatorsData = querySnapshot?.docs
                     ?.map((doc) => ({
                         id: doc?.id,
-                        isActive: doc?.data()?.image !== '' && !!doc?.data()?.portfolioLink,
                         ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
                     }));
                 setFcmCreators(creatorsData);
             });
@@ -47,10 +53,38 @@ const useGetCreators = () => {
         return () => subscriber();
     }, []);
 
+    // Fetch selected creator
+    useEffect(() => {
+        const subscriber = selectedCreatorRef
+            .onSnapshot((doc) => {
+                setSelectedCreator({
+                    id: doc?.id,
+                    ...doc?.data(),
+                });
+            });
+
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+    }, [creatorId]);
+
+    // Fetch  a list of creators without snapshot.get function
+
+    const getAllCreators = async () => {
+        const querySnapshot = await creatorsRef.get();
+        const creatorsData = querySnapshot?.docs
+            ?.map((doc) => ({
+                id: doc?.id,
+                ...doc?.data(),
+            }));
+        setCreators(creatorsData);
+    };
+
     return {
         creators,
-        filteredCreators: creators,
+        filteredCreators: creators?.filter((creator) => creator?.image !== '' && !!creator?.portfolioLink),
         fcmCreators,
+        selectedCreator,
+        getAllCreators,
     };
 };
 

@@ -29,6 +29,8 @@ target 'UGCCreatorApp' do
       :path => '../node_modules/react-native-blob-util'
 
   pod 'RNPurchases', :path => '../node_modules/react-native-purchases', :inhibit_warnings => true
+  pod 'react-native-restart', :path => '../node_modules/react-native-restart'
+
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.

@@ -1,5 +1,3 @@
-import { lowerCase, upperCase } from 'lodash';
-
 export default (product, discount, isDiscountSale) => {
     const introPriceString = !isDiscountSale ? product?.intro_price_string : discount?.priceString;
     const introPrice = product?.intro_price;
@@ -11,7 +9,7 @@ export default (product, discount, isDiscountSale) => {
     // if (introPriceString == null || periodNumberOfUnits === 0) return null;
 
     if (periodNumberOfUnits > 1) {
-        introPricePeriodUnit = `${upperCase(introPricePeriodUnit)}S`;
+        introPricePeriodUnit = `${introPricePeriodUnit?.toUpperCase()}S`;
     }
 
     const numberOfTotalIntroMonths = periodNumberOfUnits * introPriceCycle;
@@ -26,15 +24,15 @@ export default (product, discount, isDiscountSale) => {
         numberOfTotalIntroMonthsUnit,
     };
 
-    if (introPricePeriodUnit === 'YEAR' || lowerCase(introPricePeriodUnit) === 'year') {
+    if (introPricePeriodUnit === 'YEAR' || introPricePeriodUnit?.toLowerCase() === 'year') {
         return {
             ...additionalInfo,
-            introPeriod: `${introPriceString === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString}`} for ${numberOfTotalIntroMonths} ${lowerCase(introPricePeriodUnit)}`,
+            introPeriod: `${introPriceString === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString}`} for ${numberOfTotalIntroMonths} ${introPricePeriodUnit?.toLowerCase()}`,
         };
     }
 
     return {
         ...additionalInfo,
-        introPeriod: `${introPrice === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString} every ${periodNumberOfUnits > 1 ? periodNumberOfUnits : ''}${periodNumberOfUnits > 1 ? ' ' : ''}${lowerCase(introPricePeriodUnit)} for ${numberOfTotalIntroMonths} ${numberOfTotalIntroMonthsUnit}`} `,
+        introPeriod: `${introPrice === 0 ? `Free trial for ${periodNumberOfUnits} ${introPricePeriodUnit}` : `${introPriceString} every ${periodNumberOfUnits > 1 ? periodNumberOfUnits : ''}${periodNumberOfUnits > 1 ? ' ' : ''}${introPricePeriodUnit?.toLowerCase()} for ${numberOfTotalIntroMonths} ${numberOfTotalIntroMonthsUnit}`} `,
     };
 };

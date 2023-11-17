@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import moment from 'moment';
-
+import differenceInDays from 'date-fns/differenceInDays';
 import TemplateText from '../../../components/TemplateText';
 import {
     BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE,
@@ -74,7 +73,7 @@ const OffersScreen = ({ navigation }) => {
                     price: `From ${item?.priceRange?.max} to ${item?.priceRange?.min} ${item?.currency}`,
                     status: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
                     documentCount: application?.documents?.length,
-                    daysLeft: moment(item?.endDate).diff(moment(), 'days'),
+                    daysLeft: differenceInDays(new Date(item?.endDate), new Date()),
                     currentStatus: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
                 };
             });

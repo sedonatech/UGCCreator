@@ -1,9 +1,8 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import ViewShot from 'react-native-view-shot';
 
-import { BLACK_10, TRANSPARENT, WHITE } from '../../../theme/Colors';
-import { IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { IS_ANDROID } from '../../../theme/Layout';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import {
     DEFAULT_BRAND_DESCRIPTION, DEFAULT_BRAND_SHORT_DESCRIPTION,
@@ -11,8 +10,6 @@ import {
     DEFAULT_CREATOR_PAYPAL_LINK,
     DEFAULT_CREATOR_SOCIAL,
 } from '../../../consts/content/Portfolio';
-import HeaderIconButton from '../../../components/header/HeaderButton';
-import useShareScreenShot from '../../../Utils/useShareScreenShot';
 import PortfolioHeader from '../../app/profile/components/PortfolioHeader';
 import AboutSection from '../../app/profile/components/AboutSection';
 import ContactSection from '../../app/profile/components/ContactSection';
@@ -41,55 +38,30 @@ const BrandProfileScreen = ({ navigation }) => {
 
     const location = brand?.location?.country || 'London';
 
-    const screenshot = useRef(null);
-
-    const [shareScreenshot] = useShareScreenShot(userName, screenshot);
-
-    const handleShare = async () => {
-        await shareScreenshot();
-    };
-
-    useLayoutEffect(() => {
-        if (!brand?.id) {
-            navigation.setOptions({
-                headerLeft: () => (
-                    <HeaderIconButton
-                        name="share-outline"
-                        onPress={handleShare}
-                        backDropColor={BLACK_10}
-                        ml={WRAPPER_MARGIN}
-                    />
-                ),
-            });
-        }
-    }, [navigation, brand?.id]);
-
     return (
-        <ViewShot style={styles.viewShot} ref={screenshot}>
-            <ScrollView
-                style={styles.container}
-                contentContainerStyle={styles.contentContainer}
-                showsVerticalScrollIndicator={false}
-            >
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+            showsVerticalScrollIndicator={false}
+        >
 
-                <PortfolioHeader
-                    userName={userName}
-                    location={location}
-                    creatorId={brand?.id}
-                    image={image}
-                />
-                <AboutSection
-                    about={about}
-                    shortDescription={shortDescription}
-                />
-                <ContactSection
-                    contactInfo={contact}
-                    socials={socials}
-                    paypalLink={paypalLink}
-                    email={email}
-                />
-            </ScrollView>
-        </ViewShot>
+            <PortfolioHeader
+                userName={userName}
+                location={location}
+                creatorId={brand?.id}
+                image={image}
+            />
+            <AboutSection
+                about={about}
+                shortDescription={shortDescription}
+            />
+            <ContactSection
+                contactInfo={contact}
+                socials={socials}
+                paypalLink={paypalLink}
+                email={email}
+            />
+        </ScrollView>
     );
 };
 
