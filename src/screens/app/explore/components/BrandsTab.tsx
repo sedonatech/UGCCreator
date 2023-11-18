@@ -21,7 +21,11 @@ const BrandsTab = ({ data }: { data: Array<Props> }) => {
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN}>
-            {!!data?.length && data?.sort((a, b) => a?.image?.localeCompare(b?.image))?.map((brand: any, index) => (
+            {!!data?.length && data?.sort((a, b) => {
+                const imageA = a?.image ?? '';
+                const imageB = b?.image ?? '';
+                return imageB.localeCompare(imageA)
+            })?.map((brand: Props, index) => (
                 <BrandsCard
                     key={brand?.id}
                     image={{ uri: brand?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
