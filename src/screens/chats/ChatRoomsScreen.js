@@ -15,10 +15,10 @@ import {
     ERROR_RED, WHITE, BLACK, IOS_BLUE, GREY,
 } from '../../theme/Colors';
 import {
-    HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
+    HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
 } from '../../theme/Layout';
 import TemplateText from '../../components/TemplateText';
-import { CHATS } from '../../navigation/ScreenNames';
+import { CHATS, CREATORS_PROFILES_STACK } from '../../navigation/ScreenNames';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import { wp } from '../../Utils/getResponsiveSize';
 import useGetCreators from '../../hooks/brands/useGetCreators';
@@ -29,6 +29,7 @@ import TemplateTextInput from '../../components/TemplateTextInput';
 import { SHADOW } from '../../theme/Shadow';
 import { isIOS } from '../../Utils/Platform';
 import TemplateSafeAreaView from '../../components/TemplateSafeAreaView';
+import Button from '../../components/Button';
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -190,14 +191,25 @@ const ChatRoomsScreen = ({ navigation }) => {
                             >
                                 {`Continue your conversations with your ${isCreator ? 'brands' : 'creators'}`}
                             </TemplateText>
+                            {!!searchedChatRooms?.length && (
+                                <TemplateText
+                                    size={wp(14)}
+                                    center
+                                    style={styles.swipeToDeleteText}
+                                >
+                                    swipe left to delete chat
+                                </TemplateText>
+                            )}
                             <TemplateBox height={WRAPPER_MARGIN} />
-                            <TemplateTextInput
-                                placeholder="Search"
-                                style={[styles.input, SHADOW('default', WHITE)]}
-                                value={search}
-                                onChangeText={(text) => setSearch(text)}
-                                autoCapitalize="none"
-                            />
+                            {!!searchedChatRooms?.length && (
+                                <TemplateTextInput
+                                    placeholder="Search"
+                                    style={[styles.input, SHADOW('default', WHITE)]}
+                                    value={search}
+                                    onChangeText={(text) => setSearch(text)}
+                                    autoCapitalize="none"
+                                />
+                            )}
                             <TemplateBox height={WRAPPER_MARGIN} />
                         </TemplateBox>
                     </>
@@ -264,12 +276,19 @@ const ChatRoomsScreen = ({ navigation }) => {
                         {fetchingChatRooms
                             ? <ActivityIndicator size="large" color={IOS_BLUE} />
                             : (
-                                <TemplateText
-                                    size={wp(16)}
-                                    center
-                                >
-                                    There are no conversations yet
-                                </TemplateText>
+                                <TemplateBox alignItems="center">
+                                    <TemplateText
+                                        size={wp(16)}
+                                        center
+                                    >
+                                        There are no conversations yet
+                                    </TemplateText>
+                                    <Button
+                                        title="Start a conversation"
+                                        onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
+                                        style={styles.button}
+                                    />
+                                </TemplateBox>
                             )}
 
                         <TemplateBox height={WRAPPER_MARGIN} />
@@ -324,6 +343,14 @@ const styles = StyleSheet.create({
     },
     deleteIcon: {
         marginLeft: wp(4),
+    },
+    button: {
+        marginTop: wp(20),
+        height: wp(40),
+        width: wp(240),
+    },
+    swipeToDeleteText: {
+        marginTop: wp(8),
     },
 });
 

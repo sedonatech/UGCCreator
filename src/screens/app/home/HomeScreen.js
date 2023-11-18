@@ -226,9 +226,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: WRAPPER_MARGIN,
     },
-    statusCard: {
-        marginBottom: WRAPPER_MARGIN,
-    },
     emptyStatusCard: {
         marginVertical: WRAPPER_MARGIN,
     },

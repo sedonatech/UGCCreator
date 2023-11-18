@@ -44,7 +44,7 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
                 return;
             }
             navigation.navigate(BRANDS_PROFILE);
-        }, 1000);
+        }, 1600);
     };
 
     useLayoutEffect(() => {
@@ -65,8 +65,9 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
                     mr={WRAPPER_MARGIN}
                 />
             ),
+
         });
-    }, [navigation]);
+    }, [navigation, fromAdminPanel]);
 
     return (
         <Wrapper
