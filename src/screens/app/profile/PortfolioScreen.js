@@ -37,19 +37,29 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const profileCompleteRatio = auth?.profileCompleteRatio;
 
-    const creator = selectedCreator || auth?.profile;
+    const creator = creatorId ? selectedCreator : auth?.profile;
 
     const userName = creator?.userName;
+
     const image = creator?.image;
+
     const portfolioLink = creator?.portfolioLink;
+
     const about = creator?.description || '';
+
     const shortDescription = creator?.shortDescription
       || '';
+
     const contact = creator?.contact || '';
+
     const socials = creator?.socialMedia || '';
+
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
+
     const location = creator?.location?.country || creator?.location?.city;
+
     const rates = creator?.rates;
+
     const email = creator?.email;
 
     const {

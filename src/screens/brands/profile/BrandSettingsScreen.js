@@ -195,6 +195,8 @@ const BrandSettingsScreen = ({ navigation }) => {
                         onPress={onPress}
                         icon={icon}
                         key={title}
+                        isLast={title === 'Logout'}
+                        isFirst={title === 'Email'}
                     />
                 ))}
                 <TemplateBox selfCenter mv={20}>
