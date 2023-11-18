@@ -58,6 +58,7 @@ const AuthProvider = ({ children }) => {
         updateProfile,
         getProfile,
         loading,
+        updateProfileLoading,
     } = useProfile();
 
     const update = (key, data) => {
@@ -99,6 +100,7 @@ const AuthProvider = ({ children }) => {
         closeCompleteProfileModal: () => setCompleteModalVisible(false),
         getProfileCompleteStatus,
         profileCompleteRatio,
+        updateProfileLoading,
     };
 
     return (
