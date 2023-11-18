@@ -71,54 +71,55 @@ const PortfolioScreen = ({ navigation, route }) => {
     const loading = (Object.keys(selectedCreator)?.length === 0) && isBrand;
 
     return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            showsVerticalScrollIndicator={false}
-        >
-            {creatorId ? (
-                <CreatorDetailsHeader
-                    userName={userName}
-                    location={location}
-                    image={image}
+        <>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+            >
+                {creatorId ? (
+                    <CreatorDetailsHeader
+                        userName={userName}
+                        location={location}
+                        image={image}
+                    />
+                ) : (
+                    <PortfolioHeader
+                        userName={userName}
+                        location={location}
+                        creatorId={creatorId}
+                        image={image}
+                    />
+                )}
+                { profileCompleteRatio < 1 && !creatorId && (
+                    <ProfileStatusCard
+                        title={PROFILE_INCOMPLETE_TITLE}
+                        description={PROFILE_INCOMPLETE_MESSAGE}
+                        progress={profileCompleteRatio}
+                        style={styles.statusCard}
+                        slideInDelay={40}
+                        showIcon={false}
+                        backgroundColor={lightOrange}
+                        onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
+                    />
+                )}
+                {about && (
+                    <AboutSection
+                        about={about}
+                        shortDescription={shortDescription}
+                        portfolioLink={portfolioLink}
+                    />
+                )}
+                <SampleWorkSection />
+                <RatesSection rates={rates} />
+                <ContactSection
+                    contactInfo={contact}
+                    socials={socials}
+                    paypalLink={paypalLink}
+                    email={email}
                 />
-            ) : (
-                <PortfolioHeader
-                    userName={userName}
-                    location={location}
-                    creatorId={creatorId}
-                    image={image}
-                />
-            )}
-            { profileCompleteRatio < 1 && !creatorId && (
-                <ProfileStatusCard
-                    title={PROFILE_INCOMPLETE_TITLE}
-                    description={PROFILE_INCOMPLETE_MESSAGE}
-                    progress={profileCompleteRatio}
-                    style={styles.statusCard}
-                    slideInDelay={40}
-                    showIcon={false}
-                    backgroundColor={lightOrange}
-                    onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
-                />
-            )}
-            {about && (
-                <AboutSection
-                    about={about}
-                    shortDescription={shortDescription}
-                    portfolioLink={portfolioLink}
-                />
-            )}
-            <SampleWorkSection />
-            <RatesSection rates={rates} />
-            <ContactSection
-                contactInfo={contact}
-                socials={socials}
-                paypalLink={paypalLink}
-                email={email}
-            />
-            {
-                creatorId
+                {
+                    creatorId
                     && (
                         <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                             <Button
@@ -145,11 +146,14 @@ const PortfolioScreen = ({ navigation, route }) => {
                             />
                         </TemplateBox>
                     )
-            }
+                }
+
+            </ScrollView>
             {loading && (
                 <LoadingOverlay message="" />
             )}
-        </ScrollView>
+        </>
+
     );
 };
 
