@@ -7,7 +7,7 @@ import {
     ScrollView, StyleSheet,
 } from 'react-native';
 
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 import {
     BLACK,
     BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN,
@@ -17,7 +17,7 @@ import {
 import {
     SCREEN_HEIGHT,
     WRAPPER_MARGIN,
-    SCREEN_WIDTH
+    SCREEN_WIDTH,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
@@ -52,6 +52,8 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
 
         return projects?.find(({ id }) => id === projectId);
     }, [projectId, projects]);
+
+    console.log('selectedProject', JSON.stringify(selectedProject, null, 2));
 
     const enrolled = useMemo(() => {
         if (!selectedProject) return false;
@@ -103,6 +105,15 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
     }, [enrolled]);
 
     if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
+
+    const { startDate, endDate } = selectedProject;
+
+    const sDate = new Date();
+
+    const eDate = new Date();
+
+    sDate.setUTCMilliseconds(startDate?.seconds);
+    eDate.setUTCMilliseconds(endDate?.seconds);
 
     return (
         <ScrollView
@@ -215,13 +226,13 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 <DescriptionRange
                     icon="timer-outline"
                     maxSubtitle="Start Date"
-                    maxTitle={format(new Date(selectedProject?.startDate), 'dd MMM yyyy')}
+                    maxTitle={selectedProject?.startDate ? format(sDate, 'dd MMM yyyy') : 'N/A'}
                     minSubtitle="End Date"
-                    minTitle={format(new Date(selectedProject?.endDate), 'dd MMM yyyy')}
+                    minTitle={selectedProject?.endDate ? format(eDate, 'dd MMM yyyy') : 'N/A'}
                 />
                 <TemplateText
                     style={styles.title}
-                    bold
+                    boldr
                     size={20}
                     color={BLACK}
                 >

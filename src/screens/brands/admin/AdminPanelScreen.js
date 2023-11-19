@@ -95,21 +95,6 @@ const AdminPanelScreen = ({ navigation }) => {
         profile,
     ]);
 
-    useEffect(() => {
-        if (!profileImage) {
-            Alert.alert(
-                'Profile image',
-                'Please upload a profile image to continue',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate(UPDATE_BRAND_PROFILE, { fromAdminPanel: true }),
-                    },
-                ],
-            );
-        }
-    }, [profileImage]);
-
     const { previousResponse, handleRate } = useAppReview();
 
     return (
@@ -157,19 +142,6 @@ const AdminPanelScreen = ({ navigation }) => {
             )}
             <CurrentCreatorsCarousel style={styles.carousel} />
             <FeaturedCreatorsCarousel style={styles.carousel} />
-            { profileCompleteRatio < 1 && (
-                <ProfileStatusCard
-                    title={BRAND_PROFILE_INCOMPLETE_TITLE}
-                    description={BRAND_PROFILE_INCOMPLETE_MESSAGE}
-                    progress={profileCompleteRatio}
-                    style={styles.statusCard}
-                    slideInDelay={40}
-                    showIcon={false}
-                    backgroundColor={lightOrange}
-                    onPress={() => navigation.navigate(UPDATE_BRAND_PROFILE, { fromAdminPanel: true })}
-                />
-            )}
-
             {
                 projectsCarouselData?.length ? (
                     <ActiveProjectsCarousel
