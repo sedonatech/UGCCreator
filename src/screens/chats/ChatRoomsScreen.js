@@ -1,8 +1,15 @@
 import {
-    FlatList, StyleSheet, RefreshControl, KeyboardAvoidingView, StatusBar, View, Alert, ActivityIndicator,
+    FlatList,
+    StyleSheet,
+    RefreshControl,
+    KeyboardAvoidingView,
+    StatusBar,
+    View,
+    Alert,
+    ActivityIndicator,
 } from 'react-native';
 import React, {
-    useEffect, useMemo, useState, useRef,
+    useEffect, useMemo, useState, useRef, useLayoutEffect,
 } from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
@@ -12,13 +19,15 @@ import Fuse from 'fuse.js';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
 import {
-    ERROR_RED, WHITE, BLACK, IOS_BLUE, GREY,
+    ERROR_RED, WHITE, BLACK, IOS_BLUE, GREY, LIGHT_GREEN,
 } from '../../theme/Colors';
 import {
-    HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
+    HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
 } from '../../theme/Layout';
 import TemplateText from '../../components/TemplateText';
-import { CHATS } from '../../navigation/ScreenNames';
+import {
+    CHATS, CREATORS_PROFILES_STACK, SUPPORT_CHAT, UGCAI,
+} from '../../navigation/ScreenNames';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import { wp } from '../../Utils/getResponsiveSize';
 import useGetCreators from '../../hooks/brands/useGetCreators';
@@ -29,6 +38,8 @@ import TemplateTextInput from '../../components/TemplateTextInput';
 import { SHADOW } from '../../theme/Shadow';
 import { isIOS } from '../../Utils/Platform';
 import TemplateSafeAreaView from '../../components/TemplateSafeAreaView';
+import Button from '../../components/Button';
+import HeaderIconButton from '../../components/header/HeaderButton';
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -121,6 +132,20 @@ const ChatRoomsScreen = ({ navigation }) => {
             ],
         );
     };
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <HeaderIconButton
+                    title="Contact US"
+                    onPress={() => navigation.navigate(SUPPORT_CHAT)}
+                    backDropColor={LIGHT_GREEN}
+                    mr={WRAPPER_MARGIN}
+                />
+            ),
+        });
+    }, [navigation]);
+
     const ChatRoomCard = ({
         name,
         imageUrl,
@@ -190,14 +215,25 @@ const ChatRoomsScreen = ({ navigation }) => {
                             >
                                 {`Continue your conversations with your ${isCreator ? 'brands' : 'creators'}`}
                             </TemplateText>
+                            {!!searchedChatRooms?.length && (
+                                <TemplateText
+                                    size={wp(14)}
+                                    center
+                                    style={styles.swipeToDeleteText}
+                                >
+                                    swipe left to delete chat
+                                </TemplateText>
+                            )}
                             <TemplateBox height={WRAPPER_MARGIN} />
-                            <TemplateTextInput
-                                placeholder="Search"
-                                style={[styles.input, SHADOW('default', WHITE)]}
-                                value={search}
-                                onChangeText={(text) => setSearch(text)}
-                                autoCapitalize="none"
-                            />
+                            {!!searchedChatRooms?.length && (
+                                <TemplateTextInput
+                                    placeholder="Search"
+                                    style={[styles.input, SHADOW('default', WHITE)]}
+                                    value={search}
+                                    onChangeText={(text) => setSearch(text)}
+                                    autoCapitalize="none"
+                                />
+                            )}
                             <TemplateBox height={WRAPPER_MARGIN} />
                         </TemplateBox>
                     </>
@@ -264,12 +300,19 @@ const ChatRoomsScreen = ({ navigation }) => {
                         {fetchingChatRooms
                             ? <ActivityIndicator size="large" color={IOS_BLUE} />
                             : (
-                                <TemplateText
-                                    size={wp(16)}
-                                    center
-                                >
-                                    There are no conversations yet
-                                </TemplateText>
+                                <TemplateBox alignItems="center">
+                                    <TemplateText
+                                        size={wp(16)}
+                                        center
+                                    >
+                                        There are no conversations yet
+                                    </TemplateText>
+                                    <Button
+                                        title="Start a conversation"
+                                        onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
+                                        style={styles.button}
+                                    />
+                                </TemplateBox>
                             )}
 
                         <TemplateBox height={WRAPPER_MARGIN} />
@@ -324,6 +367,14 @@ const styles = StyleSheet.create({
     },
     deleteIcon: {
         marginLeft: wp(4),
+    },
+    button: {
+        marginTop: wp(20),
+        height: wp(40),
+        width: wp(240),
+    },
+    swipeToDeleteText: {
+        marginTop: wp(8),
     },
 });
 

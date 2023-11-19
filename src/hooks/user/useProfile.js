@@ -12,6 +12,9 @@ const USERS_COLLECTION = 'users';
 
 const useProfile = () => {
     const [loading, setLoading] = useState(false);
+
+    const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
+
     const createCreatorProfile = async (userName, currentUser) => {
         try {
             await firestore()
@@ -150,7 +153,7 @@ const useProfile = () => {
 
     const updateProfile = async (data, id) => {
         try {
-            setLoading(true);
+            setUpdateProfileLoading(true);
             await firestore()
                 .collection(USERS_COLLECTION)
                 .doc(id)
@@ -160,7 +163,7 @@ const useProfile = () => {
         } catch (e) {
             console.log(e);
         }
-        setLoading(false);
+        setUpdateProfileLoading(false);
     };
 
     const getProfile = async (id) => {
@@ -181,6 +184,8 @@ const useProfile = () => {
         updateProfile,
         getProfile,
         loading,
+        updateProfileLoading,
+        setLoading,
     };
 };
 

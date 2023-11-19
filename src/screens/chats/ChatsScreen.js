@@ -3,11 +3,13 @@ import { StyleSheet, View } from 'react-native';
 
 import { GiftedChat } from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
-import { WHITE } from '../../theme/Colors';
+import { LAVENDER, WHITE } from '../../theme/Colors';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import useAuthContext from '../../hooks/auth/useAuthContext';
+import TemplateBox from '../../components/TemplateBox';
+import Blob from '../../../assets/svgs/Blob';
 
 const ChatsScreen = ({ route }) => {
     const {
@@ -53,6 +55,12 @@ const ChatsScreen = ({ route }) => {
         <View
             style={styles.container}
         >
+            <TemplateBox>
+                <Blob top color={LAVENDER} />
+                <Blob right color={LAVENDER} />
+                <Blob color={LAVENDER} bottom />
+                <Blob center />
+            </TemplateBox>
             <GiftedChat
                 messages={messages}
                 onSend={(newMessages) => onSendMessage(newMessages,
