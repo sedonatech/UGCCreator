@@ -24,7 +24,7 @@ interface Props {
     descriptionSize?: number;
     onPress?: () => void;
     buttonTitle?: string;
-    lastLoginTime?: string; 
+    lastLoginTime?: string;
 }
 
 const BrandsCard: FC<Props> = ({
@@ -68,27 +68,29 @@ const BrandsCard: FC<Props> = ({
                 />
             )
         }
-        {lastLoginTime && (<TemplateBox
-            ph={8}
-            pv={4}
-            backgroundColor={lightGreen}
-            borderRadius={6}
-            alignItems="center"
-            justifyContent="center"
-            height={wp(20)}
-            width={wp(140)}
-            absolute
-            top={wp(12)}
-            left={wp(12)}
-        >
-            <TemplateText
-                color={WHITE}
-                size={9}
-                bold
+        {lastLoginTime && (
+            <TemplateBox
+                ph={8}
+                pv={4}
+                backgroundColor={lightGreen}
+                borderRadius={6}
+                alignItems="center"
+                justifyContent="center"
+                height={wp(20)}
+                width={wp(110)}
+                absolute
+                top={wp(12)}
+                left={wp(12)}
             >
-                { `Active ${lastLoginTime}` }
-            </TemplateText>
-        </TemplateBox>)}
+                <TemplateText
+                    color={WHITE}
+                    size={9}
+                    bold
+                >
+                    { `Active ${lastLoginTime}` }
+                </TemplateText>
+            </TemplateBox>
+        )}
         <TemplateBox pAll={20} onPress={onPress} selfCenter alignItems="center">
             {/* @ts-ignore */}
             <TemplateText

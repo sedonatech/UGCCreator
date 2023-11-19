@@ -4,12 +4,11 @@ import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import {
     BLACK_60,
-    LAVENDER, TRANSPARENT, WHITE,
+    TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
-    HEADER_MARGIN, IS_ANDROID, SPACE_XLARGE, WRAPPER_MARGIN,
+    IS_ANDROID, SPACE_XLARGE, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
-import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import {
@@ -164,14 +163,6 @@ const BrandSettingsScreen = ({ navigation }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox
-                mt={HEADER_MARGIN}
-            >
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
             {
                 profileCompleteRatio < 1 && (
                     <TemplateBox mv={SPACE_XLARGE}>
