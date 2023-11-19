@@ -22,7 +22,7 @@ export default () => {
         if (ready && purchaserInfo === null && count <= 3) {
             setTimeout(async () => {
                 try {
-                    const purchaseInfo = await Purchases.getPurchaserInfo();
+                    const purchaseInfo = await Purchases.getCustomerInfo();
                     console.log('[useRefetchSubscription]- re fetching subscription info', purchaseInfo, 'count:', count);
                     // access latest purchaserInfo
                     update('purchaserInfo', purchaseInfo);

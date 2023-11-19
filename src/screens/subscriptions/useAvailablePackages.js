@@ -108,22 +108,21 @@ export default (
 
                         // intro sale prices
                         // eslint-disable-next-line camelcase
-                        const introPrice = product?.intro_price;
+                        const introPrice = product?.introPrice;
                         const isIntroSale = isAndroid ? !!introPrice : introEligibility[identifier] && introPrice;
-                        const introCurrency = getCurrencyFromPriceString(product?.intro_price_string);
+                        const introCurrency = getCurrencyFromPriceString(product?.introPrice?.priceString);
                         const introSavingPercent = ((price - introPrice) / price) * 100;// todo check rounding
                         const introDiff = 1 - (introSavingPercent / 100);
                         const originalIntroPrice = (introPrice / introDiff).toFixed(2);
                         const introSavingString = `${introCurrency}${(originalIntroPrice - introPrice).toFixed(2)}`;
                         const originalIntroPriceString = `${introCurrency}${originalIntroPrice}`;
 
-                        const overrideSale = purchase?.overrideSale;
-                        const isSale = overrideSale ? false : (isDiscountSale || isIntroSale);
+                        const isSale = isDiscountSale || isIntroSale;
                         // price strings
                         // eslint-disable-next-line camelcase
-                        const priceString = product?.price_string;
+                        const priceString = product?.priceString;
                         // eslint-disable-next-line camelcase
-                        const introPriceString = product?.intro_price_string;
+                        const introPriceString = product?.introPrice?.priceString;
                         const salePriceString = !isDiscountSale && isIntroSale ? introPriceString : discount?.priceString;
 
                         // eslint-disable-next-line no-nested-ternary
