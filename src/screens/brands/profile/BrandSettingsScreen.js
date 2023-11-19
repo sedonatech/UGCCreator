@@ -176,7 +176,12 @@ const BrandSettingsScreen = ({ navigation }) => {
                     </TemplateBox>
                 )
             }
-            <TemplateBox mh={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 3}>
+            <TemplateBox
+                mh={WRAPPER_MARGIN}
+                mb={WRAPPER_MARGIN * 3}
+                mt={profileCompleteRatio < 1 ? 0 : (WRAPPER_MARGIN * 8)}
+
+            >
                 {settings.map(({
                     title, description, onPress, icon,
                 }) => (

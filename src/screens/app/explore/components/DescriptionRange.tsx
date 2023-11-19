@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import TemplateText from '../../../../components/TemplateText';
-import { BLACK, BLACK_40, GREY_SECONDARY } from '../../../../theme/Colors';
-import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { BLACK, GREY_SECONDARY } from '../../../../theme/Colors';
+import { WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface DescriptionRangeProps {
     icon: string
@@ -31,7 +32,7 @@ const DescriptionRange: FC<DescriptionRangeProps> = ({
         justifyContent="space-between"
         alignItems="center"
         style={style}
-        width={SCREEN_WIDTH}
+        width={wp(WRAPPED_SCREEN_WIDTH)}
     >
         <TemplateBox row alignItems="center">
             <TemplateBox
