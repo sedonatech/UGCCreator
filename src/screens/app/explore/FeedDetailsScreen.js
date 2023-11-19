@@ -6,6 +6,7 @@ import {
     ScrollView, StyleSheet, View,
 } from 'react-native';
 
+import Pdf from 'react-native-pdf';
 import {
     DEFAULT_GRADIENT,
     WHITE, WHITE_40,
@@ -13,12 +14,13 @@ import {
 import {
     SCREEN_HEIGHT,
     WRAPPER_MARGIN,
-    SCREEN_WIDTH
+    SCREEN_WIDTH,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
 import HeaderIconButton from '../../../components/header/HeaderButton';
+import { wp } from '../../../Utils/getResponsiveSize';
 
 const FeedDetailsScreen = ({ route, navigation }) => {
     const selectedFeed = route.params?.selectedFeed;
@@ -38,8 +40,12 @@ const FeedDetailsScreen = ({ route, navigation }) => {
 
     const pan = useRef(new Animated.ValueXY()).current;
 
-    return (
-
+    return (selectedFeed?.pdf && !!selectedFeed?.data?.url) ? (
+        <Pdf
+            source={{ uri: selectedFeed?.data?.url }}
+            style={styles.pdf}
+        />
+    ) : (
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
@@ -88,7 +94,6 @@ const FeedDetailsScreen = ({ route, navigation }) => {
             <TemplateBox
                 mh={WRAPPER_MARGIN}
                 mt={WRAPPER_MARGIN}
-
             >
                 <TemplateText
                     size={18}
@@ -103,9 +108,8 @@ const FeedDetailsScreen = ({ route, navigation }) => {
                     {selectedFeed?.description}
                 </TemplateText>
                 <TemplateBox height={20} />
-
                 {
-                    selectedFeed?.data?.length > 0 && selectedFeed?.data?.map((item, index) => (
+                    (!selectedFeed?.pdf && selectedFeed?.data?.length > 0) && selectedFeed?.data?.map((item, index) => (
                         <View key={`${item}-${index}`}>
                             <TemplateText size={14}>
                                 {
@@ -133,6 +137,10 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+    },
+    pdf: {
+        flex: 1,
+        width: wp(SCREEN_WIDTH),
     },
 });
 export default FeedDetailsScreen;
