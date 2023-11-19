@@ -53,8 +53,6 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         return projects?.find(({ id }) => id === projectId);
     }, [projectId, projects]);
 
-    console.log('selectedProject', JSON.stringify(selectedProject, null, 2));
-
     const enrolled = useMemo(() => {
         if (!selectedProject) return false;
 
