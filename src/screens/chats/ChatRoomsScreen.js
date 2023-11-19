@@ -26,7 +26,7 @@ import {
 } from '../../theme/Layout';
 import TemplateText from '../../components/TemplateText';
 import {
-    CHATS, CREATORS_PROFILES_STACK, SUPPORT_CHAT, UGCAI,
+    CHATS, CREATORS_PROFILES_STACK, START_SUPPOR_CHAT,
 } from '../../navigation/ScreenNames';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import { wp } from '../../Utils/getResponsiveSize';
@@ -138,7 +138,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             headerRight: () => (
                 <HeaderIconButton
                     title="Contact US"
-                    onPress={() => navigation.navigate(SUPPORT_CHAT)}
+                    onPress={() => navigation.navigate(START_SUPPOR_CHAT)}
                     backDropColor={LIGHT_GREEN}
                     mr={WRAPPER_MARGIN}
                 />

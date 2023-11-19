@@ -1,7 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
+import {
+    SWITCH,
+    TRANSPARENT_HEADER,
+    TRANSPARENT_NO_LOGO_HEADER,
+} from '../../components/header/ScreenOptions';
 import {
     CHAT_ROOM, CHATS, START_SUPPOR_CHAT, SUPPORT_CHAT,
 } from '../ScreenNames';
@@ -33,7 +37,7 @@ const ChatsStack = () => (
         />
         <Screen
             name={START_SUPPOR_CHAT}
-            options={TRANSPARENT_HEADER_NO_LOGO}
+            options={TRANSPARENT_NO_LOGO_HEADER}
             component={StartSupportChatScreen}
         />
     </Navigator>
