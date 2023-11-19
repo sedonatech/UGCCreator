@@ -79,6 +79,8 @@ export const CHAT_ROOM = 'ChatRoom';
 
 export const SUPPORT_CHAT = 'SupportChat';
 
+export const START_SUPPOR_CHAT = 'StartSupportChat';
+
 export const UGCAI = 'Ugcai';
 
 export const RECOMMENDED_BRANDS = 'RecommendedBrands';

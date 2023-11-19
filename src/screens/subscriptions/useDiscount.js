@@ -41,7 +41,7 @@ export default Platform.select({
 
                         let discount;
                         try {
-                            discount = await Purchases.getPaymentDiscount(product, discountInfo);
+                            discount = await Purchases.getPromotionalOffer(product, discountInfo);
                         } catch (error) {
                             console.warn('No eligible discount');
                         }

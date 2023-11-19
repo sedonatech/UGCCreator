@@ -1,19 +1,19 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BLACK, PRIMARY, WHITE } from '../../theme/Colors';
+import { BLACK } from '../../theme/Colors';
 
-import TemplateText from '../TemplateText';
 import { IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../theme/Layout';
-import { isIOS } from '../../Utils/Platform';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 
 export const TRANSPARENT_NO_LOGO_HEADER = {
-    headerTitle: null,
+    headerTitle: () => (IS_ANDROID ? null : ''),
     headerTransparent: true,
     headerBackTitleVisible: false,
-    headerTintColor: WHITE,
+    headerTintColor: BLACK,
     headerTitleAlign: 'center',
-    headerBackground: null,
+    headerBackground: () => <View style={styles.header} />,
+    animationEnabled: true,
+    headerMode: 'screen',
 };
 
 export const TRANSPARENT_HEADER = {
@@ -43,9 +43,6 @@ export const SWITCH = {
 };
 
 const styles = StyleSheet.create({
-    title: {
-        fontFamily: isIOS ? 'Baskerville-BoldItalic' : 'monospace',
-    },
     header: {
         height: SCREEN_HEIGHT * 0.1,
         width: SCREEN_WIDTH,
@@ -57,5 +54,5 @@ const styles = StyleSheet.create({
 
 export const ANIMATION_DISABLED_HEADER = {
     headerShown: false,
-    animationEnabled: false
-};    
+    animationEnabled: false,
+};

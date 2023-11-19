@@ -49,17 +49,15 @@ const SubscriptionProvider = ({ children, purchase }) => {
         (async () => {
             if (ready && userEmail) {
                 try {
-                    Purchases.addPurchaserInfoUpdateListener((purchaserInfo) => {
+                    Purchases.addCustomerInfoUpdateListener((purchaserInfo) => {
                         update('purchaserInfo', purchaserInfo);
                     });
                 } catch (e) {
-                    console.log('[addPurchaserInfoUpdateListener] - ERROR', e);
+                    console.log('[addCustomerInfoUpdateListener] - ERROR', e);
                     alert(JSON.stringify(e));
                 }
 
                 try {
-                    // THIS IS DEPRECATED !
-                    await Purchases.addAttributionData({}, Purchases.ATTRIBUTION_NETWORKS.FACEBOOK);
                     await Purchases.setAttributes({ $email: userEmail });
                 } catch (e) {
                     console.log('[Purchases Attributes] - Error', e);
@@ -116,8 +114,8 @@ const SubscriptionProvider = ({ children, purchase }) => {
                             || d?.identifier === findDefaultDiscountKey(product));
                         // if there is a valid discount identifier, get the payment discount
                         // NOTE: Swapped this to always checking for reliability, monitor speed in prod
-                        const discount = !!discountInfo && await Purchases.getPaymentDiscount(product, discountInfo);
-                        // const discount = !!discountInfo || index >= 1 || await Purchases.getPaymentDiscount(product, discountInfo);
+                        const discount = !!discountInfo && await Purchases.getPromotionalOffer(product, discountInfo);
+                        // const discount = !!discountInfo || index >= 1 || await Purchases.getPromotionalOffer(product, discountInfo);
 
                         // if there is a discount, return to build discount array
                         if (discount && discountInfo) {
@@ -151,7 +149,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
             try {
                 if (store?.discountOfferings?.length && !isAndroid) {
                     const discountPackages = await Promise.all(store?.discountOfferings.map(async ({ product, discountInfo, identifier }) => {
-                        const discount = !!discountInfo && await Purchases.getPaymentDiscount(product, discountInfo);
+                        const discount = !!discountInfo && await Purchases.getPromotionalOffer(product, discountInfo);
                         if (discount) {
                             return {
                                 discountPackage: discount,
