@@ -51,6 +51,24 @@ const ChatsScreen = ({ route }) => {
         return unsubscribe;
     }, [selectedChatRoom?.id]);
 
+    // Mark messages as read
+
+    useEffect(() => {
+        const unsubscribe = firestore()
+            .collection(CHAT_ROOMS)
+            .doc(selectedChatRoom?.id)
+            .collection(MESSAGES)
+            .where('read', '==', false)
+            .where('user._id', '!=', auth?.profile?.id)
+            .onSnapshot((snapshot) => {
+                snapshot?.docs?.forEach((doc) => {
+                    doc.ref.update({ read: true });
+                });
+            });
+
+        return unsubscribe;
+    }, [selectedChatRoom?.id]);
+
     return (
         <View
             style={styles.container}

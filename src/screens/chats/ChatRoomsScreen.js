@@ -11,15 +11,13 @@ import {
 import React, {
     useEffect, useMemo, useState, useRef, useLayoutEffect,
 } from 'react';
-import FastImage from 'react-native-fast-image';
-import PropTypes from 'prop-types';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 
 import Fuse from 'fuse.js';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
 import {
-    ERROR_RED, WHITE, BLACK, IOS_BLUE, GREY, LIGHT_GREEN,
+    ERROR_RED, WHITE, BLACK, IOS_BLUE, LIGHT_GREEN,
 } from '../../theme/Colors';
 import {
     HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
@@ -32,7 +30,6 @@ import useChatsContext from '../../hooks/chats/useChatsContext';
 import { wp } from '../../Utils/getResponsiveSize';
 import useGetCreators from '../../hooks/brands/useGetCreators';
 import useGetBrands from '../../hooks/creators/useGetBrands';
-import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../consts/content/Portfolio';
 import TemplateIcon from '../../components/TemplateIcon';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import { SHADOW } from '../../theme/Shadow';
@@ -40,6 +37,7 @@ import { isIOS } from '../../Utils/Platform';
 import TemplateSafeAreaView from '../../components/TemplateSafeAreaView';
 import Button from '../../components/Button';
 import HeaderIconButton from '../../components/header/HeaderButton';
+import ChatRoomCard from './ChatRoomCard';
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -146,49 +144,6 @@ const ChatRoomsScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const ChatRoomCard = ({
-        name,
-        imageUrl,
-        onPress,
-        lastLoginTime,
-    }) => (
-        <TemplateBox
-            width={wp(354)}
-            borderRadius={wp(20)}
-            pAll={wp(16)}
-            selfCenter
-            mt={wp(SPACE_MEDIUM)}
-            backgroundColor={WHITE}
-            onPress={onPress}
-            row
-            alignItems="center"
-        >
-            <FastImage
-                source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
-                style={styles.image}
-            />
-
-            <TemplateBox>
-                <TemplateText bold size={wp(16)}>
-                    {name}
-                </TemplateText>
-                <TemplateBox height={wp(5)} />
-                {lastLoginTime && (
-                    <TemplateText size={wp(10)} color={GREY}>
-                        {`Last active ${lastLoginTime}`}
-                    </TemplateText>
-                )}
-            </TemplateBox>
-        </TemplateBox>
-    );
-
-    ChatRoomCard.propTypes = {
-        name: PropTypes.string.isRequired,
-        imageUrl: PropTypes.string.isRequired,
-        onPress: PropTypes.func.isRequired,
-        lastLoginTime: PropTypes.string.isRequired,
-    };
-
     return (
         <KeyboardAvoidingView
             behavior={isIOS ? 'padding' : 'height'}
@@ -286,6 +241,8 @@ const ChatRoomsScreen = ({ navigation }) => {
                                         chatRoomId: item?.id,
                                     });
                                 }}
+                                id={item?.id}
+                                userId={auth?.profile?.id}
                             />
                         </Swipeable>
                     </GestureHandlerRootView>
@@ -344,12 +301,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-    },
-    image: {
-        width: wp(50),
-        height: wp(50),
-        borderRadius: wp(10),
-        marginRight: wp(20),
     },
     input: {
         width: '100%',
