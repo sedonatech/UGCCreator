@@ -14,20 +14,14 @@ interface Props {
     image?: string | number;
     title?: string;
     shortDescription?: string;
-
     subtitle?: string;
     style?: any;
-
     cardWidth?: number;
     aspectRatio?: number;
     slideInDelay?: number;
-
     showGradient?: boolean;
-
     showVideoButton?: boolean;
-
     onPress?: () => void;
-
     icon?: string;
 }
 
@@ -63,36 +57,39 @@ const FeedCard: FC<Props> = ({
         {image && <BackgroundImage source={image} style={styles.image} width={SCREEN_WIDTH} />}
 
         <TemplateBox pAll={20} onPress={onPress}>
-            {icon && (
-                <TemplateBox
-                    height={30}
-                    width={30}
-                    absolute
-                    top={-5}
-                    left={SCREEN_WIDTH - 95}
-                    borderRadius={10}
-                    backgroundColor={WHITE_30}
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <TemplateIcon name={icon} size={20} color={BLACK} />
-                </TemplateBox>
-            )}
-            {/* @ts-ignore */}
-            <TemplateText color={WHITE} bold size={18} style={styles.text}>
-                {title}
-            </TemplateText>
-
-            {subtitle && (
-            // @ts-ignore
+            <TemplateBox row alignItems="center" justifyContent="space-between">
+                {/* @ts-ignore */}
+                {!!title && (
+                    <TemplateText color={WHITE} bold size={18} style={styles.text}>
+                        {title}
+                    </TemplateText>
+                )}
+                <TemplateBox flex />
+                {icon && (
+                    <TemplateBox
+                        height={30}
+                        width={30}
+                        borderRadius={10}
+                        backgroundColor={WHITE_30}
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <TemplateIcon name={icon} size={20} color={BLACK} />
+                    </TemplateBox>
+                )}
+            </TemplateBox>
+            {!!subtitle && (
+                // @ts-ignore
                 <TemplateText color={WHITE} italic size={10} style={styles.subtitle}>
                     {subtitle}
                 </TemplateText>
             )}
             {/* @ts-ignore */}
-            <TemplateText color={WHITE} size={14} style={styles.text} numberOfLines={2}>
-                {shortDescription}
-            </TemplateText>
+            {shortDescription && (
+                <TemplateText color={WHITE} size={14} style={styles.text} numberOfLines={2}>
+                    {shortDescription}
+                </TemplateText>
+            )}
         </TemplateBox>
     </TemplateBox>
 );
