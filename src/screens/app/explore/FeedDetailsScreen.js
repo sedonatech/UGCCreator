@@ -21,6 +21,7 @@ import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { wp } from '../../../Utils/getResponsiveSize';
+import { WEBVIEW } from '../../../navigation/ScreenNames';
 
 const FeedDetailsScreen = ({ route, navigation }) => {
     const selectedFeed = route.params?.selectedFeed;
@@ -45,6 +46,9 @@ const FeedDetailsScreen = ({ route, navigation }) => {
             trustAllCerts={false}
             source={{ uri: selectedFeed?.data?.url, cache: true }}
             style={styles.pdf}
+            onPressLink={(uri) => {
+                navigation.navigate(WEBVIEW, { url: uri });
+            }}
         />
     ) : (
         <ScrollView

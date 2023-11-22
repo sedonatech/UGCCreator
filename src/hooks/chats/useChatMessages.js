@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CHAT_ROOMS } from './useChatRooms';
 import useNotifications from '../notifications/useNotifications';
 import { CHATS } from '../../navigation/ScreenNames';
@@ -9,16 +9,19 @@ export const MESSAGES = 'messages';
 
 export const SUPPORT_CHAT_MESSAGES = 'supportChatMessages';
 
-const useChatMessages = () => {
+const useChatMessages = (selectedChatRoomId) => {
     const { sendNotification } = useNotifications();
+
+    const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
 
     const onSendMessage = async (newMessage, chatRoom, fcmToken) => {
         try {
             const formattedMessages = newMessage?.map((message) => ({
                 ...message,
+                read: false,
+                sender: message?.user?.name,
                 createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
             }));
-
             await firestore()
                 .collection(CHAT_ROOMS)
                 .doc(chatRoom?.id)
@@ -61,12 +64,12 @@ const useChatMessages = () => {
     // Get support messages
     const getSupportMessages = async () => {
         try {
-            const messages = await firestore()
+            const messagesResults = await firestore()
                 .collection(SUPPORT_CHAT_MESSAGES)
                 .orderBy('createdAt', 'desc')
                 .get();
 
-            const messagesArray = messages.docs.map((doc) => ({
+            const messagesArray = messagesResults.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
             }));
@@ -79,11 +82,32 @@ const useChatMessages = () => {
         }
     };
 
+    useEffect(() => {
+        const unsubscribe = firestore()
+            .collection(CHAT_ROOMS)
+            .doc(selectedChatRoomId)
+            .collection(MESSAGES)
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snapshot) => {
+                const newMessages = snapshot?.docs?.map((doc) => ({
+                    ...doc?.data(),
+                    id: doc?.id,
+                }));
+                // Set new unread messages
+                setUnreadMessagesCount(
+                    newMessages?.filter((message) => !message?.read)?.length,
+                );
+            });
+
+        return unsubscribe;
+    }, [selectedChatRoomId]);
+
     return {
         onSendMessage,
         onSendSupportMessage,
         getSupportMessages,
         supportMessages,
+        unreadMessagesCount,
     };
 };
 

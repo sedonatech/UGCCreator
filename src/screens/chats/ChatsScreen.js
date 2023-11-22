@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { GiftedChat } from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
+import { useIsFocused } from '@react-navigation/native';
 import { LAVENDER, WHITE } from '../../theme/Colors';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
@@ -19,6 +20,10 @@ const ChatsScreen = ({ route }) => {
         setMessages,
         createdChatRoom,
     } = useChatsContext();
+
+    console.log('chatuser', chatUser);
+
+    const isFocused = useIsFocused();
 
     const { auth } = useAuthContext();
 
@@ -50,6 +55,24 @@ const ChatsScreen = ({ route }) => {
 
         return unsubscribe;
     }, [selectedChatRoom?.id]);
+
+    // Mark messages as read
+
+    useEffect(() => {
+        const unsubscribe = firestore()
+            .collection(CHAT_ROOMS)
+            .doc(selectedChatRoom?.id)
+            .collection(MESSAGES)
+            .where('read', '==', false)
+            .where('user._id', '!=', auth?.profile?.id)
+            .onSnapshot((snapshot) => {
+                snapshot?.docs?.forEach((doc) => {
+                    doc.ref.update({ read: true });
+                });
+            });
+
+        return unsubscribe;
+    }, [selectedChatRoom?.id, isFocused, auth?.profile?.id]);
 
     return (
         <View
