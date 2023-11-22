@@ -136,19 +136,13 @@ const PortfolioScreen = ({ navigation, route }) => {
                                 title="Contact Creator"
                                 onPress={async () => {
                                     try {
-                                        if (creatorId
-                                            && brandId
-                                            && creatorFCMToken
-                                            && brandFCMToken
-                                            && chatRoomName) {
-                                            await createChatRoom(
-                                                chatRoomName,
-                                                creatorId,
-                                                brandId,
-                                                creatorFCMToken,
-                                                brandFCMToken,
-                                            );
-                                        }
+                                        await createChatRoom(
+                                            chatRoomName,
+                                            creatorId,
+                                            brandId,
+                                            creatorFCMToken,
+                                            brandFCMToken,
+                                        );
                                     } catch (e) {
                                         console.log('-> e', e);
                                     }
@@ -174,9 +168,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-    },
-    viewShot: {
-        flex: 1,
     },
     statusCard: {
         marginTop: WRAPPER_MARGIN * 2,
