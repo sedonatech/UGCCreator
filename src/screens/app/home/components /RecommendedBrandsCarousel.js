@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { Configuration, OpenAIApi } from "openai-edge"
 
 import { useNavigation } from '@react-navigation/native';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
@@ -31,6 +32,34 @@ const RecommendedBrandsCarousel = ({ style }) => {
 
     const { recommendedBrands } = useFeatureFlags();
 
+    const suggestions = async() => {
+        const OPENAI_API_KEY = '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';
+
+        // Create an OpenAI API client (that's edge friendly!)
+        const configuration = new Configuration({
+          apiKey: OPENAI_API_KEY,
+        });
+        
+        const openai = new OpenAIApi(configuration);
+    
+        const completion = await openai.createChatCompletion({
+            model: 'gpt-4',
+            stream: false,
+            temperature: 0.2,
+            messages: [
+            {
+                role: "user",
+                content: `I need 10 fitness brand with name and description as keys in a list of json objects.`
+            },
+            ],
+        });
+    
+        const response = await completion.json();
+        const result = JSON.parse(response?.choices[0]?.message?.content);
+        return result;
+    }
+
+    suggestions()
     const recommendedBrandsCategories = recommendedBrands?.recommendation;
 
     const brandCategories = useMemo(() => {
