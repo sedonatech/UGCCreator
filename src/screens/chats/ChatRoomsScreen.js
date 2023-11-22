@@ -254,7 +254,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                         justifyContent="center"
                         mh={WRAPPER_MARGIN}
                     >
-                        {fetchingChatRooms
+                        {(fetchingChatRooms || !creators?.length || !brands?.length)
                             ? <ActivityIndicator size="large" color={IOS_BLUE} />
                             : (
                                 <TemplateBox alignItems="center">

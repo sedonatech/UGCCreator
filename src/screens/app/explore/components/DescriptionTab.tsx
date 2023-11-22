@@ -266,15 +266,13 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                 pAll={10}
                 alignItems="center"
                 onPress={async () => {
-                    if (creatorId && brandId && creatorFCMToken && brandFCMToken && chatRoomName) {
-                        await createChatRoom(
-                            chatRoomName,
-                            creatorId,
-                            brandId,
-                            creatorFCMToken,
-                            brandFCMToken,
-                        );
-                    }
+                    await createChatRoom(
+                        chatRoomName,
+                        creatorId,
+                        brandId,
+                        creatorFCMToken,
+                        brandFCMToken,
+                    );
                 }}
                 backgroundColor={BLACK_0_5}
                 borderRadius={10}
