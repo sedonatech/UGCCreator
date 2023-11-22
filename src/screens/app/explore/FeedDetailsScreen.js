@@ -42,7 +42,8 @@ const FeedDetailsScreen = ({ route, navigation }) => {
 
     return (selectedFeed?.pdf && !!selectedFeed?.data?.url) ? (
         <Pdf
-            source={{ uri: selectedFeed?.data?.url }}
+            trustAllCerts={false}
+            source={{ uri: selectedFeed?.data?.url, cache: true }}
             style={styles.pdf}
         />
     ) : (
