@@ -32,7 +32,7 @@ const RecommendedBrandsCarousel = ({ style }) => {
 
     const { recommendedBrands } = useFeatureFlags();
 
-    const suggestions = async() => {
+    const suggestions = async(brandType) => {
         const OPENAI_API_KEY = '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';
 
         // Create an OpenAI API client (that's edge friendly!)
@@ -49,7 +49,7 @@ const RecommendedBrandsCarousel = ({ style }) => {
             messages: [
             {
                 role: "user",
-                content: `I need 10 fitness brand with name and description as keys in a list of json objects.`
+                content: `I need 10 fitness ${brandType} brands with name and description as keys in a list of json objects.`
             },
             ],
         });
@@ -59,7 +59,7 @@ const RecommendedBrandsCarousel = ({ style }) => {
         return result;
     }
 
-    suggestions()
+    suggestions("fitness and wellness")
     const recommendedBrandsCategories = recommendedBrands?.recommendation;
 
     const brandCategories = useMemo(() => {
