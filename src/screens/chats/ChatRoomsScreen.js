@@ -172,11 +172,11 @@ const ChatRoomsScreen = ({ navigation }) => {
                             </TemplateText>
                             {!!searchedChatRooms?.length && (
                                 <TemplateText
-                                    size={wp(14)}
+                                    size={wp(13)}
                                     center
                                     style={styles.swipeToDeleteText}
                                 >
-                                    swipe left to delete chat
+                                    Swipe left to delete chat
                                 </TemplateText>
                             )}
                             <TemplateBox height={WRAPPER_MARGIN} />
