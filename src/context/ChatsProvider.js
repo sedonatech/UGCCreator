@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import useAuthContext from '../hooks/auth/useAuthContext';
 import useChatRooms from '../hooks/chats/useChatRooms';
 import { DEFAULT_AVATAR } from '../consts/content/Portfolio';
+import useChatMessages from '../hooks/chats/useChatMessages';
 
 const ChatsContext = createContext();
 const { Provider, Consumer: ChatsConsumer } = ChatsContext;
@@ -27,6 +28,10 @@ const ChatsProvider = ({ children }) => {
         deleteChatRoom,
         deleteChatRoomLoading,
     } = useChatRooms();
+
+    const {
+        unreadMessagesCount,
+    } = useChatMessages();
 
     const { profile } = auth;
 
@@ -60,6 +65,7 @@ const ChatsProvider = ({ children }) => {
         fetchingChatRooms,
         deleteChatRoom,
         deleteChatRoomLoading,
+        unreadMessagesCount,
     };
 
     return (

@@ -3,13 +3,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import ExploreScreen from '../../screens/app/explore/ExploreScreen';
 import {
-    BRAND_DETAILS, EXPLORE, FEED_DETAILS, PROJECT_DETAILS, RECOMMENDED_BRANDS,
+    BRAND_DETAILS, EXPLORE, FEED_DETAILS, PROJECT_DETAILS, RECOMMENDED_BRANDS, WEBVIEW,
 } from '../ScreenNames';
 import { SWITCH, TRANSPARENT_HEADER } from '../../components/header/ScreenOptions';
 import BrandDetailsScreen from '../../screens/app/explore/BrandDetailsScreen';
 import ProjectDetailsScreen from '../../screens/app/explore/ProjectDetailsScreen';
 import RecommendedBrandsScreen from '../../screens/app/home/RecommendedBrandsScreen';
 import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
+import WebviewScreen from '../../screens/webview/WebviewScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -40,6 +41,11 @@ const ExploreStack = () => (
             name={FEED_DETAILS}
             options={TRANSPARENT_HEADER}
             component={FeedDetailsScreen}
+        />
+        <Screen
+            name={WEBVIEW}
+            options={TRANSPARENT_HEADER}
+            component={WebviewScreen}
         />
     </Navigator>
 );

@@ -1,10 +1,10 @@
 export default (product, discount, isDiscountSale) => {
-    const introPriceString = !isDiscountSale ? product?.intro_price_string : discount?.priceString;
-    const introPrice = product?.intro_price;
-    const periodNumberOfUnits = !isDiscountSale ? product?.intro_price_period_number_of_units : discount?.periodNumberOfUnits;
+    const introPriceString = !isDiscountSale ? product?.introPrice?.priceString : discount?.priceString;
+    const introPrice = product?.introPrice?.price;
+    const periodNumberOfUnits = !isDiscountSale ? product?.introPrice?.periodUnit : discount?.periodNumberOfUnits;
 
-    const introPriceCycle = !isDiscountSale ? product?.intro_price_cycles : discount?.cycles;
-    let introPricePeriodUnit = !isDiscountSale ? product?.intro_price_period_unit : discount?.periodUnit;
+    const introPriceCycle = !isDiscountSale ? product?.introPrice?.cycles : discount?.cycles;
+    let introPricePeriodUnit = !isDiscountSale ? product?.introPrice?.periodNumberOfUnits : discount?.periodUnit;
 
     // if (introPriceString == null || periodNumberOfUnits === 0) return null;
 

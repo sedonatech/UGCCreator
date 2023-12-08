@@ -5,10 +5,6 @@ import useAuthState from '../../hooks/auth/useAuthState';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import { useConfig } from '../../context/core';
 
-if (__DEV__) {
-    Purchases.setDebugLogsEnabled(true);
-}
-
 export default () => {
     const { revenueCat } = useConfig();
 
@@ -29,7 +25,10 @@ export default () => {
                 if (!username) {
                     throw Error(`No user name present - username:${username}`);
                 }
-                await Purchases.setup(revenueCat, username);
+                Purchases.configure({
+                    apiKey: revenueCat,
+                    appUserID: username,
+                });
                 setUserEmail(email);
                 console.log('[subscriptions] Purchase setup complete');
                 setReady(true);

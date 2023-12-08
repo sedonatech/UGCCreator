@@ -3,11 +3,14 @@ import { StyleSheet, View } from 'react-native';
 
 import { GiftedChat } from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
-import { WHITE } from '../../theme/Colors';
+import { useIsFocused } from '@react-navigation/native';
+import { LAVENDER, WHITE } from '../../theme/Colors';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import useAuthContext from '../../hooks/auth/useAuthContext';
+import TemplateBox from '../../components/TemplateBox';
+import Blob from '../../../assets/svgs/Blob';
 
 const ChatsScreen = ({ route }) => {
     const {
@@ -17,6 +20,10 @@ const ChatsScreen = ({ route }) => {
         setMessages,
         createdChatRoom,
     } = useChatsContext();
+
+    console.log('chatuser', chatUser);
+
+    const isFocused = useIsFocused();
 
     const { auth } = useAuthContext();
 
@@ -49,10 +56,34 @@ const ChatsScreen = ({ route }) => {
         return unsubscribe;
     }, [selectedChatRoom?.id]);
 
+    // Mark messages as read
+
+    useEffect(() => {
+        const unsubscribe = firestore()
+            .collection(CHAT_ROOMS)
+            .doc(selectedChatRoom?.id)
+            .collection(MESSAGES)
+            .where('read', '==', false)
+            .where('user._id', '!=', auth?.profile?.id)
+            .onSnapshot((snapshot) => {
+                snapshot?.docs?.forEach((doc) => {
+                    doc.ref.update({ read: true });
+                });
+            });
+
+        return unsubscribe;
+    }, [selectedChatRoom?.id, isFocused, auth?.profile?.id]);
+
     return (
         <View
             style={styles.container}
         >
+            <TemplateBox>
+                <Blob top color={LAVENDER} />
+                <Blob right color={LAVENDER} />
+                <Blob color={LAVENDER} bottom />
+                <Blob center />
+            </TemplateBox>
             <GiftedChat
                 messages={messages}
                 onSend={(newMessages) => onSendMessage(newMessages,

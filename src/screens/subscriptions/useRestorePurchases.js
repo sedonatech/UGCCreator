@@ -3,7 +3,7 @@ import Purchases from 'react-native-purchases';
 export default () => {
     const restorePurchases = async () => {
         try {
-            await Purchases.restoreTransactions();
+            await Purchases.restorePurchases();
             return true;
         } catch (e) {
             console.log('[useRestorePurchases] - Error', e);

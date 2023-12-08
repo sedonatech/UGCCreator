@@ -107,7 +107,7 @@ const CreatorCard = ({
                 justifyContent="center"
                 onPress={onPress}
                 alignSelf="flex-end"
-                mb={wp(13)}
+                mb={wp(12)}
             >
                 <TemplateText color={WHITE} size={wp(10)} bold>View Portfolio</TemplateText>
             </TemplateBox>

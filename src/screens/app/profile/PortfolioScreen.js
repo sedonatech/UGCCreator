@@ -37,19 +37,29 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const profileCompleteRatio = auth?.profileCompleteRatio;
 
-    const creator = selectedCreator || auth?.profile;
+    const creator = creatorId ? selectedCreator : auth?.profile;
 
     const userName = creator?.userName;
+
     const image = creator?.image;
+
     const portfolioLink = creator?.portfolioLink;
+
     const about = creator?.description || '';
+
     const shortDescription = creator?.shortDescription
       || '';
+
     const contact = creator?.contact || '';
+
     const socials = creator?.socialMedia || '';
+
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
+
     const location = creator?.location?.country || creator?.location?.city;
+
     const rates = creator?.rates;
+
     const email = creator?.email;
 
     const {
@@ -71,73 +81,68 @@ const PortfolioScreen = ({ navigation, route }) => {
     const loading = (Object.keys(selectedCreator)?.length === 0) && isBrand;
 
     return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            showsVerticalScrollIndicator={false}
-        >
-            {creatorId ? (
-                <CreatorDetailsHeader
-                    userName={userName}
-                    location={location}
-                    image={image}
+        <>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+            >
+                {creatorId ? (
+                    <CreatorDetailsHeader
+                        userName={userName}
+                        location={location}
+                        image={image}
+                    />
+                ) : (
+                    <PortfolioHeader
+                        userName={userName}
+                        location={location}
+                        creatorId={creatorId}
+                        image={image}
+                    />
+                )}
+                { profileCompleteRatio < 1 && !creatorId && (
+                    <ProfileStatusCard
+                        title={PROFILE_INCOMPLETE_TITLE}
+                        description={PROFILE_INCOMPLETE_MESSAGE}
+                        progress={profileCompleteRatio}
+                        style={styles.statusCard}
+                        slideInDelay={40}
+                        showIcon={false}
+                        backgroundColor={lightOrange}
+                        onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
+                    />
+                )}
+                {about && (
+                    <AboutSection
+                        about={about}
+                        shortDescription={shortDescription}
+                        portfolioLink={portfolioLink}
+                    />
+                )}
+                <SampleWorkSection />
+                <RatesSection rates={rates} />
+                <ContactSection
+                    contactInfo={contact}
+                    socials={socials}
+                    paypalLink={paypalLink}
+                    email={email}
                 />
-            ) : (
-                <PortfolioHeader
-                    userName={userName}
-                    location={location}
-                    creatorId={creatorId}
-                    image={image}
-                />
-            )}
-            { profileCompleteRatio < 1 && !creatorId && (
-                <ProfileStatusCard
-                    title={PROFILE_INCOMPLETE_TITLE}
-                    description={PROFILE_INCOMPLETE_MESSAGE}
-                    progress={profileCompleteRatio}
-                    style={styles.statusCard}
-                    slideInDelay={40}
-                    showIcon={false}
-                    backgroundColor={lightOrange}
-                    onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
-                />
-            )}
-            {about && (
-                <AboutSection
-                    about={about}
-                    shortDescription={shortDescription}
-                    portfolioLink={portfolioLink}
-                />
-            )}
-            <SampleWorkSection />
-            <RatesSection rates={rates} />
-            <ContactSection
-                contactInfo={contact}
-                socials={socials}
-                paypalLink={paypalLink}
-                email={email}
-            />
-            {
-                creatorId
+                {
+                    creatorId
                     && (
                         <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                             <Button
                                 title="Contact Creator"
                                 onPress={async () => {
                                     try {
-                                        if (creatorId
-                                            && brandId
-                                            && creatorFCMToken
-                                            && brandFCMToken
-                                            && chatRoomName) {
-                                            await createChatRoom(
-                                                chatRoomName,
-                                                creatorId,
-                                                brandId,
-                                                creatorFCMToken,
-                                                brandFCMToken,
-                                            );
-                                        }
+                                        await createChatRoom(
+                                            chatRoomName,
+                                            creatorId,
+                                            brandId,
+                                            creatorFCMToken,
+                                            brandFCMToken,
+                                        );
                                     } catch (e) {
                                         console.log('-> e', e);
                                     }
@@ -145,11 +150,14 @@ const PortfolioScreen = ({ navigation, route }) => {
                             />
                         </TemplateBox>
                     )
-            }
+                }
+
+            </ScrollView>
             {loading && (
                 <LoadingOverlay message="" />
             )}
-        </ScrollView>
+        </>
+
     );
 };
 
@@ -160,9 +168,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-    },
-    viewShot: {
-        flex: 1,
     },
     statusCard: {
         marginTop: WRAPPER_MARGIN * 2,

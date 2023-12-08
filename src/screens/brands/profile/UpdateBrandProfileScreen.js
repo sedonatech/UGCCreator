@@ -4,12 +4,11 @@ import CountryPicker from 'react-native-country-picker-modal';
 
 import {
     BLACK,
-    BLACK_40, GREY_SECONDARY, LAVENDER, TRANSPARENT, WHITE,
+    BLACK_40, GREY_SECONDARY, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
     IS_ANDROID, SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
-import Blob from '../../../../assets/svgs/Blob';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import TemplateText from '../../../components/TemplateText';
@@ -30,21 +29,25 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
     const { auth } = useAuthContext();
 
     const {
-        profile: profileData, update, updateProfile, loading,
+        profile: profileData, update, updateProfile,
     } = auth;
 
     const { trackEvent } = useTrackEvent();
 
-    const handleUpdate = async () => {
-        updateProfile(profileData, profileData?.id);
-        await trackEvent('update_brand_profile');
-        setTimeout(() => {
+    const [loading, setLoading] = useState(false);
+
+    const handleUpdate = () => {
+        setTimeout(async () => {
+            setLoading(true);
+            updateProfile(profileData, profileData?.id);
+            await trackEvent('update_brand_profile');
             if (fromAdminPanel) {
                 navigation.goBack();
                 return;
             }
+            setLoading(false);
             navigation.navigate(BRANDS_PROFILE);
-        }, 1000);
+        }, 2600);
     };
 
     useLayoutEffect(() => {
@@ -65,8 +68,9 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
                     mr={WRAPPER_MARGIN}
                 />
             ),
+
         });
-    }, [navigation]);
+    }, [navigation, fromAdminPanel]);
 
     return (
         <Wrapper
@@ -75,12 +79,6 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
             keyboard
             safe={false}
         >
-            <TemplateBox>
-                <Blob top color={LAVENDER} />
-                <Blob right color={LAVENDER} />
-                <Blob color={LAVENDER} bottom />
-                <Blob center />
-            </TemplateBox>
             <PortfolioHeader isUpdate />
 
             <TemplateBox height={WRAPPER_MARGIN} />

@@ -1,18 +1,18 @@
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import {
-    ScrollView, StyleSheet, RefreshControl, Alert,
+    ScrollView, StyleSheet, RefreshControl,
 } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import { useIsFocused } from '@react-navigation/native';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK,
-    BLACK_SECONDARY, lightOrange,
+    BLACK_SECONDARY,
     WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import {
-    ADD_PROJECT, BRAND_PROJECT_DETAILS, BRANDS_PROFILE_STACK, UPDATE_BRAND_PROFILE,
+    ADD_PROJECT, BRAND_PROJECT_DETAILS,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
@@ -23,8 +23,7 @@ import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import {
     BRAND_NO_CURRENT_PROJECT_MESSAGE,
-    BRAND_NO_CURRENT_PROJECT_TITLE, BRAND_PROFILE_INCOMPLETE_MESSAGE,
-    BRAND_PROFILE_INCOMPLETE_TITLE,
+    BRAND_NO_CURRENT_PROJECT_TITLE,
 } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import useRefresh from '../../../hooks/creators/useRefresh';
@@ -39,10 +38,6 @@ const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
-
-    const profileImage = profile?.image;
-
-    const profileCompleteRatio = auth?.profileCompleteRatio;
 
     const isFocused = useIsFocused();
 
@@ -95,26 +90,6 @@ const AdminPanelScreen = ({ navigation }) => {
         profile,
     ]);
 
-    useEffect(() => {
-        if (!profileImage) {
-            Alert.alert(
-                'Profile image',
-                'Please upload a profile image to continue',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, {
-                            screen: UPDATE_BRAND_PROFILE,
-                            params: {
-                                fromAdminPanel: true,
-                            },
-                        }),
-                    },
-                ],
-            );
-        }
-    }, [profileImage]);
-
     const { previousResponse, handleRate } = useAppReview();
 
     return (
@@ -162,24 +137,6 @@ const AdminPanelScreen = ({ navigation }) => {
             )}
             <CurrentCreatorsCarousel style={styles.carousel} />
             <FeaturedCreatorsCarousel style={styles.carousel} />
-            { profileCompleteRatio < 1 && (
-                <ProfileStatusCard
-                    title={BRAND_PROFILE_INCOMPLETE_TITLE}
-                    description={BRAND_PROFILE_INCOMPLETE_MESSAGE}
-                    progress={profileCompleteRatio}
-                    style={styles.statusCard}
-                    slideInDelay={40}
-                    showIcon={false}
-                    backgroundColor={lightOrange}
-                    onPress={() => navigation.navigate(BRANDS_PROFILE_STACK, {
-                        screen: UPDATE_BRAND_PROFILE,
-                        params: {
-                            fromAdminPanel: true,
-                        },
-                    })}
-                />
-            )}
-
             {
                 projectsCarouselData?.length ? (
                     <ActiveProjectsCarousel
@@ -218,7 +175,7 @@ const styles = StyleSheet.create({
     },
     greeting: {
         marginTop: HEADER_MARGIN,
-        marginBottom: WRAPPER_MARGIN,
+        marginBottom: 10,
         marginHorizontal: WRAPPER_MARGIN,
     },
     carousel: {
