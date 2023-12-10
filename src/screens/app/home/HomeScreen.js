@@ -190,6 +190,32 @@ const HomeScreen = ({ navigation }) => {
                     </TemplateBox>
                 </TemplateBox>
             )}
+
+            <TemplateBox
+                row
+                alignItems="center"
+                backgroundColor={WHITE}
+                borderRadius={16}
+                pAll={20}
+                width={WRAPPED_SCREEN_WIDTH}
+                mt={WRAPPER_MARGIN}
+                onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
+                style={SHADOW('card', WHITE)}
+                selfCenter
+            >
+                <CatalogueSvg />
+                <TemplateBox width={16} />
+                <TemplateBox
+                    width={SCREEN_WIDTH / 1.6}
+                    onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
+                >
+                    <TemplateText bold size={16}>UGC guide</TemplateText>
+                    <TemplateBox height={10} />
+                    <TemplateText size={13}>
+                        Discover and explore our extensive catalogue of hundreds of brands
+                    </TemplateText>
+                </TemplateBox>
+            </TemplateBox>
             {userCurrentProjects?.length ? (
                 <CurrentProjectsCarousel style={styles.carousel} data={userCurrentProjects} />
             )
