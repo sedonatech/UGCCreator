@@ -207,7 +207,11 @@ const HomeScreen = ({ navigation }) => {
                 pAll={20}
                 width={WRAPPED_SCREEN_WIDTH}
                 mt={WRAPPER_MARGIN}
-                onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
+                onPress={() => {
+                    navigation.navigate(FEED_DETAILS, {
+                        selectedFeed: filteredFeed,
+                    });
+                }}
                 style={SHADOW('card', WHITE)}
                 selfCenter
             >
