@@ -21,7 +21,16 @@ const SettingsRow = ({
                 alignItems="center"
                 onPress={onPress}
             >
-                {!!icon && <TemplateIcon name={icon} size={20} color={isLast ? ERROR_RED : BLACK} />}
+                {!!icon
+                    && (
+                        <TemplateIcon
+                            name={icon}
+                            size={20}
+                            color={isLast
+                                ? ERROR_RED
+                                : BLACK}
+                        />
+                    )}
                 <TemplateBox width={WRAPPER_MARGIN} />
                 <TemplateBox width={SCREEN_WIDTH - 100} onPress={onPress}>
                     <TemplateText

@@ -228,7 +228,7 @@ const HomeScreen = ({ navigation }) => {
                     <TemplateText bold size={16}>UGC guide</TemplateText>
                     <TemplateBox height={10} />
                     <TemplateText size={13}>
-                        Discover and explore our extensive catalogue of hundreds of brands
+                        Discover and explore the extensive guide on how to launch  a successful UGC career
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
