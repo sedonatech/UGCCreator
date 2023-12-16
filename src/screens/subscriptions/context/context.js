@@ -106,7 +106,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
                 // get the available packages
                 const allOfferings = store?.offerings?.all && Object?.values(store?.offerings?.all);
                 const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages)?.flat().filter(({ product }) => !store?.introEligibility[product?.identifier]);
-                const discountOfferings = await Promise.all(allAvailablePackages.map(async ({ product }, index) => {
+                const discountOfferings = await Promise.all(allAvailablePackages?.map(async ({ product }, index) => {
                     // map over the packages to check if discount is available
                     try {
                         const productIdentifier = product?.identifier;

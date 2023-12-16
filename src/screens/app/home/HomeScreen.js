@@ -3,7 +3,7 @@ import {
     ScrollView, StyleSheet, RefreshControl, Alert,
 } from 'react-native';
 
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import {
     BLACK,
     LIGHT_GREEN,
@@ -27,7 +27,9 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { BRANDS_CATALOGUE, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
+import {
+    BRANDS_CATALOGUE, FEED_DETAILS, PROFILE_STACK, UGCAI,
+} from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -40,7 +42,7 @@ import { wp } from '../../../Utils/getResponsiveSize';
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
-    const { features } = useFeatureFlags();
+    const { features, feed } = useFeatureFlags();
 
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
 
@@ -114,6 +116,12 @@ const HomeScreen = ({ navigation }) => {
     }, [profileImage]);
 
     const { previousResponse, handleRate } = useAppReview();
+
+    const filteredFeed = useMemo(() => {
+        if (!feed?.feeds?.length) return [];
+
+        return feed?.feeds?.[0];
+    }, [feed]);
 
     return (
         <ScrollView
@@ -190,6 +198,40 @@ const HomeScreen = ({ navigation }) => {
                     </TemplateBox>
                 </TemplateBox>
             )}
+
+            <TemplateBox
+                row
+                alignItems="center"
+                backgroundColor={WHITE}
+                borderRadius={16}
+                pAll={20}
+                width={WRAPPED_SCREEN_WIDTH}
+                mt={WRAPPER_MARGIN}
+                onPress={() => {
+                    navigation.navigate(FEED_DETAILS, {
+                        selectedFeed: filteredFeed,
+                    });
+                }}
+                style={SHADOW('card', WHITE)}
+                selfCenter
+            >
+                <CatalogueSvg />
+                <TemplateBox width={16} />
+                <TemplateBox
+                    width={SCREEN_WIDTH / 1.6}
+                    onPress={() => {
+                        navigation.navigate(FEED_DETAILS, {
+                            selectedFeed: filteredFeed,
+                        });
+                    }}
+                >
+                    <TemplateText bold size={16}>UGC guide</TemplateText>
+                    <TemplateBox height={10} />
+                    <TemplateText size={13}>
+                        Discover and explore the extensive guide on how to launch  a successful UGC career
+                    </TemplateText>
+                </TemplateBox>
+            </TemplateBox>
             {userCurrentProjects?.length ? (
                 <CurrentProjectsCarousel style={styles.carousel} data={userCurrentProjects} />
             )

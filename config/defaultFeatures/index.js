@@ -4,6 +4,7 @@ import recommendedBrands from './defaults/recommendedBrands.json';
 import recommendedCreators from './defaults/recommendedCreators.json';
 import onboardingEducation from './defaults/onboardingEducation.json';
 import subscriptionBenefits from './defaults/subscriptionBenefits.json';
+import androidSubscription from './defaults/androidSubscription.json';
 
 export default {
     feed,
@@ -12,4 +13,5 @@ export default {
     recommendedCreators,
     onboardingEducation,
     subscriptionBenefits,
+    androidSubscription,
 };

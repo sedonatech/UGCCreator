@@ -276,32 +276,32 @@ RatesSection.propTypes = {
         monthlyPackage: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number,
+            price: PropTypes.number || PropTypes.string,
         })),
         videoStartingRate: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number,
+            price: PropTypes.number || PropTypes.string,
         })),
         photoStartingRate: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number,
+            price: PropTypes.number || PropTypes.string,
         })),
         revision: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number,
+            price: PropTypes.number || PropTypes.string,
         })),
         usageRights: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number,
+            price: PropTypes.number || PropTypes.string,
         })),
         exclusiveRights: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number,
+            price: PropTypes.number || PropTypes.string,
         })),
     }),
 };

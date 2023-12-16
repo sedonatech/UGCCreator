@@ -8,7 +8,7 @@ import {
 import {
     BRAND_DETAILS, BRANDS_CATALOGUE,
     CREATOR_TOOLS_RESULTS,
-    CURRENT_PROJECT_DETAILS,
+    CURRENT_PROJECT_DETAILS, FEED_DETAILS,
     HOME,
     PROJECT_DETAILS,
     RECOMMENDED_BRANDS, RESULTS_HISTORY, SCRIPTS_GENERATOR,
@@ -28,6 +28,7 @@ import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorSc
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
 import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 import BrandsCatalogueScreen from '../../screens/app/home/BrandsCatalogueScreen';
+import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -74,7 +75,6 @@ const HomeStack = () => (
             options={TRANSPARENT_HEADER}
             component={UGCAiScreen}
         />
-
         <Screen
             name={SCRIPTS_GENERATOR}
             options={TRANSPARENT_HEADER}
@@ -94,6 +94,11 @@ const HomeStack = () => (
             name={BRANDS_CATALOGUE}
             options={TRANSPARENT_HEADER}
             component={BrandsCatalogueScreen}
+        />
+        <Screen
+            name={FEED_DETAILS}
+            options={TRANSPARENT_HEADER}
+            component={FeedDetailsScreen}
         />
     </Navigator>
 );

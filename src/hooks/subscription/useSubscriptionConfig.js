@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Platform } from 'react-native';
 import useFeatureFlags from '../featureFlags/useFeatureFlags';
 import useAuthContext from '../auth/useAuthContext';
+import androidSubscription from '../../../config/defaultFeatures/index';
+import { IS_ANDROID } from '../../theme/Layout';
 
 const buildPurchaseConfig = (subKeys, purchase) => {
     if (!subKeys || !subKeys?.main) {

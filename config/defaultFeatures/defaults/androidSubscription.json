@@ -1,0 +1,100 @@
+{
+  "keys": {
+    "main": {
+      "monthly": "com.ugccreator.app.creator.monthly",
+      "quarterly": "com.ugccreator.app.creator.quarterly",
+      "annually": "com.ugccreator.app.creator.annual"
+    },
+    "ios": {
+      "monthly": "com.ugccreator.app.creator.monthly",
+      "quarterly": "com.ugccreator.app.creator.quarterly",
+      "annually": "com.ugccreator.app.creator.annual",
+      "promo": {
+        "monthly": "",
+        "quarterly": "",
+        "annually": ""
+      }
+    },
+    "android": {
+      "monthly": "com.ugccreator.app.creator.monthly:monthly-creator-autorenewing",
+      "quarterly": "com.ugccreator.app.creator.quarterly:quarterly-creator-autorenewing",
+      "annually": "com.ugccreator.app.creator.annual:annual-creator-autorenewing"
+    },
+    "discount": {
+      "android": {
+        "monthly": "com.ugccreator.app.android.20off",
+        "quarterly": "com.ugccreator.app.android.30off",
+        "annually": "com.ugccreator.app.android.50off"
+      },
+      "ios": {
+        "monthly": "com.ugccreator.app.ios.20off",
+        "quarterly": "com.ugccreator.app.ios.30off",
+        "annually": "com.ugccreator.app.ios.50off"
+      }
+    },
+    "singleDiscount": {
+      "ios": "active_ios_sub_annual_offer",
+      "android": "active_android_sub_annual_offer"
+    }
+  },
+  "purchase": {
+    "sortOrder": [
+      "$rc_annual",
+      "$rc_three_month",
+      "$rc_monthly"
+    ],
+    "metaData": {
+      "$rc_monthly": {
+        "label": "Monthly",
+        "billed": "/ 1 Month",
+        "recommended": false,
+        "recommendedCopy": "",
+        "popularCopy": "",
+        "freeTrial": {
+          "visible": true,
+          "copy": "Access to all features plus AI powered brand recommendation and creator tools for 7 days free trail, cancel any time with 100% money back guarantee",
+          "color": "#A5C4FD"
+        },
+        "showSaving": false
+      },
+      "$rc_three_month": {
+        "label": "Quarterly",
+        "billed": "/ 3 Months",
+        "recommended": false,
+        "recommendedCopy": "",
+        "popularCopy": "Most popular",
+        "freeTrial": {
+          "visible": true,
+          "copy": "Access to all features plus AI powered brand recommendation and creator tools for 7 days free trail, cancel any time with 100% money back guarantee",
+          "color": "#A5C4FD"
+        },
+        "showSaving": true
+      },
+      "$rc_annual": {
+        "label": "Yearly",
+        "billed": "/ 12 Months",
+        "recommended": true,
+        "recommendedCopy": "Best Value",
+        "popularCopy": "",
+        "freeTrial": {
+          "visible": true,
+          "copy": "Access to all features plus AI powered brand recommendation and creator tools for 7 days free trail, cancel any time with 100% money back guarantee",
+          "color": "#A5C4FD"
+        },
+        "showSaving": true
+      }
+    },
+    "singleDiscount": {
+      "eligibleIdentifiers": [
+        "monthly",
+        "quarterly"
+      ],
+      "originalKey": "annual",
+      "discountKey": "",
+      "options": {
+        "startDate": "2021-11-18T00:00:00Z",
+        "allowIntro": true
+      }
+    }
+  }
+}
