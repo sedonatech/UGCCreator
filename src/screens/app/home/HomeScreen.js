@@ -6,11 +6,11 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 import {
     BLACK,
-    LIGHT_GREEN,
+    LIGHT_GREEN, TRANSPARENT,
     WHITE,
 } from '../../../theme/Colors';
 import {
-    HEADER_MARGIN, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
+    HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
@@ -27,7 +27,9 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { BRANDS_CATALOGUE, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
+import {
+    BRANDS_CATALOGUE, FEED_DETAILS, PROFILE_STACK, UGCAI,
+} from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -36,11 +38,14 @@ import { SHADOW } from '../../../theme/Shadow';
 import useAppReview from '../../../hooks/useAppReview';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { wp } from '../../../Utils/getResponsiveSize';
+import FeedsTab from '../explore/components/FeedsTab';
+import FeedCard from '../explore/components/FeedCard';
+import getIconByType from '../../../Utils/getIconByType';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
-    const { features } = useFeatureFlags();
+    const { features, feed } = useFeatureFlags();
 
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
 
@@ -114,6 +119,12 @@ const HomeScreen = ({ navigation }) => {
     }, [profileImage]);
 
     const { previousResponse, handleRate } = useAppReview();
+
+    const ugcGuidePdfFeed = useMemo(() => {
+        if (!feed?.feeds?.length) return [];
+
+        return feed?.feeds?.[0];
+    }, [feed]);
 
     return (
         <ScrollView
@@ -190,6 +201,21 @@ const HomeScreen = ({ navigation }) => {
                     </TemplateBox>
                 </TemplateBox>
             )}
+
+            <TemplateBox mt={wp(20)}>
+                <FeedCard
+                    image={{ uri: ugcGuidePdfFeed?.thumbnail }}
+                    title={ugcGuidePdfFeed?.title}
+                    shortDescription={ugcGuidePdfFeed?.description}
+                    subtitle={ugcGuidePdfFeed?.subtitle}
+                    showGradient
+                    cardWidth={SCREEN_WIDTH / 1.12}
+                    aspectRatio={1.5}
+                    icon={getIconByType(ugcGuidePdfFeed?.type)}
+                    onPress={() => navigation.navigate(FEED_DETAILS, { feed: ugcGuidePdfFeed })}
+                    style={styles.card}
+                />
+            </TemplateBox>
             {userCurrentProjects?.length ? (
                 <CurrentProjectsCarousel style={styles.carousel} data={userCurrentProjects} />
             )
@@ -205,6 +231,7 @@ const HomeScreen = ({ navigation }) => {
             <ProjectsCarousel style={styles.carousel} />
             <RecommendedBrandsCarousel style={styles.carousel} />
             <BrandsCarousel style={styles.carousel} />
+            <FeedsTab />
         </ScrollView>
     );
 };
@@ -212,7 +239,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: WHITE,
+        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     contentContainer: {
         flexGrow: 1,
@@ -228,6 +255,10 @@ const styles = StyleSheet.create({
     },
     emptyStatusCard: {
         marginVertical: WRAPPER_MARGIN,
+    },
+    card: {
+        marginBottom: 10,
+        alignSelf: 'center',
     },
 });
 export default HomeScreen;

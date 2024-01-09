@@ -5,6 +5,8 @@ import isAndroid from './utils/isAndroid';
 import roundDownNumber from './utils/roundDownNumber';
 import getIntroPeriod from './utils/getIntroPeriod';
 import useAuthContext from '../../hooks/auth/useAuthContext';
+import androidSubscription from '../../../config/defaultFeatures/defaults/androidSubscription.json';
+import { IS_ANDROID } from '../../theme/Layout';
 
 export default (
     purchase,
@@ -12,7 +14,9 @@ export default (
         featureCurrentOffering: false,
     },
 ) => {
-    const sortOrder = purchase?.sortOrder || purchase;
+    const appPurchase = IS_ANDROID ? androidSubscription?.purchase : purchase;
+
+    const sortOrder = appPurchase?.sortOrder || appPurchase;
     const [availablePackages, setAvailablePackages] = useState(null);
     const [originalAvailablePackages, setOriginalAvailablePackages] = useState(null);
 
@@ -29,7 +33,6 @@ export default (
     useEffect(() => {
         (async () => {
             try {
-                console.log('[subscriptions] Starting useGetOfferings');
                 const allOfferings = offerings?.all && Object?.values(offerings?.all);
                 const currentOffering = offerings?.current;
 
@@ -38,24 +41,7 @@ export default (
                 const allAvailablePackages = allPackages?.filter(({ offeringIdentifier }) => offeringIdentifier === type);
 
                 if (allOfferings?.length) {
-                    let sortOrderedPackages = sortOrder?.length
-                        ? isAndroid ? sortOrder.map((identifier) => {
-                            // check if there is a discount key from purchase metaData
-                            const discountKey = purchase?.metaData[identifier]?.discountKey;
-                            if (discountKey) {
-                                // check if there is a discount offering, if so return that
-                                const discountOffering = allAvailablePackages.find(({ product }) => product?.identifier === discountKey);
-                                if (discountOffering) {
-                                    return discountOffering;
-                                }
-                            }
-                            // default return normal offering
-                            return allAvailablePackages?.find(({ product }) => product?.identifier === identifier);
-                        }) : allAvailablePackages
-                            ?.sort(
-                                ({ product: productA }, { product: productB }) => sortOrder.indexOf(productA.identifier) - sortOrder.indexOf(productB.identifier),
-                            )
-                        : allAvailablePackages;
+                    let sortOrderedPackages = allAvailablePackages;
 
                     if (featureCurrentOffering && !!currentOffering) {
                         const currentOfferingPackageProductIDs = currentOffering
@@ -129,7 +115,7 @@ export default (
                         const savingPercent = isDiscountSale ? discountPercent : isIntroSale ? introSavingPercent : null;
 
                         // gets the original identifier to show correct metaData
-                        const originalIdentifier = sortOrder?.find((sortIdentifier) => purchase?.metaData[sortIdentifier]?.discountKey === identifier);
+                        const originalIdentifier = sortOrder?.find((sortIdentifier) => appPurchase?.metaData[sortIdentifier]?.discountKey === identifier);
 
                         const {
                             discountIntroPriceString,
@@ -142,7 +128,8 @@ export default (
                         } = getIntroPeriod(product, discount, isDiscountSale);
 
                         return {
-                            ...purchase?.metaData[isAndroid && isIntroSale && !!originalIdentifier ? originalIdentifier : identifier],
+
+                            ...appPurchase?.metaData[isAndroid ? pack?.identifier : identifier],
                             // eslint-disable-next-line no-nested-ternary
                             priceString: isSale ? salePriceString : priceString,
                             isSale,
@@ -152,10 +139,11 @@ export default (
                             originalPrice: isDiscountSale ? originalPriceString : isIntroSale ? originalIntroPriceString : null,
                             title: product?.title,
                             description: product?.description,
+                            billed: '',
                             identifier,
                             price,
                             // eslint-disable-next-line no-nested-ternary
-                            savingPercent: savingPercent ? roundDownNumber(savingPercent, purchase?.roundSavingPercentage) : 0,
+                            savingPercent: savingPercent ? roundDownNumber(savingPercent, appPurchase?.roundSavingPercentage) : 0,
                             discountIntroPriceString,
                             introPriceCycle,
                             periodNumberOfUnits,

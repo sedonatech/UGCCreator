@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { RADIUS_SMALL, SCREEN_WIDTH } from '../../../../theme/Layout';
+import { SCREEN_WIDTH } from '../../../../theme/Layout';
 import {
     BLACK, WHITE, BRAND_BLUE, TRANSPARENT, WHITE_30, BLACK_60
 } from '../../../../theme/Colors';
@@ -44,11 +44,10 @@ const FeedCard: FC<Props> = ({
         alignItems="center"
         justifyContent="center"
         gradientColors={[BLACK_60, BLACK_60]}
-        borderRadius={RADIUS_SMALL}
+        borderRadius={20}
         width={cardWidth}
         aspectRatio={aspectRatio}
         style={style}
-        slideIn={slideInDelay !== undefined}
         slideInDelay={slideInDelay}
         backgroundColor={!image ? BRAND_BLUE : TRANSPARENT}
 
@@ -96,7 +95,7 @@ const FeedCard: FC<Props> = ({
 
 const styles = StyleSheet.create({
     image: {
-        borderRadius: 10,
+        borderRadius: 20,
         zIndex: -1,
     },
     text: {

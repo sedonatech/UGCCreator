@@ -16,7 +16,7 @@ import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
-import {wp} from "../../../Utils/getResponsiveSize";
+import { wp } from '../../../Utils/getResponsiveSize';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();

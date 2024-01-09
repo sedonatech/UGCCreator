@@ -6,11 +6,11 @@ import {
     TRANSPARENT_HEADER,
 } from '../../components/header/ScreenOptions';
 import {
-    BRAND_DETAILS, BRANDS_CATALOGUE,
+    BRAND_DETAILS, BRANDS_CATALOGUE, BRANDS_SCREEN,
     CREATOR_TOOLS_RESULTS,
-    CURRENT_PROJECT_DETAILS,
+    CURRENT_PROJECT_DETAILS, FEED_DETAILS,
     HOME,
-    PROJECT_DETAILS,
+    PROJECT_DETAILS, PROJECTS_SCREEN,
     RECOMMENDED_BRANDS, RESULTS_HISTORY, SCRIPTS_GENERATOR,
     UGCAI,
     UPDATE_PORTFOLIO,
@@ -28,6 +28,9 @@ import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorSc
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
 import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 import BrandsCatalogueScreen from '../../screens/app/home/BrandsCatalogueScreen';
+import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
+import BrandsScreen from '../../screens/app/home/BrandsScreen';
+import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -74,7 +77,6 @@ const HomeStack = () => (
             options={TRANSPARENT_HEADER}
             component={UGCAiScreen}
         />
-
         <Screen
             name={SCRIPTS_GENERATOR}
             options={TRANSPARENT_HEADER}
@@ -94,6 +96,21 @@ const HomeStack = () => (
             name={BRANDS_CATALOGUE}
             options={TRANSPARENT_HEADER}
             component={BrandsCatalogueScreen}
+        />
+        <Screen
+            name={FEED_DETAILS}
+            options={TRANSPARENT_HEADER}
+            component={FeedDetailsScreen}
+        />
+        <Screen
+            name={BRANDS_SCREEN}
+            options={TRANSPARENT_HEADER}
+            component={BrandsScreen}
+        />
+        <Screen
+            name={PROJECTS_SCREEN}
+            options={TRANSPARENT_HEADER}
+            component={ProjectsScreen}
         />
     </Navigator>
 );

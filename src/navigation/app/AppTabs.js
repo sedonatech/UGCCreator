@@ -35,16 +35,7 @@ const AppTabs = () => {
                     tabBarLabel: (props) => <TabLabel {...props}>Home</TabLabel>,
                 }}
             />
-            <Screen
-                name={EXPLORE_STACK}
-                component={ExploreStack}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="search" />
-                    ),
-                    tabBarLabel: (props) => <TabLabel {...props}>Explore</TabLabel>,
-                }}
-            />
+
             <Screen
                 name={OFFERS_STACK}
                 component={OffersStack}

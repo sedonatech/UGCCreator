@@ -1,5 +1,6 @@
 package com.ugccreatorapp;
 import android.os.Bundle;
+import android.view.WindowManager;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
@@ -11,8 +12,9 @@ public class MainActivity extends ReactActivity {
 
  @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(null);
         SplashScreen.show(this);  // here
-        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
     }
 
   /**
@@ -38,6 +40,7 @@ public class MainActivity extends ReactActivity {
                 DefaultNewArchitectureEntryPoint.getFabricEnabled(), // fabricEnabled
                 // If you opted-in for the New Architecture, we enable Concurrent React (i.e. React 18).
                 DefaultNewArchitectureEntryPoint.getConcurrentReactEnabled() // concurrentRootEnabled
+
         );
     }
 }
