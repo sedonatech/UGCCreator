@@ -6,11 +6,11 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 import {
     BLACK,
-    LIGHT_GREEN,
+    LIGHT_GREEN, TRANSPARENT,
     WHITE,
 } from '../../../theme/Colors';
 import {
-    HEADER_MARGIN, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
+    HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
@@ -239,7 +239,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: WHITE,
+        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     contentContainer: {
         flexGrow: 1,
