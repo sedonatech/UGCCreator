@@ -1,7 +1,7 @@
+import { enableScreens } from 'react-native-screens';
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
-import { enableScreens } from 'react-native-screens';
 import { View } from 'react-native';
 import {
     APP, AUTH, BRANDS_STACK, SUBSCRIPTION_STACK,
@@ -22,6 +22,7 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 enableScreens();
+
 const MainNavigator = () => {
     const { auth } = useAuthContext();
 

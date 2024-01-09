@@ -65,7 +65,7 @@ const RecommendedBrandsCarousel = ({ style }) => {
 
     return (
         <TemplateBox style={style}>
-            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={20}>
+            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                 <TemplateText size={18} bold>
                     Recommended Brands
                     {'\n'}
@@ -81,9 +81,9 @@ const RecommendedBrandsCarousel = ({ style }) => {
                 </TemplateTouchable>
             </TemplateBox>
 
-            <TemplateText size={14} color={BLACK} style={styles.subtitle}>
-                {/* eslint-disable-next-line max-len */}
-                Check out our weekly AI recommended brands based on your preferences in your portfolio. These brands may not be on our platform yet, but you can request them to be added and collaborate with them.
+            <TemplateText size={13} color={BLACK} style={styles.subtitle}>
+                Check out our weekly AI recommended brands based on your preferences in your portfolio.
+                These brands may not be on our platform yet, but you can request to collaborate with them.
             </TemplateText>
             <TemplateCarousel
                 data={brandCategories}

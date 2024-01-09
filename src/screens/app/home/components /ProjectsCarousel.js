@@ -10,11 +10,8 @@ import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateBox from '../../../../components/TemplateBox';
 import ProjectCard from './ProjectCard';
 import {
-    EXPLORE,
-    EXPLORE_STACK,
-    PROJECT_DETAILS,
+    PROJECT_DETAILS, PROJECTS_SCREEN,
 } from '../../../../navigation/ScreenNames';
-import { PROJECTS_TAB } from '../../explore/ExploreScreen';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../../consts/content/Home';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
@@ -32,7 +29,7 @@ const ProjectsCarousel = ({ style }) => {
     const carouselData = useMemo(() => {
         if (!projects || projects.length === 0) return [];
 
-        return projects?.sort((a,b) => (a?.createdAt - b?.createdAt)).map((item) => ({
+        return projects?.sort((a, b) => (a?.createdAt - b?.createdAt)).map((item) => ({
             id: item?.id,
             image: item?.image,
             title: item?.title,
@@ -53,24 +50,18 @@ const ProjectsCarousel = ({ style }) => {
         />
     ) : (
         <TemplateBox style={style}>
-            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={20}>
+            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                 <TemplateText size={18} bold>New Projects</TemplateText>
                 <TemplateBox flex />
                 {/* @ts-ignore */}
-                <TemplateTouchable onPress={() => navigation.navigate(EXPLORE_STACK, {
-                    screen: EXPLORE,
-                    params: {
-                        initialTab: PROJECTS_TAB,
-                    },
-                })}
-                >
+                <TemplateTouchable onPress={() => navigation.navigate(PROJECTS_SCREEN)}>
                     <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                         See All
                     </TemplateText>
                 </TemplateTouchable>
             </TemplateBox>
             {/* @ts-ignore */}
-            <TemplateText size={14} color={BLACK} style={styles.subtitle}>
+            <TemplateText size={13} color={BLACK} style={styles.subtitle}>
                 Check out  new projects from trusted brands based on your interests and location
             </TemplateText>
 
