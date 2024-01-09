@@ -3,7 +3,7 @@ import {
     ScrollView, StyleSheet, RefreshControl, Alert,
 } from 'react-native';
 
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import {
     BLACK,
     LIGHT_GREEN,
@@ -38,6 +38,9 @@ import { SHADOW } from '../../../theme/Shadow';
 import useAppReview from '../../../hooks/useAppReview';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { wp } from '../../../Utils/getResponsiveSize';
+import FeedsTab from '../explore/components/FeedsTab';
+import FeedCard from '../explore/components/FeedCard';
+import getIconByType from '../../../Utils/getIconByType';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -117,7 +120,7 @@ const HomeScreen = ({ navigation }) => {
 
     const { previousResponse, handleRate } = useAppReview();
 
-    const filteredFeed = useMemo(() => {
+    const ugcGuidePdfFeed = useMemo(() => {
         if (!feed?.feeds?.length) return [];
 
         return feed?.feeds?.[0];
@@ -199,38 +202,19 @@ const HomeScreen = ({ navigation }) => {
                 </TemplateBox>
             )}
 
-            <TemplateBox
-                row
-                alignItems="center"
-                backgroundColor={WHITE}
-                borderRadius={16}
-                pAll={20}
-                width={WRAPPED_SCREEN_WIDTH}
-                mt={WRAPPER_MARGIN}
-                onPress={() => {
-                    navigation.navigate(FEED_DETAILS, {
-                        selectedFeed: filteredFeed,
-                    });
-                }}
-                style={SHADOW('card', WHITE)}
-                selfCenter
-            >
-                <CatalogueSvg />
-                <TemplateBox width={16} />
-                <TemplateBox
-                    width={SCREEN_WIDTH / 1.6}
-                    onPress={() => {
-                        navigation.navigate(FEED_DETAILS, {
-                            selectedFeed: filteredFeed,
-                        });
-                    }}
-                >
-                    <TemplateText bold size={16}>UGC guide</TemplateText>
-                    <TemplateBox height={10} />
-                    <TemplateText size={13}>
-                        Discover and explore the extensive guide on how to launch  a successful UGC career
-                    </TemplateText>
-                </TemplateBox>
+            <TemplateBox mt={wp(20)}>
+                <FeedCard
+                    image={{ uri: ugcGuidePdfFeed?.thumbnail }}
+                    title={ugcGuidePdfFeed?.title}
+                    shortDescription={ugcGuidePdfFeed?.description}
+                    subtitle={ugcGuidePdfFeed?.subtitle}
+                    showGradient
+                    cardWidth={SCREEN_WIDTH / 1.12}
+                    aspectRatio={1.5}
+                    icon={getIconByType(ugcGuidePdfFeed?.type)}
+                    onPress={() => navigation.navigate(FEED_DETAILS, { feed: ugcGuidePdfFeed })}
+                    style={styles.card}
+                />
             </TemplateBox>
             {userCurrentProjects?.length ? (
                 <CurrentProjectsCarousel style={styles.carousel} data={userCurrentProjects} />
@@ -247,6 +231,7 @@ const HomeScreen = ({ navigation }) => {
             <ProjectsCarousel style={styles.carousel} />
             <RecommendedBrandsCarousel style={styles.carousel} />
             <BrandsCarousel style={styles.carousel} />
+            <FeedsTab />
         </ScrollView>
     );
 };
@@ -270,6 +255,10 @@ const styles = StyleSheet.create({
     },
     emptyStatusCard: {
         marginVertical: WRAPPER_MARGIN,
+    },
+    card: {
+        marginBottom: 10,
+        alignSelf: 'center',
     },
 });
 export default HomeScreen;

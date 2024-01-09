@@ -6,13 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-
 import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import { BRAND_DETAILS, EXPLORE, EXPLORE_STACK } from '../../../../navigation/ScreenNames';
-import { BRANDS_TAB } from '../../explore/ExploreScreen';
+import {
+    BRAND_DETAILS, BRANDS_SCREEN,
+} from '../../../../navigation/ScreenNames';
 import useGetBrands from '../../../../hooks/creators/useGetBrands';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
@@ -36,16 +36,11 @@ const BrandsCarousel = ({ style }) => {
 
     return (
         <TemplateBox style={style}>
-            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={20}>
+            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                 <TemplateText size={18} bold>Brands on our Platform</TemplateText>
                 <TemplateBox flex />
                 <TemplateTouchable
-                    onPress={() => navigation.navigate(EXPLORE_STACK, {
-                        screen: EXPLORE,
-                        params: {
-                            initialTab: BRANDS_TAB,
-                        },
-                    })}
+                    onPress={() => navigation.navigate(BRANDS_SCREEN)}
                 >
                     <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                         See All
@@ -53,14 +48,14 @@ const BrandsCarousel = ({ style }) => {
                 </TemplateTouchable>
             </TemplateBox>
 
-            <TemplateText size={14} color={BLACK} style={styles.subtitle}>
+            <TemplateText size={13} color={BLACK} style={styles.subtitle}>
                 Check out the brands currently on our platform
             </TemplateText>
             <TemplateCarousel
                 data={brandsData?.sort((a, b) => {
                     const imageA = a?.image ?? '';
                     const imageB = b?.image ?? '';
-                    return imageB.localeCompare(imageA)
+                    return imageB.localeCompare(imageA);
                 })}
                 renderItem={({ item }) => (
                     <BrandsCard

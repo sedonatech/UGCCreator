@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: WRAPPER_MARGIN,
-        marginVertical: WRAPPER_MARGIN,
+        marginTop: WRAPPER_MARGIN,
+        marginBottom: 16,
     },
     cardCarousel: {
         paddingHorizontal: WRAPPER_MARGIN,
