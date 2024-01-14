@@ -212,7 +212,7 @@ const HomeScreen = ({ navigation }) => {
                     cardWidth={SCREEN_WIDTH / 1.12}
                     aspectRatio={1.5}
                     icon={getIconByType(ugcGuidePdfFeed?.type)}
-                    onPress={() => navigation.navigate(FEED_DETAILS, { feed: ugcGuidePdfFeed })}
+                    onPress={() => navigation.navigate(FEED_DETAILS, { selectedFeed: ugcGuidePdfFeed })}
                     style={styles.card}
                 />
             </TemplateBox>
