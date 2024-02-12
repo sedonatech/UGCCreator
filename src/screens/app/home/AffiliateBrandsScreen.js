@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import {
-    HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
+    HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH,
 } from '../../../theme/Layout';
 import { LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
@@ -9,11 +9,34 @@ import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../Utils/getResponsiveSize';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
+import ToggleCarousel from '../../../components/ToggleCarousel';
 
 const AffiliateBrandsScreen = ({ navigation }) => {
     const { affiliate } = useFeatureFlags();
 
     const affiliateBrands = affiliate?.brands;
+
+    const brandCategories = useMemo(() => {
+        if (!affiliateBrands) {
+            return [];
+        }
+        const allCategories = affiliateBrands?.map(({ category }) => ({
+            name: category,
+            value: category,
+        }));
+
+        return [...new Set(allCategories)];
+    }, [affiliateBrands]);
+
+    const [selectedTab, setSelectedTab] = useState(brandCategories?.[0] ?? 'beauty');
+
+    const brandsData = useMemo(() => {
+        if (!affiliateBrands?.length) return [];
+
+        return affiliateBrands?.filter(({ category }) => category === selectedTab?.value);
+    }, [selectedTab, affiliateBrands]);
+
+    console.log('brandsData', JSON.stringify(brandsData, null, 2));
 
     return (
         <ScrollView
@@ -35,9 +58,17 @@ const AffiliateBrandsScreen = ({ navigation }) => {
                 >
                     Brand ambassador, influencer and affiliate programs
                 </TemplateText>
+                <TemplateBox selfCenter flex>
+                    <ToggleCarousel
+                        data={brandCategories}
+                        selectedTab={selectedTab}
+                        onChange={setSelectedTab}
+                    />
+                </TemplateBox>
                 <TemplateBox>
-                    {affiliateBrands?.map(({ name, link }) => (
+                    {!!brandsData?.length && brandsData?.map(({ name, link }, index) => (
                         <TemplateBox
+                            key={`${name}-${index}`}
                             borderRadius={wp(16)}
                             backgroundColor={LIGHT_PURPLE}
                             pAll={wp(16)}
@@ -58,7 +89,6 @@ const AffiliateBrandsScreen = ({ navigation }) => {
                             <TemplateBox height={wp(8)} />
                             <TemplateText
                                 size={wp(12)}
-
                             >
                                 Dive into descriptions, insights with just a tap.
                             </TemplateText>
