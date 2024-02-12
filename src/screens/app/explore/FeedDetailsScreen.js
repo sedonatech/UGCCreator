@@ -1,8 +1,7 @@
 import React, {
-    useLayoutEffect, useRef,
+    useLayoutEffect,
 } from 'react';
 import {
-    Animated,
     ScrollView, StyleSheet, View,
 } from 'react-native';
 
@@ -39,15 +38,13 @@ const FeedDetailsScreen = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    const pan = useRef(new Animated.ValueXY()).current;
-
     return (selectedFeed?.pdf && !!selectedFeed?.data?.url) ? (
         <Pdf
             trustAllCerts={false}
             source={{ uri: selectedFeed?.data?.url, cache: true }}
             style={styles.pdf}
-            onPressLink={(uri) => {
-                navigation.navigate(WEBVIEW, { url: uri });
+            onPressLink={(url) => {
+                navigation.navigate(WEBVIEW, { url });
             }}
         />
     ) : (
@@ -55,37 +52,12 @@ const FeedDetailsScreen = ({ route, navigation }) => {
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
-                {
-                    useNativeDriver: false,
-                },
-            )}
             contentContainerStyle={styles.contentContainer}
         >
             <TemplateBox
-                animated
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={DEFAULT_GRADIENT}
-                style={{
-                    transform: [
-                        {
-                            translateY: pan.y.interpolate({
-                                inputRange: [-1000, 0],
-                                outputRange: [-200, 0],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                        {
-                            scale: pan.y.interpolate({
-                                inputRange: [-3000, 0],
-                                outputRange: [20, 1],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                    ],
-                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage

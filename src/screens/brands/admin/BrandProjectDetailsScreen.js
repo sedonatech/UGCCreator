@@ -2,7 +2,6 @@ import React, {
     useLayoutEffect, useMemo, useState,
 } from 'react';
 import {
-    Animated,
     ScrollView, StyleSheet,
 } from 'react-native';
 
@@ -13,7 +12,7 @@ import {
 import {
     SCREEN_HEIGHT,
     WRAPPER_MARGIN,
-    SCREEN_WIDTH
+    SCREEN_WIDTH,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
@@ -68,8 +67,6 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    const pan = React.useRef(new Animated.ValueXY()).current;
-
     if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
 
     return (
@@ -77,35 +74,11 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
-                {
-                    useNativeDriver: false,
-                },
-            )}
         >
             <TemplateBox
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={[BLACK_30, BLACK_30]}
-                style={{
-                    transform: [
-                        {
-                            translateY: pan.y.interpolate({
-                                inputRange: [-1000, 0],
-                                outputRange: [-200, 0],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                        {
-                            scale: pan.y.interpolate({
-                                inputRange: [-3000, 0],
-                                outputRange: [20, 1],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                    ],
-                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage

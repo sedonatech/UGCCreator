@@ -77,8 +77,11 @@ ChatRoomCard.propTypes = {
     name: PropTypes.string.isRequired,
     imageUrl: PropTypes.string.isRequired,
     onPress: PropTypes.func.isRequired,
-    lastLoginTime: PropTypes.string.isRequired,
+    lastLoginTime: PropTypes.string,
     id: PropTypes.string.isRequired,
+};
+ChatRoomCard.defaultProps = {
+    lastLoginTime: null,
 };
 
 const styles = StyleSheet.create({

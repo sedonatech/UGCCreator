@@ -2,13 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
     CHATS_STACK,
-    EXPLORE_STACK,
     HOME_STACK,
     OFFERS_STACK,
     PROFILE_STACK,
 } from '../ScreenNames';
 import HomeStack from './HomeStack';
-import ExploreStack from './ExploreStack';
 import OffersStack from './OffersStack';
 import ProfileStack from './ProfileStack';
 import TabButton from '../../components/tabs/TabButton';

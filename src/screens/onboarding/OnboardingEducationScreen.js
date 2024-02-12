@@ -34,6 +34,7 @@ const OnboardingEducationScreen = ({ navigation }) => {
             carouselRef?.current?.scrollToIndex({
                 index: activeIndex + 1,
                 animated: true,
+                useNativeDriver: true,
             });
         }
     };

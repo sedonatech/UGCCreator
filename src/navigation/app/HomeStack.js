@@ -6,6 +6,7 @@ import {
     TRANSPARENT_HEADER,
 } from '../../components/header/ScreenOptions';
 import {
+    AFFILIATE_BRANDS,
     BRAND_DETAILS, BRANDS_CATALOGUE, BRANDS_SCREEN,
     CREATOR_TOOLS_RESULTS,
     CURRENT_PROJECT_DETAILS, FEED_DETAILS,
@@ -31,6 +32,7 @@ import BrandsCatalogueScreen from '../../screens/app/home/BrandsCatalogueScreen'
 import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
 import BrandsScreen from '../../screens/app/home/BrandsScreen';
 import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
+import AffiliateBrandsScreen from '../../screens/app/home/AffiliateBrandsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -111,6 +113,11 @@ const HomeStack = () => (
             name={PROJECTS_SCREEN}
             options={TRANSPARENT_HEADER}
             component={ProjectsScreen}
+        />
+        <Screen
+            name={AFFILIATE_BRANDS}
+            options={TRANSPARENT_HEADER}
+            component={AffiliateBrandsScreen}
         />
     </Navigator>
 );

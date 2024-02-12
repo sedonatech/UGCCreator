@@ -104,3 +104,5 @@ export const BRANDS_CATALOGUE = 'BrandsCatalogue';
 export const BRANDS_SCREEN = 'BrandsScreen';
 
 export const PROJECTS_SCREEN = 'ProjectsScreen';
+
+export const AFFILIATE_BRANDS = 'AffiliateBrands';
