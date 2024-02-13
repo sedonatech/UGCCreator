@@ -10,7 +10,7 @@ import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../Utils/getResponsiveSize';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ToggleCarousel from '../../../components/ToggleCarousel';
-import removeDuplictesFromAffliliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
+import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
 
 const AffiliateBrandsScreen = ({ navigation }) => {
     const { affiliate } = useFeatureFlags();
@@ -33,7 +33,7 @@ const AffiliateBrandsScreen = ({ navigation }) => {
 
         // add all category
         categories.unshift(allCategory);
-        return removeDuplictesFromAffliliateBrands(categories);
+        return removeDuplicatesFromAffiliateBrands(categories);
     }, [affiliateBrands]);
 
     const [selectedTab, setSelectedTab] = useState(brandCategories?.[0] ?? 'beauty');
