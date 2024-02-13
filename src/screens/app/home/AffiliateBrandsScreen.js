@@ -10,33 +10,40 @@ import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../Utils/getResponsiveSize';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ToggleCarousel from '../../../components/ToggleCarousel';
+import removeDuplictesFromAffliliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
 
 const AffiliateBrandsScreen = ({ navigation }) => {
     const { affiliate } = useFeatureFlags();
 
     const affiliateBrands = affiliate?.brands;
 
+    const allCategory = {
+        name: 'All',
+        value: 'all',
+    };
+
     const brandCategories = useMemo(() => {
         if (!affiliateBrands) {
             return [];
         }
-        const allCategories = affiliateBrands?.map(({ category }) => ({
+        const categories = affiliateBrands?.map(({ category }) => ({
             name: category,
             value: category,
         }));
 
-        return [...new Set(allCategories)];
+        // add all category
+        categories.unshift(allCategory);
+        return removeDuplictesFromAffliliateBrands(categories);
     }, [affiliateBrands]);
 
     const [selectedTab, setSelectedTab] = useState(brandCategories?.[0] ?? 'beauty');
 
     const brandsData = useMemo(() => {
         if (!affiliateBrands?.length) return [];
+        if (selectedTab?.value === 'all') return affiliateBrands;
 
         return affiliateBrands?.filter(({ category }) => category === selectedTab?.value);
     }, [selectedTab, affiliateBrands]);
-
-    console.log('brandsData', JSON.stringify(brandsData, null, 2));
 
     return (
         <ScrollView
@@ -68,7 +75,6 @@ const AffiliateBrandsScreen = ({ navigation }) => {
                 <TemplateBox>
                     {!!brandsData?.length && brandsData?.map(({ name, link }, index) => (
                         <TemplateBox
-                            key={`${name}-${index}`}
                             borderRadius={wp(16)}
                             backgroundColor={LIGHT_PURPLE}
                             pAll={wp(16)}
@@ -76,8 +82,9 @@ const AffiliateBrandsScreen = ({ navigation }) => {
                             style={styles.card}
                             width={WRAPPED_SCREEN_WIDTH}
                             height={wp(110)}
+                            mb={wp(16)}
                             center
-                            mt={wp(8)}
+                            key={`${name}-${index}`}
                         >
                             <TemplateText
                                 startCase
