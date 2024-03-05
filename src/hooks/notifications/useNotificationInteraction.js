@@ -20,10 +20,12 @@ const useNotificationInteraction = () => {
             navigation.reset({
                 index: 0,
                 routes: [{ name: APP_TABS }],
-
             });
         });
+    }, []);
 
+    useEffect(() => {
+        setLoading(true);
         // Check whether an initial notification is available
         messaging()
             .getInitialNotification()
@@ -33,13 +35,13 @@ const useNotificationInteraction = () => {
                         'Notification caused app to open from quit state:  ',
                         remoteMessage,
                     );
+                    setLoading(false);
                     navigation.reset({
                         index: 0,
                         routes: [{ name: APP_TABS }],
 
                     });
                 }
-                setLoading(false);
             });
     }, []);
 
