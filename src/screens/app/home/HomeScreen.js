@@ -101,12 +101,12 @@ const HomeScreen = ({ navigation }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}
-            refreshControl={(
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={handleRefresh}
-                />
-            )}
+            // refreshControl={(
+            //     <RefreshControl
+            //         refreshing={refreshing}
+            //         onRefresh={handleRefresh}
+            //     />
+            // )}
         >
 
             {!!profile?.userName && (
@@ -176,23 +176,25 @@ const HomeScreen = ({ navigation }) => {
                 </TemplateBox>
             )}
 
-            <TemplateBox mt={wp(20)} mb={wp(10)}>
-                <FeedCard
-                    image={{ uri: ugcGuidePdfFeed?.thumbnail }}
-                    title={ugcGuidePdfFeed?.title}
-                    shortDescription={ugcGuidePdfFeed?.description}
-                    subtitle={ugcGuidePdfFeed?.subtitle}
-                    showGradient
-                    cardWidth={SCREEN_WIDTH / 1.12}
-                    aspectRatio={1.5}
-                    icon={getIconByType(ugcGuidePdfFeed?.type)}
-                    onPress={() => navigation.navigate(FEED_DETAILS,
-                        {
-                            selectedFeed: ugcGuidePdfFeed,
-                        })}
-                    style={styles.card}
-                />
-            </TemplateBox>
+            {!!ugcGuidePdfFeed?.title && (
+                <TemplateBox mt={wp(20)} mb={wp(10)}>
+                    <FeedCard
+                        image={{ uri: ugcGuidePdfFeed?.thumbnail }}
+                        title={ugcGuidePdfFeed?.title}
+                        shortDescription={ugcGuidePdfFeed?.description}
+                        subtitle={ugcGuidePdfFeed?.subtitle}
+                        showGradient
+                        cardWidth={SCREEN_WIDTH / 1.12}
+                        aspectRatio={1.5}
+                        icon={getIconByType(ugcGuidePdfFeed?.type)}
+                        onPress={() => navigation.navigate(FEED_DETAILS,
+                            {
+                                selectedFeed: ugcGuidePdfFeed,
+                            })}
+                        style={styles.card}
+                    />
+                </TemplateBox>
+            )}
             <RecommendedBrandsCarousel style={styles.carousel} />
             <FeedsTab />
         </ScrollView>

@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { StyleSheet, FlatList } from 'react-native';
 import {
     HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH,
 } from '../../../theme/Layout';
@@ -45,65 +45,80 @@ const AffiliateBrandsScreen = ({ navigation }) => {
         return affiliateBrands?.filter(({ category }) => category === selectedTab?.value);
     }, [selectedTab, affiliateBrands]);
 
-    return (
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            showsVerticalScrollIndicator={false}
-            scrollEventThrottle={1}
+    const renderItem = ({ item }) => (
+        <TemplateBox
+            borderRadius={wp(16)}
+            backgroundColor={LIGHT_PURPLE}
+            pAll={wp(16)}
+            onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
+            style={styles.card}
+            width={WRAPPED_SCREEN_WIDTH}
+            height={wp(110)}
+            mb={wp(16)}
+            center
+            selfCenter
         >
-            <TemplateBox
-                mt={HEADER_MARGIN}
-                alignItems="center"
-                justifyContent="center"
+            <TemplateText
+                startCase
+                size={wp(16)}
+                semiBold
             >
-                <TemplateText
-                    size={18}
-                    startCase
-                    bold
-                    center
-                >
-                    Brand ambassador, influencer and affiliate programs
-                </TemplateText>
-                <TemplateBox selfCenter flex>
-                    <ToggleCarousel
-                        data={brandCategories}
-                        selectedTab={selectedTab}
-                        onChange={setSelectedTab}
-                    />
-                </TemplateBox>
-                <TemplateBox>
-                    {!!brandsData?.length && brandsData?.map(({ name, link }, index) => (
-                        <TemplateBox
-                            borderRadius={wp(16)}
-                            backgroundColor={LIGHT_PURPLE}
-                            pAll={wp(16)}
-                            onPress={() => navigation.navigate(WEBVIEW, { url: link })}
-                            style={styles.card}
-                            width={WRAPPED_SCREEN_WIDTH}
-                            height={wp(110)}
-                            mb={wp(16)}
+                {item?.name}
+            </TemplateText>
+            <TemplateBox height={wp(8)} />
+            <TemplateText
+                size={wp(12)}
+            >
+                Dive into descriptions, insights with just a tap.
+            </TemplateText>
+        </TemplateBox>
+    );
+
+    const [limit, setLimit] = useState(6);
+
+    useEffect(() => {
+        setLimit(6);
+    }, [selectedTab]);
+
+    return (
+        <TemplateBox flex backgroundColor={WHITE}>
+            <FlatList
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+                scrollEventThrottle={1}
+                ListHeaderComponent={(
+                    <TemplateBox backgroundColor={WHITE}>
+                        <TemplateText
+                            size={18}
+                            startCase
+                            bold
                             center
-                            key={`${name}-${index}`}
+                            alignSelf="center"
                         >
-                            <TemplateText
-                                startCase
-                                size={wp(16)}
-                                semiBold
-                            >
-                                {name}
-                            </TemplateText>
-                            <TemplateBox height={wp(8)} />
-                            <TemplateText
-                                size={wp(12)}
-                            >
-                                Dive into descriptions, insights with just a tap.
-                            </TemplateText>
+                            Brand ambassador, influencer and affiliate programs
+                        </TemplateText>
+                        <TemplateBox selfCenter flex>
+                            <ToggleCarousel
+                                data={brandCategories}
+                                selectedTab={selectedTab}
+                                onChange={setSelectedTab}
+                            />
                         </TemplateBox>
-                    ))}
-                </TemplateBox>
-            </TemplateBox>
-        </ScrollView>
+                        <TemplateBox />
+                    </TemplateBox>
+
+                )}
+                stickyHeaderIndices={[0]}
+                data={brandsData?.slice(0, limit)}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => `${item?.name}-${index}`}
+                initialNumToRender={6}
+                onEndReachedThreshold={0}
+                onEndReached={() => { setLimit((prevLimit) => prevLimit + 4); }}
+            />
+        </TemplateBox>
+
     );
 };
 
@@ -111,6 +126,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
+        marginTop: HEADER_MARGIN,
     },
     contentContainer: {
         flexGrow: 1,

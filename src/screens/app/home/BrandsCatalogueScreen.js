@@ -3,15 +3,15 @@ import {
     StyleSheet, View, FlatList, Alert,
 } from 'react-native';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
-import { WHITE } from '../../../theme/Colors';
-import { HEADER_MARGIN, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateText from '../../../components/TemplateText';
 import TemplateBox from '../../../components/TemplateBox';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
-import useHasSubscription from '../../subscriptions/useHasSubscription';
+// import useHasSubscription from '../../subscriptions/useHasSubscription';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import BrandsCatalogueCard from './BrandsCatalogueCard';
 
@@ -23,15 +23,15 @@ const BrandsCatalogueScreen = ({ navigation }) => {
     const userEmail = auth?.user?.email;
 
     // TODO: Investigate why this is not working
-    const { purchaserInfo, hasSubscription } = useHasSubscription();
+    // const { purchaserInfo, hasSubscription } = useHasSubscription();
 
-    const hasActiveSubscription = purchaserInfo?.activeSubscriptions?.length > 0;
+    // const hasActiveSubscription = purchaserInfo?.activeSubscriptions?.length > 0;
 
     const [selectedBrand, setSelectedBrand] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
 
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(6);
 
     const { unlockedUsers, activeList: activeCatalogueList } = features?.brandsCatalogue;
 
@@ -101,7 +101,8 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                 </TemplateBox>
 
                 <FlatList
-                    data={brandsCatalogue?.brands}
+                    showsVerticalScrollIndicator={false}
+                    data={brandsCatalogue?.brands?.slice(0, limit)}
                     getItemLayout={(data, index) => (
                         {length: 5, offset: 5 * index, index}
                     )}
@@ -147,7 +148,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: WHITE,
+        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     contentContainer: {
         flexGrow: 1,

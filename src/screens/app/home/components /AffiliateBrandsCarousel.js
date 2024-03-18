@@ -27,8 +27,8 @@ const AffiliateBrandsCarousel = ({ style }) => {
 
     const affiliateBrands = affiliate?.brands;
 
-    // get the first four brands to display with a useMemo
 
+    // get the first four brands to display with a useMemo
     const firstFourBrands = useMemo(() => {
         if (!affiliateBrands) return [];
 
@@ -73,7 +73,6 @@ const AffiliateBrandsCarousel = ({ style }) => {
                 renderItem={({ item }) => (
                     <TemplateBox
                         borderRadius={wp(16)}
-                        backgroundColor={LIGHT_PURPLE}
                         pAll={wp(16)}
                         onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                         style={styles.card}
@@ -122,6 +121,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         shadowOpacity: 0.2,
         elevation: ELEVATION,
+        backgroundColor: LIGHT_PURPLE,
     },
 });
 

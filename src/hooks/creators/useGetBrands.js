@@ -23,58 +23,58 @@ const useGetBrands = (brandId = '') => {
     // Fetch selected brand
 
     useEffect(() => {
-        const subscriber = selectedBrandRef
-            .onSnapshot((querySnapshot) => {
-                const brandData = querySnapshot?.data();
-                setSelectedBrand(brandData);
-            });
+        // const subscriber = selectedBrandRef
+        //     .onSnapshot((querySnapshot) => {
+        //         const brandData = querySnapshot?.data();
+        //         setSelectedBrand(brandData);
+        //     });
 
-        // Stop listening for updates when no longer required
-        return () => subscriber();
+        // // Stop listening for updates when no longer required
+        // return () => subscriber();
     }, []);
 
     useEffect(() => {
-        const subscriber = brandsRef
-            .onSnapshot((querySnapshot) => {
-                const brandsData = querySnapshot?.docs
-                    ?.map((doc) => ({
-                        id: doc?.id,
-                        ...doc?.data(),
-                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
-                    }));
-                setBrands(brandsData);
-            });
+        // const subscriber = brandsRef
+        //     .onSnapshot((querySnapshot) => {
+        //         const brandsData = querySnapshot?.docs
+        //             ?.map((doc) => ({
+        //                 id: doc?.id,
+        //                 ...doc?.data(),
+        //                 lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+        //             }));
+        //         setBrands(brandsData);
+        //     });
 
-        // Stop listening for updates when no longer required
-        return () => subscriber();
+        // // Stop listening for updates when no longer required
+        // return () => subscriber();
     }, []);
 
     useEffect(() => {
-        const subscriber = fcmBrandsRef
-            .onSnapshot((querySnapshot) => {
-                const brandsData = querySnapshot?.docs
-                    ?.map((doc) => ({
-                        id: doc?.id,
-                        ...doc?.data(),
-                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
-                    }));
-                setFcmBrands(brandsData);
-            });
+        // const subscriber = fcmBrandsRef
+        //     .onSnapshot((querySnapshot) => {
+        //         const brandsData = querySnapshot?.docs
+        //             ?.map((doc) => ({
+        //                 id: doc?.id,
+        //                 ...doc?.data(),
+        //                 lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+        //             }));
+        //         setFcmBrands(brandsData);
+        //     });
 
-        // Stop listening for updates when no longer required
-        return () => subscriber();
+        // // Stop listening for updates when no longer required
+        // return () => subscriber();
     }, []);
 
     const fetchBrands = async () => {
-        try {
-            const fetchedBrands = await brandsRef
-                .get()
-                .then((querySnapshot) => querySnapshot?.docs
-                    ?.map((doc) => doc?.data()));
-            setBrands(fetchedBrands);
-        } catch (e) {
-            console.log(e);
-        }
+        // try {
+        //     const fetchedBrands = await brandsRef
+        //         .get()
+        //         .then((querySnapshot) => querySnapshot?.docs
+        //             ?.map((doc) => doc?.data()));
+        //     setBrands(fetchedBrands);
+        // } catch (e) {
+        //     console.log(e);
+        // }
     };
 
     return {

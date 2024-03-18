@@ -22,7 +22,13 @@ const AppTabs = () => {
     useNotificationPermissions();
 
     return (
-        <Navigator screenOptions={ANIMATION_DISABLED_HEADER}>
+        <Navigator screenOptions={{
+            ...ANIMATION_DISABLED_HEADER,
+            lazy: true,
+            freezeOnBlur: true,
+            animationEnabled: false,
+        }}
+        >
             <Screen
                 name={HOME_STACK}
                 component={HomeStack}
@@ -54,6 +60,7 @@ const AppTabs = () => {
                     tabBarLabel: (props) => <TabLabel {...props}>Chats</TabLabel>,
                 }}
             />
+           
             <Screen
                 name={PROFILE_STACK}
                 component={ProfileStack}

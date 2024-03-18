@@ -12,7 +12,7 @@ import React, {
     useEffect, useMemo, useState, useRef, useLayoutEffect,
 } from 'react';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
-
+import firestore from '@react-native-firebase/firestore';
 import Fuse from 'fuse.js';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
@@ -38,20 +38,82 @@ import TemplateSafeAreaView from '../../components/TemplateSafeAreaView';
 import Button from '../../components/Button';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import ChatRoomCard from './ChatRoomCard';
+import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
+import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 
 const ChatRoomsScreen = ({ navigation }) => {
+  
     const { auth } = useAuthContext();
-
-    const { creators } = useGetCreators();
-
-    const { brands } = useGetBrands();
-
     const swipeRef = useRef(null);
 
     const isCreator = auth?.profile?.type === 'creator';
 
+    const userId = auth?.profile?.id;
+
+    const [chatRooms, setChatRooms] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [limit, setLimit] = useState(10);
+
+    const usersRef = firestore().collection('users');
+
+    const creatorRef = firestore().collection(CHAT_ROOMS)
+        .limit(limit).orderBy('createdAt', 'desc')
+        .where('creatorId', '==', userId);
+
+    const brandRef = firestore().collection(CHAT_ROOMS)
+        .limit(limit).orderBy('createdAt', 'desc')
+        .where('brandId', '==', userId);
+
+    const userChatRef = isCreator ? creatorRef : brandRef;
+
+    // listen for chat rooms
+    useEffect(() => {
+        const unsubscribe = userChatRef.onSnapshot(
+            (querySnapshot) => {
+                const newChatRooms = querySnapshot?.docs?.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setChatRooms(newChatRooms);
+            },
+            (error) => {
+                console.error('Error fetching chat rooms:', error);
+            },
+        );
+        return () => unsubscribe();
+    }, [isCreator, userId]);
+
+    // get chat user ids
+    const ids = useMemo(() => chatRooms?.reduce((acc, { creatorId, brandId }) => {
+        if (!isCreator && !!creatorId) acc.push(creatorId);
+        if (isCreator && !!brandId) acc.push(brandId);
+        return acc;
+    }, []), [chatRooms]);
+
+    useEffect(() => {
+        if (ids?.length) fetchUsers();
+    }, [ids]);
+
+    const fetchUsers = async () => {
+        try {
+            const fetchedUsers = await usersRef
+                .where('id', 'in', ids)
+                .get()
+                .then((querySnapshot) => querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+                    })));
+
+            setUsers(fetchedUsers);
+        } catch (e) {
+            console.error('Error fetching brands:', e);
+        }
+    };
+
     const {
-        chatRooms,
+        // chatRooms,
         fetchChatRooms,
         fetchingChatRooms,
         deleteChatRoom,
@@ -86,9 +148,9 @@ const ChatRoomsScreen = ({ navigation }) => {
         : chatRooms), [search, searchResults, chatRooms]);
 
     const getCreatorDetails = (selectedId) => {
-        if (isCreator && !creators?.length) return null;
+        if (isCreator && !users?.length) return null;
 
-        const creator = creators?.find(({ id }) => id === selectedId);
+        const creator = users?.find(({ id }) => id === selectedId);
         return {
             name: creator?.userName,
             image: creator?.image,
@@ -97,11 +159,11 @@ const ChatRoomsScreen = ({ navigation }) => {
     };
 
     const getBrandDetails = (selectedId) => {
-        if (!brands?.length && !isCreator) return null;
-        const brand = brands?.find(({ id }) => id === selectedId);
+        if (!users?.length && !isCreator) return null;
+        const brand = users?.find(({ id }) => id === selectedId);
 
         return {
-            name: brand?.userName,
+            name: brand?.userName || brand?.name,
             image: brand?.image,
             lastLoginTime: brand?.lastLoginTime,
         };
@@ -143,6 +205,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             ),
         });
     }, [navigation]);
+
 
     return (
         <KeyboardAvoidingView
@@ -239,6 +302,9 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 onPress={() => {
                                     navigation.navigate(CHATS, {
                                         chatRoomId: item?.id,
+                                        name: isCreator
+                                            ? getBrandDetails(item?.brandId)?.name
+                                            : getCreatorDetails(item?.creatorId)?.name,
                                     });
                                 }}
                                 id={item?.id}
@@ -254,7 +320,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                         justifyContent="center"
                         mh={WRAPPER_MARGIN}
                     >
-                        {(fetchingChatRooms || !creators?.length || !brands?.length)
+                        {(fetchingChatRooms)
                             ? <ActivityIndicator size="large" color={IOS_BLUE} />
                             : (
                                 <TemplateBox alignItems="center">

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ScrollView, StyleSheet,
 } from 'react-native';
-
+import firestore from '@react-native-firebase/firestore';
 import {
     lightOrange, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
@@ -16,7 +16,7 @@ import { DEFAULT_CREATOR_PAYPAL_LINK } from '../../../consts/content/Portfolio';
 import ContactSection from './components/ContactSection';
 import SampleWorkSection from './components/SampleWorkSection';
 import RatesSection from './components/RatesSection';
-import useGetCreators from '../../../hooks/brands/useGetCreators';
+// import useGetCreators from '../../../hooks/brands/useGetCreators';
 import TemplateBox from '../../../components/TemplateBox';
 import Button from '../../../components/Button';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
@@ -26,10 +26,32 @@ import CreatorDetailsHeader from './components/CreatorDetailsHeader';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import { UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
 
+const USERS_COLLECTION = 'users';
 const PortfolioScreen = ({ navigation, route }) => {
     const creatorId = route?.params?.creatorId;
+    const [selectedCreator, setSelectedCreator] = useState({});
 
-    const { selectedCreator } = useGetCreators(creatorId);
+    useEffect(() => {
+        if (creatorId)getProfile();
+    }, [creatorId]);
+
+    const getProfile = async () => {
+        try {
+            const documentSnapshot = await firestore().collection(USERS_COLLECTION).doc(creatorId).get();
+            if (documentSnapshot.exists) {
+                setSelectedCreator({
+                    id: documentSnapshot.id,
+                    ...documentSnapshot.data(),
+                });
+            } else {
+                console.log('Document does not exist');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    console.log({ selectedCreator });
 
     const { auth } = useAuthContext();
 

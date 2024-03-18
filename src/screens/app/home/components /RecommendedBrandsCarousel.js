@@ -114,6 +114,7 @@ const RecommendedBrandsCarousel = ({ style }) => {
                 )}
                 contentContainerStyle={styles.cardCarousel}
                 snapToInterval={SCREEN_WIDTH / 1.6}
+                keyExtractor={(item, index)=> `${item?.name}-${index}`}
             />
         </TemplateBox>
     );

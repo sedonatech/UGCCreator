@@ -34,7 +34,7 @@ const initialProjectState = {
     applications: [],
 };
 
-const useProjects = () => {
+const useProjects = (projectLimits = 5) => {
     const [projects, setProjects] = useState([]);
 
     const [allProjects, setAllProjects] = useState([]);
@@ -67,12 +67,16 @@ const useProjects = () => {
         setLoading(false);
     };
 
+    console.log('uui', auth().currentUser?.uid);
+
     const getProjects = async () => {
         try {
+            console.log('getProjects called');
             setLoading(true);
             const db = firestore();
             const { uid } = auth().currentUser;
-            const querySnapshot = await db.collection(PROJECTS_COLLECTION).where('brandId', '==', uid).get();
+            // const uid = 'QZJ14IZYjTZpjGUkaJUyqjLmhYG3';
+            const querySnapshot = await db.collection(PROJECTS_COLLECTION).where('brandId', '==', uid).limit(projectLimits).get();
             const projectsData = [];
             querySnapshot.forEach((doc) => {
                 projectsData.push({ id: doc?.id, ...doc?.data() });
@@ -81,8 +85,10 @@ const useProjects = () => {
             if (projectsData.length > 0) {
                 setProjects(projectsData?.filter(({ brandId }) => brandId === uid));
             }
+
+            console.log('brand pjs', { projectsData });
         } catch (error) {
-            console.log(error);
+            console.log('getProjects Error:', error);
         }
         setLoading(false);
     };
@@ -92,7 +98,7 @@ const useProjects = () => {
             console.log('getAllProjects called');
             setLoading(true);
             const db = firestore();
-            const querySnapshot = await db.collection(PROJECTS_COLLECTION).get();
+            const querySnapshot = await db.collection(PROJECTS_COLLECTION).limit(projectLimits).get();
             const projectsData = [];
             querySnapshot.forEach((doc) => {
                 projectsData.push({ id: doc?.id, ...doc?.data() });
@@ -112,7 +118,6 @@ const useProjects = () => {
             setLoading(true);
             const db = firestore();
             const doc = await db.collection(PROJECTS_COLLECTION).doc(id).get();
-
             if (doc.exists) {
                 setProject({ id: doc?.id, ...doc?.data() });
             }

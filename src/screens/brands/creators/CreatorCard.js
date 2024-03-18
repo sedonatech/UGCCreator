@@ -25,6 +25,7 @@ const CreatorCard = ({
     subtitleContainerWidth,
     lastLoginTime,
     height = wp(180),
+    ...extraProps
 }) => (
     <TemplateBox
         width={width}
@@ -35,6 +36,7 @@ const CreatorCard = ({
         mt={SPACE_XXLARGE}
         style={[style, { backgroundColor: WHITE }]}
         onPress={onPress}
+        {...extraProps}
     >
 
         <TemplateBox
