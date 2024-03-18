@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -13,19 +14,34 @@ import TemplateBox from '../../../../components/TemplateBox';
 import {
     BRAND_DETAILS, BRANDS_SCREEN,
 } from '../../../../navigation/ScreenNames';
-import useGetBrands from '../../../../hooks/creators/useGetBrands';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
+const USERS_COLLECTION = 'users';
 const BrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
-    const { brands } = useGetBrands();
+    const [brands, setBrands] = useState([]);
+
+    const brandsRef = firestore().collection(USERS_COLLECTION).limit(7)
+        .where('type', '==', 'brand');
+    const fetchBrands = async () => {
+        try {
+            const fetchedBrands = await brandsRef
+                .get()
+                .then((querySnapshot) => querySnapshot?.docs
+                    ?.map((doc) => doc?.data()));
+
+            setBrands(fetchedBrands);
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     const brandsData = useMemo(() => {
-        if (!brands) {
+        if (!brands?.length) {
             return [];
         }
-        return brands.map((brand) => ({
+        return brands?.map((brand) => ({
             id: brand?.id,
             name: brand?.name,
             image: brand?.image,
@@ -33,6 +49,11 @@ const BrandsCarousel = ({ style }) => {
             lastLoginTime: brand?.lastLoginTime,
         }));
     }, [brands]);
+
+    useEffect(() => {
+        fetchBrands();
+    },
+    []);
 
     return (
         <TemplateBox style={style}>
@@ -68,7 +89,7 @@ const BrandsCarousel = ({ style }) => {
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
-                snapToInterval={SCREEN_WIDTH / 1.6}
+                snapToInterval={(SCREEN_WIDTH / 1.6) + 20}
             />
         </TemplateBox>
     );
