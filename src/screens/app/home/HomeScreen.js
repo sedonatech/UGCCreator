@@ -33,6 +33,7 @@ import FeedsTab from '../explore/components/FeedsTab';
 import FeedCard from '../explore/components/FeedCard';
 import getIconByType from '../../../Utils/getIconByType';
 import AffiliateBrandsCarousel from './components /AffiliateBrandsCarousel';
+import BrandsCarousel from './components /BrandsCarousel';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -195,6 +196,7 @@ const HomeScreen = ({ navigation }) => {
             </TemplateBox>
             <RecommendedBrandsCarousel style={styles.carousel} />
             <FeedsTab />
+            <BrandsCarousel />
         </ScrollView>
     );
 };

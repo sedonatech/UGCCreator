@@ -21,8 +21,6 @@ const ChatsScreen = ({ route }) => {
         createdChatRoom,
     } = useChatsContext();
 
-    console.log('chatuser', chatUser);
-
     const isFocused = useIsFocused();
 
     const { auth } = useAuthContext();

@@ -7,6 +7,8 @@ import { CHATS_STACK } from '../../navigation/ScreenNames';
 
 export const CHAT_ROOMS = 'chatRooms';
 
+export const SUPPORT_CHAT_ROOM = 'supportChatRoom';
+
 const useChatRooms = () => {
     const navigation = useNavigation();
 
@@ -26,7 +28,7 @@ const useChatRooms = () => {
 
     const [chatRoomCreated, setChatRoomCreated] = useState(false);
 
-    const createChatRoom = async (name, creatorId, brandId, creatorFCMToken, brandFCMToken) => {
+    const createChatRoom = async (name, creatorId, brandId, creatorFCMToken, brandFCMToken, isSupport) => {
         try {
             setLoading(true);
             // Create a new chat room only if the user is available to receive messages
@@ -60,6 +62,7 @@ const useChatRooms = () => {
                 createdAt: firestore.FieldValue.serverTimestamp(),
                 creatorFCMToken,
                 brandFCMToken,
+                isSupport,
             });
 
             if (response) {

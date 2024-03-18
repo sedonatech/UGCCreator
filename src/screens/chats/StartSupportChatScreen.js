@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
     View, Text, StyleSheet, ScrollView,
 } from 'react-native';
@@ -11,9 +11,19 @@ import Button from '../../components/Button';
 import { SUPPORT_CHAT } from '../../navigation/ScreenNames';
 import TemplateText from '../../components/TemplateText';
 import TemplateBox from '../../components/TemplateBox';
+import useChatsContext from '../../hooks/chats/useChatsContext';
+import useAuthContext from '../../hooks/auth/useAuthContext';
 
 const StartSupportChatScreen = () => {
     const navigation = useNavigation();
+
+    const { auth } = useAuthContext();
+
+    const userProfile = auth?.profile;
+
+    const {
+        chatRooms,
+    } = useChatsContext();
 
     return (
         <ScrollView
