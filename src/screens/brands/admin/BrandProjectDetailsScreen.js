@@ -9,8 +9,6 @@ import firestore from '@react-native-firebase/firestore';
 
 import {
     BLACK_30,
-    BLACK_SECONDARY,
-    GREY_SECONDARY,
     WHITE, WHITE_40,
 } from '../../../theme/Colors';
 import {

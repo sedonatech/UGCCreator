@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import TemplateBox from '../../../../components/TemplateBox';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import {
+    RADIUS_SMALL,
 
     RADIUS_XSMALL,
     SCREEN_WIDTH, SPACE_MEDIUM, SPACE_XSMALL, WRAPPER_MARGIN,
@@ -16,7 +17,7 @@ import {
 import CurrentCreatorsCard from './CurrentCreatorsCard';
 import { CREATOR_PROJECT_STATUS } from '../../../../navigation/ScreenNames';
 import {
-    BLACK, DEEP_LAVENDER, WHITE,
+    BLACK, BRAND_BLUE, DEEP_LAVENDER, WHITE,
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 
@@ -25,7 +26,9 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
     const navigation = useNavigation();
 
     const [enrolledCreators, setEnrolledCreators] = useState([]);
+
     const [loading, setLoading] = useState(false);
+
     const [chunkIndex, setChunkIndex] = useState(0);
 
     useEffect(() => {
@@ -36,18 +39,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
     const getCreators = async () => {
         try {
             setLoading(true);
-            // const creators = [];
-            // for (const chunk of chunks) {
-            //     const querySnapshot = await firestore()
-            //         .collection(USERS_COLLECTION)
-            //         .where('id', 'in', chunk)
-            //         .get();
-            //     const chunkCreators = querySnapshot.docs.map((doc) => ({
-            //         id: doc.id,
-            //         ...doc.data(),
-            //     }));
-            //     creators.push(...chunkCreators);
-            // }
+
             const querySnapshot = await firestore()
                 .collection(USERS_COLLECTION)
                 .where('id', 'in', chunks?.[chunkIndex])
@@ -70,9 +62,9 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
             <TemplateBox
                 alignItems="center"
                 justifyContent="center"
-                borderRadius={RADIUS_XSMALL}
-                backgroundColor={DEEP_LAVENDER}
-                width={120}
+                borderRadius={RADIUS_SMALL}
+                backgroundColor={BLACK}
+                width={140}
                 height={30}
                 mv={SPACE_MEDIUM}
                 onPress={() => setChunkIndex((prev) => prev + 1)}
@@ -83,7 +75,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                     Show More
                 </TemplateText>
                 {
-                    loading && <ActivityIndicator color={WHITE} size="small" style={{ marginLeft: 4 }} />
+                    loading && <ActivityIndicator color={WHITE} size="small" style={styles.loading} />
                 }
             </TemplateBox>
         );
@@ -151,7 +143,7 @@ const styles = StyleSheet.create({
         marginBottom: WRAPPER_MARGIN * 2,
     },
     card: {
-        backgroundColor: DEEP_LAVENDER,
+        backgroundColor: BRAND_BLUE,
         marginVertical: SPACE_XSMALL,
     },
     brandsListContentContainer: {
