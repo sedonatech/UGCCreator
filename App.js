@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import codePush from 'react-native-code-push';
 import {
     StatusBar, View, StyleSheet,
 } from 'react-native';
@@ -73,8 +74,8 @@ const App = () => (
     </AuthProvider>
 );
 
-export default App;
+// export default App;
 // TODO: uncomment this when we are ready to use codepush
-// export default codePush({
-//     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-// })(App);
+export default codePush({
+    checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+})(App);
