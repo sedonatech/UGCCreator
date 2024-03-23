@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { isAndroid } from '../Utils/Platform';
 import {
     BLACK_10, BLACK_50,
+    WHITE,
 } from './Colors';
 
 export const ELEVATION = 9;
@@ -56,6 +57,7 @@ export const shadowStyle = StyleSheet.create({
 });
 
 export const SHADOW = (type, backgroundColor, restProps) => {
+    if (!backgroundColor || backgroundColor === 'transparent') return null
     const style = shadowStyle[type || 'default'];
     return {
         ...style,

@@ -133,27 +133,33 @@ const CurrentProjectCard: FC<Props> = ({
                 )}
                 <TemplateBox flex />
 
-                <TemplateBox row alignItems="center">
-                    <TemplateIcon color={BLACK} size={18} name="document-outline" />
-                    <TemplateText size={12} color={BLACK}>
-                        {documentCount!}
-                        {'  '}
-                    </TemplateText>
-                </TemplateBox>
-                <TemplateBox row alignItems="center">
-                    <TemplateIcon color={BLACK} size={18} name="chatbubble-ellipses-outline" />
-                    <TemplateText size={12} color={BLACK}>
-                        {notificationCount!}
-                        {'  '}
-                    </TemplateText>
-                </TemplateBox>
-                <TemplateBox row alignItems="center">
-                    <TemplateIcon color={BLACK} size={18} name="time-outline" />
-                    <TemplateText size={12} color={BLACK}>
-                        {`${daysLeft} days`}
-                        {'  '}
-                    </TemplateText>
-                </TemplateBox>
+                {documentCount >= 0 && (
+                    <TemplateBox row alignItems="center">
+                        <TemplateIcon color={BLACK} size={18} name="document-outline" />
+                        <TemplateText size={12} color={BLACK}>
+                            {documentCount!}
+                            {'  '}
+                        </TemplateText>
+                    </TemplateBox>
+                )}
+                {notificationCount >= 0 && (
+                    <TemplateBox row alignItems="center">
+                        <TemplateIcon color={BLACK} size={18} name="chatbubble-ellipses-outline" />
+                        <TemplateText size={12} color={BLACK}>
+                            {notificationCount!}
+                            {'  '}
+                        </TemplateText>
+                    </TemplateBox>
+                )}
+                {daysLeft >= 0 && (
+                    <TemplateBox row alignItems="center">
+                        <TemplateIcon color={BLACK} size={18} name="time-outline" />
+                        <TemplateText size={12} color={BLACK}>
+                            {`${daysLeft} days`}
+                            {'  '}
+                        </TemplateText>
+                    </TemplateBox>
+                )}
             </TemplateBox>
         </TemplateBox>
     );

@@ -135,14 +135,14 @@ const SettingsScreen = ({ navigation }) => {
             onPress: () => '',
             icon: 'information-circle-outline',
         },
-        {
-            title: 'Subscription',
-            description: 'Manage Subscription settings',
-            onPress: () => navigation.navigate(SUBSCRIPTION, {
-                fromSettings: true,
-            }),
-            icon: 'card-outline',
-        },
+        // {
+        //     title: 'Subscription',
+        //     description: 'Manage Subscription settings',
+        //     onPress: () => navigation.navigate(SUBSCRIPTION, {
+        //         fromSettings: true,
+        //     }),
+        //     icon: 'card-outline',
+        // },
         {
             title: 'Delete Account',
             description: 'Delete your account',

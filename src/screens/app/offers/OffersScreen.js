@@ -35,10 +35,17 @@ const getTagColor = (status) => {
     return BRAND_BLUE;
 };
 const OffersScreen = ({ navigation }) => {
+    // logic improvement
+    // fetch projects that the creatorId is the profile id
+    // get the project ids array
+    // fetch brands with those ids
+    // map data & update
+
     const { allProjects: projects } = useProjectsContext();
     const { brands } = useGetBrands();
     const { auth } = useAuthContext();
     const { profile } = auth;
+
 
     const enrolledProjects = useMemo(() => {
         if (!projects) return [];

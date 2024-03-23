@@ -276,32 +276,50 @@ RatesSection.propTypes = {
         monthlyPackage: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number || PropTypes.string,
+            price: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]),
         })),
         videoStartingRate: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number || PropTypes.string,
+            price: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]),
         })),
         photoStartingRate: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number || PropTypes.string,
+            price: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]),
         })),
         revision: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number || PropTypes.string,
+            price: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]),
         })),
         usageRights: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number || PropTypes.string,
+            price: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]),
         })),
         exclusiveRights: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
             description: PropTypes.string,
-            price: PropTypes.number || PropTypes.string,
+            price: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number,
+            ]),
         })),
     }),
 };

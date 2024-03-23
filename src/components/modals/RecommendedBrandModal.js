@@ -24,6 +24,7 @@ const RecommendedBrandModal = ({
     <ModalBase
         visible={visible}
         closeOnPress={onClose}
+        animationInTiming={250}
     >
         <TemplateBox
             borderRadius={10}

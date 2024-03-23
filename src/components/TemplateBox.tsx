@@ -3,7 +3,7 @@
 import React, { FC, memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { PRIMARY_GRADIENT } from '../theme/Colors';
+import { PRIMARY, PRIMARY_GRADIENT } from '../theme/Colors';
 import { SHADOW } from '../theme/Shadow';
 import { isAndroid } from '../Utils/Platform';
 import TemplateTouchable from './TemplateTouchable';

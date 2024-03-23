@@ -50,7 +50,6 @@ const FeedCard: FC<Props> = ({
         style={style}
         slideInDelay={slideInDelay}
         backgroundColor={!image ? BRAND_BLUE : TRANSPARENT}
-
     >
 
         {image && <BackgroundImage source={image} style={styles.image} width={SCREEN_WIDTH} />}
@@ -73,7 +72,7 @@ const FeedCard: FC<Props> = ({
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <TemplateIcon name={icon} size={20} color={BLACK} />
+                        <TemplateIcon name={icon || 'rocket-outline'} size={20} color={BLACK} />
                     </TemplateBox>
                 )}
             </TemplateBox>

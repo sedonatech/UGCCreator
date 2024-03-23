@@ -1,14 +1,14 @@
 import React, {
-    useEffect, useMemo, useRef, useState,
+    useEffect, useRef, useState,
 } from 'react';
 import {
     ActivityIndicator,
     FlatList, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, View,
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import Fuse from 'fuse.js';
+import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
-
 import { wp } from '../../../Utils/getResponsiveSize';
 import {
     HEADER_MARGIN,
@@ -21,8 +21,6 @@ import {
 import {
     BLACK, BRAND_BLUE, IOS_BLUE, WHITE, WHITE_96,
 } from '../../../theme/Colors';
-import useGetCreators from '../../../hooks/brands/useGetCreators';
-
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import { SHADOW } from '../../../theme/Shadow';
@@ -42,17 +40,91 @@ import { PROFILE } from '../../../navigation/ScreenNames';
 import TemplateSafeAreaView from '../../../components/TemplateSafeAreaView';
 import { isIOS } from '../../../Utils/Platform';
 import FilterPill from '../../app/explore/components/FilterPill';
+import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
+
+const USERS_COLLECTION = 'users';
+
+const renderItem = (item, navigation) => (
+    <CreatorCard
+        key={item?.id}
+        name={item?.userName}
+        imageUrl={item?.image}
+        shortDescription={item?.shortDescription
+                        || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+        location={item?.location?.country}
+        email={item?.email}
+        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+        height={wp(194)}
+        mt={SPACE_MEDIUM}
+    />
+);
 
 const CreatorProfilesScreen = ({ navigation }) => {
-    const { creators: creatorsData } = useGetCreators();
+    const [creatorsData, setCreatorsData] = useState([]);
+    const [limit, setLimit] = useState(10);
+    const [search, setSearch] = useState(null);
+    const [selectedFilters, setSelectedFilters] = useState([]);
+    const [filteredData, setFilteredCreators] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const searchActive = search?.includes('.com') || selectedFilters?.length;
+
+    const creatorsRef = firestore().collection(USERS_COLLECTION)
+        .where('type', '==', 'creator')
+        .limit(limit);
+
+    let filteredCreatorsRef = firestore().collection(USERS_COLLECTION)
+        .where('type', '==', 'creator')
+        .limit(limit);
+
+    if (search?.includes('.com')) filteredCreatorsRef = filteredCreatorsRef.where('email', '==', search?.toLowerCase());
+    if (selectedFilters?.length) {
+        const filterArray = selectedFilters.map((filter) => filter.toLowerCase());
+        filteredCreatorsRef = filteredCreatorsRef.where('categories', 'array-contains-any', filterArray);
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const querySnapshot = await creatorsRef.limit(limit).get();
+                const data = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    lastLoginTime: doc.data().lastLoginTime ? calculateLastLoginTime(doc.data().lastLoginTime) : 'days ago',
+                }));
+                setCreatorsData(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData(); // Call the fetch function
+    }, [limit]);
+
+    // search creator by email / selected filters
+    useEffect(() => {
+        if (!searchActive) {
+            setFilteredCreators([]);
+            setLimit(10);
+            return;
+        }
+        searchCreator();
+    }, [search, selectedFilters]);
+
+    const searchCreator = async () => {
+        setLoading(true);
+        setFilteredCreators([]);
+        const querySnapshot = await filteredCreatorsRef.get();
+        const data = querySnapshot?.docs
+            ?.map((doc) => ({
+                id: doc?.id,
+                ...doc?.data(),
+                lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+            }));
+        setLoading(false);
+        setFilteredCreators(data);
+    };
 
     const refRBSheet = useRef();
-
-    const [search, setSearch] = useState(null);
-
-    const [selectedFilters, setSelectedFilters] = useState([]);
-
-    const [searchResults, setSearchResults] = useState([]);
 
     const onProjectFilterPress = (value) => {
         if (selectedFilters.includes(value)) {
@@ -62,36 +134,12 @@ const CreatorProfilesScreen = ({ navigation }) => {
         }
     };
 
-    const filteredCreators = useMemo(() => {
-        if (!selectedFilters.length) return creatorsData;
-        // filter by selected filters
-        const filtered = creatorsData?.filter(
-            (creator) => selectedFilters.every((filter) => creator?.categories?.includes(filter)),
-        );
-        if (filtered?.length) return filtered;
-    }, [selectedFilters, creatorsData]);
+    const filteredSearchedCreators = searchActive ? filteredData : creatorsData;
 
-    const options = {
-        isCaseSensitive: false,
-        includeScore: true,
-        shouldSort: true,
-        minMatchCharLength: 1,
-        threshold: 0.4,
-        useExtendedSearch: true,
-        keys: [
-            'userName',
-        ],
-    };
-
+    const isFocused = useIsFocused();
     useEffect(() => {
-        if (!!search && filteredCreators?.length) {
-            const fuse = new Fuse(filteredCreators, options);
-            const results = fuse.search(search).map(({ item }) => item);
-            setSearchResults(results);
-        }
-    }, [search]);
-
-    const filteredSearchedCreators = search?.length ? searchResults : filteredCreators;
+        setLimit(10);
+    }, [isFocused]);
 
     return (
         <KeyboardAvoidingView
@@ -101,19 +149,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
             <StatusBar barStyle="dark-content" />
             <FlatList
                 data={filteredSearchedCreators?.sort((a, b) => b?.image?.localeCompare(a?.image))}
-                renderItem={({ item }) => (
-                    <CreatorCard
-                        key={item?.id}
-                        name={item?.userName}
-                        imageUrl={item?.image}
-                        shortDescription={item?.shortDescription
-                        || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-                        location={item?.location?.country}
-                        email={item?.email}
-                        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-                        height={wp(194)}
-                    />
-                )}
+                renderItem={({ item }) => renderItem(item, navigation)}
                 showVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}
                 ListHeaderComponent={(
@@ -127,9 +163,9 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 Find the perfect creator
                             </TemplateText>
                         </TemplateBox>
-                        <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
+                        <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
                             <TemplateTextInput
-                                placeholder="Search"
+                                placeholder="Search creators by their email"
                                 style={[styles.input, SHADOW('default', WHITE)]}
                                 value={search}
                                 onChangeText={(text) => setSearch(text)}
@@ -157,6 +193,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                             </TemplateBox>
                         )}
                     </>
+
                 )}
                 ListFooterComponent={(
                     <View style={styles.listFooter}>
@@ -172,13 +209,16 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         center
                         selfCenter
                     >
-                        {!creatorsData?.length && <ActivityIndicator size="large" color={IOS_BLUE} />}
-                        {(creatorsData?.length > 0 && !filteredSearchedCreators?.length)
+                        {(!creatorsData?.length || loading) && <ActivityIndicator size="large" color={IOS_BLUE} />}
+                        {((creatorsData?.length > 0 && !filteredSearchedCreators?.length)
+                        && !loading)
                             && <TemplateText semiBold>No results found</TemplateText>}
                     </TemplateBox>
                 )}
-                initialNumToRender={5}
+                initialNumToRender={10}
                 onEndReachedThreshold={0.5}
+                onEndReached={() => { setLimit((prevLimit) => prevLimit + 10); }}
+                removeClippedSubviews
             />
             <RBSheet
                 ref={refRBSheet}

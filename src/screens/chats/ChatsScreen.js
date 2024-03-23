@@ -1,46 +1,73 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-
 import { GiftedChat } from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
 import { useIsFocused } from '@react-navigation/native';
+import { format } from 'date-fns';
 import { LAVENDER, WHITE } from '../../theme/Colors';
-import useChatsContext from '../../hooks/chats/useChatsContext';
-import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
-import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
 import Blob from '../../../assets/svgs/Blob';
+import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
+import { DEFAULT_AVATAR } from '../../consts/content/Portfolio';
+import useNotifications from '../../hooks/notifications/useNotifications';
+import { CHATS } from '../../navigation/ScreenNames';
 
+const MESSAGES = 'messages';
 const ChatsScreen = ({ route }) => {
-    const {
-        chatRooms,
-        chatUser,
-        messages,
-        setMessages,
-        createdChatRoom,
-    } = useChatsContext();
+    const { sendNotification } = useNotifications();
 
     const isFocused = useIsFocused();
-
     const { auth } = useAuthContext();
+    const { profile } = auth;
 
-    const isCreator = auth?.profile?.type === 'creator';
+    const isCreator = profile?.type === 'creator';
 
     const chatRoomId = route.params?.chatRoomId;
+    const chatRoomName = route.params?.name;
 
-    const selectedChatRoom = useMemo(() => {
-        if (!chatRooms) return null;
+    const [chatRoom, setChatRoom] = useState(null);
+    const [messages, setMessages] = useState([]);
 
-        return chatRooms?.find((chat) => chat?.id === chatRoomId);
-    }, [chatRooms, chatRoomId, createdChatRoom]);
+    const chatUser = useMemo(() => {
+        if (profile) {
+            return {
+                _id: profile?.id,
+                name: profile?.userName || profile?.name || 'Brand',
+                avatar: profile?.image || profile?.avatar || DEFAULT_AVATAR,
+                type: profile?.type,
+            };
+        }
+        return null;
+    }, [profile]);
 
-    const { onSendMessage } = useChatMessages();
+    const fetchChatRoom = async () => {
+        try {
+            const response = await firestore()
+                .collection(CHAT_ROOMS)
+                .doc(chatRoomId)
+                .get();
+            if (response?.exists) {
+                setChatRoom({
+                    id: response.id,
+                    ...response.data(),
+                });
+            }
+        } catch (error) {
+            console.log('[FETCH CHAT ROOM ERROR]', error);
+        }
+    };
+
 
     useEffect(() => {
+        if (!chatRoomId) return null;
+        // fetch chat room
+        fetchChatRoom();
+
+        // listen for chatroom messages
         const unsubscribe = firestore()
             .collection(CHAT_ROOMS)
-            .doc(selectedChatRoom?.id)
+            .doc(chatRoomId)
             .collection(MESSAGES)
             .orderBy('createdAt', 'desc')
             .onSnapshot((snapshot) => {
@@ -52,14 +79,13 @@ const ChatsScreen = ({ route }) => {
             });
 
         return unsubscribe;
-    }, [selectedChatRoom?.id]);
+    }, [chatRoomId]);
 
     // Mark messages as read
-
     useEffect(() => {
         const unsubscribe = firestore()
             .collection(CHAT_ROOMS)
-            .doc(selectedChatRoom?.id)
+            .doc(chatRoomId)
             .collection(MESSAGES)
             .where('read', '==', false)
             .where('user._id', '!=', auth?.profile?.id)
@@ -70,7 +96,36 @@ const ChatsScreen = ({ route }) => {
             });
 
         return unsubscribe;
-    }, [selectedChatRoom?.id, isFocused, auth?.profile?.id]);
+    }, [chatRoomId, isFocused, profile?.id]);
+
+    const onSendMessage = async (newMessage, fcmToken) => {
+        try {
+            const formattedMessages = newMessage?.map((message) => ({
+                ...message,
+                read: false,
+                sender: message?.user?.name,
+                createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
+            }));
+            await firestore()
+                .collection(CHAT_ROOMS)
+                .doc(chatRoomId)
+                .collection(MESSAGES)
+                .add(formattedMessages[0]);
+
+            // send notification
+            await sendNotification(
+                fcmToken,
+                `New message from ${chatRoomName || 'UGCC'}`,
+                formattedMessages[0]?.text,
+                {
+                    type: 'chats',
+                    screen: CHATS,
+                },
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <View
@@ -85,10 +140,9 @@ const ChatsScreen = ({ route }) => {
             <GiftedChat
                 messages={messages}
                 onSend={(newMessages) => onSendMessage(newMessages,
-                    selectedChatRoom,
                     isCreator
-                        ? selectedChatRoom?.brandFCMToken
-                        : selectedChatRoom?.creatorFCMToken)}
+                        ? chatRoom?.brandFCMToken
+                        : chatRoom?.creatorFCMToken)}
                 user={chatUser}
                 placeholder="Type your message here..."
                 alwaysShowSend

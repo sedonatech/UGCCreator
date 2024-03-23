@@ -14,6 +14,7 @@ export const TRANSPARENT_NO_LOGO_HEADER = {
     headerBackground: () => <View style={styles.header} />,
     animationEnabled: true,
     headerMode: 'screen',
+    freezeOnBlur: true,
 };
 
 export const TRANSPARENT_HEADER = {
@@ -25,6 +26,7 @@ export const TRANSPARENT_HEADER = {
     headerBackground: () => <View style={styles.header} />,
     animationEnabled: true,
     headerMode: 'screen',
+    freezeOnBlur: true,
 };
 
 export const TRANSPARENT_HEADER_NO_LOGO = {
@@ -37,6 +39,7 @@ export const TRANSPARENT_HEADER_NO_LOGO = {
     headerBackground: () => <View style={styles.header} />,
     animationEnabled: true,
     headerMode: 'screen',
+    freezeOnBlur: true,
 };
 export const SWITCH = {
     animationEnabled: false,
