@@ -34,23 +34,23 @@ const SupportChatScreen = () => {
                 <Blob color={LAVENDER} bottom />
                 <Blob center />
             </TemplateBox>
-            <GiftedChat
-                messages={supportMessages}
-                onSend={(newMessages) => onSendSupportMessage(newMessages)}
-                user={chatUser}
-                placeholder="Type your message here..."
-                alwaysShowSend
-                showUserAvatar
-                isTyping
-                loadEarlier
-                onLoadEarlier={() => getSupportMessages()}
-                isLoadingEarlier={false}
-                infiniteScroll
-                renderUsernameOnMessage
-                scrollToBottom
-                sent
-                received
-            />
+            {/* <GiftedChat */}
+            {/*    messages={supportMessages} */}
+            {/*    onSend={(newMessages) => onSendSupportMessage(newMessages)} */}
+            {/*    user={chatUser} */}
+            {/*    placeholder="Type your message here..." */}
+            {/*    alwaysShowSend */}
+            {/*    showUserAvatar */}
+            {/*    isTyping */}
+            {/*    loadEarlier */}
+            {/*    onLoadEarlier={() => getSupportMessages()} */}
+            {/*    isLoadingEarlier={false} */}
+            {/*    infiniteScroll */}
+            {/*    renderUsernameOnMessage */}
+            {/*    scrollToBottom */}
+            {/*    sent */}
+            {/*    received */}
+            {/* /> */}
         </View>
     );
 };

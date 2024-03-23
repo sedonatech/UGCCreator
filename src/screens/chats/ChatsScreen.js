@@ -18,15 +18,19 @@ const ChatsScreen = ({ route }) => {
     const { sendNotification } = useNotifications();
 
     const isFocused = useIsFocused();
+
     const { auth } = useAuthContext();
+
     const { profile } = auth;
 
     const isCreator = profile?.type === 'creator';
 
     const chatRoomId = route.params?.chatRoomId;
+
     const chatRoomName = route.params?.name;
 
     const [chatRoom, setChatRoom] = useState(null);
+
     const [messages, setMessages] = useState([]);
 
     const chatUser = useMemo(() => {
@@ -57,7 +61,6 @@ const ChatsScreen = ({ route }) => {
             console.log('[FETCH CHAT ROOM ERROR]', error);
         }
     };
-
 
     useEffect(() => {
         if (!chatRoomId) return null;
@@ -115,7 +118,7 @@ const ChatsScreen = ({ route }) => {
             // send notification
             await sendNotification(
                 fcmToken,
-                `New message from ${chatRoomName || 'UGCC'}`,
+                `New message from ${chatRoomName || 'UGCCreatorapp'}`,
                 formattedMessages[0]?.text,
                 {
                     type: 'chats',

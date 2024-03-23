@@ -42,17 +42,25 @@ import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 
 const ChatRoomsScreen = ({ navigation }) => {
-  
     const { auth } = useAuthContext();
+
     const swipeRef = useRef(null);
 
     const isCreator = auth?.profile?.type === 'creator';
 
     const userId = auth?.profile?.id;
 
+    const userName = isCreator ? auth?.profile?.userName : auth?.profile?.name;
+
+    const userFCMToken = auth?.profile?.fcmToken;
+
     const [chatRooms, setChatRooms] = useState([]);
+
     const [users, setUsers] = useState([]);
+
     const [limit, setLimit] = useState(10);
+
+    const { createChatRoom } = useChatsContext();
 
     const usersRef = firestore().collection('users');
 
@@ -198,7 +206,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             headerRight: () => (
                 <HeaderIconButton
                     title="Contact US"
-                    onPress={() => navigation.navigate(START_SUPPOR_CHAT)}
+                    onPress={handleOnPressSupportChat}
                     backDropColor={LIGHT_GREEN}
                     mr={WRAPPER_MARGIN}
                 />
@@ -206,6 +214,31 @@ const ChatRoomsScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
+    const chatRoomName = ` ${userName}: SUPPORT CHAT`;
+
+    const brandId = '';
+
+    const brandFCMToken = '';
+
+    const handleOnPressSupportChat = async () => {
+        try {
+            const chatRoom = await createChatRoom(
+                chatRoomName,
+                userId,
+                brandId,
+                userFCMToken,
+                brandFCMToken,
+            );
+            setTimeout(() => {
+                Alert.alert('Chat room created successfully');
+                navigation.navigate(CHATS, {
+                    chatRoomId: chatRoom?.id,
+                });
+            }, 1200);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <KeyboardAvoidingView
