@@ -24,7 +24,10 @@ const { Navigator, Screen } = Stack;
 const AuthStack = () => (
     <Navigator
         initialRouteName={WELCOME}
-        screenOptions={SWITCH}
+        screenOptions={{
+            ...SWITCH,
+            freezeOnBlur: true,
+        }}
     >
         <Screen
             name={WELCOME}

@@ -24,6 +24,7 @@ const CreatorCard = ({
     textContainerWidth,
     subtitleContainerWidth,
     lastLoginTime,
+    ctaText = 'View Profile',
     height = wp(180),
     ...extraProps
 }) => (
@@ -111,7 +112,7 @@ const CreatorCard = ({
                 alignSelf="flex-end"
                 mb={wp(12)}
             >
-                <TemplateText color={WHITE} size={wp(10)} bold>View Portfolio</TemplateText>
+                <TemplateText color={WHITE} size={wp(10)} bold>{ctaText}</TemplateText>
             </TemplateBox>
         </TemplateBox>
     </TemplateBox>
@@ -131,6 +132,7 @@ CreatorCard.propTypes = {
     subtitleContainerWidth: PropTypes.number,
     lastLoginTime: PropTypes.string,
     height: PropTypes.number,
+    ctaText: PropTypes.string,
 };
 
 CreatorCard.defaultProps = {
@@ -146,6 +148,7 @@ CreatorCard.defaultProps = {
     subtitleContainerWidth: wp(100),
     lastLoginTime: 'days ago',
     height: wp(180),
+    ctaText: 'View Profile',
 };
 
 const styles = StyleSheet.create({

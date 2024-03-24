@@ -137,6 +137,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
     const filteredSearchedCreators = searchActive ? filteredData : creatorsData;
 
     const isFocused = useIsFocused();
+
     useEffect(() => {
         setLimit(10);
     }, [isFocused]);
