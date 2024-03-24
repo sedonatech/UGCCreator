@@ -25,7 +25,7 @@ const BrandsCarousel = ({ style }) => {
         if (!brands) {
             return [];
         }
-        return brands.map((brand) => ({
+        return brands?.map((brand) => ({
             id: brand?.id,
             name: brand?.name,
             image: brand?.image,

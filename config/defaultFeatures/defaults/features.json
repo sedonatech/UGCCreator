@@ -11,5 +11,6 @@
     "activeList": 10
   },
   "showReviewPrompt": false,
-  "showRegisteredBrands": false
+  "showRegisteredBrands": false,
+  "showBrandsCarousel": false
 }
