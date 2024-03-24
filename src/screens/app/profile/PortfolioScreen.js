@@ -16,7 +16,6 @@ import { DEFAULT_CREATOR_PAYPAL_LINK } from '../../../consts/content/Portfolio';
 import ContactSection from './components/ContactSection';
 import SampleWorkSection from './components/SampleWorkSection';
 import RatesSection from './components/RatesSection';
-// import useGetCreators from '../../../hooks/brands/useGetCreators';
 import TemplateBox from '../../../components/TemplateBox';
 import Button from '../../../components/Button';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
@@ -50,8 +49,6 @@ const PortfolioScreen = ({ navigation, route }) => {
             console.error(error);
         }
     };
-
-    console.log({ selectedCreator });
 
     const { auth } = useAuthContext();
 
