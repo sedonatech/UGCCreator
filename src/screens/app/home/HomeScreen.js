@@ -198,7 +198,7 @@ const HomeScreen = ({ navigation }) => {
             )}
             <RecommendedBrandsCarousel style={styles.carousel} />
             <FeedsTab />
-            {features.showBrandsCarousel && (
+            {features?.showBrandsCarousel && (
                 <BrandsCarousel />
             )}
         </ScrollView>

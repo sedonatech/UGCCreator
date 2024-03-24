@@ -40,9 +40,14 @@ import HeaderIconButton from '../../components/header/HeaderButton';
 import ChatRoomCard from './ChatRoomCard';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
+import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
+
+    const { features } = useFeatureFlags();
+
+    const showSupportChat = features?.showSupportChat;
 
     const swipeRef = useRef(null);
 
@@ -202,17 +207,19 @@ const ChatRoomsScreen = ({ navigation }) => {
     };
 
     useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <HeaderIconButton
-                    title="Contact US"
-                    onPress={handleOnPressSupportChat}
-                    backDropColor={LIGHT_GREEN}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
-        });
-    }, [navigation]);
+        if (showSupportChat) {
+            navigation.setOptions({
+                headerRight: () => (
+                    <HeaderIconButton
+                        title="Contact US"
+                        onPress={handleOnPressSupportChat}
+                        backDropColor={LIGHT_GREEN}
+                        mr={WRAPPER_MARGIN}
+                    />
+                ),
+            });
+        }
+    }, [navigation, showSupportChat]);
 
     const chatRoomName = ` ${userName}: SUPPORT CHAT`;
 
@@ -229,12 +236,6 @@ const ChatRoomsScreen = ({ navigation }) => {
                 userFCMToken,
                 brandFCMToken,
             );
-            setTimeout(() => {
-                Alert.alert('Chat room created successfully');
-                navigation.navigate(CHATS, {
-                    chatRoomId: chatRoom?.id,
-                });
-            }, 1200);
         } catch (error) {
             console.log(error);
         }

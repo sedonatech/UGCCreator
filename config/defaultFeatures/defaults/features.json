@@ -2,6 +2,7 @@
   "brand": true,
   "creators": false,
   "openAIScreen": true,
+  "showReviewPrompt": false,
   "subscription": {
     "overrideSubscription": true,
     "overrideEntitlements": true
@@ -12,5 +13,6 @@
   },
   "showReviewPrompt": false,
   "showRegisteredBrands": false,
-  "showBrandsCarousel": false
+  "showBrandsCarousel": false,
+  "showSupportChat": false
 }
