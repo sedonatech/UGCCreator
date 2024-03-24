@@ -28,6 +28,7 @@ import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
 import TemplateText from '../../../components/TemplateText';
 import useGetAppVersion from '../../../Utils/useGetAppVersion';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 
 const BrandSettingsScreen = ({ navigation }) => {
     const isFocused = useIsFocused();
@@ -37,6 +38,12 @@ const BrandSettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();
 
     const { nativeAppVersion } = useGetAppVersion();
+
+    const { support } = useFeatureFlags();
+
+    console.log({ userEmail });
+
+    console.log({ isSupportChatAdmin });
 
     const {
         checkApplicationPermissions,
@@ -53,6 +60,11 @@ const BrandSettingsScreen = ({ navigation }) => {
         profile,
         user,
     } = auth;
+
+    const userEmail = profile?.email;
+
+    // Check if the  user's  email is in the support emails
+    const isSupportChatAdmin = support?.emails?.includes(userEmail);
 
     useEffect(() => {
         if (isFocused) {
@@ -182,6 +194,16 @@ const BrandSettingsScreen = ({ navigation }) => {
                 mt={profileCompleteRatio < 1 ? 0 : (WRAPPER_MARGIN * 8)}
 
             >
+                {
+                    isSupportChatAdmin && (
+                        <SettingsRow
+                            title="Support Chat"
+                            subtitle="Chat with support"
+                            onPress={() => 'TO BE ADDED TO NEXT RELEASE'}
+                            icon="chatbubble-ellipses-outline"
+                        />
+                    )
+                }
                 {settings.map(({
                     title, description, onPress, icon,
                 }) => (

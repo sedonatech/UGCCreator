@@ -22,21 +22,13 @@ const BrandsCatalogueScreen = ({ navigation }) => {
 
     const userEmail = auth?.user?.email;
 
-    // TODO: Investigate why this is not working
-    // const { purchaserInfo, hasSubscription } = useHasSubscription();
-
-    // const hasActiveSubscription = purchaserInfo?.activeSubscriptions?.length > 0;
-
     const [selectedBrand, setSelectedBrand] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
 
     const [limit, setLimit] = useState(6);
 
-    const { unlockedUsers, activeList: activeCatalogueList } = features?.brandsCatalogue;
-
-    // Check if the  user's  email is in the unlockedUsers list
-    const isUnlockedUser = unlockedUsers?.includes(userEmail);
+    const { activeList: activeCatalogueList } = features?.brandsCatalogue;
 
     const title = brandsCatalogue?.title || 'Brands Catalogue';
 
@@ -52,19 +44,14 @@ const BrandsCatalogueScreen = ({ navigation }) => {
         }
     }, [mailEvent]);
 
-    const renderItem = ({ item, index }) => {
-        const isActive = index <= activeCatalogueList;
-        return (
-            <BrandsCatalogueCard
-                navigation={navigation}
-                isActive={isActive}
-                isUnlockedUser={isUnlockedUser}
-                item={item}
-                setModalVisible={setModalVisible}
-                setSelectedBrand={setSelectedBrand}
-            />
-        );
-    };
+    const renderItem = ({ item, index }) => (
+        <BrandsCatalogueCard
+            navigation={navigation}
+            item={item}
+            setModalVisible={setModalVisible}
+            setSelectedBrand={setSelectedBrand}
+        />
+    );
 
     const keyExtractor = (item) => item?.['Brand Name'];
 
@@ -104,7 +91,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                     data={brandsCatalogue?.brands?.slice(0, limit)}
                     getItemLayout={(data, index) => (
-                        {length: 5, offset: 5 * index, index}
+                        { length: 5, offset: 5 * index, index }
                     )}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}

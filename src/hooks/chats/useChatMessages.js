@@ -97,19 +97,17 @@ const useChatMessages = (selectedChatRoomId) => {
                     ...doc?.data(),
                     id: doc?.id,
                 }));
-                setUnreadMessagesCount(newMessages?.length)
+                setUnreadMessagesCount(newMessages?.length);
                 // Set new unread messages
                 // setUnreadMessagesCount(
                 //     newMessages?.filter((message) => !message?.read)?.length,
                 // );
 
-                console.log(JSON.stringify(newMessages, null, 2))
+                console.log(JSON.stringify(newMessages, null, 2));
             });
 
         return unsubscribe;
     }, [selectedChatRoomId]);
-
-    console.log(auth?.profile?.id)
 
     return {
         onSendMessage,

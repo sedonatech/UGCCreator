@@ -34,19 +34,19 @@ const useGetBrands = (brandId = '') => {
     }, []);
 
     useEffect(() => {
-        // const subscriber = brandsRef
-        //     .onSnapshot((querySnapshot) => {
-        //         const brandsData = querySnapshot?.docs
-        //             ?.map((doc) => ({
-        //                 id: doc?.id,
-        //                 ...doc?.data(),
-        //                 lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
-        //             }));
-        //         setBrands(brandsData);
-        //     });
+        const subscriber = brandsRef
+            .onSnapshot((querySnapshot) => {
+                const brandsData = querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+                    }));
+                setBrands(brandsData);
+            });
 
-        // // Stop listening for updates when no longer required
-        // return () => subscriber();
+        // Stop listening for updates when no longer required
+        return () => subscriber();
     }, []);
 
     useEffect(() => {
@@ -66,15 +66,15 @@ const useGetBrands = (brandId = '') => {
     }, []);
 
     const fetchBrands = async () => {
-        // try {
-        //     const fetchedBrands = await brandsRef
-        //         .get()
-        //         .then((querySnapshot) => querySnapshot?.docs
-        //             ?.map((doc) => doc?.data()));
-        //     setBrands(fetchedBrands);
-        // } catch (e) {
-        //     console.log(e);
-        // }
+        try {
+            const fetchedBrands = await brandsRef
+                .get()
+                .then((querySnapshot) => querySnapshot?.docs
+                    ?.map((doc) => doc?.data()));
+            setBrands(fetchedBrands);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return {

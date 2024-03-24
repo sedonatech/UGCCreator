@@ -40,19 +40,32 @@ import HeaderIconButton from '../../components/header/HeaderButton';
 import ChatRoomCard from './ChatRoomCard';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
+import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
 const ChatRoomsScreen = ({ navigation }) => {
-  
     const { auth } = useAuthContext();
+
+    const { features } = useFeatureFlags();
+
+    const showSupportChat = features?.showSupportChat;
+
     const swipeRef = useRef(null);
 
     const isCreator = auth?.profile?.type === 'creator';
 
     const userId = auth?.profile?.id;
 
+    const userName = isCreator ? auth?.profile?.userName : auth?.profile?.name;
+
+    const userFCMToken = auth?.profile?.fcmToken;
+
     const [chatRooms, setChatRooms] = useState([]);
+
     const [users, setUsers] = useState([]);
+
     const [limit, setLimit] = useState(10);
+
+    const { createChatRoom } = useChatsContext();
 
     const usersRef = firestore().collection('users');
 
@@ -194,18 +207,39 @@ const ChatRoomsScreen = ({ navigation }) => {
     };
 
     useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <HeaderIconButton
-                    title="Contact US"
-                    onPress={() => navigation.navigate(START_SUPPOR_CHAT)}
-                    backDropColor={LIGHT_GREEN}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
-        });
-    }, [navigation]);
+        if (showSupportChat) {
+            navigation.setOptions({
+                headerRight: () => (
+                    <HeaderIconButton
+                        title="Contact US"
+                        onPress={handleOnPressSupportChat}
+                        backDropColor={LIGHT_GREEN}
+                        mr={WRAPPER_MARGIN}
+                    />
+                ),
+            });
+        }
+    }, [navigation, showSupportChat]);
 
+    const chatRoomName = ` ${userName}: SUPPORT CHAT`;
+
+    const brandId = '';
+
+    const brandFCMToken = '';
+
+    const handleOnPressSupportChat = async () => {
+        try {
+            const chatRoom = await createChatRoom(
+                chatRoomName,
+                userId,
+                brandId,
+                userFCMToken,
+                brandFCMToken,
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <KeyboardAvoidingView
