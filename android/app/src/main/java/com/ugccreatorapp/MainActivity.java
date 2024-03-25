@@ -1,6 +1,5 @@
 package com.ugccreatorapp;
 import android.os.Bundle;
-import android.view.WindowManager;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
@@ -12,9 +11,9 @@ public class MainActivity extends ReactActivity {
 
  @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(null);
         SplashScreen.show(this);  // here
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        super.onCreate(null);
+
     }
 
   /**

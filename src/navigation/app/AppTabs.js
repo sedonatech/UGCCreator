@@ -2,13 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
     CHATS_STACK,
-    EXPLORE_STACK,
     HOME_STACK,
     OFFERS_STACK,
     PROFILE_STACK,
 } from '../ScreenNames';
 import HomeStack from './HomeStack';
-import ExploreStack from './ExploreStack';
 import OffersStack from './OffersStack';
 import ProfileStack from './ProfileStack';
 import TabButton from '../../components/tabs/TabButton';
@@ -24,7 +22,13 @@ const AppTabs = () => {
     useNotificationPermissions();
 
     return (
-        <Navigator screenOptions={ANIMATION_DISABLED_HEADER}>
+        <Navigator screenOptions={{
+            ...ANIMATION_DISABLED_HEADER,
+            lazy: true,
+            freezeOnBlur: true,
+            animationEnabled: false,
+        }}
+        >
             <Screen
                 name={HOME_STACK}
                 component={HomeStack}
@@ -56,6 +60,7 @@ const AppTabs = () => {
                     tabBarLabel: (props) => <TabLabel {...props}>Chats</TabLabel>,
                 }}
             />
+           
             <Screen
                 name={PROFILE_STACK}
                 component={ProfileStack}

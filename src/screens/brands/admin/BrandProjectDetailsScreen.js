@@ -1,10 +1,11 @@
 import React, {
+    useEffect,
     useLayoutEffect, useMemo, useState,
 } from 'react';
 import {
-    Animated,
     ScrollView, StyleSheet,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
 import {
     BLACK_30,
@@ -13,14 +14,13 @@ import {
 import {
     SCREEN_HEIGHT,
     WRAPPER_MARGIN,
-    SCREEN_WIDTH
+    SCREEN_WIDTH,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import BrandProjectDescriptionSection from './components/BrandProjectDescriptionSection';
 import EnrolledCreators from './components/EnrolledCreators';
@@ -34,24 +34,33 @@ export const ENROLLED_CREATORS = {
     value: 'enrolledCreators',
 };
 
+const PROJECTS_COLLECTION = 'projects';
 const TAB_DATA = [DETAILS_TAB, ENROLLED_CREATORS];
 
 const BrandProjectDetailsScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
+    const [selectedProject, setSelectedProject] = useState(null);
 
-    const { projects } = useProjectsContext();
+    useEffect(() => {
+        if (projectId) getProject(projectId);
+    }, [projectId]);
 
-    const [selectedTab, setSelectedTab] = useState(TAB_DATA[1]);
+    const getProject = async (id) => {
+        try {
+            const db = firestore();
+            const doc = await db.collection(PROJECTS_COLLECTION).doc(id).get();
+            if (doc.exists) {
+                setSelectedProject({ id: doc?.id, ...doc?.data() });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    const selectedProject = useMemo(() => {
-        if (!projects) return null;
-
-        return projects?.find(({ id }) => id === projectId);
-    }, [projectId, projects]);
+    const [selectedTab, setSelectedTab] = useState(TAB_DATA[0]);
 
     const enrolledCreatorIds = useMemo(() => {
         if (!selectedProject) return null;
-
         return selectedProject?.applications?.map(({ creatorId }) => creatorId);
     }, [selectedProject]);
 
@@ -68,44 +77,18 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    const pan = React.useRef(new Animated.ValueXY()).current;
-
-    if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
+    if (!selectedProject) return <LoadingOverlay message="Fetching project details..." backgroundColor={WHITE} />;
 
     return (
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
-                {
-                    useNativeDriver: false,
-                },
-            )}
         >
             <TemplateBox
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={[BLACK_30, BLACK_30]}
-                style={{
-                    transform: [
-                        {
-                            translateY: pan.y.interpolate({
-                                inputRange: [-1000, 0],
-                                outputRange: [-200, 0],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                        {
-                            scale: pan.y.interpolate({
-                                inputRange: [-3000, 0],
-                                outputRange: [20, 1],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                    ],
-                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage
@@ -146,10 +129,10 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                 />
             </TemplateBox>
 
-            {selectedTab === DETAILS_TAB && selectedProject && (
+            {selectedTab?.value === DETAILS_TAB?.value && selectedProject && (
                 <BrandProjectDescriptionSection selectedProject={selectedProject} />
             )}
-            {selectedTab === ENROLLED_CREATORS && enrolledCreatorIds && (
+            {selectedTab?.value === ENROLLED_CREATORS?.value && enrolledCreatorIds && (
                 <EnrolledCreators
                     creatorIds={enrolledCreatorIds}
                     projectId={projectId}

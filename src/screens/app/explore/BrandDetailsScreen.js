@@ -1,8 +1,7 @@
 import React, {
-    useLayoutEffect, useState, useRef,
+    useLayoutEffect, useState,
 } from 'react';
 import {
-    Animated,
     ScrollView, StyleSheet,
 } from 'react-native';
 
@@ -56,8 +55,6 @@ const BrandDetailsScreen = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    const pan = useRef(new Animated.ValueXY()).current;
-
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
 
     return (
@@ -66,37 +63,12 @@ const BrandDetailsScreen = ({ route, navigation }) => {
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
-                {
-                    useNativeDriver: false,
-                },
-            )}
             contentContainerStyle={styles.contentContainer}
         >
             <TemplateBox
-                animated
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={DEFAULT_GRADIENT}
-                style={{
-                    transform: [
-                        {
-                            translateY: pan.y.interpolate({
-                                inputRange: [-1000, 0],
-                                outputRange: [-200, 0],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                        {
-                            scale: pan.y.interpolate({
-                                inputRange: [-3000, 0],
-                                outputRange: [20, 1],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                    ],
-                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage

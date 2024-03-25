@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import TemplateText from '../../../components/TemplateText';
 import {
     HEADER_MARGIN,
-    IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN,
+    IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import {
     LAVENDER, TRANSPARENT, WHITE,

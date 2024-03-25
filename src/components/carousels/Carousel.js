@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { ScrollView, StyleSheet, Animated } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 const Carousel = forwardRef(
@@ -10,7 +10,6 @@ const Carousel = forwardRef(
             cardMargin,
             style,
             contentContainerStyle,
-            animated,
             onScrollToNext,
             ...rest
         },
@@ -18,10 +17,8 @@ const Carousel = forwardRef(
     ) => {
         const elementWidth = cardWidth + cardMargin;
 
-        const Component = animated ? Animated.ScrollView : ScrollView;
-
         return (
-            <Component
+            <ScrollView
                 horizontal
                 decelerationRate={0}
                 snapToInterval={elementWidth || 0}
@@ -34,7 +31,7 @@ const Carousel = forwardRef(
                 {...rest}
             >
                 {children}
-            </Component>
+            </ScrollView>
         );
     },
 );
@@ -43,9 +40,9 @@ Carousel.propTypes = {
     children: PropTypes.node.isRequired,
     cardWidth: PropTypes.number,
     cardMargin: PropTypes.number,
-    style: PropTypes.object,
+    style: PropTypes.shape({}),
     onScrollToNext: PropTypes.func,
-    contentContainerStyle: PropTypes.object,
+    contentContainerStyle: PropTypes.shape({}),
     animated: PropTypes.bool,
 };
 

@@ -1,4 +1,3 @@
-import { enableScreens } from 'react-native-screens';
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
@@ -21,7 +20,8 @@ import useNotificationInteraction from '../hooks/notifications/useNotificationIn
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
-enableScreens();
+// enableScreens();
+// enableFreeze(true);
 
 const MainNavigator = () => {
     const { auth } = useAuthContext();

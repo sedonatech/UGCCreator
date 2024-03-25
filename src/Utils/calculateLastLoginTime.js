@@ -7,4 +7,3 @@ export default (lastLoginTime) => {
 
     return formatDistance(new Date(lastLoginTime), new Date(), { addSuffix: true });
 };
-

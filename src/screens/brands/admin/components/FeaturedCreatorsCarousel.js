@@ -1,26 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
 import { BLACK, BLUE, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
-import useGetCreators from '../../../../hooks/brands/useGetCreators';
 import CreatorCard from '../../creators/CreatorCard';
 import TemplateBox from '../../../../components/TemplateBox';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 import { wp } from '../../../../Utils/getResponsiveSize';
+import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
 
 const SAMPLE_SIZE = 5;
-
+const USERS_COLLECTION = 'users';
 const FeaturedCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
+    const [creatorsData, setCreators] = useState([]);
+    const creatorsRef = firestore().collection(USERS_COLLECTION)
+        .where('type', '==', 'creator')
+        .where('portfolioLink', '!=', '')
+        .limit(20);
 
-    const { filteredCreators: creatorsData } = useGetCreators();
+    useEffect(() => {
+        getCreators();
+    }, []);
+
+    const getCreators = async () => {
+        const querySnapshot = await creatorsRef.get();
+        const data = querySnapshot?.docs
+            ?.map((doc) => ({
+                id: doc?.id,
+                ...doc?.data(),
+                lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+            }));
+        setCreators(data);
+    };
+
     const creatorsDataSample = creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE);
 
     return creatorsDataSample?.length ? (
@@ -68,7 +88,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         lastLoginTime={item?.lastLoginTime}
                     />
                 )}
-                snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
+                snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6) + 20}
                 showPagination
                 paginationSize={creatorsDataSample?.length}
                 contentContainerStyle={styles.cardCarousel}

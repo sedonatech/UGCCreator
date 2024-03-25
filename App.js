@@ -1,10 +1,12 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import codePush from 'react-native-code-push';
 import {
     StatusBar, View, StyleSheet,
 } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { enableFreeze, enableScreens } from 'react-native-screens';
 import MainNavigator from './src/navigation/MainNavigator';
 import { AuthProvider } from './src/context/AuthProvider';
 import { FeatureFlagProvider } from './src/context/FeatureFlagsContext';
@@ -17,6 +19,9 @@ import { CoreProvider } from './src/context/core';
 import useSubscriptionConfig from './src/hooks/subscription/useSubscriptionConfig';
 import { SubscriptionProvider } from './src/screens/subscriptions/context/context';
 import { ChatsProvider } from './src/context/ChatsProvider';
+
+enableScreens();
+enableFreeze(true);
 
 const NAVIGATION_THEME = {
     ...DefaultTheme,
@@ -69,8 +74,8 @@ const App = () => (
     </AuthProvider>
 );
 
-export default App;
+// export default App;
 // TODO: uncomment this when we are ready to use codepush
-// export default codePush({
-//     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-// })(App);
+export default codePush({
+    checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
+})(App);

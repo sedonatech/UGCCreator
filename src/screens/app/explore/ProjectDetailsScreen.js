@@ -1,13 +1,11 @@
 import React, {
-    useLayoutEffect, useMemo, useRef,
+    useLayoutEffect, useMemo,
 } from 'react';
 import {
     Alert,
-    Animated,
     ScrollView, StyleSheet,
 } from 'react-native';
 
-import { format } from 'date-fns';
 import {
     BLACK,
     BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN,
@@ -95,8 +93,6 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         );
     };
 
-    const pan = useRef(new Animated.ValueXY()).current;
-
     const buttonCta = useMemo(() => {
         if (enrolled) return 'View Project Status';
         return 'Enroll Now';
@@ -104,26 +100,11 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
 
     if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
 
-    const { startDate, endDate } = selectedProject;
-
-    const sDate = new Date();
-
-    const eDate = new Date();
-
-    sDate.setUTCMilliseconds(startDate?.seconds);
-    eDate.setUTCMilliseconds(endDate?.seconds);
-
     return (
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
-                {
-                    useNativeDriver: false,
-                },
-            )}
             contentContainerStyle={styles.contentContainer}
             bounces
         >
@@ -131,24 +112,6 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 fullGradient
                 height={SCREEN_HEIGHT / 2.4}
                 gradientColors={DEFAULT_GRADIENT}
-                style={{
-                    transform: [
-                        {
-                            translateY: pan.y.interpolate({
-                                inputRange: [-1000, 0],
-                                outputRange: [-200, 0],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                        {
-                            scale: pan.y.interpolate({
-                                inputRange: [-3000, 0],
-                                outputRange: [20, 1],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                    ],
-                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage
@@ -221,13 +184,6 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 >
                     Timeline
                 </TemplateText>
-                <DescriptionRange
-                    icon="timer-outline"
-                    maxSubtitle="Start Date"
-                    maxTitle={selectedProject?.startDate ? format(sDate, 'dd MMM yyyy') : 'N/A'}
-                    minSubtitle="End Date"
-                    minTitle={selectedProject?.endDate ? format(eDate, 'dd MMM yyyy') : 'N/A'}
-                />
                 <TemplateText
                     style={styles.title}
                     boldr
@@ -251,9 +207,9 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 >
                     Content Delivery Format
                 </TemplateText>
-                {selectedProject?.deliveryFormat?.map((format) => (
+                {selectedProject?.deliveryFormat?.map((format, index) => (
                     <DescriptionRow
-                        key={deliveryFormatFilters?.find(({ value }) => value === format)?.value}
+                        key={index.toString()}
                         title={deliveryFormatFilters?.find(({ value }) => value === format)?.name}
                     />
                 ))}

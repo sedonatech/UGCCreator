@@ -1,0 +1,1355 @@
+{
+  "brands": [
+    {
+      "name": "Averr Aglow",
+      "link": "https://averraglow.com/pages/partner-with-us",
+      "category": "beauty"
+    },
+    {
+      "name"  : "IHN Hair",
+      "link"  : "https://insertnameherellc.grin.live/newinfluencers",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Kovr Sunscreen",
+      "link"  : "https://theactivelifecompany.com/pages/affiliate-signup",
+        "category": "outdoors/travel"
+    },
+    {
+      "name"  : "Topicals",
+      "link"  : "https://mytopicals.com/pages/insider",
+        "category": "beauty"
+    },
+    {
+      "name"  : "Kiramoon",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSesUWZvup_EsFLpKz6BShmgNmBdxpyyRrBlmx14Y7ERs3tcpg/viewform",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Spa Sciences",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSdKi0xNAod66hSLyPQrDvUxT9_YBs4N7eaoDxwVm6YoQc4Qqw/viewform",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Jolie Skin Co",
+      "link"  : "https://join.collabs.shopify.com/community/apply/026MR55HL0M",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Bohme",
+      "link"  : "https://bohme.aspireiq.com/join/Gifted-Collaboration?clientId=XG3mgakCYI2FxEbazJBvfFCn7f9Jrho0",
+      "category": "fashion"
+    }
+    , {
+      "name"  : "Dae Hair",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLScjIhituQKjAAUX_md8nB9udBOw5sNfa3XiGcNA0KXNt41wzQ/viewform",
+      "category": "beauty"
+    }
+    , {
+      "name"  : "Embody",
+      "link"  : "https://app.creator.co/campaign/replenish-your-skin-pr-box",
+      "category": "beauty"
+    },
+    {
+        "name"  : "Soonness",
+        "link"  : "https://soonness.com/pages/the-creator-club",
+        "category": "fashion"
+    },
+    {
+      "name"  : "Ello",
+      "link"  : "https://elloproducts.grin.live/",
+      "category": "home"
+    },
+    {
+      "name"  : "Primal Pet Foods",
+      "link"  : "https://primalpetfoods.grin.live/",
+      "category": "pets"
+    },
+    {
+      "name"  : "Parachute",
+      "link"  : "https://www.parachutehome.com/brand-ambassadors",
+      "category": "home"
+    },
+    {
+      "name"  : "Merlin",
+      "link"  : "https://merlinbyfoyer.notion.site/Influencer-Program-67a100615c7941898f2486c4d64dc673",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Our Place",
+      "link"  : "https://ourplace.grin.live/apply",
+      "category": "home"
+    },
+    {
+      "name"  : "Mejuri",
+      "link"  : "https://finecrew.mejuri.com/",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Brutus Bone Broth",
+      "link"  : "https://brutusbroth.com/pages/ambassador-program",
+      "category": "pets"
+    },
+    {
+      "name"  : "Barkersons",
+      "link"  : "https://barkersons.com/pages/ambassador-program",
+      "category": "pets"
+    },
+    {
+      "name"  : "Snoozer Pets Products",
+      "link"  : "https://snoozerpetproducts.com/affiliate-area/",
+      "category": "pets"
+    },
+    {
+      "name"  : "Loki Doki Dog",
+      "link"  : "https://www.lokidokidog.com/pages/brand-ambassador-loki-doki-dog",
+      "category": "pets"
+    },
+    {
+      "name"  : "Purrrfectbark",
+      "link"  : "https://www.purrrfectbark.com/brand-ambassador",
+      "category": "pets"
+    },
+    {
+      "name"  : "Leather Paws New York",
+      "link"  : "https://www.leatherpaws.com/articles/ambassador-affiliate-program",
+      "category": "pets"
+    },
+    {
+      "name"  : "Pop Your Pup",
+      "link"  : "https://popyourpup.com/pages/pawfluencers-partners?currency=USD",
+      "category": "pets"
+    },
+    {
+      "name"  : "Evolve",
+      "link"  : "https://evolvepetfood.com/become-an-ambassador",
+      "category": "pets"
+    },
+    {
+      "name"  : "Pawrade",
+      "link"  : "https://www.pawrade.com/brandambassador/?gclid=Cj0KCQjw5f2lBhCkARIsAHeTvlh4C6YIvev1gAi_Z4AAiKNSrwmYi1Ai2Rs0ZR5cDO8HYGA8nZWjpz4aAlSQEALw_wcB",
+      "category": "pets"
+    },
+    {
+      "name"  : "Pet’n’Shape",
+      "link"  : "https://www.petnshape.com/pages/become-a-pet-n-shape-brand-ambassador",
+      "category": "pets"
+    },
+    {
+      "name"  : "Zippy Paws",
+      "link"  : "https://zippypaws.com/ambassador-program/",
+      "category": "pets"
+    },
+    {
+      "name"  : "Open Farm",
+      "link"  : "https://openfarminc.grin.live/",
+      "category": "pets"
+    },
+    {
+      "name"  : "Ruffwear",
+      "link"  : "https://ruffwear.com/pages/our-ambassadors",
+      "category": "pets"
+    },
+    {
+      "name"  : "Blueberry Pet",
+      "link"  : "https://www.blueberrypet.com/pages/brand-ambassador-programs-termsv",
+      "category": "pets"
+    },
+    {
+      "name"  : "Bonne Filou",
+      "link"  : "https://bonneetfilou.com/pages/apply-ambassador-program",
+      "category": "pets"
+    },
+    {
+      "name"  : "Bocce’s Buddies",
+      "link"  : "https://www.boccesbakery.com/pages/ambassador-program",
+      "category": "pets"
+    },
+    {
+      "name"  : "Bulli Bone",
+      "link"  : "https://bullibone.com/ambassadors-program/",
+      "category": "pets"
+    },
+    {
+      "name"  : "The Black Dog",
+      "link"  : "https://www.theblackdog.com/pages/the-bd-dog-brand-ambassador",
+      "category": "pets"
+    },
+    {
+      "name"  : "Pawz",
+      "link"  : "https://pawz.com/pages/brand-ambassador",
+      "category": "pets"
+    },
+    {
+      "name"  : "My pets plate",
+      "link"  : "https://www.mypetspalate.com/affiliate-program.html",
+      "category": "pets"
+    },
+    {
+      "name"  : "Dermala",
+      "link"  : "https://join.collabs.shopify.com/community/apply/3Kwp0jQyu78?utm_medium=social&utm_source=linktree&utm_campaign=become+a+dermala+ambassador",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Altrient",
+      "link"  : "https://www.altrient.com/ambassadors",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Courant",
+      "link"  : "https://courant.grin.live/",
+      "category": "technology"
+    },
+    {
+      "name"  : "PopSockets",
+      "link"  : "https://popsockets.grin.live/jointhepopsocketscommunity",
+      "category": "technology"
+    },
+    {
+      "name"  : "Logitech",
+      "link"  : "https://www.logitech.com/en-us/influencers-creators-program.html",
+      "category": "technology"
+    },
+    {
+      "name"  : "Moon Ultra",
+      "link"  : "https://www.moonultra.com/ambassadors",
+      "category": "technology"
+    },
+    {
+      "name"  : "Pocket Tripod",
+      "link"  : "https://join.collabs.shopify.com/community/apply/NR1PVTaQO-0",
+      "category": "technology"
+    },
+    {
+      "name"  : "Tula Skincare",
+      "link"  : "https://www.tula.com/pages/tula-influencer-ambassador-program",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Athletic Greens",
+      "link"  : "https://drinkag1.com/partners/en",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Small Packages",
+      "link"  : "https://af.uppromote.com/smallpackages/register",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Bark Box",
+      "link"  : "https://www.barkbox.com/affiliate",
+      "category": "pets"
+    },
+    {
+      "name"  : "Garage (fashion)",
+      "link"  : "https://app.impact.com/advertiser-advertiser-info/Groupe-Dynamite-Inc.brand",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Garage",
+      "link"  : "https://app.impact.com/advertiser-advertiser-info/Groupe-Dynamite-Inc.brand",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Rocket Money",
+      "link"  : "https://www.rocketmoney.com/affiliates",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Hello Fresh",
+      "link"  : "https://hubspot.hellofresh.com/partnerships-inquiries-landing-page-usa?utm_source=online&utm_medium=partnerships&utm_campaign=Partnerships-inquiries-USA",
+      "category": "food"
+    },
+    {
+      "name"  : "Santevia",
+      "link"  : "https://santevia.com/pages/partners\nLuna Bronze (skincare)\nhttps://lunabronzetanning.com/pages/shopify-collabs",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Luna Bronze",
+      "link"  : "https://lunabronzetanning.com/pages/shopify-collabs",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Zimms Organics",
+      "link"  : "https://zimmsorganics.com/pages/affiliates",
+      "category": "food"
+    },
+    {
+      "name"  : "A little to the left",
+      "link"  : "https://app.pressengine.net/requestkey/nevi78",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Pixi Beauty",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSfAWUY1itdESMEYdhGRmRxOGT3rZEwk2NfO4AK5v_GvZ5Si4g/viewform",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Cando",
+      "link"  : "https://tastecando.com/pages/ambassadors",
+      "category": "food"
+    },
+
+    {
+      "name"  : "Grin",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSd-D69L_yCfyzOqcIJOKd6JcshfubU38h5a1lRiNWuH9dk5gA/viewform",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Olaplex ",
+      "link"  : "https://olaplex.grin.live/affiliates",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Pure",
+      "link"  : "https://www.100percentpure.com/pages/affiliates",
+      "category": "beauty"
+    },
+    {
+      "name"  : "88 Acers",
+      "link"  : "https://88acres.trysaral.com/",
+      "category": "food"
+    },
+    {
+      "name"  : "Babe Original ",
+      "link"  : "https://babecollab.com/join#how-to-join",
+      "category": "beauty"
+    },
+    {
+      "name"  : "The Baby Brew",
+      "link"  : "https://thebabysbrew.grin.live/6f880782-3671-43a3-99dd-c1f56c5ae34d/v2/campaigns/fe951c6f-988e-4b70-bb2d-8e957e60b749",
+      "category": "baby"
+    },
+    {
+      "name"  : "Beddy’s",
+      "link"  : "https://beddys.com/pages/social-media-collabs",
+      "category": "home"
+    },
+    {
+      "name"  : "Mothetlove herbal company",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSe-jeLrF-7XKrlKxSmKLpSGQZGJkXz_0D8vOtYcCAs9wIM2xA/viewform",
+      "category": "baby"
+    },
+    {
+      "name"  : "Brooklynn’s",
+      "link"  : "https://brooklynns.com/pages/brooklynns-influencer-collaboration-partnership-application",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Chickapea Pasta",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSfDqoPTjtXVjoHJN3fR9YSSzutsf4X5kezD7iNMqmzC1cqjpg/viewform",
+      "category": "food"
+    },
+    {
+      "name"  : "Clean Skin Club",
+      "link"  : "https://cleanskinclub.com/en-de/pages/ambassador-signup?utm_source=lt&utm_medium=ig&utm_campaign=ambassadorsup",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Clearstem Skincare",
+      "link"  : "https://clearstem.grin.live/AmbassadorProgram",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Cupshe",
+      "link"  : "https://www.cupshe.com/pages/ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Dormify",
+      "link"  : "https://www.dormify.com/pages/dormifam-brand-ambassador-program",
+      "category": "home"
+    },
+    {
+      "name"  : "Fashion Nova",
+      "link"  : "https://www.fashionnova.com/pages/want-to-collab",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Face Tory",
+      "link"  : "https://join.collabs.shopify.com/community/apply/3SOVXNIxBDY",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Findra Clothing",
+      "link"  : "https://findraclothing.com/pages/brand-ambassadors",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Geometry",
+      "link"  : "https://www.geometry.house/en-de/pages/geometry-ambassador-program",
+      "category": "home"
+    },
+    {
+      "name"  : "Goli",
+      "link"  : "https://partners.goli.com/login",
+      "category": "food"
+    },
+    {
+      "name"  : "HelloBello",
+      "link"  : "https://my.hellobello.com/pages/enthusiast?r=1",
+      "category": "baby"
+    },
+    {
+      "name"  : "Highline Wellness",
+      "link"  : "https://highlinewellness.grin.live/ambassador",
+      "category": "wellness"
+    },
+    {
+      "name"  : "iHerb ",
+      "link"  : "https://secure.iherb.com/rewards/info/influencers",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Insta Plant Food",
+      "link"  : "https://instantplantfood.com/pages/collabs",
+      "category": "food"
+    },
+
+    {
+      "name"  : "IPSY",
+      "link"  : "https://ipsyco.grin.live/apply",
+      "category": "beauty"
+    },
+    {
+      "name"  : "IPSY",
+      "link"  : "https://ipsyco.grin.live/apply",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Last Object",
+      "link"  : "https://lastobject.de/pages/creator?shpxid=f0dba046-e4d4-4c74-a36b-b773d776e36a",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Merit Beauty",
+      "link"  : "https://community.meritbeauty.com/",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Midori Bikinis",
+      "link"  : "https://www.midoribikinis.com/pages/ambassadors",
+      "category": "fashion                        "
+    },
+    {
+      "name"  : "Misfits Market",
+      "link"  : "https://app.fohr.co/misfitsmarket/ambassador-onboarding?utm_source=fohr&utm_medium=social&utm_campaign=brand_ambassador",
+      "category": "food"
+    },
+    {
+      "name"  : "Morning Lavender",
+      "link"  : "https://vegaus.aspireiq.com/join/Samples?clientId=UQFIzQjhsaKx4VhlDlmTT28cdkkRepTt",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Vega",
+      "link"  : "https://www.limecrime.com/pages/affiliate-program",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Natural dog",
+      "link"  : "https://naturaldog.refersion.com/affiliate/registration",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Nerdy Nutsy",
+      "link"  : "https://af.uppromote.com/nerdy-nuts/register",
+      "category": "food"
+    },
+    {
+      "name"  : "Ogee",
+      "link"  : "https://ogee.com/pages/creator",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Organi",
+      "link"  : "https://orgain.com/pages/ambassadors",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Peppermayo",
+      "link"  : "https://eu.peppermayo.com/pages/brand-ambassador?shpxid=53e6029c-ff1c-44c2-8606-dea19544b80d&currency=EUR",
+      "category": "fashion"
+    },
+    {
+      "name"  : "From the ground up",
+      "link"  : "https://fromthegroundupsnacks.com/pages/snack-lover?utm_source=various&utm_medium=social&utm_campaign=SnackLoverProgram",
+      "category": "food"
+    },
+
+
+
+    {
+      "name"  : "Rebels Market",
+        "link"  : "https://www.rebelsmarket.com/ambassadors",
+        "category": "fashion"
+    },
+    {
+      "name"  : "Revolve",
+      "link"  : "https://www.revolve.com/content/ambassador/mobile",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Smart&Sexy",
+      "link"  : "https://www.smartandsexy.com/pages/collabs",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Spark",
+      "link"  : "https://form.asana.com/?k=M4wr5Iiv6zSMPsXdvTshoQ&d=1156613560607720",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Spell",
+      "link"  : "https://usa.spell.co/pages/collaborator-request-form?utm_source=Geo-redirect&utm_medium=AUS-USA",
+      "category": "fashion"
+    },
+    {
+      "name"  : "StackedSkincare ",
+      "link"  : "https://join.collabs.shopify.com/community/apply/QN57osIfUfU",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Storq",
+      "link"  : "https://apply.getroster.com/gppxA5RRv",
+      "category": "baby"
+    },
+    {
+      "name"  : "Sunny Co Clothing ",
+      "link"  : "https://sunnycoclothing.com/pages/copy-of-ambassador-app",
+      "category": "fashion"
+    },
+    {
+      "name"  : "The better skin co",
+      "link"  : "https://thebetterskinco.com/pages/become-an-influencer",
+      "category": "skin care"
+    },
+    {
+      "name"  : "The Citizenry",
+      "link"  : "https://thecitizenry.grin.live/",
+      "category": "home"
+    },
+    {
+      "name"  : "The CrunchCup",
+      "link"  : "https://thecrunchcup.com/pages/community",
+      "category": "food"
+    },
+    {
+      "name"  : "Wali Cases",
+      "link"  : "https://wallicases.com/pages/become-an-affiliate",
+      "category": "technology"
+    },
+    {
+      "name"  : "Z Supply",
+      "link"  : "https://influencers.zsupplyclothing.com/",
+      "category": "fashion"
+    },
+
+
+    {
+      "name"  : "Zeelool",
+      "link"  : "https://www.zeelool.com/influencer-program",
+      "category": "fashion"
+    },
+   {
+      "name"  : "ZitStick",
+      "link"  : "https://zitsticka.com/pages/ambassador-program",
+      "category": "skin care"
+    },
+    {
+      "name"  : "BondiBoost",
+      "link"  : "https://bondiboost.grin.live/organic-collaborations",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Botanic Tonics",
+      "link"  : "https://botanictonics.grin.live/feelfree-family",
+      "category": "food"
+    },
+    {
+      "name"  : "Coola",
+      "link"  : "https://support.coola.com/hc/en-us/requests/new?ticket_form_id=5436914980119",
+      "category": "skin care"
+    },
+    {
+      "name"  : "BrüMate",
+      "link"  : "https://creator.brumate.com/connect#welcome",
+      "category": "home"
+    },
+    {
+      "name"  : "Jiggy Puzzles",
+      "link"  : "https://jiggypuzzles.com/pages/jiggysquad",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Wonderfold Wagon",
+      "link"  : "https://wonderfoldwagon.brandchamp.io/apply",
+      "category": "baby"
+    },
+    {
+      "name"  : "Wine Chips",
+      "link"  : "https://www.powr.io/form-builder/i/30892283#page",
+      "category": "food"
+    },
+    {
+      "name"  : "University Tees",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSfW3TR0rAMl5Z6csA2wg_CE4KH5JhSaZBuvRDU0ajadqiVGEg/viewform",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Undercover Tourist ",
+      "link"  : "https://undercovertourist.mavrck.co/community/join?activity=49540",
+      "category": "travel"
+    },
+    {
+      "name"  : "Trendy and Tipsy",
+      "link"  : "https://trendyandtipsy.com/pages/trendy-tipsy-brand-ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name"  : "The Normal Brand",
+      "link"  : "https://thenormalbrand.com/pages/ambassadors",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Stronger",
+      "link"  : "https://faq.strongerlabel.com/hc/en-us/requests/new?ticket_form_id=360001127179",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Shurtape",
+      "link"  : "https://shurtapetech.com/contact/influencers/",
+      "category": "home"
+    },
+
+
+    {
+      "name"  : "Shopbop",
+      "link"  : "https://www.shopbop.com/ci/aboutShopBop/shopbop-affiliate-program.html",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Sand Cloud",
+      "link"  : "https://www.sandcloud.com/pages/ambassador",
+      "category": "home"
+    },
+    {
+      "name"  : "Ruggable",
+      "link"  : "https://ruggable.grin.live/",
+      "category": "home"
+    },
+    {
+      "name"  : "Derma E",
+      "link"  : "https://dermae.com/pages/derma-e-ambassador",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Shapermint",
+      "link"  : "https://shapermint.grin.live/crew",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Taste Salud",
+      "link"  : "https://tastesalud.grin.live/",
+      "category": "food"
+    },
+    {
+      "name"  : "TransfromHQ",
+      "link"  : "https://transformhqambassadors.com/join#how-to-join",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Clean Simple Eats",
+      "link"  : "https://cleansimpleeats.grin.live/affiliateprogram",
+      "category": "food"
+    },
+    {
+      "name"  : "Smart Sweets US",
+      "link"  : "https://kicksugarcrew.smartsweets.com/connect/#welcome",
+      "category": "food"
+    },
+    {
+      "name"  : "Grande Cosmetics",
+      "link"  : "https://collabgrandecosmetics.grin.live/",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Vera Bradley",
+        "link"  : "https://ambassador.verabradley.com/",
+        "category": "fashion"
+    },
+    {
+      "name"  : "Vici",
+      "link"  : "https://www.vicicollection.com/pages/ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name"  : "HydraPak",
+      "link"  : "https://hydrapak.com/pages/affiliate-program",
+      "category": "home"
+    },
+    {
+      "name"  : "Vego Garden",
+      "link"  : "https://vegogarden.grin.live/",
+      "category": "home"
+    },
+    {
+      "name"  : "Vitruvi",
+      "link"  : "https://hometeam.vitruvi.com/",
+      "category": "home"
+    },
+    {
+      "name"  : "Rooms To Go",
+      "link"  : "https://pixlee.me/roomstogo",
+      "category": "home"
+    },
+    {
+      "name"  : "Nutrisense",
+      "link"  : "https://forms.microsoft.com/pages/responsepage.aspx?id=SnESVXRtoEWiojexiKkS91QStiAcIaxCl_WS29snXDNUOTE2TE40WllIUU5aRUdMRU1NWTlaRUxPNi4u",
+      "category": "food"
+    },
+    {
+      "name"  : "Nordstorm",
+      "link"  : "https://www.nordstrom.com/browse/theambassadorprogram",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Hiya Health",
+      "link"  : "https://hiyahealth.com/pages/influencer-join",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Azaria",
+      "link"  : "https://azaria.refersion.com/",
+      "category": "baby"
+    },
+    {
+      "name"  : "BlenderBottle",
+      "link"  : "https://www.blenderbottle.com/pages/become-a-blenderbottle-brand-ambassador",
+      "category": "home"
+    },
+    {
+      "name"  : "Lusty Chic",
+      "link"  : "https://lustychic.com/pages/collaboration",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Martie",
+      "link"  : "https://martie.com/pages/collab",
+      "category": "food"
+    },
+    {
+      "name"  : "Meebak",
+      "link"  : "https://meebak.goaffpro.com/",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Yasso",
+      "link"  : "https://yasso.com/pages/join-our-ambassador-team",
+      "category": "food"
+    },
+    {
+      "name"  : "Express VPN",
+      "link"  : "https://www.expressvpn.com/influencers",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Meller",
+      "link"  : "https://mellerbrand.com/pages/collaborations",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Human Improvement",
+      "link"  : "https://join.collabs.shopify.com/community/apply/AeEoIW7xZ9k",
+      "category": "food"
+    },
+    {
+      "name"  : "Masami ",
+      "link"  : "https://www.lovemasami.com/pages/ambassador",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Taskade",
+      "link"  : "https://partners.taskade.com/",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Pacha",
+      "link"  : "https://livepacha.goaffpro.com/",
+      "category": "food"
+    },
+    {
+      "name"  : "Elix",
+      "link"  : "https://elixhealing.aspireiq.com/join/Herbal%20Ambassadors?memberId=47142360&token=3b8bb787-e0f0-4011-bb5e-a40659b9a0c4&utmSource=programs_list&clientId=gRYcjb7RJJ7TtQWObzdNjbT5077UcKHT",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Tanologist",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSeeh3ytrf4OQsgjiBm3_g4Sc_vJmrialO3lBUb8rpatg0sasg/viewform",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Doraihome",
+      "link"  : "https://doraihome.com/pages/affiliate",
+      "category": "home"
+    },
+    {
+      "name"  : "Bleame",
+        "link"  : "https://riflepaperco.grin.live/",
+        "category": "home"
+    },
+    {
+      "name"  : "Awesome Coffee",
+      "link"  : "https://awesomecoffee.com/pages/ambassadors",
+      "category": "food"
+    },
+    {
+      "name"  : "&Other Stories",
+      "link"  : "https://www.stories.com/de_de/customer-service/affiliates.html",
+      "category": "fashion"
+    },
+    {
+      "name"  : "Five CBD",
+      "link"  : "https://katalys.com/signup/?id=7234",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Earth Harbor Naturals",
+      "link"  : "https://e2sag.app.link/DEzoDfkLi2?$name=earth%20harbor&$og_title=Join%20Our%20Crew%2C%20Save%20Marine%20Life!&$og_description=Our%20mission%20is%20to%20be%20the%20change%20we%20want%20to%20see%20in%20the%20world%20by%20being%20plant-based%2C%20planet%20positive%2C%20and%20delivering%20powerful%20results.%0A%0AThe%20Benefits%20of%20Joining%0A%0A%20%20%20%20-%20Personalized%20discount%20codes%0A%20%20%20%20-%20Commission%20on%20Sales%0A%20%20%20%20-%20Partnered%20with%20Brandbassador%20for%20an%20easy%20%0A%20%20%20%20%20%20%20to%20use%2C%20gameable%20way%20to%20earn%20gift%20cards%2C%20%0A%20%20%20%20%20%20%20products%2C%20and%20cash.%0A%20%20%20%20-%20It%27s%20free%20to%20join!%0A%0AHow%20Do%20I%20Join%20The%20Crew%3F%0A%20%20%20%0A%20%20%20-Simply%20use%20the%20link%20below%20to%20download%20the%20%0A%20%20%20%20app%20and%20you%20will%20hear%20from%20us%20within%2048%20%0A%20%20%20%20hours.%20%0A%0AWe%20look%20forward%20to%20setting%20sail%20with%20you!&$og_brand_name=Earth%20Harbor&$og_image_url=https%3A%2F%2Fstorage.googleapis.com%2Fbb-media-prd%2Fapi.brandbassador.com%2Fimages%2F69e8374b-5432-4eed-80bf-016e18f90cb8.jpg&$og_desktop_url=https%3A%2F%2Fstorage.googleapis.com%2Fbb-media-prd%2Fapi.brandbassador.com%2Fimages%2F4e191986-0446-49db-8069-9d3db44077ee.jpg&$og_logo_url=https%3A%2F%2Fapi.brandbassador.com%2Fimages%2F3cd3534d-1860-4152-ab25-dc92794f4495.png&$s=5329d788-c828-4c49-a69f-c767f037205b&$shortId=zp9miz&$sig=bCWPei6KrlJ1HwmNHyXcqYOPBxmp-3BwTpJaL_wUdzQ&_p=c81029c390067af2e01590fcefbd",
+      "category": "skin care"
+    },
+    {
+      "name"  : "Bushwick Kitchen",
+      "link"  : "https://bushwickkitchen.com/pages/collab",
+      "category": "food"
+    },
+    {
+      "name"  : "Hustle + flo",
+      "link": "https://hustlenflo.co/pages/affiliate-program",
+      "category": "wellness"
+    },
+
+    {
+      "name"  : "Dirty Shirley",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSerweBbNuT98qV4cGU8LVe5xamk2QMrbSQQbS0izHgDP4TvRg/viewform",
+      "category": "food"
+    },
+    {
+      "name"  : "VoChill",
+      "link"  : "https://vochill.com/pages/affiliate-program",
+      "category": "home"
+    },
+    {
+      "name"  : "ShredSkinz",
+      "link"  : "https://shredskinz.goaffpro.com/",
+      "category": "fitness"
+    },
+    {
+      "name"  : "Jackery",
+      "link"  : "https://www.jackery.com/pages/affiliate-program",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Plunge",
+      "link"  : "https://plunge.com/pages/collab",
+      "category": "home"
+    },
+    {
+      "name"  : "Yung King Hair Care",
+      "link"  : "https://youngkinghaircare.grin.live/creators",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Toto Foods",
+      "link"  : "https://af.uppromote.com/toto-cookie-dough/register",
+      "category": "food"
+    },
+    {
+      "name"  : "Creation Nation",
+      "link"  : "https://docs.google.com/forms/d/e/1FAIpQLSeCnEIVE2N1cTam1YmlkpFQPi2l6O1msVGOMJofWuIaG8mKnQ/viewform",
+      "category": "food"
+    },
+    {
+      "name"  : "Veri",
+      "link"  : "https://www.veri.co/affiliate",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Lumineux Oral Essentials",
+      "link"  : "https://oralessentials.mavrck.co/community/join?activity=50491",
+      "category": "wellness"
+    },
+    {
+      "name"  : "Phoozy",
+      "link"  : "https://phoozy.com/pages/phoozy-ambassador",
+      "category": "app & games"
+    },
+    {
+      "name"  : "Peach&Lilly",
+      "link"  : "https://dpv6dpk3qw8.typeform.com/to/F1itRsET",
+      "category": "beauty"
+    },
+    {
+      "name"  : "Motif Beauty",
+      "link"  : "https://motifskincare.com/pages/ambassador-program-1",
+      "category": "beauty"
+    },
+    {
+      "name": "Dr.Dennis Cross Skincare",
+      "link": "https://docs.google.com/forms/d/e/1FAIpQLScwtoxvL7oavklcd1iZFcAsDe4j3JR8lK8g45dc9UMEiP6dYA/viewform",
+      "category": "skin care"
+    },
+    {
+      "name": "Busy Baby",
+      "link": "https://join.collabs.shopify.com/community/apply/YMR5SugI2jU",
+      "category": "baby"
+    },
+    {
+      "name": "Tandm Surf",
+      "link": "https://tandmsurf.com/pages/tandm-surf-affiliate-sign-up-details",
+      "category": "sports"
+    },
+    {
+      "name": "Walkee Paws",
+      "link": "https://walkeepaws.com/pages/ambassador",
+      "category": "pets"
+    },
+    {
+      "name": "Pashion Footwear",
+      "link": "https://docs.google.com/forms/d/e/1FAIpQLSfEK1dBSI5fRvfs5Oah0NEa5uIHM6H03Oa-gqV9rCKSSKSw1g/viewform",
+      "category": "fashion"
+    },
+    {
+      "name": "Luna Magic Beauty",
+      "link": "https://join.collabs.shopify.com/community/apply/CR3tXf8M_YA",
+      "category": "beauty"
+    },
+    {
+      "name": "Moment",
+      "link": "https://moment.refersion.com/affiliate/registration",
+      "category": "food"
+    },
+    {
+      "name": "Flipstick",
+      "link": "https://www.getflipstik.com/pages/flipstik-brand-ambassador-program",
+      "category": "technology"
+    },
+    {
+      "name": "Chirp",
+      "link": "https://gochirp.com/pages/affiliate-influencer-partnerships",
+      "category": "fitness"
+    },
+    {
+      "name": "Pnuff Crunch",
+      "link": "https://pnuff.trysaral.com/",
+      "category": "food"
+    },
+    {
+      "name": "Slate Milk",
+      "link": "https://slatemilk.com/pages/slate-ambassador",
+      "category": "food"
+    },
+    {
+      "name": "Dreamland Baby",
+      "link": "https://dreamlandbaby.grin.live/",
+      "category": "baby"
+    },
+    {
+      "name": "Proven Skincare ",
+      "link": "https://www.provenskincare.com/influencer-program/",
+      "category": "skin care"
+    },
+    {
+      "name": "Neuro",
+      "link": "https://neurogum.grin.live/",
+      "category": "food"
+    },
+    {
+      "name": "Good Thomas",
+      "link": "https://goodthomas.goaffpro.com/",
+      "category": "pets"
+    },
+    {
+      "name": "Supply",
+      "link": "https://supply.co/pages/ambassadors",
+      "category": "beauty"
+    },
+    {
+      "name": "Misaky Tokyo",
+      "link": "https://misaky.tokyo/pages/affiliate-program",
+      "category": "food"
+    },
+    {
+      "name": "Kanga. Coolers",
+      "link": "https://kangaambassadors.current.tech/join#how-to-join",
+      "category": "home"
+    },
+    {
+      "name": "Curl Mix",
+      "link": "https://curlmix.grin.live/",
+      "category": "beauty"
+    },
+    {
+      "name": "Tushbaby",
+      "link": "https://apply.getroster.com/U6r6TR8gp",
+      "category": "baby"
+    },
+    {
+      "name": "Gunnar",
+      "link": "https://gunnar.com/pages/creators",
+      "category": "fashion"
+    },
+    {
+      "name": "Slumber Kins",
+      "link": "https://slumberkins.com/pages/collaborations",
+      "category": "baby"
+    },
+    {
+      "name": "Grove Collaborative",
+      "link": "https://www.grove.co/s/partners/",
+      "category": "wellness"
+    },
+    {
+      "name": "Milk Snob",
+      "link": "https://milksnob.grin.live/",
+      "category": "baby"
+    },
+    {
+      "name": "Pete&Pedro",
+       "link": "https://peteandpedro.com/pages/ambassador-signup",
+       "category": "fashion"
+    },
+    {
+      "name": "Good Sport",
+      "link": "https://playgoodsport.com/pages/ambassador-program",
+      "category": "sports"
+    },
+    {
+      "name": "Atlas Bar",
+      "link": "https://atlasbars.com/pages/apply",
+      "category": "food"
+    },
+    {
+      "name": "Rags",
+      "link": "https://rags.com/pages/affiliates",
+      "category": "baby"
+    },
+    {
+      "name": "Beloved Shirts",
+      "link": "https://belovedeverything.com/en-de/pages/join-the-team",
+      "category": "fashion"
+    },
+    {
+      "name": "Shefit",
+      "link": "https://shefit.com/pages/collab",
+      "category": "fashion"
+    },
+    {
+      "name": "Ezpz",
+      "link": "https://ezpzfun.com/pages/partnership-opportunities",
+      "category": "baby"
+    }
+  ,
+    {
+      "name": "Controlled Chaos",
+      "link": "https://controlledchaoshair.com/pages/brand-ambassadors",
+      "category": "beauty"
+    },
+    {
+      "name": "Evry Jewels",
+      "link": "https://evryjewels.goaffpro.com/signup/customer-ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Vitable",
+      "link": "https://forms.gle/CBFeoq8vjiHr3Gat8",
+      "category": "wellness"
+    },
+    {
+      "name": "Gameday Couture",
+      "link": "https://www.shopthesoho.com/pages/ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name": "BeatBox",
+      "link": "https://barefootscientist.grin.live/",
+      "category": "beauty"
+    },
+    {
+      "name": "Barefoot Scientist",
+      "link": "https://beatboxbeverages.com/pages/fam-member",
+      "category": "food"
+    },
+    {
+      "name": "Fable",
+      "link": "https://fable.com/pages/calling-all-creators",
+      "category": "home"
+    },
+    {
+      "name": "UnbuckleME",
+      "link": "https://docs.google.com/forms/d/e/1FAIpQLScbbaiFeUVyxBajouIWlGHxk2xGYGVLkn-emr0ykPQLiRU22A/viewform",
+      "category": "baby"
+    },
+    {
+      "name": "FilterBaby",
+      "link": "https://filterbaby.refersion.com/",
+      "category": "baby"
+    },
+    {
+      "name": "Eva NYC",
+      "link": "https://creators.eva-nyc.com/connect#welcome",
+      "category": "beauty"
+    },
+    {
+      "name": "SH & Co.",
+      "link": "https://www.shnco.co/pages/collab-with-us",
+      "category": "jewelry"
+    },
+    {
+      "name": "Smooch",
+      "link": "https://www.mysmooch.ie/collab-with-us",
+      "category": "food"
+    },
+    {
+      "name": "Culture 28",
+      "link": "https://culture28.com/pages/collab-with-us",
+      "category": "fashion"
+    },
+    {
+      "name": "Japan Candy Store",
+      "link": "https://www.japancandystore.com/pages/collaborations",
+      "category": "food"
+    },
+    {
+      "name": "Kameli Boutique",
+      "link": "https://www.kameliboutique.com/pages/collaborations",
+      "category": "fashion"
+    },
+    {
+      "name": "WLO Wood",
+      "link": "https://wlostore.com/pages/collaboration",
+      "category": "pets"
+    },
+    {
+      "name": "Ash & Rose",
+      "link": "https://www.ashandrose.com/pages/collabs",
+      "category": "fashion"
+    },
+    {
+      "name": "Love Style Co",
+      "link": "https://www.lovestyleco.com.au/pages/collab-with-us",
+      "category": "fashion"
+    },
+    {
+      "name": "Puro Sound Labs",
+      "link": "https://purosound.com/pages/partner_with_puro",
+      "category": "technology"
+    },
+    {
+      "name": "Xlash",
+      "link": "https://docs.google.com/forms/d/e/1FAIpQLSdTy-mFI_drfg8vZW42K4iWrbWS4y9ujUs7yN4IsEcZrJ9BXA/viewform",
+      "category": "beauty"
+    },
+    {
+      "name": "Baack Embrace",
+      "link": "https://backembrace.com/pages/collabs",
+      "category": "wellness"
+    },
+    {
+      "name": "Sans Trou",
+      "link": "https://sanstrou.com/pages/collabs",
+      "category": "beauty"
+    },
+    {
+      "name": "Somos",
+      "link": "https://www.somosancestria.com/collab",
+      "category": "technology"
+    },
+    {
+      "name": "Full London",
+      "link": "https://fullondon.com/pages/collabs",
+      "category": "beauty"
+    },
+    {
+      "name": "Chewer’s Joy",
+      "link": "https://www.chewersjoy.com/pages/apply-to-collab-with-us",
+      "category": "pets"
+    },
+    {
+      "name": "VellutSkin",
+      "link": "https://vellutskin.com/pages/collab-with-us",
+      "category": "beauty"
+    },
+    {
+      "name": "Nuts ’N More",
+      "link": "https://affiliate.nuts-n-more.com/",
+      "category": "food"
+    },
+    {
+      "name": "Doré",
+      "link": "https://wearedore.com/pages/ambassador",
+      "category": "beauty"
+    },
+    {
+      "name": "Prep U",
+      "link": "https://af.uppromote.com/prep-u/register",
+      "category": "beauty"
+    },
+    {
+      "name": "Ingarden",
+      "link": "https://ingarden.com/pages/affiliate-ingarden",
+      "category": "home"
+    },
+    {
+      "name": "Hampden Clothing",
+      "link": "https://hampdenclothing.com/pages/hampden-ambassadors",
+      "category": "fashion"
+    },
+    {
+      "name": "Aila",
+      "link": "https://hampdenclothing.com/pages/hampden-ambassadors",
+      "category": "fitness"
+    },
+    {
+      "name": "Hedony",
+      "link": "https://www.hedony.co/pages/ambassador-application",
+      "category": "fashion"
+    },
+    {
+      "name": "Leesa Bar",
+      "link": "https://leesabarr.com.au/pages/register-affiliate-account",
+      "category": "beauty"
+    },
+    {
+      "name": "URBN",
+      "link": "https://www.urbanoutfitters.com/help/affiliate",
+      "category": "fashion"
+    },
+    {
+      "name": "Lulus",
+      "link": "https://ambassadors.lulus.com/connect/",
+      "category": "fashion"
+    },
+    {
+      "name": "Alo Yoga",
+      "link": "https://www.aloyoga.com/pages/in-access",
+      "category": "fashion"
+    },
+    {
+      "name": "Lactote",
+      "link": "https://loctote.com/pages/collabs",
+      "category": "fashion"
+    },
+    {
+      "name": "AquaVault Inc.",
+      "link": "https://theaquavault.com/pages/affiliate-influencer-signup",
+      "category": "technology"
+    },
+    {
+      "name": "Wild One",
+      "link": "https://wildone.com/pages/become-an-ambassador",
+      "category": "pets"
+    },
+    {
+      "name": "Iwi Life",
+      "link": "https://iwi.typeform.com/make-money?typeform-source=iwilife.com",
+      "category": "wellness"
+    },
+    {
+      "name": "Caraway",
+      "link": "https://www.carawayhome.com/ambassadors/",
+      "category": "home"
+    },
+    {
+      "name": "IWON Organics",
+      "link": "https://iwonorganics.com/pages/jointhefam",
+      "category": "food"
+    },
+    {
+      "name": "Jamie’s Farm",
+      "link": "https://www.jamies-farm.com/pages/ambassadorship",
+      "category": "home"
+    },
+    {
+      "name": "Kreatures of Habit",
+      "link": "https://kreaturesofhabit.com/pages/ambassador",
+      "category": "food"
+    },
+    {
+      "name": "Melo Air",
+      "link": "https://melolabs.aspireiq.com/join/Day-to-Day%20Campaign?clientId=rRiMxc1LxHnvXG2j0IY3AzN0QzhZWZax",
+      "category": "wellness"
+    },
+    {
+      "name": "Rind Snacks",
+      "link": "https://rindsnacks.aspireiq.com/join/RINDSnacksLifestyle?clientId=5u6ikFkvyWHTAzqbyYfM5O57h7xCG5UW",
+      "category": "food"
+    },
+    {
+      "name": "To You Snacks",
+      "link": "https://www.toyousnacks.com/pages/sponsorships-partner-opportunities",
+      "category": "food"
+    },
+    {
+      "name": "Brentwood Home",
+      "link": "https://brentwoodhome.grin.live/",
+      "category": "home"
+    },
+    {
+      "name": "The Wellness Company",
+      "link": "https://www.twc.health/pages/affiliate-program-application",
+      "category": "wellness"
+    },
+    {
+      "name": "COSRX",
+      "link": "https://docs.google.com/forms/d/e/1FAIpQLSdyjArMwopE6XRWhCFaYk-tsmCGw-FkRfq6sa3mwYcyu9YuHg/viewform",
+      "category": "beauty"
+    },
+    {
+      "name": "Public Rec",
+      "link": "https://support.publicrec.com/hc/en-us",
+      "category": "fashion"
+    },
+    {
+      "name": "Clean Beauty Collective ",
+      "link": "https://cleanbeauty.grin.live/",
+      "category": "beauty"
+    },
+    {
+      "name": "Baby Brezza",
+      "link": "https://beteshgroupbabybrezza.grin.live/",
+      "category": "baby"
+    },
+    {
+      "name": "Cayatch Posture Corrector",
+      "link": "https://www.cayatch.com/pages/become-an-affiliate",
+      "category": "wellness"
+    },
+    {
+      "name": "Victoria Secret",
+      "link": "https://www.victoriassecret.com/us/victorias-secret-and-pink-influencers",
+      "category": "fashion"
+    },
+    {
+      "name": "Dunleath",
+      "link": "https://ui.awin.com/merchant-profile/58637",
+      "category": "beauty"
+    },
+    {
+      "name": "Nasty Gal",
+      "link": "https://www.nastygal.com/page/become-a-brand-ambassador.html",
+      "category": "beauty"
+    },
+    {
+      "name": "Vestique",
+      "link": "https://vestique.com/pages/collabs",
+      "category": "fashion"
+    },
+    {
+      "name": "Windsor",
+      "link": "https://www.windsorstore.com/pages/ambassador",
+      "category": "fashion"
+    }
+  ]
+}
