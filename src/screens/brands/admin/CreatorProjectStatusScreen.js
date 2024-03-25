@@ -2,11 +2,13 @@ import React, {
     useLayoutEffect, useMemo, useState,
 } from 'react';
 import {
-    Animated, ScrollView, StyleSheet,
+    ScrollView, StyleSheet,
 } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
-import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
+import {
+    BLACK, GREEN, WHITE, WHITE_40,
+} from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
@@ -58,8 +60,6 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
             : {};
     }, [currentProject, creatorID]);
 
-    const pan = React.useRef(new Animated.ValueXY()).current;
-
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -81,41 +81,15 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
 
     if (!currentProject) return <LoadingOverlay message="Loading project details..." />;
 
-    // TODO: Add the empty states of the document pickers
-
     return (
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
-                {
-                    useNativeDriver: false,
-                },
-            )}
             contentContainerStyle={styles.contentContainer}
         >
             <TemplateBox
                 height={SCREEN_HEIGHT / 2.4}
-                style={{
-                    transform: [
-                        {
-                            translateY: pan.y.interpolate({
-                                inputRange: [-1000, 0],
-                                outputRange: [-200, 0],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                        {
-                            scale: pan.y.interpolate({
-                                inputRange: [-3000, 0],
-                                outputRange: [20, 1],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                    ],
-                }}
             >
                 {/* @ts-ignore */}
                 <BackgroundImage

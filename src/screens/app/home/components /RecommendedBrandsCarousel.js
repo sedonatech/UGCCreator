@@ -65,26 +65,34 @@ const RecommendedBrandsCarousel = ({ style }) => {
 
     return (
         <TemplateBox style={style}>
-            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
-                <TemplateText size={18} bold>
-                    Recommended Brands
-                    {'\n'}
-                    <TemplateText size={10} color={IOS_BLUE}>(powered by OpenAI)</TemplateText>
-                </TemplateText>
-                <TemplateBox flex />
-                <TemplateTouchable
-                    onPress={() => navigation.navigate(RECOMMENDED_BRANDS, { selectedCategory })}
-                >
-                    <TemplateText startCase size={14} underLine color={IOS_BLUE}>
-                        See All
-                    </TemplateText>
-                </TemplateTouchable>
-            </TemplateBox>
+            { brandCategories && (
+                <TemplateBox>
+                    <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
+                        <TemplateText size={18} bold>
+                            Recommended Brands
+                            {'\n'}
+                            <TemplateText size={10} color={IOS_BLUE}>
+                                (powered by OpenAI)
+                            </TemplateText>
+                        </TemplateText>
+                        <TemplateBox flex />
+                        <TemplateTouchable
+                            onPress={() => navigation.navigate(RECOMMENDED_BRANDS, { selectedCategory })}
+                        >
+                            <TemplateText startCase size={14} underLine color={IOS_BLUE}>
+                                See All
+                            </TemplateText>
+                        </TemplateTouchable>
+                    </TemplateBox>
 
-            <TemplateText size={13} color={BLACK} style={styles.subtitle}>
-                Check out our weekly AI recommended brands based on your preferences in your portfolio.
-                These brands may not be on our platform yet, but you can request to collaborate with them.
-            </TemplateText>
+                    <TemplateText size={13} color={BLACK} style={styles.subtitle}>
+                        Check out our weekly AI
+                        recommended brands based on your preferences in your portfolio.
+                        These brands may not be on our platform yet,
+                        but you can request to collaborate with them.
+                    </TemplateText>
+                </TemplateBox>
+            )}
             <TemplateCarousel
                 data={brandCategories}
                 renderItem={({ item }) => (
@@ -106,6 +114,7 @@ const RecommendedBrandsCarousel = ({ style }) => {
                 )}
                 contentContainerStyle={styles.cardCarousel}
                 snapToInterval={SCREEN_WIDTH / 1.6}
+                keyExtractor={(item, index)=> `${item?.name}-${index}`}
             />
         </TemplateBox>
     );

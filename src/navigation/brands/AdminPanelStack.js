@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import {
+    ACTIVE_CREATORS,
     ADD_PROJECT,
     ADMIN_PANEL,
     BRAND_OFFERS,
@@ -26,6 +27,7 @@ import WebviewScreen from '../../screens/webview/WebviewScreen';
 import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfilesScreen';
 import ChatsStack from '../chats/ChatsStack';
 import BrandsProfileStack from './BrandsProfileStack';
+import ActiveCreatorsScreen from '../../screens/brands/admin/ActiveCreatorsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -91,6 +93,11 @@ const AdminPanelStack = () => (
             name={BRANDS_PROFILE_STACK}
             options={TRANSPARENT_HEADER}
             component={BrandsProfileStack}
+        />
+        <Screen
+            name={ACTIVE_CREATORS}
+            options={TRANSPARENT_HEADER}
+            component={ActiveCreatorsScreen}
         />
     </Navigator>
 );

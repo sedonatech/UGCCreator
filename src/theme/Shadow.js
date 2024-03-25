@@ -56,6 +56,7 @@ export const shadowStyle = StyleSheet.create({
 });
 
 export const SHADOW = (type, backgroundColor, restProps) => {
+    if (!backgroundColor || backgroundColor === 'transparent') return null;
     const style = shadowStyle[type || 'default'];
     return {
         ...style,

@@ -22,7 +22,6 @@ const ChatRoomCard = ({
 
     return (
         <>
-
             <TemplateBox
                 width={wp(354)}
                 borderRadius={wp(20)}
@@ -40,7 +39,7 @@ const ChatRoomCard = ({
                     style={styles.image}
                 />
 
-                <TemplateBox>
+                <TemplateBox onPress={onPress}>
                     <TemplateText bold size={wp(16)}>
                         {name}
                     </TemplateText>
@@ -75,10 +74,14 @@ const ChatRoomCard = ({
 
 ChatRoomCard.propTypes = {
     name: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
     onPress: PropTypes.func.isRequired,
-    lastLoginTime: PropTypes.string.isRequired,
+    lastLoginTime: PropTypes.string,
     id: PropTypes.string.isRequired,
+};
+ChatRoomCard.defaultProps = {
+    lastLoginTime: null,
+    imageUrl: DEFAULT_CREATOR_WORK_SAMPLE_IMAGE,
 };
 
 const styles = StyleSheet.create({

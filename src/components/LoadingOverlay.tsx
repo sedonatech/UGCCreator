@@ -10,15 +10,16 @@ import { wp } from '../Utils/getResponsiveSize';
 
 interface LoadingOverlayProps {
     message?: string
-    ml?: number
+    ml?: number,
+    backgroundColor?: string
 }
-const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0 }) => (
+const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0, backgroundColor = BLACK_40 }) => (
     <TemplateBox
         height={SCREEN_HEIGHT}
         width={SCREEN_WIDTH}
         alignItems="center"
         justifyContent="center"
-        backgroundColor={BLACK_40}
+        backgroundColor={backgroundColor}
         absolute
         ml={ml}
         flex

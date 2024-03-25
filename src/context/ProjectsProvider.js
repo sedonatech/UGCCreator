@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import useProjects from '../hooks/brands/useProjects';
@@ -11,22 +11,15 @@ const { Provider, Consumer: ProjectsConsumer } = ProjectsContext;
 
 const ProjectsProvider = ({ children }) => {
     const { auth } = useAuthContext();
+    const [projectLimits, setProjectLimits] = useState(5);
 
     const userType = auth?.profile?.type;
 
-    const { creators } = useGetCreators();
+    const { creators, getCreators } = useGetCreators();
 
     const getEnrolledCreators = (creatorIds) => {
         if (!creatorIds && !creators) return [];
-        return creators?.reduce((acc, cr) => {
-            creatorIds?.forEach((id) => {
-                if (id === cr?.id) {
-                    acc?.push(cr);
-                }
-            });
-
-            return acc;
-        }, []);
+        return getCreators(creatorIds);
     };
 
     const {
@@ -58,13 +51,15 @@ const ProjectsProvider = ({ children }) => {
         enrollToProject,
         getEnrolledCreators,
         updateProjectStatus,
+        projectLimits,
+        setProjectLimits,
     };
 
     useEffect(() => {
         if (userType === 'creator') {
-            getAllProjects();
+            getAllProjects(projectLimits);
         } else {
-            getProjects();
+            getProjects(projectLimits);
         }
     }, [userType]);
 

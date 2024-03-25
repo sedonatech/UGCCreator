@@ -5,6 +5,7 @@ import recommendedCreators from './defaults/recommendedCreators.json';
 import onboardingEducation from './defaults/onboardingEducation.json';
 import subscriptionBenefits from './defaults/subscriptionBenefits.json';
 import androidSubscription from './defaults/androidSubscription.json';
+import support from './defaults/support.json';
 
 export default {
     feed,
@@ -14,4 +15,5 @@ export default {
     onboardingEducation,
     subscriptionBenefits,
     androidSubscription,
+    support,
 };

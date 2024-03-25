@@ -10,7 +10,13 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const AppStack = () => (
-    <Navigator initialRouteName={APP_TABS} screenOptions={SWITCH}>
+    <Navigator
+        initialRouteName={APP_TABS}
+        screenOptions={{
+            ...SWITCH,
+            freezeOnBlur: true,
+        }}
+    >
         <Screen
             name={APP_TABS}
             options={{ headerShown: false }}

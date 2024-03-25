@@ -1,10 +1,12 @@
 import React, {
     useLayoutEffect, useMemo, useState,
 } from 'react';
-import { Animated, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
-import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
+import {
+    BLACK, GREEN, WHITE, WHITE_40,
+} from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
@@ -63,8 +65,6 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
         return brands?.find(({ id }) => id === currentProject?.brandId);
     }, [currentProject?.brandId, brands]);
 
-    const pan = React.useRef(new Animated.ValueXY()).current;
-
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -91,34 +91,10 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: pan.y } } }],
-                {
-                    useNativeDriver: false,
-                },
-            )}
             contentContainerStyle={styles.contentContainer}
         >
             <TemplateBox
                 height={SCREEN_HEIGHT / 2.4}
-                style={{
-                    transform: [
-                        {
-                            translateY: pan.y.interpolate({
-                                inputRange: [-1000, 0],
-                                outputRange: [-200, 0],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                        {
-                            scale: pan.y.interpolate({
-                                inputRange: [-3000, 0],
-                                outputRange: [20, 1],
-                                extrapolate: 'clamp',
-                            }),
-                        },
-                    ],
-                }}
             >
                 <BackgroundImage
                     source={{ uri: currentProject?.image }}

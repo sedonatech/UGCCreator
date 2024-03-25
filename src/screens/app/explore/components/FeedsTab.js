@@ -29,7 +29,7 @@ const FeedsTab = () => {
             </TemplateBox>
             <TemplateText size={13} color={BLACK} style={styles.subtitle}>
                 Check out weekly content updates, these include:
-                general tips, hooks examples, photo andvideo editing tips,
+                general tips, hooks examples, photo and video editing tips,
                 video lessons and ideas.
             </TemplateText>
             {

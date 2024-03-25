@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import TemplateBox from '../../../../components/TemplateBox';
@@ -21,28 +21,26 @@ const BrandsTab = ({ data }: { data: Array<Props> }) => {
 
     return (
         <TemplateBox ph={WRAPPER_MARGIN}>
-            {!!data?.length && data?.sort((a, b) => {
-                const imageA = a?.image ?? '';
-                const imageB = b?.image ?? '';
-                return imageB.localeCompare(imageA)
-            })?.map((brand: Props, index) => (
-                <BrandsCard
-                    key={brand?.id}
-                    image={{ uri: brand?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
-                    title={brand?.name}
-                    shortDescription={brand?.shortDescription}
-                    style={styles.card}
-                    cardWidth={SCREEN_WIDTH - 2 * WRAPPER_MARGIN}
-                    aspectRatio={1.8}
-                    titleSize={16}
-                    descriptionLines={2}
-                    descriptionSize={12}
-                    // @ts-ignore
-                    onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: brand?.id })}
-                    lastLoginTime={brand?.lastLoginTime}
-                />
-            ))}
-
+            <FlatList
+                data={data}
+                keyExtractor={(item) => item?.id}
+                renderItem={({ item }) => (
+                    <BrandsCard
+                        image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
+                        title={item?.name}
+                        shortDescription={item?.shortDescription}
+                        style={styles.card}
+                        cardWidth={SCREEN_WIDTH - 2 * WRAPPER_MARGIN}
+                        aspectRatio={1.8}
+                        titleSize={16}
+                        descriptionLines={2}
+                        descriptionSize={12}
+                        // @ts-ignore
+                        onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
+                        lastLoginTime={item?.lastLoginTime}
+                    />
+                )}
+            />
         </TemplateBox>
     );
 };

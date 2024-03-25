@@ -6,7 +6,7 @@ import {
     TRANSPARENT_HEADER_NO_LOGO,
 } from '../../components/header/ScreenOptions';
 import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
-import {SUBSCRIPTION, WEBVIEW} from '../ScreenNames';
+import { SUBSCRIPTION, WEBVIEW } from '../ScreenNames';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 
 const Stack = createStackNavigator();
