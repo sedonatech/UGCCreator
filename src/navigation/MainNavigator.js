@@ -66,7 +66,8 @@ const MainNavigator = () => {
               && (
                   <Screen name={APP} component={AppStack} />
               )}
-            {isSignedIn
+            {isCreator
+              && isSignedIn
               && !hasSubscription
               && (
                   <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />
