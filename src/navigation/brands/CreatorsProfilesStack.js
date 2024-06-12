@@ -14,33 +14,47 @@ import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfiles
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import ChatsStack from '../chats/ChatsStack';
+import useAuthContext from '../../hooks/auth/useAuthContext';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
-const CreatorsProfilesStack = () => (
-    <Navigator initialRouteName={CREATORS_PROFILES} screenOptions={SWITCH}>
-        <Screen
-            name={CREATORS_PROFILES}
-            options={TRANSPARENT_HEADER}
-            component={CreatorProfilesScreen}
-        />
-        <Screen
-            name={PROFILE}
-            options={TRANSPARENT_HEADER}
-            component={PortfolioScreen}
-        />
-        <Screen
-            name={WEBVIEW}
-            options={TRANSPARENT_HEADER}
-            component={WebviewScreen}
-        />
-        <Screen
-            name={CHATS_STACK}
-            options={TRANSPARENT_HEADER}
-            component={ChatsStack}
-        />
-    </Navigator>
-);
+const CreatorsProfilesStack = () => {
+    const { auth } = useAuthContext();
+    const isCreator = auth?.profile?.type && auth?.profile?.type === 'creator';
+
+    return (
+        <Navigator
+            initialRouteName={CREATORS_PROFILES}
+            screenOptions={{
+                headerShown: !isCreator,
+                ...SWITCH,
+                animation: 'none',
+                animationEnabled: false,
+            }}
+        >
+            <Screen
+                name={CREATORS_PROFILES}
+                options={{...TRANSPARENT_HEADER, animation: 'none'}}
+                component={CreatorProfilesScreen}
+            />
+            <Screen
+                name={PROFILE}
+                options={TRANSPARENT_HEADER}
+                component={PortfolioScreen}
+            />
+            <Screen
+                name={WEBVIEW}
+                options={TRANSPARENT_HEADER}
+                component={WebviewScreen}
+            />
+            <Screen
+                name={CHATS_STACK}
+                options={TRANSPARENT_HEADER}
+                component={ChatsStack}
+            />
+        </Navigator>
+    );
+};
 
 export default CreatorsProfilesStack;

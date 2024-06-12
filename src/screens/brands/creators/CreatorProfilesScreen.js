@@ -155,7 +155,11 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 keyExtractor={(item, index) => (`${item?.id}-${index}`)}
                 ListHeaderComponent={(
                     <>
-                        <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
+                        <TemplateBox
+                            mt={HEADER_MARGIN}
+                            alignItems="center"
+                            justifyContent="center"
+                        >
                             <TemplateText
                                 size={18}
                                 bold

@@ -612,6 +612,8 @@ PODS:
     - React-Core
     - SSZipArchive (~> 2.2.2)
   - DoubleConversion (1.1.6)
+  - FBAEMKit (17.0.0):
+    - FBSDKCoreKit_Basics (= 17.0.0)
   - FBLazyVector (0.71.1)
   - FBReactNativeSpec (0.71.1):
     - RCT-Folly (= 2021.07.22.00)
@@ -620,6 +622,18 @@ PODS:
     - React-Core (= 0.71.1)
     - React-jsi (= 0.71.1)
     - ReactCommon/turbomodule/core (= 0.71.1)
+  - FBSDKCoreKit (17.0.0):
+    - FBAEMKit (= 17.0.0)
+    - FBSDKCoreKit_Basics (= 17.0.0)
+  - FBSDKCoreKit_Basics (17.0.0)
+  - FBSDKGamingServicesKit (17.0.0):
+    - FBSDKCoreKit (= 17.0.0)
+    - FBSDKCoreKit_Basics (= 17.0.0)
+    - FBSDKShareKit (= 17.0.0)
+  - FBSDKLoginKit (17.0.0):
+    - FBSDKCoreKit (= 17.0.0)
+  - FBSDKShareKit (17.0.0):
+    - FBSDKCoreKit (= 17.0.0)
   - Firebase/Analytics (10.0.0):
     - Firebase/Core
   - Firebase/Auth (10.0.0):
@@ -1076,6 +1090,21 @@ PODS:
     - React-Core
   - react-native-document-picker (8.1.4):
     - React-Core
+  - react-native-fbsdk-next (13.0.0):
+    - React-Core
+    - react-native-fbsdk-next/Core (= 13.0.0)
+    - react-native-fbsdk-next/Login (= 13.0.0)
+    - react-native-fbsdk-next/Share (= 13.0.0)
+  - react-native-fbsdk-next/Core (13.0.0):
+    - FBSDKCoreKit (~> 17.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Login (13.0.0):
+    - FBSDKLoginKit (~> 17.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Share (13.0.0):
+    - FBSDKGamingServicesKit (~> 17.0.0)
+    - FBSDKShareKit (~> 17.0.0)
+    - React-Core
   - react-native-mail (6.1.1):
     - React-Core
   - react-native-pdf (6.6.2):
@@ -1281,6 +1310,9 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -1299,6 +1331,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-mail (from `../node_modules/react-native-mail`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-restart (from `../node_modules/react-native-restart`)
@@ -1353,6 +1386,12 @@ SPEC REPOS:
     - abseil
     - Base64
     - BoringSSL-GRPC
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKGamingServicesKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -1438,6 +1477,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blob-util"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
   react-native-mail:
     :path: "../node_modules/react-native-mail"
   react-native-pdf:
@@ -1543,8 +1584,14 @@ SPEC CHECKSUMS:
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CodePush: aa3cc7e07b4e9396ab2e5d7dbbf317037cba6ff4
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
   FBLazyVector: ad72713385db5289b19f1ead07e8e4aa26dcb01d
   FBReactNativeSpec: df2602c11e33d310433496e28a48b4b2be652a61
+  FBSDKCoreKit: dac911b656816f8d0b06e5fa4bac60e89505bb3b
+  FBSDKCoreKit_Basics: 92b7b7458d57091370b0b6cc197578874c3b4b16
+  FBSDKGamingServicesKit: 0ae05466560dca03aa6c8691746e664c351b5d9e
+  FBSDKLoginKit: 5d5271ebfd1e39c6b071de8db5c4bd6255be3561
+  FBSDKShareKit: 09dbbe11cf43a4a831b92f064f974e9a01b4f8bc
   Firebase: 1b810f3d0c0532e27a48f1961f8c0400a668a2cf
   FirebaseABTesting: 40774deef367dcc7b736b6c26dd59ce0fab42f41
   FirebaseAnalytics: 9921a52739f4ab66099da31b6e0243db78a3ac0a
@@ -1583,7 +1630,7 @@ SPEC CHECKSUMS:
   RCTTypeSafety: c276d85975bde3d8448907235c70bf0da257adfd
   React: e481a67971af1ce9639c9f746b753dd0e84ca108
   React-callinvoker: 1051c04a94fa9d243786b86380606bad701a3b31
-  React-Codegen: 395450333e191f2d1d883a4f9616315761d5d3f7
+  React-Codegen: de309e66e1fb4806a7f1e3ca7e6bdc6f374d0d52
   React-Core: a840bd00d4a3c72a3afedde0ed3075e33dc66d3d
   React-CoreModules: 59245305f41ff0adfeac334acc0594dea4585a7c
   React-cxxreact: 49accd2954b0f532805dbcd1918fa6962f32f247
@@ -1594,6 +1641,7 @@ SPEC CHECKSUMS:
   React-logger: 60a0b5f8bed667ecf9e24fecca1f30d125de6d75
   react-native-blob-util: 4949dcc0dd5ee25fcb5abe0687f67fa3d5cdf05a
   react-native-document-picker: a9bd26996d1b2e4f412dd186041714c79af381d0
+  react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-pdf: 33c622cbdf776a649929e8b9d1ce2d313347c4fa
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
@@ -1648,6 +1696,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 921eb014669cf9c718ada68b08d362517d564e0c
 
-PODFILE CHECKSUM: 06727746fea63ff7574b5549462835c8b350f5e7
+PODFILE CHECKSUM: ad17b10e08da206ebf9cbc78b2c4046d8d7542cb
 
-COCOAPODS: 1.15.0
+COCOAPODS: 1.13.0
