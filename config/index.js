@@ -22,6 +22,8 @@ const reviewPromptProps = {
     link: mainDomain,
 };
 
+const fbAppID = '2996542933821709';
+
 export default {
     overrideEntitlements,
     overrideSubscription,
@@ -31,4 +33,5 @@ export default {
     firebaseServerKey,
     mainDomain,
     reviewPromptProps,
+    fbAppID,
 };
