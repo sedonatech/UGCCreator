@@ -1,10 +1,12 @@
 #import "AppDelegate.h"
-
 #import <React/RCTBundleURLProvider.h>
 #import <Firebase.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
 #import <CodePush/CodePush.h>
+#import <AuthenticationServices/AuthenticationServices.h>
+#import <SafariServices/SafariServices.h>
+#import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 
 @implementation AppDelegate
 
@@ -16,23 +18,33 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+                       didFinishLaunchingWithOptions:launchOptions];
+
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (BOOL)application:(UIApplication *)application
-   openURL:(NSURL *)url
-   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [RCTLinkingManager application:application openURL:url options:options];
-}
+  if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
+    return YES;
+  }
 
+  if ([RCTLinkingManager application:app openURL:url options:options]) {
+    return YES;
+  }
+
+  return NO;
+}
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
- return [CodePush bundleURL];
+  return [CodePush bundleURL];
 #endif
 }
 

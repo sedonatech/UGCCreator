@@ -30,6 +30,10 @@ target 'UGCCreatorApp' do
 
   pod 'RNPurchases', :path => '../node_modules/react-native-purchases', :inhibit_warnings => true
   pod 'react-native-restart', :path => '../node_modules/react-native-restart'
+  pod 'react-native-fbsdk-next', :path => '../node_modules/react-native-fbsdk-next'
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
 
   use_react_native!(
     :path => config[:reactNativePath],
