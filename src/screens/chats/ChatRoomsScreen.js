@@ -241,6 +241,20 @@ const ChatRoomsScreen = ({ navigation }) => {
         }
     };
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <HeaderIconButton
+                    name="add"
+                    onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
+                    backDropColor={WHITE}
+                    mr={WRAPPER_MARGIN}
+                />
+            ),
+            gestureEnabled: false,
+        });
+    }, [navigation]);
+
     return (
         <KeyboardAvoidingView
             behavior={isIOS ? 'padding' : 'height'}
