@@ -1,10 +1,11 @@
 import React, {
+    useEffect,
     useLayoutEffect, useState,
 } from 'react';
 import {
     ScrollView, StyleSheet,
 } from 'react-native';
-
+import firestore from '@react-native-firebase/firestore';
 import {
     DEFAULT_GRADIENT,
     WHITE, WHITE_40,
@@ -38,9 +39,29 @@ const BRAND_DETAILS_TABS = [
 const BrandDetailsScreen = ({ route, navigation }) => {
     const brandId = route?.params?.brandId;
 
-    const { selectedBrand } = useGetBrands(brandId);
-
     const [selectedTab, setSelectedTab] = useState(BRAND_DETAILS_TABS[0]);
+
+    const [selectedBrand, setSelectedBrand] = useState({});
+
+    useEffect(() => {
+        if (brandId)getProfile();
+    }, [brandId]);
+
+    const getProfile = async () => {
+        try {
+            const documentSnapshot = await firestore().collection('users').doc(brandId).get();
+            if (documentSnapshot.exists) {
+                setSelectedBrand({
+                    id: documentSnapshot.id,
+                    ...documentSnapshot.data(),
+                });
+            } else {
+                console.log('Document does not exist');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -56,6 +77,8 @@ const BrandDetailsScreen = ({ route, navigation }) => {
     }, [navigation]);
 
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
+
+    console.log({selectedBrand})
 
     return (
 
