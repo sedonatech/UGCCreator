@@ -1,10 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { APP_TABS, SUBSCRIPTION } from '../ScreenNames';
+import { APP_TABS, CREATORS_PROFILES_STACK, SUBSCRIPTION } from '../ScreenNames';
 import AppTabs from './AppTabs';
-import { SWITCH, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
+import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO, TRANSPARENT_NO_LOGO_HEADER } from '../../components/header/ScreenOptions';
 import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
+import CreatorsProfilesStack from '../brands/CreatorsProfilesStack';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -26,6 +27,11 @@ const AppStack = () => (
             name={SUBSCRIPTION}
             component={SubscriptionScreen}
             options={TRANSPARENT_HEADER_NO_LOGO}
+        />
+        <Screen
+            name={CREATORS_PROFILES_STACK}
+            component={CreatorsProfilesStack}
+            options={TRANSPARENT_HEADER}
         />
     </Navigator>
 );
