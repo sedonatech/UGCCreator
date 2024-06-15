@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-
+import { orderBy } from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
@@ -22,8 +22,10 @@ const BrandsCarousel = ({ style }) => {
 
     const [brands, setBrands] = useState([]);
 
-    const brandsRef = firestore().collection(USERS_COLLECTION).limit(7)
-        .where('type', '==', 'brand');
+    const brandsRef = firestore().collection(USERS_COLLECTION)
+        .where('image', '>', '')
+        .where('type', '==', 'brand')
+        .limit(20);
     const fetchBrands = async () => {
         try {
             const fetchedBrands = await brandsRef
@@ -31,7 +33,10 @@ const BrandsCarousel = ({ style }) => {
                 .then((querySnapshot) => querySnapshot?.docs
                     ?.map((doc) => doc?.data()));
 
-            setBrands(fetchedBrands);
+            const filteredBrands = orderBy(fetchedBrands?.filter((brand) => !!brand?.lastLoginTime), 'lastLoginTime', 'desc');
+            const filteredBrands2 = fetchedBrands?.filter((brand) => !brand?.lastLoginTime);
+            const mergedBrands = [...filteredBrands, ...filteredBrands2]?.slice(0, 7);
+            setBrands(mergedBrands);
         } catch (e) {
             console.log(e);
         }
