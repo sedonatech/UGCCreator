@@ -48,11 +48,11 @@ const ChatsStack = () => (
             options={TRANSPARENT_NO_LOGO_HEADER}
             component={StartSupportChatScreen}
         />
-        <Screen
+        {/* <Screen
             name={CREATORS_PROFILES_STACK}
             component={CreatorsProfilesStack}
             options={TRANSPARENT_NO_LOGO_HEADER}
-        />
+        /> */}
     </Navigator>
 
 );
