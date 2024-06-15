@@ -1,24 +1,75 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-
+import firestore from '@react-native-firebase/firestore';
 import TemplateBox from '../../components/TemplateBox';
 import { wp } from '../../Utils/getResponsiveSize';
 import { SPACE_MEDIUM } from '../../theme/Layout';
 import { ERROR_RED, GREY, WHITE } from '../../theme/Colors';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../consts/content/Portfolio';
 import TemplateText from '../../components/TemplateText';
-import useChatMessages from '../../hooks/chats/useChatMessages';
+// import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
+import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
+import { CHATS } from '../../navigation/ScreenNames';
+import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 
 const ChatRoomCard = ({
     id,
-    name,
-    imageUrl,
-    onPress,
-    lastLoginTime,
+    item,
+    userId,
+    navigation,
 }) => {
-    const { unreadMessagesCount } = useChatMessages(id);
+    // const { unreadMessagesCount } = useChatMessages(id);
+    const usersRef = firestore().collection('users');
+
+    const [users, setUsers] = useState([]);
+    const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
+
+    useEffect(() => {
+        if (item) fetchUsers([item?.brandId, item?.creatorId]);
+    }, [item]);
+
+    const fetchUsers = async (ids) => {
+        try {
+            const fetchedUsers = await usersRef
+                .where('id', 'in', ids)
+                .get()
+                .then((querySnapshot) => querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        ...doc?.data(),
+                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+                    })));
+
+            setUsers(fetchedUsers);
+        } catch (e) {
+            console.error('Error fetching brands:', e);
+        }
+    };
+
+    const receiver = useMemo(() => users?.find(
+        (item) => userId !== item?.id,
+    ), [userId, users]);
+
+    useEffect(() => {
+        if (!id) return () => {};
+        const unsubscribe = firestore()
+            .collection('chatRooms')
+            .doc(id)
+            .collection('messages')
+            .where('read', '==', false)
+            .onSnapshot((snapshot) => {
+                const newMessages = snapshot?.docs?.map((doc) => ({
+                    ...doc?.data(),
+                    id: doc?.id,
+                }));
+                setUnreadMessagesCount(newMessages?.filter(
+                    (message) => message?.user?._id !== userId)?.length);
+            });
+
+        return unsubscribe;
+    }, [id]);
 
     return (
         <>
@@ -29,31 +80,43 @@ const ChatRoomCard = ({
                 selfCenter
                 mt={wp(SPACE_MEDIUM)}
                 backgroundColor={WHITE}
-                onPress={onPress}
                 row
                 alignItems="center"
             >
+                <TemplateBox
+                    width={wp(354)}
+                    absolute
+                    top={0}
+                    left={0}
+                    zIndex={99}
+                    onPress={() => {
+                        navigation.navigate(CHATS, {
+                            chatRoomId: id,
+                            name: receiver?.name,
+                        });
+                    }}
+                />
 
                 <FastImage
-                    source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
+                    source={{ uri: receiver?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                     style={styles.image}
                 />
 
-                <TemplateBox onPress={onPress}>
+                <TemplateBox width='80%'>
                     <TemplateText bold size={wp(16)}>
-                        {name}
+                        {receiver?.userName || receiver?.name}
                     </TemplateText>
                     <TemplateBox height={wp(5)} />
-                    {lastLoginTime && (
+                    {receiver?.lastLoginTime && (
                         <TemplateText size={wp(10)} color={GREY}>
-                            {`Last active ${lastLoginTime}`}
+                            {`Last active ${receiver?.lastLoginTime}`}
                         </TemplateText>
                     )}
                 </TemplateBox>
                 {!!unreadMessagesCount && (
                     <TemplateBox
-                        height={wp(24)}
-                        width={wp(24)}
+                        height={wp(16)}
+                        width={wp(16)}
                         borderRadius={wp(12)}
                         backgroundColor={ERROR_RED}
                         absolute
@@ -73,15 +136,9 @@ const ChatRoomCard = ({
 };
 
 ChatRoomCard.propTypes = {
-    name: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string,
-    onPress: PropTypes.func.isRequired,
-    lastLoginTime: PropTypes.string,
     id: PropTypes.string.isRequired,
 };
 ChatRoomCard.defaultProps = {
-    lastLoginTime: null,
-    imageUrl: DEFAULT_CREATOR_WORK_SAMPLE_IMAGE,
 };
 
 const styles = StyleSheet.create({
