@@ -151,8 +151,8 @@ const ChatsScreen = ({ route }) => {
                 alwaysShowSend
                 showUserAvatar
                 isTyping
-                loadEarlier
-                onLoadEarlier={() => {}}
+                // loadEarlier
+                // onLoadEarlier={() => {}}
                 isLoadingEarlier={false}
                 infiniteScroll
             />
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: WHITE,
+        paddingTop: 120,
     },
 });
 export default ChatsScreen;
