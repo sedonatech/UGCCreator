@@ -48,13 +48,6 @@ const CreatorsProfilesStack = () => {
                 options={TRANSPARENT_HEADER}
                 component={WebviewScreen}
             />
-            {!isCreator && ( // screen messes up navigation in creator flow
-                <Screen
-                    name={CHATS_STACK}
-                    options={TRANSPARENT_HEADER}
-                    component={ChatsStack}
-                />
-            )}
         </Navigator>
     );
 };
