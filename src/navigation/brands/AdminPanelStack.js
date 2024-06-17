@@ -89,11 +89,11 @@ const AdminPanelStack = () => (
             options={TRANSPARENT_HEADER}
             component={ChatsStack}
         />
-        <Screen
+        {/* <Screen
             name={BRANDS_PROFILE_STACK}
             options={TRANSPARENT_HEADER}
             component={BrandsProfileStack}
-        />
+        /> */}
         <Screen
             name={ACTIVE_CREATORS}
             options={TRANSPARENT_HEADER}
