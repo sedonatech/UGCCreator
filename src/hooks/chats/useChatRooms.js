@@ -27,61 +27,74 @@ const useChatRooms = () => {
     const [chatRoomCreated, setChatRoomCreated] = useState(false);
 
     const createChatRoom = async (name, creatorId, brandId, creatorFCMToken, brandFCMToken) => {
-        // try {
-        //     setLoading(true);
-        //     // Create a new chat room only if the user is available to receive messages
-        //     if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId || !name) {
-        //         Alert.alert('The user may not be available at the moment',
-        //             'Please try again later',
-        //             [{
-        //                 text: 'OK',
-        //                 onPress: () => {},
-        //             }], { cancelable: false });
-        //         return;
-        //     }
+        try {
+            setLoading(true);
+            // Create a new chat room only if the user is available to receive messages
+            if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId || !name) {
+                Alert.alert('The user may not be available at the moment',
+                    'Please try again later',
+                    [{
+                        text: 'OK',
+                        onPress: () => {},
+                    }], { cancelable: false });
+                return;
+            }
 
-        //     // Check if the chat room already exists
-        //     const existingChatRoom = chatRooms?.find((chatRoom) => (
-        //         chatRoom?.creatorId === creatorId && chatRoom?.brandId === brandId
-        //     ));
-        //     if (existingChatRoom) {
-        //         Alert.alert('A conversation has already been started',
-        //             'You can check the chats tab and continue chatting',
-        //             [{
-        //                 text: 'OK',
-        //                 onPress: () => navigation.navigate(CHATS_STACK),
-        //             }], { cancelable: false });
-        //         return;
-        //     }
-        //     const response = await firestore().collection(CHAT_ROOMS).add({
-        //         name,
-        //         creatorId,
-        //         brandId,
-        //         createdAt: firestore.FieldValue.serverTimestamp(),
-        //         creatorFCMToken,
-        //         brandFCMToken,
-        //     });
+            // Check if the chat room already exists, extend to handle creator to creator chat
+            const foundBrandToCreatorChat = await firestore()
+                .collection(CHAT_ROOMS)
+                .where('brandId', '==', brandId)
+                .where('creatorId', '==', creatorId)
+                .get();
 
-        //     if (response) {
-        //         setChatRoomCreated(true);
-        //         Alert.alert('A conversation has been started',
-        //             'You can check the chats tab and continue chatting',
-        //             [{
-        //                 text: 'OK',
-        //                 onPress: () => navigation.navigate(CHATS_STACK),
-        //             }], { cancelable: false });
-        //     }
-        // } catch (error) {
-        //     console.log('[CREATE CHAT ROOM ERROR]', error);
-        //     if (error.message) {
-        //         Alert.alert('The user may not be available at the moment',
-        //             'Please try again later',
-        //             [{
-        //                 text: 'OK',
-        //                 onPress: () => {},
-        //             }], { cancelable: false });
-        //     }
-        // }
+            const foundCreatorToCreatorChat = await firestore()
+                .collection(CHAT_ROOMS)
+                .where('brandId', '==', creatorId)
+                .where('creatorId', '==', brandId)
+                .get();
+
+
+            const existingChatRoom = foundBrandToCreatorChat?.docs?.length
+             || foundCreatorToCreatorChat?.docs?.length;
+
+            if (existingChatRoom) {
+                Alert.alert('A conversation has already been started',
+                    'You can check the chats tab and continue chatting',
+                    [{
+                        text: 'OK',
+                        onPress: () => navigation.navigate(CHATS_STACK),
+                    }], { cancelable: false });
+                return;
+            }
+            const response = await firestore().collection(CHAT_ROOMS).add({
+                name,
+                creatorId,
+                brandId,
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                creatorFCMToken,
+                brandFCMToken,
+            });
+
+            if (response) {
+                setChatRoomCreated(true);
+                Alert.alert('A conversation has been started',
+                    'You can check the chats tab and continue chatting',
+                    [{
+                        text: 'OK',
+                        onPress: () => navigation.navigate(CHATS_STACK),
+                    }], { cancelable: false });
+            }
+        } catch (error) {
+            console.log('[CREATE CHAT ROOM ERROR]', error);
+            if (error.message) {
+                Alert.alert('The user may not be available at the moment',
+                    'Please try again later',
+                    [{
+                        text: 'OK',
+                        onPress: () => {},
+                    }], { cancelable: false });
+            }
+        }
         // setLoading(false);
     };
 
@@ -128,16 +141,16 @@ const useChatRooms = () => {
 
     // Delete chat room
     const deleteChatRoom = async (chatRoomId) => {
-        // try {
-        //     setDeleteChatRoomLoading(true);
-        //     await firestore()
-        //         .collection(CHAT_ROOMS)
-        //         .doc(chatRoomId)
-        //         .delete();
-        // } catch (error) {
-        //     console.log('[DELETE CHAT ROOM ERROR]', error);
-        // }
-        // setDeleteChatRoomLoading(false);
+        try {
+            setDeleteChatRoomLoading(true);
+            await firestore()
+                .collection(CHAT_ROOMS)
+                .doc(chatRoomId)
+                .delete();
+        } catch (error) {
+            console.log('[DELETE CHAT ROOM ERROR]', error);
+        }
+        setDeleteChatRoomLoading(false);
     };
 
     return {

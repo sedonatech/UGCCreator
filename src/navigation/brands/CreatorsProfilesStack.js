@@ -35,7 +35,7 @@ const CreatorsProfilesStack = () => {
         >
             <Screen
                 name={CREATORS_PROFILES}
-                options={{...TRANSPARENT_HEADER, animation: 'none'}}
+                options={{ ...TRANSPARENT_HEADER, animation: 'none' }}
                 component={CreatorProfilesScreen}
             />
             <Screen
@@ -47,11 +47,6 @@ const CreatorsProfilesStack = () => {
                 name={WEBVIEW}
                 options={TRANSPARENT_HEADER}
                 component={WebviewScreen}
-            />
-            <Screen
-                name={CHATS_STACK}
-                options={TRANSPARENT_HEADER}
-                component={ChatsStack}
             />
         </Navigator>
     );

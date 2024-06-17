@@ -117,6 +117,11 @@ const HomeScreen = ({ navigation }) => {
             <TemplateBox height={236}>
                 <AffiliateBrandsCarousel />
             </TemplateBox>
+            {features?.showBrandsCarousel && (
+                <TemplateBox height={236} mt={WRAPPER_MARGIN} mb={12}>
+                    <BrandsCarousel />
+                </TemplateBox>
+            )}
 
             {previousResponse === null && features?.showReviewPrompt && (
                 <TemplateBox
@@ -198,9 +203,7 @@ const HomeScreen = ({ navigation }) => {
             )}
             <RecommendedBrandsCarousel style={styles.carousel} />
             <FeedsTab />
-            {features?.showBrandsCarousel && (
-                <BrandsCarousel />
-            )}
+
         </ScrollView>
     );
 };

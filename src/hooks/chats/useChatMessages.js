@@ -85,28 +85,28 @@ const useChatMessages = (selectedChatRoomId) => {
     };
 
     useEffect(() => {
-        if (!selectedChatRoomId) return () => {};
-        const unsubscribe = firestore()
-            .collection(CHAT_ROOMS)
-            .doc(selectedChatRoomId)
-            .collection(MESSAGES)
-            .where('read', '==', false)
-            .where('user._id', '!=', auth?.profile?.id)
-            .onSnapshot((snapshot) => {
-                const newMessages = snapshot?.docs?.map((doc) => ({
-                    ...doc?.data(),
-                    id: doc?.id,
-                }));
-                setUnreadMessagesCount(newMessages?.length);
-                // Set new unread messages
-                // setUnreadMessagesCount(
-                //     newMessages?.filter((message) => !message?.read)?.length,
-                // );
+        // if (!selectedChatRoomId) return () => {};
+        // const unsubscribe = firestore()
+        //     .collection(CHAT_ROOMS)
+        //     .doc(selectedChatRoomId)
+        //     .collection(MESSAGES)
+        //     .where('read', '==', false)
+        //     .where('user._id', '!=', auth?.profile?.id)
+        //     .onSnapshot((snapshot) => {
+        //         const newMessages = snapshot?.docs?.map((doc) => ({
+        //             ...doc?.data(),
+        //             id: doc?.id,
+        //         }));
+        //         setUnreadMessagesCount(newMessages?.length);
+        //         // Set new unread messages
+        //         // setUnreadMessagesCount(
+        //         //     newMessages?.filter((message) => !message?.read)?.length,
+        //         // );
 
-                console.log(JSON.stringify(newMessages, null, 2));
-            });
+        //         console.log(JSON.stringify(newMessages, null, 2));
+        //     });
 
-        return unsubscribe;
+        // return unsubscribe;
     }, [selectedChatRoomId]);
 
     return {

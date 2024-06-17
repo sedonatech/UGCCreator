@@ -26,10 +26,11 @@ const BrandsScreen = ({ navigation }) => {
 
     const [brandsData, setBrandsData] = useState([]);
 
-    const [limit, setLimit] = useState(6);
+    const [limit, setLimit] = useState(20);
 
     const brandsRef = firestore().collection(USERS_COLLECTION)
-        .where('type', '==', 'brand').limit(limit);
+        .where('type', '==', 'brand')
+        .limit(limit);
     const fetchBrands = async () => {
         try {
             const fetchedBrands = await brandsRef
@@ -94,7 +95,7 @@ const BrandsScreen = ({ navigation }) => {
                     descriptionSize={12}
                     // @ts-ignore
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
-                    lastLoginTime={item?.lastLoginTime}
+                    // lastLoginTime={item?.lastLoginTime}
                 />
             )}
             ListHeaderComponent={() => (

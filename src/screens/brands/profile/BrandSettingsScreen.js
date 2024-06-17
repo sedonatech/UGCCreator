@@ -177,7 +177,7 @@ const BrandSettingsScreen = ({ navigation }) => {
         >
             {
                 profileCompleteRatio < 1 && (
-                    <TemplateBox mv={SPACE_XLARGE}>
+                    <TemplateBox mv={SPACE_XLARGE} mt={80}>
                         <ProfileStatusCard
                             title={BRAND_PROFILE_INCOMPLETE_TITLE}
                             description={BRAND_PROFILE_INCOMPLETE_MESSAGE}
