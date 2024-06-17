@@ -1,10 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { BRANDS_TABS, SUBSCRIPTION } from '../ScreenNames';
-import { SWITCH, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
+import { BRANDS_TABS, SUBSCRIPTION, UPDATE_BRAND_PROFILE } from '../ScreenNames';
+import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import BrandsTabs from './BrandsTabs';
 import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
+import UpdateBrandProfileScreen from '../../screens/brands/profile/UpdateBrandProfileScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -20,6 +21,11 @@ const BrandsStack = () => (
             name={SUBSCRIPTION}
             component={SubscriptionScreen}
             options={TRANSPARENT_HEADER_NO_LOGO}
+        />
+        <Screen
+            name={UPDATE_BRAND_PROFILE}
+            options={TRANSPARENT_HEADER}
+            component={UpdateBrandProfileScreen}
         />
     </Navigator>
 );
