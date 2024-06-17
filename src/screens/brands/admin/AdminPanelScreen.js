@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import {
     ScrollView, StyleSheet, RefreshControl,
+    Alert,
 } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import { useIsFocused } from '@react-navigation/native';
@@ -13,6 +14,10 @@ import {
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import {
     ADD_PROJECT, BRAND_PROJECT_DETAILS,
+    BRAND_SETTINGS,
+    BRANDS_PROFILE_STACK,
+    BRANDS_STACK,
+    UPDATE_BRAND_PROFILE,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
@@ -33,11 +38,15 @@ import { wp } from '../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../components/TemplateIcon';
 import useAppReview from '../../../hooks/useAppReview';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+import { DEFAULT_BRAND_DESCRIPTION } from '../../../consts/content/Portfolio';
 
 const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
+
+    const profileImage = profile?.image;
+    const defaultDescription = profile.description === DEFAULT_BRAND_DESCRIPTION;
 
     const isFocused = useIsFocused();
 
@@ -91,6 +100,21 @@ const AdminPanelScreen = ({ navigation }) => {
     ]);
 
     const { previousResponse, handleRate } = useAppReview();
+
+    useEffect(() => {
+        if (!profileImage || defaultDescription) {
+            Alert.alert(
+                'Update Profile',
+                'Please upload a profile image & brand description to improve your brand identification',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate(UPDATE_BRAND_PROFILE),
+                    },
+                ],
+            );
+        }
+    }, [profileImage]);
 
     return (
         <ScrollView
