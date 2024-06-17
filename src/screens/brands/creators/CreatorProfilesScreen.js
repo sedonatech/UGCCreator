@@ -1,10 +1,15 @@
 import React, {
+    useCallback,
     useEffect, useRef, useState,
 } from 'react';
 import {
     ActivityIndicator,
     FlatList, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, View,
 } from 'react-native';
+import {
+    throttle, startCase,
+    toLower,
+} from 'lodash';
 import { useIsFocused } from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import firestore from '@react-native-firebase/firestore';
@@ -67,7 +72,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
     const [filteredData, setFilteredCreators] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const searchActive = search?.includes('.com') || selectedFilters?.length;
+    const searchActive = search?.length > 2 || selectedFilters?.length;
 
     const creatorsRef = firestore().collection(USERS_COLLECTION)
         .where('type', '==', 'creator')
@@ -78,6 +83,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
         .limit(limit);
 
     if (search?.includes('.com')) filteredCreatorsRef = filteredCreatorsRef.where('email', '==', search?.toLowerCase());
+    if (search?.length > 2 && !search?.includes('.com')) filteredCreatorsRef = filteredCreatorsRef.where('userName', '==', startCase(toLower(search)));
     if (selectedFilters?.length) {
         const filterArray = selectedFilters.map((filter) => filter.toLowerCase());
         filteredCreatorsRef = filteredCreatorsRef.where('categories', 'array-contains-any', filterArray);
@@ -100,16 +106,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
         fetchData(); // Call the fetch function
     }, [limit]);
 
-    // search creator by email / selected filters
-    useEffect(() => {
-        if (!searchActive) {
-            setFilteredCreators([]);
-            setLimit(10);
-            return;
-        }
-        searchCreator();
-    }, [search, selectedFilters]);
-
     const searchCreator = async () => {
         setLoading(true);
         setFilteredCreators([]);
@@ -123,6 +119,20 @@ const CreatorProfilesScreen = ({ navigation }) => {
         setLoading(false);
         setFilteredCreators(data);
     };
+
+    const throttledSearchCreator = useCallback(
+        throttle(searchCreator, 300), [search, selectedFilters],
+    );
+
+    // search creator by email / selected filters
+    useEffect(() => {
+        if (!searchActive) {
+            setFilteredCreators([]);
+            setLimit(10);
+            return;
+        }
+        throttledSearchCreator();
+    }, [searchActive, search, selectedFilters, throttledSearchCreator]);
 
     const refRBSheet = useRef();
 
@@ -170,7 +180,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         </TemplateBox>
                         <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
                             <TemplateTextInput
-                                placeholder="Search creators by their email"
+                                placeholder="Search"
                                 style={[styles.input, SHADOW('default', WHITE)]}
                                 value={search}
                                 onChangeText={(text) => setSearch(text)}
