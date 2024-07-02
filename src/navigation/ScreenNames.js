@@ -58,6 +58,7 @@ export const BRANDS_PROFILE_STACK = 'BrandsProfileStack';
 export const CREATORS_PROFILES_STACK = 'CreatorsProfilesStack';
 
 export const ADD_PROJECT = 'AddProject';
+export const ADD_EVENT= 'AddEvent';
 
 export const BRAND_PROJECTS = 'BrandProjects';
 
