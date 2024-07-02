@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import {
     ACTIVE_CREATORS,
+    ADD_EVENT,
     ADD_PROJECT,
     ADMIN_PANEL,
     BRAND_OFFERS,
@@ -28,6 +29,7 @@ import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfiles
 import ChatsStack from '../chats/ChatsStack';
 import BrandsProfileStack from './BrandsProfileStack';
 import ActiveCreatorsScreen from '../../screens/brands/admin/ActiveCreatorsScreen';
+import AddEventScreen from '../../screens/brands/admin/AddEventScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -43,6 +45,11 @@ const AdminPanelStack = () => (
             name={ADD_PROJECT}
             options={TRANSPARENT_HEADER}
             component={AddProjectScreen}
+        />
+        <Screen
+            name={ADD_EVENT}
+            options={TRANSPARENT_HEADER}
+            component={AddEventScreen}
         />
         <Screen
             name={BRAND_PROJECTS}
