@@ -38,7 +38,19 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const HomeStack = () => (
-    <Navigator screenOptions={SWITCH}>
+    <Navigator 
+        screenOptions={{
+            ...SWITCH,
+            lazy: true,
+            freezeOnBlur: true,
+            animationEnabled: false,
+            gestureEnabled: false, 
+            transitionSpec: {
+                open: { animation: 'timing', config: { duration: 150 } },
+                close: { animation: 'timing', config: { duration: 200 } },
+            }
+        }}
+    >
         <Screen
             options={TRANSPARENT_HEADER}
             name={HOME}

@@ -27,7 +27,19 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const ProfileStack = () => (
-    <Navigator initialRouteName={PROFILE} screenOptions={SWITCH}>
+    <Navigator initialRouteName={PROFILE} 
+        screenOptions={{
+            ...SWITCH,
+            lazy: true,
+            freezeOnBlur: true,
+            animationEnabled: false,
+            gestureEnabled: false, 
+            transitionSpec: {
+                open: { animation: 'timing', config: { duration: 250 } },
+                close: { animation: 'timing', config: { duration: 200 } },
+            }
+        }}
+    >
         <Screen
             name={PROFILE}
             options={{
