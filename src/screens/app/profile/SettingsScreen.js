@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -17,6 +17,7 @@ import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../Utils/getResponsiveSize';
+import DeleteUserModal from '../../../components/modals/DeleteUserModal';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout, deleteAccount } = useLogout();
@@ -48,6 +49,7 @@ const SettingsScreen = ({ navigation }) => {
     }, [isFocused, profile, user]);
 
     const creatorToolsEnabled = features?.openAIScreen;
+    const [showDeleteUser, setShowDeleteUser] = useState(false)
 
     const settings = [
         {
@@ -97,44 +99,44 @@ const SettingsScreen = ({ navigation }) => {
             },
             icon: 'notifications-outline',
         },
-        {
-            title: 'Privacy',
-            description: 'Manage your privacy settings',
-            onPress: () => {
-                if (mainDomain) {
-                    navigation.navigate(
-                        WEBVIEW,
-                        {
-                            url: mainDomain,
+        // {
+        //     title: 'Privacy',
+        //     description: 'Manage your privacy settings',
+        //     onPress: () => {
+        //         if (mainDomain) {
+        //             navigation.navigate(
+        //                 WEBVIEW,
+        //                 {
+        //                     url: mainDomain,
 
-                        },
-                    );
-                }
-            },
-            icon: 'lock-closed-outline',
-        },
-        {
-            title: 'Help',
-            description: 'Get help with your account',
-            onPress: () => {
-                if (mainDomain) {
-                    navigation.navigate(
-                        WEBVIEW,
-                        {
-                            url: mainDomain,
+        //                 },
+        //             );
+        //         }
+        //     },
+        //     icon: 'lock-closed-outline',
+        // },
+        // {
+        //     title: 'Help',
+        //     description: 'Get help with your account',
+        //     onPress: () => {
+        //         if (mainDomain) {
+        //             navigation.navigate(
+        //                 WEBVIEW,
+        //                 {
+        //                     url: mainDomain,
 
-                        },
-                    );
-                }
-            },
-            icon: 'help-circle-outline',
-        },
-        {
-            title: 'About',
-            description: 'Learn more about us',
-            onPress: () => '',
-            icon: 'information-circle-outline',
-        },
+        //                 },
+        //             );
+        //         }
+        //     },
+        //     icon: 'help-circle-outline',
+        // },
+        // {
+        //     title: 'About',
+        //     description: 'Learn more about us',
+        //     onPress: () => '',
+        //     icon: 'information-circle-outline',
+        // },
         // {
         //     title: 'Subscription',
         //     description: 'Manage Subscription settings',
@@ -146,7 +148,7 @@ const SettingsScreen = ({ navigation }) => {
         {
             title: 'Delete Account',
             description: 'Delete your account',
-            onPress: deleteAccount,
+            onPress: ()=> setShowDeleteUser(true),
             icon: 'trash-outline',
         },
         {
@@ -172,6 +174,7 @@ const SettingsScreen = ({ navigation }) => {
     }, [navigation]);
 
     return (
+        <>
         <FlatList
             showsVerticalScrollIndicator={false}
             style={styles.container}
@@ -199,6 +202,8 @@ const SettingsScreen = ({ navigation }) => {
                 />
             )}
         />
+        <DeleteUserModal onClose={()=> setShowDeleteUser(false)} visible={showDeleteUser} />
+        </>
     );
 };
 
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp(WRAPPER_MARGIN),
     },
     statusCard: {
-        marginTop: HEADER_MARGIN + WRAPPER_MARGIN,
+        marginTop: HEADER_MARGIN,
         marginBottom: WRAPPER_MARGIN * 2,
     },
 });

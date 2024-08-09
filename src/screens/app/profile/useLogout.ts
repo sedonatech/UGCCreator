@@ -44,11 +44,12 @@ const useLogout = () => {
                     text: 'OK',
                     onPress: async () => {
                         try {
+                            await auth().currentUser?.delete();
                             const allKeys = await AsyncStorage.getAllKeys();
                             if (allKeys?.length > 0) {
                                 await AsyncStorage.multiRemove(allKeys);
                             }
-                            await auth().currentUser?.delete();
+                            await auth().signOut();
                             RNRestart.Restart();
                         } catch (e) {
                             console.error(e);
