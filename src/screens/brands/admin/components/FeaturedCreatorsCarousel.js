@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -41,7 +41,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
         setCreators(data);
     };
 
-    const creatorsDataSample = creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE);
+    const creatorsDataSample = useMemo(()=> creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE) ,[creatorsData, SAMPLE_SIZE])
 
     return creatorsDataSample?.length ? (
         <View style={style}>
@@ -86,6 +86,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                             creatorId: item?.id,
                         })}
                         lastLoginTime={item?.lastLoginTime}
+                        mt={12}
                     />
                 )}
                 snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6) + 20}

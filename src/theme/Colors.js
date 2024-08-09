@@ -60,6 +60,7 @@ export const LIGHT_PURPLE = '#ECEDFD';
 export const ACCENT = '#A5C4FD';
 
 export const GREY = '#9CA4AB';
+export const DARK_GREY = '#636363';
 
 export const GREY_SECONDARY = 'rgba(227, 231, 236, 1)';
 

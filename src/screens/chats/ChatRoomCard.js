@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import TemplateBox from '../../components/TemplateBox';
 import { wp } from '../../Utils/getResponsiveSize';
-import { SPACE_MEDIUM } from '../../theme/Layout';
-import { ERROR_RED, GREY, WHITE } from '../../theme/Colors';
+import {  SPACE_SMALL } from '../../theme/Layout';
+import { ERROR_RED, GREY, lightOrange, WHITE } from '../../theme/Colors';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../consts/content/Portfolio';
 import TemplateText from '../../components/TemplateText';
 // import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
@@ -19,6 +19,7 @@ const ChatRoomCard = ({
     item,
     userId,
     navigation,
+    isSupport
 }) => {
     // const { unreadMessagesCount } = useChatMessages(id);
     const usersRef = firestore().collection('users');
@@ -78,7 +79,7 @@ const ChatRoomCard = ({
                 borderRadius={wp(20)}
                 pAll={wp(16)}
                 selfCenter
-                mt={wp(SPACE_MEDIUM)}
+                mt={wp(SPACE_SMALL)}
                 backgroundColor={WHITE}
                 row
                 alignItems="center"
@@ -96,6 +97,13 @@ const ChatRoomCard = ({
                         });
                     }}
                 />
+                {isSupport && 
+                    <View style={{alignSelf: 'flex-start', position: 'absolute', paddingHorizontal: 8, paddingVertical: 2, backgroundColor: lightOrange, right: 20}} >
+                        <TemplateText size={12} medium color={WHITE}>
+                            Support
+                        </TemplateText>
+                    </View>
+                }
 
                 <FastImage
                     source={{ uri: receiver?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
@@ -107,7 +115,7 @@ const ChatRoomCard = ({
                         {receiver?.userName || receiver?.name}
                     </TemplateText>
                     <TemplateBox height={wp(5)} />
-                    {receiver?.lastLoginTime && (
+                    {receiver?.lastLoginTime && !isSupport && (
                         <TemplateText size={wp(10)} color={GREY}>
                             {`Last active ${receiver?.lastLoginTime}`}
                         </TemplateText>

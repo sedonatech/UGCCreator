@@ -1,12 +1,13 @@
 /* eslint-disable max-len */
 /* eslint-disable react-native/no-inline-styles */
-import React, { FC, memo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { FC, memo, useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { PRIMARY, PRIMARY_GRADIENT } from '../theme/Colors';
 import { SHADOW } from '../theme/Shadow';
 import { isAndroid } from '../Utils/Platform';
 import TemplateTouchable from './TemplateTouchable';
+import { wp } from '../Utils/getResponsiveSize';
 
 export interface Props {
     animated?:boolean,
@@ -78,7 +79,8 @@ export interface Props {
     slideInTime?: number,
     slideInDelay?: number
     slideInDirection?: 'left' | 'right' | 'top' | 'bottom'
-    animationType?: 'spring' | 'timing'
+    animationType?: 'spring' | 'timing',
+    slideInX?: number
 }
 const TemplateBox: FC<Props> = ({
     animated,
@@ -150,16 +152,49 @@ const TemplateBox: FC<Props> = ({
     slideInDelay,
     slideInDirection = 'right',
     animationType = 'timing',
+    slideInX = 0,
     ...restProps
 }) => {
     // eslint-disable-next-line no-nested-ternary
-    const Component: any = onPress ? TemplateTouchable : View;
+    // const Component: any = onPress ? TemplateTouchable : View;
+
+    const Component = onPress
+        ? (animated || fadeIn ? (Animated.createAnimatedComponent(TouchableOpacity)) : TouchableOpacity)
+        : (animated || fadeIn ? Animated.View : View) as React.ElementType;
+
+    const fadeOpacity = useRef(new Animated.Value(0)).current;
+    const slideValue = useRef(new Animated.ValueXY({ x: slideIn ? wp(slideInX) : 0, y: 0 })).current;
+
+    useEffect(() => {
+        if (fadeIn) {
+            setTimeout(() => {
+                Animated.timing(fadeOpacity, {
+                    toValue: (opacity || opacity === 0) ? opacity : 1,
+                    duration: ((fadeInTime || fadeInTime === 0) && fadeInTime) || 750,
+                    useNativeDriver: true
+                }).start();
+            }, fadeInDelay || 0);
+        }
+    }, [opacity]);
+
+    useEffect(() => {
+        if (slideIn && !!slideInX) {
+            setTimeout(() => {
+                Animated.timing(slideValue, {
+                    toValue: { x: 0, y: 0 },
+                    duration: ((slideInTime || slideInTime === 0) && slideInTime) || 500,
+                    useNativeDriver: true
+                }).start();
+            }, slideInDelay || 0);
+        }
+    }, []);
 
     return (
         <Component
             style={[
                 !!flex && { flex: flex === true ? 1 : flex },
                 !!flexGrow && { flexGrow: flexGrow === true ? 1 : flexGrow },
+                !!slideIn && { transform: [{ translateX: slideValue.x }, { translateY: slideValue.y }] },
                 !!flexWrap && { flexWrap },
                 center && styles.center,
                 hCenter && styles.hCenter,
@@ -198,6 +233,7 @@ const TemplateBox: FC<Props> = ({
                 !!borderTopLeftRadius && { borderTopLeftRadius },
                 !!borderTopRightRadius && { borderTopRightRadius },
                 !fadeIn && (!!opacity || opacity === 0) && { opacity },
+                (!!fadeIn && { opacity: fadeOpacity }),
                 (!!zIndex || zIndex === 0) && { zIndex },
                 !!absolute && { position: 'absolute' },
                 (!!top || top === 0) && { top },
