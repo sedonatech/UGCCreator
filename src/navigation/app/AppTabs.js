@@ -27,6 +27,7 @@ const AppTabs = () => {
             lazy: true,
             freezeOnBlur: true,
             animationEnabled: false,
+            gestureEnabled: false, 
         }}
         >
             <Screen

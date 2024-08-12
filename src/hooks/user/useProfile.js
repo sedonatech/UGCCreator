@@ -8,7 +8,7 @@ import {
     DEFAULT_CREATOR_SHORT_DESCRIPTION,
 } from '../../consts/content/Portfolio';
 
-const USERS_COLLECTION = 'users';
+export const USERS_COLLECTION = 'users';
 
 const useProfile = () => {
     const [loading, setLoading] = useState(false);
@@ -161,7 +161,7 @@ const useProfile = () => {
                     ...data,
                 });
         } catch (e) {
-            console.log(e);
+            console.log("error updating profile:", e);
         }
         setUpdateProfileLoading(false);
     };

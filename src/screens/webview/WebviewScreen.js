@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import {
+    ActivityIndicator,
     Alert, ScrollView, StyleSheet,
 } from 'react-native';
-import { HEADER_MARGIN, IS_ANDROID } from '../../theme/Layout';
-import { TRANSPARENT, WHITE } from '../../theme/Colors';
+import { HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../theme/Layout';
+import { BLUE, TRANSPARENT, WHITE } from '../../theme/Colors';
+import { hp } from '../../Utils/getResponsiveSize';
+import isAndroid from '../subscriptions/utils/isAndroid';
+import TemplateBox from '../../components/TemplateBox';
 
 const urlPattern = new RegExp('^(https?:\\/\\/)?' // validate protocol
     + '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' // validate domain name
@@ -30,18 +34,36 @@ const WebviewScreen = ({ route, navigation }) => {
         }
     }, []);
 
+    const [loading, setLoading] = useState(true);
+    const handleLoad = () => {
+        setLoading(false);
+    };
+    const handleError = () => {
+        setLoading(false);
+        Alert.alert('Error', 'Something went wrong with this link. Please try again later.');
+    };
+
     return (
+        <>
+            {loading && (
+                <TemplateBox absolute height={SCREEN_HEIGHT} width={SCREEN_WIDTH} zIndex={99} justifyContent='center' alignItems='center'>
+                    <ActivityIndicator size="large" color={BLUE} />
+                </TemplateBox>
+            )}
         <ScrollView
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}
         >
+            
             <WebView
                 source={{ uri: url }}
-                style={{ marginTop: HEADER_MARGIN }}
-                onError={() => Alert.alert('Error', 'Something went wrong with this link. Please try again later.')}
+                style={{ marginTop: isAndroid ? 80 : 120 }}
+                onLoad={handleLoad} // Trigger when WebView finishes loading
+                onError={handleError}
             />
         </ScrollView>
+        </>
     );
 };
 

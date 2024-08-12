@@ -7,6 +7,7 @@ import {
     View,
     Alert,
     ActivityIndicator,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import React, {
     useEffect, useMemo, useState, useRef, useLayoutEffect,
@@ -19,6 +20,7 @@ import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
 import {
     ERROR_RED, WHITE, BLACK, IOS_BLUE, LIGHT_GREEN,
+    LAVENDER,
 } from '../../theme/Colors';
 import {
     HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
@@ -28,7 +30,7 @@ import {
     CHATS, CREATORS_PROFILES_STACK, START_SUPPOR_CHAT,
 } from '../../navigation/ScreenNames';
 import useChatsContext from '../../hooks/chats/useChatsContext';
-import { wp } from '../../Utils/getResponsiveSize';
+import { hp, wp } from '../../Utils/getResponsiveSize';
 import useGetCreators from '../../hooks/brands/useGetCreators';
 import useGetBrands from '../../hooks/creators/useGetBrands';
 import TemplateIcon from '../../components/TemplateIcon';
@@ -42,6 +44,10 @@ import ChatRoomCard from './ChatRoomCard';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
+
+// info@ugccreatorapp.com brand details for support
+const brandId = "ng64onQ318Q8LghDizaB2sARx7r2"; // support brand id
+const brandFCMToken = "feIcGv7HvUWViQzFVuA_E9:APA91bEsjLxPCW0r4OkmCVRhjFJeQqzB1nlqKxiNcijXFhLfLCGRo8ptOEi-hpCt5WQuFy-IwDI1-dEZ0FazouXUPSxzg-kKsYHvY2pQ5JkXSDs31rLcMZsS45hKyKWoHcdy1aXOYJyp";
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -230,39 +236,69 @@ const ChatRoomsScreen = ({ navigation }) => {
         }
     }, [navigation, showSupportChat]);
 
-    const chatRoomName = ` ${userName}: SUPPORT CHAT`;
+    const chatRoomName = `SUPPORT CHAT`;
+    const [supportPress, setSupportPress] = useState(false)
 
-    const brandId = '';
 
-    const brandFCMToken = '';
-
-    const handleOnPressSupportChat = async () => {
+    const handleSupportPress = async () => {
         try {
-            const chatRoom = await createChatRoom(
+            await createChatRoom(
                 chatRoomName,
                 userId,
                 brandId,
                 userFCMToken,
                 brandFCMToken,
             );
-        } catch (error) {
-            console.log(error);
+            setSupportPress(true)
+        } catch (e) {
+            console.log('-> e', e);
         }
-    };
+    }
 
+    
+    const [showOptions, setShowOptions] = useState(false)
+   
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <HeaderIconButton
                     name="add"
-                    onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
+                    onPress={()=> setShowOptions(!showOptions)}
                     backDropColor={WHITE}
                     mr={WRAPPER_MARGIN}
                 />
             ),
             gestureEnabled: false,
         });
-    }, [navigation]);
+    }, [navigation, showOptions]);
+
+    const options = [
+        {
+            title: 'Search Creators',
+            onPress: () => {
+                setShowOptions(false)
+                navigation.navigate(CREATORS_PROFILES_STACK)
+            }
+        },
+        {
+            title: 'Support (Features / Bugs)',
+            onPress: ()=>{ 
+                setShowOptions(false)
+                handleSupportPress()
+            }
+        }
+    ]
+
+    const supportChat = useMemo(()=> searchedChatRooms?.find((chat)=> chat?.brandId === brandId ) ,[searchedChatRooms])
+    useEffect(()=> {
+        if(supportChat && supportPress){
+            navigation.navigate(CHATS, {
+                chatRoomId: supportChat?.id,
+                name: 'Support Chat',
+            });
+            setSupportPress(false)
+        }
+    },[supportChat, supportPress])
 
     return (
         <KeyboardAvoidingView
@@ -270,6 +306,8 @@ const ChatRoomsScreen = ({ navigation }) => {
             style={styles.mainContainer}
         >
             <StatusBar barStyle="dark-content" />
+            <TouchableWithoutFeedback onPress={()=> setShowOptions(false)} style={{backgroundColor: 'red', flex: 1, }}>
+            <View flex>
             <FlatList
                 data={searchedChatRooms}
                 showsVerticalScrollIndicator={false}
@@ -351,6 +389,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 userId={auth?.profile?.id}
                                 item={item}
                                 navigation={navigation}
+                                isSupport={brandId === item?.brandId}
                             />
                         </Swipeable>
                     </GestureHandlerRootView>
@@ -396,6 +435,46 @@ const ChatRoomsScreen = ({ navigation }) => {
                 initialNumToRender={5}
                 onEndReachedThreshold={0.5}
             />
+           
+            {showOptions && 
+            <View
+                    style={{
+                        position: 'absolute', 
+                        right: WRAPPER_MARGIN, 
+                        top: HEADER_MARGIN *  0.85, 
+                        zIndex: 99
+                    }}
+                >
+                    {
+                        options?.map(({title, onPress}, index)=> (
+                                <TemplateBox
+                                    key={index}
+                                    zIndex={99}
+                                    backgroundColor={LAVENDER} 
+                                    mb={hp(8)} 
+                                    borderRadius={hp(8)}
+                                    fadeIn
+                                    slideInTime={100 + index * 100}
+                                    slideIn
+                                    slideInX={20}
+                                    debug
+                                >
+                                <TemplateBox 
+                                    onPress={onPress}
+                                    ph={12} 
+                                    pv={12} 
+                                >
+                                    <TemplateText size={hp(14)} semiBold>
+                                        {title}
+                                    </TemplateText>
+                                </TemplateBox>
+                            </TemplateBox>
+                        ))
+                    }
+                </View>
+            } 
+            </View>
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );
 };

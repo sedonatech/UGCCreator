@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import {
     ACTIVE_CREATORS,
+    ADD_EVENT,
     ADD_PROJECT,
     ADMIN_PANEL,
     BRAND_OFFERS,
@@ -94,11 +95,7 @@ const AdminPanelStack = () => (
             options={TRANSPARENT_HEADER}
             component={BrandsProfileStack}
         /> */}
-        <Screen
-            name={ACTIVE_CREATORS}
-            options={TRANSPARENT_HEADER}
-            component={ActiveCreatorsScreen}
-        />
+       
     </Navigator>
 );
 

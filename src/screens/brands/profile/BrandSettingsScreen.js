@@ -7,6 +7,7 @@ import {
     TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import {
+    HEADER_MARGIN,
     IS_ANDROID, SPACE_XLARGE, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
@@ -177,7 +178,7 @@ const BrandSettingsScreen = ({ navigation }) => {
         >
             {
                 profileCompleteRatio < 1 && (
-                    <TemplateBox mv={SPACE_XLARGE} mt={80}>
+                    <TemplateBox mv={SPACE_XLARGE} mt={HEADER_MARGIN}>
                         <ProfileStatusCard
                             title={BRAND_PROFILE_INCOMPLETE_TITLE}
                             description={BRAND_PROFILE_INCOMPLETE_MESSAGE}

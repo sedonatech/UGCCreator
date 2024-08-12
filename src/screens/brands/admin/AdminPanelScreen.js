@@ -1,7 +1,9 @@
-import React, { useEffect, useLayoutEffect, useMemo } from 'react';
+import React, {  useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import {
     ScrollView, StyleSheet, RefreshControl,
     Alert,
+    View,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import { useIsFocused } from '@react-navigation/native';
@@ -9,15 +11,16 @@ import TemplateText from '../../../components/TemplateText';
 import {
     BLACK,
     BLACK_SECONDARY,
+    LAVENDER,
     WHITE,
 } from '../../../theme/Colors';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import {
+    ADD_EVENT,
     ADD_PROJECT, BRAND_PROJECT_DETAILS,
     BRAND_SETTINGS,
     BRANDS_PROFILE_STACK,
     BRANDS_STACK,
-    UPDATE_BRAND_PROFILE,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
@@ -34,16 +37,21 @@ import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import TemplateBox from '../../../components/TemplateBox';
 import { SHADOW } from '../../../theme/Shadow';
-import { wp } from '../../../Utils/getResponsiveSize';
+import { hp, wp } from '../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../components/TemplateIcon';
 import useAppReview from '../../../hooks/useAppReview';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { DEFAULT_BRAND_DESCRIPTION } from '../../../consts/content/Portfolio';
+import BrandEventsCarousel from '../../app/home/components /BrandEventsCarousel';
+import { UPDATE_BRAND_PROFILE } from '../../../navigation/ScreenNames';
+import HeaderIconButton from '../../../components/header/HeaderButton';
+import useProfile from '../../../hooks/user/useProfile';
 
 const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const profile = auth?.profile;
+    const { updateProfile } = useProfile();
 
     const profileImage = profile?.image;
     const defaultDescription = profile.description === DEFAULT_BRAND_DESCRIPTION;
@@ -75,20 +83,20 @@ const AdminPanelScreen = ({ navigation }) => {
         }));
     }, [projects]);
 
+    const [showOptions, setShowOptions] = useState(false)
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TemplateTouchable
-                    style={styles.addButton}
-                    onPress={() => navigation.navigate(ADD_PROJECT)}
-                >
-                    <TemplateText bold caps size={10} color={WHITE}>
-                        Add project
-                    </TemplateText>
-                </TemplateTouchable>
+                <HeaderIconButton
+                    name="add"
+                    onPress={()=> setShowOptions(!showOptions)}
+                    backDropColor={WHITE}
+                    mr={WRAPPER_MARGIN}
+                />
             ),
         });
-    }, [navigation]);
+    }, [navigation, showOptions]);
 
     useEffect(() => {
         if (isFocused && profile) {
@@ -101,22 +109,51 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const { previousResponse, handleRate } = useAppReview();
 
+    console.log({profileImage, defaultDescription})
+
     useEffect(() => {
         if (!profileImage || defaultDescription) {
             Alert.alert(
                 'Update Profile',
-                'Please upload a profile image & brand description to improve your brand identification',
+                (!!profile && defaultDescription) ? 'Please update your brand description from the default description to improve your brand identification' :'Please upload a profile image & brand description to improve your brand identification',
                 [
                     {
                         text: 'OK',
-                        onPress: () => navigation.navigate(UPDATE_BRAND_PROFILE),
+                        onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, {screen: UPDATE_BRAND_PROFILE}),
                     },
                 ],
             );
         }
-    }, [profileImage]);
+    }, [profileImage, defaultDescription]);
+
+    const options = [
+        {
+            title: 'Add Project',
+            onPress: () => {
+                setShowOptions(false)
+                navigation.navigate(ADD_PROJECT)
+            }
+        },
+        {
+            title: 'Add Event',
+            onPress: ()=> {
+                setShowOptions(false)
+                navigation.navigate(ADD_EVENT)
+            }
+        }
+    ]
+
+    const updateLastLogin = async () => {
+        await updateProfile({lastLoginTime: new Date().toISOString()}, profile?.id)
+    }
+
+    useEffect(()=> {
+        updateLastLogin()
+    },[])
 
     return (
+        <TouchableWithoutFeedback onPress={()=> setShowOptions(false)} style={{backgroundColor: 'red', flex: 1, }}>
+        <View flex>
         <ScrollView
             style={styles.container}
             refreshControl={(
@@ -161,6 +198,7 @@ const AdminPanelScreen = ({ navigation }) => {
             )}
             <CurrentCreatorsCarousel style={styles.carousel} />
             <FeaturedCreatorsCarousel style={styles.carousel} />
+            <BrandEventsCarousel brandId={profile?.id} />
             {
                 projectsCarouselData?.length ? (
                     <ActiveProjectsCarousel
@@ -179,7 +217,45 @@ const AdminPanelScreen = ({ navigation }) => {
                 )
             }
         </ScrollView>
-
+        {showOptions && 
+            <View
+                    style={{
+                        position: 'absolute', 
+                        right: WRAPPER_MARGIN, 
+                        top: HEADER_MARGIN *  0.85, 
+                        zIndex: 99
+                    }}
+                >
+                    {
+                        options?.map(({title, onPress}, index)=> (
+                                <TemplateBox
+                                    key={index}
+                                    zIndex={99}
+                                    backgroundColor={LAVENDER} 
+                                    mb={hp(8)} 
+                                    borderRadius={hp(8)}
+                                    fadeIn
+                                    slideInTime={160 + index * 100}
+                                    slideIn
+                                    slideInX={20}
+                                    debug
+                                >
+                                <TemplateBox 
+                                    onPress={onPress}
+                                    ph={12} 
+                                    pv={8} 
+                                >
+                                    <TemplateText size={hp(12)} semiBold>
+                                        {title}
+                                    </TemplateText>
+                                </TemplateBox>
+                            </TemplateBox>
+                        ))
+                    }
+                </View>
+            } 
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -190,6 +266,15 @@ const styles = StyleSheet.create({
     },
     addButton: {
         marginRight: 20,
+        height: 30,
+        borderRadius: 10,
+        backgroundColor: BLACK_SECONDARY,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 8,
+    },
+    eventButton: {
+        marginLeft: 20,
         height: 30,
         borderRadius: 10,
         backgroundColor: BLACK_SECONDARY,

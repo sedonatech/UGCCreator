@@ -78,8 +78,6 @@ const BrandDetailsScreen = ({ route, navigation }) => {
 
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
 
-    console.log({selectedBrand})
-
     return (
 
         <ScrollView

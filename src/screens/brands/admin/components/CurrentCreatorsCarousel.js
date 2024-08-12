@@ -124,7 +124,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
         </View>
     ) : (
         <ProfileStatusCard
-            title="No active creators"
+            title="No Active Creators"
             description="You don't have any active creators that you are working with at the moment"
             showProgress={false}
             showIcon={false}
@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     statusCard: {
-        marginTop: WRAPPER_MARGIN,
         marginBottom: 10,
     },
 });

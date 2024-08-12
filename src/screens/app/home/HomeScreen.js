@@ -34,6 +34,8 @@ import FeedCard from '../explore/components/FeedCard';
 import getIconByType from '../../../Utils/getIconByType';
 import AffiliateBrandsCarousel from './components /AffiliateBrandsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
+import EventsCarousel from './components /EventsCarousel';
+import useProfile from '../../../hooks/user/useProfile';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -43,6 +45,7 @@ const HomeScreen = ({ navigation }) => {
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
 
     const profile = auth?.profile;
+    const { updateProfile } = useProfile();
 
     const profileImage = profile?.image;
 
@@ -97,6 +100,16 @@ const HomeScreen = ({ navigation }) => {
         return feed?.feeds?.[0];
     }, [feed]);
 
+    const updateLastLogin = async () => {
+        await updateProfile({lastLoginTime: new Date().toISOString()}, profile?.id)
+    }
+
+    useEffect(()=> {
+        updateLastLogin()
+    },[])
+
+
+
     return (
         <ScrollView
             style={styles.container}
@@ -117,8 +130,9 @@ const HomeScreen = ({ navigation }) => {
             <TemplateBox height={236}>
                 <AffiliateBrandsCarousel />
             </TemplateBox>
+            <EventsCarousel />
             {features?.showBrandsCarousel && (
-                <TemplateBox height={236} mt={WRAPPER_MARGIN} mb={12}>
+                <TemplateBox height={236} mb={12}>
                     <BrandsCarousel />
                 </TemplateBox>
             )}
@@ -162,10 +176,10 @@ const HomeScreen = ({ navigation }) => {
                     borderRadius={16}
                     pAll={20}
                     width={WRAPPED_SCREEN_WIDTH}
-                    mt={WRAPPER_MARGIN}
                     onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
                     style={SHADOW('card', WHITE)}
                     selfCenter
+                    mt={35}
                 >
                     <CatalogueSvg />
                     <TemplateBox width={16} />

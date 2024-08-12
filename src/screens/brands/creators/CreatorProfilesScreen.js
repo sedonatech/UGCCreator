@@ -46,6 +46,7 @@ import TemplateSafeAreaView from '../../../components/TemplateSafeAreaView';
 import { isIOS } from '../../../Utils/Platform';
 import FilterPill from '../../app/explore/components/FilterPill';
 import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const USERS_COLLECTION = 'users';
 
@@ -152,6 +153,9 @@ const CreatorProfilesScreen = ({ navigation }) => {
         setLimit(10);
     }, [isFocused]);
 
+    const { auth } = useAuthContext();
+    const isCreator = auth?.profile?.type === 'creator';
+
     return (
         <KeyboardAvoidingView
             behavior={isIOS ? 'padding' : 'height'}
@@ -175,7 +179,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 bold
                                 startCase
                             >
-                                Find the perfect creator
+                                {`${isCreator ? 'Collaborate with' : 'FInd'} the perfect creator`}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>

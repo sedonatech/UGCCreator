@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { isAndroid } from '../Utils/Platform';
 import {
     BLACK_10, BLACK_50,
+    BLACK_90,
 } from './Colors';
 
 export const ELEVATION = 9;
@@ -42,6 +43,16 @@ export const shadowStyle = StyleSheet.create({
         shadowRadius: SHADOW_RADIUS,
         shadowOpacity: SHADOW_OPACITY,
         elevation: ELEVATION,
+    },
+    mediumCard: {
+        shadowColor: isAndroid ? BLACK_50 : BLACK_90,
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowRadius: 6,
+        shadowOpacity: 0.15,
+        elevation: 3,
     },
     none: {
         shadowColor: null,

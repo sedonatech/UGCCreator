@@ -67,7 +67,7 @@ const Avatar = ({
                 </TemplateBox>
             ) : (
                 <TemplateTouchable onPress={() => onAddPhoto(true)}>
-                    <Image source={{ uri: avatar?.url }} style={imageStyle} />
+                    <Image source={{ uri: profileData?.image }} style={imageStyle} />
                 </TemplateTouchable>
             )}
         </TemplateTouchable>

@@ -75,7 +75,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox mt={HEADER_MARGIN} selfCenter mb={50}>
+            <TemplateBox mt={HEADER_MARGIN} mb={50}>
                 <TemplateText
                     size={18}
                     bold
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
+        alignItems: 'center'
     },
     input: {
         height: 60,

@@ -34,6 +34,10 @@ interface Props {
     style?: any,
     adjustsFontSizeToFit?: boolean,
     allowFontScaling?: boolean,
+    ml?: number,
+    mr?: number,
+    mt?: number,
+    mb?: number,
 }
 const TemplateText: FC<Props> = ({
     light,
@@ -61,6 +65,10 @@ const TemplateText: FC<Props> = ({
     lineHeight,
     adjustsFontSizeToFit,
     allowFontScaling,
+    ml,
+    mr,
+    mt,
+    mb,
     ...restProps
 }) => {
     const textStyle = {} as any;
@@ -140,6 +148,12 @@ const TemplateText: FC<Props> = ({
     if (lineHeight) {
         textStyle.lineHeight = lineHeight;
     }
+
+    if(ml)textStyle.marginLeft = ml;
+    if(mr)textStyle.marginRight = mr;
+    if(mt)textStyle.marginTop = mt;
+    if(mb)textStyle.marginBottom = mb;
+    
 
     let content = children;
 

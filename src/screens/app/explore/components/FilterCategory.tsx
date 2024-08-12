@@ -38,7 +38,7 @@ const FilterCategory: FC<Props> = ({
                 mb={SPACE_LARGE}
                 selfCenter
                 onPress={() => setToggleFilters((prevState) => !prevState)}
-                style={SHADOW('default', WHITE)}
+                style={SHADOW('mediumCard', WHITE)}
             >
                 <TemplateText color={BLACK} semiBold size={16}>{title}</TemplateText>
                 <TemplateIcon

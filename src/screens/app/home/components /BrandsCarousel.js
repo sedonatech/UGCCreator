@@ -16,6 +16,13 @@ import {
 } from '../../../../navigation/ScreenNames';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 
+function generateRandomRange(min, max) {
+    const rangeLength = 9;
+    const start = Math.floor(Math.random() * (max - min - rangeLength + 1)) + min;
+    const end = start + rangeLength - 1;
+    return { start, end };
+  }
+
 const USERS_COLLECTION = 'users';
 const BrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
@@ -25,7 +32,8 @@ const BrandsCarousel = ({ style }) => {
     const brandsRef = firestore().collection(USERS_COLLECTION)
         .where('image', '>', '')
         .where('type', '==', 'brand')
-        .limit(20);
+        .limit(40);
+        
     const fetchBrands = async () => {
         try {
             const fetchedBrands = await brandsRef
@@ -33,10 +41,13 @@ const BrandsCarousel = ({ style }) => {
                 .then((querySnapshot) => querySnapshot?.docs
                     ?.map((doc) => doc?.data()));
 
-            const filteredBrands = orderBy(fetchedBrands?.filter((brand) => !!brand?.lastLoginTime), 'lastLoginTime', 'desc');
-            const filteredBrands2 = fetchedBrands?.filter((brand) => !brand?.lastLoginTime);
-            const mergedBrands = [...filteredBrands, ...filteredBrands2]?.slice(0, 7);
-            setBrands(mergedBrands);
+            // const filteredBrands = orderBy(fetchedBrands?.filter((brand) => !!brand?.lastLoginTime), 'lastLoginTime', 'asc');
+            // const filteredBrands2 = fetchedBrands?.filter((brand) => !brand?.lastLoginTime);
+            // const mergedBrands = [...filteredBrands, ...filteredBrands2]?.slice(0, 15);
+
+            const range = generateRandomRange(0, 40)
+            const sorted = fetchedBrands?.slice(range?.start, range?.end)
+            setBrands(sorted);
         } catch (e) {
             console.log(e);
         }
@@ -90,7 +101,7 @@ const BrandsCarousel = ({ style }) => {
                         shortDescription={item?.shortDescription}
                         style={styles.card}
                         onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
-                        lastLoginTime={item?.lastLoginTime}
+                        // lastLoginTime={item?.lastLoginTime}
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
