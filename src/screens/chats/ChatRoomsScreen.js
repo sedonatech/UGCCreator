@@ -46,8 +46,8 @@ import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
 // info@ugccreatorapp.com brand details for support
-const brandId = "ng64onQ318Q8LghDizaB2sARx7r2"; // support brand id
-const brandFCMToken = "feIcGv7HvUWViQzFVuA_E9:APA91bEsjLxPCW0r4OkmCVRhjFJeQqzB1nlqKxiNcijXFhLfLCGRo8ptOEi-hpCt5WQuFy-IwDI1-dEZ0FazouXUPSxzg-kKsYHvY2pQ5JkXSDs31rLcMZsS45hKyKWoHcdy1aXOYJyp";
+const brandId = 'ng64onQ318Q8LghDizaB2sARx7r2'; // support brand id
+const brandFCMToken = 'feIcGv7HvUWViQzFVuA_E9:APA91bEsjLxPCW0r4OkmCVRhjFJeQqzB1nlqKxiNcijXFhLfLCGRo8ptOEi-hpCt5WQuFy-IwDI1-dEZ0FazouXUPSxzg-kKsYHvY2pQ5JkXSDs31rLcMZsS45hKyKWoHcdy1aXOYJyp';
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -236,9 +236,8 @@ const ChatRoomsScreen = ({ navigation }) => {
         }
     }, [navigation, showSupportChat]);
 
-    const chatRoomName = `SUPPORT CHAT`;
-    const [supportPress, setSupportPress] = useState(false)
-
+    const chatRoomName = 'SUPPORT CHAT';
+    const [supportPress, setSupportPress] = useState(false);
 
     const handleSupportPress = async () => {
         try {
@@ -249,21 +248,20 @@ const ChatRoomsScreen = ({ navigation }) => {
                 userFCMToken,
                 brandFCMToken,
             );
-            setSupportPress(true)
+            setSupportPress(true);
         } catch (e) {
             console.log('-> e', e);
         }
-    }
+    };
 
-    
-    const [showOptions, setShowOptions] = useState(false)
-   
+    const [showOptions, setShowOptions] = useState(false);
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <HeaderIconButton
                     name="add"
-                    onPress={()=> setShowOptions(!showOptions)}
+                    onPress={() => setShowOptions(!showOptions)}
                     backDropColor={WHITE}
                     mr={WRAPPER_MARGIN}
                 />
@@ -276,29 +274,29 @@ const ChatRoomsScreen = ({ navigation }) => {
         {
             title: 'Search Creators',
             onPress: () => {
-                setShowOptions(false)
-                navigation.navigate(CREATORS_PROFILES_STACK)
-            }
+                setShowOptions(false);
+                navigation.navigate(CREATORS_PROFILES_STACK);
+            },
         },
         {
             title: 'Support (Features / Bugs)',
-            onPress: ()=>{ 
-                setShowOptions(false)
-                handleSupportPress()
-            }
-        }
-    ]
+            onPress: () => {
+                setShowOptions(false);
+                handleSupportPress();
+            },
+        },
+    ];
 
-    const supportChat = useMemo(()=> searchedChatRooms?.find((chat)=> chat?.brandId === brandId ) ,[searchedChatRooms])
-    useEffect(()=> {
-        if(supportChat && supportPress){
+    const supportChat = useMemo(() => searchedChatRooms?.find((chat) => chat?.brandId === brandId), [searchedChatRooms]);
+    useEffect(() => {
+        if (supportChat && supportPress) {
             navigation.navigate(CHATS, {
                 chatRoomId: supportChat?.id,
                 name: 'Support Chat',
             });
-            setSupportPress(false)
+            setSupportPress(false);
         }
-    },[supportChat, supportPress])
+    }, [supportChat, supportPress]);
 
     return (
         <KeyboardAvoidingView
@@ -306,163 +304,164 @@ const ChatRoomsScreen = ({ navigation }) => {
             style={styles.mainContainer}
         >
             <StatusBar barStyle="dark-content" />
-            <TouchableWithoutFeedback onPress={()=> setShowOptions(false)} style={{backgroundColor: 'red', flex: 1, }}>
-            <View flex>
-            <FlatList
-                data={searchedChatRooms}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item?.id}
-                ListHeaderComponent={(
-                    <>
-                        <TemplateBox
-                            mt={HEADER_MARGIN}
-                            alignItems="center"
-                            justifyContent="center"
-                            mh={WRAPPER_MARGIN}
-                        >
-                            <TemplateText
-                                size={wp(16)}
-                                startCase
-                                bold
-                                center
-                            >
-                                {`Continue your conversations with your ${isCreator ? 'brands' : 'creators'}`}
-                            </TemplateText>
-                            {!!searchedChatRooms?.length && (
-                                <TemplateText
-                                    size={wp(13)}
-                                    center
-                                    style={styles.swipeToDeleteText}
+            <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ backgroundColor: 'red', flex: 1 }}>
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        data={searchedChatRooms}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={(item) => item?.id}
+                        ListHeaderComponent={(
+                            <>
+                                <TemplateBox
+                                    mt={HEADER_MARGIN}
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    mh={WRAPPER_MARGIN}
                                 >
-                                    Swipe left to delete chat
-                                </TemplateText>
-                            )}
-                            <TemplateBox height={WRAPPER_MARGIN} />
-                            {!!searchedChatRooms?.length && (
-                                <TemplateTextInput
-                                    placeholder="Search"
-                                    style={[styles.input, SHADOW('default', WHITE)]}
-                                    value={search}
-                                    onChangeText={(text) => setSearch(text)}
-                                    autoCapitalize="none"
-                                />
-                            )}
-                            <TemplateBox height={WRAPPER_MARGIN} />
-                        </TemplateBox>
-                    </>
-                )}
-                renderItem={({ item }) => (
-                    <GestureHandlerRootView>
-                        <Swipeable
-                            ref={swipeRef}
-                            friction={2}
-                            containerStyle={styles.swipeContainer}
-                            useNativeAnimations
-                            renderRightActions={
-                                () => (
-                                    <TemplateBox
-                                        center
-                                        selfCenter
-                                        mr={wp(WRAPPER_MARGIN)}
-                                        mt={wp(SPACE_SMALL)}
-                                        onPress={() => handleDeleteChat(item?.id)}
-                                    >
-                                        <TemplateIcon
-                                            name="trash"
-                                            size={wp(24)}
-                                            color={ERROR_RED}
-                                            style={styles.deleteIcon}
-                                        />
-                                        <TemplateText
-                                            color={ERROR_RED}
-                                            size={wp(9)}
-                                            bold
-                                        >
-                                            Delete
-                                        </TemplateText>
-                                    </TemplateBox>
-                                )
-                            }
-                        >
-                            <ChatRoomCard
-                                id={item?.id}
-                                userId={auth?.profile?.id}
-                                item={item}
-                                navigation={navigation}
-                                isSupport={brandId === item?.brandId}
-                            />
-                        </Swipeable>
-                    </GestureHandlerRootView>
-                )}
-                ListEmptyComponent={() => (
-                    <TemplateBox
-                        mt={HEADER_MARGIN}
-                        alignItems="center"
-                        justifyContent="center"
-                        mh={WRAPPER_MARGIN}
-                    >
-                        {(fetchingChatRooms)
-                            ? <ActivityIndicator size="large" color={IOS_BLUE} />
-                            : (
-                                <TemplateBox alignItems="center">
                                     <TemplateText
                                         size={wp(16)}
+                                        startCase
+                                        bold
                                         center
                                     >
-                                        There are no conversations yet
+                                        {`Continue your conversations with your ${isCreator ? 'brands' : 'creators'}`}
                                     </TemplateText>
-                                    <Button
-                                        title="Start a conversation"
-                                        onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
-                                        style={styles.button}
-                                    />
+                                    {!!searchedChatRooms?.length && (
+                                        <TemplateText
+                                            size={wp(13)}
+                                            center
+                                            style={styles.swipeToDeleteText}
+                                        >
+                                            Swipe left to delete chat
+                                        </TemplateText>
+                                    )}
+                                    <TemplateBox height={WRAPPER_MARGIN} />
+                                    {!!searchedChatRooms?.length && (
+                                        <TemplateTextInput
+                                            placeholder="Search"
+                                            style={[styles.input, SHADOW('default', WHITE)]}
+                                            value={search}
+                                            onChangeText={(text) => setSearch(text)}
+                                            autoCapitalize="none"
+                                        />
+                                    )}
+                                    <TemplateBox height={WRAPPER_MARGIN} />
                                 </TemplateBox>
-                            )}
+                            </>
+                        )}
+                        renderItem={({ item }) => (
+                            <GestureHandlerRootView>
+                                <Swipeable
+                                    ref={swipeRef}
+                                    friction={2}
+                                    containerStyle={styles.swipeContainer}
+                                    useNativeAnimations
+                                    renderRightActions={
+                                        () => (
+                                            <TemplateBox
+                                                center
+                                                selfCenter
+                                                mr={wp(WRAPPER_MARGIN)}
+                                                mt={wp(SPACE_SMALL)}
+                                                onPress={() => handleDeleteChat(item?.id)}
+                                            >
+                                                <TemplateIcon
+                                                    name="trash"
+                                                    size={wp(24)}
+                                                    color={ERROR_RED}
+                                                    style={styles.deleteIcon}
+                                                />
+                                                <TemplateText
+                                                    color={ERROR_RED}
+                                                    size={wp(9)}
+                                                    bold
+                                                >
+                                                    Delete
+                                                </TemplateText>
+                                            </TemplateBox>
+                                        )
+                                    }
+                                >
+                                    <ChatRoomCard
+                                        id={item?.id}
+                                        userId={auth?.profile?.id}
+                                        item={item}
+                                        navigation={navigation}
+                                        isSupport={brandId === item?.brandId}
+                                    />
+                                </Swipeable>
+                            </GestureHandlerRootView>
+                        )}
+                        ListEmptyComponent={() => (
+                            <TemplateBox
+                                mt={HEADER_MARGIN}
+                                alignItems="center"
+                                justifyContent="center"
+                                mh={WRAPPER_MARGIN}
+                            >
+                                {(fetchingChatRooms)
+                                    ? <ActivityIndicator size="large" color={IOS_BLUE} />
+                                    : (
+                                        <TemplateBox alignItems="center">
+                                            <TemplateText
+                                                size={wp(16)}
+                                                center
+                                            >
+                                                There are no conversations yet
+                                            </TemplateText>
+                                            <Button
+                                                title="Start a conversation"
+                                                onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
+                                                style={styles.button}
+                                            />
+                                        </TemplateBox>
+                                    )}
 
-                        <TemplateBox height={WRAPPER_MARGIN} />
-                    </TemplateBox>
-                )}
-                ListFooterComponent={(
-                    <View style={styles.listFooter}>
-                        <TemplateSafeAreaView ios />
-                    </View>
-                )}
-                style={styles.container}
-                contentContainerStyle={styles.contentContainer}
-                refreshControl={
-                    <RefreshControl refreshing={fetchingChatRooms} onRefresh={fetchChatRooms} />
-                }
-                initialNumToRender={5}
-                onEndReachedThreshold={0.5}
-            />
-           
-            {showOptions && 
-            <View
+                                <TemplateBox height={WRAPPER_MARGIN} />
+                            </TemplateBox>
+                        )}
+                        ListFooterComponent={(
+                            <View style={styles.listFooter}>
+                                <TemplateSafeAreaView ios />
+                            </View>
+                        )}
+                        style={styles.container}
+                        contentContainerStyle={styles.contentContainer}
+                        refreshControl={
+                            <RefreshControl refreshing={fetchingChatRooms} onRefresh={fetchChatRooms} />
+                        }
+                        initialNumToRender={5}
+                        onEndReachedThreshold={0.5}
+                    />
+
+                    {showOptions
+            && (
+                <View
                     style={{
-                        position: 'absolute', 
-                        right: WRAPPER_MARGIN, 
-                        top: HEADER_MARGIN *  0.85, 
-                        zIndex: 99
+                        position: 'absolute',
+                        right: WRAPPER_MARGIN,
+                        top: HEADER_MARGIN * 0.85,
+                        zIndex: 99,
                     }}
                 >
                     {
-                        options?.map(({title, onPress}, index)=> (
+                        options?.map(({ title, onPress }, index) => (
+                            <TemplateBox
+                                key={index}
+                                zIndex={99}
+                                backgroundColor={LAVENDER}
+                                mb={hp(8)}
+                                borderRadius={hp(8)}
+                                fadeIn
+                                slideInTime={100 + index * 100}
+                                slideIn
+                                slideInX={20}
+                                debug
+                            >
                                 <TemplateBox
-                                    key={index}
-                                    zIndex={99}
-                                    backgroundColor={LAVENDER} 
-                                    mb={hp(8)} 
-                                    borderRadius={hp(8)}
-                                    fadeIn
-                                    slideInTime={100 + index * 100}
-                                    slideIn
-                                    slideInX={20}
-                                    debug
-                                >
-                                <TemplateBox 
                                     onPress={onPress}
-                                    ph={12} 
-                                    pv={12} 
+                                    ph={12}
+                                    pv={12}
                                 >
                                     <TemplateText size={hp(14)} semiBold>
                                         {title}
@@ -472,8 +471,8 @@ const ChatRoomsScreen = ({ navigation }) => {
                         ))
                     }
                 </View>
-            } 
-            </View>
+            )}
+                </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );

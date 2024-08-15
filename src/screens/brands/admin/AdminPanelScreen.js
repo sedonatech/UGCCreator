@@ -1,4 +1,6 @@
-import React, {  useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import React, {
+    useEffect, useLayoutEffect, useMemo, useState,
+} from 'react';
 import {
     ScrollView, StyleSheet, RefreshControl,
     Alert,
@@ -21,6 +23,7 @@ import {
     BRAND_SETTINGS,
     BRANDS_PROFILE_STACK,
     BRANDS_STACK,
+    UPDATE_BRAND_PROFILE,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
@@ -43,7 +46,6 @@ import useAppReview from '../../../hooks/useAppReview';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { DEFAULT_BRAND_DESCRIPTION } from '../../../consts/content/Portfolio';
 import BrandEventsCarousel from '../../app/home/components /BrandEventsCarousel';
-import { UPDATE_BRAND_PROFILE } from '../../../navigation/ScreenNames';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import useProfile from '../../../hooks/user/useProfile';
 
@@ -83,14 +85,14 @@ const AdminPanelScreen = ({ navigation }) => {
         }));
     }, [projects]);
 
-    const [showOptions, setShowOptions] = useState(false)
+    const [showOptions, setShowOptions] = useState(false);
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <HeaderIconButton
                     name="add"
-                    onPress={()=> setShowOptions(!showOptions)}
+                    onPress={() => setShowOptions(!showOptions)}
                     backDropColor={WHITE}
                     mr={WRAPPER_MARGIN}
                 />
@@ -109,141 +111,140 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const { previousResponse, handleRate } = useAppReview();
 
-    console.log({profileImage, defaultDescription})
-
-    useEffect(() => {
-        if (!profileImage || defaultDescription) {
-            Alert.alert(
-                'Update Profile',
-                (!!profile && defaultDescription) ? 'Please update your brand description from the default description to improve your brand identification' :'Please upload a profile image & brand description to improve your brand identification',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, {screen: UPDATE_BRAND_PROFILE}),
-                    },
-                ],
-            );
-        }
-    }, [profileImage, defaultDescription]);
+    // useEffect(() => {
+    //     if (!profileImage || defaultDescription) {
+    //         Alert.alert(
+    //             'Update Profile',
+    //             (!!profile && defaultDescription) ? 'Please update your brand description from the default description to improve your brand identification' : 'Please upload a profile image & brand description to improve your brand identification',
+    //             [
+    //                 {
+    //                     text: 'OK',
+    //                     onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, { screen: UPDATE_BRAND_PROFILE }),
+    //                 },
+    //             ],
+    //         );
+    //     }
+    // }, [profileImage, defaultDescription]);
 
     const options = [
         {
             title: 'Add Project',
             onPress: () => {
-                setShowOptions(false)
-                navigation.navigate(ADD_PROJECT)
-            }
+                setShowOptions(false);
+                navigation.navigate(ADD_PROJECT);
+            },
         },
         {
             title: 'Add Event',
-            onPress: ()=> {
-                setShowOptions(false)
-                navigation.navigate(ADD_EVENT)
-            }
-        }
-    ]
+            onPress: () => {
+                setShowOptions(false);
+                navigation.navigate(ADD_EVENT);
+            },
+        },
+    ];
 
     const updateLastLogin = async () => {
-        await updateProfile({lastLoginTime: new Date().toISOString()}, profile?.id)
-    }
+        await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
+    };
 
-    useEffect(()=> {
-        updateLastLogin()
-    },[])
+    useEffect(() => {
+        updateLastLogin();
+    }, []);
 
     return (
-        <TouchableWithoutFeedback onPress={()=> setShowOptions(false)} style={{backgroundColor: 'red', flex: 1, }}>
-        <View flex>
-        <ScrollView
-            style={styles.container}
-            refreshControl={(
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={handleBrandRefresh}
-                />
-            )}
-            showsVerticalScrollIndicator={false}
-        >
-            {profile?.name && (
-                <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
-            )}
-            {previousResponse === null && features?.showReviewPrompt && (
-                <TemplateBox
-                    row
-                    backgroundColor={WHITE}
-                    borderRadius={16}
-                    pAll={16}
-                    width={WRAPPED_SCREEN_WIDTH}
-                    mv={WRAPPER_MARGIN}
-                    onPress={handleRate}
-                    style={SHADOW('card', WHITE)}
-                    selfCenter
-                >
-                    <TemplateText size={13} onPress={handleRate}>
-                        Please take a moment to rate our app
-                    </TemplateText>
-                    <TemplateBox
-                        onPress={handleRate}
-                        ml={wp(60)}
-                        mt={-wp(8)}
-                    >
-                        <TemplateIcon
-                            name="close-outline"
-                            size={20}
-                            color={BLACK}
-
+        <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ backgroundColor: 'red', flex: 1 }}>
+            <View style={{ flex: 1 }}>
+                <ScrollView
+                    style={styles.container}
+                    refreshControl={(
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={handleBrandRefresh}
                         />
-                    </TemplateBox>
-                </TemplateBox>
-            )}
-            <CurrentCreatorsCarousel style={styles.carousel} />
-            <FeaturedCreatorsCarousel style={styles.carousel} />
-            <BrandEventsCarousel brandId={profile?.id} />
-            {
-                projectsCarouselData?.length ? (
-                    <ActiveProjectsCarousel
-                        style={styles.carousel}
-                        projectsCarouselData={projectsCarouselData}
-                    />
-                ) : (
-                    <ProfileStatusCard
-                        title={BRAND_NO_CURRENT_PROJECT_TITLE}
-                        description={BRAND_NO_CURRENT_PROJECT_MESSAGE}
-                        showProgress={false}
-                        showIcon={false}
-                        style={styles.statusCard}
-                        slideInDelay={200}
-                    />
-                )
-            }
-        </ScrollView>
-        {showOptions && 
-            <View
+                    )}
+                    showsVerticalScrollIndicator={false}
+                >
+                    {profile?.name && (
+                        <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
+                    )}
+                    {previousResponse === null && features?.showReviewPrompt && (
+                        <TemplateBox
+                            row
+                            backgroundColor={WHITE}
+                            borderRadius={16}
+                            pAll={16}
+                            width={WRAPPED_SCREEN_WIDTH}
+                            mv={WRAPPER_MARGIN}
+                            onPress={handleRate}
+                            style={SHADOW('card', WHITE)}
+                            selfCenter
+                        >
+                            <TemplateText size={13} onPress={handleRate}>
+                                Please take a moment to rate our app
+                            </TemplateText>
+                            <TemplateBox
+                                onPress={handleRate}
+                                ml={wp(60)}
+                                mt={-wp(8)}
+                            >
+                                <TemplateIcon
+                                    name="close-outline"
+                                    size={20}
+                                    color={BLACK}
+
+                                />
+                            </TemplateBox>
+                        </TemplateBox>
+                    )}
+                    <CurrentCreatorsCarousel style={styles.carousel} />
+                    <FeaturedCreatorsCarousel style={styles.carousel} />
+                    <BrandEventsCarousel brandId={profile?.id} />
+                    {
+                        projectsCarouselData?.length ? (
+                            <ActiveProjectsCarousel
+                                style={styles.carousel}
+                                projectsCarouselData={projectsCarouselData}
+                            />
+                        ) : (
+                            <ProfileStatusCard
+                                title={BRAND_NO_CURRENT_PROJECT_TITLE}
+                                description={BRAND_NO_CURRENT_PROJECT_MESSAGE}
+                                showProgress={false}
+                                showIcon={false}
+                                style={styles.statusCard}
+                                slideInDelay={200}
+                            />
+                        )
+                    }
+                </ScrollView>
+                {showOptions
+            && (
+                <View
                     style={{
-                        position: 'absolute', 
-                        right: WRAPPER_MARGIN, 
-                        top: HEADER_MARGIN *  0.85, 
-                        zIndex: 99
+                        position: 'absolute',
+                        right: WRAPPER_MARGIN,
+                        top: HEADER_MARGIN * 0.85,
+                        zIndex: 99,
                     }}
                 >
                     {
-                        options?.map(({title, onPress}, index)=> (
+                        options?.map(({ title, onPress }, index) => (
+                            <TemplateBox
+                                key={index}
+                                zIndex={99}
+                                backgroundColor={LAVENDER}
+                                mb={hp(8)}
+                                borderRadius={hp(8)}
+                                fadeIn
+                                slideInTime={160 + index * 100}
+                                slideIn
+                                slideInX={20}
+                                debug
+                            >
                                 <TemplateBox
-                                    key={index}
-                                    zIndex={99}
-                                    backgroundColor={LAVENDER} 
-                                    mb={hp(8)} 
-                                    borderRadius={hp(8)}
-                                    fadeIn
-                                    slideInTime={160 + index * 100}
-                                    slideIn
-                                    slideInX={20}
-                                    debug
-                                >
-                                <TemplateBox 
                                     onPress={onPress}
-                                    ph={12} 
-                                    pv={8} 
+                                    ph={12}
+                                    pv={8}
                                 >
                                     <TemplateText size={hp(12)} semiBold>
                                         {title}
@@ -253,7 +254,7 @@ const AdminPanelScreen = ({ navigation }) => {
                         ))
                     }
                 </View>
-            } 
+            )}
             </View>
         </TouchableWithoutFeedback>
     );
