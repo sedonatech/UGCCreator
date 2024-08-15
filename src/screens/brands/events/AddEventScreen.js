@@ -120,7 +120,7 @@ const AddEventScreen = ({ navigation, route }) => {
             createEvent(event);
         }
 
-        Alert.alert('Event created successfully',
+        Alert.alert(`Event ${eventData ? 'edited' : 'created'} successfully`,
             'You can view your event in the events section',
             [
                 {
