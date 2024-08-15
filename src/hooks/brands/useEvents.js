@@ -11,14 +11,14 @@ const initialEventState = {
     image: '',
     title: '',
     startDate: new Date(),
-    endDate: '',
+    endDate: new Date(),
     categories: [],
-    country: "",
-    city: "",
+    country: '',
+    city: '',
     description: '',
     likes: [],
     link: '',
-    startTime: ''
+    startTime: new Date(),
 };
 
 const useEvents = (eventsLimit = 5) => {
@@ -42,7 +42,7 @@ const useEvents = (eventsLimit = 5) => {
             const { uid } = auth().currentUser;
             const docRef = await db.collection(EVENTS_COLLECTION).add({
                 ...eventData,
-                eventId:  uuidv4(),
+                eventId: uuidv4(),
                 userId: uid,
                 createdAt: Date.now(),
             });
@@ -65,9 +65,8 @@ const useEvents = (eventsLimit = 5) => {
             });
 
             if (eventsData.length > 0) {
-                setEvents(eventsData)
+                setEvents(eventsData);
             }
-
         } catch (error) {
             console.log('getEvents Error:', error);
         }
@@ -141,7 +140,7 @@ const useEvents = (eventsLimit = 5) => {
         update,
         getAllEvents,
         allEvents,
-        setEvent
+        setEvent,
     };
 };
 
