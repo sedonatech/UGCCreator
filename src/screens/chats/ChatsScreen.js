@@ -107,7 +107,7 @@ const ChatsScreen = ({ route }) => {
                 ...message,
                 read: false,
                 sender: message?.user?.name,
-                createdAt: format(new Date(), 'yyyy-MM-dd HH:mm'),
+                createdAt: new Date().toISOString()
             }));
             await firestore()
                 .collection(CHAT_ROOMS)
