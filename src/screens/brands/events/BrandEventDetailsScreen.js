@@ -131,7 +131,7 @@ const BrandEventDetailsScreen = ({navigation, route}) => {
             </TemplateText>
           </TemplateBox>
 
-          <TemplateBox row center mt={hp(4)}>
+          {!!event?.country && <TemplateBox row center mt={hp(4)}>
             <TemplateIcon
               name="location-sharp"
               size={hp(11)}
@@ -142,7 +142,7 @@ const BrandEventDetailsScreen = ({navigation, route}) => {
             <TemplateText medium size={hp(14)} color={DARK_GREY}>
             {`${event?.city}, ${event?.country}`}
             </TemplateText>
-          </TemplateBox>
+          </TemplateBox>}
 
           <TemplateBox row hCenter mt={hp(16)}>
             <TemplateBox mr={wp(16)} alignItems="center">

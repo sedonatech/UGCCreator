@@ -134,17 +134,17 @@ const EventsCarousel = ({style}) => {
               spaceBetween
               justifyContent="space-between"
               pv={hp(4)}>
-              <TemplateBox>
-                <TemplateBox mb={hp(2)}>
-                  <TemplateText size={hp(14)} semiBold mb={2}>
+              <TemplateBox mb={2}>
+                <TemplateBox mb={2}>
+                  <TemplateText size={hp(13)} lineHeight={14.5} semiBold mb={2} numberOfLines={2}>
                     {item?.name}
                   </TemplateText>
                 </TemplateBox>
-                <TemplateText size={hp(12)} light color={DARK_GREY}>
-                  {item?.description?.slice(0, 50)}
+                <TemplateText size={hp(12)} lineHeight={13} light color={DARK_GREY} numberOfLines={!item?.country ? 3 : 2}>
+                  {item?.description}
                 </TemplateText>
               </TemplateBox>
-              <TemplateBox row alignItems="center">
+              {!!item?.country && <TemplateBox row alignItems="center">
               <TemplateIcon
                 name="location-sharp"
                 size={hp(11)}
@@ -155,7 +155,7 @@ const EventsCarousel = ({style}) => {
                 <TemplateText size={hp(10)} color={DARK_GREY} medium>
                   {`${item?.city}, ${item?.country}`}
                 </TemplateText>
-              </TemplateBox>
+              </TemplateBox>}
             </TemplateBox>
           </TemplateBox>
         )}}
