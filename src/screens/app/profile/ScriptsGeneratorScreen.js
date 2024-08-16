@@ -144,7 +144,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     placeholderStyle={styles.placeholderStyle}
                     placeholderTextColor={BLACK_50}
                 />
-                <TemplateBox width={WRAPPED_SCREEN_WIDTH}>
+                <TemplateBox width={WRAPPED_SCREEN_WIDTH} selfCenter>
                     <FilterCategory
                         title="Select at least one (required)"
                         filters={projectFilters}
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
         paddingLeft: 16,
         marginTop: 10,
         marginBottom: WRAPPER_MARGIN,
+        alignSelf: 'center'
     },
     button: {
         marginTop: 40,
