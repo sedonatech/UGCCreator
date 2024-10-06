@@ -75,3 +75,9 @@ export const YELLOW = '#FFF27C';
 export const DEFAULT_GRADIENT = ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.6)'];
 
 export const LIGHT_GREEN = 'rgba(52, 199, 89, 0.3)';
+
+export const ONBOARDING_BLUE = '#3979E8';
+export const OFF_WHITE = '#EFEFEF';
+export const METAL = '#6B7280'
+
+export const DARK_OVERLAY = '#00000033'
