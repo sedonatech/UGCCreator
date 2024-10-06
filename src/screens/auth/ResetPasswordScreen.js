@@ -4,13 +4,18 @@ import auth from '@react-native-firebase/auth';
 import {
     BLACK,
     BLACK_10,
+    BLACK_20,
     BLACK_SECONDARY,
     BLUE,
     BRAND_BLUE,
+    DARK_OVERLAY,
+    GREY_30,
+    ONBOARDING_BLUE,
+    WHITE,
     WHITE_40,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
-import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
+import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { ONBOARDING } from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
@@ -18,6 +23,9 @@ import TemplateTextInput from '../../components/TemplateTextInput';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
 import HeaderIconButton from '../../components/header/HeaderButton';
+import TemplateBox from '../../components/TemplateBox';
+import ResizedImage from '../../components/ResizedImage';
+import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
 const ResetPasswordScreen = ({ navigation, route }) => {
     const isUpdate = route.params?.isUpdate;
@@ -69,12 +77,15 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                 <HeaderIconButton
                     name="arrow-back-outline"
                     onPress={() => navigation.goBack()}
-                    backDropColor={WHITE_40}
+                    backDropColor={BLACK_20}
                     ml={WRAPPER_MARGIN}
                 />
             ),
         });
     }, [navigation]);
+
+    const { onboardingEducation } = useFeatureFlags();
+    const image = onboardingEducation?.images?.forgotPassword
 
     return (
         <Wrapper
@@ -82,21 +93,27 @@ const ResetPasswordScreen = ({ navigation, route }) => {
             style={styles.container}
             keyboard
         >
-            <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} />
+            <TemplateBox borderRadius={20} overflow='hidden'>
+                <TemplateBox style={{position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99}} backgroundColor={`${BLACK_10}`}>
+                </TemplateBox>
+                <ResizedImage source={{uri: image}} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
+            </TemplateBox>
 
-            <TemplateText
-                size={18}
-                bold
-                caps
-                center
-                color={BLACK}
-                style={styles.title}
-            >
-                {isUpdate ? 'Update your Password!' : 'Reset your Password!' }
-            </TemplateText>
-            <TemplateText size={16} color={BLACK_SECONDARY} medium>
-                Enter your email to continue
-            </TemplateText>
+
+            <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={16}>
+                <TemplateText
+                    size={18}
+                    bold
+                    caps
+                    color={BLACK}
+                    style={styles.title}
+                >
+                    {isUpdate ? 'Update your Password!' : 'Reset your Password!' }
+                </TemplateText>
+                <TemplateText size={16} color={BLACK_SECONDARY} medium>
+                    Enter your email to continue
+                </TemplateText>
+            </TemplateBox>
             <TemplateTextInput
                 placeholder="Email"
                 style={styles.input}
@@ -114,14 +131,15 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                     onPress={handleResetPassword}
                     style={styles.button}
                     loading={loading}
+                    color={ONBOARDING_BLUE}
                 />
                 {!isUpdate && (
-                    <TemplateText size={16} center italic style={styles.signupLink} medium>
+                    <TemplateText size={16} center style={styles.signupLink} medium>
                         New to the UGC creator app?
                         {' '}
 
                         <TemplateText
-                            color={BLUE}
+                            color={ONBOARDING_BLUE}
                             underLine
                             size={16}
                             medium
@@ -138,13 +156,10 @@ const ResetPasswordScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     container: {
-
         alignItems: 'center',
-        backgroundColor: BRAND_BLUE,
     },
     contentContainerStyle: {
         flex: 1,
-        backgroundColor: BRAND_BLUE,
     },
     buttonContainer: {
         alignSelf: 'center',
@@ -166,7 +181,8 @@ const styles = StyleSheet.create({
         borderColor: BLACK_10,
         borderRadius: 8,
         paddingLeft: 16,
-        marginTop: WRAPPER_MARGIN * 2,
+        backgroundColor: GREY_30,
+        marginTop: 16
     },
     generalError: {
         marginVertical: 10,
