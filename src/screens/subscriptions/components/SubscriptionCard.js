@@ -24,7 +24,7 @@ const SubscriptionCard = ({
     <TemplateBox
         backgroundColor={WHITE}
         borderRadius={16}
-        mt={WRAPPER_MARGIN * 2}
+        mt={16}
         width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
         pAll={16}
         slideIn
