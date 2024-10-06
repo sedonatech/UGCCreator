@@ -17,6 +17,7 @@ import {
 import ResetPasswordScreen from '../../screens/auth/ResetPasswordScreen';
 import OnboardingEducationScreen from '../../screens/onboarding/OnboardingEducationScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
+import { WHITE } from '../../theme/Colors';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -25,6 +26,9 @@ const AuthStack = () => (
     <Navigator
         initialRouteName={WELCOME}
         screenOptions={{
+            cardStyle: {
+                backgroundColor: WHITE,
+              },
             ...SWITCH,
             freezeOnBlur: true,
         }}
