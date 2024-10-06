@@ -15,7 +15,7 @@ const Error = ({show, children, style}) =>
         style,
         isSmallDevice && !show && styles.hideOnSmallDevice,
       ]}>
-      <TemplateText size={isShortDEvice ? 12 : 14} medium style={styles.error}>
+      <TemplateText size={12} medium style={styles.error}>
         {children}
       </TemplateText>
     </View>
