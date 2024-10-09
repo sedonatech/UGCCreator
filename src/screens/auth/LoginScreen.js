@@ -7,9 +7,13 @@ import {
     BLACK_SECONDARY,
     BLUE,
     BRAND_BLUE,
+    DARK_OVERLAY,
+    GREY_30,
+    ONBOARDING_BLUE,
+    WHITE,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
-import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
+import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { FORGOT_PASSWORD, ONBOARDING } from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
@@ -19,6 +23,9 @@ import Error from '../../components/Error';
 import TemplateTouchable from '../../components/TemplateTouchable';
 import TemplateIcon from '../../components/TemplateIcon';
 import useProfile from '../../hooks/user/useProfile';
+import ResizedImage from '../../components/ResizedImage';
+import TemplateBox from '../../components/TemplateBox';
+import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
@@ -62,27 +69,31 @@ const LoginScreen = ({ navigation }) => {
         setLoading(false);
     };
 
+    const { onboardingEducation } = useFeatureFlags();
+    const image = onboardingEducation?.images?.login 
+
+
     return (
         <Wrapper
             contentContainerStyle={styles.contentContainerStyle}
-            style={styles.container}
             keyboard
-        >
-            <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} />
+        >   
+            <TemplateBox borderRadius={20} overflow='hidden'>
+                <TemplateBox style={{position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99}} backgroundColor={DARK_OVERLAY}>
+                 <BrandLogo height={58} width={282} color={WHITE} />
+                </TemplateBox>
+                <ResizedImage source={{uri: image}} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
+            </TemplateBox>
 
+            <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={20}>
             <TemplateText
                 size={18}
-                bold
-                caps
-                center
-                color={BLACK}
-                style={styles.title}
+                medium
+                color={ONBOARDING_BLUE}
             >
                 Welcome back!
             </TemplateText>
-            <TemplateText size={16} color={BLACK_SECONDARY} medium center>
-                Enter your email and password to continue
-            </TemplateText>
+            </TemplateBox>
             <TemplateTextInput
                 placeholder="Email"
                 style={styles.input}
@@ -123,13 +134,14 @@ const LoginScreen = ({ navigation }) => {
                     onPress={handleLogin}
                     style={styles.button}
                     loading={loading}
+                    color={ONBOARDING_BLUE}
                 />
-                <TemplateText size={16} center italic style={styles.signupLink} medium>
+                <TemplateText size={16} center style={styles.signupLink} medium>
                     Forgot you password?
                     {' '}
 
                     <TemplateText
-                        color={BLUE}
+                        color={ONBOARDING_BLUE}
                         underLine
                         size={16}
                         medium
@@ -139,12 +151,11 @@ const LoginScreen = ({ navigation }) => {
                     </TemplateText>
                 </TemplateText>
 
-                <TemplateText size={16} center italic style={styles.signupLink} medium>
+                <TemplateText size={16} center style={styles.signupLink} medium>
                     New to the UGC creator app?
                     {' '}
-
                     <TemplateText
-                        color={BLUE}
+                        color={ONBOARDING_BLUE}
                         underLine
                         size={16}
                         medium
@@ -160,12 +171,10 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
-        backgroundColor: BRAND_BLUE,
     },
     contentContainerStyle: {
         flex: 1,
-        backgroundColor: BRAND_BLUE,
+        paddingTop: 40,
     },
     buttonContainer: {
         alignSelf: 'center',
@@ -190,7 +199,8 @@ const styles = StyleSheet.create({
         borderColor: BLACK_10,
         borderRadius: 8,
         paddingLeft: 16,
-        marginTop: WRAPPER_MARGIN * 2,
+        marginTop: 16,
+        backgroundColor: GREY_30
     },
     generalError: {
         marginVertical: 10,

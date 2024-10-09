@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import TemplateBox from '../../components/TemplateBox';
 import { wp } from '../../Utils/getResponsiveSize';
@@ -11,7 +11,7 @@ import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../consts/content/Portfoli
 import TemplateText from '../../components/TemplateText';
 // import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
-import { CHATS } from '../../navigation/ScreenNames';
+import { CHATS, CREATORS_PROFILES_STACK, PROFILE } from '../../navigation/ScreenNames';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 
 const ChatRoomCard = ({
@@ -19,7 +19,8 @@ const ChatRoomCard = ({
     item,
     userId,
     navigation,
-    isSupport
+    isSupport,
+    isCreator
 }) => {
     // const { unreadMessagesCount } = useChatMessages(id);
     const usersRef = firestore().collection('users');
@@ -105,10 +106,23 @@ const ChatRoomCard = ({
                     </View>
                 }
 
-                <FastImage
-                    source={{ uri: receiver?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
-                    style={styles.image}
-                />
+                <TemplateBox style={styles.image} zIndex={9999} 
+                    onPress={()=> {
+                        if(!isCreator) return navigation.navigate(PROFILE, {
+                            creatorId: receiver?.id,
+                        })
+
+                       return !isSupport && navigation.navigate(CREATORS_PROFILES_STACK, {
+                                screen: PROFILE,
+                                params:{ creatorId: receiver?.id }
+                         })
+                    }}
+                    >
+                    <FastImage
+                        source={{ uri: receiver?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
+                        style={styles.image}
+                    />
+                </TemplateBox>
 
                 <TemplateBox width='80%'>
                     <TemplateText bold size={wp(16)}>
@@ -154,7 +168,7 @@ const styles = StyleSheet.create({
         width: wp(50),
         height: wp(50),
         borderRadius: wp(10),
-        marginRight: wp(20),
+        marginRight: wp(16),
     },
 });
 

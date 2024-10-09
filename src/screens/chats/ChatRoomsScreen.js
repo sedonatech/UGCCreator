@@ -388,6 +388,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                         item={item}
                                         navigation={navigation}
                                         isSupport={brandId === item?.brandId}
+                                        isCreator={isCreator}
                                     />
                                 </Swipeable>
                             </GestureHandlerRootView>

@@ -12,7 +12,7 @@ import {
     SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../theme/Layout';
 import {
-    BLACK, BLACK_10, BLACK_60, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND, WHITE,
+    BLACK, BLACK_10, BLACK_60, DARK_GREY, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND, WHITE,
 } from '../../theme/Colors';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import SubscriptionCard from './components/SubscriptionCard';
@@ -27,6 +27,8 @@ import BrushSvg from '../../../assets/svgs/BrushSvg';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 import Button from '../../components/Button';
 import useAuthContext from '../../hooks/auth/useAuthContext';
+import ResizedImage from '../../components/ResizedImage';
+import Star from '../../../assets/svgs/Star';
 
 const SubscriptionScreen = ({ navigation, route }) => {
     const fromSettings = route?.params?.fromSettings;
@@ -162,6 +164,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const isBrand = auth?.profile?.type === 'brand';
 
     const appBenefits = isBrand ? subscriptionBenefits?.brandBenefits : subscriptionBenefits?.benefits;
+    const reviews = subscriptionBenefits?.reviews
 
     return (
         <ScrollView
@@ -169,12 +172,13 @@ const SubscriptionScreen = ({ navigation, route }) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox selfCenter mt={40}>
-                <BrandLogo height={SCREEN_HEIGHT / 5.4} width={SCREEN_WIDTH / 1.9} />
+            <TemplateBox selfCenter mt={60}>
+                <BrandLogo height={45} width={SCREEN_WIDTH / 1.4} />
             </TemplateBox>
             <TemplateBox
                 flex
                 backgroundColor={PAYWALL_PRIMARY_BACKGROUND}
+                mt={16}
             >
                 <TemplateBox selfCenter ph={WRAPPER_MARGIN}>
                     <TemplateText
@@ -187,17 +191,6 @@ const SubscriptionScreen = ({ navigation, route }) => {
                     >
                         {subscriptionBenefits?.title}
                     </TemplateText>
-                    <TemplateBox height={20} />
-                    <TemplateBox selfCenter>
-                        <TemplateText
-                            size={14}
-                            color={BLACK}
-                            center
-                        >
-                            {subscriptionBenefits?.subtitle}
-                        </TemplateText>
-                    </TemplateBox>
-                    <TemplateBox height={10} />
                 </TemplateBox>
 
                 <TemplateBox
@@ -243,6 +236,16 @@ const SubscriptionScreen = ({ navigation, route }) => {
 
                     ))}
                 </TemplateBox>
+                <TemplateBox selfCenter>
+                        <TemplateText
+                            size={14}
+                            color={BLACK}
+                            medium
+                            center
+                        >
+                            {subscriptionBenefits?.subtitle}
+                        </TemplateText>
+                    </TemplateBox> 
 
                 <TemplateBox mh={WRAPPER_MARGIN}>
                     {
@@ -291,6 +294,42 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         Restore Subscription
                     </TemplateText>
                 </TemplateBox>
+
+                {
+                    reviews?.length > 1 && 
+                    <TemplateBox selfCenter >
+                        <TemplateBox mb={16}>
+                            <TemplateText semiBold>
+                                Trusted by UGC creators worldwide
+                            </TemplateText>
+                        </TemplateBox>
+                    
+                        {reviews?.map(({title, subtitle, image}, index)=> (
+                            <TemplateBox key={index} row backgroundColor={WHITE} width={WRAPPED_SCREEN_WIDTH} borderRadius={12} pAll={16} mb={16}>
+                                <ResizedImage source={{uri: image}} style={{width: 48, aspectRatio: 1, borderRadius: 12}} />
+                            <TemplateBox ml={16} width='75%'>
+                                <TemplateText size={16} medium>
+                                    {title}
+                                </TemplateText>
+                                <TemplateText size={14} color={`${DARK_GREY}b3`} mt={4} light>
+                                    {subtitle}
+                                </TemplateText>
+
+                                <TemplateBox row mt={6}>
+                                {
+                                    Array(5).fill(0).map((_, index) => (
+                                        <Star style={{marginRight: 4}} />
+                                    ))
+                                }
+                                </TemplateBox>
+                            </TemplateBox>
+
+                            </TemplateBox>
+                        ))}
+                    </TemplateBox>
+                }
+
+                
                 <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN}>
                     <TemplateText size={12} color={BLACK_60} center small>
                         By selecting a subscription plan you agree to our
@@ -368,7 +407,7 @@ const styles = StyleSheet.create({
         backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
     },
     button: {
-        marginTop: 40,
+        marginTop: 20,
         alignSelf: 'center',
         borderRadius: 16,
         backgroundColor: IOS_BLUE,

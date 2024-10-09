@@ -36,6 +36,7 @@ import AffiliateBrandsCarousel from './components /AffiliateBrandsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
 import EventsCarousel from './components /EventsCarousel';
 import useProfile from '../../../hooks/user/useProfile';
+import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -180,6 +181,7 @@ const HomeScreen = ({ navigation }) => {
                     style={SHADOW('card', WHITE)}
                     selfCenter
                     mt={35}
+                    mb={20}
                 >
                     <CatalogueSvg />
                     <TemplateBox width={16} />
@@ -195,6 +197,7 @@ const HomeScreen = ({ navigation }) => {
                     </TemplateBox>
                 </TemplateBox>
             )}
+            <FeaturedCreatorsCarousel style={styles.carousel} creator={true} />    
 
             {!!ugcGuidePdfFeed?.title && (
                 <TemplateBox mt={wp(20)} mb={wp(10)}>

@@ -1,22 +1,37 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import {
     BLUE,
     BRAND_BLUE,
+    DARK_OVERLAY,
+    ONBOARDING_BLUE,
+    WHITE,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import {
-    HEADER_MARGIN, SCREEN_WIDTH,
+    HEADER_MARGIN, SCREEN_HEIGHT, SCREEN_WIDTH,
 } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { LOGIN, SIGN_UP } from '../../navigation/ScreenNames';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import TemplateBox from '../../components/TemplateBox';
+import BackgroundImage from '../../components/BackgroundImage';
+import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
-const OnboardingScreen = ({ navigation }) => (
-    <View style={styles.container}>
-        <TemplateBox height={HEADER_MARGIN} />
-        <BrandLogo height={300} width={SCREEN_WIDTH / 1.4} />
+
+const OnboardingScreen = ({ navigation }) => {
+    const { onboardingEducation } = useFeatureFlags();
+    const image = onboardingEducation?.images?.registerSelection
+    
+    return(
+    <SafeAreaView style={styles.container}>
+        <BackgroundImage
+                source={{ uri: image }}
+                width={SCREEN_WIDTH}
+                style={styles.bgImage}
+            />
+            <TemplateBox absolute width={SCREEN_WIDTH} height={SCREEN_HEIGHT} backgroundColor={DARK_OVERLAY}   />
+            <BrandLogo height={115} width={282} color={WHITE} />
 
         <View style={styles.buttonContainer}>
             <Button
@@ -25,6 +40,7 @@ const OnboardingScreen = ({ navigation }) => (
                     type: 'creator',
                 })}
                 style={styles.button}
+                color={ONBOARDING_BLUE}
             />
             <Button
                 title="Register as a Brand"
@@ -32,13 +48,14 @@ const OnboardingScreen = ({ navigation }) => (
                     type: 'brand',
                 })}
                 style={styles.button}
+                color={WHITE}
+                titleColor={ONBOARDING_BLUE}
             />
-            <TemplateText italic size={16} center style={styles.loginText} medium>
-                Already joined?
+            <TemplateText size={16} center style={styles.loginText} medium color={WHITE}>
+                Already have an account?
                 {' '}
-
                 <TemplateText
-                    color={BLUE}
+                    color={WHITE}
                     underLine
                     size={16}
                     medium
@@ -48,14 +65,17 @@ const OnboardingScreen = ({ navigation }) => (
                 </TemplateText>
             </TemplateText>
         </View>
-    </View>
-);
+    </SafeAreaView>
+)};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: BRAND_BLUE,
         alignItems: 'center',
+    },
+    bgImage:{
+        height: SCREEN_HEIGHT,
     },
     buttonContainer: {
         position: 'absolute',

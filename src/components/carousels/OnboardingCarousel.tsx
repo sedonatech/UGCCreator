@@ -19,6 +19,7 @@ export interface TemplateCarouselProps extends FlatListProps<any> { // Fix <any>
     onShowAllPress?: (()=>void) | null,
     activeIndex: number,
     setActiveIndex: (index: number) => void,
+    dots?: boolean
 }
 
 type RefType = LegacyRef<FlatList>;
@@ -34,6 +35,7 @@ const OnboardingCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
     onShowAllPress,
     activeIndex,
     setActiveIndex,
+    dots,
     ...restProps
 }, ref:RefType) =>
     // @ts-ignore
@@ -62,6 +64,7 @@ const OnboardingCarousel:React.FC<TemplateCarouselProps> = forwardRef(({
                 <TemplatePagination
                     paginationSize={paginationSize || 0}
                     position={activeIndex}
+                    dots={dots}
                 />
             )}
 
