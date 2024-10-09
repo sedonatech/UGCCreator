@@ -108,8 +108,8 @@ android {
         applicationId "com.ugccreatorapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 44
-        versionName "1.7.0"
+        versionCode 46
+        versionName "1.7.2"
         vectorDrawables.useSupportLibrary = true
     }
 
