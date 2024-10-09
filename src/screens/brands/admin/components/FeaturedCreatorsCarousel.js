@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import { CREATORS_PROFILES, PROFILE } from '../../../../navigation/ScreenNames';
+import { CREATORS_PROFILES, CREATORS_PROFILES_STACK, PROFILE } from '../../../../navigation/ScreenNames';
 import { BLACK, BLUE, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
@@ -18,7 +18,7 @@ import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
 
 const SAMPLE_SIZE = 5;
 const USERS_COLLECTION = 'users';
-const FeaturedCreatorsCarousel = ({ style }) => {
+const FeaturedCreatorsCarousel = ({ style, creator }) => {
     const navigation = useNavigation();
     const [creatorsData, setCreators] = useState([]);
     const creatorsRef = firestore().collection(USERS_COLLECTION)
@@ -52,7 +52,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                     </TemplateText>
                     <TemplateBox />
                     <TemplateTouchable
-                        onPress={() => navigation.navigate(CREATORS_PROFILES)}
+                        onPress={() => navigation.navigate(creator ? CREATORS_PROFILES_STACK : CREATORS_PROFILES)}
                     >
                         <TemplateText startCase size={14} underLine color={BLUE}>
                             See All
@@ -63,7 +63,7 @@ const FeaturedCreatorsCarousel = ({ style }) => {
 
                 <TemplateBox height={10} />
                 <TemplateText size={14} color={BLACK}>
-                    Based on your recent searches
+                    {creator ? `Collaborate with other creators` : `Based on your recent searches`}
                 </TemplateText>
             </View>
 
@@ -82,9 +82,17 @@ const FeaturedCreatorsCarousel = ({ style }) => {
                         buttonOffset={50}
                         textContainerWidth="68%"
                         location={item?.location?.city || item?.location?.country}
-                        onPress={() => navigation.navigate(PROFILE, {
-                            creatorId: item?.id,
-                        })}
+                        onPress={() => {
+                            if(creator) return navigation.navigate(CREATORS_PROFILES_STACK, {
+                                screen: PROFILE,
+                                params:{
+                                    creatorId: item?.id,
+                                }
+                            })
+                            return navigation.navigate(PROFILE, {
+                                creatorId: item?.id,
+                            })
+                        }}
                         lastLoginTime={item?.lastLoginTime}
                         mt={12}
                     />
