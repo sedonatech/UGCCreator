@@ -108,7 +108,7 @@ android {
         applicationId "com.ugccreatorapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 46
+        versionCode 48
         versionName "1.7.2"
         vectorDrawables.useSupportLibrary = true
     }
@@ -175,6 +175,7 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-fbsdk-next')
+    implementation 'org.jetbrains:annotations:16.0.2'
 //     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 //     implementation 'com.google.firebase:firebase-analytics-ktx'
 //
