@@ -54,6 +54,7 @@ const AddEventScreen = ({ navigation, route }) => {
     const [showStartDate, setShowStartDate] = useState(false);
     const [showEndDate, setShowEndDate] = useState(false);
     const [showStartTime, setShowStartTime] = useState(false);
+    const [updateImage, setUpdateImage] = useState(false);
 
     useEffect(() => {
         if (eventData)loadEvent();
@@ -80,7 +81,11 @@ const AddEventScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (latestImage) {
+            // fixes the issue where your'e trying to edit an event
+            // and latest image has higher generation value that previous event
+            if (eventData && !updateImage) return;
             update('image', latestImage?.url);
+            return;
         }
 
         if (eventData) update('image', eventData?.image);
@@ -371,7 +376,10 @@ const AddEventScreen = ({ navigation, route }) => {
                                 },
                                 {
                                     text: 'OK',
-                                    onPress: () => onAddPhoto(),
+                                    onPress: () => {
+                                        onAddPhoto();
+                                        setUpdateImage(true)
+                                    },
                                 },
                             ]);
                             return;

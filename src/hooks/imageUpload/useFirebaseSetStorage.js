@@ -125,9 +125,8 @@ const useFirebaseSetStorage = () => {
                 console.log('[Image library] - take a picture error:', err.code);
                 if (err.code === 'E_NO_LIBRARY_PERMISSION') {
                     // Get the permission status
-                    request(isIOS
-                        ? PERMISSIONS.IOS.PHOTO_LIBRARY
-                        : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE)
+                    const permissionType = isIOS ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+                    request(permissionType)
                         .then((result) => {
                             handlePermissionStatus(result, 'Photo library');
                         });

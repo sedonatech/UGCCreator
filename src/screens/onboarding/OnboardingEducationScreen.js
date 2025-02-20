@@ -100,7 +100,7 @@ const OnboardingEducationScreen = ({ navigation }) => {
                     ref={carouselRef}
                 />
             </TemplateBox> 
-            <TemplateBox absolute top={SCREEN_HEIGHT - 100} ph={35} width={SCREEN_WIDTH} row justifyContent='space-between'>
+            <TemplateBox absolute top={SCREEN_HEIGHT - 110} ph={35} width={SCREEN_WIDTH} row justifyContent='space-between'>
                 <TemplateBox backgroundColor={OFF_WHITE} ph={25} pv={18} borderRadius={13} onPress={() =>  navigation.navigate(ONBOARDING)}>
                     <TemplateText size={16} semiBold caps>
                         Skip
