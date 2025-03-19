@@ -1,6 +1,6 @@
 import React, {
     useCallback,
-    useEffect, useRef, useState,
+    useEffect, useMemo, useRef, useState,
 } from 'react';
 import {
     ActivityIndicator,
@@ -75,48 +75,86 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const searchActive = search?.length > 2 || selectedFilters?.length;
 
-    const creatorsRef = firestore().collection(USERS_COLLECTION)
+    const creatorsRef = useMemo(() => firestore()
+        .collection(USERS_COLLECTION)
         .where('type', '==', 'creator')
-        .limit(limit);
+        .limit(limit), [limit]);
 
-    let filteredCreatorsRef = firestore().collection(USERS_COLLECTION)
-        .where('type', '==', 'creator')
-        .limit(limit);
+    const filteredCreatorsRef = useMemo(() => {
+        let query = firestore()
+            .collection(USERS_COLLECTION)
+            .where('type', '==', 'creator')
+            .limit(limit);
 
-    if (search?.includes('.com')) filteredCreatorsRef = filteredCreatorsRef.where('email', '==', search?.toLowerCase());
-    if (search?.length > 2 && !search?.includes('.com')) filteredCreatorsRef = filteredCreatorsRef.where('userName', '==', startCase(toLower(search)));
-    if (selectedFilters?.length) {
-        const filterArray = selectedFilters.map((filter) => filter.toLowerCase());
-        filteredCreatorsRef = filteredCreatorsRef.where('categories', 'array-contains-any', filterArray);
-    }
+        if (search?.includes('.com')) {
+            query = query.where('email', '==', search.toLowerCase());
+        }
+        if (search?.length > 2 && !search?.includes('.com')) {
+            query = query.where('userName', '==', startCase(toLower(search)));
+        }
+        if (selectedFilters?.length) {
+            const filterArray = selectedFilters.map((filter) => filter.toLowerCase());
+            query = query.where('categories', 'array-contains-any', filterArray);
+        }
+
+        return query;
+    }, [limit, search, selectedFilters]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const querySnapshot = await creatorsRef.limit(limit).get();
-                const data = querySnapshot.docs.map((doc) => ({
+                let data = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
-                    lastLoginTime: doc.data().lastLoginTime ? calculateLastLoginTime(doc.data().lastLoginTime) : 'days ago',
+                    lastLoginTime: doc.data().lastLoginTime
+                        ? calculateLastLoginTime(doc.data().lastLoginTime)
+                        : 'days ago',
                 }));
+
+                // Sort so that items with an image come first.
+                // If both items have an image, sort them lexicographically by the image string.
+                data = data.sort((a, b) => {
+                    if (a.image && b.image) {
+                        return a.image.localeCompare(b.image);
+                    }
+                    if (a.image && !b.image) {
+                        return -1; // a comes first if it has an image
+                    }
+                    if (!a.image && b.image) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
                 setCreatorsData(data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-        fetchData(); // Call the fetch function
+
+        fetchData();
     }, [limit]);
 
     const searchCreator = async () => {
         setLoading(true);
         setFilteredCreators([]);
         const querySnapshot = await filteredCreatorsRef.get();
-        const data = querySnapshot?.docs
-            ?.map((doc) => ({
-                id: doc?.id,
-                ...doc?.data(),
-                lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
-            }));
+        let data = querySnapshot?.docs.map((doc) => ({
+            id: doc?.id,
+            ...doc?.data(),
+            lastLoginTime: doc?.data()?.lastLoginTime
+                ? calculateLastLoginTime(doc?.data()?.lastLoginTime)
+                : 'days ago',
+        }));
+
+        // Sort so that creators with an image appear first.
+        data = data.sort((a, b) => {
+            if (a.image && !b.image) return -1;
+            if (!a.image && b.image) return 1;
+            return 0;
+        });
+
         setLoading(false);
         setFilteredCreators(data);
     };
