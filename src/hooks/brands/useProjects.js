@@ -40,7 +40,6 @@ const useProjects = () => {
 
     const [allProjects, setAllProjects] = useState([]);
     const [enrolledProjects, setEnrolledProjects] = useState([]);
-
     const { auth: authContext } = useAuthContext();
     const profile = authContext?.profile;
   
@@ -204,7 +203,7 @@ const useProjects = () => {
     const enrollToProject = async (creatorID, selectedProject) => {
         try {
             const selectedProjectApplications = selectedProject?.applications;
-            const enrolledUserIds = selectedProject?.enrolledUserIds || [];
+            const enrolledUserIds = [...selectedProject?.enrolledUserIds] || [];
             const selectedProjectEnrolledCreatorIds = selectedProjectApplications
                 ?.map(({ creatorId }) => creatorId);
 
