@@ -19,8 +19,6 @@ const ProjectsTab = (id) => {
 
     const { allProjects } = useProjectsContext();
 
-    console.log({allProjects})
-
     const brandProjects = useMemo(() => {
         if (!allProjects?.length) return [];
 
