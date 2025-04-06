@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useState } from 'react';
 import { projectStatuses } from '../../consts/AppFilters/ProjectStatus';
+import useAuthContext from '../auth/useAuthContext';
 
 const PROJECTS_COLLECTION = 'projects';
 
@@ -34,11 +35,15 @@ const initialProjectState = {
     applications: [],
 };
 
-const useProjects = (projectLimits = 5) => {
+const useProjects = () => {
     const [projects, setProjects] = useState([]);
 
     const [allProjects, setAllProjects] = useState([]);
+    const [enrolledProjects, setEnrolledProjects] = useState([]);
 
+    const { auth: authContext } = useAuthContext();
+    const profile = authContext?.profile;
+  
     const [project, setProject] = useState(initialProjectState);
 
     const [loading, setLoading] = useState(false);
@@ -59,6 +64,8 @@ const useProjects = (projectLimits = 5) => {
                 ...projectData,
                 brandId: uid,
                 createdAt: Date.now(),
+                brandName: profile?.name,
+                isBlocked: false,
             });
             console.log('Document written with ID: ', docRef.id);
         } catch (error) {
@@ -67,16 +74,17 @@ const useProjects = (projectLimits = 5) => {
         setLoading(false);
     };
 
-    console.log('uui', auth().currentUser?.uid);
-
-    const getProjects = async () => {
+    const getProjects = async (projectLimits = 8) => {
         try {
-            console.log('getProjects called');
             setLoading(true);
             const db = firestore();
             const { uid } = auth().currentUser;
             // const uid = 'QZJ14IZYjTZpjGUkaJUyqjLmhYG3';
-            const querySnapshot = await db.collection(PROJECTS_COLLECTION).where('brandId', '==', uid).limit(projectLimits).get();
+            const querySnapshot = await db.collection(PROJECTS_COLLECTION)
+                .where('brandId', '==', uid)
+                .orderBy('createdAt', 'desc')
+                .limit(projectLimits)
+                .get();
             const projectsData = [];
             querySnapshot.forEach((doc) => {
                 projectsData.push({ id: doc?.id, ...doc?.data() });
@@ -85,20 +93,21 @@ const useProjects = (projectLimits = 5) => {
             if (projectsData.length > 0) {
                 setProjects(projectsData?.filter(({ brandId }) => brandId === uid));
             }
-
-            console.log('brand pjs', { projectsData });
         } catch (error) {
             console.log('getProjects Error:', error);
         }
         setLoading(false);
     };
 
-    const getAllProjects = async () => {
+    const getAllProjects = async (projectLimits = 8) => {
         try {
-            console.log('getAllProjects called');
             setLoading(true);
             const db = firestore();
-            const querySnapshot = await db.collection(PROJECTS_COLLECTION).limit(projectLimits).get();
+            const querySnapshot = await db.collection(PROJECTS_COLLECTION)
+                .where('isBlocked', '==', false)
+                .orderBy('createdAt', 'desc')
+                .limit(projectLimits)
+                .get();
             const projectsData = [];
             querySnapshot.forEach((doc) => {
                 projectsData.push({ id: doc?.id, ...doc?.data() });
@@ -119,7 +128,32 @@ const useProjects = (projectLimits = 5) => {
             const db = firestore();
             const doc = await db.collection(PROJECTS_COLLECTION).doc(id).get();
             if (doc.exists) {
-                setProject({ id: doc?.id, ...doc?.data() });
+                const result = { id: doc?.id, ...doc?.data() };
+                setProject(result);
+                return result;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        setLoading(false);
+    };
+
+    const getEnrolledProjects = async (id, projectLimits = 5) => {
+        try {
+            setLoading(true);
+            const db = firestore();
+            const querySnapshot = await db.collection(PROJECTS_COLLECTION)
+                .where('enrolledUserIds', 'array-contains', id)
+                .orderBy('createdAt', 'desc')
+                .limit(projectLimits)
+                .get();
+            const projectsData = [];
+            querySnapshot.forEach((doc) => {
+                projectsData.push({ id: doc?.id, ...doc?.data() });
+            });
+
+            if (projectsData.length > 0) {
+                setEnrolledProjects(projectsData);
             }
         } catch (error) {
             console.log(error);
@@ -170,6 +204,7 @@ const useProjects = (projectLimits = 5) => {
     const enrollToProject = async (creatorID, selectedProject) => {
         try {
             const selectedProjectApplications = selectedProject?.applications;
+            const enrolledUserIds = selectedProject?.enrolledUserIds || [];
             const selectedProjectEnrolledCreatorIds = selectedProjectApplications
                 ?.map(({ creatorId }) => creatorId);
 
@@ -181,10 +216,12 @@ const useProjects = (projectLimits = 5) => {
                     enrolledAt: Date.now(),
                     documents: [],
                 });
+                enrolledUserIds?.push(creatorID);
 
                 await updateProject(selectedProject?.id,
                     {
                         applications: selectedProjectApplications,
+                        enrolledUserIds,
                     });
             }
         } catch (error) {
@@ -227,6 +264,8 @@ const useProjects = (projectLimits = 5) => {
         allProjects,
         enrollToProject,
         updateProjectStatus,
+        getEnrolledProjects,
+        enrolledProjects,
     };
 };
 
