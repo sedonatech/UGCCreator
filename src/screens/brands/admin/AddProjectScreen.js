@@ -42,8 +42,9 @@ const AddProjectScreen = ({ navigation }) => {
 
     const latestImage = useMemo(() => {
         if (!images) return null;
-
-        const sortedImages = images?.filter((item) => !!item?.contentDisposition).sort((a, b) => (a?.generation?.localeCompare(b?.generation)));
+        const sortedImages = images
+            ?.filter((item) => !!item?.contentDisposition)
+            .sort((a, b) => b?.generation - a?.generation);
 
         return sortedImages[0];
     }, [images]);
@@ -54,10 +55,28 @@ const AddProjectScreen = ({ navigation }) => {
         }
     }, [latestImage]);
 
+    const getUnfilledFields = () => {
+        const {
+            image, title, shortDescription,
+        } = project;
+        const unfilledFields = [];
+        if (!image?.trim()?.length) unfilledFields.push('Image');
+        if (!title?.trim()?.length) unfilledFields.push('Title');
+        if (!shortDescription?.trim()?.length) unfilledFields.push('Short Description');
+        return unfilledFields?.join(', ');
+    };
+
     const handleCreateProject = () => {
-        if (Object.keys(project).length === 0) {
-            Alert.alert('Please fill all the fields');
-        }
+        const {
+            image, title, shortDescription,
+        } = project;
+
+        if (
+            !image?.trim()?.length
+            || !title?.trim()?.length
+            || !shortDescription?.trim()?.length
+        ) return Alert.alert('Please fill all required fields:', getUnfilledFields());
+
         createProject(project);
         Alert.alert('Project created successfully',
             'You can view your project in the projects section',
