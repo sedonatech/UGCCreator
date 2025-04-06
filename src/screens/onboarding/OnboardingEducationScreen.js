@@ -1,26 +1,19 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import {
-    ACCENT, BLACK,
-
-    BRAND_BLUE, DEFAULT_GRADIENT, METAL, OFF_WHITE, ONBOARDING_BLUE, WHITE,
+import {METAL, OFF_WHITE, ONBOARDING_BLUE, WHITE,
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import {
     HEADER_MARGIN, SCREEN_HEIGHT, SCREEN_WIDTH,
-    WRAPPED_SCREEN_WIDTH,
 } from '../../theme/Layout';
 
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import TemplateBox from '../../components/TemplateBox';
-import { SHADOW } from '../../theme/Shadow';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 import OnboardingCarousel from '../../components/carousels/OnboardingCarousel';
 import { ONBOARDING } from '../../navigation/ScreenNames';
-import { isAndroid } from '../../Utils/Platform';
 import TemplateIcon from '../../components/TemplateIcon';
 import { hp, wp } from '../../Utils/getResponsiveSize';
-import LinearGradient from 'react-native-linear-gradient';
 
 const OnboardingEducationScreen = ({ navigation }) => {
     const { onboardingEducation } = useFeatureFlags();

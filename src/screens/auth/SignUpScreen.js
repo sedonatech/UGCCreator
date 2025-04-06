@@ -30,7 +30,9 @@ import TemplateTouchable from '../../components/TemplateTouchable';
 import TemplateIcon from '../../components/TemplateIcon';
 import TemplateBox from '../../components/TemplateBox';
 import ResizedImage from '../../components/ResizedImage';
-import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
+
+const creatorAuthImage = require('../../../assets/images/onboarding/login.jpg');
+const brandAuthImage = require('../../../assets/images/onboarding/brand-auth.jpg');
 
 const CREATOR_PLACEHOLDER = 'Your Name';
 const BRAND_PLACEHOLDER = 'Your Brand Name';
@@ -114,8 +116,7 @@ const SignUpScreen = ({ navigation, route }) => {
         }
     };
 
-    const { onboardingEducation } = useFeatureFlags();
-    const image = isCreator ? onboardingEducation?.images?.creatorRegister : onboardingEducation?.images?.brandRegister
+    const image = isCreator ? creatorAuthImage : brandAuthImage;
 
 
     return (
@@ -129,7 +130,7 @@ const SignUpScreen = ({ navigation, route }) => {
                 <TemplateBox style={{position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99}} backgroundColor={DARK_OVERLAY}>
                  <BrandLogo height={58} width={282} color={WHITE} />
                 </TemplateBox>
-                <ResizedImage source={{uri: image}} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
+                <ResizedImage source={image} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
             </TemplateBox>
 
 
