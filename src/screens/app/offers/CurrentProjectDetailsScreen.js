@@ -1,8 +1,8 @@
 import React, {
+    useEffect,
     useLayoutEffect, useMemo, useState,
 } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK, GREEN, WHITE, WHITE_40,
@@ -17,7 +17,8 @@ import ProjectNotificationsTab from './components/ProjectNotificationsTab';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { HOME } from '../../../navigation/ScreenNames';
-import useGetBrands from '../../../hooks/creators/useGetBrands';
+import useGetUser from '../../../hooks/creators/useGetUser';
+import TemplateBox from '../../../components/TemplateBox';
 
 const CURRENT_PROJECT_TABS = [
     {
@@ -32,24 +33,35 @@ const CURRENT_PROJECT_TABS = [
 
 const CurrentProjectDetailsScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
-
     const fromProjectDetails = route?.params?.fromProjectDetails;
 
     const { auth } = useAuthContext();
-
     const { profile } = auth;
-
     const [selectedTab, setSelectedTab] = useState(CURRENT_PROJECT_TABS[0]);
 
-    const { allProjects: projects } = useProjectsContext();
+    const { getProject } = useProjectsContext();
+    const [currentProject, setCurrentProject] = useState(null);
+    const [currentProjectBrand, setCurrentProjectBrand] = useState(null);
 
-    const { brands } = useGetBrands();
+    const { getBrand } = useGetUser();
 
-    const currentProject = useMemo(() => {
-        if (!projects) return null;
+    useEffect(() => {
+        async function fetchData() {
+            const data = await getProject(projectId);
+            if (data) setCurrentProject(data);
+        }
+        fetchData();
+    }, [projectId]);
 
-        return projects?.find(({ id }) => id === projectId);
-    }, [projectId, projects]);
+    useEffect(() => {
+        async function fetchBrand() {
+            if (currentProject?.brandId) {
+                const data = await getBrand(currentProject?.brandId);
+                if (data) setCurrentProjectBrand(data);
+            }
+        }
+        fetchBrand();
+    }, [currentProject]);
 
     const application = useMemo(() => {
         if (!currentProject) return null;
@@ -59,11 +71,6 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
             : {};
     }, [currentProject, profile?.id]);
 
-    const currentProjectBrand = useMemo(() => {
-        if (!brands) return null;
-
-        return brands?.find(({ id }) => id === currentProject?.brandId);
-    }, [currentProject?.brandId, brands]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -84,7 +91,7 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    if (!currentProject) return <LoadingOverlay message="Loading project details..." />;
+    if (!currentProject) return <LoadingOverlay backgroundColor={WHITE} />;
 
     return (
         <ScrollView
