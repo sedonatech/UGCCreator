@@ -70,7 +70,7 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const projectsCarouselData = useMemo(() => {
         if (!projects?.length) return [];
-        return projects?.map((project) => ({
+        return projects?.slice(0, 5)?.map((project) => ({
             id: project?.id,
             title: project?.title,
             brand: brandName,
