@@ -38,7 +38,7 @@ const ProjectCard: FC<Props> = ({
     onPress,
     enrolled,
     duration,
-    projectType
+    projectType,
 }) => (
     <TemplateTouchable
         style={[styles.container, style]}
@@ -83,23 +83,25 @@ const ProjectCard: FC<Props> = ({
             colors={DEFAULT_GRADIENT}
             style={styles.linearGradient}
         />
-        <Image style={styles.image} source={image} />
-        <TemplateBox width={CARD_WIDTH - 8} selfCenter top={110} left={16}>
+        {!!image && <Image style={styles.image} source={image} />}
+        <TemplateBox width={CARD_WIDTH - 8} selfCenter pb={20} left={16} justifyContent="flex-end" height="100%" onPress={onPress}>
             {/* @ts-ignore */}
             <TemplateText color={WHITE} bold size={16} caps style={styles.text}>
                 {title}
             </TemplateText>
-            <TemplateBox row alignItems="center">
-                <TemplateIcon
-                    name="trending-up-outline"
-                    color={WHITE}
-                    size={12}
-                    style={styles.icon}
-                />
-                <TemplateText color={WHITE} size={10} semiBold>
-                    {projectType}
-                </TemplateText>
-            </TemplateBox>
+            {!!projectType && (
+                <TemplateBox row alignItems="center">
+                    <TemplateIcon
+                        name="trending-up-outline"
+                        color={WHITE}
+                        size={12}
+                        style={styles.icon}
+                    />
+                    <TemplateText color={WHITE} size={10} semiBold>
+                        {projectType}
+                    </TemplateText>
+                </TemplateBox>
+            )}
             <TemplateBox row alignItems="center">
                 <TemplateIcon
                     name="calendar-outline"

@@ -30,7 +30,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
     const creatorIds = useMemo(() => {
         if (!projects?.length) return [];
 
-        return projects?.reduce((acc, proj) => {
+        return projects?.slice(0, 5).reduce((acc, proj) => {
             if (proj?.applications?.length > 0) {
                 proj?.applications?.forEach((app) => {
                     if (app?.creatorId) {
@@ -51,18 +51,19 @@ const CurrentCreatorsCarousel = ({ style }) => {
         if (ids) getCreators();
     }, [ids]);
 
-    const chunks = chunk(ids, 10);
     const getCreators = async () => {
         try {
             const querySnapshot = await firestore()
                 .collection(USERS_COLLECTION)
-                .where('id', 'in', chunks?.[0])
+                .where('id', 'in', ids)
                 .get();
+
             const chunkCreators = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            setEnrolledCreators(chunkCreators);
+            const unique = [...new Map(chunkCreators.map((u) => [u.email, u])).values()];
+            setEnrolledCreators(unique);
         } catch (error) {
             console.log(error);
         }

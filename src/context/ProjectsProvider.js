@@ -11,7 +11,7 @@ const { Provider, Consumer: ProjectsConsumer } = ProjectsContext;
 
 const ProjectsProvider = ({ children }) => {
     const { auth } = useAuthContext();
-    const [projectLimits, setProjectLimits] = useState(5);
+    const [projectLimits, setProjectLimits] = useState(6);
 
     const userType = auth?.profile?.type;
 
@@ -35,6 +35,8 @@ const ProjectsProvider = ({ children }) => {
         allProjects,
         enrollToProject,
         updateProjectStatus,
+        getEnrolledProjects,
+        enrolledProjects,
     } = useProjects();
 
     const value = {
@@ -53,6 +55,8 @@ const ProjectsProvider = ({ children }) => {
         updateProjectStatus,
         projectLimits,
         setProjectLimits,
+        getEnrolledProjects,
+        enrolledProjects,
     };
 
     useEffect(() => {
@@ -61,7 +65,7 @@ const ProjectsProvider = ({ children }) => {
         } else {
             getProjects(projectLimits);
         }
-    }, [userType]);
+    }, [userType, projectLimits]);
 
     return (
         <Provider value={value}>

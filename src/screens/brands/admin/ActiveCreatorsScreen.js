@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, ActivityIndicator } from 'react-native';
+import { FlatList, ActivityIndicator, View } from 'react-native';
 import { chunk } from 'lodash';
 import firestore from '@react-native-firebase/firestore';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import {
     BLACK, BRAND_BLUE, DEEP_LAVENDER, WHITE,
 } from '../../../theme/Colors';
 import {
+    HEADER_MARGIN,
     RADIUS_SMALL,
     RADIUS_XSMALL, SPACE_MEDIUM, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
@@ -25,8 +26,6 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
     const ids = route?.params?.ids;
 
     const creatorIds = route?.params?.creatorIds;
-
-    console.log('creatorIds', JSON.stringify(creatorIds, null, 2));
 
     const [activeCreators, setActiveCreators] = useState([]);
 
@@ -51,7 +50,8 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
                 id: doc.id,
                 ...doc.data(),
             }));
-            setActiveCreators([...activeCreators, ...chunkCreators]);
+            const unique = [...new Map([...activeCreators, ...chunkCreators].map((u) => [u.email, u])).values()];
+            setActiveCreators(unique);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -106,7 +106,7 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
     );
 
     return (
-        <TemplateBox>
+        <View style={styles.container}>
             { !loading && !activeCreators?.length ? (
                 <ProfileStatusCard
                     title="No enrolled creators"
@@ -131,13 +131,13 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
                     initialNumToRender={10}
                     ListFooterComponent={renderFooter}
                     ListHeaderComponent={() => (
-                        <TemplateText size={16} bold center>
+                        <TemplateText size={16} bold center mt={HEADER_MARGIN}>
                             Active Creators
                         </TemplateText>
                     )}
                 />
             )}
-        </TemplateBox>
+        </View>
     );
 };
 
@@ -152,11 +152,13 @@ ActiveCreatorsScreen.defaultProps = {
 };
 
 const styles = {
+    container:{
+        flex: 1,
+    },
     statusCard: {
         marginHorizontal: WRAPPER_MARGIN,
     },
     card: {
-        marginRight: WRAPPER_MARGIN,
         marginBottom: 10,
     },
     brandsListContentContainer: {

@@ -6,6 +6,7 @@ import onboardingEducation from './defaults/onboardingEducation.json';
 import subscriptionBenefits from './defaults/subscriptionBenefits.json';
 import androidSubscription from './defaults/androidSubscription.json';
 import support from './defaults/support.json';
+import testers from './defaults/testers.json';
 
 export default {
     feed,
@@ -16,4 +17,5 @@ export default {
     subscriptionBenefits,
     androidSubscription,
     support,
+    testers,
 };

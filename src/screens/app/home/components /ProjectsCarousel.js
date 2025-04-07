@@ -29,15 +29,15 @@ const ProjectsCarousel = ({ style }) => {
     const carouselData = useMemo(() => {
         if (!projects || projects.length === 0) return [];
 
-        return projects?.sort((a, b) => (a?.createdAt - b?.createdAt)).map((item) => ({
+        return projects?.map((item) => ({
             id: item?.id,
             image: item?.image,
             title: item?.title,
             shortDescription: item?.shortDescription,
-            duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
+            duration: (!!item?.startDate && !!item?.endDate) ? `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks` : 'Ongoing',
             enrolled: item?.applications?.map((app) => app?.creatorId)?.includes(profile?.id),
-            projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
-        }))?.slice(0, 4);
+            projectType: item?.projectType?.length > 0 && projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
+        }))?.filter((item) => !!item?.image)?.slice(0, 5);
     }, [projects]);
 
     return !carouselData ? (
@@ -70,7 +70,7 @@ const ProjectsCarousel = ({ style }) => {
                 renderItem={({ item }) => (
                     <ProjectCard
                         key={item?.id}
-                        image={{ uri: item?.image }}
+                        image={!!item?.image && { uri: item?.image }}
                         title={item?.title}
                         shortDescription={item?.shortDescription}
                         // @ts-ignore

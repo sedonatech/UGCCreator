@@ -6,6 +6,7 @@ import {
     ScrollView, StyleSheet,
 } from 'react-native';
 
+import firestore from '@react-native-firebase/firestore';
 import {
     BLACK,
     BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN,
@@ -35,15 +36,21 @@ import {
 } from '../../../consts/AppFilters/ProjectFilters';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+
+const PROJECTS_COLLECTION = 'projects';
 
 const ProjectDetailsScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
+
+    const { testers } = useFeatureFlags();
 
     const { allProjects: projects, enrollToProject } = useProjectsContext();
 
     const { auth } = useAuthContext();
 
     const { profile } = auth;
+    const isTestUser = testers?.emails?.includes(profile?.email);
 
     const selectedProject = useMemo(() => {
         if (!projects) return null;
@@ -57,6 +64,42 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         return selectedProject?.applications?.map((app) => app?.creatorId)?.includes(profile?.id);
     }, [selectedProject, profile]);
 
+    const updateProject = async (id, projectData) => {
+        try {
+            const db = firestore();
+            await db.collection(PROJECTS_COLLECTION).doc(id).update(projectData);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const blockProject = () => {
+        Alert.alert(
+            'Confirm Action',
+            'Are you sure you want to block this project?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                    onPress: () => Alert.alert('Action cancelled.'),
+                },
+                {
+                    text: 'Block',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            await updateProject(projectId, { isBlocked: true });
+                            Alert.alert('Success', 'Project successfully blocked.');
+                        } catch (error) {
+                            console.error('Error blocking project:', error);
+                            Alert.alert('Error', 'Failed to block the project.');
+                        }
+                    },
+                },
+            ],
+        );
+    };
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -67,8 +110,17 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                     ml={WRAPPER_MARGIN}
                 />
             ),
+            headerRight: () => isTestUser && (
+                <HeaderIconButton
+                    title="block"
+                    onPress={blockProject}
+                    backDropColor={WHITE_40}
+                    mr={WRAPPER_MARGIN}
+                />
+            ),
+
         });
-    }, [navigation]);
+    }, [navigation, isTestUser, blockProject, projectId]);
 
     const onEnroll = () => {
         if (enrolled) {
@@ -97,6 +149,12 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         if (enrolled) return 'View Project Status';
         return 'Enroll Now';
     }, [enrolled]);
+
+    const formatDate = (date) => new Date(date?.seconds * 1000).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 
     if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
 
@@ -133,16 +191,18 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         {selectedProject?.title}
                     </TemplateText>
                     <TemplateBox height={10} />
-                    <TemplateText
-                        size={14}
-                        color={WHITE}
-                        numberOfLines={2}
-
-                    >
-                        {selectedProject?.shortDescription}
-                    </TemplateText>
+                    {!!selectedProject?.shortDescription
+                    && (
+                        <TemplateText
+                            size={14}
+                            color={WHITE}
+                            numberOfLines={2}
+                        >
+                            {selectedProject?.shortDescription}
+                        </TemplateText>
+                    )}
                 </TemplateBox>
-                {enrolled && (
+                {!!enrolled && (
                     <TemplateBox
                         flex
                         absolute
@@ -161,29 +221,48 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN}>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={18}
-                    color={BLACK}
-                >
-                    Description
-                </TemplateText>
-                <TemplateText
-                    color={BLACK}
-                    size={14}
-                    lineHeight={20}
-                >
-                    {selectedProject?.description}
-                </TemplateText>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Timeline
-                </TemplateText>
+                {!!selectedProject?.description
+               && (
+                   <>
+                       <TemplateText
+                           style={styles.title}
+                           bold
+                           size={18}
+                           color={BLACK}
+                       >
+                           Description
+                       </TemplateText>
+                       <TemplateText
+                           color={BLACK}
+                           size={14}
+                           lineHeight={20}
+                       >
+                           {selectedProject?.description}
+                       </TemplateText>
+                   </>
+               )}
+                {!!selectedProject?.startDate && !!selectedProject?.endDate
+              && (
+                  <>
+                      <TemplateText
+                          style={styles.title}
+                          bold
+                          size={20}
+                          color={BLACK}
+                      >
+                          Timeline
+                      </TemplateText>
+                      <TemplateBox>
+                          <TemplateText
+                              size={14}
+                              color={BLACK}
+                              numberOfLines={2}
+                          >
+                              {`${formatDate(selectedProject?.startDate)} - ${formatDate(selectedProject?.endDate)}`}
+                          </TemplateText>
+                      </TemplateBox>
+                  </>
+              ) }
                 <TemplateText
                     style={styles.title}
                     boldr
@@ -195,124 +274,167 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 <DescriptionRange
                     icon="wallet-outline"
                     maxSubtitle="Maximum Budget"
-                    maxTitle={`${selectedProject?.priceRange?.max} ${selectedProject?.currency?.symbol}`}
+                    maxTitle={`${selectedProject?.priceRange?.max || '--'} ${selectedProject?.currency?.symbol || '$'}`}
                     minSubtitle="Minimum Budget"
-                    minTitle={`${selectedProject?.priceRange?.min} ${selectedProject?.currency?.symbol}`}
+                    minTitle={`${selectedProject?.priceRange?.min || '--'} ${selectedProject?.currency?.symbol || '$'}`}
                 />
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Content Delivery Format
-                </TemplateText>
-                {selectedProject?.deliveryFormat?.map((format, index) => (
-                    <DescriptionRow
-                        key={index.toString()}
-                        title={deliveryFormatFilters?.find(({ value }) => value === format)?.name}
-                    />
-                ))}
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Project Duration
-                </TemplateText>
-                {selectedProject?.duration?.map((duration) => (
-                    <DescriptionRow
-                        key={projectDurationFilters?.find(({ value }) => value === duration)?.value}
-                        title={projectDurationFilters
-                            ?.find(({ value }) => value === duration)
-                            ?.name}
-                    />
-                ))}
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Categories
-                </TemplateText>
-                {selectedProject?.categories?.map((category) => (
-                    <DescriptionRow
-                        key={projectFilters?.find(({ value }) => value === category)?.value}
-                        title={projectFilters?.find(({ value }) => value === category)?.name}
-                    />
-                ))}
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Location
-                </TemplateText>
-                {selectedProject?.countries?.map((country) => (
-                    <DescriptionRow
-                        key={countryFilters?.find(({ value }) => value === country)?.value}
-                        title={countryFilters?.find(({ value }) => value === country)?.name}
-                    />
-                ))}
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Genders
-                </TemplateText>
-                {selectedProject?.gender?.map((gender) => (
-                    <DescriptionRow
-                        key={genderFilters?.find(({ value }) => value === gender)?.value}
-                        title={genderFilters?.find(({ value }) => value === gender)?.name}
-                    />
-                ))}
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Content Languages
-                </TemplateText>
-                {selectedProject?.languages?.map((language) => (
-                    <DescriptionRow
-                        key={languageFilters?.find(({ value }) => value === language)?.value}
-                        title={languageFilters?.find(({ value }) => value === language)?.name}
-                    />
-                ))}
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Age Ranges
-                </TemplateText>
-                {selectedProject?.ageRange?.map((range) => (
-                    <DescriptionRow
-                        key={ageFilters?.find(({ value }) => value === range)?.value}
-                        title={ageFilters?.find(({ value }) => value === range)?.name}
-                    />
-                ))}
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
-                    Project Type
-                </TemplateText>
-                {selectedProject?.projectType?.map((type) => (
-                    <DescriptionRow
-                        key={projectTypeFilters?.find(({ value }) => value === type)?.value}
-                        title={projectTypeFilters?.find(({ value }) => value === type)?.name}
-                    />
-                ))}
+                {!!selectedProject?.deliveryFormat && selectedProject?.deliveryFormat?.length > 0
+                && (
+                    <>
+                        <TemplateText
+                            style={styles.title}
+                            bold
+                            size={20}
+                            color={BLACK}
+                        >
+                            Content Delivery Format
+                        </TemplateText>
+                        {selectedProject?.deliveryFormat?.map((format, index) => (
+                            <DescriptionRow
+                                key={index.toString()}
+                                title={deliveryFormatFilters?.find(({ value }) => value === format)?.name}
+                            />
+                        ))}
+                    </>
+                )}
+                {!!selectedProject?.duration && selectedProject?.duration?.length > 0
+                    && (
+                        <>
+                            <TemplateText
+                                style={styles.title}
+                                bold
+                                size={20}
+                                color={BLACK}
+                            >
+                                Project Duration
+                            </TemplateText>
+                            {selectedProject?.duration?.map((duration) => (
+                                <DescriptionRow
+                                    key={projectDurationFilters?.find(({ value }) => value === duration)?.value}
+                                    title={projectDurationFilters
+                                        ?.find(({ value }) => value === duration)
+                                        ?.name}
+                                />
+                            ))}
+                        </>
+                    )}
+                {!!selectedProject?.categories && selectedProject?.categories?.length > 0
+                && (
+                    <>
+                        <TemplateText
+                            style={styles.title}
+                            bold
+                            size={20}
+                            color={BLACK}
+                        >
+                            Categories
+                        </TemplateText>
+                        {selectedProject?.categories?.map((category) => {
+                            if (!projectFilters?.find(({ value }) => value === category)?.name) return null;
+                            return (
+                                <DescriptionRow
+                                    key={projectFilters?.find(({ value }) => value === category)?.value}
+                                    title={projectFilters?.find(({ value }) => value === category)?.name}
+                                />
+                            );
+                        })}
+                    </>
+                )}
+                {!!selectedProject?.countries && selectedProject?.countries?.length > 0
+               && (
+                   <>
+                       <TemplateText
+                           style={styles.title}
+                           bold
+                           size={20}
+                           color={BLACK}
+                       >
+                           Location
+                       </TemplateText>
+                       {selectedProject?.countries?.map((country) => (
+                           <DescriptionRow
+                               key={countryFilters?.find(({ value }) => value === country)?.value}
+                               title={countryFilters?.find(({ value }) => value === country)?.name}
+                           />
+                       ))}
+                   </>
+               )}
+                {!!selectedProject?.gender && selectedProject?.gender?.length > 0
+                && (
+                    <>
+                        <TemplateText
+                            style={styles.title}
+                            bold
+                            size={20}
+                            color={BLACK}
+                        >
+                            Genders
+                        </TemplateText>
+                        {selectedProject?.gender?.map((gender) => (
+                            <DescriptionRow
+                                key={genderFilters?.find(({ value }) => value === gender)?.value}
+                                title={genderFilters?.find(({ value }) => value === gender)?.name}
+                            />
+                        ))}
+                    </>
+                )}
+                {!!selectedProject?.languages && selectedProject?.languages?.length > 0
+                && (
+                    <>
+                        <TemplateText
+                            style={styles.title}
+                            bold
+                            size={20}
+                            color={BLACK}
+                        >
+                            Content Languages
+                        </TemplateText>
+                        {selectedProject?.languages?.map((language) => (
+                            <DescriptionRow
+                                key={languageFilters?.find(({ value }) => value === language)?.value}
+                                title={languageFilters?.find(({ value }) => value === language)?.name}
+                            />
+                        ))}
+                    </>
+                )}
+                {!!selectedProject?.ageRange && selectedProject?.ageRange?.length > 0
+                && (
+                    <>
+                        <TemplateText
+                            style={styles.title}
+                            bold
+                            size={20}
+                            color={BLACK}
+                        >
+                            Age Ranges
+                        </TemplateText>
+                        {selectedProject?.ageRange?.map((range) => (
+                            <DescriptionRow
+                                key={ageFilters?.find(({ value }) => value === range)?.value}
+                                title={ageFilters?.find(({ value }) => value === range)?.name}
+                            />
+                        ))}
+                    </>
+                )}
+                {!!selectedProject?.projectType && selectedProject?.projectType?.length > 0
+                && (
+                    <>
+                        <TemplateText
+                            style={styles.title}
+                            bold
+                            size={20}
+                            color={BLACK}
+                        >
+                            Project Type
+                        </TemplateText>
+                        {selectedProject?.projectType?.map((type) => (
+                            <DescriptionRow
+                                key={projectTypeFilters?.find(({ value }) => value === type)?.value}
+                                title={projectTypeFilters?.find(({ value }) => value === type)?.name}
+                            />
+                        ))}
+                    </>
+                )}
             </TemplateBox>
 
             <Button
@@ -342,4 +464,5 @@ const styles = StyleSheet.create({
         marginVertical: WRAPPER_MARGIN * 2,
     },
 });
+
 export default ProjectDetailsScreen;

@@ -25,7 +25,9 @@ import Error from '../../components/Error';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import TemplateBox from '../../components/TemplateBox';
 import ResizedImage from '../../components/ResizedImage';
-import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
+
+const lockImage = require('../../../assets/images/onboarding/lock.jpg');
+
 
 const ResetPasswordScreen = ({ navigation, route }) => {
     const isUpdate = route.params?.isUpdate;
@@ -84,9 +86,6 @@ const ResetPasswordScreen = ({ navigation, route }) => {
         });
     }, [navigation]);
 
-    const { onboardingEducation } = useFeatureFlags();
-    const image = onboardingEducation?.images?.forgotPassword
-
     return (
         <Wrapper
             contentContainerStyle={styles.contentContainerStyle}
@@ -96,7 +95,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
             <TemplateBox borderRadius={20} overflow='hidden'>
                 <TemplateBox style={{position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99}} backgroundColor={`${BLACK_10}`}>
                 </TemplateBox>
-                <ResizedImage source={{uri: image}} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
+                <ResizedImage source={lockImage} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
             </TemplateBox>
 
 

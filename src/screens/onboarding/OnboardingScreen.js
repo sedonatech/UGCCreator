@@ -1,7 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import {
-    BLUE,
     BRAND_BLUE,
     DARK_OVERLAY,
     ONBOARDING_BLUE,
@@ -9,29 +8,25 @@ import {
 } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import {
-    HEADER_MARGIN, SCREEN_HEIGHT, SCREEN_WIDTH,
+     SCREEN_HEIGHT, SCREEN_WIDTH,
 } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { LOGIN, SIGN_UP } from '../../navigation/ScreenNames';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import TemplateBox from '../../components/TemplateBox';
 import BackgroundImage from '../../components/BackgroundImage';
-import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
+const image = require('../../../assets/images/onboarding/auth-select.jpg');
 
-const OnboardingScreen = ({ navigation }) => {
-    const { onboardingEducation } = useFeatureFlags();
-    const image = onboardingEducation?.images?.registerSelection
-    
-    return(
+const OnboardingScreen = ({ navigation }) => (
     <SafeAreaView style={styles.container}>
         <BackgroundImage
-                source={{ uri: image }}
-                width={SCREEN_WIDTH}
-                style={styles.bgImage}
-            />
-            <TemplateBox absolute width={SCREEN_WIDTH} height={SCREEN_HEIGHT} backgroundColor={DARK_OVERLAY}   />
-            <BrandLogo height={115} width={282} color={WHITE} />
+            source={image}
+            width={SCREEN_WIDTH}
+            style={styles.bgImage}
+        />
+        <TemplateBox absolute width={SCREEN_WIDTH} height={SCREEN_HEIGHT} backgroundColor={DARK_OVERLAY} />
+        <BrandLogo height={115} width={282} color={WHITE} />
 
         <View style={styles.buttonContainer}>
             <Button
@@ -66,7 +61,7 @@ const OnboardingScreen = ({ navigation }) => {
             </TemplateText>
         </View>
     </SafeAreaView>
-)};
+);
 
 const styles = StyleSheet.create({
     container: {
@@ -74,7 +69,7 @@ const styles = StyleSheet.create({
         backgroundColor: BRAND_BLUE,
         alignItems: 'center',
     },
-    bgImage:{
+    bgImage: {
         height: SCREEN_HEIGHT,
     },
     buttonContainer: {

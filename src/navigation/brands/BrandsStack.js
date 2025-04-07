@@ -1,7 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { ACTIVE_CREATORS, ADD_EVENT, BRAND_EVENT_DETAILS_SCREEN, BRAND_EVENTS_COMPLETED_SCREEN, BRAND_EVENTS_SCREEN, BRANDS_TABS, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW } from '../ScreenNames';
+import {
+    ACTIVE_CREATORS, ADD_EVENT, BRAND_EVENT_DETAILS_SCREEN, BRAND_EVENTS_COMPLETED_SCREEN, BRAND_EVENTS_SCREEN, BRANDS_TABS, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW,
+} from '../ScreenNames';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import BrandsTabs from './BrandsTabs';
 import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
@@ -12,12 +14,21 @@ import BrandEventDetailsScreen from '../../screens/brands/events/BrandEventDetai
 import AddEventScreen from '../../screens/brands/events/AddEventScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import BrandEventsCompletedScreen from '../../screens/brands/events/BrandEventsCompletedScreen';
+import { WHITE } from '../../theme/Colors';
 
-const Stack = createStackNavigator();;
+const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const BrandsStack = () => (
-    <Navigator initialRouteName={BRANDS_TABS} screenOptions={SWITCH}>
+    <Navigator
+        initialRouteName={BRANDS_TABS}
+        screenOptions={{
+            ...SWITCH,
+            cardStyle: {
+                backgroundColor: WHITE,
+            },
+        }}
+    >
         <Screen
             name={BRANDS_TABS}
             options={{ headerShown: false }}
@@ -33,7 +44,7 @@ const BrandsStack = () => (
             options={TRANSPARENT_HEADER}
             component={UpdateBrandProfileScreen}
         />
-         <Screen
+        <Screen
             name={ACTIVE_CREATORS}
             options={TRANSPARENT_HEADER}
             component={ActiveCreatorsScreen}
@@ -53,7 +64,7 @@ const BrandsStack = () => (
             options={TRANSPARENT_HEADER}
             component={BrandEventDetailsScreen}
         />
-         <Screen
+        <Screen
             name={ADD_EVENT}
             options={TRANSPARENT_HEADER}
             component={AddEventScreen}

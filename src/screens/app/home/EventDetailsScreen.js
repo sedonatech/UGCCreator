@@ -104,10 +104,10 @@ const EventDetailsScreen = ({navigation, route}) => {
   const onFavPress = async () => {
     if (!profile) return;
     if (favEvents?.length > 0 && favEvents.includes(event?.eventId)) {
-      await updateProfile({...profile,  favoriteEvents: favEvents.filter((id) => id !== event?.eventId)}, event?.id)
+      await updateProfile({...profile,  favoriteEvents: favEvents.filter((id) => id !== event?.eventId)}, profile?.id)
       update('favoriteEvents', favEvents?.filter((id)=> id !== event?.eventId ))
     } else {
-      await updateProfile({...profile,  favoriteEvents: [...new Set([...(profile?.favoriteEvents || []), event?.eventId])]}, event?.id)
+      await updateProfile({...profile,  favoriteEvents: [...new Set([...(profile?.favoriteEvents || []), event?.eventId])]}, profile?.id)
       update('favoriteEvents', [...new Set([...(profile?.favoriteEvents || []), event?.eventId])])
     }
 };

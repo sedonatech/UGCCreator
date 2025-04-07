@@ -48,7 +48,8 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                 id: doc.id,
                 ...doc.data(),
             }));
-            setEnrolledCreators([...enrolledCreators, ...chunkCreators]);
+            const unique = [...new Map([...enrolledCreators, ...chunkCreators]?.map((u) => [u.email, u])).values()];
+            setEnrolledCreators(unique);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -86,7 +87,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
             { !loading && !enrolledCreators?.length ? (
                 <ProfileStatusCard
                     title="No enrolled creators"
-                    description="You have not enrolled any creators to this project yet."
+                    description="No creators enrolled to this project yet."
                     showProgress={false}
                     style={styles.statusCard}
                     slideInDelay={200}
@@ -112,7 +113,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                             onPress={() => navigation.navigate(CREATOR_PROJECT_STATUS, {
                                 creatorID: item?.id,
                                 projectId,
-                                creatorEmail: item?.contact?.email,
+                                creatorEmail: item?.contact?.email || item?.email,
                                 creatorFCMToken: item?.fcmToken,
                             })}
                         />

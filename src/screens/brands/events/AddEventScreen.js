@@ -97,10 +97,10 @@ const AddEventScreen = ({ navigation, route }) => {
         } = event;
         const unfilledFields = [];
         if (!image?.length) unfilledFields.push('image');
-        if (!title?.length) unfilledFields.push('title');
+        if (!title?.trim()?.length) unfilledFields.push('title');
         if (!startDate) unfilledFields.push('startDate');
         if (!endDate) unfilledFields.push('endDate');
-        if (!description?.length) unfilledFields.push('description');
+        if (!description?.trim()?.length) unfilledFields.push('description');
         return unfilledFields?.join(', ');
     };
 
@@ -108,15 +108,12 @@ const AddEventScreen = ({ navigation, route }) => {
         const {
             image, title, startDate, endDate, description,
         } = event;
-        console.log({
-            image, title, startDate, endDate, description,
-        });
         if (
             !image?.length
-      || !title?.length
+      || !title?.trim()?.length
       || !startDate
       || !endDate
-      || !description?.length
+      || !description?.trim()?.length
         ) return Alert.alert('Please fill all required fields:', getUnfilledFields());
 
         if (eventData) {

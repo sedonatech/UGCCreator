@@ -4,9 +4,6 @@ import auth from '@react-native-firebase/auth';
 import {
     BLACK,
     BLACK_10,
-    BLACK_SECONDARY,
-    BLUE,
-    BRAND_BLUE,
     DARK_OVERLAY,
     GREY_30,
     ONBOARDING_BLUE,
@@ -25,7 +22,8 @@ import TemplateIcon from '../../components/TemplateIcon';
 import useProfile from '../../hooks/user/useProfile';
 import ResizedImage from '../../components/ResizedImage';
 import TemplateBox from '../../components/TemplateBox';
-import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
+
+const loginImage = require('../../../assets/images/onboarding/login.jpg');
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
@@ -49,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
             await auth().signInWithEmailAndPassword(email, password);
             const profile = await getProfile(auth().currentUser.uid);
 
-            await updateProfile({lastLoginTime: new Date().toISOString()}, profile?.id)
+            await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
             // eslint-disable-next-line @typescript-eslint/no-shadow
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
@@ -69,30 +67,31 @@ const LoginScreen = ({ navigation }) => {
         setLoading(false);
     };
 
-    const { onboardingEducation } = useFeatureFlags();
-    const image = onboardingEducation?.images?.login 
-
-
     return (
         <Wrapper
             contentContainerStyle={styles.contentContainerStyle}
             keyboard
-        >   
-            <TemplateBox borderRadius={20} overflow='hidden'>
-                <TemplateBox style={{position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99}} backgroundColor={DARK_OVERLAY}>
-                 <BrandLogo height={58} width={282} color={WHITE} />
+        >
+            <TemplateBox borderRadius={20} overflow="hidden">
+                <TemplateBox
+                    style={{
+                        position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99,
+                    }}
+                    backgroundColor={DARK_OVERLAY}
+                >
+                    <BrandLogo height={58} width={282} color={WHITE} />
                 </TemplateBox>
-                <ResizedImage source={{uri: image}} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
+                <ResizedImage source={loginImage} style={{ height: 345, width: WRAPPED_SCREEN_WIDTH }} />
             </TemplateBox>
 
             <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={20}>
-            <TemplateText
-                size={18}
-                medium
-                color={ONBOARDING_BLUE}
-            >
-                Welcome back!
-            </TemplateText>
+                <TemplateText
+                    size={18}
+                    medium
+                    color={ONBOARDING_BLUE}
+                >
+                    Welcome back!
+                </TemplateText>
             </TemplateBox>
             <TemplateTextInput
                 placeholder="Email"
@@ -200,7 +199,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingLeft: 16,
         marginTop: 16,
-        backgroundColor: GREY_30
+        backgroundColor: GREY_30,
     },
     generalError: {
         marginVertical: 10,

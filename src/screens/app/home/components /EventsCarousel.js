@@ -73,7 +73,7 @@ const EventsCarousel = ({style}) => {
   if(!eventsData?.length) return <TemplateBox width={SCREEN_WIDTH} height={hp(35)} />
 
   return (
-    <TemplateBox style={style} mt={hp(35)} mb={hp(25)} height={145} >
+    <TemplateBox style={style} mt={hp(30)} mb={hp(25)} height={145} >
       <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} >
         <TemplateText size={18} bold>
           Brand Events
