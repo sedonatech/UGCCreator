@@ -203,7 +203,7 @@ const useProjects = () => {
     const enrollToProject = async (creatorID, selectedProject) => {
         try {
             const selectedProjectApplications = selectedProject?.applications;
-            const enrolledUserIds = [...selectedProject?.enrolledUserIds] || [];
+            const enrolledUserIds = selectedProject?.enrolledUserIds || [];
             const selectedProjectEnrolledCreatorIds = selectedProjectApplications
                 ?.map(({ creatorId }) => creatorId);
 
@@ -215,12 +215,12 @@ const useProjects = () => {
                     enrolledAt: Date.now(),
                     documents: [],
                 });
-                enrolledUserIds?.push(creatorID);
 
+                const newUserIds = [...enrolledUserIds, creatorID];
                 await updateProject(selectedProject?.id,
                     {
                         applications: selectedProjectApplications,
-                        enrolledUserIds,
+                        enrolledUserIds: newUserIds,
                     });
             }
         } catch (error) {
