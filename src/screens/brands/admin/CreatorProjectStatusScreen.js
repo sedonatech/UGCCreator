@@ -1,9 +1,11 @@
 import React, {
+    useEffect,
     useLayoutEffect, useMemo, useState,
 } from 'react';
 import {
     ScrollView, StyleSheet,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import {
@@ -18,6 +20,8 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import { HOME } from '../../../navigation/ScreenNames';
 import CreatorProjectStatusOverviewTab from './components/CreatorProjectStatusOverviewTab';
 import ProjectNotificationsTab from '../../app/offers/components/ProjectNotificationsTab';
+
+const PROJECTS_COLLECTION = 'projects';
 
 const CURRENT_PROJECT_TABS = [
     {
@@ -43,14 +47,23 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
 
     const [selectedTab, setSelectedTab] = useState(CURRENT_PROJECT_TABS[0]);
 
-    const { projects } = useProjectsContext();
+    const [currentProject, setCurrentProject] = useState(null);
 
-    const currentProject = useMemo(() => {
-        if (!projects) return null;
+    useEffect(() => {
+        if (projectId) getProject(projectId);
+    }, [projectId]);
 
-        // @ts-ignore
-        return projects?.find(({ id }) => id === projectId);
-    }, [projectId, projects]);
+    const getProject = async (id) => {
+        try {
+            const db = firestore();
+            const doc = await db.collection(PROJECTS_COLLECTION).doc(id).get();
+            if (doc.exists) {
+                setCurrentProject({ id: doc?.id, ...doc?.data() });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const application = useMemo(() => {
         if (!currentProject) return null;
