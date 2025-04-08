@@ -29,12 +29,21 @@ import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfiles
 import ChatsStack from '../chats/ChatsStack';
 import BrandsProfileStack from './BrandsProfileStack';
 import ActiveCreatorsScreen from '../../screens/brands/admin/ActiveCreatorsScreen';
+import { WHITE } from '../../theme/Colors';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const AdminPanelStack = () => (
-    <Navigator initialRouteName={ADMIN_PANEL} screenOptions={SWITCH}>
+    <Navigator
+        initialRouteName={ADMIN_PANEL}
+        screenOptions={{
+            ...SWITCH,
+            cardStyle: {
+                backgroundColor: WHITE,
+            },
+        }}
+    >
         <Screen
             name={ADMIN_PANEL}
             options={TRANSPARENT_HEADER}
@@ -95,7 +104,6 @@ const AdminPanelStack = () => (
             options={TRANSPARENT_HEADER}
             component={BrandsProfileStack}
         /> */}
-       
     </Navigator>
 );
 
