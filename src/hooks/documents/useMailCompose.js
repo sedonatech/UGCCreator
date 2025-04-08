@@ -14,6 +14,7 @@ const useMailCompose = () => {
         } = metaData;
 
         try {
+            if (__DEV__) return setMailEvent('sent');
             await Mailer.mail({
                 recipients,
                 subject,
@@ -36,6 +37,7 @@ const useMailCompose = () => {
 
     const composeEmailWithAttachment = async (recipientEmail) => {
         try {
+            if (__DEV__) return setMailEvent('sent');
             const res = await DocumentPicker.pickSingle({
                 presentationStyle: 'fullScreen',
                 copyTo: 'cachesDirectory',
