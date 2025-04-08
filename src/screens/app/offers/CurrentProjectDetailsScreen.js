@@ -57,7 +57,7 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
         async function fetchBrand() {
             if (currentProject?.brandId) {
                 const data = await getBrand(currentProject?.brandId);
-                if (data) setCurrentProjectBrand(data);
+                if (data) setCurrentProjectBrand(data?.[0]);
             }
         }
         fetchBrand();
