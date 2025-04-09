@@ -54,13 +54,18 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const profile = auth?.profile;
     const { updateProfile } = useProfile();
+    const [refetchProjects, setRefetchProjects] = useState(null);
 
     const profileImage = profile?.image;
     const defaultDescription = profile.description === DEFAULT_BRAND_DESCRIPTION;
 
     const isFocused = useIsFocused();
 
-    const { projects } = useProjectsContext();
+    const { projects, getProjects } = useProjectsContext();
+
+    useEffect(() => {
+        getProjects();
+    }, [refetchProjects]);
 
     const brandName = profile?.name;
 
@@ -131,7 +136,7 @@ const AdminPanelScreen = ({ navigation }) => {
             title: 'Add Project',
             onPress: () => {
                 setShowOptions(false);
-                navigation.navigate(ADD_PROJECT);
+                navigation.navigate(ADD_PROJECT, { setRefetchProjects });
             },
         },
         {

@@ -54,7 +54,7 @@ export const projectStatuses : ProjectStatus[] = [
         value: 'first_payment_received',
         description: 'You have received the first payment for this project.',
         status: 'inactive',
-        brandName: 'First Payment Received',
+        brandName: 'First Payment Sent',
         brandDescription: 'The creator has received the payment and will start working on the project',
     },
     {

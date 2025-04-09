@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Alert, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FastImage from 'react-native-fast-image';
-
 import {
-    BLACK, BLACK_40, DEEP_PURPLE, GREY_SECONDARY, TRANSPARENT, WHITE,
+    BLACK, BLACK_40, BLUE, DEEP_PURPLE, GREY_SECONDARY, PRIMARY, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
 import {
@@ -30,13 +29,15 @@ import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
 import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
 import { wp } from '../../../Utils/getResponsiveSize';
 
-const AddProjectScreen = ({ navigation }) => {
+const AddProjectScreen = ({ navigation, route }) => {
     // TODO: Update project feature
     // const selectedProjectId = route?.params?.selectedProjectId;
+    const setRefetchProjects = route?.params?.setRefetchProjects;
 
     const {
         update, project, createProject, loading,
     } = useProjects();
+    const [imageLoading, setImageLoading] = useState(false);
 
     const { onAddImage: onAddPhoto, images } = useImageStorage();
 
@@ -45,7 +46,7 @@ const AddProjectScreen = ({ navigation }) => {
         const sortedImages = images
             ?.filter((item) => !!item?.contentDisposition)
             .sort((a, b) => b?.generation - a?.generation);
-
+        setImageLoading(false);
         return sortedImages[0];
     }, [images]);
 
@@ -83,10 +84,14 @@ const AddProjectScreen = ({ navigation }) => {
             [
                 {
                     text: 'OK',
-                    onPress: () => navigation.goBack(),
+                    onPress: () => {
+                        navigation.goBack();
+                        setRefetchProjects(new Date().toISOString());
+                    },
                 },
             ]);
     };
+
     return (
         <Wrapper
             contentContainerStyle={styles.contentContainer}
@@ -184,7 +189,10 @@ const AddProjectScreen = ({ navigation }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Image</TemplateText>
+                <TemplateBox row>
+                    <TemplateText size={16} mr={5}>Image</TemplateText>
+                    {imageLoading && <ActivityIndicator size="small" color={BLUE} />}
+                </TemplateBox>
                 <TemplateBox height={10} />
                 {latestImage?.url && (
                     <TemplateBox height={120} width={120} borderRadius={10}>
@@ -207,7 +215,10 @@ const AddProjectScreen = ({ navigation }) => {
                                 },
                                 {
                                     text: 'OK',
-                                    onPress: () => onAddPhoto(),
+                                    onPress: () => {
+                                        setImageLoading(true);
+                                        onAddPhoto();
+                                    },
                                 },
                             ]);
                             return;

@@ -97,7 +97,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                     showsVerticalScrollIndicator={false}
                     data={enrolledCreators}
                     ListEmptyComponent={(
-                        <TemplateBox bottom={10} left="45%">
+                        <TemplateBox bottom={10}>
                             <ActivityIndicator size="small" color={BLACK} />
                         </TemplateBox>
                     )}
