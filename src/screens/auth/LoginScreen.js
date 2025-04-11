@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 import {
     BLACK,
     BLACK_10,
@@ -46,8 +47,11 @@ const LoginScreen = ({ navigation }) => {
             }
             await auth().signInWithEmailAndPassword(email, password);
             const profile = await getProfile(auth().currentUser.uid);
+            const token = await messaging().getToken();
 
-            await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
+            const data = token ? { lastLoginTime: new Date().toISOString(), token }
+                : { lastLoginTime: new Date().toISOString() };
+            await updateProfile(data, profile?.id);
             // eslint-disable-next-line @typescript-eslint/no-shadow
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
