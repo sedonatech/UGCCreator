@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import { useIsFocused } from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK,
@@ -147,6 +148,17 @@ const AdminPanelScreen = ({ navigation }) => {
             },
         },
     ];
+
+    useEffect(() => {
+        const unsubscribe = messaging().onTokenRefresh((token) => {
+            if (token) updateFcmToken(token);
+        });
+        return unsubscribe;
+    }, []);
+
+    const updateFcmToken = async (token) => {
+        await updateProfile({ fcmToken: token }, profile?.id);
+    };
 
     const updateLastLogin = async () => {
         await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
