@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
 import {
     BLACK,
     LIGHT_GREEN, TRANSPARENT,
@@ -64,6 +65,17 @@ const HomeScreen = ({ navigation }) => {
         profile,
     ]);
 
+    useEffect(() => {
+        const unsubscribe = messaging().onTokenRefresh((token) => {
+            if (token) updateFcmToken(token);
+        });
+        return unsubscribe;
+    }, []);
+
+    const updateFcmToken = async (token) => {
+        await updateProfile({ fcmToken: token }, profile?.id);
+    };
+
     const creatorToolsEnabled = features?.openAIScreen;
 
     useLayoutEffect(() => {
@@ -103,14 +115,12 @@ const HomeScreen = ({ navigation }) => {
     }, [feed]);
 
     const updateLastLogin = async () => {
-        await updateProfile({lastLoginTime: new Date().toISOString()}, profile?.id)
-    }
+        await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
+    };
 
-    useEffect(()=> {
-        updateLastLogin()
-    },[])
-
-
+    useEffect(() => {
+        updateLastLogin();
+    }, []);
 
     return (
         <ScrollView
@@ -199,7 +209,7 @@ const HomeScreen = ({ navigation }) => {
                     </TemplateBox>
                 </TemplateBox>
             )}
-            <FeaturedCreatorsCarousel style={styles.carousel} creator={true} />
+            <FeaturedCreatorsCarousel style={styles.carousel} creator />
 
             {!!ugcGuidePdfFeed?.title && (
                 <TemplateBox mt={wp(20)} mb={wp(10)}>

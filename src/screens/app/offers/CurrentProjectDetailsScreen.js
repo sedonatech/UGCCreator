@@ -152,13 +152,13 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
                 </TemplateText>
             </TemplateBox>
 
-            <TemplateBox height={100}>
-                <ToggleCarousel
+            <TemplateBox height={20}>
+                {/* <ToggleCarousel
                     data={CURRENT_PROJECT_TABS}
                     selectedTab={selectedTab}
                     onChange={setSelectedTab}
                     flex={false}
-                />
+                /> */}
             </TemplateBox>
             {
                 selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (

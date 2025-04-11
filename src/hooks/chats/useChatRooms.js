@@ -73,6 +73,7 @@ const useChatRooms = () => {
                 createdAt: firestore.FieldValue.serverTimestamp(),
                 creatorFCMToken,
                 brandFCMToken,
+                lastMessageTimestamp: firestore.FieldValue.serverTimestamp(),
             });
 
             if (response) {

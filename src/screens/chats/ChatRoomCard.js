@@ -20,7 +20,7 @@ const ChatRoomCard = ({
     userId,
     navigation,
     isSupport,
-    isCreator
+    isCreator,
 }) => {
     // const { unreadMessagesCount } = useChatMessages(id);
     const usersRef = firestore().collection('users');
@@ -84,6 +84,7 @@ const ChatRoomCard = ({
                 backgroundColor={WHITE}
                 row
                 alignItems="center"
+                lightShadow
             >
                 <TemplateBox
                     width={wp(354)}
@@ -95,6 +96,7 @@ const ChatRoomCard = ({
                         navigation.navigate(CHATS, {
                             chatRoomId: id,
                             name: receiver?.name,
+                            receiverFcmToken: receiver?.fcmToken,
                         });
                     }}
                 />
@@ -146,6 +148,7 @@ const ChatRoomCard = ({
                         left={wp(10)}
                         alignItems="center"
                         justifyContent="center"
+                        zIndex={9999}
                     >
                         <TemplateText size={wp(12)} color={WHITE} bold>
                             {unreadMessagesCount}

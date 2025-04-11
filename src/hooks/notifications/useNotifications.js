@@ -1,38 +1,32 @@
-import { useConfig } from '../../context/core';
+import auth from '@react-native-firebase/auth';
 
 const useNotifications = () => {
-    const { firebaseServerKey } = useConfig();
-    const sendNotification = async (registrationIds, title, body, data) => {
+    const sendNotification = async (fcmToken, title, body, data) => {
         try {
+            const { currentUser } = auth();
+            if (!currentUser) throw new Error('User not logged in');
+            const idToken = await currentUser.getIdToken();
+
             const message = {
-                registration_ids: [registrationIds],
-                notification: {
-                    title,
-                    body,
-                    sound: 'default',
-                    priority: 'high',
-                    vibrate: 1,
-                    contentAvailable: true,
-                    foreground: true,
-                    volume: 1,
-                },
-                data,
+                token: fcmToken,
+                title: title || '',
+                body: body || '',
+                data: data || {},
             };
 
-            const headers = new Headers({
-                'Content-Type': 'application/json',
-                Authorization: `key=${firebaseServerKey}`,
-            });
-
-            const response = await fetch('https://fcm.googleapis.com/fcm/send', {
+            const response = await fetch('https://sendpushnotification-teghgfnx4a-uc.a.run.app', {
                 method: 'POST',
-                headers,
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify(message),
             });
 
-            await response.json();
+            const result = await response.json();
+            console.log('Push response:', JSON.stringify(result, null, 2));
         } catch (error) {
-            console.log('error', error);
+            console.error('Push error:', JSON.stringify(error, null, 2));
         }
     };
 
