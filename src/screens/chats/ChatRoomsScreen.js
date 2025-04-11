@@ -62,29 +62,46 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const userId = auth?.profile?.id;
 
-    const userName = isCreator ? auth?.profile?.userName : auth?.profile?.name;
-
     const userFCMToken = auth?.profile?.fcmToken;
 
     const [chatRooms, setChatRooms] = useState([]);
-
-    const [users, setUsers] = useState([]);
 
     const [limit, setLimit] = useState(10);
 
     const { createChatRoom } = useChatsContext();
 
-    const usersRef = firestore().collection('users');
+    const [supportFcmToken, setSupportFcmToken] = useState({});
 
     const creatorRef = firestore().collection(CHAT_ROOMS)
-        .limit(limit).orderBy('createdAt', 'desc')
-        .where('creatorId', '==', userId);
+        .limit(limit)
+        .where('creatorId', '==', userId)
+        .orderBy('createdAt', 'desc');
 
     const brandRef = firestore().collection(CHAT_ROOMS)
-        .limit(limit).orderBy('createdAt', 'desc')
-        .where('brandId', '==', userId);
+        .limit(limit)
+        .where('brandId', '==', userId)
+        .orderBy('createdAt', 'desc');
 
-    const userChatRef = isCreator ? creatorRef : brandRef;
+    useEffect(() => {
+        fetchSupport();
+    }, []);
+
+    const fetchSupport = async () => {
+        try {
+            const fetchedUsers = await firestore().collection('users')
+                .where('id', '==', brandId)
+                .get()
+                .then((querySnapshot) => querySnapshot?.docs
+                    ?.map((doc) => ({
+                        id: doc?.id,
+                        ...doc?.data(),
+                    })));
+
+            setSupportFcmToken(fetchedUsers?.[0]?.fcmToken);
+        } catch (e) {
+            console.error('Error fetching brands:', e);
+        }
+    };
 
     // listen for chat rooms
     useEffect(() => {
@@ -130,36 +147,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             unsubscribeCreator();
             unsubscribeBrand();
         };
-    }, [isCreator, userId]);
-
-    // get chat user ids
-    // const ids = useMemo(() => chatRooms?.reduce((acc, { creatorId, brandId }) => {
-    //     if (!isCreator && !!creatorId) acc.push(creatorId);
-    //     if (isCreator && !!brandId) acc.push(brandId);
-    //     return acc;
-    // }, []), [chatRooms]);
-
-    // useEffect(() => {
-    //     if (ids?.length) fetchUsers();
-    // }, [ids]);
-
-    // const fetchUsers = async () => {
-    //     try {
-    //         const fetchedUsers = await usersRef
-    //             .where('id', 'in', ids)
-    //             .get()
-    //             .then((querySnapshot) => querySnapshot?.docs
-    //                 ?.map((doc) => ({
-    //                     id: doc?.id,
-    //                     ...doc?.data(),
-    //                     lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
-    //                 })));
-
-    //         setUsers(fetchedUsers);
-    //     } catch (e) {
-    //         console.error('Error fetching brands:', e);
-    //     }
-    // };
+    }, [isCreator, userId, limit]);
 
     const {
         // chatRooms,
@@ -192,9 +180,14 @@ const ChatRoomsScreen = ({ navigation }) => {
         }
     }, [search]);
 
-    const searchedChatRooms = useMemo(() => (search?.length
-        ? searchResults
-        : orderBy(chatRooms, 'createdAt.seconds', 'desc')), [search, searchResults, chatRooms]);
+    const searchedChatRooms = useMemo(() => {
+        if (search?.length > 0) return searchResults;
+        return chatRooms.sort((a, b) => {
+            const aTime = a?.createdAt?.seconds ?? a.lastMessageTimestamp?.seconds ?? 0;
+            const bTime = b?.createdAt?.seconds ?? b.lastMessageTimestamp?.seconds ?? 0;
+            return bTime - aTime;
+        });
+    }, [search, searchResults, chatRooms]);
 
     // Handle chat room deletion
     const handleDeleteChat = (chatRoomId) => {
@@ -293,6 +286,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             navigation.navigate(CHATS, {
                 chatRoomId: supportChat?.id,
                 name: 'Support Chat',
+                receiverFcmToken: supportFcmToken,
             });
             setSupportPress(false);
         }
@@ -389,6 +383,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                         navigation={navigation}
                                         isSupport={brandId === item?.brandId}
                                         isCreator={isCreator}
+                                        lastMessageText={item?.lastMessageText}
                                     />
                                 </Swipeable>
                             </GestureHandlerRootView>
@@ -433,6 +428,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                         }
                         initialNumToRender={5}
                         onEndReachedThreshold={0.5}
+                        onEndReached={() => { setLimit((prevLimit) => prevLimit + 10); }}
                     />
 
                     {showOptions
