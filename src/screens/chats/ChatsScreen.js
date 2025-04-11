@@ -28,6 +28,7 @@ const ChatsScreen = ({ route }) => {
     const chatRoomId = route.params?.chatRoomId;
 
     const chatRoomName = route.params?.name;
+    const receiverFcmToken = route.params?.receiverFcmToken;
 
     const [chatRoom, setChatRoom] = useState(null);
 
@@ -107,7 +108,7 @@ const ChatsScreen = ({ route }) => {
                 ...message,
                 read: false,
                 sender: message?.user?.name,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
             }));
             await firestore()
                 .collection(CHAT_ROOMS)
@@ -115,9 +116,15 @@ const ChatsScreen = ({ route }) => {
                 .collection(MESSAGES)
                 .add(formattedMessages[0]);
 
+            await firestore().collection(CHAT_ROOMS).doc(chatRoomId).update({
+                lastMessageText: formattedMessages[0]?.text,
+                lastMessageTimestamp: firestore.FieldValue.serverTimestamp(),
+                createdAt: firestore.FieldValue.serverTimestamp(),
+            });
+
             // send notification
             await sendNotification(
-                fcmToken,
+                receiverFcmToken,
                 `New message from ${chatRoomName || 'UGCCreatorapp'}`,
                 formattedMessages[0]?.text,
                 {
