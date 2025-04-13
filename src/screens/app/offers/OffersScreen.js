@@ -74,10 +74,10 @@ const OffersScreen = ({ navigation }) => {
                 const application = item?.applications?.length
                     ? item?.applications?.find(({ creatorId }) => creatorId === profile?.id)
                     : {};
-                const completedStatuses = projectStatuses?.filter(({ status }) => status === 'completed');
+                const completedStatuses = application?.status?.filter(({ status }) => status === 'completed');
 
                 const progress = completedStatuses?.length
-                    ? Math.round((completedStatuses?.length / projectStatuses?.length) * 10) / 10
+                    ? Math.round((completedStatuses?.length / (projectStatuses?.length - 1)) * 10) / 10
                     : 0;
                 return {
                     ...item,
