@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 import {
     CHATS_STACK,
     HOME_STACK,
@@ -14,6 +16,7 @@ import TabLabel from '../../components/tabs/TabLabel';
 import useNotificationPermissions from '../../hooks/notifications/useNotificationPermissions';
 import ChatsStack from '../chats/ChatsStack';
 import { ANIMATION_DISABLED_HEADER } from '../../components/header/ScreenOptions';
+import useChatRooms from '../../hooks/chats/useChatRooms';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
@@ -21,13 +24,25 @@ const { Navigator, Screen } = Tab;
 const AppTabs = () => {
     useNotificationPermissions();
 
+    const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
+    const { fetchUnreadCountInLatestChatRoom } = useChatRooms();
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const fetchUnread = async () => {
+            const result = await fetchUnreadCountInLatestChatRoom();
+            setUnreadMessagesCount(result);
+        };
+        fetchUnread();
+    }, [navigation]);
+
     return (
         <Navigator screenOptions={{
             ...ANIMATION_DISABLED_HEADER,
             lazy: true,
             freezeOnBlur: true,
             animationEnabled: false,
-            gestureEnabled: false, 
+            gestureEnabled: false,
         }}
         >
             <Screen
@@ -58,10 +73,16 @@ const AppTabs = () => {
                     tabBarIcon: ({ focused }) => (
                         <TabButton focused={focused} icon="chatbubbles-outline" />
                     ),
-                    tabBarLabel: (props) => <TabLabel {...props}>Chats</TabLabel>,
+                    tabBarLabel: (props) => (
+                        <TabLabel
+                            {...props}
+                            showNotification={unreadMessagesCount}
+                        >
+                            Chats
+                        </TabLabel>
+                    ),
                 }}
             />
-           
             <Screen
                 name={PROFILE_STACK}
                 component={ProfileStack}
