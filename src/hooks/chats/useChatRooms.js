@@ -154,6 +154,42 @@ const useChatRooms = () => {
         setDeleteChatRoomLoading(false);
     };
 
+    const fetchUnreadCountInLatestChatRoom = async () => {
+        try {
+            const chatRoomSnapshot = await firestore()
+                .collection('chatRooms')
+                .where(isCreator ? 'creatorId' : 'brandId', '==', userId)
+                .orderBy('createdAt', 'desc')
+                .limit(1)
+                .get();
+
+            const latestRoom = chatRoomSnapshot.docs[0];
+
+            if (!latestRoom) {
+                console.log('No chat room found');
+                return 0;
+            }
+
+            const roomId = latestRoom.id;
+
+            const messagesSnapshot = await firestore()
+                .collection('chatRooms')
+                .doc(roomId)
+                .collection('messages')
+                .where('read', '==', false)
+                .get();
+
+            const unreadMessages = messagesSnapshot.docs
+                .map((doc) => ({ id: doc.id, ...doc.data() }))
+                .filter((message) => message.user?._id !== userId);
+
+            return unreadMessages.length;
+        } catch (error) {
+            console.log('[UNREAD MESSAGE CHECK ERROR]', error);
+        }
+        return 0;
+    };
+
     return {
         chatRooms,
         loading,
@@ -163,6 +199,7 @@ const useChatRooms = () => {
         fetchingChatRooms,
         deleteChatRoom,
         deleteChatRoomLoading,
+        fetchUnreadCountInLatestChatRoom,
     };
 };
 

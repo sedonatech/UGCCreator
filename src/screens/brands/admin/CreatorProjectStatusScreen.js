@@ -50,20 +50,23 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
     const [currentProject, setCurrentProject] = useState(null);
 
     useEffect(() => {
-        if (projectId) getProject(projectId);
-    }, [projectId]);
+        const db = firestore();
+        const unsubscribe = db
+            .collection(PROJECTS_COLLECTION)
+            .doc(projectId)
+            .onSnapshot((doc) => {
+                if (doc.exists) {
+                    const result = { id: doc.id, ...doc.data() };
+                    setCurrentProject(result);
+                }
+            }, (error) => {
+                console.log('[PROJECT LISTENER ERROR]', error);
+            });
 
-    const getProject = async (id) => {
-        try {
-            const db = firestore();
-            const doc = await db.collection(PROJECTS_COLLECTION).doc(id).get();
-            if (doc.exists) {
-                setCurrentProject({ id: doc?.id, ...doc?.data() });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        return () => {
+            unsubscribe(); // clean up listener on unmount
+        };
+    }, [projectId]);
 
     const application = useMemo(() => {
         if (!currentProject) return null;

@@ -3,6 +3,7 @@ import React, {
     useLayoutEffect, useMemo, useState,
 } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK, GREEN, WHITE, WHITE_40,
@@ -19,6 +20,8 @@ import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { HOME } from '../../../navigation/ScreenNames';
 import useGetUser from '../../../hooks/creators/useGetUser';
 import TemplateBox from '../../../components/TemplateBox';
+
+const PROJECTS_COLLECTION = 'projects';
 
 const CURRENT_PROJECT_TABS = [
     {
@@ -46,11 +49,22 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
     const { getBrand } = useGetUser();
 
     useEffect(() => {
-        async function fetchData() {
-            const data = await getProject(projectId);
-            if (data) setCurrentProject(data);
-        }
-        fetchData();
+        const db = firestore();
+        const unsubscribe = db
+            .collection(PROJECTS_COLLECTION)
+            .doc(projectId)
+            .onSnapshot((doc) => {
+                if (doc.exists) {
+                    const result = { id: doc.id, ...doc.data() };
+                    setCurrentProject(result);
+                }
+            }, (error) => {
+                console.log('[PROJECT LISTENER ERROR]', error);
+            });
+
+        return () => {
+            unsubscribe(); // clean up listener on unmount
+        };
     }, [projectId]);
 
     useEffect(() => {
@@ -70,7 +84,6 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
             ? currentProject?.applications?.find(({ creatorId }) => creatorId === profile?.id)
             : {};
     }, [currentProject, profile?.id]);
-
 
     useLayoutEffect(() => {
         navigation.setOptions({

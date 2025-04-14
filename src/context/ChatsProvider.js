@@ -27,6 +27,7 @@ const ChatsProvider = ({ children }) => {
         fetchingChatRooms,
         deleteChatRoom,
         deleteChatRoomLoading,
+        fetchUnreadCountInLatestChatRoom,
     } = useChatRooms();
 
     const {
@@ -66,6 +67,7 @@ const ChatsProvider = ({ children }) => {
         deleteChatRoom,
         deleteChatRoomLoading,
         unreadMessagesCount,
+        fetchUnreadCountInLatestChatRoom
     };
 
     return (
