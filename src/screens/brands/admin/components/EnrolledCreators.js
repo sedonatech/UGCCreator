@@ -15,7 +15,7 @@ import {
     SCREEN_WIDTH, SPACE_MEDIUM, SPACE_XSMALL, WRAPPER_MARGIN,
 } from '../../../../theme/Layout';
 import CurrentCreatorsCard from './CurrentCreatorsCard';
-import { CREATOR_PROJECT_STATUS } from '../../../../navigation/ScreenNames';
+import { CREATOR_PROJECT_STATUS, PROFILE } from '../../../../navigation/ScreenNames';
 import {
     BLACK, BRAND_BLUE, DEEP_LAVENDER, WHITE,
 } from '../../../../theme/Colors';
@@ -115,6 +115,9 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                                 projectId,
                                 creatorEmail: item?.contact?.email || item?.email,
                                 creatorFCMToken: item?.fcmToken,
+                            })}
+                            onViewCreatorPress={() => navigation.navigate(PROFILE, {
+                                creatorId: item?.id,
                             })}
                         />
                     )}
