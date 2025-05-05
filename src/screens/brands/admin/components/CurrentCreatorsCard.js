@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
-    BLACK_60, GREEN, WHITE,
+    BLACK_60, BLUE, GREEN, WHITE,
 } from '../../../../theme/Colors';
 import { RADIUS_SMALL, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import BackgroundImage from '../../../../components/BackgroundImage';
@@ -14,7 +14,7 @@ import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Po
 const defaultCardWidth = SCREEN_WIDTH / 1.3;
 const defaultAspectRatio = 1.6;
 const CurrentCreatorsCard = ({
-    image, name, shortDescription, style, onPress, cardWidth, aspectRatio,
+    image, name, shortDescription, style, onPress, cardWidth, aspectRatio, onViewCreatorPress,
 }) => (
     <TemplateBox
         fullGradient={!!image}
@@ -27,7 +27,7 @@ const CurrentCreatorsCard = ({
         style={style}
     >
         <BackgroundImage source={{ uri: image }} style={styles.image} width={SCREEN_WIDTH} />
-        <TemplateBox pAll={20} onPress={onPress} mt={WRAPPER_MARGIN}>
+        <TemplateBox pAll={20} mt={WRAPPER_MARGIN} width="100%">
             <TemplateText color={WHITE} bold size={16} style={styles.text}>
                 {name}
             </TemplateText>
@@ -50,11 +50,29 @@ const CurrentCreatorsCard = ({
                 pv={10}
                 onPress={onPress}
                 selfCenter
+                mb={8}
             >
                 <TemplateText color={WHITE} bold size={12}>
                     View Project Status
                 </TemplateText>
             </TemplateBox>
+            {!!onViewCreatorPress
+                && (
+                    <TemplateBox
+                        alignItems="center"
+                        justifyContent="center"
+                        borderRadius={RADIUS_SMALL}
+                        backgroundColor={BLUE}
+                        width={160}
+                        pv={10}
+                        onPress={onViewCreatorPress}
+                        selfCenter
+                    >
+                        <TemplateText color={WHITE} bold size={12}>
+                            View Creator
+                        </TemplateText>
+                    </TemplateBox>
+                )}
         </TemplateBox>
     </TemplateBox>
 );
