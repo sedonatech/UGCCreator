@@ -37,8 +37,9 @@ const BrandsScreen = ({ navigation }) => {
                 .get()
                 .then((querySnapshot) => querySnapshot?.docs
                     ?.map((doc) => doc?.data()));
+            const filtered = (fetchedBrands || [])?.filter((brand) => !brand?.isBlocked);
 
-            setBrandsData(fetchedBrands);
+            setBrandsData(filtered);
         } catch (e) {
             console.log(e);
         }

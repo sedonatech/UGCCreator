@@ -21,7 +21,7 @@ function generateRandomRange(min, max) {
     const start = Math.floor(Math.random() * (max - min - rangeLength + 1)) + min;
     const end = start + rangeLength - 1;
     return { start, end };
-  }
+}
 
 const USERS_COLLECTION = 'users';
 const BrandsCarousel = ({ style }) => {
@@ -32,8 +32,8 @@ const BrandsCarousel = ({ style }) => {
     const brandsRef = firestore().collection(USERS_COLLECTION)
         .where('image', '>', '')
         .where('type', '==', 'brand')
-        .limit(40);
-        
+        .limit(60);
+
     const fetchBrands = async () => {
         try {
             const fetchedBrands = await brandsRef
@@ -41,12 +41,9 @@ const BrandsCarousel = ({ style }) => {
                 .then((querySnapshot) => querySnapshot?.docs
                     ?.map((doc) => doc?.data()));
 
-            // const filteredBrands = orderBy(fetchedBrands?.filter((brand) => !!brand?.lastLoginTime), 'lastLoginTime', 'asc');
-            // const filteredBrands2 = fetchedBrands?.filter((brand) => !brand?.lastLoginTime);
-            // const mergedBrands = [...filteredBrands, ...filteredBrands2]?.slice(0, 15);
-
-            const range = generateRandomRange(0, 40)
-            const sorted = fetchedBrands?.slice(range?.start, range?.end)
+            const filtered = (fetchedBrands || [])?.filter((brand) => !brand?.isBlocked);
+            const range = generateRandomRange(0, 40);
+            const sorted = filtered?.slice(range?.start, range?.end);
             setBrands(sorted);
         } catch (e) {
             console.log(e);
