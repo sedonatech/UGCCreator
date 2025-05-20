@@ -3,6 +3,7 @@ import React, {
     useLayoutEffect, useState,
 } from 'react';
 import {
+    Alert,
     ScrollView, StyleSheet,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -23,7 +24,8 @@ import HeaderIconButton from '../../../components/header/HeaderButton';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import DescriptionTab from './components/DescriptionTab';
 import ProjectsTab from './components/ProjectsTab';
-import useGetBrands from '../../../hooks/creators/useGetBrands';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const BRAND_DETAILS_TABS = [
     {
@@ -36,12 +38,18 @@ const BRAND_DETAILS_TABS = [
     },
 ];
 
+const USERS_COLLECTION = 'users';
+
 const BrandDetailsScreen = ({ route, navigation }) => {
     const brandId = route?.params?.brandId;
 
     const [selectedTab, setSelectedTab] = useState(BRAND_DETAILS_TABS[0]);
-
     const [selectedBrand, setSelectedBrand] = useState({});
+
+    const { auth } = useAuthContext();
+    const { profile } = auth;
+    const { testers } = useFeatureFlags();
+    const isTestUser = testers?.emails?.includes(profile?.email);
 
     useEffect(() => {
         if (brandId)getProfile();
@@ -63,6 +71,42 @@ const BrandDetailsScreen = ({ route, navigation }) => {
         }
     };
 
+    const updateBrand = async (id, brandData) => {
+        try {
+            const db = firestore();
+            await db.collection(USERS_COLLECTION).doc(id).update(brandData);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const blockBrand = () => {
+        Alert.alert(
+            'Confirm Action',
+            'Are you sure you want to block this brand?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                    onPress: () => Alert.alert('Action cancelled.'),
+                },
+                {
+                    text: 'Block',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            await updateBrand(brandId, { isBlocked: true });
+                            Alert.alert('Success', 'brand successfully blocked.');
+                        } catch (error) {
+                            console.error('Error blocking project:', error);
+                            Alert.alert('Error', 'Failed to block the project.');
+                        }
+                    },
+                },
+            ],
+        );
+    };
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -73,8 +117,18 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                     ml={WRAPPER_MARGIN}
                 />
             ),
+            headerRight: () => isTestUser && (
+                <HeaderIconButton
+                    title="block"
+                    onPress={blockBrand}
+                    backDropColor={WHITE_40}
+                    mr={WRAPPER_MARGIN}
+                />
+            ),
         });
-    }, [navigation]);
+    }, [navigation, blockBrand]);
+
+    console.log({selectedBrand})
 
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
 
