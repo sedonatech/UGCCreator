@@ -12,7 +12,6 @@ import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import { SHADOW } from '../../../theme/Shadow';
-import BrandsTab from '../explore/components/BrandsTab';
 import BrandsCard from './components /BrandsCard';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 import { BRAND_DETAILS } from '../../../navigation/ScreenNames';
@@ -26,7 +25,7 @@ const BrandsScreen = ({ navigation }) => {
 
     const [brandsData, setBrandsData] = useState([]);
 
-    const [limit, setLimit] = useState(20);
+    const [limit, setLimit] = useState(40);
 
     const brandsRef = firestore().collection(USERS_COLLECTION)
         .where('type', '==', 'brand')
@@ -38,7 +37,7 @@ const BrandsScreen = ({ navigation }) => {
                 .then((querySnapshot) => querySnapshot?.docs
                     ?.map((doc) => doc?.data()));
             const filtered = (fetchedBrands || [])?.filter((brand) => !brand?.isBlocked);
-
+            if (filtered?.length < 1) setLimit(limit + 20);
             setBrandsData(filtered);
         } catch (e) {
             console.log(e);

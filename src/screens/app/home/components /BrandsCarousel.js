@@ -28,11 +28,12 @@ const BrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
     const [brands, setBrands] = useState([]);
+    const [limit, setLimit] = useState(60);
 
     const brandsRef = firestore().collection(USERS_COLLECTION)
         .where('image', '>', '')
         .where('type', '==', 'brand')
-        .limit(60);
+        .limit(limit);
 
     const fetchBrands = async () => {
         try {
@@ -42,7 +43,8 @@ const BrandsCarousel = ({ style }) => {
                     ?.map((doc) => doc?.data()));
 
             const filtered = (fetchedBrands || [])?.filter((brand) => !brand?.isBlocked);
-            const range = generateRandomRange(0, 40);
+            if (filtered?.length < 1) setLimit(limit + 20);
+            const range = generateRandomRange(0, filtered?.length - 1);
             const sorted = filtered?.slice(range?.start, range?.end);
             setBrands(sorted);
         } catch (e) {
@@ -66,7 +68,7 @@ const BrandsCarousel = ({ style }) => {
     useEffect(() => {
         fetchBrands();
     },
-    []);
+    [limit]);
 
     return (
         <TemplateBox style={style}>
