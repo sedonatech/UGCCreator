@@ -128,7 +128,6 @@ const BrandDetailsScreen = ({ route, navigation }) => {
         });
     }, [navigation, blockBrand]);
 
-    console.log({selectedBrand})
 
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
 

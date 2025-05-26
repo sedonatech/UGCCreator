@@ -1,4 +1,5 @@
 import React, {
+    useCallback,
     useEffect, useLayoutEffect, useMemo, useState,
 } from 'react';
 import {
@@ -8,7 +9,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
 import TemplateText from '../../../components/TemplateText';
 import {
@@ -17,13 +18,10 @@ import {
     LAVENDER,
     WHITE,
 } from '../../../theme/Colors';
-import TemplateTouchable from '../../../components/TemplateTouchable';
 import {
     ADD_EVENT,
     ADD_PROJECT, BRAND_PROJECT_DETAILS,
-    BRAND_SETTINGS,
     BRANDS_PROFILE_STACK,
-    BRANDS_STACK,
     UPDATE_BRAND_PROFILE,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -117,20 +115,26 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const { previousResponse, handleRate } = useAppReview();
 
-    // useEffect(() => {
-    //     if (!profileImage || defaultDescription) {
-    //         Alert.alert(
-    //             'Update Profile',
-    //             (!!profile && defaultDescription) ? 'Please update your brand description from the default description to improve your brand identification' : 'Please upload a profile image & brand description to improve your brand identification',
-    //             [
-    //                 {
-    //                     text: 'OK',
-    //                     onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, { screen: UPDATE_BRAND_PROFILE }),
-    //                 },
-    //             ],
-    //         );
-    //     }
-    // }, [profileImage, defaultDescription]);
+    useFocusEffect(
+        useCallback(() => {
+            if (!profileImage || defaultDescription) {
+                Alert.alert(
+                    'Update Profile',
+                    (!!profile && defaultDescription)
+                        ? 'Please update your brand description from the default description to improve your brand identification'
+                        : 'Please upload a profile image & brand description to improve your brand identification',
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, {
+                                screen: UPDATE_BRAND_PROFILE,
+                            }),
+                        },
+                    ],
+                );
+            }
+        }, [profileImage, defaultDescription, navigation]),
+    );
 
     const options = [
         {
