@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import {
-    ScrollView, StyleSheet, RefreshControl, Alert,
+    ScrollView, StyleSheet, Alert,
 } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
@@ -16,7 +16,6 @@ import {
 } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import useRefresh from '../../../hooks/creators/useRefresh';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import {
@@ -39,6 +38,7 @@ import EventsCarousel from './components /EventsCarousel';
 import useProfile from '../../../hooks/user/useProfile';
 import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
+import EmergingBrandsCarousel from './components /EmergingBrandsCarousel';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -53,8 +53,6 @@ const HomeScreen = ({ navigation }) => {
     const profileImage = profile?.image;
 
     const isFocused = useIsFocused();
-
-    const { refreshing, handleRefresh } = useRefresh();
 
     useEffect(() => {
         if (isFocused && profile) {
@@ -142,6 +140,11 @@ const HomeScreen = ({ navigation }) => {
             <TemplateBox height={236}>
                 <AffiliateBrandsCarousel />
             </TemplateBox>
+            {features?.showEmergingBrandsCarousel && (
+                <TemplateBox height={236} mt={40}>
+                    <EmergingBrandsCarousel />
+                </TemplateBox>
+            )}
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />
             {features?.showBrandsCarousel && (
@@ -258,9 +261,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: WRAPPER_MARGIN,
     },
-    emptyStatusCard: {
-        marginVertical: WRAPPER_MARGIN,
-    },
+
     card: {
         marginBottom: 10,
         alignSelf: 'center',

@@ -28,7 +28,7 @@ const TrendingCategoriesCarousel = () => (
             smallCardWidth={CATEGORY_CARD_WIDTH}
             style={styles.cardCarousel}
         >
-            {TRENDING_CATEGORIES.map((item, index) => (
+            {TRENDING_CATEGORIES.map((item) => (
                 <CategoryCard
                     key={item?.id}
                     onPress={() => {}}
