@@ -12,23 +12,16 @@ import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import RecommendedBrandModal from '../../../components/modals/RecommendedBrandModal';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 // import useHasSubscription from '../../subscriptions/useHasSubscription';
-import useAuthContext from '../../../hooks/auth/useAuthContext';
 import BrandsCatalogueCard from './BrandsCatalogueCard';
 
 const BrandsCatalogueScreen = ({ navigation }) => {
-    const { brandsCatalogue, features } = useFeatureFlags();
-
-    const { auth } = useAuthContext();
-
-    const userEmail = auth?.user?.email;
+    const { brandsCatalogue } = useFeatureFlags();
 
     const [selectedBrand, setSelectedBrand] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
 
     const [limit, setLimit] = useState(6);
-
-    const { activeList: activeCatalogueList } = features?.brandsCatalogue;
 
     const title = brandsCatalogue?.title || 'Brands Catalogue';
 
@@ -44,7 +37,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
         }
     }, [mailEvent]);
 
-    const renderItem = ({ item, index }) => (
+    const renderItem = ({ item }) => (
         <BrandsCatalogueCard
             navigation={navigation}
             item={item}

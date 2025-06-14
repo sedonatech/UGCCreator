@@ -11,7 +11,7 @@ import {
 } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import { AFFILIATE_BRANDS, WEBVIEW } from '../../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, WEBVIEW } from '../../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import {
@@ -20,23 +20,21 @@ import {
     SHADOW_OFFSET_WIDTH,
 } from '../../../../theme/Shadow';
 
-const AffiliateBrandsCarousel = ({ style }) => {
+const EmergingBrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
 
-    const { affiliate } = useFeatureFlags();
-
-    const affiliateBrands = affiliate?.brands;
+    const { brandsCatalogue } = useFeatureFlags();
 
     // get the first four brands to display with a useMemo
     const firstFourBrands = useMemo(() => {
-        if (!affiliateBrands) return [];
+        if (!brandsCatalogue?.brands) return [];
 
-        return affiliateBrands.slice(0, 4);
-    }, [affiliateBrands]);
+        return brandsCatalogue?.brands.slice(0, 20);
+    }, [brandsCatalogue?.brands]);
 
     return (
         <TemplateBox style={style}>
-            {affiliateBrands && (
+            {brandsCatalogue && (
                 <TemplateBox>
                     <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                         <TemplateBox width={SCREEN_WIDTH * 0.8}>
@@ -44,12 +42,13 @@ const AffiliateBrandsCarousel = ({ style }) => {
                                 size={16}
                                 semiBold
                             >
-                                Brand ambassador, influencer and affiliate programs
+                                {brandsCatalogue?.title || 'Emerging Brands'}
                             </TemplateText>
+
                         </TemplateBox>
                         <TemplateBox flex />
                         <TemplateTouchable
-                            onPress={() => navigation.navigate(AFFILIATE_BRANDS)}
+                            onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
                         >
                             <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                                 See All
@@ -62,8 +61,7 @@ const AffiliateBrandsCarousel = ({ style }) => {
                         color={BLACK}
                         style={styles.subtitle}
                     >
-                        Empower your UGC career and unlock new opportunities for growth
-                        with our Brand Ambassador, Influencer, and Affiliate Programs Hub.
+                        {brandsCatalogue?.subtitle || 'These brands are looking for creators like you!'}
                     </TemplateText>
                 </TemplateBox>
             )}
@@ -73,7 +71,7 @@ const AffiliateBrandsCarousel = ({ style }) => {
                     <TemplateBox
                         borderRadius={wp(16)}
                         pAll={wp(16)}
-                        onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
+                        onPress={() => navigation.navigate(WEBVIEW, { url: item?.Site })}
                         style={styles.card}
                         width={SCREEN_WIDTH / 1.6}
                         height={wp(110)}
@@ -86,14 +84,15 @@ const AffiliateBrandsCarousel = ({ style }) => {
                             size={wp(16)}
                             semiBold
                         >
-                            {item?.name}
+                            {item['Brand Name']}
                         </TemplateText>
                         <TemplateBox height={wp(8)} />
                         <TemplateText
                             size={wp(12)}
 
                         >
-                            Dive into descriptions, insights with just a tap.
+                            {item?.Caption}
+
                         </TemplateText>
                     </TemplateBox>
                 )}
@@ -124,11 +123,11 @@ const styles = StyleSheet.create({
     },
 });
 
-AffiliateBrandsCarousel.propTypes = {
+EmergingBrandsCarousel.propTypes = {
     style: PropTypes.shape({}),
 };
 
-AffiliateBrandsCarousel.defaultProps = {
+EmergingBrandsCarousel.defaultProps = {
     style: {},
 };
-export default AffiliateBrandsCarousel;
+export default EmergingBrandsCarousel;
