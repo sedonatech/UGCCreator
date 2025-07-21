@@ -117,6 +117,32 @@
 		<string>fb2996542933821709</string>
 	</array>
 	</dict>
+	<dict>
+		<key>CFBundleURLName</key>
+		<string>com.ugccreatorapp</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>com.ugccreatorapp</string>
+		</array>
+	</dict>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>com.googleusercontent.apps.1029021461255-ftuvghcsmo4rovba732hl96816972ggj</string>
+		</array>
+	</dict>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>com.googleusercontent.apps.1029021461255-0kci8gogq2vip2qnhjhacrrgdbpjvgds</string>
+		</array>
+  	</dict>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>1029021461255-0kci8gogq2vip2qnhjhacrrgdbpjvgds.apps.googleusercontent.com</string>
+		</array>
+  	</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>2996542933821709</string>

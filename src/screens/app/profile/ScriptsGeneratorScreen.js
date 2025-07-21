@@ -3,6 +3,7 @@ import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import TemplateBox from '../../../components/TemplateBox';
 import {
+    BLACK,
     BLACK_10, BLACK_50, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND,
 } from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
@@ -20,7 +21,7 @@ import Button from '../../../components/Button';
 import { CREATOR_TOOLS_RESULTS } from '../../../navigation/ScreenNames';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
-const ScriptsGeneratorScreen = ({ navigation, route }) => {
+const AnalyticsCopilotScreen = ({ navigation, route }) => {
     const title = route.params?.title;
 
     const toolType = route.params?.type;
@@ -75,7 +76,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox mt={HEADER_MARGIN} mb={50}>
+            <TemplateBox mt={HEADER_MARGIN} mb={50} alignItems="center">
                 <TemplateText
                     size={18}
                     bold
@@ -90,76 +91,18 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                         size={16}
                         center
                     >
-                        Enter Details and let the magic happen!
+                        Benchmark your IG & TikTok and surface growth gaps.
                     </TemplateText>
                 </TemplateBox>
                 <TemplateBox height={20} />
-                <TemplateTextInput
-                    placeholder="Enter brand name (required)"
-                    style={styles.input}
-                    value={brandName}
-                    onChangeText={(text) => setBrandName(text)}
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
-                />
-                <TemplateTextInput
-                    placeholder="Enter product name (required)"
-                    style={styles.input}
-                    value={productName}
-                    onChangeText={(text) => setProductName(text)}
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
-                />
-                <TemplateTextInput
-                    placeholder="Enter short description of the product (required)"
-                    style={styles.input}
-                    value={productDescription}
-                    onChangeText={(text) => setProductDescription(text)}
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
-                />
-                <TemplateTextInput
-                    placeholder="Enter the value proposition (optional)"
-                    style={styles.input}
-                    value={valueProposition}
-                    onChangeText={(text) => setValueProposition(text)}
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
-                />
-                <TemplateTextInput
-                    placeholder="Enter target audience persona (optional)"
-                    style={styles.input}
-                    value={persona}
-                    onChangeText={(text) => setPersona(text)}
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
-                />
-                <TemplateBox width={WRAPPED_SCREEN_WIDTH} selfCenter>
-                    <FilterCategory
-                        title="Select at least one (required)"
-                        filters={projectFilters}
-                        onFilterPress={onCategoriesPress}
-                        selectedFilters={selectedCategories}
-
-                    />
-                </TemplateBox>
 
                 <Button
-                    title="Save and Continue"
+                    title="Connect to Instagram"
                     onPress={handleSaveAndSubmit}
                     style={styles.button}
                     loading={loading}
                 />
+
             </TemplateBox>
         </ScrollView>
     );
@@ -173,7 +116,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     input: {
         height: 60,
@@ -184,17 +127,18 @@ const styles = StyleSheet.create({
         paddingLeft: 16,
         marginTop: 10,
         marginBottom: WRAPPER_MARGIN,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     button: {
         marginTop: 40,
         alignSelf: 'center',
-        borderRadius: 16,
-        backgroundColor: IOS_BLUE,
+        borderRadius: 30,
+        backgroundColor: BLACK,
         width: WRAPPED_SCREEN_WIDTH,
+        height: 50,
     },
     placeholderStyle: {
         fontSize: 13,
     },
 });
-export default ScriptsGeneratorScreen;
+export default AnalyticsCopilotScreen;

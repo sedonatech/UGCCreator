@@ -176,6 +176,7 @@ dependencies {
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-fbsdk-next')
     implementation 'org.jetbrains:annotations:16.0.2'
+    implementation 'com.google.android.gms:play-services-auth:20.6.0'
 //     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 //     implementation 'com.google.firebase:firebase-analytics-ktx'
 //

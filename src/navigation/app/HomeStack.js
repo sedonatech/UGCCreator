@@ -11,6 +11,7 @@ import {
     CREATOR_TOOLS_RESULTS,
     CURRENT_PROJECT_DETAILS, FEED_DETAILS,
     HOME,
+    PITCH_PAL_SCREEN,
     PROJECT_DETAILS, PROJECTS_SCREEN,
     RECOMMENDED_BRANDS, RESULTS_HISTORY, SCRIPTS_GENERATOR,
     UGCAI,
@@ -33,22 +34,23 @@ import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
 import BrandsScreen from '../../screens/app/home/BrandsScreen';
 import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
 import AffiliateBrandsScreen from '../../screens/app/home/AffiliateBrandsScreen';
+import PitchPalScreen from '../../screens/app/home/PitchPalScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const HomeStack = () => (
-    <Navigator 
+    <Navigator
         screenOptions={{
             ...SWITCH,
             lazy: true,
             freezeOnBlur: true,
             animationEnabled: false,
-            gestureEnabled: false, 
+            gestureEnabled: false,
             transitionSpec: {
                 open: { animation: 'timing', config: { duration: 150 } },
                 close: { animation: 'timing', config: { duration: 200 } },
-            }
+            },
         }}
     >
         <Screen
@@ -131,6 +133,7 @@ const HomeStack = () => (
             options={TRANSPARENT_HEADER}
             component={AffiliateBrandsScreen}
         />
+
     </Navigator>
 );
 

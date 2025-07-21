@@ -12,7 +12,6 @@ import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
-import ToggleCarousel from '../../../components/ToggleCarousel';
 import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
@@ -164,15 +163,7 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
                     {currentProject?.shortDescription}
                 </TemplateText>
             </TemplateBox>
-
-            <TemplateBox height={20}>
-                {/* <ToggleCarousel
-                    data={CURRENT_PROJECT_TABS}
-                    selectedTab={selectedTab}
-                    onChange={setSelectedTab}
-                    flex={false}
-                /> */}
-            </TemplateBox>
+            <TemplateBox height={20} />
             {
                 selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
                     <OverviewTab

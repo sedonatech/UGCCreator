@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable react-native/no-color-literals */
 import React, { useEffect, useLayoutEffect, useMemo } from 'react';
 import {
     ScrollView, StyleSheet, Alert,
@@ -7,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
 import {
     BLACK,
-    LIGHT_GREEN, TRANSPARENT,
+    LIGHT_GREEN, LIGHT_PURPLE, TRANSPARENT,
     WHITE,
 } from '../../../theme/Colors';
 import {
@@ -19,13 +21,15 @@ import useAuthContext from '../../../hooks/auth/useAuthContext';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import {
-    BRANDS_CATALOGUE, FEED_DETAILS, PROFILE_STACK, UGCAI,
+    BRANDS_CATALOGUE, FEED_DETAILS, PITCH_PAL_SCREEN, PROFILE_STACK, UGCAI,
 } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import CatalogueSvg from '../../../../assets/svgs/CatalogueSvg';
-import { SHADOW } from '../../../theme/Shadow';
+import {
+    ELEVATION, SHADOW, SHADOW_OFFSET_HEIGHT, SHADOW_OFFSET_WIDTH,
+} from '../../../theme/Shadow';
 import useAppReview from '../../../hooks/useAppReview';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { wp } from '../../../Utils/getResponsiveSize';
@@ -39,6 +43,7 @@ import useProfile from '../../../hooks/user/useProfile';
 import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
 import EmergingBrandsCarousel from './components /EmergingBrandsCarousel';
+import AIIcon from '../../../../assets/svgs/AIIcon';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -48,6 +53,8 @@ const HomeScreen = ({ navigation }) => {
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
 
     const profile = auth?.profile;
+    console.log('🚀 ~ HomeScreen ~ profile:', JSON.stringify(profile, null, 2));
+
     const { updateProfile } = useProfile();
 
     const profileImage = profile?.image;
@@ -76,18 +83,20 @@ const HomeScreen = ({ navigation }) => {
 
     const creatorToolsEnabled = features?.openAIScreen;
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <HeaderIconButton
-                    title="Creator tools"
-                    onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
-                    backDropColor={LIGHT_GREEN}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
-        });
-    }, [navigation, creatorToolsEnabled]);
+    /* The `useLayoutEffect` hook in the provided code snippet is used to set options for the navigation
+  header in a React component. */
+    // useLayoutEffect(() => {
+    //     navigation.setOptions({
+    //         headerRight: () => (
+    //             <HeaderIconButton
+    //                 title="Creator tools"
+    //                 onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
+    //                 backDropColor={LIGHT_GREEN}
+    //                 mr={WRAPPER_MARGIN}
+    //             />
+    //         ),
+    //     });
+    // }, [navigation, creatorToolsEnabled]);
 
     useEffect(() => {
         if (!profileImage) {
@@ -137,7 +146,40 @@ const HomeScreen = ({ navigation }) => {
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
 
-            <TemplateBox height={236}>
+            <TemplateBox style={styles.pitchPalProCard}>
+                <TemplateBox row alignItems="center">
+
+                    <TemplateText center ml={8} size={18} medium>Creator Tools</TemplateText>
+                </TemplateBox>
+                <TemplateBox height={10} />
+                <TemplateText size={13} center>
+                    Analytics and insights, trending content ideas, pitch generation and tracking
+                </TemplateText>
+                <TemplateBox
+                    height={45}
+                    borderRadius={16}
+                    backgroundColor={BLACK}
+                    ow
+                    alignItems="center"
+                    justifyContent="center"
+                    mt={20}
+                    ph={60}
+                    onPress={() => navigation.navigate(UGCAI)}
+                >
+
+                    <TemplateText
+                        size={13}
+                        center
+                        color={WHITE}
+                        semiBold
+                        ml={8}
+                    >
+                        Explore Creator Tools
+                    </TemplateText>
+                </TemplateBox>
+
+            </TemplateBox>
+            <TemplateBox height={236} style={styles.card}>
                 <AffiliateBrandsCarousel />
             </TemplateBox>
             {features?.showEmergingBrandsCarousel && (
@@ -265,6 +307,24 @@ const styles = StyleSheet.create({
     card: {
         marginBottom: 10,
         alignSelf: 'center',
+    },
+    pitchPalProCard: {
+        shadowOffset: {
+            width: SHADOW_OFFSET_WIDTH,
+            height: SHADOW_OFFSET_HEIGHT,
+        },
+        shadowRadius: 4,
+        shadowOpacity: 0.2,
+        elevation: ELEVATION,
+        backgroundColor: LIGHT_PURPLE,
+
+        borderRadius: 20,
+        marginHorizontal: WRAPPER_MARGIN,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+        marginBottom: 32,
+        marginTop: 10,
     },
 });
 export default HomeScreen;

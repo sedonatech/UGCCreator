@@ -58,7 +58,7 @@ export const BRANDS_PROFILE_STACK = 'BrandsProfileStack';
 export const CREATORS_PROFILES_STACK = 'CreatorsProfilesStack';
 
 export const ADD_PROJECT = 'AddProject';
-export const ADD_EVENT= 'AddEvent';
+export const ADD_EVENT = 'AddEvent';
 
 export const BRAND_PROJECTS = 'BrandProjects';
 
@@ -116,10 +116,10 @@ export const FAVORITE_EVENTS_SCREEN = 'FavoriteEventsScreen';
 
 export const EVENT_DETAILS_SCREEN = 'EventDetailsScreen';
 
-export const BRAND_EVENTS_SCREEN  = 'BrandEventsScreen';
+export const BRAND_EVENTS_SCREEN = 'BrandEventsScreen';
 
-export const BRAND_EVENTS_COMPLETED_SCREEN  = 'BrandEventsCompletedScreen';
+export const BRAND_EVENTS_COMPLETED_SCREEN = 'BrandEventsCompletedScreen';
 
-export const  BRAND_EVENT_DETAILS_SCREEN = 'BrandEventDetailsScreen';
+export const BRAND_EVENT_DETAILS_SCREEN = 'BrandEventDetailsScreen';
 
-
+export const PITCH_PAL_SCREEN = 'PitchPalScreen';

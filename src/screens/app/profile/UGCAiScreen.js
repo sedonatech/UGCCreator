@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 
 import { ScrollView, StyleSheet } from 'react-native';
@@ -26,28 +27,28 @@ import useTrackEvent from '../../../hooks/events/useTrackEvent';
 const UGCAiScreen = ({ navigation }) => {
     const creatorTools = [
         {
-            title: 'Scripts Generator',
-            description: 'This tool helps you generate scripts for your videos based on your project requirements.',
-            screen: SCRIPTS_GENERATOR,
+            title: 'Analytics Copilot',
+            description: 'Compare your IG & TikTok to top creators and get prioritized insights.',
+            screen: '',
             icon: 'scripts',
-            type: 'scripts',
-            screenTitle: 'Create Engaging Scripts With AI in minutes',
+            type: 'analysis',
+            screenTitle: 'Account Benchmark & Insights',
         },
         {
-            title: 'Content Suggester',
-            description: 'This tool  suggests content for you to create based on your project requirements.',
-            screen: CONTENT_SUGGESTOR,
+            title: 'Pitch Copilot',
+            description: 'Automate brand outreach: data‑backed pitch drafts & follow‑up cues.',
+            screen: 'PITCH_COPILOT',
             icon: 'suggestor',
-            type: 'content suggestion',
-            screenTitle: 'Create Engaging Content With AI in minutes',
+            type: 'pitching',
+            screenTitle: 'Automated Brand Outreach',
         },
         {
-            title: 'Hooks Generator',
-            description: 'This tool helps you generate hooks for your project.',
-            screen: HOOKS_GENERATOR,
+            title: 'Content Copilot',
+            description: 'Spot trending themes & format gaps to guide what to post next.',
+            screen: 'CONTENT_COPILOT',
             icon: 'hooks',
-            type: 'hooks',
-            screenTitle: 'Create Engaging Hooks With AI in minutes',
+            type: 'content-strategy',
+            screenTitle: 'Trending Content Opportunities',
         },
     ];
 
@@ -122,12 +123,12 @@ const UGCAiScreen = ({ navigation }) => {
                     }
 
                 </TemplateBox>
-                <Button
+                {/* <Button
                     title="View Results History"
                     onPress={() => navigation.navigate(RESULTS_HISTORY)}
                     style={styles.button}
                     loading={false}
-                />
+                /> */}
             </TemplateBox>
 
         </ScrollView>
