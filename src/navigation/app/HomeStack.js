@@ -11,7 +11,6 @@ import {
     CREATOR_TOOLS_RESULTS,
     CURRENT_PROJECT_DETAILS, FEED_DETAILS,
     HOME,
-    PITCH_PAL_SCREEN,
     PROJECT_DETAILS, PROJECTS_SCREEN,
     RECOMMENDED_BRANDS, RESULTS_HISTORY, SCRIPTS_GENERATOR,
     UGCAI,
@@ -26,7 +25,7 @@ import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScre
 import RecommendedBrandsScreen from '../../screens/app/home/RecommendedBrandsScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import UGCAiScreen from '../../screens/app/profile/UGCAiScreen';
-import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorScreen';
+import ScriptsGeneratorScreen from '../../screens/app/profile/AnalyticsCopilotScreen';
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
 import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 import BrandsCatalogueScreen from '../../screens/app/home/BrandsCatalogueScreen';
@@ -34,7 +33,6 @@ import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
 import BrandsScreen from '../../screens/app/home/BrandsScreen';
 import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
 import AffiliateBrandsScreen from '../../screens/app/home/AffiliateBrandsScreen';
-import PitchPalScreen from '../../screens/app/home/PitchPalScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;

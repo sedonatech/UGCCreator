@@ -17,11 +17,9 @@ import ScriptsSvg from '../../../../assets/svgs/ScriptsSvg';
 import SuggestorSvg from '../../../../assets/svgs/SuggestorSvg';
 import HooksSvg from '../../../../assets/svgs/HooksSvg';
 import {
-    CONTENT_SUGGESTOR,
-    HOOKS_GENERATOR, RESULTS_HISTORY,
+
     SCRIPTS_GENERATOR,
 } from '../../../navigation/ScreenNames';
-import Button from '../../../components/Button';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const UGCAiScreen = ({ navigation }) => {

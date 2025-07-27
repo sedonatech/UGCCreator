@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react-native/no-color-literals */
-import React, { useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
     ScrollView, StyleSheet, Alert,
 } from 'react-native';
@@ -9,7 +9,7 @@ import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
 import {
     BLACK,
-    LIGHT_GREEN, LIGHT_PURPLE, TRANSPARENT,
+    LIGHT_PURPLE, TRANSPARENT,
     WHITE,
 } from '../../../theme/Colors';
 import {
@@ -19,9 +19,9 @@ import {
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
-import HeaderIconButton from '../../../components/header/HeaderButton';
+
 import {
-    BRANDS_CATALOGUE, FEED_DETAILS, PITCH_PAL_SCREEN, PROFILE_STACK, UGCAI,
+    BRANDS_CATALOGUE, FEED_DETAILS, PROFILE_STACK, UGCAI,
 } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
@@ -43,7 +43,6 @@ import useProfile from '../../../hooks/user/useProfile';
 import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
 import EmergingBrandsCarousel from './components /EmergingBrandsCarousel';
-import AIIcon from '../../../../assets/svgs/AIIcon';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -53,7 +52,6 @@ const HomeScreen = ({ navigation }) => {
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
 
     const profile = auth?.profile;
-    console.log('🚀 ~ HomeScreen ~ profile:', JSON.stringify(profile, null, 2));
 
     const { updateProfile } = useProfile();
 
