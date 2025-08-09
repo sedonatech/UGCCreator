@@ -7,12 +7,13 @@ import {
 } from '../../components/header/ScreenOptions';
 import {
     AFFILIATE_BRANDS,
+    ANALYTICS_COPILOT_DETAILS_SCREEN,
     BRAND_DETAILS, BRANDS_CATALOGUE, BRANDS_SCREEN,
     CREATOR_TOOLS_RESULTS,
     CURRENT_PROJECT_DETAILS, FEED_DETAILS,
     HOME,
     PROJECT_DETAILS, PROJECTS_SCREEN,
-    RECOMMENDED_BRANDS, RESULTS_HISTORY, SCRIPTS_GENERATOR,
+    RECOMMENDED_BRANDS, RESULTS_HISTORY,
     UGCAI,
     UPDATE_PORTFOLIO,
     WEBVIEW,
@@ -25,7 +26,6 @@ import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScre
 import RecommendedBrandsScreen from '../../screens/app/home/RecommendedBrandsScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import UGCAiScreen from '../../screens/app/profile/UGCAiScreen';
-import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorScreen';
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
 import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 import BrandsCatalogueScreen from '../../screens/app/home/BrandsCatalogueScreen';
@@ -33,22 +33,23 @@ import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
 import BrandsScreen from '../../screens/app/home/BrandsScreen';
 import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
 import AffiliateBrandsScreen from '../../screens/app/home/AffiliateBrandsScreen';
+import AnalyticsCopilotDetailsScreen from '../../screens/app/profile/AnalyticsCopilotDetailsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const HomeStack = () => (
-    <Navigator 
+    <Navigator
         screenOptions={{
             ...SWITCH,
             lazy: true,
             freezeOnBlur: true,
             animationEnabled: false,
-            gestureEnabled: false, 
+            gestureEnabled: false,
             transitionSpec: {
                 open: { animation: 'timing', config: { duration: 150 } },
                 close: { animation: 'timing', config: { duration: 200 } },
-            }
+            },
         }}
     >
         <Screen
@@ -92,9 +93,9 @@ const HomeStack = () => (
             component={UGCAiScreen}
         />
         <Screen
-            name={SCRIPTS_GENERATOR}
+            name={ANALYTICS_COPILOT_DETAILS_SCREEN}
             options={TRANSPARENT_HEADER}
-            component={ScriptsGeneratorScreen}
+            component={AnalyticsCopilotDetailsScreen}
         />
         <Screen
             name={CREATOR_TOOLS_RESULTS}

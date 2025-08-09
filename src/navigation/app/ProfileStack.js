@@ -19,7 +19,7 @@ import UpdatePortfolioScreen from '../../screens/app/profile/UpdatePortfolioScre
 import ResetPasswordScreen from '../../screens/auth/ResetPasswordScreen';
 import UGCAiScreen from '../../screens/app/profile/UGCAiScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
-import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorScreen';
+import ScriptsGeneratorScreen from '../../screens/app/profile/AnalyticsCopilotDetailsScreen';
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
 import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 
