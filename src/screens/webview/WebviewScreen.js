@@ -4,7 +4,9 @@ import {
     ActivityIndicator,
     Alert, ScrollView, StyleSheet,
 } from 'react-native';
-import { HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../theme/Layout';
+import {
+    HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH,
+} from '../../theme/Layout';
 import { BLUE, TRANSPARENT, WHITE } from '../../theme/Colors';
 import { hp } from '../../Utils/getResponsiveSize';
 import isAndroid from '../subscriptions/utils/isAndroid';
@@ -19,6 +21,8 @@ const urlPattern = new RegExp('^(https?:\\/\\/)?' // validate protocol
 
 const WebviewScreen = ({ route, navigation }) => {
     const url = route?.params?.url;
+    console.log('🚀 ~ WebviewScreen ~ url:', url);
+    console.log('🚀 ~ WebviewScreen ~ url:', url);
 
     // Check if url is valid
     useEffect(() => {
@@ -46,23 +50,23 @@ const WebviewScreen = ({ route, navigation }) => {
     return (
         <>
             {loading && (
-                <TemplateBox absolute height={SCREEN_HEIGHT} width={SCREEN_WIDTH} zIndex={99} justifyContent='center' alignItems='center'>
+                <TemplateBox absolute height={SCREEN_HEIGHT} width={SCREEN_WIDTH} zIndex={99} justifyContent="center" alignItems="center">
                     <ActivityIndicator size="large" color={BLUE} />
                 </TemplateBox>
             )}
-        <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            showsVerticalScrollIndicator={false}
-        >
-            
-            <WebView
-                source={{ uri: url }}
-                style={{ marginTop: isAndroid ? 80 : 120 }}
-                onLoad={handleLoad} // Trigger when WebView finishes loading
-                onError={handleError}
-            />
-        </ScrollView>
+            <ScrollView
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                showsVerticalScrollIndicator={false}
+            >
+
+                <WebView
+                    source={{ uri: url }}
+                    style={{ marginTop: isAndroid ? 80 : 120 }}
+                    onLoad={handleLoad} // Trigger when WebView finishes loading
+                    onError={handleError}
+                />
+            </ScrollView>
         </>
     );
 };

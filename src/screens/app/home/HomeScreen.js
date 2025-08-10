@@ -38,7 +38,7 @@ import EventsCarousel from './components /EventsCarousel';
 import useProfile from '../../../hooks/user/useProfile';
 import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
-import EmergingBrandsCarousel from './components /EmergingBrandsCarousel';
+import BrandDealsCarousel from './components /BrandDealsCarousel';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -140,11 +140,14 @@ const HomeScreen = ({ navigation }) => {
             <TemplateBox height={236}>
                 <AffiliateBrandsCarousel />
             </TemplateBox>
-            {features?.showEmergingBrandsCarousel && (
+            {/* {features?.showEmergingBrandsCarousel && (
                 <TemplateBox height={236} mt={40}>
                     <EmergingBrandsCarousel />
                 </TemplateBox>
-            )}
+            )} */}
+            <TemplateBox height={236} mt={40}>
+                <BrandDealsCarousel />
+            </TemplateBox>
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />
             {features?.showBrandsCarousel && (

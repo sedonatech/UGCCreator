@@ -35,43 +35,72 @@ export const FeatureFlagProvider:React.FC<FeatureFlagProviderProps> = ({
 
     const fetchAll = async (debug = false) => {
         try {
-            // @ts-ignore
-            await remoteConfig().setDefaults(defaultFeatures);
+            // Only pass primitives to Remote Config defaults
+            const primitiveDefaults: Record<string, string | number | boolean> = {};
+            Object.keys(defaultFeatures).forEach((k) => {
+                const v = (defaultFeatures as any)[k];
+                if (['string', 'number', 'boolean'].includes(typeof v)) {
+                    primitiveDefaults[k] = v as any;
+                }
+            });
+
+            // Configure fetch interval instead of calling fetch(refetch)
+            await remoteConfig().setConfigSettings({
+                minimumFetchIntervalMillis: Math.max(0, refetch) * 1000,
+            });
+
+            // Set defaults & make sure RC is ready
+            if (Object.keys(primitiveDefaults).length) {
+                await remoteConfig().setDefaults(primitiveDefaults);
+            }
+            await remoteConfig().ensureInitialized();
+
+            // Fetch and activate latest values
             await remoteConfig().fetchAndActivate();
 
-            // fetches and updates every 3.5 minutes as default.
-            await remoteConfig().fetch(refetch);
+            // Read everything via public API (no _value)
+            const all = remoteConfig().getAll();
 
-            const allConfigs = await remoteConfig().getAll();
+            const parsedConfigs = Object.keys(all).reduce((acc, key) => {
+                try {
+                    const str = all[key].asString(); // always a string
+                    // Parse JSON-ish strings, else keep as string.
+                    // This preserves falsy values like "false", "0", "".
+                    let val: any = str;
 
-            if (allConfigs) {
-                const parsedConfigs = Object.keys(allConfigs).reduce((a, key) => {
-                    // @ts-ignore
-                    // eslint-disable-next-line no-underscore-dangle
-                    const value = allConfigs[key]?._value;
-                    if (value) {
-                        try {
-                            // eslint-disable-next-line no-param-reassign
-                            a[key] = typeof value === 'boolean' ? value : JSON.parse(value);
-                        } catch (e) {
-                            // @ts-ignore
-                            crashlytics().recordError(e, 'firebase_config_parsing');
-                            console.log('[FirebaseConfigProviders] parsedConfigs - Error: ', e);
-                        }
+                    // Try to interpret booleans/numbers first
+                    if (str === 'true' || str === 'false') {
+                        val = str === 'true';
+                    } else if (/^-?\d+(\.\d+)?$/.test(str)) {
+                        const num = Number(str);
+                        // Preserve "0" correctly
+                        if (!Number.isNaN(num)) val = num;
+                    } else if ((str.startsWith('{') && str.endsWith('}')) || (str.startsWith('[') && str.endsWith(']'))) {
+                        val = JSON.parse(str);
                     }
-                    return a;
-                }, { ...defaultFeatures });
 
-                if (debug) {
-                    console.log('[Firebase Config Provider] - updated Config', parsedConfigs);
+                    (acc as any)[key] = val;
+                } catch (e) {
+                    // If parsing fails, fall back to raw string
+                    (acc as any)[key] = all[key].asString();
+                    crashlytics().recordError(e as any, 'firebase_config_parsing');
+                    // eslint-disable-next-line no-console
+                    console.log('[FirebaseConfigProviders] parsedConfigs - Error: ', e);
                 }
+                return acc;
+            }, { ...defaultFeatures } as Record<string, any>);
 
-                setConfig(parsedConfigs);
-                return;
+            if (debug) {
+                // eslint-disable-next-line no-console
+                console.log('[Firebase Config Provider] - updated Config', parsedConfigs);
             }
-            setConfig(defaultFeatures);
+
+            setConfig(parsedConfigs);
         } catch (e) {
+            // eslint-disable-next-line no-console
             console.log('[Firebase Config Provider] - Error', e);
+            // On any failure, at least fall back to defaults so consumers have something
+            setConfig({ ...defaultFeatures });
         }
     };
 
@@ -79,6 +108,8 @@ export const FeatureFlagProvider:React.FC<FeatureFlagProviderProps> = ({
         (async () => {
             await fetchAll(true);
         })();
+        // we intentionally run once; callers can invoke fetchAll as needed
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
