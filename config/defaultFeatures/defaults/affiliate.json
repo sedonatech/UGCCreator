@@ -1,153 +1,123 @@
 {
   "brands": [
     {
-      "name": "She's Birdie",
-      "link": "https://www.shesbirdie.com/pages/ambassador",
-      "category": "accessories"
+      "name": "Lene Nicole Candle Company",
+      "link": "https://lenenicolecandlecompany.com/pages/become-a-brand-ambassador",
+      "category": "home"
     },
     {
-      "name": "BIOLYTE",
-      "link": "https://drinkbiolyte.com/pages/ambassador",
-      "category": "beverage"
+      "name": "Defined Elegance Candle Co.",
+      "link": "https://decandleco.com/pages/become-a-brand-ambassador",
+      "category": "home"
     },
     {
-      "name": "Matchaeologist",
-      "link": "https://www.matchaeologist.com/pages/ambassador",
-      "category": "beverage"
+      "name": "French Press Candle Co.",
+      "link": "https://frenchpresscandleco.com/pages/affiliates",
+      "category": "home"
     },
     {
-      "name": "Saint Spritz",
-      "link": "https://saintspritz.com/pages/ambassador",
-      "category": "beverage (alcohol)"
+      "name": "Wishes Candle Co.",
+      "link": "https://www.wishescandleco.com/pages/affiliates",
+      "category": "home"
     },
     {
-      "name": "Tempaper",
-      "link": "https://tempaper.com/pages/affiliate",
-      "category": "home decor"
+      "name": "Jackpot Candles",
+      "link": "https://www.jackpotcandles.com/pages/jackpot-candles-brand-ambassador",
+      "category": "home"
     },
     {
-      "name": "Verve Culture",
-      "link": "https://verveculture.com/pages/affiliate-program",
-      "category": "kitchen & home"
+      "name": "Brooklyn Candle Studio",
+      "link": "https://brooklyncandlestudio.com/pages/become-an-affiliate",
+      "category": "home"
     },
     {
-      "name": "The Landmark Project",
-      "link": "https://thelandmarkproject.com/pages/affiliate-program",
-      "category": "outdoor apparel"
+      "name": "P.F. Candle Co.",
+      "link": "https://pfcandleco.com/pages/affiliates",
+      "category": "home"
     },
     {
-      "name": "Sea & Grass",
-      "link": "https://seaandgrass.com/pages/ambassador",
-      "category": "fashion accessories"
+      "name": "LG Candle",
+      "link": "https://lgcandle.com/pages/become-an-ambassador",
+      "category": "home"
     },
     {
-      "name": "Native Max Shop",
-      "link": "https://nativemax.shop/nativemax-shop-brand-ambassador-program/",
-      "category": "fashion"
-    },
-    {
-      "name": "Sidetracked Workshop",
-      "link": "https://sidetrackedworkshop.com/blogs/petes-musings/we-are-launching-a-brand-ambassador-program-apply",
-      "category": "home & gifts"
-    },
-    {
-      "name": "NOTES Candle",
-      "link": "https://notescandle.com/pages/ambassador",
-      "category": "home fragrance"
-    },
-    {
-      "name": "Southern Elegance Candle Co.",
-      "link": "https://www.secandleco.com/pages/ambassador-program",
-      "category": "home fragrance"
-    },
-    {
-      "name": "Bluecorn Beeswax",
-      "link": "https://bluecorncandles.com/pages/affiliate-program",
-      "category": "home fragrance"
-    },
-    {
-      "name": "Antique Candle Co.",
-      "link": "https://antiquecandleco.com/pages/affiliate-program",
-      "category": "home fragrance"
-    },
-    {
-      "name": "APOTHEKE",
-      "link": "https://apothekeco.com/pages/ambassador-page-signup",
-      "category": "home fragrance"
-    },
-    {
-      "name": "Fontana Candle Company",
-      "link": "https://fontanacandlecompany.com/pages/affiliate-information",
-      "category": "home fragrance"
-    },
-    {
-      "name": "Minbati",
-      "link": "https://minbati.com/pages/ambassador-faqs",
-      "category": "home fragrance"
-    },
-    {
-      "name": "BeecoCo Candle",
-      "link": "https://www.beecococandle.com/pages/affiliate-registration",
-      "category": "home fragrance"
-    },
-    {
-      "name": "Companion Candles",
-      "link": "https://companioncandles.com/pages/affiliate-program",
-      "category": "home fragrance"
-    },
-    {
-      "name": "Hive and Honey Candle Co. (Supplies)",
-      "link": "https://hiveandhoneycandleco.com/pages/affiliate-program",
-      "category": "craft supplies"
-    },
-    {
-      "name": "Farm to Pet",
-      "link": "https://farmtopettreats.com/pages/affiliate",
-      "category": "pet treats"
-    },
-    {
-      "name": "Pet 'n Shape",
-      "link": "https://www.petnshape.com/pages/become-a-pet-n-shape-brand-ambassador",
-      "category": "pet treats"
-    },
-    {
-      "name": "The Foggy Dog",
-      "link": "https://www.thefoggydog.com/pages/brand-ambassador-application",
-      "category": "pet accessories"
-    },
-    {
-      "name": "Snuggle Puppy",
-      "link": "https://snugglepuppy.com/pages/influencers",
-      "category": "pet products"
-    },
-    {
-      "name": "Jolly Pets",
-      "link": "https://jollypets.com/pages/brand-ambassador",
-      "category": "pet toys"
-    },
-    {
-      "name": "MYOS Pet",
-      "link": "https://myospet.com/pages/brand-ambassador-program",
-      "category": "pet supplements"
-    },
-    {
-      "name": "Tofino Soap Company",
-      "link": "https://tofinosoapcompany.com/pages/ambassador-program",
-      "category": "beauty"
-    },
-    {
-      "name": "The Noble Brand",
-      "link": "https://thenoblebrandco.com/pages/ambassador-program",
-      "category": "fragrance"
-    },
-    {
-      "name": "MagicCrystals",
-      "link": "https://www.magiccrystals.com/pages/affiliate-program",
-      "category": "wellness"
+      "name": "Boutique Rugs",
+      "link": "https://boutiquerugs.com/pages/ambassadors",
+      "category": "home"
     },
     {
       "name": "Slide Jewels",
       "link": "https://slidejewels.com/pages/ambassador-program",
+      "category": "jewelry"
+    },
+    {
+      "name": "Willow Boutique",
+      "link": "https://willowboutique.com/pages/willow-boutique-ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Shop VELVET Boutique",
+      "link": "https://shopvelvetboutique.com/pages/brand-ambassador",
+      "category": "fashion"
+    },
+    {
+      "name": "27 Boutique",
+      "link": "https://27boutique.com/pages/brand-ambassadors",
+      "category": "fashion"
+    },
+    {
+      "name": "Jessie Boutique",
+      "link": "https://jessieboutique.com/pages/affiliate-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Magnolia Boutique",
+      "link": "https://magnoliaboutique.com/pages/brand-ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Apricot Lane McKinney",
+      "link": "https://apricotlanemckinney.com/pages/ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Taelor Boutique",
+      "link": "https://taelorboutique.com/pages/affiliate-program",
+      "category": "fashion"
+    },
+    {
+      "name": "JAYNE Boutique",
+      "link": "https://shopjayne.com/pages/affiliate-program",
+      "category": "fashion"
+    },
+    {
+      "name": "The Willow Tree Boutique",
+      "link": "https://thewillowtree.com/pages/affiliate-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Beginning Boutique",
+      "link": "https://www.beginningboutique.com/pages/affiliate-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Current Boutique",
+      "link": "https://currentboutique.com/pages/affiliate-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Classic Charm Boutique",
+      "link": "https://www.shopclassiccharm.com/pages/ambassadors",
+      "category": "fashion"
+    },
+    {
+      "name": "Wild Oak Boutique",
+      "link": "https://www.wildoakboutique.com/pages/ambassador-program",
+      "category": "fashion"
+    },
+    {
+      "name": "Astrid & Miyu",
+      "link": "https://us.astridandmiyu.com/pages/brand-ambassador-program",
       "category": "jewelry"
     },
     {
@@ -156,49 +126,384 @@
       "category": "jewelry"
     },
     {
-      "name": "Marie June Jewelry",
+      "name": "Ettika",
+      "link": "https://www.ettika.com/pages/ambassador",
+      "category": "jewelry"
+    },
+    {
+      "name": "AMYO Jewelry",
+      "link": "https://amyojewelry.com/pages/ambassadors-program",
+      "category": "jewelry"
+    },
+    {
+      "name": "James Michelle",
+      "link": "https://jamesmichelle.com/pages/brand-ambassador-page",
+      "category": "jewelry"
+    },
+    {
+      "name": "Objekts",
+      "link": "https://objktsjewelry.com/pages/ambassadors",
+      "category": "jewelry"
+    },
+    {
+      "name": "Beauty In Stone Jewelry",
+      "link": "https://beautyinstonejewelry.com/pages/become-an-affiliate",
+      "category": "jewelry"
+    },
+    {
+      "name": "Chia Jewelry",
+      "link": "https://chiajewelry.com/pages/affiliate-program-chia-jewelry-handcrafted-elegance-timeless-designs",
+      "category": "jewelry"
+    },
+    {
+      "name": "J&CO Jewellery",
+      "link": "https://www.jcojewellery.com/pages/affiliate",
+      "category": "jewelry"
+    },
+    {
+      "name": "Hey Happiness",
+      "link": "https://www.heyhappiness.com/pages/influencers-affiliate",
+      "category": "jewelry"
+    },
+    {
+      "name": "Kate Furman Jewelry",
+      "link": "https://katefurman.com/pages/affiliate-program",
+      "category": "jewelry"
+    },
+    {
+      "name": "MARIE JUNE",
       "link": "https://mariejune.com/pages/affiliate",
       "category": "jewelry"
     },
     {
-      "name": "Hello Adorn",
-      "link": "https://www.helloadorn.com/pages/ambassador-program",
+      "name": "Satya Jewelry",
+      "link": "https://www.satyajewelry.com/pages/brand-ambassador-program",
       "category": "jewelry"
     },
     {
-      "name": "OBJKTS Jewelry",
-      "link": "https://objktsjewelry.com/pages/affiliate-program",
+      "name": "Azura Jewelry",
+      "link": "https://azurajewelry.com/pages/affiliate-program",
       "category": "jewelry"
     },
     {
-      "name": "Dive Silver (Peter Stone)",
-      "link": "https://divesilver.com/pages/affiliate-jewelry-program-1",
+      "name": "Jasel Jewelry",
+      "link": "https://jaseljewelry.com/pages/brand-ambassadors",
       "category": "jewelry"
     },
     {
-      "name": "Anvi Studios",
-      "link": "https://www.anvistudios.com/pages/ambassador",
-      "category": "jewelry"
+      "name": "Brindle Pet Supplies",
+      "link": "https://www.brindlepets.ca/pages/brand-ambassadors",
+      "category": "pet"
     },
     {
-      "name": "Little Sky Stone",
-      "link": "https://www.littleskystone.com/pages/ambassador-program",
-      "category": "jewelry"
+      "name": "Shameless Pets",
+      "link": "https://shamelesspets.com/pages/affiliate",
+      "category": "pet"
     },
     {
-      "name": "Willow Boutique",
-      "link": "https://willowchicclothing.com/pages/ambassador",
-      "category": "fashion"
+      "name": "Rocky Mountain Dog",
+      "link": "https://rockymountaindog.ca/pages/become-an-ambassador",
+      "category": "pet"
     },
     {
-      "name": "JAYNE Boutique",
-      "link": "https://shopjayne.com/pages/affiliates",
-      "category": "fashion"
+      "name": "Redbarn Pet Products",
+      "link": "https://www.redbarn.com/pages/affiliate",
+      "category": "pet"
     },
     {
-      "name": "Lauriebelles",
-      "link": "https://lauriebelles.com/pages/ambassador-program",
-      "category": "fashion"
+      "name": "Pet 'n Shape",
+      "link": "https://www.petnshape.com/pages/become-a-pet-n-shape-brand-ambassador",
+      "category": "pet"
+    },
+    {
+      "name": "Snuggle Puppy",
+      "link": "https://snugglepuppy.com/pages/influencers",
+      "category": "pet"
+    },
+    {
+      "name": "Jolly Pets",
+      "link": "https://jollypets.com/pages/brand-ambassador",
+      "category": "pet"
+    },
+    {
+      "name": "Le Dog Company",
+      "link": "https://ledogcompany.com/pages/ambassador-program",
+      "category": "pet"
+    },
+    {
+      "name": "Lucky Love Dog",
+      "link": "https://luckylovedog.org/pages/lucky-love-dog-ambassador-program",
+      "category": "pet"
+    },
+    {
+      "name": "Annie's Pooch Pops",
+      "link": "https://anniespoochpops.com/pages/affiliate",
+      "category": "pet"
+    },
+    {
+      "name": "K&H Pet Products",
+      "link": "https://khpet.com/pages/brand-ambassador-signup",
+      "category": "pet"
+    },
+    {
+      "name": "Pawstruck",
+      "link": "https://www.pawstruck.com/pages/affiliate",
+      "category": "pet"
+    },
+    {
+      "name": "Small Pet Select",
+      "link": "https://shop.smallpetselect.com/pages/become-an-ambassador",
+      "category": "pet"
+    },
+    {
+      "name": "Waka Coffee",
+      "link": "https://www.wakacoffee.com/pages/waka-coffee-affiliate-program-share-a-sale",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Volcanica Coffee",
+      "link": "https://volcanicacoffee.com/pages/coffee-affiliate-program",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Coffee Bros.",
+      "link": "https://coffeebros.com/pages/coffee-affiliate-program",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Mutombo Coffee",
+      "link": "https://www.mutombocoffee.com/pages/affiliates",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Kiid Coffee",
+      "link": "https://kiidcoffee.com/pages/affiliates",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Fire Dept. Coffee",
+      "link": "https://www.firedeptcoffee.com/pages/affiliate-program",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Sur Coffee",
+      "link": "https://surcoffee.com/pages/become-an-ambassador",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Big Island Coffee Roasters",
+      "link": "https://bigislandcoffeeroasters.com/pages/affiliate-program",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Seven Weeks Coffee",
+      "link": "https://sevenweekscoffee.com/pages/ambassadors",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Purity Coffee",
+      "link": "https://puritycoffee.com/pages/affiliate-registration",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Compass Coffee",
+      "link": "https://www.compasscoffee.com/pages/compass-coffee-brand-ambassador-program",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Café Britt",
+      "link": "https://www.cafebritt.com/pages/affiliate-program",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Sabbath Coffee Roasters",
+      "link": "https://sabbathcoffeeroasters.com/pages/become-a-brand-ambassador",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Black Warrior Coffee",
+      "link": "https://blackwarriorcoffee.com/pages/ambassador-application",
+      "category": "food & beverage"
+    },
+    {
+      "name": "Guadalupe Roastery",
+      "link": "https://guadaluperoastery.shop/pages/ambassadorprogram",
+      "category": "food & beverage"
+    },
+    {
+      "name": "The Organic Skin Co.",
+      "link": "https://theorganicskinco.com/pages/affiliates",
+      "category": "beauty"
+    },
+    {
+      "name": "Petite 'n Pretty",
+      "link": "https://www.petitenpretty.com/pages/collab",
+      "category": "beauty"
+    },
+    {
+      "name": "Nala Care",
+      "link": "https://nalacare.com/pages/become-an-affiliate",
+      "category": "beauty"
+    },
+    {
+      "name": "Chagrin Valley Soap & Salve",
+      "link": "https://www.chagrinvalleysoapandsalve.com/pages/ambassadors",
+      "category": "beauty"
+    },
+    {
+      "name": "Freedom Deodorant",
+      "link": "https://freedomdeodorant.com/pages/ambassador",
+      "category": "beauty"
+    },
+    {
+      "name": "Tofino Soap Company",
+      "link": "https://tofinosoapcompany.com/pages/ambassador-program",
+      "category": "beauty"
+    },
+    {
+      "name": "Zerra & Co.",
+      "link": "https://zerraco.com/pages/become-an-affiliate",
+      "category": "beauty"
+    },
+    {
+      "name": "Mountain Goat Soap Co.",
+      "link": "https://mountaingoatsoapco.com/pages/collab",
+      "category": "beauty"
+    },
+    {
+      "name": "PiperWai",
+      "link": "https://www.piperwai.com/pages/affiliate",
+      "category": "beauty"
+    },
+    {
+      "name": "PurelyGreat",
+      "link": "https://mynaturaldeodorant.com/pages/collab",
+      "category": "beauty"
+    },
+    {
+      "name": "Bambaw",
+      "link": "https://www.bambaw.com/pages/eco-product-affiliate",
+      "category": "eco"
+    },
+    {
+      "name": "ZOMCHI",
+      "link": "https://zomchi.com/pages/zomchi-zero-waste-product-affiliate",
+      "category": "eco"
+    },
+    {
+      "name": "ZeroWasteStore",
+      "link": "https://zerowastestore.com/pages/affiliates",
+      "category": "eco"
+    },
+    {
+      "name": "Zero Waste Outlet",
+      "link": "https://zerowasteoutlet.com/pages/collab",
+      "category": "eco"
+    },
+    {
+      "name": "Package Free",
+      "link": "https://packagefreeshop.com/pages/ambassador",
+      "category": "eco"
+    },
+    {
+      "name": "Tomahawk Shades",
+      "link": "https://tomahawkshades.com/pages/become-an-ambassador",
+      "category": "eyewear"
+    },
+    {
+      "name": "Blue Planet Eyewear",
+      "link": "https://blueplaneteyewear.com/pages/ambassador-1",
+      "category": "eyewear"
+    },
+    {
+      "name": "goodr",
+      "link": "https://goodr.com/pages/flamboyance",
+      "category": "eyewear"
+    },
+    {
+      "name": "Rule 28",
+      "link": "https://www.rule28.com/pages/brand-ambassadors",
+      "category": "sports"
+    },
+    {
+      "name": "Soomom Cycling",
+      "link": "https://www.soomom.com/pages/brand-ambassador",
+      "category": "sports"
+    },
+    {
+      "name": "MIER Sports",
+      "link": "https://www.miersports.com/pages/brand-ambassadors",
+      "category": "sports"
+    },
+    {
+      "name": "Jelenew",
+      "link": "https://www.jelenew.com/pages/ambassadors-program",
+      "category": "sports"
+    },
+    {
+      "name": "SAYSKY",
+      "link": "https://saysky.com/pages/saysky-ambassador-program",
+      "category": "sports"
+    },
+    {
+      "name": "Green Monkey Velo",
+      "link": "https://www.greenmonkeyvelo.com/pages/our-ambassador-stories",
+      "category": "sports"
+    },
+    {
+      "name": "Effie's Paper",
+      "link": "https://effiespaper.com/pages/affiliate-program",
+      "category": "stationery"
+    },
+    {
+      "name": "Planners Avenue",
+      "link": "https://plannersavenue.com/pages/affiliate-program",
+      "category": "stationery"
+    },
+    {
+      "name": "The Sticker Planner Shop",
+      "link": "https://www.thestickerplannershop.com/pages/collaboration",
+      "category": "stationery"
+    },
+    {
+      "name": "Paper House Productions",
+      "link": "https://paperhouseproductions.com/pages/join-our-affiliate-program",
+      "category": "stationery"
+    },
+    {
+      "name": "Day Designer",
+      "link": "https://daydesigner.com/pages/affiliate-program",
+      "category": "stationery"
+    },
+    {
+      "name": "ThunderBolt Paper",
+      "link": "https://thunderboltpaper.com/pages/affiliate",
+      "category": "stationery"
+    },
+    {
+      "name": "Esterbrook Pens",
+      "link": "https://www.esterbrookpens.com/pages/brand-ambassador-application",
+      "category": "stationery"
+    },
+    {
+      "name": "Crea With Gaby",
+      "link": "https://creawithgaby.com/pages/join-our-affiliate-program",
+      "category": "stationery"
+    },
+    {
+      "name": "Papers & Planners",
+      "link": "https://papersplanners.com/pages/affiliate-program",
+      "category": "stationery"
+    },
+    {
+      "name": "HAND & HART",
+      "link": "https://handandhart.com/pages/affiliate-program",
+      "category": "stationery"
+    },
+    {
+      "name": "Bandit Running",
+      "link": "https://banditrunning.com/pages/ambassadors",
+      "category": "sports"
     }
   ]
 }
