@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import {
@@ -5,10 +6,9 @@ import {
     Alert, ScrollView, StyleSheet,
 } from 'react-native';
 import {
-    HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH,
+    IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH,
 } from '../../theme/Layout';
 import { BLUE, TRANSPARENT, WHITE } from '../../theme/Colors';
-import { hp } from '../../Utils/getResponsiveSize';
 import isAndroid from '../subscriptions/utils/isAndroid';
 import TemplateBox from '../../components/TemplateBox';
 
@@ -21,8 +21,6 @@ const urlPattern = new RegExp('^(https?:\\/\\/)?' // validate protocol
 
 const WebviewScreen = ({ route, navigation }) => {
     const url = route?.params?.url;
-    console.log('🚀 ~ WebviewScreen ~ url:', url);
-    console.log('🚀 ~ WebviewScreen ~ url:', url);
 
     // Check if url is valid
     useEffect(() => {
