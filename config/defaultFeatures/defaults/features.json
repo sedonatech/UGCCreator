@@ -11,8 +11,8 @@
     "visible": true,
     "activeList": 10
   },
-  "showReviewPrompt": false,
   "showRegisteredBrands": false,
   "showBrandsCarousel": false,
-  "showSupportChat": false
+  "showSupportChat": false,
+  "showBrandDealsCarousel": true
 }

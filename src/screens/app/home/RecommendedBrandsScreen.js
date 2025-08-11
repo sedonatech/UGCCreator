@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 

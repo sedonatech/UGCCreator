@@ -21,8 +21,8 @@ const Avatar = ({
     const { profile: profileData, update } = auth;
 
     const imageStyle = {
-        width,
-        height,
+        width: '100%',
+        height: '100%',
         borderRadius,
     };
 
@@ -67,7 +67,7 @@ const Avatar = ({
                 </TemplateBox>
             ) : (
                 <TemplateTouchable onPress={() => onAddPhoto(true)}>
-                     <Image source={{ uri: avatar?.url || profileData?.image }} style={imageStyle} />
+                    <Image source={{ uri: avatar?.url || profileData?.image }} style={imageStyle} />
                 </TemplateTouchable>
             )}
         </TemplateTouchable>

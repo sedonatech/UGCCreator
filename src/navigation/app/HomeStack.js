@@ -7,6 +7,7 @@ import {
 } from '../../components/header/ScreenOptions';
 import {
     AFFILIATE_BRANDS,
+    BRAND_DEALS_SCREEN,
     BRAND_DETAILS, BRANDS_CATALOGUE, BRANDS_SCREEN,
     CREATOR_TOOLS_RESULTS,
     CURRENT_PROJECT_DETAILS, FEED_DETAILS,
@@ -33,22 +34,23 @@ import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
 import BrandsScreen from '../../screens/app/home/BrandsScreen';
 import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
 import AffiliateBrandsScreen from '../../screens/app/home/AffiliateBrandsScreen';
+import BrandDealsScreen from '../../screens/app/home/BrandDealsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const HomeStack = () => (
-    <Navigator 
+    <Navigator
         screenOptions={{
             ...SWITCH,
             lazy: true,
             freezeOnBlur: true,
             animationEnabled: false,
-            gestureEnabled: false, 
+            gestureEnabled: false,
             transitionSpec: {
                 open: { animation: 'timing', config: { duration: 150 } },
                 close: { animation: 'timing', config: { duration: 200 } },
-            }
+            },
         }}
     >
         <Screen
@@ -130,6 +132,11 @@ const HomeStack = () => (
             name={AFFILIATE_BRANDS}
             options={TRANSPARENT_HEADER}
             component={AffiliateBrandsScreen}
+        />
+        <Screen
+            name={BRAND_DEALS_SCREEN}
+            options={TRANSPARENT_HEADER}
+            component={BrandDealsScreen}
         />
     </Navigator>
 );
