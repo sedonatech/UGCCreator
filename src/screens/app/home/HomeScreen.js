@@ -46,6 +46,7 @@ const HomeScreen = ({ navigation }) => {
     const { features, feed } = useFeatureFlags();
 
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
+    const showBrandDealsCarousel = features?.showBrandDealsCarousel;
 
     const profile = auth?.profile;
     const { updateProfile } = useProfile();
@@ -140,14 +141,11 @@ const HomeScreen = ({ navigation }) => {
             <TemplateBox height={236}>
                 <AffiliateBrandsCarousel />
             </TemplateBox>
-            {/* {features?.showEmergingBrandsCarousel && (
+            {showBrandDealsCarousel && (
                 <TemplateBox height={236} mt={40}>
-                    <EmergingBrandsCarousel />
+                    <BrandDealsCarousel />
                 </TemplateBox>
-            )} */}
-            <TemplateBox height={236} mt={40}>
-                <BrandDealsCarousel />
-            </TemplateBox>
+            )}
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />
             {features?.showBrandsCarousel && (
