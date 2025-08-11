@@ -3,7 +3,7 @@ import { StyleSheet, FlatList } from 'react-native';
 import {
     HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH,
 } from '../../../theme/Layout';
-import { LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLACK, LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import { wp } from '../../../Utils/getResponsiveSize';
@@ -70,6 +70,18 @@ const BrandDealsScreen = ({ navigation }: BrandDealsScreenProps) => {
         <TemplateBox flex backgroundColor={WHITE} alignItems="center">
             <FlatList
                 style={styles.container}
+                ListHeaderComponent={
+                    <TemplateBox pb={wp(16)} alignItems="center" width={WRAPPED_SCREEN_WIDTH}>
+                        <TemplateText semiBold size={16} mb={wp(8)}>Brand Deals</TemplateText>
+                        <TemplateText
+                            size={13}
+                            color={BLACK}
+                            center
+                        >
+                            Social media, UGC and brand partnerships handpicked for you.
+                        </TemplateText>
+                  </TemplateBox>
+                }
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
                 scrollEventThrottle={1}
