@@ -57,7 +57,7 @@ const Avatar = ({
                     justifyContent="center"
                     alignItems="center"
                     onPress={() => onAddPhoto(true)}
-                    hit
+                    hitslop={{ radius: 25 }}
                 >
                     <TemplateIcon
                         name="person-add-outline"
@@ -66,9 +66,20 @@ const Avatar = ({
                     />
                 </TemplateBox>
             ) : (
-                <TemplateTouchable onPress={() => onAddPhoto(true)}>
-                    <Image source={{ uri: avatar?.url || profileData?.image }} style={imageStyle} />
-                </TemplateTouchable>
+                <TemplateBox
+                    height={height}
+                    width={width}
+                    borderRadius={borderRadius}
+                    onPress={() => onAddPhoto(true)}
+                    style={styles.imageBox}
+                    hitslop={{ radius: 25 }}
+                >
+                    <Image
+                        source={{ uri: profileData?.image }}
+                        style={imageStyle}
+                        resizeMode="cover"
+                    />
+                </TemplateBox>
             )}
         </TemplateTouchable>
     );
@@ -86,6 +97,7 @@ Avatar.defaultProps = {
     width: 50,
     borderRadius: 25,
 };
+
 const styles = StyleSheet.create({
     container: {
         width: 50,
@@ -96,4 +108,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+
 export default Avatar;
