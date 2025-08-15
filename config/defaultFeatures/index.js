@@ -7,11 +7,13 @@ import subscriptionBenefits from './defaults/subscriptionBenefits.json';
 import androidSubscription from './defaults/androidSubscription.json';
 import support from './defaults/support.json';
 import testers from './defaults/testers.json';
+import ugcGigs from './defaults/ugcGigs.json';
 
 export default {
     feed,
     features,
     recommendedBrands,
+    ugcGigs,
     recommendedCreators,
     onboardingEducation,
     subscriptionBenefits,
