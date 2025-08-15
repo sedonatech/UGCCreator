@@ -11,15 +11,14 @@ import {
 } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import { AFFILIATE_BRANDS, BRAND_DEALS_SCREEN, WEBVIEW } from '../../../../navigation/ScreenNames';
+import { BRAND_DEALS_SCREEN, WEBVIEW } from '../../../../navigation/ScreenNames';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import {
     ELEVATION,
     SHADOW_OFFSET_HEIGHT,
     SHADOW_OFFSET_WIDTH,
 } from '../../../../theme/Shadow';
-import { userGeneratedContentBrandDealsSearch } from '../../../../hooks/content/useUserGeneratedContentBrandDealsSearch';
-import isAndroid from '../../../subscriptions/utils/isAndroid';
+import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 
 interface BrandDealsCarouselProps {
     style?: object;
@@ -32,32 +31,19 @@ type RootStackParamList = {
 
 const BrandDealsCarousel = ({ style }: BrandDealsCarouselProps): JSX.Element => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const functionsBaseAddress = isAndroid
-        ? 'http://10.0.2.2:5001/ugccreatorapp/us-central1'
-        : 'http://localhost:5001/ugccreatorapp/us-central1';
-
-     const {
-            status: brandDealsStatus,
-            leads: brandDealsLeads,
-            error: brandDealsError,
-            refresh: refreshBrandDeals,
-            hasAnyResults: hasAnyBrandDealsResults,
-        } = userGeneratedContentBrandDealsSearch({
-            backendEndpoint: `${functionsBaseAddress}/userGeneratedContentBrandDealsSearch`,
-            shouldFetchOnMount: true,
-            requestTimeoutInMilliseconds: 15000,
-        });
-
+    //@ts-ignore
+    const { ugcGigs } = useFeatureFlags();
+    const gigs = ugcGigs?.gigs;
     // get the first four brands to display with a useMemo
-    const firstTenBrands = useMemo(() => {
-        if (!brandDealsLeads) return [];
+    const firstSixGigs = useMemo(() => {
+        if (!gigs) return [];
 
-        return brandDealsLeads.slice(0, 4);
-    }, [brandDealsLeads]);
+        return gigs.slice(0, 6);
+    }, [gigs]);
 
     return (
         <TemplateBox style={style}>
-            {brandDealsLeads && (
+            {firstSixGigs && (
                 <TemplateBox>
                     <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                         <TemplateBox width={SCREEN_WIDTH * 0.8}>
@@ -65,7 +51,7 @@ const BrandDealsCarousel = ({ style }: BrandDealsCarouselProps): JSX.Element => 
                                 size={16}
                                 semiBold
                             >
-                             High-Intent Brand Deals
+                             {gigs?.title || "Fresh Creator Gigs"}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox flex />
@@ -85,17 +71,17 @@ const BrandDealsCarousel = ({ style }: BrandDealsCarouselProps): JSX.Element => 
                         color={BLACK}
                         style={styles.subtitle}
                     >
-                       Social media, UGC and brand partnerships—handpicked for you.
+                       {gigs?.subtitle || "High-intent teams investing in creator content right now"}
                     </TemplateText>
                 </TemplateBox>
             )}
             <TemplateCarousel
-                data={firstTenBrands}
+                data={firstSixGigs}
                 renderItem={({ item }) => (
                     <TemplateBox
                         borderRadius={wp(16)}
                         pAll={wp(16)}
-                        onPress={() => navigation.navigate(WEBVIEW, { url: item?.applicationLink })}
+                        onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                         style={styles.card}
                         width={SCREEN_WIDTH / 1.6}
                         height={wp(110)}
@@ -108,14 +94,14 @@ const BrandDealsCarousel = ({ style }: BrandDealsCarouselProps): JSX.Element => 
                             size={wp(16)}
                             semiBold
                         >
-                            {item?.brandName }
+                            {item?.title }
                         </TemplateText>
                         <TemplateBox height={wp(8)} />
                         <TemplateText
                             size={wp(12)}
 
                         >
-                            {item?.roleTitle}
+                            {item?.company}--{item?.source}
                         </TemplateText>
                     </TemplateBox>
                 )}
