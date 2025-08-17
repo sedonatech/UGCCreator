@@ -1,8 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import {
-    CHATS_STACK, CREATORS_PROFILES, PROFILE, WEBVIEW,
+    CREATORS_PROFILES, PROFILE, WEBVIEW,
 } from '../ScreenNames';
 import {
     SWITCH,
@@ -13,7 +12,6 @@ import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfiles
 
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
-import ChatsStack from '../chats/ChatsStack';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 
 const Stack = createStackNavigator();

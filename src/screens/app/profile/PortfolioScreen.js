@@ -36,7 +36,10 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const getProfile = async () => {
         try {
-            const documentSnapshot = await firestore().collection(USERS_COLLECTION).doc(creatorId).get();
+            const documentSnapshot = await firestore()
+                .collection(USERS_COLLECTION)
+                .doc(creatorId)
+                .get();
             if (documentSnapshot.exists) {
                 setSelectedCreator({
                     id: documentSnapshot.id,
@@ -120,7 +123,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                         image={image}
                     />
                 )}
-                { profileCompleteRatio < 1 && !creatorId && (
+                {/* { profileCompleteRatio < 1 && !creatorId && (
                     <ProfileStatusCard
                         title={PROFILE_INCOMPLETE_TITLE}
                         description={PROFILE_INCOMPLETE_MESSAGE}
@@ -131,14 +134,14 @@ const PortfolioScreen = ({ navigation, route }) => {
                         backgroundColor={lightOrange}
                         onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
                     />
-                )}
-                {about && (
+                )} */}
+                {/* {about && (
                     <AboutSection
                         about={about}
                         shortDescription={shortDescription}
                         portfolioLink={portfolioLink}
                     />
-                )}
+                )} */}
                 <SampleWorkSection />
                 <RatesSection rates={rates} />
                 <ContactSection

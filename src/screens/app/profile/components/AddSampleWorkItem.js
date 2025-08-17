@@ -40,13 +40,13 @@ const AddSampleWorkItem = ({
         onClose();
     };
     return (
-        <TemplateBox mb={30} alignItems="center" justifyContent="center">
+        <TemplateBox mb={30} alignItems="center" justifyContent="center" backgroundColor={WHITE}>
             <TemplateBox>
                 <TemplateBox mt={10}>
                     <TemplateBox mv={10}>
                         <TemplateText size={12} bold>Link</TemplateText>
                         <TemplateTextInput
-                            placeholder="Link"
+                            placeholder="Im"
                             placeholderTextColor={BLACK_40}
                             style={styles.shortInput}
                             value={info.link}
@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
 });
 AddSampleWorkItem.propTypes = {
     onClose: PropTypes.func,
-    type: PropTypes.string.isRequired,
 };
 
 AddSampleWorkItem.defaultProps = {

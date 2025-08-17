@@ -9,17 +9,15 @@ import {
 } from '../../../../theme/Colors';
 
 const RatesSection = ({ rates }) => (
-    <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN * 2}>
-        <TemplateText bold color={BLACK} size={18}>My Current Rates</TemplateText>
-        <TemplateBox height={10} />
-
+    <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
+        <TemplateText bold color={BLACK} size={18} mb={16}>My Current Rates</TemplateText>
         <TemplateBox
             pAll={WRAPPER_MARGIN}
-            backgroundColor={BRAND_BLUE}
-            borderRadius={10}
+            borderRadius={16}
             width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
             justifyContent="center"
-            shadow
+            borderWidth={1}
+            borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
                 <TemplateText bold size={20} color={BLACK}>Monthly Package</TemplateText>
@@ -58,11 +56,11 @@ const RatesSection = ({ rates }) => (
         <TemplateBox height={WRAPPER_MARGIN} />
         <TemplateBox
             pAll={WRAPPER_MARGIN}
-            backgroundColor={BRAND_BLUE}
-            borderRadius={10}
+            borderRadius={16}
             width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
             justifyContent="center"
-            shadow
+            borderWidth={1}
+            borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
                 <TemplateText bold size={20} color={BLACK}>Video Starting Rates</TemplateText>
@@ -101,11 +99,11 @@ const RatesSection = ({ rates }) => (
         <TemplateBox height={WRAPPER_MARGIN} />
         <TemplateBox
             pAll={WRAPPER_MARGIN}
-            backgroundColor={BRAND_BLUE}
-            borderRadius={10}
+            borderRadius={16}
             width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
             justifyContent="center"
-            shadow
+            borderWidth={1}
+            borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
                 <TemplateText bold size={20} color={BLACK}>Photo Starting Rates</TemplateText>
@@ -144,11 +142,11 @@ const RatesSection = ({ rates }) => (
         <TemplateBox height={WRAPPER_MARGIN} />
         <TemplateBox
             pAll={WRAPPER_MARGIN}
-            backgroundColor={BRAND_BLUE}
-            borderRadius={10}
+            borderRadius={16}
             width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
             justifyContent="center"
-            shadow
+            borderWidth={1}
+            borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
                 <TemplateText bold size={20} color={BLACK}>Revisions</TemplateText>
@@ -186,11 +184,11 @@ const RatesSection = ({ rates }) => (
         <TemplateBox height={WRAPPER_MARGIN} />
         <TemplateBox
             pAll={WRAPPER_MARGIN}
-            backgroundColor={BRAND_BLUE}
-            borderRadius={10}
+            borderRadius={16}
             width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
             justifyContent="center"
-            shadow
+            borderWidth={1}
+            borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
                 <TemplateText bold size={20} color={BLACK}>Usage Rights</TemplateText>
@@ -229,11 +227,11 @@ const RatesSection = ({ rates }) => (
         <TemplateBox height={WRAPPER_MARGIN} />
         <TemplateBox
             pAll={WRAPPER_MARGIN}
-            backgroundColor={BRAND_BLUE}
-            borderRadius={10}
+            borderRadius={16}
             width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
             justifyContent="center"
-            shadow
+            borderWidth={1}
+            borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
                 <TemplateText bold size={20} color={BLACK}>Exclusive Rights</TemplateText>
