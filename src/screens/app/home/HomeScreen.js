@@ -139,18 +139,15 @@ const HomeScreen = ({ navigation }) => {
             )}
 
             {showUgcGigsCarousel && (
-                <TemplateBox height={236} mt={40}>
+                <TemplateBox height={200} mt={15}>
                     <BrandDealsCarousel />
                 </TemplateBox>
             )}
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />
             {features?.showBrandsCarousel && (
-                <TemplateBox height={236} mb={12}>
-                    <BrandsCarousel />
-                </TemplateBox>
+                <BrandsCarousel />
             )}
-
             {previousResponse === null && features?.showReviewPrompt && (
                 <TemplateBox
                     row
