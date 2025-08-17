@@ -77,18 +77,18 @@ const HomeScreen = ({ navigation }) => {
 
     const creatorToolsEnabled = features?.openAIScreen;
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <HeaderIconButton
-                    title="Creator tools"
-                    onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
-                    backDropColor={LIGHT_GREEN}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
-        });
-    }, [navigation, creatorToolsEnabled]);
+    // useLayoutEffect(() => {
+    //     navigation.setOptions({
+    //         headerRight: () => (
+    //             <HeaderIconButton
+    //                 title="Creator tools"
+    //                 onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
+    //                 backDropColor={LIGHT_GREEN}
+    //                 mr={WRAPPER_MARGIN}
+    //             />
+    //         ),
+    //     });
+    // }, [navigation, creatorToolsEnabled]);
 
     useEffect(() => {
         if (!profileImage) {
