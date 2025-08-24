@@ -4,15 +4,18 @@
   "openAIScreen": true,
   "showReviewPrompt": false,
   "subscription": {
-    "overrideSubscription": true,
-    "overrideEntitlements": true
+    "overrideSubscription": false,
+    "overrideEntitlements": false
   },
   "brandsCatalogue": {
-    "visible": true,
-    "activeList": 10
+    "visible": false,
+    "activeList": 20,
+    "unlockAllBrands": false
   },
-  "showRegisteredBrands": false,
+  "showRegisteredBrands": true,
   "showBrandsCarousel": false,
+  "showEmergingBrandsCarousel": true,
   "showSupportChat": false,
-  "showUgcGigsCarousel": true
+  "showUgcGigsCarousel": true,
+  "showAffiliateProgramsCarousel": true
 }

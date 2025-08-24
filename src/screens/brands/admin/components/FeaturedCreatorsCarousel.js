@@ -1,13 +1,15 @@
+/* eslint-disable max-len */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-
 import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, CREATORS_PROFILES_STACK, PROFILE } from '../../../../navigation/ScreenNames';
-import { BLACK, BLUE, IOS_BLUE } from '../../../../theme/Colors';
+import {
+    BLACK, BLUE, IOS_BLUE, LIGHT_PURPLE,
+} from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import CreatorCard from '../../creators/CreatorCard';
@@ -41,7 +43,7 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
         setCreators(data);
     };
 
-    const creatorsDataSample = useMemo(()=> creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE) ,[creatorsData, SAMPLE_SIZE])
+    const creatorsDataSample = useMemo(() => creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE), [creatorsData, SAMPLE_SIZE]);
 
     return creatorsDataSample?.length ? (
         <View style={style}>
@@ -63,7 +65,7 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
 
                 <TemplateBox height={10} />
                 <TemplateText size={14} color={BLACK}>
-                    {creator ? `Collaborate with other creators` : `Based on your recent searches`}
+                    {creator ? 'Collaborate with other creators' : 'Based on your recent searches'}
                 </TemplateText>
             </View>
 
@@ -83,15 +85,17 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
                         textContainerWidth="68%"
                         location={item?.location?.city || item?.location?.country}
                         onPress={() => {
-                            if(creator) return navigation.navigate(CREATORS_PROFILES_STACK, {
-                                screen: PROFILE,
-                                params:{
-                                    creatorId: item?.id,
-                                }
-                            })
+                            if (creator) {
+                                return navigation.navigate(CREATORS_PROFILES_STACK, {
+                                    screen: PROFILE,
+                                    params: {
+                                        creatorId: item?.id,
+                                    },
+                                });
+                            }
                             return navigation.navigate(PROFILE, {
                                 creatorId: item?.id,
-                            })
+                            });
                         }}
                         lastLoginTime={item?.lastLoginTime}
                         mt={12}
@@ -110,10 +114,12 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
 
 FeaturedCreatorsCarousel.propTypes = {
     style: PropTypes.shape({}),
+    creator: PropTypes.bool,
 };
 
 FeaturedCreatorsCarousel.defaultProps = {
     style: {},
+    creator: false,
 };
 
 const styles = StyleSheet.create({
@@ -127,6 +133,7 @@ const styles = StyleSheet.create({
     card: {
         marginRight: WRAPPER_MARGIN,
         marginBottom: 10,
+        backgroundColor: LIGHT_PURPLE,
     },
     image: {
         width: wp(80),

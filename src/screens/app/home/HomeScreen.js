@@ -16,7 +16,6 @@ import {
 } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import RecommendedBrandsCarousel from './components /RecommendedBrandsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import {
     BRANDS_CATALOGUE, FEED_DETAILS, PROFILE_STACK, UGCAI,
@@ -47,6 +46,7 @@ const HomeScreen = ({ navigation }) => {
 
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
     const showUgcGigsCarousel = features?.showUgcGigsCarousel;
+    const showAffiliateProgramsCarousel = features?.showAffiliateProgramsCarousel;
 
     const profile = auth?.profile;
     const { updateProfile } = useProfile();
@@ -126,23 +126,23 @@ const HomeScreen = ({ navigation }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}
-            // refreshControl={(
-            //     <RefreshControl
-            //         refreshing={refreshing}
-            //         onRefresh={handleRefresh}
-            //     />
-            // )}
+
         >
 
             {!!profile?.userName && (
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
-
+            {showAffiliateProgramsCarousel && (
+                <TemplateBox height={180} mt={15}>
+                    <AffiliateBrandsCarousel />
+                </TemplateBox>
+            )}
             {showUgcGigsCarousel && (
-                <TemplateBox height={200} mt={15}>
+                <TemplateBox height={180} mt={15}>
                     <BrandDealsCarousel />
                 </TemplateBox>
             )}
+
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />
             {features?.showBrandsCarousel && (
@@ -228,7 +228,6 @@ const HomeScreen = ({ navigation }) => {
                     />
                 </TemplateBox>
             )}
-            <RecommendedBrandsCarousel style={styles.carousel} />
             <FeedsTab />
 
         </ScrollView>

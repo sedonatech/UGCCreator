@@ -45,7 +45,7 @@ const BrandDealsCarousel = ({ style }: BrandDealsCarouselProps): JSX.Element => 
         <TemplateBox style={style}>
             {firstSixGigs && (
                 <TemplateBox>
-                    <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
+                    <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
                         <TemplateBox width={SCREEN_WIDTH * 0.8}>
                             <TemplateText
                                 size={16}
@@ -87,7 +87,6 @@ const BrandDealsCarousel = ({ style }: BrandDealsCarouselProps): JSX.Element => 
                         height={wp(110)}
                         center
                         mr={wp(16)}
-                        mt={wp(8)}
                     >
                         <TemplateText
                             startCase
