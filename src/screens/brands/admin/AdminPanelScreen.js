@@ -115,27 +115,6 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const { previousResponse, handleRate } = useAppReview();
 
-    useFocusEffect(
-        useCallback(() => {
-            if (!profileImage || defaultDescription) {
-                Alert.alert(
-                    'Update Profile',
-                    (!!profile && defaultDescription)
-                        ? 'Please update your brand description from the default description to improve your brand identification'
-                        : 'Please upload a profile image & brand description to improve your brand identification',
-                    [
-                        {
-                            text: 'OK',
-                            onPress: () => navigation.navigate(BRANDS_PROFILE_STACK, {
-                                screen: UPDATE_BRAND_PROFILE,
-                            }),
-                        },
-                    ],
-                );
-            }
-        }, [profileImage, defaultDescription, navigation]),
-    );
-
     const options = [
         {
             title: 'Add Project',

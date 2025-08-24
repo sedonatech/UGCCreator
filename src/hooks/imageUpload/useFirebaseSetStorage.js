@@ -15,6 +15,7 @@ import { isIOS } from '../../Utils/Platform';
 const useFirebaseSetStorage = () => {
     const [progress, setProgress] = useState(0);
     const [picture, setPicture] = useState(false);
+    const [imagePath, setImagePath] = useState('');
 
     const saveAPicture = async ({
         isAvatar = false,
@@ -109,7 +110,6 @@ const useFirebaseSetStorage = () => {
                 : { ...options, ...customOptions, cropperCircleOverlay: !!isAvatar };
 
             const picked = await ImagePicker[pickerOptions](pickerConfig);
-            console.log('[IMAGE-LIBRARY]: takeAPicture response:', picked);
 
             // Normalize (single selection expected; handle array just in case)
             const base = Array.isArray(picked) ? picked[0] : picked;
@@ -120,6 +120,7 @@ const useFirebaseSetStorage = () => {
             const path = base?.path || base?.sourceURL || base?.localUri || base?.uri;
             if (!path) throw new Error('No local image path from picker');
 
+            setImagePath(path);
             // IMPORTANT: don’t leak boolean isAvatar into filename
             const fileName = isAvatar
                 ? `profile.${ext}`
@@ -169,6 +170,7 @@ const useFirebaseSetStorage = () => {
         progress,
         picture,
         clearCurrentPicture,
+        imagePath,
     };
 };
 

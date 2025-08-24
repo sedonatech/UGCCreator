@@ -180,7 +180,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 bold
                                 startCase
                             >
-                                {`${isCreator ? 'Collaborate with' : 'FInd'} the perfect creator`}
+                                {`${isCreator ? 'Collaborate with' : 'Find'} the perfect creator`}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>

@@ -1,18 +1,27 @@
 import {
-    View, StyleSheet, Image, Modal
+    View, StyleSheet, Image, Modal,
+    ScrollView
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 /* eslint-disable max-len */
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import RBSheet from 'react-native-raw-bottom-sheet';
 import AddSampleWorkItem from './AddSampleWorkItem';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
-import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
-import { BLACK, IOS_BLUE, WHITE } from '../../../../theme/Colors';
+import { IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import {
+    BLACK, BLACK_40, BLACK_SECONDARY, GREY_SECONDARY, IOS_BLUE, WHITE, WHITE_96
+} from '../../../../theme/Colors';
+import DynamicIcon from '../../../../components/DynamicIcon';
+import TemplateTextInput from '../../../../components/TemplateTextInput';
+import TemplateIcon from '../../../../components/TemplateIcon';
+import useImageStorage from '../../../../hooks/Portfolio/useImageStorage';
+import useFirebaseSetStorage from '../../../../hooks/imageUpload/useFirebaseSetStorage';
 
 interface SampleWork {
     id: string;
@@ -54,7 +63,7 @@ const DUMMY_SAMPLE_WORK: SampleWork[] = [
     },
 ];
 
-const CARD_WIDTH = (SCREEN_WIDTH / 2) - 28;
+const CARD_WIDTH = (SCREEN_WIDTH / 2) - 10;
 const CARD_HEIGHT = 240;
 const CARD_CONTENT_WIDTH = CARD_WIDTH - 8;
 const DEFAULT_GRADIENT = ['rgba(0,0,0,0.1)', 'rgba(0,0,0,0.7)'];
@@ -76,9 +85,12 @@ const SampleWorkCard: FC<SampleWorkCardProps> = ({ item, onPress }) => (
             colors={DEFAULT_GRADIENT}
             style={styles.linearGradient}
         />
+        <TemplateBox absolute top={16} left={8}>
+            <DynamicIcon name="Edit" color={WHITE} />
+        </TemplateBox>
         <View style={styles.content}>
-            <TemplateText color={WHITE} bold size={16} caps style={styles.text}>{item.title}</TemplateText>
-            <TemplateText color={WHITE} size={13} style={styles.text}>{item.subtitle}</TemplateText>
+            <TemplateText color={WHITE} bold size={14} style={styles.text} numberOfLines={2} adjustsFontSizeToFit>{item.title}</TemplateText>
+            <TemplateText color={WHITE} size={13} style={styles.text} numberOfLines={2} adjustsFontSizeToFit>{item.subtitle}</TemplateText>
             <TemplateText color={WHITE} size={12} style={styles.text}>{item.creatorName}</TemplateText>
         </View>
     </TemplateTouchable>
@@ -87,9 +99,11 @@ const SampleWorkCard: FC<SampleWorkCardProps> = ({ item, onPress }) => (
 const SampleWorkSection: FC = () => {
     const { auth } = useAuthContext();
     const userId = auth?.profile?.id;
-    const [modalVisible, setModalVisible] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
+    const refRBSheet = useRef<RBSheet>(null);
+    const { picture, takeAPicture } = useFirebaseSetStorage();
+    console.log('🚀 ~ SampleWorkSection ~ picture:', picture);
 
     const addSampleWork = async (
         sampleWork: SampleWork,
@@ -120,7 +134,6 @@ const SampleWorkSection: FC = () => {
                     createdAt: firestore.FieldValue.serverTimestamp(),
                 });
             setLoading(false);
-            setModalVisible(false);
             setError(null);
             if (onSuccess) onSuccess();
         } catch (err) {
@@ -142,7 +155,7 @@ const SampleWorkSection: FC = () => {
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
                 <TemplateText bold color={BLACK} size={18}>My Work Examples</TemplateText>
                 <TemplateBox flex />
-                <TemplateTouchable onPress={() => setModalVisible(true)} activeOpacity={0.8} disabled={false}>
+                <TemplateTouchable onPress={() => refRBSheet.current?.open()} activeOpacity={0.8} disabled={false}>
                     <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                         Add
                     </TemplateText>
@@ -155,6 +168,110 @@ const SampleWorkSection: FC = () => {
                 snapToInterval={CARD_WIDTH}
                 flex
             />
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown
+                closeOnPressMask
+                customStyles={{
+                    wrapper: {
+                    },
+                    container: {
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                        backgroundColor: IS_ANDROID ? WHITE_96 : WHITE,
+                        paddingTop: 10,
+                        paddingBottom: 40,
+                        height: 600,
+                    },
+                    draggableIcon: {
+                        backgroundColor: BLACK,
+                    },
+                }}
+            >
+                <ScrollView>
+                    <TemplateBox>
+                        <TemplateBox selfCenter alignItems="center">
+                            <TemplateText
+                                bold
+                                size={16}
+                                color={BLACK}
+                                center
+                            >
+                                Upload sample photos
+                            </TemplateText>
+                            <TemplateBox height={10} />
+                            <TemplateText
+                                size={12}
+                                color={BLACK}
+                                center
+                            >
+                                You can upload up to 4 variants of
+                                your links to your sample photos on your social media
+                            </TemplateText>
+                        </TemplateBox>
+                        <TemplateBox pAll={WRAPPER_MARGIN}>
+
+                            <TemplateBox mb={30} alignItems="center" justifyContent="center" backgroundColor={WHITE}>
+                                <TemplateBox>
+                                    <TemplateBox mt={10}>
+                                        <TemplateBox mv={10}>
+                                            <TemplateText size={12} bold>Link</TemplateText>
+                                            <TemplateTextInput
+                                                placeholder="Video Link"
+                                                placeholderTextColor={BLACK_40}
+                                                style={styles.shortInput}
+                                                value={[]}
+                                                onChangeText={(text) => []}
+                                                autoCapitalize="none"
+                                            />
+                                        </TemplateBox>
+                                        <TemplateBox mv={10}>
+                                            <TemplateText size={12} bold>Title</TemplateText>
+                                            <TemplateTextInput
+                                                placeholder="Title"
+                                                placeholderTextColor={BLACK_40}
+                                                style={styles.shortInput}
+                                                value={[]}
+                                                onChangeText={(text) => {}}
+                                                autoCapitalize="none"
+                                            />
+                                        </TemplateBox>
+                                        <TemplateBox mv={10}>
+                                            <TemplateText size={12} bold>Description</TemplateText>
+                                            <TemplateTextInput
+                                                placeholder="Description"
+                                                placeholderTextColor={BLACK_40}
+                                                style={styles.shortInput}
+                                                value={[]}
+                                                onChangeText={(text) => {}}
+                                                autoCapitalize="none"
+                                                maxLength={100}
+                                                multiline
+                                            />
+                                        </TemplateBox>
+                                    </TemplateBox>
+                                </TemplateBox>
+                                <TemplateBox
+                                    row
+                                    alignItems="center"
+                                    backgroundColor={BLACK_SECONDARY}
+                                    borderRadius={10}
+                                    mt={WRAPPER_MARGIN}
+                                    onPress={() => takeAPicture()}
+                                    ph={WRAPPER_MARGIN * 2}
+                                    pv={16}
+                                    selfCenter
+                                >
+                                    <TemplateIcon name="add-outline" color={WHITE} size={16} />
+                                    <TemplateBox width={5} />
+                                    <TemplateText color={WHITE} bold size={12}>Upload Cover Photo</TemplateText>
+                                </TemplateBox>
+                            </TemplateBox>
+
+                        </TemplateBox>
+                    </TemplateBox>
+                </ScrollView>
+            </RBSheet>
         </TemplateBox>
     );
 };
@@ -186,13 +303,22 @@ const styles = StyleSheet.create({
     },
     content: {
         position: 'absolute',
-        left: 16,
+        left: 10,
         bottom: 20,
         width: CARD_CONTENT_WIDTH,
-        justifyContent: 'flex-end',
     },
     text: {
         marginBottom: 4,
+    },
+    shortInput: {
+        height: 40,
+        width: SCREEN_WIDTH - (WRAPPER_MARGIN * 2),
+        borderWidth: 1,
+        borderColor: GREY_SECONDARY,
+        borderRadius: 10,
+        paddingLeft: 16,
+        marginTop: 5,
+        color: BLACK,
     },
 });
 

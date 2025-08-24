@@ -20,14 +20,14 @@ const RatesSection = ({ rates }) => (
             borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
-                <TemplateText bold size={20} color={BLACK}>Monthly Package</TemplateText>
+                <TemplateText semiBold size={16} color={BLACK}>Monthly Package</TemplateText>
             </TemplateBox>
             <TemplateBox height={WRAPPER_MARGIN} />
             <TemplateBox selfCenter>
                 {
                     rates?.monthlyPackage?.map(({ title, description, price }, index) => (
                         <TemplateBox key={title}>
-                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
+                            <TemplateText semiBold size={16} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={5} />
                             <TemplateText
                                 size={14}
@@ -63,14 +63,14 @@ const RatesSection = ({ rates }) => (
             borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
-                <TemplateText bold size={20} color={BLACK}>Video Starting Rates</TemplateText>
+                <TemplateText semiBold size={16} color={BLACK}>Video Starting Rates</TemplateText>
             </TemplateBox>
             <TemplateBox height={WRAPPER_MARGIN} />
             <TemplateBox selfCenter>
                 {
                     rates?.videoStartingRate?.map(({ title, description, price }, index) => (
                         <TemplateBox key={title}>
-                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
+                            <TemplateText semiBold size={16} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={5} />
                             <TemplateText
                                 size={14}
@@ -106,14 +106,14 @@ const RatesSection = ({ rates }) => (
             borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
-                <TemplateText bold size={20} color={BLACK}>Photo Starting Rates</TemplateText>
+                <TemplateText semiBold size={16} color={BLACK}>Photo Starting Rates</TemplateText>
             </TemplateBox>
             <TemplateBox height={WRAPPER_MARGIN} />
             <TemplateBox selfCenter>
                 {
                     rates?.photoStartingRate?.map(({ title, description, price }, index) => (
                         <TemplateBox key={title}>
-                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
+                            <TemplateText semiBold size={16} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={5} />
                             <TemplateText
                                 size={14}
@@ -149,14 +149,14 @@ const RatesSection = ({ rates }) => (
             borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
-                <TemplateText bold size={20} color={BLACK}>Revisions</TemplateText>
+                <TemplateText semiBold size={16} color={BLACK}>Revisions</TemplateText>
             </TemplateBox>
             <TemplateBox height={WRAPPER_MARGIN} />
             <TemplateBox selfCenter>
                 {
                     rates?.revision?.map(({ title, description, price }, index) => (
                         <TemplateBox key={title}>
-                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
+                            <TemplateText semiBold size={16} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={5} />
                             <TemplateText
                                 size={14}
@@ -191,14 +191,14 @@ const RatesSection = ({ rates }) => (
             borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
-                <TemplateText bold size={20} color={BLACK}>Usage Rights</TemplateText>
+                <TemplateText semiBold size={16} color={BLACK}>Usage Rights</TemplateText>
             </TemplateBox>
             <TemplateBox height={WRAPPER_MARGIN} />
             <TemplateBox selfCenter>
                 {
                     rates?.usageRights?.map(({ title, description, price }, index) => (
                         <TemplateBox key={title}>
-                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
+                            <TemplateText semiBold size={16} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={5} />
                             <TemplateText
                                 size={14}
@@ -234,14 +234,14 @@ const RatesSection = ({ rates }) => (
             borderColor={BLACK_20}
         >
             <TemplateBox selfCenter>
-                <TemplateText bold size={20} color={BLACK}>Exclusive Rights</TemplateText>
+                <TemplateText semiBold size={16} color={BLACK}>Exclusive Rights</TemplateText>
             </TemplateBox>
             <TemplateBox height={WRAPPER_MARGIN} />
             <TemplateBox selfCenter>
                 {
                     rates?.exclusiveRights?.map(({ title, description, price }, index) => (
                         <TemplateBox key={title}>
-                            <TemplateText bold size={18} color={BLACK}>{title}</TemplateText>
+                            <TemplateText semiBold size={16} color={BLACK}>{title}</TemplateText>
                             <TemplateBox height={5} />
                             <TemplateText
                                 size={14}

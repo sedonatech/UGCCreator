@@ -11,6 +11,7 @@ const useImageStorage = () => {
     const [image, setImage] = useState();
     const [images, setImages] = useState([]);
 
+    const [imagePath, setImagePath] = useState('');
     const { takeAPicture, progress } = useFirebaseSetStorage();
     const { getAvatar, getImages } = useFirebaseGetStorage();
 
