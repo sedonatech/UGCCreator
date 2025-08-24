@@ -70,14 +70,14 @@ const RecommendedBrandsCarousel = ({ style }) => {
                     <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                         <TemplateText size={18} bold>
                             Recommended Brands
-                            {'\n'}
-                            <TemplateText size={10} color={IOS_BLUE}>
-                                (powered by OpenAI)
-                            </TemplateText>
+
                         </TemplateText>
                         <TemplateBox flex />
                         <TemplateTouchable
-                            onPress={() => navigation.navigate(RECOMMENDED_BRANDS, { selectedCategory })}
+                            onPress={() => navigation.navigate(
+                                RECOMMENDED_BRANDS,
+                                { selectedCategory },
+                            )}
                         >
                             <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                                 See All
@@ -114,7 +114,7 @@ const RecommendedBrandsCarousel = ({ style }) => {
                 )}
                 contentContainerStyle={styles.cardCarousel}
                 snapToInterval={SCREEN_WIDTH / 1.6}
-                keyExtractor={(item, index)=> `${item?.name}-${index}`}
+                keyExtractor={(item, index) => `${item?.name}-${index}`}
             />
         </TemplateBox>
     );
