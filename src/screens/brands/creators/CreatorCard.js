@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
@@ -35,7 +36,7 @@ const CreatorCard = ({
         pAll={16}
         selfCenter
         mt={SPACE_XXLARGE}
-        style={[style, { backgroundColor: WHITE }]}
+        style={style}
         onPress={onPress}
         {...extraProps}
     >

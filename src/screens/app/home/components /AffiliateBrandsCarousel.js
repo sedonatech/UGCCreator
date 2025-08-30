@@ -22,11 +22,8 @@ import {
 
 const AffiliateBrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
-
     const { affiliate } = useFeatureFlags();
-
     const affiliateBrands = affiliate?.brands;
-
     // get the first four brands to display with a useMemo
     const firstFourBrands = useMemo(() => {
         if (!affiliateBrands) return [];
@@ -38,18 +35,21 @@ const AffiliateBrandsCarousel = ({ style }) => {
         <TemplateBox style={style}>
             {affiliateBrands && (
                 <TemplateBox>
-                    <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
+                    <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
                         <TemplateBox width={SCREEN_WIDTH * 0.8}>
                             <TemplateText
                                 size={16}
                                 semiBold
                             >
-                                Brand ambassador, influencer and affiliate programs
+                                Brand Collabs
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox flex />
                         <TemplateTouchable
-                            onPress={() => navigation.navigate(AFFILIATE_BRANDS)}
+                            onPress={() => navigation.navigate(AFFILIATE_BRANDS, {
+                                title: 'Brand Collabs',
+                                subtitle: 'Explore our brand collaborations',
+                            })}
                         >
                             <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                                 See All
@@ -62,8 +62,7 @@ const AffiliateBrandsCarousel = ({ style }) => {
                         color={BLACK}
                         style={styles.subtitle}
                     >
-                        Empower your UGC career and unlock new opportunities for growth
-                        with our Brand Ambassador, Influencer, and Affiliate Programs Hub.
+                        Co-create with growing brands that want your style
                     </TemplateText>
                 </TemplateBox>
             )}
@@ -79,7 +78,7 @@ const AffiliateBrandsCarousel = ({ style }) => {
                         height={wp(110)}
                         center
                         mr={wp(16)}
-                        mt={wp(8)}
+
                     >
                         <TemplateText
                             startCase
@@ -91,9 +90,9 @@ const AffiliateBrandsCarousel = ({ style }) => {
                         <TemplateBox height={wp(8)} />
                         <TemplateText
                             size={wp(12)}
-
+                            numberOfLines={2}
                         >
-                            Dive into descriptions, insights with just a tap.
+                            {item?.description}
                         </TemplateText>
                     </TemplateBox>
                 )}

@@ -1,28 +1,26 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable max-len */
+/* eslint-disable react-native/no-inline-styles */
 import React, {
-    useCallback,
     useEffect, useLayoutEffect, useMemo, useState,
 } from 'react';
 import {
     ScrollView, StyleSheet, RefreshControl,
-    Alert,
     View,
     TouchableWithoutFeedback,
 } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK,
-    BLACK_SECONDARY,
     LAVENDER,
     WHITE,
 } from '../../../theme/Colors';
 import {
     ADD_EVENT,
     ADD_PROJECT, BRAND_PROJECT_DETAILS,
-    BRANDS_PROFILE_STACK,
-    UPDATE_BRAND_PROFILE,
 } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
@@ -43,23 +41,16 @@ import { hp, wp } from '../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../components/TemplateIcon';
 import useAppReview from '../../../hooks/useAppReview';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
-import { DEFAULT_BRAND_DESCRIPTION } from '../../../consts/content/Portfolio';
 import BrandEventsCarousel from '../../app/home/components /BrandEventsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import useProfile from '../../../hooks/user/useProfile';
 
 const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
-
     const profile = auth?.profile;
     const { updateProfile } = useProfile();
     const [refetchProjects, setRefetchProjects] = useState(null);
-
-    const profileImage = profile?.image;
-    const defaultDescription = profile.description === DEFAULT_BRAND_DESCRIPTION;
-
     const isFocused = useIsFocused();
-
     const { projects, getProjects } = useProjectsContext();
 
     useEffect(() => {
@@ -152,7 +143,7 @@ const AdminPanelScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ backgroundColor: 'red', flex: 1 }}>
+        <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
                 <ScrollView
                     style={styles.container}
@@ -230,7 +221,7 @@ const AdminPanelScreen = ({ navigation }) => {
                     {
                         options?.map(({ title, onPress }, index) => (
                             <TemplateBox
-                                key={index}
+                                key={`option-${index}`}
                                 zIndex={99}
                                 backgroundColor={LAVENDER}
                                 mb={hp(8)}
@@ -264,24 +255,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingBottom: wp(60),
-    },
-    addButton: {
-        marginRight: 20,
-        height: 30,
-        borderRadius: 10,
-        backgroundColor: BLACK_SECONDARY,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 8,
-    },
-    eventButton: {
-        marginLeft: 20,
-        height: 30,
-        borderRadius: 10,
-        backgroundColor: BLACK_SECONDARY,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 8,
     },
     greeting: {
         marginTop: HEADER_MARGIN,

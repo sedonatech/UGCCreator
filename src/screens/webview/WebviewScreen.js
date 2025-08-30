@@ -19,9 +19,9 @@ const urlPattern = new RegExp('^(https?:\\/\\/)?' // validate protocol
     + '(\\?[;&a-z\\d%_.~+=-]*)?' // validate query string
     + '(\\#[-a-z\\d_]*)?$', 'i');
 
-const WebviewScreen = ({ route, navigation }) => {
+const WebviewScreen = ({ route }) => {
     const url = route?.params?.url;
-
+    const [loading, setLoading] = useState(true);
     // Check if url is valid
     useEffect(() => {
         if (!urlPattern.test(url)) {
@@ -29,17 +29,17 @@ const WebviewScreen = ({ route, navigation }) => {
                 {
                     text: 'OK',
                     onPress: () => {
-                        navigation.goBack();
+                        setLoading(false);
                     },
                 },
             ]);
         }
     }, []);
 
-    const [loading, setLoading] = useState(true);
     const handleLoad = () => {
         setLoading(false);
     };
+
     const handleError = () => {
         setLoading(false);
         Alert.alert('Error', 'Something went wrong with this link. Please try again later.');

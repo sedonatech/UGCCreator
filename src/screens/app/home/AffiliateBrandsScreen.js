@@ -12,9 +12,9 @@ import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
 
-const AffiliateBrandsScreen = ({ navigation }) => {
+const AffiliateBrandsScreen = ({ navigation, route }) => {
     const { affiliate } = useFeatureFlags();
-
+    const title = route?.params?.title;
     const affiliateBrands = affiliate?.brands;
 
     const allCategory = {
@@ -69,7 +69,7 @@ const AffiliateBrandsScreen = ({ navigation }) => {
             <TemplateText
                 size={wp(12)}
             >
-                Dive into descriptions, insights with just a tap.
+                {item?.description}
             </TemplateText>
         </TemplateBox>
     );
@@ -96,7 +96,7 @@ const AffiliateBrandsScreen = ({ navigation }) => {
                             center
                             alignSelf="center"
                         >
-                            Brand ambassador, influencer and affiliate programs
+                            {title}
                         </TemplateText>
                         <TemplateBox selfCenter flex>
                             <ToggleCarousel

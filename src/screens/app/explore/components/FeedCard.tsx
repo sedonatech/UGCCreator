@@ -50,6 +50,7 @@ const FeedCard: FC<Props> = ({
         style={style}
         slideInDelay={slideInDelay}
         backgroundColor={!image ? BRAND_BLUE : TRANSPARENT}
+        shadow
     >
 
         {image && <BackgroundImage source={image} style={styles.image} width={SCREEN_WIDTH} />}
