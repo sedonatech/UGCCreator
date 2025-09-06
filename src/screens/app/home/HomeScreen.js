@@ -38,6 +38,7 @@ import useProfile from '../../../hooks/user/useProfile';
 import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
 import BrandDealsCarousel from './components /BrandDealsCarousel';
+import FeaturedShowcaseCarousel from './components /FeaturedSamplesCarousel';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -208,6 +209,8 @@ const HomeScreen = ({ navigation }) => {
                 </TemplateBox>
             )}
             <FeaturedCreatorsCarousel style={styles.carousel} creator />
+
+            <FeaturedShowcaseCarousel />
 
             {!!ugcGuidePdfFeed?.title && (
                 <TemplateBox mt={wp(20)} mb={wp(10)}>
