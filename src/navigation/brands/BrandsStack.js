@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import {
-    ACTIVE_CREATORS, ADD_EVENT, BRAND_EVENT_DETAILS_SCREEN, BRAND_EVENTS_COMPLETED_SCREEN, BRAND_EVENTS_SCREEN, BRANDS_TABS, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW,
+    ACTIVE_CREATORS, ADD_EVENT, BRAND_EVENT_DETAILS_SCREEN, BRAND_EVENTS_COMPLETED_SCREEN, BRAND_EVENTS_SCREEN, BRANDS_TABS, SAMPLE_DETAILS_SCREEN, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW,
 } from '../ScreenNames';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import BrandsTabs from './BrandsTabs';
@@ -15,6 +15,7 @@ import AddEventScreen from '../../screens/brands/events/AddEventScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import BrandEventsCompletedScreen from '../../screens/brands/events/BrandEventsCompletedScreen';
 import { WHITE } from '../../theme/Colors';
+import SampleDetailsScreen from '../../screens/app/home/SampleDetailsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -68,6 +69,11 @@ const BrandsStack = () => (
             name={ADD_EVENT}
             options={TRANSPARENT_HEADER}
             component={AddEventScreen}
+        />
+        <Screen
+            name={SAMPLE_DETAILS_SCREEN}
+            component={SampleDetailsScreen}
+            options={TRANSPARENT_HEADER}
         />
         <Screen
             name={WEBVIEW}
