@@ -32,7 +32,7 @@ export default function PortfolioCarousel({ creatorId }) {
   async function refresh() {
     try {
       if (!uid) return;
-      const all = await getMySamples(creatorId);
+      const all = await getMySamples(creatorId || uid);
       const visible = isOwner ? all : all?.filter((s) => !!s.isFeatured);
       setItems(visible);
     }
@@ -54,7 +54,7 @@ export default function PortfolioCarousel({ creatorId }) {
     ? "Add sample works to your profile with a chance of being featured."
     : "Featured sample works from this creator.";
 
-  if(items?.length < 1) return null
+  if((items?.length < 1) && !isOwner) return null
 
 
   return (
