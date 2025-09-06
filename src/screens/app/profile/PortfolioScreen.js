@@ -24,6 +24,7 @@ import useChatsContext from '../../../hooks/chats/useChatsContext';
 import CreatorDetailsHeader from './components/CreatorDetailsHeader';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import { UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
+import PortfolioCarousel from './components/PortfolioCarousel';
 
 const USERS_COLLECTION = 'users';
 const PortfolioScreen = ({ navigation, route }) => {
@@ -120,7 +121,10 @@ const PortfolioScreen = ({ navigation, route }) => {
                         image={image}
                     />
                 )}
-                { profileCompleteRatio < 1 && !creatorId && (
+
+                <PortfolioCarousel creatorId={creatorId} />
+
+                {/* { profileCompleteRatio < 1 && !creatorId && (
                     <ProfileStatusCard
                         title={PROFILE_INCOMPLETE_TITLE}
                         description={PROFILE_INCOMPLETE_MESSAGE}
@@ -131,15 +135,15 @@ const PortfolioScreen = ({ navigation, route }) => {
                         backgroundColor={lightOrange}
                         onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
                     />
-                )}
-                {about && (
+                )} */}
+                {/* {about && (
                     <AboutSection
                         about={about}
                         shortDescription={shortDescription}
                         portfolioLink={portfolioLink}
                     />
-                )}
-                <SampleWorkSection />
+                )} */}
+                {/* <SampleWorkSection /> */}
                 <RatesSection rates={rates} />
                 <ContactSection
                     contactInfo={contact}
