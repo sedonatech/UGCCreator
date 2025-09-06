@@ -25,14 +25,14 @@ export default function PortfolioCarousel({ creatorId }) {
   const [editItem, setEditItem] = useState<SampleWork | null>(null);
   const uid = auth?.profile?.id;
 
-  const isOwner = uid && creatorId && uid === creatorId;
+  const isOwner = (!!creatorId && creatorId === uid) || !creatorId
 
   const navigation = useNavigation()
 
   async function refresh() {
     try {
       if (!uid) return;
-      const all = await getMySamples(creatorId);
+      const all = await getMySamples(creatorId || uid);
       const visible = isOwner ? all : all?.filter((s) => !!s.isFeatured);
       setItems(visible);
     }
@@ -54,6 +54,7 @@ export default function PortfolioCarousel({ creatorId }) {
     ? "Add sample works to your profile with a chance of being featured."
     : "Featured sample works from this creator.";
 
+  if(items?.length < 1) return null
 
   return (
     <TemplateBox flex>
