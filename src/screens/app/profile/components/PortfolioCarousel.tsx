@@ -25,7 +25,7 @@ export default function PortfolioCarousel({ creatorId }) {
   const [editItem, setEditItem] = useState<SampleWork | null>(null);
   const uid = auth?.profile?.id;
 
-  const isOwner = uid && creatorId && uid === creatorId;
+  const isOwner = (!!creatorId && creatorId === uid) || !creatorId
 
   const navigation = useNavigation()
 
@@ -54,9 +54,11 @@ export default function PortfolioCarousel({ creatorId }) {
     ? "Add sample works to your profile with a chance of being featured."
     : "Featured sample works from this creator.";
 
+  if(items?.length < 1) return null
+
 
   return (
-    <TemplateBox flex>
+    <TemplateBox flex mt={12}>
       <TemplateBox row alignItems="center" spaceBetween ph={WRAPPER_MARGIN} mb={8} width={WRAPPED_SCREEN_WIDTH}>
         <TemplateText size={18} bold mr={8}>{titleText}</TemplateText>
         {isOwner && <Text style={{ color: "#9ca3af" }}>{items.length}/3</Text>}
