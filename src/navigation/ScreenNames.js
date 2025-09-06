@@ -118,6 +118,8 @@ export const FAVORITE_EVENTS_SCREEN = 'FavoriteEventsScreen';
 
 export const EVENT_DETAILS_SCREEN = 'EventDetailsScreen';
 
+export const SAMPLE_DETAILS_SCREEN = 'SampleDetailsScreen';
+
 export const BRAND_EVENTS_SCREEN = 'BrandEventsScreen';
 
 export const BRAND_EVENTS_COMPLETED_SCREEN = 'BrandEventsCompletedScreen';
