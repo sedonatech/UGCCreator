@@ -44,6 +44,7 @@ import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import BrandEventsCarousel from '../../app/home/components /BrandEventsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import useProfile from '../../../hooks/user/useProfile';
+import FeaturedShowcaseCarousel from '../../app/home/components /FeaturedSamplesCarousel';
 
 const AdminPanelScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -189,6 +190,7 @@ const AdminPanelScreen = ({ navigation }) => {
                     )}
                     <CurrentCreatorsCarousel style={styles.carousel} />
                     <FeaturedCreatorsCarousel style={styles.carousel} />
+                    <FeaturedShowcaseCarousel style={styles.carousel} />
                     <BrandEventsCarousel brandId={profile?.id} />
                     {
                         projectsCarouselData?.length ? (

@@ -38,6 +38,7 @@ import useProfile from '../../../hooks/user/useProfile';
 import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
 import ProjectsCarousel from './components /ProjectsCarousel';
 import BrandDealsCarousel from './components /BrandDealsCarousel';
+import FeaturedShowcaseCarousel from './components /FeaturedSamplesCarousel';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -142,6 +143,7 @@ const HomeScreen = ({ navigation }) => {
                     <BrandDealsCarousel />
                 </TemplateBox>
             )}
+            <FeaturedShowcaseCarousel style={styles.showcase}/>
 
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />
@@ -208,7 +210,6 @@ const HomeScreen = ({ navigation }) => {
                 </TemplateBox>
             )}
             <FeaturedCreatorsCarousel style={styles.carousel} creator />
-
             {!!ugcGuidePdfFeed?.title && (
                 <TemplateBox mt={wp(20)} mb={wp(10)}>
                     <FeedCard
@@ -246,6 +247,10 @@ const styles = StyleSheet.create({
         marginTop: HEADER_MARGIN,
         marginBottom: 10,
         marginHorizontal: WRAPPER_MARGIN,
+    },
+    showcase: {
+        marginTop: 12,
+        marginBottom: 8,
     },
     carousel: {
         flex: 1,

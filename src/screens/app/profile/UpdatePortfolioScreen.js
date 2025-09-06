@@ -268,7 +268,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <UpdateBrandsWorkedWith />
                 <UpdateCategories />
-                <UpdateWorkExamples />
+                {/* <UpdateWorkExamples /> */}
                 <UpdateRates />
             </Wrapper>
             {loading && (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { APP_TABS, CREATORS_PROFILES_STACK, EVENT_DETAILS_SCREEN, EVENTS_SCREEN, FAVORITE_EVENTS_SCREEN, SUBSCRIPTION, WEBVIEW } from '../ScreenNames';
+import { APP_TABS, CREATORS_PROFILES_STACK, EVENT_DETAILS_SCREEN, EVENTS_SCREEN, FAVORITE_EVENTS_SCREEN, SAMPLE_DETAILS_SCREEN, SUBSCRIPTION, WEBVIEW } from '../ScreenNames';
 import AppTabs from './AppTabs';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO, TRANSPARENT_NO_LOGO_HEADER } from '../../components/header/ScreenOptions';
 import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
@@ -9,8 +9,9 @@ import EventsScreen from '../../screens/app/home/EventsScreen';
 import EventDetailsScreen from '../../screens/app/home/EventDetailsScreen';
 import WebviewScreen from '../../screens/webview/WebviewScreen';
 import FavoriteEventsScreen from '../../screens/app/home/FavoriteEventsScreen';
+import SampleDetailsScreen from '../../screens/app/home/SampleDetailsScreen';
 
-const Stack = createStackNavigator();;
+const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const AppStack = () => (
@@ -55,6 +56,11 @@ const AppStack = () => (
         <Screen
             name={EVENT_DETAILS_SCREEN}
             component={EventDetailsScreen}
+            options={TRANSPARENT_HEADER}
+        />
+        <Screen
+            name={SAMPLE_DETAILS_SCREEN}
+            component={SampleDetailsScreen}
             options={TRANSPARENT_HEADER}
         />
          <Screen
