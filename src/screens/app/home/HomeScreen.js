@@ -143,6 +143,7 @@ const HomeScreen = ({ navigation }) => {
                     <BrandDealsCarousel />
                 </TemplateBox>
             )}
+            <FeaturedShowcaseCarousel style={styles.showcase}/>
 
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />
@@ -209,9 +210,6 @@ const HomeScreen = ({ navigation }) => {
                 </TemplateBox>
             )}
             <FeaturedCreatorsCarousel style={styles.carousel} creator />
-
-            <FeaturedShowcaseCarousel />
-
             {!!ugcGuidePdfFeed?.title && (
                 <TemplateBox mt={wp(20)} mb={wp(10)}>
                     <FeedCard
@@ -249,6 +247,10 @@ const styles = StyleSheet.create({
         marginTop: HEADER_MARGIN,
         marginBottom: 10,
         marginHorizontal: WRAPPER_MARGIN,
+    },
+    showcase: {
+        marginTop: 12,
+        marginBottom: 8,
     },
     carousel: {
         flex: 1,
