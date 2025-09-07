@@ -26,6 +26,7 @@ interface Props {
     duration?: string;
 
     projectType?: string;
+    isShowcase?: boolean
 }
 
 const CARD_WIDTH = (SCREEN_WIDTH / 2) - 28;
@@ -39,12 +40,13 @@ const ProjectCard: FC<Props> = ({
     enrolled,
     duration,
     projectType,
+    isShowcase
 }) => (
     <TemplateTouchable
         style={[styles.container, style]}
         onPress={onPress}
     >
-        {enrolled ? (
+        {enrolled && (
             <TemplateBox
                 flex
                 absolute
@@ -60,24 +62,26 @@ const ProjectCard: FC<Props> = ({
             >
                 <TemplateText semiBold size={9} color={BLACK} caps>active</TemplateText>
             </TemplateBox>
-        )
-            : (
-                <TemplateBox
-                    flex
-                    absolute
-                    borderRadius={8}
-                    backgroundColor={YELLOW}
-                    height={25}
-                    width={CARD_WIDTH / 2.6}
-                    alignItems="center"
-                    justifyContent="center"
-                    top={16}
-                    left={16}
-                    zIndex={2}
-                >
-                    <TemplateText size={9} color={BLACK} caps semiBold>New</TemplateText>
-                </TemplateBox>
-            )}
+        )}
+
+        {(!enrolled && !isShowcase ) &&
+            <TemplateBox
+                flex
+                absolute
+                borderRadius={8}
+                backgroundColor={YELLOW}
+                height={25}
+                width={CARD_WIDTH / 2.6}
+                alignItems="center"
+                justifyContent="center"
+                top={16}
+                left={16}
+                zIndex={2}
+            >
+                <TemplateText size={9} color={BLACK} caps semiBold>New</TemplateText>
+            </TemplateBox>
+        }
+
 
         <LinearGradient
             colors={DEFAULT_GRADIENT}

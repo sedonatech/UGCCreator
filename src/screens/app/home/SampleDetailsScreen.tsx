@@ -83,16 +83,6 @@ export default function SampleDetailsScreen({ route, navigation }) {
         return () => unsub();
     }, [id]);
 
-    async function onShare() {
-        console.log('share')
-        if (!sample) return;
-        try {
-            await Share.share({
-                message: `${sample.title}\n\n${sample.description}\n\n${sample.socialUrl ?? ""}`,
-            });
-        } catch { }
-    }
-
     function onDelete() {
         if (!sample) return;
         Alert.alert("Delete sample", "This action cannot be undone.", [
@@ -147,10 +137,22 @@ export default function SampleDetailsScreen({ route, navigation }) {
                     resizeMode="cover"
                 >
                     <TemplateBox style={styles.topBar}>
-                        <TemplateBox style={{ flexDirection: "row", gap: 12 }}>
-                            <TouchableOpacity onPress={onShare} style={styles.iconBtn}>
-                                <Text style={styles.iconTxt}>⤴︎</Text>
-                            </TouchableOpacity>
+                         <TemplateBox backgroundColor={BLUE} ph={12} pv={8} borderRadius={8} alignSelf='flex-start'
+                            onPress={() => {
+                                if (isCreator) {
+                                    return navigation.navigate(CREATORS_PROFILES_STACK, {
+                                        screen: PROFILE,
+                                        params: {
+                                            creatorId: owner?.id,
+                                        },
+                                    });
+                                }
+                                return navigation.navigate(PROFILE, {
+                                    creatorId: owner?.id,
+                                });
+                            }}
+                         >
+                            <TemplateText color={WHITE} size={hp(14)} medium>View Creator</TemplateText>
                         </TemplateBox>
                     </TemplateBox>
 
@@ -180,23 +182,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
                             <TemplateText color={WHITE} size={hp(14)} medium>Open Link</TemplateText>
                         </TemplateBox>
                     ) : null}
-                        <TemplateBox backgroundColor={BLACK} ph={12} pv={8} borderRadius={8} alignSelf='flex-start' mt={hp(20)}
-                            onPress={() => {
-                                if (isCreator) {
-                                    return navigation.navigate(CREATORS_PROFILES_STACK, {
-                                        screen: PROFILE,
-                                        params: {
-                                            creatorId: owner?.id,
-                                        },
-                                    });
-                                }
-                                return navigation.navigate(PROFILE, {
-                                    creatorId: owner?.id,
-                                });
-                            }}
-                         >
-                            <TemplateText color={WHITE} size={hp(14)} medium>View Creator</TemplateText>
-                        </TemplateBox>
+                       
                 </TemplateBox>
 
                 {/* Owner-only controls */}

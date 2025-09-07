@@ -9,7 +9,8 @@ import TemplateCarousel from "../../../../components/carousels/TemplateCarousel"
 import ProjectCard from "./ProjectCard";
 import { BLACK } from "../../../../theme/Colors";
 import { SAMPLE_DETAILS_SCREEN } from "../../../../navigation/ScreenNames";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import useFeatureFlags from "../../../../hooks/featureFlags/useFeatureFlags";
 
 type Item = {
     id: string;
@@ -27,11 +28,14 @@ export default function FeaturedShowcaseCarousel({ style }) {
     const [items, setItems] = useState<Item[]>([]);
     const navigation = useNavigation();
 
-    useEffect(() => {
+    const { features } = useFeatureFlags();
+    const showCreatorShowcase = features?.showAffiliateProgramsCarousel;
+
+    useFocusEffect(
+        React.useCallback(() => {
         let mounted = true;
         (async () => {
             try {
-                await AsyncStorage.removeItem(SHOWCASE_KEY);
                 const cached = await AsyncStorage.getItem(SHOWCASE_KEY);
                 if (cached) {
                     const { dateKey, sampleIds } = JSON.parse(cached) as {
@@ -42,6 +46,7 @@ export default function FeaturedShowcaseCarousel({ style }) {
                         const snap = await firestore()
                             .collection("sampleWorks")
                             .where(firestore.FieldPath.documentId(), "in", sampleIds.slice(0, MAX_ITEMS))
+                            .where("showcaseOptIn", "==", true)
                             .get();
 
                         const map = new Map<string, any>();
@@ -87,10 +92,12 @@ export default function FeaturedShowcaseCarousel({ style }) {
                 const picked = docs.slice(0, MAX_ITEMS).map((d) => ({ id: d.id, ...(d.data() as any) })) as Item[];
                 const ids = picked.map((p) => p.id);
 
-                if (docs?.length > MAX_ITEMS) await AsyncStorage.setItem(
-                    SHOWCASE_KEY,
-                    JSON.stringify({ dateKey: TODAY_KEY, sampleIds: ids })
-                );
+                if (docs?.length > MAX_ITEMS) {
+                    await AsyncStorage.setItem(
+                        SHOWCASE_KEY,
+                        JSON.stringify({ dateKey: TODAY_KEY, sampleIds: ids })
+                    );
+                }
                 if (mounted) setItems(picked);
             } catch (e: any) {
                 console.warn("Showcase load error:", e?.message ?? e);
@@ -101,9 +108,10 @@ export default function FeaturedShowcaseCarousel({ style }) {
         return () => {
             mounted = false;
         };
-    }, []);
+    }, [TODAY_KEY])
+    );
 
-    if (!items.length) return null;
+    if (!items.length || !showCreatorShowcase) return null;
 
     return (
         <TemplateBox style={style} flex>
@@ -127,6 +135,7 @@ export default function FeaturedShowcaseCarousel({ style }) {
                             id: item?.id,
                         })}
                         style={styles.card}
+                        isShowcase
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
