@@ -5,24 +5,24 @@ const overrideEntitlements = false;
 const overrideSubscription = __DEV__;
 
 const overrideProfileUpdateModal = true;
-const revenueCat = isAndroid ? 'goog_VloSDFYRLkZcXLeXTMxYfNiEtbu' : 'appl_gKgUgJLyYmYOxsOgRIltrYVOswb';
-const firebaseServerKey = 'AAAA75Z1awc:APA91bGZlGphZsIZP4vSN3CZFrFCYPM4jv4D2tg0ynItNqSLKTP90lkcrveEC8S1lWX2GfGM2kg0mHAHXIMBbDHMrgmEWkIKDb9R2frYvI2zpUy1GbehQ8wo23WZzJ6OPSWriZFK94_i';
+const revenueCat = isAndroid ? process.env.ANDROID_REVENUE_CAT_ID : process.env.IOS_REVENUE_CAT_ID;
+const firebaseServerKey = process.env.FIREBASE_SERVER_KEY;
 
-const mainDomain = 'https://www.ugccreatorapp.com/#Contact';
+const mainDomain = process.env.MAIN_DOMAIN;
 
 const stream = {
-    apiKey: '3jymrhfzg4ah',
-    apiSecret: 'c3vabn4y94fssbgc9fmj4rpp4479nz9dt7s52cn53ktj2yefxdsxfe6gxb4uunsp',
-    appId: 1236778,
+    apiKey: process.env.STREAM_API_KEY,
+    apiSecret: process.env.STREAM_API_SECRET,
+    appId: process.env.STREAM_APP_ID,
 };
 
 const reviewPromptProps = {
-    AppleAppId: '6446017566',
-    GooglePackageName: 'com.ugccreatorapp',
+    AppleAppId: process.env.APPLE_APP_ID,
+    GooglePackageName: process.env.GOOGLE_PACKAGE_NAME,
     link: mainDomain,
 };
 
-const fbAppID = '2996542933821709';
+const fbAppID = process.env.FACE_BOOK_APP_ID;
 
 export default {
     overrideEntitlements,
