@@ -134,7 +134,7 @@ const HomeScreen = ({ navigation }) => {
                 <Greeting userName={profile?.userName} style={styles.greeting} />
             )}
             {showAffiliateProgramsCarousel && (
-                <TemplateBox height={180} mt={15}>
+                <TemplateBox height={220} mt={15}>
                     <AffiliateBrandsCarousel />
                 </TemplateBox>
             )}
@@ -143,7 +143,7 @@ const HomeScreen = ({ navigation }) => {
                     <BrandDealsCarousel />
                 </TemplateBox>
             )}
-            <FeaturedShowcaseCarousel style={styles.showcase}/>
+            <FeaturedShowcaseCarousel style={styles.showcase} />
 
             <ProjectsCarousel style={styles.projectsCarousel} />
             <EventsCarousel />

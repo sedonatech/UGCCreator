@@ -8,27 +8,25 @@ import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import {
     BLACK, IOS_BLUE, LIGHT_PURPLE,
+    WHITE,
 } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { AFFILIATE_BRANDS, WEBVIEW } from '../../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../../Utils/getResponsiveSize';
-import {
-    ELEVATION,
-    SHADOW_OFFSET_HEIGHT,
-    SHADOW_OFFSET_WIDTH,
-} from '../../../../theme/Shadow';
+import Button from '../../../../components/Button';
 
 const AffiliateBrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
     const { affiliate } = useFeatureFlags();
     const affiliateBrands = affiliate?.brands;
-    // get the first four brands to display with a useMemo
-    const firstFourBrands = useMemo(() => {
+    // get four random brands to display with a useMemo
+    const randomFourBrands = useMemo(() => {
         if (!affiliateBrands) return [];
-
-        return affiliateBrands.slice(0, 4);
+        if (affiliateBrands.length <= 4) return affiliateBrands;
+        const shuffled = [...affiliateBrands].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 4);
     }, [affiliateBrands]);
 
     return (
@@ -62,27 +60,27 @@ const AffiliateBrandsCarousel = ({ style }) => {
                         color={BLACK}
                         style={styles.subtitle}
                     >
-                        Co-create with growing brands that want your style
+                        Discover brand collabs, ambassador deals, and affiliate programs
+                        matched to your niche.
                     </TemplateText>
                 </TemplateBox>
             )}
             <TemplateCarousel
-                data={firstFourBrands}
+                data={randomFourBrands}
                 renderItem={({ item }) => (
                     <TemplateBox
                         borderRadius={wp(16)}
-                        pAll={wp(16)}
+                        pAll={wp(12)}
                         onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                         style={styles.card}
                         width={SCREEN_WIDTH / 1.6}
-                        height={wp(110)}
+                        height={wp(120)}
                         center
                         mr={wp(16)}
-
                     >
                         <TemplateText
                             startCase
-                            size={wp(16)}
+                            size={wp(14)}
                             semiBold
                         >
                             {item?.name}
@@ -94,6 +92,12 @@ const AffiliateBrandsCarousel = ({ style }) => {
                         >
                             {item?.description}
                         </TemplateText>
+                        <Button
+                            title="Learn More"
+                            onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
+                            style={styles.button}
+                            titleSize={12}
+                        />
                     </TemplateBox>
                 )}
                 contentContainerStyle={styles.cardCarousel}
@@ -112,14 +116,17 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     card: {
-        shadowOffset: {
-            width: SHADOW_OFFSET_WIDTH,
-            height: SHADOW_OFFSET_HEIGHT,
-        },
-        shadowRadius: 4,
-        shadowOpacity: 0.2,
-        elevation: ELEVATION,
-        backgroundColor: LIGHT_PURPLE,
+        backgroundColor: WHITE,
+        borderColor: LIGHT_PURPLE,
+        borderWidth: 1,
+        shadowColor: BLACK,
+    },
+    button: {
+        marginVertical: 10,
+        height: 30,
+        width: 150,
+        borderRadius: 16,
+        alignSelf: 'center',
     },
 });
 

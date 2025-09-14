@@ -24,7 +24,13 @@ const MAX_ITEMS = 6;
 const TODAY_KEY = new Date().toISOString().slice(0, 10);
 const SHOWCASE_KEY = "showcase_today";
 
-export default function FeaturedShowcaseCarousel({ style }) {
+import { ViewStyle } from "react-native";
+
+type FeaturedShowcaseCarouselProps = {
+    style?: ViewStyle;
+};
+
+export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCarouselProps) {
     const [items, setItems] = useState<Item[]>([]);
     const navigation = useNavigation();
 
