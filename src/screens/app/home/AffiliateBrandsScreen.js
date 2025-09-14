@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import {
-    HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH,
+    HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
 } from '../../../theme/Layout';
-import { LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import {
+    BLACK, LIGHT_PURPLE, TRANSPARENT, WHITE,
+} from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
@@ -11,6 +13,7 @@ import { wp } from '../../../Utils/getResponsiveSize';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
+import Button from '../../../components/Button';
 
 const AffiliateBrandsScreen = ({ navigation, route }) => {
     const { affiliate } = useFeatureFlags();
@@ -53,7 +56,7 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
             onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
             style={styles.card}
             width={WRAPPED_SCREEN_WIDTH}
-            height={wp(110)}
+            height={wp(140)}
             mb={wp(16)}
             center
             selfCenter
@@ -71,6 +74,12 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
             >
                 {item?.description}
             </TemplateText>
+            <Button
+                title="Learn More"
+                onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
+                style={styles.button}
+                titleSize={12}
+            />
         </TemplateBox>
     );
 
@@ -97,6 +106,16 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                             alignSelf="center"
                         >
                             {title}
+                        </TemplateText>
+                        <TemplateText
+                            size={13}
+                            color={BLACK}
+                            center
+                            width={SCREEN_WIDTH / 1.1}
+                            mt={8}
+                        >
+                            Discover brand collabs, ambassador deals, and affiliate programs
+                            matched to your niche.
                         </TemplateText>
                         <TemplateBox selfCenter flex>
                             <ToggleCarousel
@@ -130,6 +149,19 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+    },
+    card: {
+        backgroundColor: WHITE,
+        borderColor: LIGHT_PURPLE,
+        borderWidth: 1.5,
+    },
+    button: {
+        marginVertical: 10,
+        height: 40,
+        width: 180,
+        borderRadius: 20,
+        alignSelf: 'center',
+        marginTop: 20,
     },
 });
 export default AffiliateBrandsScreen;

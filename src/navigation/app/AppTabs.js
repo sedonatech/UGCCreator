@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import {
     CHATS_STACK,
@@ -50,7 +49,7 @@ const AppTabs = () => {
                 component={HomeStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="home-outline" />
+                        <TabButton focused={focused} icon="Home" />
                     ),
                     tabBarLabel: (props) => <TabLabel {...props}>Home</TabLabel>,
                 }}
@@ -61,7 +60,7 @@ const AppTabs = () => {
                 component={OffersStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="briefcase" />
+                        <TabButton focused={focused} icon="Projects" />
                     ),
                     tabBarLabel: (props) => <TabLabel {...props}>My Projects</TabLabel>,
                 }}
@@ -71,7 +70,7 @@ const AppTabs = () => {
                 component={ChatsStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="chatbubbles-outline" />
+                        <TabButton focused={focused} icon="Chat" />
                     ),
                     tabBarLabel: (props) => (
                         <TabLabel
@@ -88,7 +87,7 @@ const AppTabs = () => {
                 component={ProfileStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="person" />
+                        <TabButton focused={focused} icon="Profile" />
                     ),
                     tabBarLabel: (props) => <TabLabel {...props}>My Portfolio</TabLabel>,
                 }}

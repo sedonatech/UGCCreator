@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ActivityIndicator, StyleSheet } from 'react-native';
@@ -16,6 +17,7 @@ const Button = ({
     disabled,
     style,
     titleColor,
+    titleSize = 16,
 }) => {
     const handleOnPress = () => {
         if (disabled) {
@@ -46,7 +48,14 @@ const Button = ({
             {loading ? (
                 <ActivityIndicator size="small" color={WHITE} />
             ) : (
-                <TemplateText size={16} subTitle semiBold center color={titleColor}>
+                <TemplateText
+                    size={titleSize}
+                    subTitle
+                    semiBold
+                    center
+                    color={titleColor}
+
+                >
                     {title}
                 </TemplateText>
             )}
@@ -64,6 +73,7 @@ Button.propTypes = {
     disabled: PropTypes.bool,
     style: PropTypes.shape({}),
     titleColor: PropTypes.string,
+    titleSize: PropTypes.number,
 };
 Button.defaultProps = {
     height: 60,
@@ -75,6 +85,7 @@ Button.defaultProps = {
     disabled: false,
     style: {},
     titleColor: WHITE,
+    titleSize: 16,
 };
 
 const styles = StyleSheet.create({
