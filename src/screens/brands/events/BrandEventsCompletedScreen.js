@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable max-len */
 import React, {
     memo,
     useCallback,
@@ -7,12 +9,13 @@ import React, {
 } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import Fuse from 'fuse.js';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore, collection, query, where, orderBy, limit as fsLimit, getDocs,
+} from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 import {
     HEADER_MARGIN,
     IS_ANDROID,
-    SCREEN_WIDTH,
     WRAPPED_SCREEN_WIDTH,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
@@ -50,18 +53,20 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
     const brandId = auth?.profile?.id;
 
     const today = useMemo(() => new Date(), []);
-    const eventsRef = firestore()
-        .collection(EVENTS_COLLECTION)
-        .where('userId', '==', brandId)
-        .where('endDate', '<', today)
-        .orderBy('endDate', 'desc')
-        .limit(limit);
+    const db = getFirestore();
+    const getEventsQuery = (limitCount) => query(
+        collection(db, EVENTS_COLLECTION),
+        where('userId', '==', brandId),
+        where('endDate', '<', today),
+        orderBy('endDate', 'desc'),
+        fsLimit(limitCount),
+    );
 
     const fetchEvents = async () => {
         try {
-            const fetchedEvents = await eventsRef
-                .get()
-                .then((querySnapshot) => querySnapshot?.docs?.map((doc) => ({ id: doc?.id, ...doc?.data() })));
+            const q = getEventsQuery(limit);
+            const querySnapshot = await getDocs(q);
+            const fetchedEvents = querySnapshot?.docs?.map((doc) => ({ id: doc?.id, ...doc?.data() }));
             setEventsData(fetchedEvents);
         } catch (e) {
             console.log(e);
@@ -197,18 +202,20 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
                         </TemplateText>
                     </TemplateBox>
                     <TemplateBox row alignItems="center" width="100%">
-                        {!!item?.country && <TemplateBox row>
-                        <TemplateIcon
-                            name="location-sharp"
-                            size={hp(11)}
-                            family="Ionicons"
-                            color={DARK_GREY}
-                            style={{ marginRight: 3 }}
-                        />
-                        <TemplateText size={hp(10)} color={DARK_GREY} medium>
-                            {`${item?.city}, ${item?.country}`}
-                        </TemplateText>
-                        </TemplateBox>}
+                        {!!item?.country && (
+                            <TemplateBox row>
+                                <TemplateIcon
+                                    name="location-sharp"
+                                    size={hp(11)}
+                                    family="Ionicons"
+                                    color={DARK_GREY}
+                                    style={{ marginRight: 3 }}
+                                />
+                                <TemplateText size={hp(10)} color={DARK_GREY} medium>
+                                    {`${item?.city}, ${item?.country}`}
+                                </TemplateText>
+                            </TemplateBox>
+                        )}
 
                         <View
                             style={{
@@ -309,10 +316,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: 16,
         color: BLACK,
-    },
-    card: {
-        marginBottom: WRAPPER_MARGIN,
-        alignSelf: 'center',
     },
 });
 

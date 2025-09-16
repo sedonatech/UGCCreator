@@ -93,7 +93,7 @@ const AffiliateBrandsCarousel = ({ style }) => {
                             {item?.description}
                         </TemplateText>
                         <Button
-                            title="Learn More"
+                            title="Apply Now"
                             onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                             style={styles.button}
                             titleSize={12}

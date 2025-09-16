@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable max-len */
 import React, {
     useLayoutEffect, useMemo,
 } from 'react';
@@ -6,7 +8,11 @@ import {
     ScrollView, StyleSheet,
 } from 'react-native';
 
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore,
+    doc,
+    updateDoc,
+} from '@react-native-firebase/firestore';
 import {
     BLACK,
     BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN,
@@ -66,8 +72,9 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
 
     const updateProject = async (id, projectData) => {
         try {
-            const db = firestore();
-            await db.collection(PROJECTS_COLLECTION).doc(id).update(projectData);
+            const db = getFirestore();
+            const projectRef = doc(db, PROJECTS_COLLECTION, id);
+            await updateDoc(projectRef, projectData);
         } catch (error) {
             console.log(error);
         }

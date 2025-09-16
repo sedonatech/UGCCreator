@@ -14,7 +14,9 @@ import React, {
 } from 'react';
 import { orderBy } from 'lodash';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore, collection, query, where, orderBy as fsOrderBy, limit as fsLimit, getDocs, onSnapshot,
+} from '@react-native-firebase/firestore';
 import Fuse from 'fuse.js';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
@@ -72,15 +74,20 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const [supportFcmToken, setSupportFcmToken] = useState({});
 
-    const creatorRef = firestore().collection(CHAT_ROOMS)
-        .limit(limit)
-        .where('creatorId', '==', userId)
-        .orderBy('createdAt', 'desc');
+    const db = getFirestore();
+    const creatorRef = query(
+        collection(db, CHAT_ROOMS),
+        fsLimit(limit),
+        where('creatorId', '==', userId),
+        fsOrderBy('createdAt', 'desc'),
+    );
 
-    const brandRef = firestore().collection(CHAT_ROOMS)
-        .limit(limit)
-        .where('brandId', '==', userId)
-        .orderBy('createdAt', 'desc');
+    const brandRef = query(
+        collection(db, CHAT_ROOMS),
+        fsLimit(limit),
+        where('brandId', '==', userId),
+        fsOrderBy('createdAt', 'desc'),
+    );
 
     useEffect(() => {
         fetchSupport();
@@ -88,15 +95,14 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const fetchSupport = async () => {
         try {
-            const fetchedUsers = await firestore().collection('users')
-                .where('id', '==', brandId)
-                .get()
-                .then((querySnapshot) => querySnapshot?.docs
-                    ?.map((doc) => ({
-                        id: doc?.id,
-                        ...doc?.data(),
-                    })));
-
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where('id', '==', brandId));
+            const querySnapshot = await getDocs(q);
+            const fetchedUsers = querySnapshot?.docs
+                ?.map((doc) => ({
+                    id: doc?.id,
+                    ...doc?.data(),
+                }));
             setSupportFcmToken(fetchedUsers?.[0]?.fcmToken);
         } catch (e) {
             console.error('Error fetching brands:', e);
@@ -105,13 +111,12 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     // listen for chat rooms
     useEffect(() => {
-        const unsubscribeCreator = creatorRef.onSnapshot(
+        const unsubscribeCreator = onSnapshot(creatorRef,
             (querySnapshot) => {
                 const creatorRooms = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
                 }));
-
                 setChatRooms((prevRooms) => {
                     const mergedRooms = [...prevRooms, ...creatorRooms];
                     return mergedRooms.filter(
@@ -121,16 +126,14 @@ const ChatRoomsScreen = ({ navigation }) => {
             },
             (error) => {
                 console.error('Error fetching creator chat rooms:', error);
-            },
-        );
+            });
 
-        const unsubscribeBrand = brandRef.onSnapshot(
+        const unsubscribeBrand = onSnapshot(brandRef,
             (querySnapshot) => {
                 const brandRooms = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
                 }));
-
                 setChatRooms((prevRooms) => {
                     const mergedRooms = [...prevRooms, ...brandRooms];
                     return mergedRooms.filter(
@@ -140,8 +143,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             },
             (error) => {
                 console.error('Error fetching brand chat rooms:', error);
-            },
-        );
+            });
 
         return () => {
             unsubscribeCreator();

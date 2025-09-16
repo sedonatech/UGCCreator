@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import auth from '@react-native-firebase/auth';
+import { getAuth, onAuthStateChanged as onAuthStateChangedModular } from '@react-native-firebase/auth';
 
 const useAuthState = () => {
     const [initializing, setInitializing] = useState(true);
@@ -13,8 +13,9 @@ const useAuthState = () => {
     };
 
     useEffect(() => {
-        const subscribe = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscribe;
+        const authInstance = getAuth();
+        const unsubscribe = onAuthStateChangedModular(authInstance, onAuthStateChanged);
+        return unsubscribe;
     }, []);
 
     return {

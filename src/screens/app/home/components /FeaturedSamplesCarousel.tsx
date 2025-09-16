@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import firestore from "@react-native-firebase/firestore";
+import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs,
+    documentId,
+} from "@react-native-firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TemplateBox from "../../../../components/TemplateBox";
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from "../../../../theme/Layout";
@@ -32,9 +41,10 @@ type FeaturedShowcaseCarouselProps = {
 
 export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCarouselProps) {
     const [items, setItems] = useState<Item[]>([]);
+
     const navigation = useNavigation();
 
-    const { features } = useFeatureFlags();
+    const { features  } = useFeatureFlags();
     const showCreatorShowcase = features?.showAffiliateProgramsCarousel;
 
     useFocusEffect(
@@ -49,19 +59,20 @@ export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCaro
                         sampleIds: string[];
                     };
                     if (dateKey === TODAY_KEY && sampleIds?.length) {
-                        const snap = await firestore()
-                            .collection("sampleWorks")
-                            .where(firestore.FieldPath.documentId(), "in", sampleIds.slice(0, MAX_ITEMS))
-                            .where("showcaseOptIn", "==", true)
-                            .get();
-
+                        const db = getFirestore();
+                        const sampleWorksRef = collection(db, "sampleWorks");
+                        const snapQuery = query(
+                            sampleWorksRef,
+                            where(documentId(), "in", sampleIds.slice(0, MAX_ITEMS)),
+                            where("showcaseOptIn", "==", true),
+                        );
+                        const snap = await getDocs(snapQuery);
                         const map = new Map<string, any>();
                         snap.forEach(d => map.set(d.id, d.data()));
                         const ordered = sampleIds
                             .slice(0, MAX_ITEMS)
                             .map(id => (map.has(id) ? { id, ...(map.get(id) as any) } : null))
                             .filter(Boolean) as any[];
-
                         if (mounted) setItems(ordered);
                         return;
                     }
@@ -69,33 +80,64 @@ export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCaro
 
                 // 2) No cache → get 6 random via rand pivot
                 const pivot = Math.random();
-                const base = firestore()
-                    .collection("sampleWorks")
-                    .where("visibility", "==", "public")
-                    .where("showcaseOptIn", "==", true)
-                    .orderBy("rand", "asc"); // needs composite index with (visibility, isFeatured, rand)
-
-                const aSnap = await base.where("rand", ">=", pivot).limit(MAX_ITEMS).get();
+                const db = getFirestore();
+                const sampleWorksRef = collection(db, "sampleWorks");
+                const baseQuery = query(
+                    sampleWorksRef,
+                    where("visibility", "==", "public"),
+                    where("showcaseOptIn", "==", true),
+                    orderBy("rand", "asc"),
+                );
+                const aQuery = query(
+                    sampleWorksRef,
+                    where("visibility", "==", "public"),
+                    where("showcaseOptIn", "==", true),
+                    orderBy("rand", "asc"),
+                    where("rand", ">=", pivot),
+                    limit(MAX_ITEMS),
+                );
+                const aSnap = await getDocs(aQuery);
                 let docs = aSnap.docs;
-
                 if (docs.length < MAX_ITEMS) {
-                    const bSnap = await base.where("rand", "<", pivot).limit(MAX_ITEMS - docs.length).get();
+                    const bQuery = query(
+                        sampleWorksRef,
+                        where("visibility", "==", "public"),
+                        where("showcaseOptIn", "==", true),
+                        orderBy("rand", "asc"),
+                        where("rand", "<", pivot),
+                        limit(MAX_ITEMS - docs.length),
+                    );
+                    const bSnap = await getDocs(bQuery);
                     docs = docs.concat(bSnap.docs);
                 }
-
                 // Fallback if no docs (e.g., early data) → newest 6
                 if (docs.length === 0) {
-                    const fb = await firestore()
-                        .collection("sampleWorks")
-                        .where("visibility", "==", "public")
-                        .where("isFeatured", "==", true)
-                        .orderBy("createdAt", "desc")
-                        .limit(MAX_ITEMS)
-                        .get();
+                    const fbQuery = query(
+                        sampleWorksRef,
+                        where("visibility", "==", "public"),
+                        where("isFeatured", "==", true),
+                        orderBy("createdAt", "desc"),
+                        limit(MAX_ITEMS),
+                    );
+                    const fb = await getDocs(fbQuery);
                     docs = fb.docs;
                 }
 
-                const picked = docs.slice(0, MAX_ITEMS).map((d) => ({ id: d.id, ...(d.data() as any) })) as Item[];
+                interface SampleWorkDoc {
+                    id: string;
+                    title: string;
+                    description: string;
+                    coverUrl: string;
+                    socialUrl?: string;
+                    [key: string]: any;
+                }
+
+                const picked: Item[] = docs
+                    .slice(0, MAX_ITEMS)
+                    .map((d: any): SampleWorkDoc => {
+                        const { id: _id, ...data } = d.data() as SampleWorkDoc;
+                        return { id: d.id, ...data };
+                    });
                 const ids = picked.map((p) => p.id);
 
                 if (docs?.length > MAX_ITEMS) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import messaging from '@react-native-firebase/messaging';
+import { getMessaging } from '@react-native-firebase/messaging';
 import useFCMToken from './useFCMToken';
 
 const useNotificationPermissions = () => {
@@ -9,40 +9,15 @@ const useNotificationPermissions = () => {
 
     const checkApplicationPermissions = async () => {
         try {
-            const authorizationStatus = await messaging().requestPermission(
-                {
-                    alert: true,
-                    announcement: true,
-                    badge: true,
-                    carPlay: false,
-                    criticalAlert: false,
-                    provisional: false,
-                    sound: true,
-                },
-            );
-
-            if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-                setIsAuthorized(true);
-            } else {
-                setIsAuthorized(false);
-            }
+            const authorizationStatus = await getMessaging().hasPermission();
+            setIsAuthorized(authorizationStatus === getMessaging().AuthorizationStatus.AUTHORIZED);
         } catch (error) {
             console.log('error', error);
         }
     };
 
-    const registerDevice = async () => {
-        try {
-            const response = await messaging().registerDeviceForRemoteMessages();
-            if (response) {
-                checkApplicationPermissions();
-            }
-        } catch (error) {
-            console.log('error', error);
-        }
-    };
     useEffect(() => {
-        registerDevice();
+        checkApplicationPermissions();
     }, []);
 
     useEffect(() => {

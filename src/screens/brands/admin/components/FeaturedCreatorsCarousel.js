@@ -3,7 +3,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    limit,
+    getDocs,
+} from '@react-native-firebase/firestore';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, CREATORS_PROFILES_STACK, PROFILE } from '../../../../navigation/ScreenNames';
@@ -23,22 +30,25 @@ const USERS_COLLECTION = 'users';
 const FeaturedCreatorsCarousel = ({ style, creator }) => {
     const navigation = useNavigation();
     const [creatorsData, setCreators] = useState([]);
-    const creatorsRef = firestore().collection(USERS_COLLECTION)
-        .where('type', '==', 'creator')
-        .where('portfolioLink', '!=', '')
-        .limit(20);
+    const db = getFirestore();
+    const creatorsRef = query(
+        collection(db, USERS_COLLECTION),
+        where('type', '==', 'creator'),
+        where('portfolioLink', '!=', ''),
+        limit(20),
+    );
 
     useEffect(() => {
         getCreators();
     }, []);
 
     const getCreators = async () => {
-        const querySnapshot = await creatorsRef.get();
+        const querySnapshot = await getDocs(creatorsRef);
         const data = querySnapshot?.docs
-            ?.map((doc) => ({
-                id: doc?.id,
-                ...doc?.data(),
-                lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+            ?.map((docSnap) => ({
+                id: docSnap?.id,
+                ...docSnap?.data(),
+                lastLoginTime: docSnap?.lastLoginTime ? calculateLastLoginTime(docSnap?.lastLoginTime) : 'days ago',
             }));
         setCreators(data);
     };

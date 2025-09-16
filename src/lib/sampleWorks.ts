@@ -1,4 +1,4 @@
-import firestore, { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, where, orderBy, serverTimestamp, FieldValue } from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 import analytics from "@react-native-firebase/analytics";
 import { nanoid } from "nanoid/non-secure";
@@ -72,9 +72,10 @@ export async function uploadCover(
 export async function createSample(
   input: Omit<SampleWork, "id" | "createdAt" | "updatedAt">
 ) {
-  const col = firestore().collection("sampleWorks");
-  const now = firestore.FieldValue.serverTimestamp();
-  const docRef = await col.add({
+  const db = getFirestore();
+  const col = collection(db, "sampleWorks");
+  const now = serverTimestamp();
+  const docRef = await addDoc(col, {
     ...input,
     createdAt: now,
     updatedAt: now,
@@ -94,9 +95,11 @@ export async function createSample(
 
 // --- Update a sample ---
 export async function updateSample(id: string, patch: Partial<SampleWork>) {
-  await firestore().collection("sampleWorks").doc(id).update({
+  const db = getFirestore();
+  const sampleRef = doc(db, "sampleWorks", id);
+  await updateDoc(sampleRef, {
     ...patch,
-    updatedAt: firestore.FieldValue.serverTimestamp(),
+    updatedAt: serverTimestamp(),
   });
 
   // log analytics
@@ -108,7 +111,9 @@ export async function updateSample(id: string, patch: Partial<SampleWork>) {
 
 // --- Delete a sample ---
 export async function deleteSample(id: string) {
-  await firestore().collection("sampleWorks").doc(id).delete();
+  const db = getFirestore();
+  const sampleRef = doc(db, "sampleWorks", id);
+  await deleteDoc(sampleRef);
 
   // log analytics
   await analytics().logEvent("sample_deleted", {
@@ -118,11 +123,9 @@ export async function deleteSample(id: string) {
 
 // --- Get user samples ---
 export async function getMySamples(uid: string) {
-  const snap = await firestore()
-    .collection("sampleWorks")
-    .where("ownerId", "==", uid)
-    .orderBy("createdAt", "desc")
-    .get();
-
+  const db = getFirestore();
+  const col = collection(db, "sampleWorks");
+  const q = query(col, where("ownerId", "==", uid), orderBy("createdAt", "desc"));
+  const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...(d.data() as SampleWork) }));
 }

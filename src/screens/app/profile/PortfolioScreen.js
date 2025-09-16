@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
     ScrollView, StyleSheet,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore, collection, doc, getDoc,
+} from '@react-native-firebase/firestore';
 import {
     lightOrange, TRANSPARENT, WHITE,
 } from '../../../theme/Colors';
@@ -37,8 +39,10 @@ const PortfolioScreen = ({ navigation, route }) => {
 
     const getProfile = async () => {
         try {
-            const documentSnapshot = await firestore().collection(USERS_COLLECTION).doc(creatorId).get();
-            if (documentSnapshot.exists) {
+            const db = getFirestore();
+            const userRef = doc(collection(db, USERS_COLLECTION), creatorId);
+            const documentSnapshot = await getDoc(userRef);
+            if (documentSnapshot.exists()) {
                 setSelectedCreator({
                     id: documentSnapshot.id,
                     ...documentSnapshot.data(),

@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { ProjectApplicationContext } from '../../context/ProjectApplicationProvider';
 
-const useProjectApplication = () => {
+const useProjectApplicationContext = () => {
     const projectApplicationContext = useContext(ProjectApplicationContext);
 
     return projectApplicationContext;
 };
 
-export default useProjectApplication;
+export default useProjectApplicationContext;

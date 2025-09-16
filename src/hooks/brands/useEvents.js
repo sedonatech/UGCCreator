@@ -1,5 +1,17 @@
-/* eslint-disable no-param-reassign */
-import firestore from '@react-native-firebase/firestore';
+/* eslint-disable import/no-unresolved */
+import {
+    getFirestore,
+    collection,
+    doc,
+    getDocs,
+    getDoc,
+    query,
+    where,
+    limit,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+} from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -38,9 +50,10 @@ const useEvents = (eventsLimit = 5) => {
     const createEvent = async (eventData) => {
         try {
             setLoading(true);
-            const db = firestore();
+            const db = getFirestore();
             const { uid } = auth().currentUser;
-            const docRef = await db.collection(EVENTS_COLLECTION).add({
+            const eventsRef = collection(db, EVENTS_COLLECTION);
+            const docRef = await addDoc(eventsRef, {
                 ...eventData,
                 eventId: uuidv4(),
                 userId: uid,
@@ -56,14 +69,19 @@ const useEvents = (eventsLimit = 5) => {
     const getEvents = async () => {
         try {
             setLoading(true);
-            const db = firestore();
+            const db = getFirestore();
             const { uid } = auth().currentUser;
-            const querySnapshot = await db.collection(EVENTS_COLLECTION).where('userId', '==', uid).limit(eventsLimit).get();
+            const eventsRef = collection(db, EVENTS_COLLECTION);
+            const q = query(
+                eventsRef,
+                where('userId', '==', uid),
+                limit(eventsLimit),
+            );
+            const querySnapshot = await getDocs(q);
             const eventsData = [];
-            querySnapshot.forEach((doc) => {
-                eventsData.push({ docId: doc?.id, ...doc?.data() });
+            querySnapshot.forEach((docSnap) => {
+                eventsData.push({ docId: docSnap?.id, ...docSnap?.data() });
             });
-
             if (eventsData.length > 0) {
                 setEvents(eventsData);
             }
@@ -76,13 +94,17 @@ const useEvents = (eventsLimit = 5) => {
     const getAllEvents = async () => {
         try {
             setLoading(true);
-            const db = firestore();
-            const querySnapshot = await db.collection(EVENTS_COLLECTION).limit(eventsLimit).get();
+            const db = getFirestore();
+            const eventsRef = collection(db, EVENTS_COLLECTION);
+            const q = query(
+                eventsRef,
+                limit(eventsLimit),
+            );
+            const querySnapshot = await getDocs(q);
             const eventsData = [];
-            querySnapshot.forEach((doc) => {
-                eventsData.push({ id: doc?.id, ...doc?.data() });
+            querySnapshot.forEach((docSnap) => {
+                eventsData.push({ id: docSnap?.id, ...docSnap?.data() });
             });
-
             if (eventsData.length > 0) {
                 setAllEvents(eventsData);
             }
@@ -95,10 +117,11 @@ const useEvents = (eventsLimit = 5) => {
     const getEvent = async (id) => {
         try {
             setLoading(true);
-            const db = firestore();
-            const doc = await db.collection(EVENTS_COLLECTION).doc(id).get();
-            if (doc.exists) {
-                setEvent({ id: doc?.id, ...doc?.data() });
+            const db = getFirestore();
+            const eventRef = doc(db, EVENTS_COLLECTION, id);
+            const docSnap = await getDoc(eventRef);
+            if (docSnap.exists) {
+                setEvent({ id: docSnap?.id, ...docSnap?.data() });
             }
         } catch (error) {
             console.log(error);
@@ -109,8 +132,9 @@ const useEvents = (eventsLimit = 5) => {
     const updateEvent = async (id, eventData) => {
         try {
             setLoading(true);
-            const db = firestore();
-            await db.collection(EVENTS_COLLECTION).doc(id).update(eventData);
+            const db = getFirestore();
+            const eventRef = doc(db, EVENTS_COLLECTION, id);
+            await updateDoc(eventRef, eventData);
         } catch (error) {
             console.log(error);
         }
@@ -120,8 +144,9 @@ const useEvents = (eventsLimit = 5) => {
     const deleteEvent = async (id) => {
         try {
             setLoading(true);
-            const db = firestore();
-            await db.collection(EVENTS_COLLECTION).doc(id).delete();
+            const db = getFirestore();
+            const eventRef = doc(db, EVENTS_COLLECTION, id);
+            await deleteDoc(eventRef);
         } catch (error) {
             console.log(error);
         }
