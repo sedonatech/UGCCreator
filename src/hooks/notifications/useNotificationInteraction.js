@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import messaging from '@react-native-firebase/messaging';
+import { getMessaging, getInitialNotification } from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
 import { APP_TABS } from '../../navigation/ScreenNames';
 
@@ -11,7 +11,8 @@ const useNotificationInteraction = () => {
     useEffect(() => {
         setLoading(true);
 
-        messaging().onNotificationOpenedApp((remoteMessage) => {
+        const messaging = getMessaging();
+        messaging.onNotificationOpenedApp((remoteMessage) => {
             console.log(
                 'Notification caused app to open from background state:',
                 remoteMessage.notification,
@@ -27,22 +28,21 @@ const useNotificationInteraction = () => {
     useEffect(() => {
         setLoading(true);
         // Check whether an initial notification is available
-        messaging()
-            .getInitialNotification()
-            .then((remoteMessage) => {
-                if (remoteMessage) {
-                    console.log(
-                        'Notification caused app to open from quit state:  ',
-                        remoteMessage,
-                    );
-                    setLoading(false);
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: APP_TABS }],
-
-                    });
-                }
-            });
+        (async () => {
+            setLoading(true);
+            const remoteMessage = await getInitialNotification();
+            if (remoteMessage) {
+                console.log(
+                    'Notification caused app to open from quit state:  ',
+                    remoteMessage,
+                );
+                setLoading(false);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: APP_TABS }],
+                });
+            }
+        })();
     }, []);
 
     return {

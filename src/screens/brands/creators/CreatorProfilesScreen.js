@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, {
     useCallback,
     useEffect, useRef, useState,
@@ -12,7 +13,9 @@ import {
 } from 'lodash';
 import { useIsFocused } from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore, collection, query, where, limit as fsLimit, getDocs,
+} from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
 import { wp } from '../../../Utils/getResponsiveSize';
 import {
@@ -75,25 +78,33 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const searchActive = search?.length > 2 || selectedFilters?.length;
 
-    const creatorsRef = firestore().collection(USERS_COLLECTION)
-        .where('type', '==', 'creator')
-        .limit(limit);
+    const db = getFirestore();
 
-    let filteredCreatorsRef = firestore().collection(USERS_COLLECTION)
-        .where('type', '==', 'creator')
-        .limit(limit);
+    const getCreatorsQuery = (limitCount) => query(
+        collection(db, USERS_COLLECTION),
+        where('type', '==', 'creator'),
+        fsLimit(limitCount),
+    );
 
-    if (search?.includes('.com')) filteredCreatorsRef = filteredCreatorsRef.where('email', '==', search?.toLowerCase());
-    if (search?.length > 2 && !search?.includes('.com')) filteredCreatorsRef = filteredCreatorsRef.where('userName', '==', startCase(toLower(search)));
-    if (selectedFilters?.length) {
-        const filterArray = selectedFilters.map((filter) => filter.toLowerCase());
-        filteredCreatorsRef = filteredCreatorsRef.where('categories', 'array-contains-any', filterArray);
-    }
+    const getFilteredCreatorsQuery = (limitCount, search, selectedFilters) => {
+        const constraints = [where('type', '==', 'creator'), fsLimit(limitCount)];
+        if (search?.includes('.com')) {
+            constraints.push(where('email', '==', search?.toLowerCase()));
+        } else if (search?.length > 2 && !search?.includes('.com')) {
+            constraints.push(where('userName', '==', startCase(toLower(search))));
+        }
+        if (selectedFilters?.length) {
+            const filterArray = selectedFilters.map((filter) => filter.toLowerCase());
+            constraints.push(where('categories', 'array-contains-any', filterArray));
+        }
+        return query(collection(db, USERS_COLLECTION), ...constraints);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const querySnapshot = await creatorsRef.limit(limit).get();
+                const q = getCreatorsQuery(limit);
+                const querySnapshot = await getDocs(q);
                 const data = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
@@ -110,12 +121,13 @@ const CreatorProfilesScreen = ({ navigation }) => {
     const searchCreator = async () => {
         setLoading(true);
         setFilteredCreators([]);
-        const querySnapshot = await filteredCreatorsRef.get();
+        const q = getFilteredCreatorsQuery(limit, search, selectedFilters);
+        const querySnapshot = await getDocs(q);
         const data = querySnapshot?.docs
             ?.map((doc) => ({
                 id: doc?.id,
                 ...doc?.data(),
-                lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
+                lastLoginTime: doc?.data().lastLoginTime ? calculateLastLoginTime(doc?.data().lastLoginTime) : 'days ago',
             }));
         setLoading(false);
         setFilteredCreators(data);

@@ -1,5 +1,18 @@
 /* eslint-disable no-param-reassign */
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore,
+    collection,
+    doc,
+    getDocs,
+    getDoc,
+    query,
+    where,
+    orderBy,
+    limit,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+} from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { useState } from 'react';
 import { projectStatuses } from '../../consts/AppFilters/ProjectStatus';
@@ -42,7 +55,7 @@ const useProjects = () => {
     const [enrolledProjects, setEnrolledProjects] = useState([]);
     const { auth: authContext } = useAuthContext();
     const profile = authContext?.profile;
-  
+
     const [project, setProject] = useState(initialProjectState);
 
     const [loading, setLoading] = useState(false);
@@ -57,9 +70,10 @@ const useProjects = () => {
     const createProject = async (projectData) => {
         try {
             setLoading(true);
-            const db = firestore();
+            const db = getFirestore();
             const { uid } = auth().currentUser;
-            const docRef = await db.collection(PROJECTS_COLLECTION).add({
+            const projectsRef = collection(db, PROJECTS_COLLECTION);
+            const docRef = await addDoc(projectsRef, {
                 ...projectData,
                 brandId: uid,
                 createdAt: Date.now(),
@@ -76,19 +90,20 @@ const useProjects = () => {
     const getProjects = async (projectLimits = 8) => {
         try {
             setLoading(true);
-            const db = firestore();
+            const db = getFirestore();
             const { uid } = auth().currentUser;
-            // const uid = 'QZJ14IZYjTZpjGUkaJUyqjLmhYG3';
-            const querySnapshot = await db.collection(PROJECTS_COLLECTION)
-                .where('brandId', '==', uid)
-                .orderBy('createdAt', 'desc')
-                .limit(projectLimits)
-                .get();
+            const projectsRef = collection(db, PROJECTS_COLLECTION);
+            const q = query(
+                projectsRef,
+                where('brandId', '==', uid),
+                orderBy('createdAt', 'desc'),
+                limit(projectLimits),
+            );
+            const querySnapshot = await getDocs(q);
             const projectsData = [];
-            querySnapshot.forEach((doc) => {
-                projectsData.push({ id: doc?.id, ...doc?.data() });
+            querySnapshot.forEach((docSnap) => {
+                projectsData.push({ id: docSnap?.id, ...docSnap?.data() });
             });
-
             if (projectsData.length > 0) {
                 setProjects(projectsData?.filter(({ brandId }) => brandId === uid));
             }
@@ -101,17 +116,19 @@ const useProjects = () => {
     const getAllProjects = async (projectLimits = 8) => {
         try {
             setLoading(true);
-            const db = firestore();
-            const querySnapshot = await db.collection(PROJECTS_COLLECTION)
-                .where('isBlocked', '==', false)
-                .orderBy('createdAt', 'desc')
-                .limit(projectLimits)
-                .get();
+            const db = getFirestore();
+            const projectsRef = collection(db, PROJECTS_COLLECTION);
+            const q = query(
+                projectsRef,
+                where('isBlocked', '==', false),
+                orderBy('createdAt', 'desc'),
+                limit(projectLimits),
+            );
+            const querySnapshot = await getDocs(q);
             const projectsData = [];
-            querySnapshot.forEach((doc) => {
-                projectsData.push({ id: doc?.id, ...doc?.data() });
+            querySnapshot.forEach((docSnap) => {
+                projectsData.push({ id: docSnap?.id, ...docSnap?.data() });
             });
-
             if (projectsData.length > 0) {
                 setAllProjects(projectsData);
             }
@@ -124,33 +141,39 @@ const useProjects = () => {
     const getProject = async (id) => {
         try {
             setLoading(true);
-            const db = firestore();
-            const doc = await db.collection(PROJECTS_COLLECTION).doc(id).get();
-            if (doc.exists) {
-                const result = { id: doc?.id, ...doc?.data() };
+            const db = getFirestore();
+            const projectRef = doc(db, PROJECTS_COLLECTION, id);
+            const docSnap = await getDoc(projectRef);
+            if (docSnap.exists) {
+                const result = { id: docSnap?.id, ...docSnap?.data() };
                 setProject(result);
                 return result;
             }
+            setProject(initialProjectState);
+            return initialProjectState;
         } catch (error) {
             console.log(error);
+            setProject(initialProjectState);
+            return initialProjectState;
         }
-        setLoading(false);
     };
 
     const getEnrolledProjects = async (id, projectLimits = 5) => {
         try {
             setLoading(true);
-            const db = firestore();
-            const querySnapshot = await db.collection(PROJECTS_COLLECTION)
-                .where('enrolledUserIds', 'array-contains', id)
-                .orderBy('createdAt', 'desc')
-                .limit(projectLimits)
-                .get();
+            const db = getFirestore();
+            const projectsRef = collection(db, PROJECTS_COLLECTION);
+            const q = query(
+                projectsRef,
+                where('enrolledUserIds', 'array-contains', id),
+                orderBy('createdAt', 'desc'),
+                limit(projectLimits),
+            );
+            const querySnapshot = await getDocs(q);
             const projectsData = [];
-            querySnapshot.forEach((doc) => {
-                projectsData.push({ id: doc?.id, ...doc?.data() });
+            querySnapshot.forEach((docSnap) => {
+                projectsData.push({ id: docSnap?.id, ...docSnap?.data() });
             });
-
             if (projectsData.length > 0) {
                 setEnrolledProjects(projectsData);
             }
@@ -163,8 +186,9 @@ const useProjects = () => {
     const updateProject = async (id, projectData) => {
         try {
             setLoading(true);
-            const db = firestore();
-            await db.collection(PROJECTS_COLLECTION).doc(id).update(projectData);
+            const db = getFirestore();
+            const projectRef = doc(db, PROJECTS_COLLECTION, id);
+            await updateDoc(projectRef, projectData);
         } catch (error) {
             console.log(error);
         }
@@ -174,8 +198,9 @@ const useProjects = () => {
     const deleteProject = async (id) => {
         try {
             setLoading(true);
-            const db = firestore();
-            await db.collection(PROJECTS_COLLECTION).doc(id).delete();
+            const db = getFirestore();
+            const projectRef = doc(db, PROJECTS_COLLECTION, id);
+            await deleteDoc(projectRef);
         } catch (error) {
             console.log(error);
         }

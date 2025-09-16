@@ -11,7 +11,7 @@ import {
     Share,
     Switch,
 } from "react-native";
-import firestore, { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
+import { getFirestore, collection, doc, getDoc, onSnapshot, deleteDoc, updateDoc } from "@react-native-firebase/firestore";
 import SampleWorkModal from "../../../components/modals/SampleWorkModal";
 import { BLACK, BLUE, DEFAULT_GRADIENT, ERROR_RED, GREY_SECONDARY, PRIMARY, WHITE } from "../../../theme/Colors";
 import TemplateText from "../../../components/TemplateText";
@@ -64,9 +64,10 @@ export default function SampleDetailsScreen({ route, navigation }) {
 
     useEffect(() => {
         if (!id) return;
-        const ref = firestore().collection("sampleWorks").doc(id);
-        const unsub = ref.onSnapshot(async (snap) => {
-            if (!snap.exists) {
+        const db = getFirestore();
+        const ref = doc(collection(db, "sampleWorks"), id);
+        const unsub = onSnapshot(ref, async (snap) => {
+            if (!snap.exists()) {
                 setSample(null);
                 setLoading(false);
                 return;
@@ -76,8 +77,9 @@ export default function SampleDetailsScreen({ route, navigation }) {
             setLoading(false);
 
             if (data.ownerId) {
-                const u = await firestore().collection("users").doc(data.ownerId).get();
-                setOwner((u.exists ? (u.data() as any) : null) as UserLite | null);
+                const userRef = doc(collection(db, "users"), data.ownerId);
+                const u = await getDoc(userRef);
+                setOwner((u.exists() ? (u.data() as any) : null) as UserLite | null);
             }
         });
         return () => unsub();
@@ -91,7 +93,9 @@ export default function SampleDetailsScreen({ route, navigation }) {
                 text: "Delete",
                 style: "destructive",
                 onPress: async () => {
-                    await firestore().collection("sampleWorks").doc(sample.id).delete();
+                    const db = getFirestore();
+                    const sampleRef = doc(collection(db, "sampleWorks"), sample.id);
+                    await deleteDoc(sampleRef);
                     navigation.goBack();
                 },
             },
@@ -100,12 +104,16 @@ export default function SampleDetailsScreen({ route, navigation }) {
 
     async function toggleFeatured(v: boolean) {
         if (!sample) return;
-        await firestore().collection("sampleWorks").doc(sample.id).update({ isFeatured: v });
+    const db = getFirestore();
+    const sampleRef = doc(collection(db, "sampleWorks"), sample.id);
+    await updateDoc(sampleRef, { isFeatured: v });
     }
 
     async function toggleShowcase(v: boolean) {
         if (!sample) return;
-        await firestore().collection("sampleWorks").doc(sample.id).update({ showcaseOptIn: v });
+    const db = getFirestore();
+    const sampleRef = doc(collection(db, "sampleWorks"), sample.id);
+    await updateDoc(sampleRef, { showcaseOptIn: v });
     }
 
     if (loading) {

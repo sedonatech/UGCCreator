@@ -1,9 +1,12 @@
+/* eslint-disable max-len */
 import React, {
     useEffect, useMemo, useState,
 } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import Fuse from 'fuse.js';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore, collection, query, where, limit as fsLimit, getDocs,
+} from '@react-native-firebase/firestore';
 import {
     HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN,
 } from '../../../theme/Layout';
@@ -27,15 +30,17 @@ const BrandsScreen = ({ navigation }) => {
 
     const [limit, setLimit] = useState(40);
 
-    const brandsRef = firestore().collection(USERS_COLLECTION)
-        .where('type', '==', 'brand')
-        .limit(limit);
+    const db = getFirestore();
+    const brandsRef = query(
+        collection(db, USERS_COLLECTION),
+        where('type', '==', 'brand'),
+        fsLimit(limit),
+    );
     const fetchBrands = async () => {
         try {
-            const fetchedBrands = await brandsRef
-                .get()
-                .then((querySnapshot) => querySnapshot?.docs
-                    ?.map((doc) => doc?.data()));
+            const querySnapshot = await getDocs(brandsRef);
+            const fetchedBrands = querySnapshot?.docs
+                ?.map((doc) => doc?.data());
             const filtered = (fetchedBrands || [])?.filter((brand) => !brand?.isBlocked);
             if (filtered?.length < 1) setLimit(limit + 20);
             setBrandsData(filtered);

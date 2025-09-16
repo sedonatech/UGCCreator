@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore, collection, doc, getDoc, query, where, orderBy as fsOrderBy, onSnapshot, addDoc, updateDoc, serverTimestamp, FieldValue,
+} from '@react-native-firebase/firestore';
 import { useIsFocused } from '@react-navigation/native';
 import { format } from 'date-fns';
 import { LAVENDER, WHITE } from '../../theme/Colors';
@@ -46,13 +48,12 @@ const ChatsScreen = ({ route }) => {
         return null;
     }, [profile]);
 
+    const db = getFirestore();
     const fetchChatRoom = async () => {
         try {
-            const response = await firestore()
-                .collection(CHAT_ROOMS)
-                .doc(chatRoomId)
-                .get();
-            if (response?.exists) {
+            const chatRoomRef = doc(collection(db, CHAT_ROOMS), chatRoomId);
+            const response = await getDoc(chatRoomRef);
+            if (response?.exists()) {
                 setChatRoom({
                     id: response.id,
                     ...response.data(),
@@ -65,40 +66,33 @@ const ChatsScreen = ({ route }) => {
 
     useEffect(() => {
         if (!chatRoomId) return null;
-        // fetch chat room
         fetchChatRoom();
 
-        // listen for chatroom messages
-        const unsubscribe = firestore()
-            .collection(CHAT_ROOMS)
-            .doc(chatRoomId)
-            .collection(MESSAGES)
-            .orderBy('createdAt', 'desc')
-            .onSnapshot((snapshot) => {
-                const newMessages = snapshot?.docs?.map((doc) => ({
-                    ...doc?.data(),
-                    id: doc?.id,
-                }));
-                setMessages(newMessages);
-            });
-
+        const messagesRef = collection(db, CHAT_ROOMS, chatRoomId, MESSAGES);
+        const q = query(messagesRef, fsOrderBy('createdAt', 'desc'));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const newMessages = snapshot?.docs?.map((docSnap) => ({
+                ...docSnap?.data(),
+                id: docSnap?.id,
+            }));
+            setMessages(newMessages);
+        });
         return unsubscribe;
     }, [chatRoomId]);
 
     // Mark messages as read
     useEffect(() => {
-        const unsubscribe = firestore()
-            .collection(CHAT_ROOMS)
-            .doc(chatRoomId)
-            .collection(MESSAGES)
-            .where('read', '==', false)
-            .where('user._id', '!=', auth?.profile?.id)
-            .onSnapshot((snapshot) => {
-                snapshot?.docs?.forEach((doc) => {
-                    doc.ref.update({ read: true });
-                });
+        const messagesRef = collection(db, CHAT_ROOMS, chatRoomId, MESSAGES);
+        const q = query(
+            messagesRef,
+            where('read', '==', false),
+            where('user._id', '!=', auth?.profile?.id),
+        );
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            snapshot?.docs?.forEach((docSnap) => {
+                updateDoc(doc(collection(db, CHAT_ROOMS, chatRoomId, MESSAGES), docSnap.id), { read: true });
             });
-
+        });
         return unsubscribe;
     }, [chatRoomId, isFocused, profile?.id]);
 
@@ -110,16 +104,14 @@ const ChatsScreen = ({ route }) => {
                 sender: message?.user?.name,
                 createdAt: new Date().toISOString(),
             }));
-            await firestore()
-                .collection(CHAT_ROOMS)
-                .doc(chatRoomId)
-                .collection(MESSAGES)
-                .add(formattedMessages[0]);
+            const messagesRef = collection(db, CHAT_ROOMS, chatRoomId, MESSAGES);
+            await addDoc(messagesRef, formattedMessages[0]);
 
-            await firestore().collection(CHAT_ROOMS).doc(chatRoomId).update({
+            const chatRoomRef = doc(collection(db, CHAT_ROOMS), chatRoomId);
+            await updateDoc(chatRoomRef, {
                 lastMessageText: formattedMessages[0]?.text,
-                lastMessageTimestamp: firestore.FieldValue.serverTimestamp(),
-                createdAt: firestore.FieldValue.serverTimestamp(),
+                lastMessageTimestamp: serverTimestamp(),
+                createdAt: serverTimestamp(),
             });
 
             // send notification

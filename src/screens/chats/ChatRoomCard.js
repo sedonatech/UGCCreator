@@ -1,18 +1,22 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore, collection, query, where, getDocs, onSnapshot,
+} from '@react-native-firebase/firestore';
 import TemplateBox from '../../components/TemplateBox';
 import { wp } from '../../Utils/getResponsiveSize';
-import {  SPACE_SMALL } from '../../theme/Layout';
-import { ERROR_RED, GREY, lightOrange, WHITE } from '../../theme/Colors';
+import { SPACE_SMALL } from '../../theme/Layout';
+import {
+    ERROR_RED, GREY, lightOrange, WHITE,
+} from '../../theme/Colors';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../consts/content/Portfolio';
 import TemplateText from '../../components/TemplateText';
 // import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 import { CHATS, CREATORS_PROFILES_STACK, PROFILE } from '../../navigation/ScreenNames';
-import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 
 const ChatRoomCard = ({
     id,
@@ -23,7 +27,8 @@ const ChatRoomCard = ({
     isCreator,
 }) => {
     // const { unreadMessagesCount } = useChatMessages(id);
-    const usersRef = firestore().collection('users');
+    const db = getFirestore();
+    const usersRef = collection(db, 'users');
 
     const [users, setUsers] = useState([]);
     const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
@@ -34,16 +39,14 @@ const ChatRoomCard = ({
 
     const fetchUsers = async (ids) => {
         try {
-            const fetchedUsers = await usersRef
-                .where('id', 'in', ids)
-                .get()
-                .then((querySnapshot) => querySnapshot?.docs
-                    ?.map((doc) => ({
-                        id: doc?.id,
-                        ...doc?.data(),
-                        lastLoginTime: doc?.lastLoginTime ? calculateLastLoginTime(doc?.lastLoginTime) : 'days ago',
-                    })));
-
+            const q = query(usersRef, where('id', 'in', ids));
+            const querySnapshot = await getDocs(q);
+            const fetchedUsers = querySnapshot?.docs
+                ?.map((docSnap) => ({
+                    id: docSnap?.id,
+                    ...docSnap?.data(),
+                    lastLoginTime: docSnap?.data().lastLoginTime ? calculateLastLoginTime(docSnap?.data().lastLoginTime) : 'days ago',
+                }));
             setUsers(fetchedUsers);
         } catch (e) {
             console.error('Error fetching brands:', e);
@@ -56,20 +59,17 @@ const ChatRoomCard = ({
 
     useEffect(() => {
         if (!id) return () => {};
-        const unsubscribe = firestore()
-            .collection('chatRooms')
-            .doc(id)
-            .collection('messages')
-            .where('read', '==', false)
-            .onSnapshot((snapshot) => {
-                const newMessages = snapshot?.docs?.map((doc) => ({
-                    ...doc?.data(),
-                    id: doc?.id,
-                }));
-                setUnreadMessagesCount(newMessages?.filter(
-                    (message) => message?.user?._id !== userId)?.length);
-            });
-
+        const messagesRef = collection(db, 'chatRooms', id, 'messages');
+        const q = query(messagesRef, where('read', '==', false));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const newMessages = snapshot?.docs?.map((docSnap) => ({
+                ...docSnap?.data(),
+                id: docSnap?.id,
+            }));
+            setUnreadMessagesCount(newMessages?.filter(
+                (message) => message?.user?._id !== userId,
+            )?.length);
+        });
         return unsubscribe;
     }, [id]);
 
@@ -100,33 +100,41 @@ const ChatRoomCard = ({
                         });
                     }}
                 />
-                {isSupport && 
-                    <View style={{alignSelf: 'flex-start', position: 'absolute', paddingHorizontal: 8, paddingVertical: 2, backgroundColor: lightOrange, right: 20}} >
-                        <TemplateText size={12} medium color={WHITE}>
-                            Support
-                        </TemplateText>
-                    </View>
-                }
+                {isSupport
+                    && (
+                        <View style={{
+                            alignSelf: 'flex-start', position: 'absolute', paddingHorizontal: 8, paddingVertical: 2, backgroundColor: lightOrange, right: 20,
+                        }}
+                        >
+                            <TemplateText size={12} medium color={WHITE}>
+                                Support
+                            </TemplateText>
+                        </View>
+                    )}
 
-                <TemplateBox style={styles.image} zIndex={9999} 
-                    onPress={()=> {
-                        if(!isCreator) return navigation.navigate(PROFILE, {
-                            creatorId: receiver?.id,
-                        })
+                <TemplateBox
+                    style={styles.image}
+                    zIndex={9999}
+                    onPress={() => {
+                        if (!isCreator) {
+                            return navigation.navigate(PROFILE, {
+                                creatorId: receiver?.id,
+                            });
+                        }
 
-                       return !isSupport && navigation.navigate(CREATORS_PROFILES_STACK, {
-                                screen: PROFILE,
-                                params:{ creatorId: receiver?.id }
-                         })
+                        return !isSupport && navigation.navigate(CREATORS_PROFILES_STACK, {
+                            screen: PROFILE,
+                            params: { creatorId: receiver?.id },
+                        });
                     }}
-                    >
+                >
                     <FastImage
                         source={{ uri: receiver?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                         style={styles.image}
                     />
                 </TemplateBox>
 
-                <TemplateBox width='80%'>
+                <TemplateBox width="80%">
                     <TemplateText bold size={wp(16)}>
                         {receiver?.userName || receiver?.name}
                     </TemplateText>

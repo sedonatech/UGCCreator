@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import remoteConfig from '@react-native-firebase/remote-config';
+import { getRemoteConfig } from '@react-native-firebase/remote-config';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 /**
@@ -45,21 +45,21 @@ export const FeatureFlagProvider:React.FC<FeatureFlagProviderProps> = ({
             });
 
             // Configure fetch interval instead of calling fetch(refetch)
-            await remoteConfig().setConfigSettings({
+            await getRemoteConfig().setConfigSettings({
                 minimumFetchIntervalMillis: Math.max(0, refetch) * 1000,
             });
 
             // Set defaults & make sure RC is ready
             if (Object.keys(primitiveDefaults).length) {
-                await remoteConfig().setDefaults(primitiveDefaults);
+                await getRemoteConfig().setDefaults(primitiveDefaults);
             }
-            await remoteConfig().ensureInitialized();
+            await getRemoteConfig().ensureInitialized();
 
             // Fetch and activate latest values
-            await remoteConfig().fetchAndActivate();
+            await getRemoteConfig().fetchAndActivate();
 
             // Read everything via public API (no _value)
-            const all = remoteConfig().getAll();
+            const all = getRemoteConfig().getAll();
 
             const parsedConfigs = Object.keys(all).reduce((acc, key) => {
                 try {

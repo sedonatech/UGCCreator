@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import {
     HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
+    WRAPPER_MARGIN,
 } from '../../../theme/Layout';
 import {
     BLACK, LIGHT_PURPLE, TRANSPARENT, WHITE,
@@ -56,7 +58,7 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
             onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
             style={styles.card}
             width={WRAPPED_SCREEN_WIDTH}
-            height={wp(140)}
+            height={wp(150)}
             mb={wp(16)}
             center
             selfCenter
@@ -75,7 +77,7 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                 {item?.description}
             </TemplateText>
             <Button
-                title="Learn More"
+                title="Apply Now"
                 onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                 style={styles.button}
                 titleSize={12}
@@ -97,26 +99,27 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                 showsVerticalScrollIndicator={false}
                 scrollEventThrottle={1}
                 ListHeaderComponent={(
-                    <TemplateBox backgroundColor={WHITE}>
+                    <TemplateBox backgroundColor={WHITE} style={{ alignItems: 'center' }}>
                         <TemplateText
                             size={18}
                             startCase
                             bold
                             center
-                            alignSelf="center"
                         >
                             {title}
                         </TemplateText>
-                        <TemplateText
-                            size={13}
-                            color={BLACK}
-                            center
-                            width={SCREEN_WIDTH / 1.1}
-                            mt={8}
-                        >
-                            Discover brand collabs, ambassador deals, and affiliate programs
-                            matched to your niche.
-                        </TemplateText>
+                        <TemplateBox center ph={WRAPPER_MARGIN} mt={8}>
+                            <TemplateText
+                                size={13}
+                                color={BLACK}
+                                center
+                                mt={8}
+                                ml={WRAPPER_MARGIN}
+                            >
+                                Discover brand collabs, ambassador deals, and affiliate programs
+                                matched to your niche.
+                            </TemplateText>
+                        </TemplateBox>
                         <TemplateBox selfCenter flex>
                             <ToggleCarousel
                                 data={brandCategories}

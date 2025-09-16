@@ -6,7 +6,12 @@ import {
     Alert,
     ScrollView, StyleSheet,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    updateDoc,
+} from '@react-native-firebase/firestore';
 import {
     DEFAULT_GRADIENT,
     WHITE, WHITE_40,
@@ -57,7 +62,9 @@ const BrandDetailsScreen = ({ route, navigation }) => {
 
     const getProfile = async () => {
         try {
-            const documentSnapshot = await firestore().collection('users').doc(brandId).get();
+            const db = getFirestore();
+            const brandRef = doc(db, 'users', brandId);
+            const documentSnapshot = await getDoc(brandRef);
             if (documentSnapshot.exists) {
                 setSelectedBrand({
                     id: documentSnapshot.id,
@@ -73,8 +80,9 @@ const BrandDetailsScreen = ({ route, navigation }) => {
 
     const updateBrand = async (id, brandData) => {
         try {
-            const db = firestore();
-            await db.collection(USERS_COLLECTION).doc(id).update(brandData);
+            const db = getFirestore();
+            const brandRef = doc(db, USERS_COLLECTION, id);
+            await updateDoc(brandRef, brandData);
         } catch (error) {
             console.log(error);
         }
@@ -127,7 +135,6 @@ const BrandDetailsScreen = ({ route, navigation }) => {
             ),
         });
     }, [navigation, blockBrand]);
-
 
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
 

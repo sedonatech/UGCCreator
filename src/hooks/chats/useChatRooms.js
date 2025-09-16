@@ -1,5 +1,18 @@
-import { useEffect, useState } from 'react';
-import firestore from '@react-native-firebase/firestore';
+/* eslint-disable no-underscore-dangle */
+import { useState } from 'react';
+import {
+    getFirestore,
+    collection,
+    doc,
+    query,
+    where,
+    orderBy,
+    limit,
+    getDocs,
+    addDoc,
+    deleteDoc,
+    serverTimestamp,
+} from '@react-native-firebase/firestore';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import useAuthContext from '../auth/useAuthContext';
@@ -10,13 +23,9 @@ export const CHAT_ROOMS = 'chatRooms';
 const useChatRooms = () => {
     const navigation = useNavigation();
 
-    const [chatRooms, setChatRooms] = useState([]);
-
     const [loading, setLoading] = useState(false);
 
     const [deleteChatRoomLoading, setDeleteChatRoomLoading] = useState(false);
-
-    const [fetchingChatRooms, setFetchingChatRooms] = useState(false);
 
     const { auth } = useAuthContext();
 
@@ -29,7 +38,7 @@ const useChatRooms = () => {
     const createChatRoom = async (name, creatorId, brandId, creatorFCMToken, brandFCMToken) => {
         try {
             setLoading(true);
-            // Create a new chat room only if the user is available to receive messages
+            const db = getFirestore();
             if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId || !name) {
                 Alert.alert('The user may not be available at the moment',
                     'Please try again later',
@@ -39,24 +48,22 @@ const useChatRooms = () => {
                     }], { cancelable: false });
                 return;
             }
-
             // Check if the chat room already exists, extend to handle creator to creator chat
-            const foundBrandToCreatorChat = await firestore()
-                .collection(CHAT_ROOMS)
-                .where('brandId', '==', brandId)
-                .where('creatorId', '==', creatorId)
-                .get();
-
-            const foundCreatorToCreatorChat = await firestore()
-                .collection(CHAT_ROOMS)
-                .where('brandId', '==', creatorId)
-                .where('creatorId', '==', brandId)
-                .get();
-
-
+            const chatRoomsRef = collection(db, CHAT_ROOMS);
+            const brandToCreatorQuery = query(
+                chatRoomsRef,
+                where('brandId', '==', brandId),
+                where('creatorId', '==', creatorId),
+            );
+            const creatorToCreatorQuery = query(
+                chatRoomsRef,
+                where('brandId', '==', creatorId),
+                where('creatorId', '==', brandId),
+            );
+            const foundBrandToCreatorChat = await getDocs(brandToCreatorQuery);
+            const foundCreatorToCreatorChat = await getDocs(creatorToCreatorQuery);
             const existingChatRoom = foundBrandToCreatorChat?.docs?.length
-             || foundCreatorToCreatorChat?.docs?.length;
-
+                || foundCreatorToCreatorChat?.docs?.length;
             if (existingChatRoom) {
                 Alert.alert('A conversation has already been started',
                     'You can check the chats tab and continue chatting',
@@ -66,16 +73,15 @@ const useChatRooms = () => {
                     }], { cancelable: false });
                 return;
             }
-            const response = await firestore().collection(CHAT_ROOMS).add({
+            const response = await addDoc(chatRoomsRef, {
                 name,
                 creatorId,
                 brandId,
-                createdAt: firestore.FieldValue.serverTimestamp(),
+                createdAt: serverTimestamp(),
                 creatorFCMToken,
                 brandFCMToken,
-                lastMessageTimestamp: firestore.FieldValue.serverTimestamp(),
+                lastMessageTimestamp: serverTimestamp(),
             });
-
             if (response) {
                 setChatRoomCreated(true);
                 Alert.alert('A conversation has been started',
@@ -96,58 +102,15 @@ const useChatRooms = () => {
                     }], { cancelable: false });
             }
         }
-        // setLoading(false);
-    };
-
-    useEffect(() => {
-        // const unsubscribe = firestore()
-        //     .collection(CHAT_ROOMS)
-        //     .orderBy('createdAt', 'desc')
-        //     .onSnapshot((querySnapshot) => {
-        //         const newChatRooms = querySnapshot?.docs?.map((doc) => ({
-        //             id: doc.id,
-        //             ...doc.data(),
-        //         }));
-        //         if (isCreator) {
-        //             setChatRooms(newChatRooms?.filter((chatRoom) => (chatRoom?.creatorId === userId)));
-        //         } else {
-        //             setChatRooms(newChatRooms?.filter((chatRoom) => (chatRoom?.brandId === userId)));
-        //         }
-        //     });
-        // return () => unsubscribe();
-    }, [chatRoomCreated, isCreator, userId]);
-
-    // Fetch chat rooms
-    const fetchChatRooms = async () => {
-        // try {
-        //     setFetchingChatRooms(true);
-        //     const response = await firestore()
-        //         .collection(CHAT_ROOMS)
-        //         .orderBy('createdAt', 'desc')
-        //         .get();
-        //     const newChatRooms = response?.docs?.map((doc) => ({
-        //         id: doc.id,
-        //         ...doc.data(),
-        //     }));
-        //     if (isCreator) {
-        //         setChatRooms(newChatRooms?.filter((chatRoom) => (chatRoom?.creatorId === userId)));
-        //     } else {
-        //         setChatRooms(newChatRooms?.filter((chatRoom) => (chatRoom?.brandId === userId)));
-        //     }
-        // } catch (error) {
-        //     console.log('[FETCH CHAT ROOMS ERROR]', error);
-        // }
-        // setFetchingChatRooms(false);
     };
 
     // Delete chat room
     const deleteChatRoom = async (chatRoomId) => {
         try {
             setDeleteChatRoomLoading(true);
-            await firestore()
-                .collection(CHAT_ROOMS)
-                .doc(chatRoomId)
-                .delete();
+            const db = getFirestore();
+            const chatRoomRef = doc(db, CHAT_ROOMS, chatRoomId);
+            await deleteDoc(chatRoomRef);
         } catch (error) {
             console.log('[DELETE CHAT ROOM ERROR]', error);
         }
@@ -156,33 +119,30 @@ const useChatRooms = () => {
 
     const fetchUnreadCountInLatestChatRoom = async () => {
         try {
-            const chatRoomSnapshot = await firestore()
-                .collection('chatRooms')
-                .where(isCreator ? 'creatorId' : 'brandId', '==', userId)
-                .orderBy('createdAt', 'desc')
-                .limit(1)
-                .get();
-
+            const db = getFirestore();
+            const chatRoomsRef = collection(db, CHAT_ROOMS);
+            const chatRoomQuery = query(
+                chatRoomsRef,
+                where(isCreator ? 'creatorId' : 'brandId', '==', userId),
+                orderBy('createdAt', 'desc'),
+                limit(1),
+            );
+            const chatRoomSnapshot = await getDocs(chatRoomQuery);
             const latestRoom = chatRoomSnapshot.docs[0];
-
             if (!latestRoom) {
                 console.log('No chat room found');
                 return 0;
             }
-
             const roomId = latestRoom.id;
-
-            const messagesSnapshot = await firestore()
-                .collection('chatRooms')
-                .doc(roomId)
-                .collection('messages')
-                .where('read', '==', false)
-                .get();
-
+            const messagesRef = collection(db, CHAT_ROOMS, roomId, 'messages');
+            const messagesQuery = query(
+                messagesRef,
+                where('read', '==', false),
+            );
+            const messagesSnapshot = await getDocs(messagesQuery);
             const unreadMessages = messagesSnapshot.docs
-                .map((doc) => ({ id: doc.id, ...doc.data() }))
+                .map((messageDoc) => ({ id: messageDoc.id, ...messageDoc.data() }))
                 .filter((message) => message.user?._id !== userId);
-
             return unreadMessages.length;
         } catch (error) {
             console.log('[UNREAD MESSAGE CHECK ERROR]', error);
@@ -191,12 +151,9 @@ const useChatRooms = () => {
     };
 
     return {
-        chatRooms,
         loading,
         createChatRoom,
         chatRoomCreated,
-        fetchChatRooms,
-        fetchingChatRooms,
         deleteChatRoom,
         deleteChatRoomLoading,
         fetchUnreadCountInLatestChatRoom,
