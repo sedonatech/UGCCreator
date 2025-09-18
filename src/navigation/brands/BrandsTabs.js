@@ -26,7 +26,7 @@ const BrandsTabs = () => {
                 component={AdminPanelStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="home-outline" />
+                        <TabButton focused={focused} icon="Home" />
                     ),
                     tabBarLabel: (props) => <TabLabel {...props}>Admin</TabLabel>,
                 }}
@@ -36,7 +36,7 @@ const BrandsTabs = () => {
                 component={CreatorsProfilesStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="search" />
+                        <TabButton focused={focused} icon="People" />
                     ),
                     tabBarLabel: (props) => <TabLabel {...props}>Explore</TabLabel>,
                 }}
@@ -46,7 +46,7 @@ const BrandsTabs = () => {
                 component={ChatsStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="chatbubbles-outline" />
+                        <TabButton focused={focused} icon="Chat" />
                     ),
                     tabBarLabel: (props) => <TabLabel {...props}>Chats</TabLabel>,
                 }}
@@ -56,7 +56,7 @@ const BrandsTabs = () => {
                 component={BrandsProfileStack}
                 options={{
                     tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="people-outline" />
+                        <TabButton focused={focused} icon="Profile" />
                     ),
                     tabBarLabel: (props) => <TabLabel {...props}>Brand Profile</TabLabel>,
                 }}
