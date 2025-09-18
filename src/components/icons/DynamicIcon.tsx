@@ -6,8 +6,9 @@ import ChatIcon from './ChatIcon';
 import ProfileIcon from './ProfileIcon';
 import ProjectsIcon from './ProjectsIcon';
 import { IconProps } from './IconProps';
+import PeopleIcon from './PeopleIcon';
 
-export type DynamicIconName = 'Home' | 'Chat' | 'Profile' | "Projects" | null;
+export type DynamicIconName = 'Home' | 'Chat' | 'Profile' | "Projects" | "People" | null;
 
 export interface DynamicIconProps extends IconProps {
     name: DynamicIconName
@@ -29,6 +30,10 @@ const IconList = [
     {
         name: 'Projects',
         icon: ProjectsIcon
+    },
+    {
+        name: 'People',
+        icon: PeopleIcon
     }
 ];
 
