@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import {
     View,
     Text,
@@ -10,6 +10,7 @@ import {
     Alert,
     Share,
     Switch,
+    SafeAreaView,
 } from "react-native";
 import firestore, { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import SampleWorkModal from "../../../components/modals/SampleWorkModal";
@@ -61,6 +62,30 @@ export default function SampleDetailsScreen({ route, navigation }) {
 
     const uid = auth?.profile?.id || null;
     const isOwner = useMemo(() => !!uid && sample?.ownerId === uid, [uid, sample?.ownerId]);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TemplateBox backgroundColor={BLUE} ph={12} pv={8} mr={8} borderRadius={8} row center
+                onPress={() => {
+                    if (isCreator) {
+                        return navigation.navigate(CREATORS_PROFILES_STACK, {
+                            screen: PROFILE,
+                            params: {
+                                creatorId: owner?.id,
+                            },
+                        });
+                    }
+                    return navigation.navigate(PROFILE, {
+                        creatorId: owner?.id,
+                    });
+                }}
+                >
+                <TemplateText color={WHITE} size={hp(14)} medium>View Creator</TemplateText>
+            </TemplateBox>
+            )
+        });
+    }, [navigation, isCreator, owner]);
 
     useEffect(() => {
         if (!id) return;
@@ -126,36 +151,20 @@ export default function SampleDetailsScreen({ route, navigation }) {
 
     return (
         <View style={styles.container}>
+            <SafeAreaView>
             <TemplateBox
                 style={{ borderBottomWidth: 1, borderColor: COLORS.border }}
                 fullGradient
                 gradientColors={DEFAULT_GRADIENT}
+                borderBottomLeftRadius={20}
+                borderBottomRightRadius={20}
+                overflow="hidden"
             >
                 <ImageBackground
                     source={{ uri: sample.coverUrl }}
                     style={{ width: "100%", height: 300, backgroundColor: COLORS.card }}
                     resizeMode="cover"
                 >
-                    <TemplateBox style={styles.topBar}>
-                         <TemplateBox backgroundColor={BLUE} ph={12} pv={8} borderRadius={8} alignSelf='flex-start'
-                            onPress={() => {
-                                if (isCreator) {
-                                    return navigation.navigate(CREATORS_PROFILES_STACK, {
-                                        screen: PROFILE,
-                                        params: {
-                                            creatorId: owner?.id,
-                                        },
-                                    });
-                                }
-                                return navigation.navigate(PROFILE, {
-                                    creatorId: owner?.id,
-                                });
-                            }}
-                         >
-                            <TemplateText color={WHITE} size={hp(14)} medium>View Creator</TemplateText>
-                        </TemplateBox>
-                    </TemplateBox>
-
                     <View style={styles.overlayBottom}>
                         <Text style={styles.title} numberOfLines={2}>
                             {sample.title}
@@ -228,6 +237,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
                     initial={sample as any}
                 />
             )}
+            </SafeAreaView>
         </View>
     );
 }
@@ -270,7 +280,7 @@ const styles = StyleSheet.create({
     ownerAvatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: COLORS.card },
     ownerName: { color: COLORS.text, fontWeight: "700" },
     ownerHandle: { color: COLORS.textDim, marginTop: 2 },
-    sectionTitle: { fontWeight: "800", fontSize: 16, marginTop: 18, marginBottom: 6 },
+    sectionTitle: { fontWeight: "700", fontSize: 16, marginTop: 18, marginBottom: 6 },
     description: { lineHeight: 20 },
     ownerPanel: {
         borderRadius: 16,
