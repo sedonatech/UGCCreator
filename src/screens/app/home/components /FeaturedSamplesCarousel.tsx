@@ -92,7 +92,7 @@ export default function FeaturedShowcaseCarousel({ style }) {
                 const picked = docs.slice(0, MAX_ITEMS).map((d) => ({ id: d.id, ...(d.data() as any) })) as Item[];
                 const ids = picked.map((p) => p.id);
 
-                if (docs?.length > MAX_ITEMS) {
+                if (docs?.length >= MAX_ITEMS) {
                     await AsyncStorage.setItem(
                         SHOWCASE_KEY,
                         JSON.stringify({ dateKey: TODAY_KEY, sampleIds: ids })
