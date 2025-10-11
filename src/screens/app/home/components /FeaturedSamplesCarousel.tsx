@@ -140,7 +140,7 @@ export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCaro
                     });
                 const ids = picked.map((p) => p.id);
 
-                if (docs?.length > MAX_ITEMS) {
+                if (docs?.length >= MAX_ITEMS) {
                     await AsyncStorage.setItem(
                         SHOWCASE_KEY,
                         JSON.stringify({ dateKey: TODAY_KEY, sampleIds: ids })

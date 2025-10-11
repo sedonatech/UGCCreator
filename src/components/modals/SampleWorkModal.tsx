@@ -51,9 +51,19 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
         if (uri) setLocalCover(uri);
     }
 
+    function isValidUrl(url: string) {
+        try {
+          new URL(url);
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
     async function handleSave() {
         try {
             if (!auth?.profile || !title?.trim() || !(localCover || initial?.coverUrl)) return Alert.alert('Add all required inputs');
+            if (!!socialUrl && !isValidUrl(socialUrl)) return Alert.alert('Enter a valid social link URL: https://...');
             setLoading(true);
             try {
                 let coverUrl = (initial?.coverUrl as string) || '';
@@ -172,7 +182,7 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                         <TextInput
                             value={socialUrl}
                             onChangeText={setSocialUrl}
-                            placeholder="Social link (optional)"
+                            placeholder="Social link: http:... (optional)"
                             placeholderTextColor={GREY}
                             style={{
                                 borderWidth: 1,
