@@ -3,85 +3,84 @@
 import React, { FC, memo, useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { PRIMARY, PRIMARY_GRADIENT } from '../theme/Colors';
+import { PRIMARY_GRADIENT } from '../theme/Colors';
 import { SHADOW } from '../theme/Shadow';
 import { isAndroid } from '../Utils/Platform';
-import TemplateTouchable from './TemplateTouchable';
 import { wp } from '../Utils/getResponsiveSize';
 
 export interface Props {
-    animated?:boolean,
-    shadow?:boolean,
-    lightShadow?:boolean,
-    darkShadow?:boolean,
-    children?:React.ReactNode,
-    center?:boolean,
-    vCenter?:boolean,
-    hCenter?:boolean,
-    selfCenter?:boolean,
-    spaceBetween?:boolean,
-    flex?:boolean | number,
-    flexGrow?:boolean | number,
-    flexWrap?: string,
-    row?:boolean,
-    mAll?:number | null,
-    mt?:number | false,
-    mb?:number | false,
-    mh?:number | false,
-    mv?:number | false,
-    ml?:number | false,
-    mr?:number | false,
-    pAll?:number | false,
-    pv?:number | false,
-    ph?:number | false,
-    pl?:number | false,
-    pt?:number | false,
-    pr?:number | false,
-    pb?:number | false,
-    width?:number | string | false,
-    minWidth?:number | string | false,
-    height?:number | string | false,
-    minHeight?:number | string | false,
-    borderRadius?:number,
-    borderBottomLeftRadius?:number,
-    borderBottomRightRadius?:number,
-    borderTopLeftRadius?:number | false,
-    borderTopRightRadius?:number | false,
-    justifyContent?:string | false,
-    alignItems?:string | false,
-    alignSelf?:string | false,
-    backgroundColor?:string | false,
-    aspectRatio?:number,
-    borderWidth?:number | false,
-    borderColor?:string | false,
-    absolute?:boolean,
-    top?:number | string,
-    bottom?:number | string,
-    left?:number | string,
-    right?:number | string,
-    opacity?:number,
-    zIndex?:number,
-    style?:object,
-    onPress?:(() => void) | null,
-    activeOpacity?:number,
-    hGradient?:boolean,
-    fullGradient?:boolean,
-    vGradient?:boolean,
-    gradientColors?:string[],
-    gradientStartBalance?:number,
-    gradientEndBalance?:number,
-    disabled?:boolean,
-    overflow?:string,
-    position?:string
-    fadeIn?: boolean,
-    fadeInTime?: number,
-    fadeInDelay?: number
-    slideIn?: boolean
-    slideInTime?: number,
-    slideInDelay?: number
-    slideInDirection?: 'left' | 'right' | 'top' | 'bottom'
-    animationType?: 'spring' | 'timing',
-    slideInX?: number
+    animated?: boolean;
+    shadow?: boolean;
+    lightShadow?: boolean;
+    darkShadow?: boolean;
+    children?: React.ReactNode;
+    center?: boolean;
+    vCenter?: boolean;
+    hCenter?: boolean;
+    selfCenter?: boolean;
+    spaceBetween?: boolean;
+    flex?: boolean | number;
+    flexGrow?: boolean | number;
+    flexWrap?: string;
+    row?: boolean;
+    mAll?: number | null;
+    mt?: number | false;
+    mb?: number | false;
+    mh?: number | false;
+    mv?: number | false;
+    ml?: number | false;
+    mr?: number | false;
+    pAll?: number | false;
+    pv?: number | false;
+    ph?: number | false;
+    pl?: number | false;
+    pt?: number | false;
+    pr?: number | false;
+    pb?: number | false;
+    width?: number | string | false;
+    minWidth?: number | string | false;
+    height?: number | string | false;
+    minHeight?: number | string | false;
+    borderRadius?: number;
+    borderBottomLeftRadius?: number;
+    borderBottomRightRadius?: number;
+    borderTopLeftRadius?: number | false;
+    borderTopRightRadius?: number | false;
+    justifyContent?: string | false;
+    alignItems?: string | false;
+    alignSelf?: string | false;
+    backgroundColor?: string | false;
+    aspectRatio?: number;
+    borderWidth?: number | false;
+    borderColor?: string | false;
+    absolute?: boolean;
+    top?: number | string;
+    bottom?: number | string;
+    left?: number | string;
+    right?: number | string;
+    opacity?: number;
+    zIndex?: number;
+    style?: object;
+    onPress?: (() => void) | null;
+    activeOpacity?: number;
+    hGradient?: boolean;
+    fullGradient?: boolean;
+    vGradient?: boolean;
+    gradientColors?: string[];
+    gradientStartBalance?: number;
+    gradientEndBalance?: number;
+    disabled?: boolean;
+    overflow?: string;
+    position?: string;
+    fadeIn?: boolean;
+    fadeInTime?: number;
+    fadeInDelay?: number;
+    slideIn?: boolean;
+    slideInTime?: number;
+    slideInDelay?: number;
+    slideInDirection?: 'left' | 'right' | 'top' | 'bottom';
+    animationType?: 'spring' | 'timing';
+    slideInX?: number;
 }
 const TemplateBox: FC<Props> = ({
     animated,
@@ -161,8 +160,10 @@ const TemplateBox: FC<Props> = ({
     // const Component: any = onPress ? TemplateTouchable : View;
 
     const Component = onPress
-        ? (animated || fadeIn ? (Animated.createAnimatedComponent(TouchableOpacity)) : TouchableOpacity)
-        : (animated || fadeIn ? Animated.View : View) as React.ElementType;
+        ? animated || fadeIn
+            ? Animated.createAnimatedComponent(TouchableOpacity)
+            : TouchableOpacity
+        : ((animated || fadeIn ? Animated.View : View) as React.ElementType);
 
     const fadeOpacity = useRef(new Animated.Value(0)).current;
     const slideValue = useRef(new Animated.ValueXY({ x: slideIn ? wp(slideInX) : 0, y: 0 })).current;
@@ -171,9 +172,9 @@ const TemplateBox: FC<Props> = ({
         if (fadeIn) {
             setTimeout(() => {
                 Animated.timing(fadeOpacity, {
-                    toValue: (opacity || opacity === 0) ? opacity : 1,
+                    toValue: opacity || opacity === 0 ? opacity : 1,
                     duration: ((fadeInTime || fadeInTime === 0) && fadeInTime) || 750,
-                    useNativeDriver: true
+                    useNativeDriver: true,
                 }).start();
             }, fadeInDelay || 0);
         }
@@ -185,7 +186,7 @@ const TemplateBox: FC<Props> = ({
                 Animated.timing(slideValue, {
                     toValue: { x: 0, y: 0 },
                     duration: ((slideInTime || slideInTime === 0) && slideInTime) || 500,
-                    useNativeDriver: true
+                    useNativeDriver: true,
                 }).start();
             }, slideInDelay || 0);
         }
@@ -196,7 +197,7 @@ const TemplateBox: FC<Props> = ({
             style={[
                 !!flex && { flex: flex === true ? 1 : flex },
                 !!flexGrow && { flexGrow: flexGrow === true ? 1 : flexGrow },
-                !!slideIn && { transform: [{ translateX: slideValue.x }, { translateY: slideValue.y }] },
+                //!!slideIn && { transform: [{ translateX: slideValue.x }, { translateY: slideValue.y }] },
                 !!flexWrap && { flexWrap },
                 center && styles.center,
                 hCenter && styles.hCenter,
@@ -236,7 +237,7 @@ const TemplateBox: FC<Props> = ({
                 !!borderTopLeftRadius && { borderTopLeftRadius },
                 !!borderTopRightRadius && { borderTopRightRadius },
                 !fadeIn && (!!opacity || opacity === 0) && { opacity },
-                (!!fadeIn && { opacity: fadeOpacity }),
+                !!fadeIn && { opacity: fadeOpacity },
                 (!!zIndex || zIndex === 0) && { zIndex },
                 !!absolute && { position: 'absolute' },
                 (!!top || top === 0) && { top },
@@ -244,10 +245,7 @@ const TemplateBox: FC<Props> = ({
                 (!!left || left === 0) && { left },
                 (!!right || right === 0) && { right },
                 !!disabled && { opacity: 0.5 },
-                isAndroid
-        && (shadow || lightShadow)
-        && !animated
-        && SHADOW('default', backgroundColor, {}),
+                isAndroid && (shadow || lightShadow) && !animated && SHADOW('default', backgroundColor, {}),
                 style,
             ]}
             onPress={onPress}
@@ -285,11 +283,7 @@ const TemplateBox: FC<Props> = ({
             {(hGradient || vGradient) && (
                 <LinearGradient
                     start={{ x: gradientStartBalance || 0, y: gradientStartBalance || 0 }}
-                    end={
-                        hGradient
-                            ? { x: gradientEndBalance || 1, y: 0 }
-                            : { x: 0, y: gradientEndBalance || 1 }
-                    }
+                    end={hGradient ? { x: gradientEndBalance || 1, y: 0 } : { x: 0, y: gradientEndBalance || 1 }}
                     style={[
                         styles.overlay,
                         !!borderRadius && { borderRadius },

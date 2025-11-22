@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    BLACK, BLACK_70, IOS_BLUE, WHITE,
-} from '../../../theme/Colors';
+import { BLACK, BLACK_70, LIGHT_GREEN, WHITE } from '../../../theme/Colors';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -25,111 +23,49 @@ const SubscriptionCard = ({
         backgroundColor={WHITE}
         borderRadius={16}
         mt={16}
-        width={SCREEN_WIDTH - (WRAPPER_MARGIN * 2)}
+        width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
         pAll={16}
         slideIn
         slideInDelay={(index + 1) * 100}
         borderWidth={2}
-        borderColor={selected ? IOS_BLUE : 'transparent'}
+        borderColor={selected ? LIGHT_GREEN : 'transparent'}
         onPress={onPress}
         row
         alignItems="center"
     >
-        <TemplateBox mr={10}>
-            {
-                selected ? (
-                    <SelectedSvg />
-                ) : (
-                    <UnSelectedSvg />
-                )
-            }
-        </TemplateBox>
-        <TemplateBox
-            onPress={onPress}
-        >
-            <TemplateText
-                bold
-                size={15}
-                color={BLACK}
-                onPress={onPress}
-            >
-                {/* eslint-disable-next-line no-nested-ternary */}
-                {title?.includes('Annual')
-                    ? 'Annual'
-                    : title?.includes('Quarterly')
-                        ? 'Quarterly'
-                        : 'Monthly'}
+        <TemplateBox mr={10}>{selected ? <SelectedSvg /> : <UnSelectedSvg />}</TemplateBox>
+        <TemplateBox onPress={onPress}>
+            <TemplateText bold size={15} color={BLACK} onPress={onPress}>
+                {}
+                {title?.includes('Annual') ? 'Annual' : title?.includes('Quarterly') ? 'Quarterly' : 'Monthly'}
             </TemplateText>
             <TemplateBox height={8} />
-            <TemplateBox
-                row
-                justifyContent="space-between"
-                alignItems="center"
-            >
-                <TemplateText
-                    size={13}
-                    color={BLACK_70}
-                >
-                    {price}
-                    {' '}
+            <TemplateBox row justifyContent="space-between" alignItems="center">
+                <TemplateText size={13} color={BLACK_70}>
+                    {price}{' '}
                 </TemplateText>
-                <TemplateText
-                    size={13}
-                    color={BLACK_70}
-                >
+                <TemplateText size={13} color={BLACK_70}>
                     {billed}
                 </TemplateText>
             </TemplateBox>
         </TemplateBox>
         <TemplateBox flex />
 
-        {
-            recommended && (
-                <TemplateBox
-                    backgroundColor={IOS_BLUE}
-                    borderRadius={10}
-                    pv={7}
-                    ph={12}
-                    width={110}
-                    height={30}
-                    alignItems="center"
-                    onPress={onPress}
-                >
-                    <TemplateText
-                        size={12}
-                        color={WHITE}
-                        bold
-                        caps
-                    >
-                        {recommendedCopy}
-                    </TemplateText>
-                </TemplateBox>
-            )
-        }
+        {recommended && (
+            <TemplateBox onPress={onPress}>
+                <TemplateText size={12} color={BLACK} bold caps>
+                    {recommendedCopy}
+                </TemplateText>
+            </TemplateBox>
+        )}
 
-        {
-            !!popularCopy && (
-                <TemplateBox
-                    backgroundColor={IOS_BLUE}
-                    borderRadius={10}
-                    pv={7}
-                    ph={12}
-                    width={130}
-                    height={30}
-                    alignItems="center"
-                    onPress={onPress}
-                >
-                    <TemplateText
-                        size={12}
-                        color={WHITE}
-                        bold
-                        caps
-                    >
-                        {popularCopy}
-                    </TemplateText>
-                </TemplateBox>
-            )
-        }
+        {!!popularCopy && (
+            <TemplateBox onPress={onPress}>
+                <TemplateText size={12} color={BLACK} bold caps>
+                    {popularCopy}
+                </TemplateText>
+            </TemplateBox>
+        )}
     </TemplateBox>
 );
 

@@ -10,9 +10,7 @@ import useImageStorage from '../hooks/Portfolio/useImageStorage';
 import useProfile from '../hooks/user/useProfile';
 import useAuthContext from '../hooks/auth/useAuthContext';
 
-const Avatar = ({
-    style, height, width, borderRadius,
-}) => {
+const Avatar = ({ style, height, width, borderRadius }) => {
     const { image: avatarData, onAddImage: onAddPhoto } = useImageStorage();
 
     const { auth } = useAuthContext();
@@ -47,7 +45,7 @@ const Avatar = ({
     }, [avatar]);
 
     return (
-        <TemplateTouchable style={[styles.container, style]}>
+        <TemplateTouchable style={[styles.container, style]} onPress={() => onAddPhoto(true)}>
             {!avatar?.url ? (
                 <TemplateBox
                     height={height}
@@ -56,14 +54,9 @@ const Avatar = ({
                     backgroundColor={BRAND_BLUE}
                     justifyContent="center"
                     alignItems="center"
-                    onPress={() => onAddPhoto(true)}
                     hitslop={{ radius: 25 }}
                 >
-                    <TemplateIcon
-                        name="person-add-outline"
-                        color={BLACK}
-                        size={24}
-                    />
+                    <TemplateIcon name="person-add-outline" color={BLACK} size={24} />
                 </TemplateBox>
             ) : (
                 <TemplateBox
@@ -74,11 +67,7 @@ const Avatar = ({
                     style={styles.imageBox}
                     hitslop={{ radius: 25 }}
                 >
-                    <Image
-                        source={{ uri: profileData?.image }}
-                        style={imageStyle}
-                        resizeMode="cover"
-                    />
+                    <Image source={{ uri: profileData?.image }} style={imageStyle} resizeMode="cover" />
                 </TemplateBox>
             )}
         </TemplateTouchable>

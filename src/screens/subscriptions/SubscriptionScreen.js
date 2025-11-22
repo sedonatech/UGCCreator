@@ -1,19 +1,14 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useLayoutEffect, useState } from 'react';
-import {
-    ActivityIndicator, ScrollView, StyleSheet,
-} from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 import TemplateText from '../../components/TemplateText';
 import useSubscriptionContext from './useSubscriptionContext';
 import useRestorePurchases from './useRestorePurchases';
 import usePurchase from './usePurchase';
 import useAvailablePackages from './useAvailablePackages';
 import TemplateBox from '../../components/TemplateBox';
-import {
-    SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN,
-} from '../../theme/Layout';
-import {
-    BLACK, BLACK_10, BLACK_60, DARK_GREY, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND, WHITE,
-} from '../../theme/Colors';
+import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
+import { BLACK, BLACK_10, BLACK_60, DARK_GREY, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND, WHITE } from '../../theme/Colors';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import SubscriptionCard from './components/SubscriptionCard';
 import useLogout from '../app/profile/useLogout';
@@ -62,7 +57,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
         brush: BrushSvg(),
     };
 
-    const onSubscribe = async (i) => {
+    const onSubscribe = async i => {
         setLoading(true);
         if (error) setError(null);
         let index = selected;
@@ -95,21 +90,22 @@ const SubscriptionScreen = ({ navigation, route }) => {
             }
         } catch (e) {
             console.log('[onRestore] - error', e);
-            alert(e?.message);
         } finally {
             setLoading(false);
         }
     };
 
-    const setSelected = (item) => {
+    const setSelected = item => {
         if (typeof item !== 'number') {
-            console.error('[SubscriptionScreenInjector] - onSelectPackage error: Incorrect data passed, only value of type int is allowed');
+            console.error(
+                '[SubscriptionScreenInjector] - onSelectPackage error: Incorrect data passed, only value of type int is allowed',
+            );
             return;
         }
         setSelectedPackage(item);
     };
 
-    const handleSubscription = async (index) => {
+    const handleSubscription = async index => {
         try {
             setSelected(index);
             setSubscribing(index);
@@ -119,19 +115,20 @@ const SubscriptionScreen = ({ navigation, route }) => {
                 navigation.goBack();
             }
         } catch (er) {
-            alert(er.message);
+            console.log('handleSubscription error:', er);
             setSubscribing(false);
             if (fromSettings) {
                 navigation.goBack();
             }
         }
     };
-    const getSavings = (pack) => {
+    const getSavings = pack => {
         const monthlyPackage = packages?.length && packages?.find(({ identifier }) => identifier?.includes('monthly'));
         const monthlyPrice = monthlyPackage?.isSale
             ? monthlyPackage?.originalPrice || monthlyPackage?.introPrice
             : monthlyPackage?.price;
-        const convertedMonthlyPrice = typeof monthlyPrice === 'string' ? parseFloat(monthlyPrice.replace(/[^0-9.,]+/, '')) : monthlyPrice;
+        const convertedMonthlyPrice =
+            typeof monthlyPrice === 'string' ? parseFloat(monthlyPrice.replace(/[^0-9.,]+/, '')) : monthlyPrice;
         const fullMonthlyPrice = convertedMonthlyPrice * 12;
 
         const packPrice = pack?.isSale ? pack?.introPrice : pack?.price;
@@ -139,7 +136,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
         const isQuarterly = pack?.identifier?.includes('quarterly');
         const savingPrice = packPrice * (isQuarterly ? 4 : 1);
 
-        const saving = Math.round(100 - ((savingPrice / fullMonthlyPrice) * 100));
+        const saving = Math.round(100 - (savingPrice / fullMonthlyPrice) * 100);
 
         return `${saving}%`;
     };
@@ -164,7 +161,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const isBrand = auth?.profile?.type === 'brand';
 
     const appBenefits = isBrand ? subscriptionBenefits?.brandBenefits : subscriptionBenefits?.benefits;
-    const reviews = subscriptionBenefits?.reviews
+    const reviews = subscriptionBenefits?.reviews;
 
     return (
         <ScrollView
@@ -175,20 +172,9 @@ const SubscriptionScreen = ({ navigation, route }) => {
             <TemplateBox selfCenter mt={60}>
                 <BrandLogo height={45} width={SCREEN_WIDTH / 1.4} />
             </TemplateBox>
-            <TemplateBox
-                flex
-                backgroundColor={PAYWALL_PRIMARY_BACKGROUND}
-                mt={16}
-            >
+            <TemplateBox flex backgroundColor={PAYWALL_PRIMARY_BACKGROUND} mt={16}>
                 <TemplateBox selfCenter ph={WRAPPER_MARGIN}>
-                    <TemplateText
-                        bold
-                        size={18}
-                        center
-                        color={BLACK}
-                        lineHeight={22}
-                        startCase
-                    >
+                    <TemplateText bold size={18} center color={BLACK} lineHeight={22} startCase>
                         {subscriptionBenefits?.title}
                     </TemplateText>
                 </TemplateBox>
@@ -200,7 +186,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
                     mt={WRAPPER_MARGIN}
                     mb={WRAPPER_MARGIN}
                 >
-                    {appBenefits?.map((benefit) => (
+                    {appBenefits?.map(benefit => (
                         <TemplateBox
                             key={benefit?.title}
                             row
@@ -215,125 +201,111 @@ const SubscriptionScreen = ({ navigation, route }) => {
                             <TemplateBox row alignItems="center">
                                 {subscriptionBenefitsIconsMap[benefit?.icon]}
                                 <TemplateBox width={10} />
-                                <TemplateBox width={WRAPPED_SCREEN_WIDTH - (WRAPPER_MARGIN * 5.5)}>
-                                    <TemplateText
-                                        size={16}
-                                        color={BLACK}
-                                        semiBold
-                                    >
+                                <TemplateBox width={WRAPPED_SCREEN_WIDTH - WRAPPER_MARGIN * 5.5}>
+                                    <TemplateText size={16} color={BLACK} semiBold>
                                         {benefit?.title}
                                     </TemplateText>
-                                    <TemplateText
-                                        size={13}
-                                        color={BLACK}
-                                    >
+                                    <TemplateText size={13} color={BLACK}>
                                         {benefit?.description}
                                     </TemplateText>
                                 </TemplateBox>
-
                             </TemplateBox>
                         </TemplateBox>
-
                     ))}
                 </TemplateBox>
                 <TemplateBox selfCenter>
-                        <TemplateText
-                            size={14}
-                            color={BLACK}
-                            medium
-                            center
-                        >
-                            {subscriptionBenefits?.subtitle}
-                        </TemplateText>
-                    </TemplateBox> 
+                    <TemplateText size={14} color={BLACK} medium center>
+                        {subscriptionBenefits?.subtitle}
+                    </TemplateText>
+                </TemplateBox>
 
                 <TemplateBox mh={WRAPPER_MARGIN}>
-                    {
-                        packages?.length ? (
-                            packages.map((pack, index) => (
-                                <SubscriptionCard
-                                    onPress={() => setSelected(index)}
-                                    key={pack?.title}
-                                    title={pack?.title}
-                                    price={pack?.priceString}
-                                    description={pack?.description}
-                                    selected={selected === index}
-                                    index={index}
-                                    isSale
-                                    savingPercent={pack?.showSaving && getSavings(pack)}
-                                    introPrice={pack?.introPrice}
-                                    billed={pack?.billed}
-                                    originalPrice={pack?.originalPrice}
-                                    freeTrial={pack?.freeTrial}
-                                    recommended={pack?.recommended}
-                                    recommendedCopy={pack?.recommendedCopy}
-                                    popularCopy={pack?.popularCopy}
-                                />
-                            ))
-                        ) : (
-                            <TemplateBox selfCenter alignItems="center" justifyContent="center">
-                                <ActivityIndicator color={BLACK} size="small" />
-                            </TemplateBox>
-                        )
-                    }
-
+                    {packages?.length ? (
+                        packages.map((pack, index) => (
+                            <SubscriptionCard
+                                onPress={() => setSelected(index)}
+                                key={pack?.title}
+                                title={pack?.title}
+                                price={pack?.priceString}
+                                description={pack?.description}
+                                selected={selected === index}
+                                index={index}
+                                isSale
+                                savingPercent={pack?.showSaving && getSavings(pack)}
+                                introPrice={pack?.introPrice}
+                                billed={pack?.billed}
+                                originalPrice={pack?.originalPrice}
+                                freeTrial={pack?.freeTrial}
+                                recommended={pack?.recommended}
+                                recommendedCopy={pack?.recommendedCopy}
+                                popularCopy={pack?.popularCopy}
+                            />
+                        ))
+                    ) : (
+                        <TemplateBox selfCenter alignItems="center" justifyContent="center">
+                            <ActivityIndicator color={BLACK} size="small" />
+                        </TemplateBox>
+                    )}
                 </TemplateBox>
                 <Button
                     title={subscriptionBenefits?.buttonCta}
                     onPress={() => handleSubscription(selected)}
                     style={styles.button}
                     loading={loading}
+                    height={50}
+                    width={SCREEN_WIDTH - 40}
+                    color={BLACK}
                 />
-                <TemplateBox
-                    onPress={onRestore}
-                    selfCenter
-                    mv={WRAPPER_MARGIN}
-                    mh={WRAPPER_MARGIN}
-                >
+                <TemplateBox onPress={onRestore} selfCenter mv={WRAPPER_MARGIN} mh={WRAPPER_MARGIN}>
                     <TemplateText color={IOS_BLUE} semiBold size={16}>
                         Restore Subscription
                     </TemplateText>
                 </TemplateBox>
 
-                {
-                    reviews?.length > 1 && 
-                    <TemplateBox selfCenter >
-                        <TemplateBox mb={16}>
-                            <TemplateText semiBold>
-                                Trusted by UGC creators worldwide
-                            </TemplateText>
+                {reviews?.length > 1 && (
+                    <TemplateBox selfCenter>
+                        <TemplateBox mb={16} alignItems="center">
+                            <TemplateText semiBold>Trusted by UGC creators worldwide</TemplateText>
                         </TemplateBox>
-                    
-                        {reviews?.map(({title, subtitle, image}, index)=> (
-                            <TemplateBox key={index} row backgroundColor={WHITE} width={WRAPPED_SCREEN_WIDTH} borderRadius={12} pAll={16} mb={16}>
-                                <ResizedImage source={{uri: image}} style={{width: 48, aspectRatio: 1, borderRadius: 12}} />
-                            <TemplateBox ml={16} width='75%'>
-                                <TemplateText size={16} medium>
-                                    {title}
-                                </TemplateText>
-                                <TemplateText size={14} color={`${DARK_GREY}b3`} mt={4} light>
-                                    {subtitle}
-                                </TemplateText>
 
-                                <TemplateBox row mt={6}>
-                                {
-                                    Array(5).fill(0).map((_, index) => (
-                                        <Star style={{marginRight: 4}} />
-                                    ))
-                                }
+                        {reviews?.map(({ title, subtitle, image }, index) => (
+                            <TemplateBox
+                                key={index}
+                                row
+                                backgroundColor={WHITE}
+                                width={WRAPPED_SCREEN_WIDTH}
+                                borderRadius={12}
+                                pAll={16}
+                                mb={16}
+                            >
+                                <ResizedImage
+                                    source={{ uri: image }}
+                                    style={{ width: 48, aspectRatio: 1, borderRadius: 12 }}
+                                />
+                                <TemplateBox ml={16} width="75%">
+                                    <TemplateText size={16} medium>
+                                        {title}
+                                    </TemplateText>
+                                    <TemplateText size={14} color={`${DARK_GREY}b3`} mt={4} light>
+                                        {subtitle}
+                                    </TemplateText>
+
+                                    <TemplateBox row mt={6}>
+                                        {Array(5)
+                                            .fill(0)
+                                            .map((_, indx) => (
+                                                <Star key={`star-${indx}`} style={{ marginRight: 4 }} />
+                                            ))}
+                                    </TemplateBox>
                                 </TemplateBox>
-                            </TemplateBox>
-
                             </TemplateBox>
                         ))}
                     </TemplateBox>
-                }
+                )}
 
-                
                 <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN}>
                     <TemplateText size={12} color={BLACK_60} center small>
-                        By selecting a subscription plan you agree to our
-                        {' '}
+                        By selecting a subscription plan you agree to our{' '}
                         <TemplateText
                             black
                             size={14}
@@ -348,15 +320,9 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         >
                             terms and conditions
                         </TemplateText>
-
-                        <TemplateText
-                            black
-                            center
-                            size={14}
-                        >
+                        <TemplateText black center size={14}>
                             {' '}
-                            and
-                            {' '}
+                            and{' '}
                         </TemplateText>
                         <TemplateText
                             black
@@ -370,24 +336,17 @@ const SubscriptionScreen = ({ navigation, route }) => {
                                 }
                             }}
                         >
-                            privacy policy.
-                            {' '}
+                            privacy policy.{' '}
                         </TemplateText>
-                        Your subscription will automatically renew unless auto-renew is
-                        turned off at least 24 hours before the end of the current period.
-                        You can manage subscriptions at any time, and turn off auto-renewal
-                        in your iTunes settings after purchase if you choose. We will create
-                        you an account that will allow you to access our content on any iOS
-                        devices and you may choose to add additional devices as you require.
+                        Your subscription will automatically renew unless auto-renew is turned off at least 24 hours
+                        before the end of the current period. You can manage subscriptions at any time, and turn off
+                        auto-renewal in your iTunes settings after purchase if you choose. We will create you an account
+                        that will allow you to access our content on any iOS devices and you may choose to add
+                        additional devices as you require.
                     </TemplateText>
                 </TemplateBox>
                 {!fromSettings && (
-                    <TemplateBox
-                        selfCenter
-                        mb={WRAPPER_MARGIN * 2}
-                        mh={WRAPPER_MARGIN}
-                        onPress={() => handleLogout()}
-                    >
+                    <TemplateBox selfCenter mb={WRAPPER_MARGIN * 2} mh={WRAPPER_MARGIN} onPress={() => handleLogout()}>
                         <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
                             logout
                         </TemplateText>
@@ -409,8 +368,7 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 20,
         alignSelf: 'center',
-        borderRadius: 16,
-        backgroundColor: IOS_BLUE,
+        borderRadius: 26,
     },
 });
 export default SubscriptionScreen;

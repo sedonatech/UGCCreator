@@ -1,15 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
-import {
-    BLACK,
-    BLACK_10,
-    DARK_OVERLAY,
-    GREY_30,
-    ONBOARDING_BLUE,
-    WHITE,
-} from '../../theme/Colors';
+import { BLACK, BLACK_10, GREY_30, ONBOARDING_BLUE, WHITE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
@@ -49,22 +43,22 @@ const LoginScreen = ({ navigation }) => {
             const profile = await getProfile(auth().currentUser.uid);
             const token = await messaging().getToken();
 
-            const data = token ? { lastLoginTime: new Date().toISOString(), token }
+            const data = token
+                ? { lastLoginTime: new Date().toISOString(), token }
                 : { lastLoginTime: new Date().toISOString() };
             await updateProfile(data, profile?.id);
-            // eslint-disable-next-line @typescript-eslint/no-shadow
-        } catch (error) {
-            if (error.code === 'auth/email-already-in-use') {
+        } catch (err) {
+            if (err.code === 'auth/email-already-in-use') {
                 setError('That email address is already in use!');
             }
 
-            if (error.code === 'auth/invalid-email') {
-                setEmail('That email address is invalid!');
+            if (err.code === 'auth/invalid-email') {
+                setError('That email address is invalid!');
             }
-            if (error.code === 'auth/wrong-password') {
+            if (err.code === 'auth/wrong-password') {
                 setError('That password is invalid!');
             }
-            if (error.code === 'auth/user-not-found') {
+            if (err.code === 'auth/user-not-found') {
                 setError('That user does not exist!');
             }
         }
@@ -74,26 +68,27 @@ const LoginScreen = ({ navigation }) => {
     return (
         <Wrapper
             contentContainerStyle={styles.contentContainerStyle}
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
             keyboard
         >
             <TemplateBox borderRadius={20} overflow="hidden">
                 <TemplateBox
                     style={{
-                        position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99,
+                        position: 'absolute',
+                        top: 50,
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        zIndex: 99,
                     }}
-                    backgroundColor={DARK_OVERLAY}
                 >
                     <BrandLogo height={58} width={282} color={WHITE} />
                 </TemplateBox>
-                <ResizedImage source={loginImage} style={{ height: 345, width: WRAPPED_SCREEN_WIDTH }} />
+                <ResizedImage source={loginImage} style={{ height: 370, width: SCREEN_WIDTH }} />
             </TemplateBox>
 
             <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={20}>
-                <TemplateText
-                    size={18}
-                    medium
-                    color={ONBOARDING_BLUE}
-                >
+                <TemplateText size={22} semiBold>
                     Welcome back!
                 </TemplateText>
             </TemplateBox>
@@ -101,7 +96,7 @@ const LoginScreen = ({ navigation }) => {
                 placeholder="Email"
                 style={styles.input}
                 value={email}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={text => setEmail(text)}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 returnKeyType="next"
@@ -111,13 +106,13 @@ const LoginScreen = ({ navigation }) => {
                     placeholder="Password"
                     style={styles.input}
                     value={password}
-                    onChangeText={(text) => setPassword(text)}
+                    onChangeText={text => setPassword(text)}
                     secureTextEntry={!passwordVisible}
                     autoCapitalize="none"
                     returnKeyType="next"
                 />
                 <TemplateTouchable
-                    onPress={() => setPasswordVisible((prevState) => !prevState)}
+                    onPress={() => setPasswordVisible(prevState => !prevState)}
                     style={styles.passwordIcon}
                 >
                     <TemplateIcon
@@ -137,12 +132,12 @@ const LoginScreen = ({ navigation }) => {
                     onPress={handleLogin}
                     style={styles.button}
                     loading={loading}
-                    color={ONBOARDING_BLUE}
+                    height={50}
+                    width={SCREEN_WIDTH - 40}
+                    color={BLACK}
                 />
                 <TemplateText size={16} center style={styles.signupLink} medium>
-                    Forgot you password?
-                    {' '}
-
+                    Forgot you password?{' '}
                     <TemplateText
                         color={ONBOARDING_BLUE}
                         underLine
@@ -155,8 +150,7 @@ const LoginScreen = ({ navigation }) => {
                 </TemplateText>
 
                 <TemplateText size={16} center style={styles.signupLink} medium>
-                    New to the UGC creator app?
-                    {' '}
+                    New to the UGC creator app?{' '}
                     <TemplateText
                         color={ONBOARDING_BLUE}
                         underLine
@@ -174,11 +168,9 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
+        alignItems: 'center',
     },
-    contentContainerStyle: {
-        flex: 1,
-        paddingTop: 40,
-    },
+    contentContainerStyle: {},
     buttonContainer: {
         alignSelf: 'center',
         marginBottom: WRAPPER_MARGIN * 4,
@@ -186,21 +178,17 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 24,
         marginBottom: 16,
+        borderRadius: 26,
     },
     signupLink: {
         marginBottom: 16,
     },
-    title: {
-        marginBottom: WRAPPER_MARGIN,
-
-    },
-
     input: {
         height: 60,
         width: SCREEN_WIDTH - 32,
         borderWidth: 0.4,
         borderColor: BLACK_10,
-        borderRadius: 8,
+        borderRadius: 26,
         paddingLeft: 16,
         marginTop: 16,
         backgroundColor: GREY_30,

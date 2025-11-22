@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 import startOfDay from 'date-fns/startOfDay';
 import PropTypes from 'prop-types';
 
@@ -12,12 +12,12 @@ import Avatar from '../../../../components/Avatar';
 const Greeting = ({ userName, style, showAvatar }) => {
     const hour = new Date().getHours();
 
-    const start = startOfDay(new Date())
+    const start = startOfDay(new Date());
     const today = useMemo(() => start, []);
 
     const activeDay = useMemo(() => format(start, 'MMMM dd yyyy'), [today]);
 
-    const getTimeGreeting = (hour) => {
+    const getTimeGreeting = hour => {
         if (hour > 16) {
             return 'Good evening, ';
         }
@@ -29,22 +29,20 @@ const Greeting = ({ userName, style, showAvatar }) => {
 
     return (
         <View style={[styles.container, style]}>
-            {showAvatar && (
-                <Avatar style={styles.avatar} />
-            )}
+            {showAvatar && <Avatar style={styles.avatar} />}
             <View>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
                     {`${getTimeGreeting(hour)}`}
-
                 </TemplateText>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
-                    {`${userName?.replace(/-/g, ' ')?.toLowerCase()?.split(' ')?.map((word) => word?.charAt(0)?.toUpperCase() + word?.slice(1))?.join(' ')}!`}
+                    {`${userName
+                        ?.replace(/-/g, ' ')
+                        ?.toLowerCase()
+                        ?.split(' ')
+                        ?.map(word => word?.charAt(0)?.toUpperCase() + word?.slice(1))
+                        ?.join(' ')}!`}
                 </TemplateText>
-                <TemplateText
-                    size={13}
-                    color={BLACK_SECONDARY}
-                    style={styles.greetingTitle}
-                >
+                <TemplateText size={13} color={BLACK_SECONDARY} style={styles.greetingTitle}>
                     {activeDay}
                 </TemplateText>
             </View>

@@ -6,7 +6,9 @@ import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import {
     CREATOR_TOOLS_RESULTS,
     FORGOT_PASSWORD,
-    PROFILE, RESULTS_HISTORY, SCRIPTS_GENERATOR,
+    PROFILE,
+    RESULTS_HISTORY,
+    SCRIPTS_GENERATOR,
     SETTINGS,
     UGCAI,
     UPDATE_PORTFOLIO,
@@ -27,73 +29,36 @@ const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
 const ProfileStack = () => (
-    <Navigator initialRouteName={PROFILE} 
+    <Navigator
+        initialRouteName={PROFILE}
         screenOptions={{
             ...SWITCH,
             lazy: true,
             freezeOnBlur: true,
             animationEnabled: false,
-            gestureEnabled: false, 
+            gestureEnabled: false,
             transitionSpec: {
                 open: { animation: 'timing', config: { duration: 250 } },
                 close: { animation: 'timing', config: { duration: 200 } },
-            }
+            },
         }}
     >
         <Screen
             name={PROFILE}
             options={{
                 ...TRANSPARENT_HEADER,
-                headerRight: () => (
-                    <HeaderIconButton
-                        name="settings-outline"
-                        screen={SETTINGS}
-                        mr={WRAPPER_MARGIN}
-                    />
-                ),
+                headerRight: () => <HeaderIconButton name="settings-outline" screen={SETTINGS} mr={WRAPPER_MARGIN} />,
             }}
             component={PortfolioScreen}
         />
-        <Screen
-            name={SETTINGS}
-            options={TRANSPARENT_HEADER}
-            component={SettingsScreen}
-        />
-        <Screen
-            name={UPDATE_PORTFOLIO}
-            options={TRANSPARENT_HEADER}
-            component={UpdatePortfolioScreen}
-        />
-        <Screen
-            name={FORGOT_PASSWORD}
-            component={ResetPasswordScreen}
-            options={TRANSPARENT_HEADER_NO_LOGO}
-        />
-        <Screen
-            name={UGCAI}
-            options={TRANSPARENT_HEADER}
-            component={UGCAiScreen}
-        />
-        <Screen
-            name={WEBVIEW}
-            options={TRANSPARENT_HEADER}
-            component={WebviewScreen}
-        />
-        <Screen
-            name={SCRIPTS_GENERATOR}
-            options={TRANSPARENT_HEADER}
-            component={ScriptsGeneratorScreen}
-        />
-        <Screen
-            name={CREATOR_TOOLS_RESULTS}
-            options={TRANSPARENT_HEADER}
-            component={CreatorToolsResultsScreen}
-        />
-        <Screen
-            name={RESULTS_HISTORY}
-            options={TRANSPARENT_HEADER}
-            component={ResultsHistoryScreen}
-        />
+        <Screen name={SETTINGS} options={TRANSPARENT_HEADER} component={SettingsScreen} />
+        <Screen name={UPDATE_PORTFOLIO} options={TRANSPARENT_HEADER} component={UpdatePortfolioScreen} />
+        <Screen name={FORGOT_PASSWORD} component={ResetPasswordScreen} options={TRANSPARENT_HEADER_NO_LOGO} />
+        <Screen name={UGCAI} options={TRANSPARENT_HEADER} component={UGCAiScreen} />
+        <Screen name={WEBVIEW} options={TRANSPARENT_HEADER} component={WebviewScreen} />
+        <Screen name={SCRIPTS_GENERATOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
+        <Screen name={CREATOR_TOOLS_RESULTS} options={TRANSPARENT_HEADER} component={CreatorToolsResultsScreen} />
+        <Screen name={RESULTS_HISTORY} options={TRANSPARENT_HEADER} component={ResultsHistoryScreen} />
     </Navigator>
 );
 

@@ -6,10 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import {
-    BLACK, IOS_BLUE, LIGHT_PURPLE,
-    WHITE,
-} from '../../../../theme/Colors';
+import { BLACK, BLACK_20, IOS_BLUE, WHITE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { AFFILIATE_BRANDS, WEBVIEW } from '../../../../navigation/ScreenNames';
@@ -35,34 +32,29 @@ const AffiliateBrandsCarousel = ({ style }) => {
                 <TemplateBox>
                     <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
                         <TemplateBox width={SCREEN_WIDTH * 0.8}>
-                            <TemplateText
-                                size={16}
-                                semiBold
-                            >
+                            <TemplateText size={16} semiBold>
                                 Brand Collabs
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox flex />
                         <TemplateTouchable
-                            onPress={() => navigation.navigate(AFFILIATE_BRANDS, {
-                                title: 'Brand Collabs',
-                                subtitle: 'Explore our brand collaborations',
-                            })}
+                            onPress={() =>
+                                navigation.navigate(AFFILIATE_BRANDS, {
+                                    title: 'Brand Collabs',
+                                    subtitle: 'Explore our brand collaborations',
+                                })
+                            }
                         >
                             <TemplateText startCase size={14} underLine color={IOS_BLUE}>
                                 See All
                             </TemplateText>
                         </TemplateTouchable>
                     </TemplateBox>
-
-                    <TemplateText
-                        size={13}
-                        color={BLACK}
-                        style={styles.subtitle}
-                    >
-                        Discover brand collabs, ambassador deals, and affiliate programs
-                        matched to your niche.
-                    </TemplateText>
+                    <TemplateBox mh={WRAPPER_MARGIN} mb={16}>
+                        <TemplateText size={13} color={BLACK}>
+                            Discover brand collabs, ambassador deals, and affiliate programs matched to your niche.
+                        </TemplateText>
+                    </TemplateBox>
                 </TemplateBox>
             )}
             <TemplateCarousel
@@ -70,26 +62,19 @@ const AffiliateBrandsCarousel = ({ style }) => {
                 renderItem={({ item }) => (
                     <TemplateBox
                         borderRadius={wp(16)}
-                        pAll={wp(12)}
+                        pAll={wp(16)}
                         onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                         style={styles.card}
                         width={SCREEN_WIDTH / 1.6}
-                        height={wp(120)}
+                        // height={wp(120)}
                         center
                         mr={wp(16)}
                     >
-                        <TemplateText
-                            startCase
-                            size={wp(14)}
-                            semiBold
-                        >
+                        <TemplateText startCase size={wp(16)} semiBold>
                             {item?.name}
                         </TemplateText>
-                        <TemplateBox height={wp(8)} />
-                        <TemplateText
-                            size={wp(12)}
-                            numberOfLines={2}
-                        >
+
+                        <TemplateText size={wp(13)} numberOfLines={2} mv={10}>
                             {item?.description}
                         </TemplateText>
                         <Button
@@ -111,19 +96,15 @@ const styles = StyleSheet.create({
     cardCarousel: {
         paddingHorizontal: WRAPPER_MARGIN,
     },
-    subtitle: {
-        marginLeft: WRAPPER_MARGIN,
-        marginBottom: 10,
-    },
     card: {
         backgroundColor: WHITE,
-        borderColor: LIGHT_PURPLE,
-        borderWidth: 1,
+        borderColor: BLACK_20,
+        borderWidth: 1.2,
         shadowColor: BLACK,
     },
     button: {
         marginVertical: 10,
-        height: 30,
+        height: 40,
         width: 150,
         borderRadius: 16,
         alignSelf: 'center',

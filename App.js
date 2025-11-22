@@ -1,8 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import {
-    StatusBar, View, StyleSheet,
-} from 'react-native';
+import { StatusBar, View, StyleSheet } from 'react-native';
 import { AppEventsLogger, Settings } from 'react-native-fbsdk-next';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
@@ -47,16 +45,13 @@ const MainApp = () => {
                     <ProjectsProvider>
                         <ProjectApplicationProvider>
                             <ActionSheetProvider>
-                                <NavigationContainer
-                                    theme={NAVIGATION_THEME}
-                                >
+                                <NavigationContainer theme={NAVIGATION_THEME}>
                                     <StatusBar barStyle="dark-content" />
                                     <ChatsProvider>
                                         <MainNavigator />
                                     </ChatsProvider>
                                 </NavigationContainer>
                             </ActionSheetProvider>
-
                         </ProjectApplicationProvider>
                     </ProjectsProvider>
                 </SubscriptionProvider>
@@ -69,7 +64,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
-
     },
 });
 

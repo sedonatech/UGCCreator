@@ -1,11 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import {METAL, OFF_WHITE, ONBOARDING_BLUE, WHITE,
-} from '../../theme/Colors';
+import { BLACK, GREY, METAL, WHITE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
-import {
-    HEADER_MARGIN, SCREEN_HEIGHT, SCREEN_WIDTH,
-} from '../../theme/Layout';
+import { HEADER_MARGIN, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../theme/Layout';
 
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import TemplateBox from '../../components/TemplateBox';
@@ -40,49 +38,41 @@ const OnboardingEducationScreen = ({ navigation }) => {
         <View style={styles.container}>
             <TemplateBox height={HEADER_MARGIN / 2} />
             <BrandLogo height={45} width={SCREEN_WIDTH / 1.4} />
-            <TemplateBox
-                height={SCREEN_HEIGHT * 0.6}
-                width={SCREEN_WIDTH}
-                borderRadius={30}
-                top={(150)}
-                absolute
-            >
+            <TemplateBox height={SCREEN_HEIGHT * 0.6} width={SCREEN_WIDTH} borderRadius={30} top={150} absolute>
                 <OnboardingCarousel
                     showPagination
                     dots
                     data={onboardingContent}
                     renderItem={({ item, index }) => (
-                        <TemplateBox justifyContent='center' alignItems='center' width={SCREEN_WIDTH}>
-                            <TemplateBox height={hp(475)} width={SCREEN_WIDTH} mb={-180} alignItems='center'  >
-                                <Image source={{uri: item?.image}} style={{width: '100%', height: '100%', alignSelf: 'center', resizeMode: 'contain'}} />
+                        <TemplateBox justifyContent="center" alignItems="center" width={SCREEN_WIDTH}>
+                            <TemplateBox height={hp(475)} width={SCREEN_WIDTH} mb={-180} alignItems="center">
+                                <Image
+                                    source={{ uri: item?.image }}
+                                    resizeMode="contain"
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        alignSelf: 'center',
+                                    }}
+                                />
                             </TemplateBox>
-                        <TemplateBox
-                            width={SCREEN_WIDTH}
-                            ph={wp(35)}
-                            alignItems="center"
-                            height={200}
-                            // pt={40}
-                            backgroundColor={WHITE}
-                            style={styles.shadow}
-                        >
-                            <TemplateText
-                                size={21}
-                                semiBold
-                                center
-                                mb={8}
+                            <TemplateBox
+                                width={SCREEN_WIDTH}
+                                ph={wp(35)}
+                                alignItems="center"
+                                height={200}
+                                // pt={40}
+                                backgroundColor={WHITE}
+                                style={styles.shadow}
                             >
-                                {item?.title}
-                            </TemplateText>
-                            <TemplateBox height={10} />
-                            <TemplateText
-                                size={15}
-                                center
-                                light
-                                color={METAL}
-                            >
-                                {item?.message}
-                            </TemplateText>
-                        </TemplateBox>
+                                <TemplateText size={21} semiBold center mb={8}>
+                                    {item?.title}
+                                </TemplateText>
+                                <TemplateBox height={10} />
+                                <TemplateText size={15} center light color={METAL}>
+                                    {item?.message}
+                                </TemplateText>
+                            </TemplateBox>
                         </TemplateBox>
                     )}
                     paginationSize={onboardingContent?.length}
@@ -92,16 +82,28 @@ const OnboardingEducationScreen = ({ navigation }) => {
                     setActiveIndex={setActiveIndex}
                     ref={carouselRef}
                 />
-            </TemplateBox> 
-            <TemplateBox absolute top={SCREEN_HEIGHT - 110} ph={35} width={SCREEN_WIDTH} row justifyContent='space-between'>
-                <TemplateBox backgroundColor={OFF_WHITE} ph={25} pv={18} borderRadius={13} onPress={() =>  navigation.navigate(ONBOARDING)}>
+            </TemplateBox>
+            <TemplateBox
+                absolute
+                top={SCREEN_HEIGHT - 110}
+                ph={35}
+                width={SCREEN_WIDTH}
+                row
+                justifyContent="space-between"
+            >
+                <TemplateBox
+                    backgroundColor={GREY}
+                    ph={46}
+                    pv={18}
+                    borderRadius={26}
+                    onPress={() => navigation.navigate(ONBOARDING)}
+                >
                     <TemplateText size={16} semiBold caps>
                         Skip
                     </TemplateText>
                 </TemplateBox>
 
-
-                <TemplateBox backgroundColor={ONBOARDING_BLUE} ph={34} pv={18} borderRadius={13} row center onPress={handleNext}>
+                <TemplateBox backgroundColor={BLACK} ph={46} pv={18} borderRadius={26} row center onPress={handleNext}>
                     <TemplateText color={WHITE} size={16} semiBold caps mr={19}>
                         Next
                     </TemplateText>
@@ -118,22 +120,5 @@ const styles = StyleSheet.create({
         backgroundColor: WHITE,
         alignItems: 'center',
     },
-    linearGradient: {
-        position: 'absolute',
-        width: SCREEN_WIDTH,
-        height: 240,
-        borderRadius: 16,
-        bottom: 0
-    },
-    shadow:{
-        shadowColor: "#ffffff40", // Black shadow
-shadowOffset: {
-  width: 20,
-  height: 10, // Positive height for shadow at the bottom
-},
-shadowOpacity: 1, // Light opacity for a soft shadow
-shadowRadius: 16, // Higher radius for a soft, diffused shadow
-elevation: 10,
-    }
 });
 export default OnboardingEducationScreen;

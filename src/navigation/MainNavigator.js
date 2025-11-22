@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import { View } from 'react-native';
-import {
-    APP, AUTH, BRANDS_STACK, SUBSCRIPTION_STACK,
-} from './ScreenNames';
+import { APP, AUTH, BRANDS_STACK, SUBSCRIPTION_STACK } from './ScreenNames';
 import AuthStack from './auth/AuthStack';
 
 import AppStack from './app/AppStack';
@@ -60,20 +58,9 @@ const MainNavigator = () => {
                 headerShown: false,
             }}
         >
-            {isCreator
-              && isSignedIn
-              && hasSubscription
-              && (
-                  <Screen name={APP} component={AppStack} />
-              )}
-            {isSignedIn
-              && !hasSubscription
-              && (
-                  <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />
-              )}
-            {!isCreator && isSignedIn && (
-                <Screen name={BRANDS_STACK} component={BrandsStack} />
-            )}
+            {isCreator && isSignedIn && hasSubscription && <Screen name={APP} component={AppStack} />}
+            {isSignedIn && !hasSubscription && <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />}
+            {!isCreator && isSignedIn && <Screen name={BRANDS_STACK} component={BrandsStack} />}
             {!isSignedIn && <Screen name={AUTH} component={AuthStack} />}
         </Navigator>
     );
