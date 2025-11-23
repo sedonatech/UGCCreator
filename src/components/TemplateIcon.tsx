@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import FontAwesome5 from '@react-native-vector-icons/fontawesome5';
+import FontAwesome5 from '@react-native-vector-icons/ionicons';
 import { BLUE_SECONDARY } from '../theme/Colors';
 
 interface Props {

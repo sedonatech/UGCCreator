@@ -116,7 +116,7 @@ const LoginScreen = ({ navigation }) => {
                     style={styles.passwordIcon}
                 >
                     <TemplateIcon
-                        name={passwordVisible ? 'eye-off-outline' : 'eye-outline'}
+                        name={passwordVisible ? 'eye' : 'eye-off'}
                         size={20}
                         color={BLACK}
                         family="Ionicons"
