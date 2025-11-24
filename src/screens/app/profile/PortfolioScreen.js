@@ -43,49 +43,23 @@ const PortfolioScreen = ({ navigation, route }) => {
     };
 
     const { auth } = useAuthContext();
-
     const isBrand = auth?.profile?.type === 'brand';
-
-    const profileCompleteRatio = auth?.profileCompleteRatio;
-
     const creator = creatorId ? selectedCreator : auth?.profile;
-
     const userName = creator?.userName;
-
     const image = creator?.image;
-
-    const portfolioLink = creator?.portfolioLink;
-
-    const about = creator?.description || '';
-
-    const shortDescription = creator?.shortDescription || '';
-
     const contact = creator?.contact || '';
-
     const socials = creator?.socialMedia || '';
-
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
-
     const location = creator?.location?.country || creator?.location?.city;
-
     const rates = creator?.rates;
-
     const email = creator?.email;
-
     const { createChatRoom } = useChatsContext();
-
     const creatorFCMToken = creator?.fcmToken;
-
     const creatorName = creator?.userName;
-
     const brandId = auth?.profile?.id;
-
     const brandFCMToken = auth?.profile?.fcmToken;
-
     const brandName = auth?.profile?.userName;
-
     const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
-
     const loading = Object.keys(selectedCreator)?.length === 0 && isBrand;
 
     return (
@@ -100,29 +74,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                 ) : (
                     <PortfolioHeader userName={userName} location={location} creatorId={creatorId} image={image} />
                 )}
-
                 <PortfolioCarousel creatorId={creatorId} />
-
-                {/* { profileCompleteRatio < 1 && !creatorId && (
-                    <ProfileStatusCard
-                        title={PROFILE_INCOMPLETE_TITLE}
-                        description={PROFILE_INCOMPLETE_MESSAGE}
-                        progress={profileCompleteRatio}
-                        style={styles.statusCard}
-                        slideInDelay={40}
-                        showIcon={false}
-                        backgroundColor={lightOrange}
-                        onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
-                    />
-                )} */}
-                {/* {about && (
-                    <AboutSection
-                        about={about}
-                        shortDescription={shortDescription}
-                        portfolioLink={portfolioLink}
-                    />
-                )} */}
-                {/* <SampleWorkSection /> */}
                 <RatesSection rates={rates} />
                 <ContactSection contactInfo={contact} socials={socials} paypalLink={paypalLink} email={email} />
                 {creatorId && (
@@ -158,9 +110,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
-    },
-    statusCard: {
-        marginTop: WRAPPER_MARGIN * 2,
     },
 });
 export default PortfolioScreen;
