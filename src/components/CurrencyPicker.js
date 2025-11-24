@@ -7,7 +7,6 @@ import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../theme/Layout';
 import { GREY_SECONDARY } from '../theme/Colors';
 
 const CurrencyPicker = ({ onSelectCurrency, value }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let currencyPickerRef;
     return (
         <TemplateBox
@@ -20,16 +19,22 @@ const CurrencyPicker = ({ onSelectCurrency, value }) => {
             selfCenter
         >
             <CPicker
-                currencyPickerRef={(ref) => { currencyPickerRef = ref; }}
+                currencyPickerRef={ref => {
+                    currencyPickerRef = ref;
+                }}
                 enable
                 darkMode={false}
                 currencyCode={value?.code}
                 showFlag
                 showCurrencyName
                 showCurrencyCode
-                onSelectCurrency={(data) => onSelectCurrency({ code: data.code, symbol: data.symbol })}
-                onOpen={() => { console.log('Open'); }}
-                onClose={() => { console.log('Close'); }}
+                onSelectCurrency={data => onSelectCurrency({ code: data.code, symbol: data.symbol })}
+                onOpen={() => {
+                    console.log('Open');
+                }}
+                onClose={() => {
+                    console.log('Close');
+                }}
                 showNativeSymbol
                 showSymbol={false}
                 containerStyle={{

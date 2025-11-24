@@ -3,15 +3,13 @@ import { ActivityIndicator } from 'react-native';
 import TemplateBox from './TemplateBox';
 import TemplateText from './TemplateText';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
-import {
-    BLACK, BLACK_40, IOS_BLUE
-} from '../theme/Colors';
+import { BLACK, BLACK_40, IOS_BLUE } from '../theme/Colors';
 import { wp } from '../Utils/getResponsiveSize';
 
 interface LoadingOverlayProps {
-    message?: string
-    ml?: number,
-    backgroundColor?: string
+    message?: string;
+    ml?: number;
+    backgroundColor?: string;
 }
 const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0, backgroundColor = BLACK_40 }) => (
     <TemplateBox
@@ -29,7 +27,6 @@ const LoadingOverlay: FC<LoadingOverlayProps> = ({ message, ml = 0, backgroundCo
         <TemplateText color={BLACK} size={20} bold center>
             {message}
         </TemplateText>
-
     </TemplateBox>
 );
 

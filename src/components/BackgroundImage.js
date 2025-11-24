@@ -5,15 +5,8 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import { SCREEN_WIDTH } from '../theme/Layout';
 
-const BackgroundImage = ({
-    style, source, width, ...rest
-}) => (
-    <FastImage
-        style={[styles.image, style]}
-        {...rest}
-        source={source}
-        width={width}
-    />
+const BackgroundImage = ({ style, source, width, ...rest }) => (
+    <FastImage style={[styles.image, style]} {...rest} source={source} width={width} />
 );
 
 BackgroundImage.propTypes = {
