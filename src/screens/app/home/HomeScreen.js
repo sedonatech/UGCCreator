@@ -23,6 +23,7 @@ import BrandsCarousel from './components /BrandsCarousel';
 import EventsCarousel from './components /EventsCarousel';
 import useProfile from '../../../hooks/user/useProfile';
 import FeaturedShowcaseCarousel from './components /FeaturedSamplesCarousel';
+import ChallengeCard from './components /ChallengeCard';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -106,6 +107,7 @@ const HomeScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
         >
             {!!profile?.userName && <Greeting userName={profile?.userName} style={styles.greeting} showAvatar />}
+            <ChallengeCard />
             {showAffiliateProgramsCarousel && <AffiliateBrandsCarousel style={styles.affiliateBrandsCarousel} />}
             {/* {showUgcGigsCarousel && (
                 <TemplateBox height={180} mt={15}>
@@ -207,18 +209,7 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginBottom: 8,
     },
-    carousel: {
-        flex: 1,
-        marginBottom: WRAPPER_MARGIN,
-    },
-    projectsCarousel: {
-        flex: 1,
-        marginTop: WRAPPER_MARGIN,
-    },
-    card: {
-        marginBottom: 10,
-        alignSelf: 'center',
-    },
+
     affiliateBrandsCarousel: {
         marginVertical: 15,
     },
