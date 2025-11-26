@@ -11,16 +11,8 @@ const { Navigator, Screen } = Stack;
 
 const OffersStack = () => (
     <Navigator initialRouteName={OFFERS} screenOptions={SWITCH}>
-        <Screen
-            name={OFFERS}
-            options={TRANSPARENT_HEADER}
-            component={OffersScreen}
-        />
-        <Screen
-            name={CURRENT_PROJECT_DETAILS}
-            options={TRANSPARENT_HEADER}
-            component={CurrentProjectDetailsScreen}
-        />
+        <Screen name={OFFERS} options={TRANSPARENT_HEADER} component={OffersScreen} />
+        <Screen name={CURRENT_PROJECT_DETAILS} options={TRANSPARENT_HEADER} component={CurrentProjectDetailsScreen} />
     </Navigator>
 );
 

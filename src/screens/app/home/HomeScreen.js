@@ -8,7 +8,7 @@ import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { BRANDS_CATALOGUE, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -107,7 +107,7 @@ const HomeScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
         >
             {!!profile?.userName && <Greeting userName={profile?.userName} style={styles.greeting} showAvatar />}
-            <ChallengeCard />
+            <ChallengeCard onPress={() => navigation.navigate(CHALLENGE_DETAILS)} />
             {showAffiliateProgramsCarousel && <AffiliateBrandsCarousel style={styles.affiliateBrandsCarousel} />}
             {/* {showUgcGigsCarousel && (
                 <TemplateBox height={180} mt={15}>

@@ -5,7 +5,10 @@ import TemplateText from '../../../../components/TemplateText';
 import { BLACK, BLACK_30, BLACK_SECONDARY, LIGHT_GREEN, WHITE } from '../../../../theme/Colors';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 
-const ChallengeCard = () => {
+interface ChallengeCardProps {
+    onPress?: () => void;
+}
+const ChallengeCard = ({ onPress }: ChallengeCardProps) => {
     return (
         <TemplateBox
             mh={WRAPPER_MARGIN}
@@ -23,7 +26,7 @@ const ChallengeCard = () => {
                     alignItems="center"
                     justifyContent="center"
                     backgroundColor={LIGHT_GREEN}
-                    pv={5}
+                    pv={8}
                     ph={15}
                     borderRadius={16}
                     row
@@ -52,9 +55,10 @@ const ChallengeCard = () => {
             <Button
                 title="Enroll Now"
                 height={46}
-                width={300}
+                width={290}
                 color={BLACK}
                 style={{ borderRadius: 20, marginTop: 24 }}
+                onPress={onPress}
             />
         </TemplateBox>
     );

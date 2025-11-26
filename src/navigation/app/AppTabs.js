@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import {
-    CHATS_STACK,
-    HOME_STACK,
-    OFFERS_STACK,
-    PROFILE_STACK,
-} from '../ScreenNames';
+import { CHATS_STACK, HOME_STACK, OFFERS_STACK, PROFILE_STACK } from '../ScreenNames';
 import HomeStack from './HomeStack';
 import OffersStack from './OffersStack';
 import ProfileStack from './ProfileStack';
@@ -36,22 +31,21 @@ const AppTabs = () => {
     }, [navigation]);
 
     return (
-        <Navigator screenOptions={{
-            ...ANIMATION_DISABLED_HEADER,
-            lazy: true,
-            freezeOnBlur: true,
-            animationEnabled: false,
-            gestureEnabled: false,
-        }}
+        <Navigator
+            screenOptions={{
+                ...ANIMATION_DISABLED_HEADER,
+                lazy: true,
+                freezeOnBlur: true,
+                animationEnabled: false,
+                gestureEnabled: false,
+            }}
         >
             <Screen
                 name={HOME_STACK}
                 component={HomeStack}
                 options={{
-                    tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="Home" />
-                    ),
-                    tabBarLabel: (props) => <TabLabel {...props}>Home</TabLabel>,
+                    tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Home" />,
+                    tabBarLabel: props => <TabLabel {...props}>Home</TabLabel>,
                 }}
             />
 
@@ -59,24 +53,17 @@ const AppTabs = () => {
                 name={OFFERS_STACK}
                 component={OffersStack}
                 options={{
-                    tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="Projects" />
-                    ),
-                    tabBarLabel: (props) => <TabLabel {...props}>My Projects</TabLabel>,
+                    tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Projects" />,
+                    tabBarLabel: props => <TabLabel {...props}>My Projects</TabLabel>,
                 }}
             />
             <Screen
                 name={CHATS_STACK}
                 component={ChatsStack}
                 options={{
-                    tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="Chat" />
-                    ),
-                    tabBarLabel: (props) => (
-                        <TabLabel
-                            {...props}
-                            showNotification={unreadMessagesCount}
-                        >
+                    tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Chat" />,
+                    tabBarLabel: props => (
+                        <TabLabel {...props} showNotification={unreadMessagesCount}>
                             Chats
                         </TabLabel>
                     ),
@@ -86,10 +73,8 @@ const AppTabs = () => {
                 name={PROFILE_STACK}
                 component={ProfileStack}
                 options={{
-                    tabBarIcon: ({ focused }) => (
-                        <TabButton focused={focused} icon="Profile" />
-                    ),
-                    tabBarLabel: (props) => <TabLabel {...props}>My Portfolio</TabLabel>,
+                    tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Profile" />,
+                    tabBarLabel: props => <TabLabel {...props}>My Portfolio</TabLabel>,
                 }}
             />
         </Navigator>
