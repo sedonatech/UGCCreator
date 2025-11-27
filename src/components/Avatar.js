@@ -30,8 +30,6 @@ const Avatar = ({ style, height = 50, width = 50, borderRadius = 25 }) => {
         return null;
     }, [avatarData]);
 
-    console.log('Avatar Rendered99999999', avatar);
-
     useEffect(() => {
         (async () => {
             try {
