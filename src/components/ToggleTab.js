@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import PropTypes from 'prop-types';

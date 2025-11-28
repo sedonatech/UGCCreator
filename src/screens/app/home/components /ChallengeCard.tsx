@@ -1,18 +1,47 @@
 import TemplateBox from '../../../../components/TemplateBox';
 import { BLACK, BLACK_SECONDARY, WHITE } from '../../../../theme/Colors';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Image } from 'react-native';
 //@ts-ignore
 import challengeCardImage from '../../../../../assets/images/challenge-background.jpg';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
 import TemplateText from '../../../../components/TemplateText';
 import Button from '../../../../components/Button';
-
 interface ChallengeCardProps {
     onPress?: () => void;
+    loading?: boolean;
+    prizePoolUsd?: number;
+    challengeTitle?: string;
+    shortDescriptionSegments?: { text: string; bold: boolean }[];
+    enrollmentStartAt?: Date;
+    challengeStartAt?: Date;
+    challengeEndAt?: Date;
+    getStatusLabel: (
+        enrollmentStartAt: Date | undefined,
+        challengeStartAt: Date | undefined,
+        challengeEndAt: Date | undefined,
+        now: Date,
+    ) => string;
+    canEnrollNow: (enrollmentStartAt: Date | undefined, challengeEndAt: Date | undefined, now: Date) => boolean;
 }
-const ChallengeCard = ({ onPress }: ChallengeCardProps) => {
+const ChallengeCard = ({
+    onPress,
+    loading,
+    prizePoolUsd,
+    challengeTitle,
+    shortDescriptionSegments,
+    enrollmentStartAt,
+    challengeStartAt,
+    challengeEndAt,
+    getStatusLabel,
+    canEnrollNow,
+}: ChallengeCardProps) => {
+    const now = useMemo(() => new Date(), []);
+    const statusLabel = getStatusLabel(enrollmentStartAt, challengeStartAt, challengeEndAt, now);
+    const isEnrollmentOpen = canEnrollNow(enrollmentStartAt, challengeEndAt, now);
+    const segments = shortDescriptionSegments ?? [];
+
     return (
         <TemplateBox
             mh={WRAPPER_MARGIN}
@@ -40,32 +69,37 @@ const ChallengeCard = ({ onPress }: ChallengeCardProps) => {
                     >
                         <DynamicIcon name="Trophy" size={16} />
                         <TemplateText size={14} medium color={BLACK_SECONDARY} ml={8}>
-                            Win up to $500
+                            Win up to {prizePoolUsd ? ` $${prizePoolUsd}` : ' 300 USD'}
                         </TemplateText>
                     </TemplateBox>
-                    <TemplateText size={14}>Ends in 6 days</TemplateText>
+                    {<TemplateText size={14}>{statusLabel}</TemplateText>}
                 </TemplateBox>
-                <TemplateText bold size={18} mv={10}>
-                    3 WEEK VIDEO CHALLENGE
+                <TemplateText bold size={18} mv={10} caps>
+                    {challengeTitle}
                 </TemplateText>
                 <TemplateText size={14} center lineHeight={20} color={BLACK_SECONDARY}>
-                    A three week push where you{' '}
-                    <TemplateText size={14} semiBold>
-                        post short videos, add our app download link
-                    </TemplateText>
-                    , and compete to land in the{' '}
-                    <TemplateText size={14} semiBold>
-                        top 10 for cash rewards!
+                    <TemplateText size={14} center lineHeight={20} color={BLACK_SECONDARY}>
+                        {segments.length > 0 &&
+                            segments.map((segment, index) =>
+                                segment.bold ? (
+                                    <TemplateText key={index} size={14} semiBold>
+                                        {segment.text}
+                                    </TemplateText>
+                                ) : (
+                                    segment.text
+                                ),
+                            )}
                     </TemplateText>
                 </TemplateText>
 
                 <Button
-                    title="Enroll Now"
+                    title={isEnrollmentOpen ? 'Enroll Now' : 'Coming Soon!'}
                     width={290}
                     height={40}
                     color={BLACK}
                     style={{ borderRadius: 20, marginTop: 14 }}
                     onPress={onPress}
+                    //  disabled={!isEnrollmentOpen}
                 />
             </TemplateBox>
         </TemplateBox>

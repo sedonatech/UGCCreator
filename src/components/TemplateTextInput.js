@@ -5,7 +5,6 @@ import { BLACK, BLACK_SECONDARY, WHITE } from '../theme/Colors';
 
 const TemplateTextInput = ({
     focus,
-    children,
     disabled,
     placeholderTextColor,
     placeholderStyle,
@@ -47,7 +46,6 @@ const styles = StyleSheet.create({
 });
 
 TemplateTextInput.propTypes = {
-    children: PropTypes.node,
     focus: PropTypes.bool,
     placeholderTextColor: PropTypes.string,
     disabled: PropTypes.bool,
@@ -58,7 +56,6 @@ TemplateTextInput.propTypes = {
 };
 
 TemplateTextInput.defaultProps = {
-    children: null,
     focus: false,
     placeholderTextColor: null,
     disabled: false,
