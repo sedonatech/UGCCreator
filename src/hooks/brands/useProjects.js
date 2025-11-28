@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import {
     getFirestore,
     collection,
@@ -62,12 +61,12 @@ const useProjects = () => {
 
     const update = (key, data) => {
         console.log('[Projects] Use projects: ', key, data);
-        setProject((prevState) => ({
+        setProject(prevState => ({
             ...prevState,
             [key]: data,
         }));
     };
-    const createProject = async (projectData) => {
+    const createProject = async projectData => {
         try {
             setLoading(true);
             const db = getFirestore();
@@ -101,7 +100,7 @@ const useProjects = () => {
             );
             const querySnapshot = await getDocs(q);
             const projectsData = [];
-            querySnapshot.forEach((docSnap) => {
+            querySnapshot.forEach(docSnap => {
                 projectsData.push({ id: docSnap?.id, ...docSnap?.data() });
             });
             if (projectsData.length > 0) {
@@ -126,7 +125,7 @@ const useProjects = () => {
             );
             const querySnapshot = await getDocs(q);
             const projectsData = [];
-            querySnapshot.forEach((docSnap) => {
+            querySnapshot.forEach(docSnap => {
                 projectsData.push({ id: docSnap?.id, ...docSnap?.data() });
             });
             if (projectsData.length > 0) {
@@ -138,7 +137,7 @@ const useProjects = () => {
         setLoading(false);
     };
 
-    const getProject = async (id) => {
+    const getProject = async id => {
         try {
             setLoading(true);
             const db = getFirestore();
@@ -171,7 +170,7 @@ const useProjects = () => {
             );
             const querySnapshot = await getDocs(q);
             const projectsData = [];
-            querySnapshot.forEach((docSnap) => {
+            querySnapshot.forEach(docSnap => {
                 projectsData.push({ id: docSnap?.id, ...docSnap?.data() });
             });
             if (projectsData.length > 0) {
@@ -195,7 +194,7 @@ const useProjects = () => {
         setLoading(false);
     };
 
-    const deleteProject = async (id) => {
+    const deleteProject = async id => {
         try {
             setLoading(true);
             const db = getFirestore();
@@ -207,30 +206,30 @@ const useProjects = () => {
         setLoading(false);
     };
 
-    const getStatus = (statusIndex) => projectStatuses.reduce((acc, curr, currIndex) => {
-        if (statusIndex > currIndex) {
-            curr.status = 'completed';
-            acc.push(curr);
-        } else if (statusIndex === currIndex) {
-            curr.status = 'completed';
-            acc.push(curr);
-        } else if ((currIndex - 1) === statusIndex) {
-            curr.status = 'active';
-            acc.push(curr);
-        } else {
-            curr.status = 'inactive';
-            acc.push(curr);
-        }
+    const getStatus = statusIndex =>
+        projectStatuses.reduce((acc, curr, currIndex) => {
+            if (statusIndex > currIndex) {
+                curr.status = 'completed';
+                acc.push(curr);
+            } else if (statusIndex === currIndex) {
+                curr.status = 'completed';
+                acc.push(curr);
+            } else if (currIndex - 1 === statusIndex) {
+                curr.status = 'active';
+                acc.push(curr);
+            } else {
+                curr.status = 'inactive';
+                acc.push(curr);
+            }
 
-        return acc;
-    }, []);
+            return acc;
+        }, []);
 
     const enrollToProject = async (creatorID, selectedProject) => {
         try {
             const selectedProjectApplications = selectedProject?.applications;
             const enrolledUserIds = selectedProject?.enrolledUserIds || [];
-            const selectedProjectEnrolledCreatorIds = selectedProjectApplications
-                ?.map(({ creatorId }) => creatorId);
+            const selectedProjectEnrolledCreatorIds = selectedProjectApplications?.map(({ creatorId }) => creatorId);
 
             if (!selectedProjectEnrolledCreatorIds?.includes(creatorID)) {
                 selectedProjectApplications?.push({
@@ -242,11 +241,10 @@ const useProjects = () => {
                 });
 
                 const newUserIds = [...enrolledUserIds, creatorID];
-                await updateProject(selectedProject?.id,
-                    {
-                        applications: selectedProjectApplications,
-                        enrolledUserIds: newUserIds,
-                    });
+                await updateProject(selectedProject?.id, {
+                    applications: selectedProjectApplications,
+                    enrolledUserIds: newUserIds,
+                });
             }
         } catch (error) {
             console.log(error);
@@ -256,18 +254,17 @@ const useProjects = () => {
     const updateProjectStatus = async (creatorID, selectedProject, currentStatusIndex) => {
         try {
             const selectedProjectApplications = selectedProject?.applications;
-            const selectedProjectEnrolledCreatorIds = selectedProjectApplications
-                ?.map(({ creatorId }) => creatorId);
+            const selectedProjectEnrolledCreatorIds = selectedProjectApplications?.map(({ creatorId }) => creatorId);
 
             if (selectedProjectEnrolledCreatorIds?.includes(creatorID)) {
-                const selectedApplication = selectedProjectApplications
-                    ?.find(({ creatorId }) => creatorId === creatorID);
+                const selectedApplication = selectedProjectApplications?.find(
+                    ({ creatorId }) => creatorId === creatorID,
+                );
                 selectedApplication.status = getStatus(currentStatusIndex);
-                await updateProject(selectedProject?.id,
-                    {
-                        ...selectedProject,
-                        applications: selectedProjectApplications,
-                    });
+                await updateProject(selectedProject?.id, {
+                    ...selectedProject,
+                    applications: selectedProjectApplications,
+                });
             }
         } catch (error) {
             console.log(error);

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, Alert } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
@@ -24,23 +24,19 @@ import EventsCarousel from './components /EventsCarousel';
 import useProfile from '../../../hooks/user/useProfile';
 import FeaturedShowcaseCarousel from './components /FeaturedSamplesCarousel';
 import ChallengeCard from './components /ChallengeCard';
+import useChallenge from '../../../hooks/useChallenge';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
-
-    const { features, feed } = useFeatureFlags();
-
+    const { features } = useFeatureFlags();
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
-    const showUgcGigsCarousel = features?.showUgcGigsCarousel;
     const showAffiliateProgramsCarousel = features?.showAffiliateProgramsCarousel;
-
     const profile = auth?.profile;
     const { updateProfile } = useProfile();
-
     const profileImage = profile?.image;
-
     const isFocused = useIsFocused();
-
+    const { challenge, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
+    console.log('HomeScreen', challenge);
     useEffect(() => {
         if (isFocused && profile) {
             auth?.getProfileCompleteStatus();
@@ -86,18 +82,19 @@ const HomeScreen = ({ navigation }) => {
 
     const { previousResponse, handleRate } = useAppReview();
 
-    const ugcGuidePdfFeed = useMemo(() => {
-        if (!feed?.feeds?.length) return [];
-
-        return feed?.feeds?.[0];
-    }, [feed]);
-
     const updateLastLogin = async () => {
-        await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
+        await updateProfile({ lastLoginTime: new Date().toUTCString() }, profile?.id);
     };
 
     useEffect(() => {
         updateLastLogin();
+        // (async () => {
+        //     try {
+        //         await setChallengeShortDescription('viral-sprint-3-week');
+        //     } catch (error) {
+        //         console.log('Error fetching UGC Guide PDF feed:', error);
+        //     }
+        // })();
     }, []);
 
     return (
@@ -107,7 +104,22 @@ const HomeScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
         >
             {!!profile?.userName && <Greeting userName={profile?.userName} style={styles.greeting} showAvatar />}
-            <ChallengeCard onPress={() => navigation.navigate(CHALLENGE_DETAILS)} />
+            <ChallengeCard
+                onPress={() =>
+                    navigation.navigate(CHALLENGE_DETAILS, {
+                        challengeId: challenge?.id,
+                    })
+                }
+                loading={challengeLoading}
+                prizePoolUsd={challenge?.prizePoolUsd}
+                challengeTitle={challenge?.title}
+                shortDescriptionSegments={challenge?.shortDescriptionSegments}
+                enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
+                challengeStartAt={challenge?.challengeStartAt?.toDate()}
+                challengeEndAt={challenge?.challengeEndAt?.toDate()}
+                getStatusLabel={getStatusLabel}
+                canEnrollNow={canEnrollNow}
+            />
             {showAffiliateProgramsCarousel && <AffiliateBrandsCarousel style={styles.affiliateBrandsCarousel} />}
             {/* {showUgcGigsCarousel && (
                 <TemplateBox height={180} mt={15}>
