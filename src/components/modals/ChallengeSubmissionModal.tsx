@@ -20,6 +20,11 @@ type MetricFieldConfig = {
 
 const METRIC_FIELDS: MetricFieldConfig[] = [
     {
+        key: 'title',
+        label: 'Title',
+        placeholder: 'eg.Morning Glow-Up with UGCCreator app',
+    },
+    {
         key: 'views',
         label: 'Views',
         placeholder: 'Enter number of views',
@@ -43,11 +48,6 @@ const METRIC_FIELDS: MetricFieldConfig[] = [
         key: 'saves',
         label: 'Saves',
         placeholder: 'Enter number of saves',
-    },
-    {
-        key: 'title',
-        label: 'Title',
-        placeholder: 'eg.Morning Glow-Up with UGCCreator app',
     },
 ];
 const NUMERIC_METRIC_KEYS: MetricFieldKey[] = ['views', 'likes', 'comments', 'shares', 'saves'];

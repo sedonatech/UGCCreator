@@ -3,27 +3,26 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import TemplateText from '../../../components/TemplateText';
 import { TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
-import { HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { HEADER_MARGIN, IS_ANDROID } from '../../../theme/Layout';
 import useChallenge from '../../../hooks/useChallenge';
 import ChallengeCard from '../home/components /ChallengeCard';
 
 const ChallengesScreen = ({ navigation }) => {
     const { challenge, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
-    console.log;
+    console.log('ChallengesScreen challengepppppppppppp', challenge);
 
     return (
         <View style={styles.container}>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: WRAPPER_MARGIN }}
                 ListHeaderComponent={
                     <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center" mb={20}>
                         <TemplateText size={18} startCase bold>
-                            Check the status of your offers
+                            Challenges
                         </TemplateText>
                     </TemplateBox>
                 }
-                data={challenge}
+                data={[challenge]}
                 renderItem={({ item }) => (
                     <ChallengeCard
                         loading={challengeLoading}

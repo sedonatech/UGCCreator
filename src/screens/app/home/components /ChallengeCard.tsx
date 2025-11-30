@@ -1,16 +1,19 @@
 import TemplateBox from '../../../../components/TemplateBox';
 import { BLACK, BLACK_SECONDARY, WHITE } from '../../../../theme/Colors';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Image } from 'react-native';
 //@ts-ignore
 import challengeCardImage from '../../../../../assets/images/challenge-background.jpg';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
 import TemplateText from '../../../../components/TemplateText';
 import Button from '../../../../components/Button';
+import { getChallengeCta, isUserEnrolledInChallenge } from '../../../../hooks/useChallenge';
 interface ChallengeCardProps {
     onPress?: () => void;
     loading?: boolean;
+    challengeId?: string;
+    currentUserId?: string;
     prizePoolUsd?: number;
     challengeTitle?: string;
     shortDescriptionSegments?: { text: string; bold: boolean }[];
@@ -28,19 +31,68 @@ interface ChallengeCardProps {
 const ChallengeCard = ({
     onPress,
     loading,
+    challengeId,
     prizePoolUsd,
     challengeTitle,
     shortDescriptionSegments,
     enrollmentStartAt,
     challengeStartAt,
     challengeEndAt,
+    currentUserId,
     getStatusLabel,
     canEnrollNow,
 }: ChallengeCardProps) => {
     const now = useMemo(() => new Date(), []);
     const statusLabel = getStatusLabel(enrollmentStartAt, challengeStartAt, challengeEndAt, now);
     const isEnrollmentOpen = canEnrollNow(enrollmentStartAt, challengeEndAt, now);
+    const [isEnrolled, setIsEnrolled] = React.useState<boolean>(false);
+    const [enrollmentLoading, setEnrollmentLoading] = React.useState<boolean>(true);
     const segments = shortDescriptionSegments ?? [];
+
+    useEffect(() => {
+        if (!challengeId || !currentUserId) {
+            setIsEnrolled(false);
+            setEnrollmentLoading(false);
+            return;
+        }
+
+        let cancelled = false;
+
+        const checkEnrollment = async () => {
+            try {
+                const enrolled = await isUserEnrolledInChallenge({
+                    challengeId,
+                    userId: currentUserId,
+                });
+                if (!cancelled) {
+                    setIsEnrolled(enrolled);
+                }
+            } catch (error) {
+                console.error('Error checking enrollment:', error);
+                if (!cancelled) {
+                    setIsEnrolled(false);
+                }
+            } finally {
+                if (!cancelled) {
+                    setEnrollmentLoading(false);
+                }
+            }
+        };
+
+        checkEnrollment();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [challengeId, currentUserId]);
+
+    const cta = getChallengeCta({
+        enrollmentStartAt,
+        challengeStartAt,
+        challengeEndAt,
+        now,
+        isEnrolled,
+    });
 
     return (
         <TemplateBox
@@ -96,13 +148,13 @@ const ChallengeCard = ({
                 </TemplateText>
 
                 <Button
-                    title={isEnrollmentOpen ? 'Enroll Now' : 'Coming Soon!'}
+                    title={cta?.title}
                     width={290}
                     height={40}
                     color={BLACK}
                     style={{ borderRadius: 20, marginTop: 14 }}
                     onPress={onPress}
-                    disabled={!isEnrollmentOpen}
+                    disabled={cta?.disabled || enrollmentLoading || loading}
                 />
             </TemplateBox>
         </TemplateBox>

@@ -1,8 +1,9 @@
 import { ChallengeLeaderboardEntry } from '../../hooks/useChallengeSubmission';
-import { BLACK, BLACK_10, EMERALD_500, WHITE_30 } from '../../theme/Colors';
+import { BLACK, BLACK_10, BLUE_500, EMERALD_500, WHITE_30 } from '../../theme/Colors';
 import { WRAPPED_SCREEN_WIDTH } from '../../theme/Layout';
 import { getMetricIconName, MetricKey } from '../../Utils/challengeIcons';
 import { getMetricColor } from '../../Utils/challengeMetricColors';
+import openUrl from '../../Utils/openUrl';
 import DynamicIcon from '../icons/DynamicIcon';
 import TemplateBox from '../TemplateBox';
 import TemplateText from '../TemplateText';
@@ -24,8 +25,8 @@ const LeaderBoardCard: React.FC<LeaderBoardCardProps> = ({ entry }) => {
         >
             <TemplateBox row justifyContent="space-between" alignItems="center">
                 <TemplateBox
-                    height={50}
-                    width={50}
+                    height={40}
+                    width={40}
                     justifyContent="center"
                     alignItems="center"
                     borderRadius={30}
@@ -48,12 +49,28 @@ const LeaderBoardCard: React.FC<LeaderBoardCardProps> = ({ entry }) => {
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
+            <TemplateBox
+                row
+                justifyContent="space-between"
+                mb={20}
+                onPress={() => {
+                    openUrl(entry?.videoUrl || '');
+                }}
+            >
+                <TemplateBox width="85%">
+                    <TemplateText size={14} color={BLUE_500} mt={8} numberOfLines={2} adjustsFontSizeToFit>
+                        {entry?.videoUrl}
+                    </TemplateText>
+                </TemplateBox>
+                <TemplateBox mt={18}>
+                    <DynamicIcon name="Link" size={24} color={BLUE_500} />
+                </TemplateBox>
+            </TemplateBox>
 
             <TemplateBox
                 row
                 justifyContent="space-between"
                 mb={5}
-                mt={16}
                 borderRadius={16}
                 pAll={12}
                 borderWidth={1}

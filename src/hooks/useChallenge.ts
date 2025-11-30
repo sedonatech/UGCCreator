@@ -208,7 +208,6 @@ const useChallenge = () => {
         return `Ends in ${diffDays} days`;
     };
 
-    console.log('🚀 ~ useChallenge ~ challenge-----------:', challenge);
     return { challenge, challengeLoading, getStatusLabel, canEnrollNow, getEndsInLabel };
 };
 

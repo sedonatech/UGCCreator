@@ -2,7 +2,7 @@ import React, { FC, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 //@ts-ignore
 import challengeBackground from '../../../../assets/images/challenge-background.jpg';
 import firestore from '@react-native-firebase/firestore';
-import { ActivityIndicator, Image, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateText from '../../../components/TemplateText';
@@ -133,7 +133,16 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                     borderWidth={1}
                     borderColor={BLACK_20}
                     borderRadius={26}
-                    onPress={() => setIsLeaderBoardModalVisible(true)}
+                    onPress={() => {
+                        if (!isChallengeStarted) {
+                            Alert.alert(
+                                'Challenge Not Started',
+                                'The challenge has not started yet. Leader Board will be available once the challenge starts.',
+                            );
+                        } else {
+                            setIsLeaderBoardModalVisible(true);
+                        }
+                    }}
                     ph={16}
                     pv={8}
                 >
@@ -235,6 +244,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     // labels
     const { getStatusLabel, canEnrollNow, getEndsInLabel } = useChallenge();
     const now = useMemo(() => new Date(), []);
+    const nowMs = now.getTime();
     const statusLabel = getStatusLabel(
         challenge?.enrollmentStartAt?.toDate(),
         challenge?.challengeStartAt?.toDate(),
@@ -249,6 +259,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     const endsInLabel = getEndsInLabel(challenge?.challengeEndAt?.toDate(), now);
     const enrollmentStartDate = challenge?.enrollmentStartAt?.toDate();
     const challengeStartDate = challenge?.challengeStartAt?.toDate();
+    const challengeStartMs = challengeStartDate?.getTime() ?? 0;
     const challengeEndDate = challenge?.challengeEndAt?.toDate();
     const { title: enrollButtonTitle, disabled: enrollButtonDisabled } = getChallengeCta({
         enrollmentStartAt: enrollmentStartDate,
@@ -257,7 +268,8 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         now,
         isEnrolled,
     });
-
+    const isChallengeStarted = nowMs >= challengeStartMs;
+    console.log('🚀 ~ ChallengeDetailsScreen ~ isChallengeStarted:', isChallengeStarted);
     const handleEnrollPress = async () => {
         if (!challengeId) {
             return;
@@ -285,8 +297,9 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         }
     };
 
+    const Submissions = () => {};
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollViewMain}>
             {(loading || submissionsLoading) && (
                 <TemplateBox absolute selfCenter mt={SCREEN_HEIGHT / 2.5}>
                     <ActivityIndicator color={BLUE_500} size={'large'} />
@@ -294,7 +307,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             )}
             <TemplateBox width={SCREEN_WIDTH} height={260}>
                 <TemplateBox absolute top={0} left={0} right={0} overflow="hidden" height={260}>
-                    <Image source={challengeBackground} style={{ width: '100%', height: '100%' }} />
+                    <Image source={challengeBackground} style={styles.backgroundImage} />
                 </TemplateBox>
                 <TemplateBox absolute bottom={30} left={20}>
                     <TemplateText bold size={22} mb={16} caps style={{ maxWidth: SCREEN_WIDTH - 140 }}>
@@ -466,60 +479,70 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                 </TemplateBox>
             )}
             {activeTab === TOGGLE_TABS[3] && (
-                <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={100}>
-                    <TemplateBox>
-                        <TemplateBox row alignItems="center" justifyContent="space-between" mb={10}>
-                            <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={8}>
-                                {submissions?.length > 0 ? 'My Entries' : 'Submit Your Entries'}
+                <TemplateBox>
+                    {!isChallengeStarted ? (
+                        <TemplateBox mt={100} justifyContent="center" alignItems="center">
+                            <TemplateText center size={16} color={BLACK_SECONDARY} mb={30}>
+                                Challenge has not started yet. You can add entries once it starts.
                             </TemplateText>
-                            {submissions?.length > 0 && (
-                                <TemplateBox
-                                    row
-                                    alignItems="center"
-                                    onPress={() => setIsEntriesModalVisible(true)}
-                                    mb={8}
-                                >
-                                    <DynamicIcon name="Add" size={20} color={BLACK} />
-                                    <TemplateText size={14} semiBold>
-                                        Add Entry
-                                    </TemplateText>
-                                </TemplateBox>
-                            )}
-                        </TemplateBox>
-                        <TemplateText size={14} color={METAL} mb={20}>
-                            {submissions?.length > 0
-                                ? 'Here’s what you’ve added for this challenge. Edit these or add more anytime.'
-                                : 'Show off your skills by submitting your best work for this challenge. You can add multiple entries to increase your chances of winning!'}
-                        </TemplateText>
-                    </TemplateBox>
-                    {submissions?.length === 0 ? (
-                        <TemplateBox justifyContent="center" alignItems="center" mt={100}>
-                            <TemplateText size={16} color={BLACK_SECONDARY} mb={30}>
-                                Start the challenge 💪🏼, drop your first piece
-                            </TemplateText>
-                            <Button
-                                title={'Submit  Entry'}
-                                height={50}
-                                width={SCREEN_WIDTH - 40}
-                                color={BLACK}
-                                onPress={() => setIsEntriesModalVisible(true)}
-                                loading={savingEntry}
-                            />
                         </TemplateBox>
                     ) : (
-                        <TemplateBox justifyContent="center" alignItems="center">
-                            {submissions?.map(submission => (
-                                <ChallengeEntryCard
-                                    key={submission.id}
-                                    entry={submission}
-                                    onEdit={() => {
-                                        startEditEntry(submission);
-                                        setTimeout(() => {
-                                            setIsEntriesModalVisible(true);
-                                        }, 300);
-                                    }}
-                                />
-                            ))}
+                        <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={100}>
+                            <TemplateBox>
+                                <TemplateBox row alignItems="center" justifyContent="space-between" mb={10}>
+                                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={8}>
+                                        {submissions?.length > 0 ? 'My Entries' : 'Submit Your Entries'}
+                                    </TemplateText>
+                                    {submissions?.length > 0 && (
+                                        <TemplateBox
+                                            row
+                                            alignItems="center"
+                                            onPress={() => setIsEntriesModalVisible(true)}
+                                            mb={8}
+                                        >
+                                            <DynamicIcon name="Add" size={20} color={BLACK} />
+                                            <TemplateText size={14} semiBold>
+                                                Add Entry
+                                            </TemplateText>
+                                        </TemplateBox>
+                                    )}
+                                </TemplateBox>
+                                <TemplateText size={14} color={METAL} mb={20}>
+                                    {submissions?.length > 0
+                                        ? 'Here’s what you’ve added for this challenge. Edit these or add more anytime.'
+                                        : 'Show off your skills by submitting your best work for this challenge. You can add multiple entries to increase your chances of winning!'}
+                                </TemplateText>
+                            </TemplateBox>
+                            {submissions?.length === 0 ? (
+                                <TemplateBox justifyContent="center" alignItems="center" mt={100}>
+                                    <TemplateText size={16} color={BLACK_SECONDARY} mb={30}>
+                                        Start the challenge 💪🏼, drop your first piece
+                                    </TemplateText>
+                                    <Button
+                                        title={'Submit  Entry'}
+                                        height={50}
+                                        width={SCREEN_WIDTH - 40}
+                                        color={BLACK}
+                                        onPress={() => setIsEntriesModalVisible(true)}
+                                        loading={savingEntry}
+                                    />
+                                </TemplateBox>
+                            ) : (
+                                <TemplateBox justifyContent="center" alignItems="center">
+                                    {submissions?.map(submission => (
+                                        <ChallengeEntryCard
+                                            key={submission.id}
+                                            entry={submission}
+                                            onEdit={() => {
+                                                startEditEntry(submission);
+                                                setTimeout(() => {
+                                                    setIsEntriesModalVisible(true);
+                                                }, 300);
+                                            }}
+                                        />
+                                    ))}
+                                </TemplateBox>
+                            )}
                         </TemplateBox>
                     )}
                 </TemplateBox>
@@ -568,5 +591,13 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         </ScrollView>
     );
 };
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    scrollViewMain: {
+        flex: 1,
+    },
+    backgroundImage: {
+        width: '100%',
+        height: '100%',
+    },
+});
 export default ChallengeDetailsScreen;
