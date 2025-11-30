@@ -1,15 +1,13 @@
-/* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Alert } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-import { BLACK, LIGHT_GREEN, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import HeaderIconButton from '../../../components/header/HeaderButton';
-import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -56,18 +54,18 @@ const HomeScreen = ({ navigation }) => {
 
     const creatorToolsEnabled = features?.openAIScreen;
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <HeaderIconButton
-                    title="Creator tools"
-                    onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
-                    backDropColor={LIGHT_GREEN}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
-        });
-    }, [navigation, creatorToolsEnabled]);
+    // useLayoutEffect(() => {
+    //     navigation.setOptions({
+    //         headerRight: () => (
+    //             <HeaderIconButton
+    //                 title="Creator tools"
+    //                 onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
+    //                 backDropColor={LIGHT_GREEN}
+    //                 mr={WRAPPER_MARGIN}
+    //             />
+    //         ),
+    //     });
+    // }, [navigation, creatorToolsEnabled]);
 
     useEffect(() => {
         if (!profileImage) {
@@ -106,6 +104,8 @@ const HomeScreen = ({ navigation }) => {
                 loading={challengeLoading}
                 prizePoolUsd={challenge?.prizePoolUsd}
                 challengeTitle={challenge?.title}
+                challengeId={challenge?.id}
+                currentUserId={profile?.id}
                 shortDescriptionSegments={challenge?.shortDescriptionSegments}
                 enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
                 challengeStartAt={challenge?.challengeStartAt?.toDate()}

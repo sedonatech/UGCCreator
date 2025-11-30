@@ -6,10 +6,12 @@ import TemplateBox from '../../../components/TemplateBox';
 import { HEADER_MARGIN, IS_ANDROID } from '../../../theme/Layout';
 import useChallenge from '../../../hooks/useChallenge';
 import ChallengeCard from '../home/components /ChallengeCard';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const ChallengesScreen = ({ navigation }) => {
+    const { auth } = useAuthContext();
+    const profile = auth?.profile;
     const { challenge, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
-    console.log('ChallengesScreen challengepppppppppppp', challenge);
 
     return (
         <View style={styles.container}>
@@ -28,6 +30,8 @@ const ChallengesScreen = ({ navigation }) => {
                         loading={challengeLoading}
                         prizePoolUsd={challenge?.prizePoolUsd}
                         challengeTitle={challenge?.title}
+                        challengeId={challenge?.id}
+                        currentUserId={profile?.id}
                         shortDescriptionSegments={challenge?.shortDescriptionSegments}
                         enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
                         challengeStartAt={challenge?.challengeStartAt?.toDate()}
