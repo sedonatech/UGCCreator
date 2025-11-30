@@ -2,10 +2,19 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import {
-    getFirestore, collection, doc, getDoc, query, where, orderBy as fsOrderBy, onSnapshot, addDoc, updateDoc, serverTimestamp, FieldValue,
+    getFirestore,
+    collection,
+    doc,
+    getDoc,
+    query,
+    where,
+    orderBy as fsOrderBy,
+    onSnapshot,
+    addDoc,
+    updateDoc,
+    serverTimestamp,
 } from '@react-native-firebase/firestore';
 import { useIsFocused } from '@react-navigation/native';
-import { format } from 'date-fns';
 import { LAVENDER, WHITE } from '../../theme/Colors';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
@@ -28,6 +37,7 @@ const ChatsScreen = ({ route }) => {
     const isCreator = profile?.type === 'creator';
 
     const chatRoomId = route.params?.chatRoomId;
+    const [isTyping, setIsTyping] = useState(false);
 
     const chatRoomName = route.params?.name;
     const receiverFcmToken = route.params?.receiverFcmToken;
@@ -70,8 +80,8 @@ const ChatsScreen = ({ route }) => {
 
         const messagesRef = collection(db, CHAT_ROOMS, chatRoomId, MESSAGES);
         const q = query(messagesRef, fsOrderBy('createdAt', 'desc'));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const newMessages = snapshot?.docs?.map((docSnap) => ({
+        const unsubscribe = onSnapshot(q, snapshot => {
+            const newMessages = snapshot?.docs?.map(docSnap => ({
                 ...docSnap?.data(),
                 id: docSnap?.id,
             }));
@@ -83,13 +93,9 @@ const ChatsScreen = ({ route }) => {
     // Mark messages as read
     useEffect(() => {
         const messagesRef = collection(db, CHAT_ROOMS, chatRoomId, MESSAGES);
-        const q = query(
-            messagesRef,
-            where('read', '==', false),
-            where('user._id', '!=', auth?.profile?.id),
-        );
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            snapshot?.docs?.forEach((docSnap) => {
+        const q = query(messagesRef, where('read', '==', false), where('user._id', '!=', auth?.profile?.id));
+        const unsubscribe = onSnapshot(q, snapshot => {
+            snapshot?.docs?.forEach(docSnap => {
                 updateDoc(doc(collection(db, CHAT_ROOMS, chatRoomId, MESSAGES), docSnap.id), { read: true });
             });
         });
@@ -98,7 +104,7 @@ const ChatsScreen = ({ route }) => {
 
     const onSendMessage = async (newMessage, fcmToken) => {
         try {
-            const formattedMessages = newMessage?.map((message) => ({
+            const formattedMessages = newMessage?.map(message => ({
                 ...message,
                 read: false,
                 sender: message?.user?.name,
@@ -130,9 +136,7 @@ const ChatsScreen = ({ route }) => {
     };
 
     return (
-        <View
-            style={styles.container}
-        >
+        <View style={styles.container}>
             <TemplateBox>
                 <Blob top color={LAVENDER} />
                 <Blob right color={LAVENDER} />
@@ -141,19 +145,20 @@ const ChatsScreen = ({ route }) => {
             </TemplateBox>
             <GiftedChat
                 messages={messages}
-                onSend={(newMessages) => onSendMessage(newMessages,
-                    isCreator
-                        ? chatRoom?.brandFCMToken
-                        : chatRoom?.creatorFCMToken)}
+                onSend={newMessages =>
+                    onSendMessage(newMessages, isCreator ? chatRoom?.brandFCMToken : chatRoom?.creatorFCMToken)
+                }
                 user={chatUser}
                 placeholder="Type your message here..."
                 alwaysShowSend
                 showUserAvatar
-                isTyping
-                // loadEarlier
+                isTyping={false}
+                loadEarlier
                 // onLoadEarlier={() => {}}
                 isLoadingEarlier={false}
                 infiniteScroll
+                isKeyboardInternallyHandled
+                focusOnInputWhenOpeningKeyboard
             />
         </View>
     );

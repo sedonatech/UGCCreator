@@ -1,23 +1,13 @@
-import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import TemplateTouchable from '../TemplateTouchable';
-import {
-    CATEGORY_CARD_HEIGHT,
-    CATEGORY_CARD_WIDTH,
-    RADIUS_SMALL,
-    WRAPPER_MARGIN,
-} from '../../theme/Layout';
-import {
-    BLACK_30, BLUE,
-} from '../../theme/Colors';
+import { CATEGORY_CARD_HEIGHT, CATEGORY_CARD_WIDTH, RADIUS_SMALL, WRAPPER_MARGIN } from '../../theme/Layout';
+import { BLACK_30, BLUE } from '../../theme/Colors';
 import TemplateText from '../TemplateText';
 import TemplateIcon from '../TemplateIcon';
 
-const BrandCard = ({
-    onPress, title, icon, proposalCount, style,
-}) => {
+const BrandCard = ({ onPress, title, icon, proposalCount, style }) => {
     const Component = onPress ? TemplateTouchable : View;
 
     return (

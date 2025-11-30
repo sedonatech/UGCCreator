@@ -9,32 +9,27 @@ import {
     ActivityIndicator,
     TouchableWithoutFeedback,
 } from 'react-native';
-import React, {
-    useEffect, useMemo, useState, useRef, useLayoutEffect,
-} from 'react';
-import { orderBy } from 'lodash';
+import React, { useEffect, useMemo, useState, useRef, useLayoutEffect } from 'react';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import {
-    getFirestore, collection, query, where, orderBy as fsOrderBy, limit as fsLimit, getDocs, onSnapshot,
+    getFirestore,
+    collection,
+    query,
+    where,
+    orderBy as fsOrderBy,
+    limit as fsLimit,
+    getDocs,
+    onSnapshot,
 } from '@react-native-firebase/firestore';
 import Fuse from 'fuse.js';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import TemplateBox from '../../components/TemplateBox';
-import {
-    ERROR_RED, WHITE, BLACK, IOS_BLUE, LIGHT_GREEN,
-    LAVENDER,
-} from '../../theme/Colors';
-import {
-    HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN,
-} from '../../theme/Layout';
+import { ERROR_RED, WHITE, BLACK, IOS_BLUE, LIGHT_GREEN, LAVENDER } from '../../theme/Colors';
+import { HEADER_MARGIN, SPACE_MEDIUM, SPACE_SMALL, WRAPPER_MARGIN } from '../../theme/Layout';
 import TemplateText from '../../components/TemplateText';
-import {
-    CHATS, CREATORS_PROFILES_STACK, START_SUPPOR_CHAT,
-} from '../../navigation/ScreenNames';
+import { CHATS, CREATORS_PROFILES_STACK } from '../../navigation/ScreenNames';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import { hp, wp } from '../../Utils/getResponsiveSize';
-import useGetCreators from '../../hooks/brands/useGetCreators';
-import useGetBrands from '../../hooks/creators/useGetBrands';
 import TemplateIcon from '../../components/TemplateIcon';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import { SHADOW } from '../../theme/Shadow';
@@ -44,12 +39,12 @@ import Button from '../../components/Button';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import ChatRoomCard from './ChatRoomCard';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
-import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
 // info@ugccreatorapp.com brand details for support
 const brandId = 'ng64onQ318Q8LghDizaB2sARx7r2'; // support brand id
-const brandFCMToken = 'feIcGv7HvUWViQzFVuA_E9:APA91bEsjLxPCW0r4OkmCVRhjFJeQqzB1nlqKxiNcijXFhLfLCGRo8ptOEi-hpCt5WQuFy-IwDI1-dEZ0FazouXUPSxzg-kKsYHvY2pQ5JkXSDs31rLcMZsS45hKyKWoHcdy1aXOYJyp';
+const brandFCMToken =
+    'feIcGv7HvUWViQzFVuA_E9:APA91bEsjLxPCW0r4OkmCVRhjFJeQqzB1nlqKxiNcijXFhLfLCGRo8ptOEi-hpCt5WQuFy-IwDI1-dEZ0FazouXUPSxzg-kKsYHvY2pQ5JkXSDs31rLcMZsS45hKyKWoHcdy1aXOYJyp';
 
 const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -98,11 +93,10 @@ const ChatRoomsScreen = ({ navigation }) => {
             const usersRef = collection(db, 'users');
             const q = query(usersRef, where('id', '==', brandId));
             const querySnapshot = await getDocs(q);
-            const fetchedUsers = querySnapshot?.docs
-                ?.map((doc) => ({
-                    id: doc?.id,
-                    ...doc?.data(),
-                }));
+            const fetchedUsers = querySnapshot?.docs?.map(doc => ({
+                id: doc?.id,
+                ...doc?.data(),
+            }));
             setSupportFcmToken(fetchedUsers?.[0]?.fcmToken);
         } catch (e) {
             console.error('Error fetching brands:', e);
@@ -111,39 +105,39 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     // listen for chat rooms
     useEffect(() => {
-        const unsubscribeCreator = onSnapshot(creatorRef,
-            (querySnapshot) => {
-                const creatorRooms = querySnapshot.docs.map((doc) => ({
+        const unsubscribeCreator = onSnapshot(
+            creatorRef,
+            querySnapshot => {
+                const creatorRooms = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
                 }));
-                setChatRooms((prevRooms) => {
+                setChatRooms(prevRooms => {
                     const mergedRooms = [...prevRooms, ...creatorRooms];
-                    return mergedRooms.filter(
-                        (room, index, self) => index === self.findIndex((r) => r.id === room.id),
-                    );
+                    return mergedRooms.filter((room, index, self) => index === self.findIndex(r => r.id === room.id));
                 });
             },
-            (error) => {
+            error => {
                 console.error('Error fetching creator chat rooms:', error);
-            });
+            },
+        );
 
-        const unsubscribeBrand = onSnapshot(brandRef,
-            (querySnapshot) => {
-                const brandRooms = querySnapshot.docs.map((doc) => ({
+        const unsubscribeBrand = onSnapshot(
+            brandRef,
+            querySnapshot => {
+                const brandRooms = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
                 }));
-                setChatRooms((prevRooms) => {
+                setChatRooms(prevRooms => {
                     const mergedRooms = [...prevRooms, ...brandRooms];
-                    return mergedRooms.filter(
-                        (room, index, self) => index === self.findIndex((r) => r.id === room.id),
-                    );
+                    return mergedRooms.filter((room, index, self) => index === self.findIndex(r => r.id === room.id));
                 });
             },
-            (error) => {
+            error => {
                 console.error('Error fetching brand chat rooms:', error);
-            });
+            },
+        );
 
         return () => {
             unsubscribeCreator();
@@ -169,9 +163,7 @@ const ChatRoomsScreen = ({ navigation }) => {
         minMatchCharLength: 1,
         threshold: 0.4,
         useExtendedSearch: true,
-        keys: [
-            'name',
-        ],
+        keys: ['name'],
     };
 
     useEffect(() => {
@@ -192,28 +184,24 @@ const ChatRoomsScreen = ({ navigation }) => {
     }, [search, searchResults, chatRooms]);
 
     // Handle chat room deletion
-    const handleDeleteChat = (chatRoomId) => {
-        Alert.alert(
-            'Delete Chat',
-            'Are you sure you want to delete this chat?',
-            [
-                {
-                    text: 'Cancel',
-                    onPress: () => swipeRef?.current?.close(),
-                    style: 'cancel',
+    const handleDeleteChat = chatRoomId => {
+        Alert.alert('Delete Chat', 'Are you sure you want to delete this chat?', [
+            {
+                text: 'Cancel',
+                onPress: () => swipeRef?.current?.close(),
+                style: 'cancel',
+            },
+            {
+                text: 'Delete',
+                onPress: () => {
+                    deleteChatRoom(chatRoomId);
+                    swipeRef?.current?.close();
+                    setChatRooms(chatRooms?.filter(item => item?.id !== chatRoomId));
+                    fetchChatRooms();
                 },
-                {
-                    text: 'Delete',
-                    onPress: () => {
-                        deleteChatRoom(chatRoomId);
-                        swipeRef?.current?.close();
-                        setChatRooms(chatRooms?.filter((item) => item?.id !== chatRoomId));
-                        fetchChatRooms();
-                    },
-                    style: 'destructive',
-                },
-            ],
-        );
+                style: 'destructive',
+            },
+        ]);
     };
 
     useLayoutEffect(() => {
@@ -236,13 +224,7 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const handleSupportPress = async () => {
         try {
-            await createChatRoom(
-                chatRoomName,
-                userId,
-                brandId,
-                userFCMToken,
-                brandFCMToken,
-            );
+            await createChatRoom(chatRoomName, userId, brandId, userFCMToken, brandFCMToken);
             setSupportPress(true);
         } catch (e) {
             console.log('-> e', e);
@@ -282,7 +264,7 @@ const ChatRoomsScreen = ({ navigation }) => {
         },
     ];
 
-    const supportChat = useMemo(() => searchedChatRooms?.find((chat) => chat?.brandId === brandId), [searchedChatRooms]);
+    const supportChat = useMemo(() => searchedChatRooms?.find(chat => chat?.brandId === brandId), [searchedChatRooms]);
     useEffect(() => {
         if (supportChat && supportPress) {
             navigation.navigate(CHATS, {
@@ -295,18 +277,15 @@ const ChatRoomsScreen = ({ navigation }) => {
     }, [supportChat, supportPress]);
 
     return (
-        <KeyboardAvoidingView
-            behavior={isIOS ? 'padding' : 'height'}
-            style={styles.mainContainer}
-        >
+        <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.mainContainer}>
             <StatusBar barStyle="dark-content" />
             <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ backgroundColor: 'red', flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     <FlatList
                         data={searchedChatRooms}
                         showsVerticalScrollIndicator={false}
-                        keyExtractor={(item) => item?.id}
-                        ListHeaderComponent={(
+                        keyExtractor={item => item?.id}
+                        ListHeaderComponent={
                             <>
                                 <TemplateBox
                                     mt={HEADER_MARGIN}
@@ -314,20 +293,11 @@ const ChatRoomsScreen = ({ navigation }) => {
                                     justifyContent="center"
                                     mh={WRAPPER_MARGIN}
                                 >
-                                    <TemplateText
-                                        size={wp(16)}
-                                        startCase
-                                        bold
-                                        center
-                                    >
+                                    <TemplateText size={wp(16)} startCase bold center>
                                         {`Continue your conversations with your ${isCreator ? 'brands' : 'creators'}`}
                                     </TemplateText>
                                     {!!searchedChatRooms?.length && (
-                                        <TemplateText
-                                            size={wp(13)}
-                                            center
-                                            style={styles.swipeToDeleteText}
-                                        >
+                                        <TemplateText size={wp(13)} center style={styles.swipeToDeleteText}>
                                             Swipe left to delete chat
                                         </TemplateText>
                                     )}
@@ -337,14 +307,14 @@ const ChatRoomsScreen = ({ navigation }) => {
                                             placeholder="Search"
                                             style={[styles.input, SHADOW('default', WHITE)]}
                                             value={search}
-                                            onChangeText={(text) => setSearch(text)}
+                                            onChangeText={text => setSearch(text)}
                                             autoCapitalize="none"
                                         />
                                     )}
                                     <TemplateBox height={WRAPPER_MARGIN} />
                                 </TemplateBox>
                             </>
-                        )}
+                        }
                         renderItem={({ item }) => (
                             <GestureHandlerRootView>
                                 <Swipeable
@@ -352,31 +322,25 @@ const ChatRoomsScreen = ({ navigation }) => {
                                     friction={2}
                                     containerStyle={styles.swipeContainer}
                                     useNativeAnimations
-                                    renderRightActions={
-                                        () => (
-                                            <TemplateBox
-                                                center
-                                                selfCenter
-                                                mr={wp(WRAPPER_MARGIN)}
-                                                mt={wp(SPACE_SMALL)}
-                                                onPress={() => handleDeleteChat(item?.id)}
-                                            >
-                                                <TemplateIcon
-                                                    name="trash"
-                                                    size={wp(24)}
-                                                    color={ERROR_RED}
-                                                    style={styles.deleteIcon}
-                                                />
-                                                <TemplateText
-                                                    color={ERROR_RED}
-                                                    size={wp(9)}
-                                                    bold
-                                                >
-                                                    Delete
-                                                </TemplateText>
-                                            </TemplateBox>
-                                        )
-                                    }
+                                    renderRightActions={() => (
+                                        <TemplateBox
+                                            center
+                                            selfCenter
+                                            mr={wp(WRAPPER_MARGIN)}
+                                            mt={wp(SPACE_SMALL)}
+                                            onPress={() => handleDeleteChat(item?.id)}
+                                        >
+                                            <TemplateIcon
+                                                name="trash"
+                                                size={wp(24)}
+                                                color={ERROR_RED}
+                                                style={styles.deleteIcon}
+                                            />
+                                            <TemplateText color={ERROR_RED} size={wp(9)} bold>
+                                                Delete
+                                            </TemplateText>
+                                        </TemplateBox>
+                                    )}
                                 >
                                     <ChatRoomCard
                                         id={item?.id}
@@ -397,80 +361,70 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 justifyContent="center"
                                 mh={WRAPPER_MARGIN}
                             >
-                                {(fetchingChatRooms)
-                                    ? <ActivityIndicator size="large" color={IOS_BLUE} />
-                                    : (
-                                        <TemplateBox alignItems="center">
-                                            <TemplateText
-                                                size={wp(16)}
-                                                center
-                                            >
-                                                There are no conversations yet
-                                            </TemplateText>
-                                            <Button
-                                                title="Start a conversation"
-                                                onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
-                                                style={styles.button}
-                                            />
-                                        </TemplateBox>
-                                    )}
+                                {fetchingChatRooms ? (
+                                    <ActivityIndicator size="large" color={IOS_BLUE} />
+                                ) : (
+                                    <TemplateBox alignItems="center">
+                                        <TemplateText size={wp(16)} center>
+                                            There are no conversations yet
+                                        </TemplateText>
+                                        <Button
+                                            title="Start a conversation"
+                                            onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
+                                            style={styles.button}
+                                        />
+                                    </TemplateBox>
+                                )}
 
                                 <TemplateBox height={WRAPPER_MARGIN} />
                             </TemplateBox>
                         )}
-                        ListFooterComponent={(
+                        ListFooterComponent={
                             <View style={styles.listFooter}>
                                 <TemplateSafeAreaView ios />
                             </View>
-                        )}
+                        }
                         style={styles.container}
                         contentContainerStyle={styles.contentContainer}
-                        refreshControl={
-                            <RefreshControl refreshing={fetchingChatRooms} onRefresh={fetchChatRooms} />
-                        }
+                        refreshControl={<RefreshControl refreshing={fetchingChatRooms} onRefresh={fetchChatRooms} />}
                         initialNumToRender={5}
                         onEndReachedThreshold={0.5}
-                        onEndReached={() => { setLimit((prevLimit) => prevLimit + 10); }}
+                        onEndReached={() => {
+                            setLimit(prevLimit => prevLimit + 10);
+                        }}
                     />
 
-                    {showOptions
-            && (
-                <View
-                    style={{
-                        position: 'absolute',
-                        right: WRAPPER_MARGIN,
-                        top: HEADER_MARGIN * 0.85,
-                        zIndex: 99,
-                    }}
-                >
-                    {
-                        options?.map(({ title, onPress }, index) => (
-                            <TemplateBox
-                                key={index}
-                                zIndex={99}
-                                backgroundColor={LAVENDER}
-                                mb={hp(8)}
-                                borderRadius={hp(8)}
-                                fadeIn
-                                slideInTime={100 + index * 100}
-                                slideIn
-                                slideInX={20}
-                                debug
-                            >
+                    {showOptions && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                right: WRAPPER_MARGIN,
+                                top: HEADER_MARGIN * 0.85,
+                                zIndex: 99,
+                            }}
+                        >
+                            {options?.map(({ title, onPress }, index) => (
                                 <TemplateBox
-                                    onPress={onPress}
-                                    ph={12}
-                                    pv={12}
+                                    key={index}
+                                    zIndex={99}
+                                    backgroundColor={LAVENDER}
+                                    mb={hp(8)}
+                                    borderRadius={hp(8)}
+                                    fadeIn
+                                    slideInTime={100 + index * 100}
+                                    slideIn
+                                    slideInX={20}
+                                    debug
                                 >
-                                    <TemplateText size={hp(14)} semiBold>
-                                        {title}
-                                    </TemplateText>
+                                    <TemplateBox onPress={onPress} ph={12} pv={12}>
+                                        <TemplateText size={hp(14)} semiBold>
+                                            {title}
+                                        </TemplateText>
+                                    </TemplateBox>
                                 </TemplateBox>
-                            </TemplateBox>
-                        ))
-                    }
-                </View>
-            )}
+                            ))}
+                        </View>
+                    )}
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

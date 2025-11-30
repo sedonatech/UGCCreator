@@ -10,13 +10,13 @@ import TemplateText from './TemplateText';
 const Button = ({
     height,
     width,
-    color,
+    color = BLACK,
     onPress,
     title,
     loading,
     disabled,
     style,
-    titleColor,
+    titleColor = WHITE,
     titleSize = 16,
 }) => {
     const handleOnPress = () => {
@@ -48,14 +48,7 @@ const Button = ({
             {loading ? (
                 <ActivityIndicator size="small" color={WHITE} />
             ) : (
-                <TemplateText
-                    size={titleSize}
-                    subTitle
-                    semiBold
-                    center
-                    color={titleColor}
-
-                >
+                <TemplateText size={titleSize} subTitle semiBold center color={titleColor}>
                     {title}
                 </TemplateText>
             )}
@@ -92,7 +85,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 8,
+        borderRadius: 26,
     },
 });
 export default Button;

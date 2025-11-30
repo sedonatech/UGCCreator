@@ -1,20 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Video from 'react-native-video';
-import {
-    BLACK,
-    BLACK_10,
-    BLACK_SECONDARY,
-    BLUE,
-    BRAND_BLUE,
-    DARK_OVERLAY,
-    ERROR_RED,
-    GREY_30,
-    ONBOARDING_BLUE,
-    WHITE,
-} from '../../theme/Colors';
+import { BLACK, BLACK_10, ERROR_RED, GREY_30, ONBOARDING_BLUE, WHITE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
@@ -74,13 +63,10 @@ const SignUpScreen = ({ navigation, route }) => {
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
-    const disabled = useMemo(() => (
-        !emailValid(email)
-      || !passwordValid(password)
-      || isEmpty(name)
-      || loading
-      || !!error
-    ), [email, password, name, loading, error]);
+    const disabled = useMemo(
+        () => !emailValid(email) || !passwordValid(password) || isEmpty(name) || loading || !!error,
+        [email, password, name, loading, error],
+    );
 
     useEffect(() => {
         setError(null);
@@ -92,10 +78,7 @@ const SignUpScreen = ({ navigation, route }) => {
         setLoading(true);
         try {
             await AsyncStorage.setItem('@userType', namePlaceholder);
-            const response = await auth().createUserWithEmailAndPassword(
-                email,
-                password,
-            );
+            const response = await auth().createUserWithEmailAndPassword(email, password);
 
             if (response?.user) {
                 if (isCreator) {
@@ -118,7 +101,6 @@ const SignUpScreen = ({ navigation, route }) => {
 
     const image = isCreator ? creatorAuthImage : brandAuthImage;
 
-
     return (
         <Wrapper
             contentContainerStyle={styles.contentContainerStyle}
@@ -126,22 +108,23 @@ const SignUpScreen = ({ navigation, route }) => {
             showsVerticalScrollIndicator={false}
             keyboard
         >
-            <TemplateBox borderRadius={20} overflow='hidden'>
-                <TemplateBox style={{position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99}} backgroundColor={DARK_OVERLAY}>
-                 <BrandLogo height={58} width={282} color={WHITE} />
+            <TemplateBox borderRadius={20} overflow="hidden">
+                <TemplateBox
+                    style={{
+                        position: 'absolute',
+                        top: 50,
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        zIndex: 99,
+                    }}
+                >
+                    <BrandLogo height={58} width={282} color={WHITE} />
                 </TemplateBox>
-                <ResizedImage source={image} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
+                <ResizedImage source={image} style={{ height: 350, width: SCREEN_WIDTH }} />
             </TemplateBox>
 
-
             <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={20}>
-                <TemplateText
-                    size={21}
-                    medium
-                    center
-                    color={ONBOARDING_BLUE}
-                    style={styles.title}
-                >
+                <TemplateText size={22} medium center style={styles.title}>
                     {`Create your ${isCreator ? 'creator' : 'brand'} account `}
                 </TemplateText>
             </TemplateBox>
@@ -150,19 +133,15 @@ const SignUpScreen = ({ navigation, route }) => {
                 placeholder={namePlaceholder}
                 style={[styles.input, showNameError && styles.error]}
                 value={name}
-                onChangeText={(text) => setName(text)}
+                onChangeText={text => setName(text)}
                 onBlur={() => setNameTouched(true)}
             />
-            <Error show={showNameError}>
-                {`Please enter a valid ${
-                    isCreator ? 'name' : 'brand name'
-                } `}
-            </Error>
+            <Error show={showNameError}>{`Please enter a valid ${isCreator ? 'name' : 'brand name'} `}</Error>
             <TemplateTextInput
                 placeholder="Your Email"
                 style={[styles.input, showEmailError && styles.error]}
                 value={email}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={text => setEmail(text)}
                 keyboardType="email-address"
                 onBlur={() => setEmailTouched(true)}
                 autoCapitalize="none"
@@ -174,13 +153,13 @@ const SignUpScreen = ({ navigation, route }) => {
                     placeholder="Password"
                     style={[styles.input, showPasswordError && styles.error]}
                     value={password}
-                    onChangeText={(text) => setPassword(text)}
+                    onChangeText={text => setPassword(text)}
                     onBlur={() => setPasswordTouched(true)}
                     secureTextEntry={!passwordVisible}
                     autoCapitalize="none"
                 />
                 <TemplateTouchable
-                    onPress={() => setPasswordVisible((prevState) => !prevState)}
+                    onPress={() => setPasswordVisible(prevState => !prevState)}
                     style={styles.passwordIcon}
                 >
                     <TemplateIcon
@@ -201,9 +180,11 @@ const SignUpScreen = ({ navigation, route }) => {
                     title="Create Account"
                     onPress={handleSignUp}
                     style={styles.button}
+                    height={50}
+                    width={SCREEN_WIDTH - 40}
                     loading={loading}
                     disabled={disabled}
-                    color={ONBOARDING_BLUE}
+                    color={BLACK}
                 />
                 <TemplateText
                     size={14}
@@ -218,9 +199,7 @@ const SignUpScreen = ({ navigation, route }) => {
                         }
                     }}
                 >
-                    By creating an account, you agree to our
-                    {' '}
-
+                    By creating an account, you agree to our{' '}
                     <TemplateText
                         medium
                         underLine
@@ -234,22 +213,16 @@ const SignUpScreen = ({ navigation, route }) => {
                         }}
                         color={ONBOARDING_BLUE}
                     >
-                        Terms of Service
-                        {' '}
-
+                        Terms of Service{' '}
                     </TemplateText>
-                    and
-                    {' '}
-
+                    and{' '}
                     <TemplateText medium underLine size={14} color={ONBOARDING_BLUE}>
                         Privacy Policy
                     </TemplateText>
                 </TemplateText>
 
                 <TemplateText size={16} center style={styles.signupLink} medium>
-                    Already a member?
-                    {' '}
-
+                    Already a member?{' '}
                     <TemplateText
                         color={ONBOARDING_BLUE}
                         underLine
@@ -269,17 +242,14 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
     },
-    contentContainerStyle: {
-    },
-    logo: {
-        alignSelf: 'center',
-    },
+    contentContainerStyle: {},
     buttonContainer: {
         alignSelf: 'center',
         marginBottom: 20,
     },
     button: {
         marginTop: 24,
+        borderRadius: 26,
     },
     loginText: {
         marginTop: WRAPPER_MARGIN,
@@ -287,16 +257,15 @@ const styles = StyleSheet.create({
     signupLink: {
         marginTop: 16,
     },
-    title: {
-    },
+    title: {},
     input: {
         height: 60,
         width: SCREEN_WIDTH - 32,
-        borderRadius: 8,
+        borderRadius: 26,
         paddingLeft: 16,
         marginTop: 16,
         borderColor: BLACK_10,
-        backgroundColor: GREY_30
+        backgroundColor: GREY_30,
     },
     error: {
         borderColor: ERROR_RED,

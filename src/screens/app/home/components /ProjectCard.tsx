@@ -2,12 +2,9 @@ import React, { FC } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { SCREEN_WIDTH } from '../../../../theme/Layout';
-import {
-    BLACK, DEFAULT_GRADIENT, GREEN, WHITE, YELLOW,
-} from '../../../../theme/Colors';
+import { BLACK, DEFAULT_GRADIENT, GREEN, WHITE, YELLOW } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
-import { wp } from '../../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 
@@ -26,10 +23,10 @@ interface Props {
     duration?: string;
 
     projectType?: string;
-    isShowcase?: boolean
+    isShowcase?: boolean;
 }
 
-const CARD_WIDTH = (SCREEN_WIDTH / 2) - 28;
+const CARD_WIDTH = SCREEN_WIDTH / 2 - 28;
 const ProjectCard: FC<Props> = ({
     image,
     style,
@@ -40,12 +37,9 @@ const ProjectCard: FC<Props> = ({
     enrolled,
     duration,
     projectType,
-    isShowcase
+    isShowcase,
 }) => (
-    <TemplateTouchable
-        style={[styles.container, style]}
-        onPress={onPress}
-    >
+    <TemplateTouchable style={[styles.container, style]} onPress={onPress}>
         {enrolled && (
             <TemplateBox
                 flex
@@ -60,11 +54,13 @@ const ProjectCard: FC<Props> = ({
                 left={16}
                 zIndex={2}
             >
-                <TemplateText semiBold size={9} color={BLACK} caps>active</TemplateText>
+                <TemplateText semiBold size={9} color={BLACK} caps>
+                    active
+                </TemplateText>
             </TemplateBox>
         )}
 
-        {(!enrolled && !isShowcase ) &&
+        {!enrolled && !isShowcase && (
             <TemplateBox
                 flex
                 absolute
@@ -78,54 +74,49 @@ const ProjectCard: FC<Props> = ({
                 left={16}
                 zIndex={2}
             >
-                <TemplateText size={9} color={BLACK} caps semiBold>New</TemplateText>
+                <TemplateText size={9} color={BLACK} caps semiBold>
+                    New
+                </TemplateText>
             </TemplateBox>
-        }
+        )}
 
-
-        <LinearGradient
-            colors={DEFAULT_GRADIENT}
-            style={styles.linearGradient}
-        />
+        <LinearGradient colors={DEFAULT_GRADIENT} style={styles.linearGradient} />
         {!!image && <Image style={styles.image} source={image} />}
-        <TemplateBox width={CARD_WIDTH - 8} selfCenter pb={20} left={16} justifyContent="flex-end" height="100%" onPress={onPress}>
+        <TemplateBox
+            width={CARD_WIDTH - 8}
+            selfCenter
+            pb={20}
+            left={16}
+            justifyContent="flex-end"
+            height="100%"
+            onPress={onPress}
+        >
             {/* @ts-ignore */}
             <TemplateText color={WHITE} bold size={16} caps style={styles.text}>
                 {title}
             </TemplateText>
             {!!projectType && (
                 <TemplateBox row alignItems="center">
-                    <TemplateIcon
-                        name="trending-up-outline"
-                        color={WHITE}
-                        size={12}
-                        style={styles.icon}
-                    />
+                    <TemplateIcon name="trending-up-outline" color={WHITE} size={12} style={styles.icon} />
                     <TemplateText color={WHITE} size={10} semiBold>
                         {projectType}
                     </TemplateText>
                 </TemplateBox>
             )}
             <TemplateBox row alignItems="center">
-                <TemplateIcon
-                    name="calendar-outline"
-                    color={WHITE}
-                    size={12}
-                    style={styles.icon}
-                />
+                <TemplateIcon name="calendar" color={WHITE} size={12} style={styles.icon} />
                 <TemplateText color={WHITE} size={10} semiBold>
                     {duration}
                 </TemplateText>
             </TemplateBox>
         </TemplateBox>
-
     </TemplateTouchable>
 );
 
 const styles = StyleSheet.create({
     text: {
         marginTop: 40,
-        width: 140
+        width: 140,
     },
     container: {
         width: CARD_WIDTH,
@@ -147,8 +138,8 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
     icon: {
-        marginRight: 5
-    }
+        marginRight: 5,
+    },
 });
 
 export default ProjectCard;

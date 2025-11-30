@@ -2,30 +2,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import {
-    getFirestore, collection, query, where, getDocs, onSnapshot,
-} from '@react-native-firebase/firestore';
+import { StyleSheet, View } from 'react-native';
+import { getFirestore, collection, query, where, getDocs, onSnapshot } from '@react-native-firebase/firestore';
 import TemplateBox from '../../components/TemplateBox';
 import { wp } from '../../Utils/getResponsiveSize';
 import { SPACE_SMALL } from '../../theme/Layout';
-import {
-    ERROR_RED, GREY, lightOrange, WHITE,
-} from '../../theme/Colors';
+import { ERROR_RED, GREY, lightOrange, WHITE } from '../../theme/Colors';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../consts/content/Portfolio';
 import TemplateText from '../../components/TemplateText';
 // import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 import { CHATS, CREATORS_PROFILES_STACK, PROFILE } from '../../navigation/ScreenNames';
 
-const ChatRoomCard = ({
-    id,
-    item,
-    userId,
-    navigation,
-    isSupport,
-    isCreator,
-}) => {
+const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) => {
     // const { unreadMessagesCount } = useChatMessages(id);
     const db = getFirestore();
     const usersRef = collection(db, 'users');
@@ -37,38 +26,35 @@ const ChatRoomCard = ({
         if (item) fetchUsers([item?.brandId, item?.creatorId]);
     }, [item]);
 
-    const fetchUsers = async (ids) => {
+    const fetchUsers = async ids => {
         try {
             const q = query(usersRef, where('id', 'in', ids));
             const querySnapshot = await getDocs(q);
-            const fetchedUsers = querySnapshot?.docs
-                ?.map((docSnap) => ({
-                    id: docSnap?.id,
-                    ...docSnap?.data(),
-                    lastLoginTime: docSnap?.data().lastLoginTime ? calculateLastLoginTime(docSnap?.data().lastLoginTime) : 'days ago',
-                }));
+            const fetchedUsers = querySnapshot?.docs?.map(docSnap => ({
+                id: docSnap?.id,
+                ...docSnap?.data(),
+                lastLoginTime: docSnap?.data().lastLoginTime
+                    ? calculateLastLoginTime(docSnap?.data().lastLoginTime)
+                    : 'days ago',
+            }));
             setUsers(fetchedUsers);
         } catch (e) {
             console.error('Error fetching brands:', e);
         }
     };
 
-    const receiver = useMemo(() => users?.find(
-        (item) => userId !== item?.id,
-    ), [userId, users]);
+    const receiver = useMemo(() => users?.find(item => userId !== item?.id), [userId, users]);
 
     useEffect(() => {
         if (!id) return () => {};
         const messagesRef = collection(db, 'chatRooms', id, 'messages');
         const q = query(messagesRef, where('read', '==', false));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const newMessages = snapshot?.docs?.map((docSnap) => ({
+        const unsubscribe = onSnapshot(q, snapshot => {
+            const newMessages = snapshot?.docs?.map(docSnap => ({
                 ...docSnap?.data(),
                 id: docSnap?.id,
             }));
-            setUnreadMessagesCount(newMessages?.filter(
-                (message) => message?.user?._id !== userId,
-            )?.length);
+            setUnreadMessagesCount(newMessages?.filter(message => message?.user?._id !== userId)?.length);
         });
         return unsubscribe;
     }, [id]);
@@ -85,6 +71,14 @@ const ChatRoomCard = ({
                 row
                 alignItems="center"
                 lightShadow
+                onPress={() => {
+                    console.log('navigating to chat room', id);
+                    navigation.navigate(CHATS, {
+                        chatRoomId: id,
+                        name: receiver?.name,
+                        receiverFcmToken: receiver?.fcmToken,
+                    });
+                }}
             >
                 <TemplateBox
                     width={wp(354)}
@@ -93,6 +87,7 @@ const ChatRoomCard = ({
                     left={0}
                     zIndex={99}
                     onPress={() => {
+                        console.log('navigating to chat room', id);
                         navigation.navigate(CHATS, {
                             chatRoomId: id,
                             name: receiver?.name,
@@ -100,17 +95,22 @@ const ChatRoomCard = ({
                         });
                     }}
                 />
-                {isSupport
-                    && (
-                        <View style={{
-                            alignSelf: 'flex-start', position: 'absolute', paddingHorizontal: 8, paddingVertical: 2, backgroundColor: lightOrange, right: 20,
+                {isSupport && (
+                    <View
+                        style={{
+                            alignSelf: 'flex-start',
+                            position: 'absolute',
+                            paddingHorizontal: 8,
+                            paddingVertical: 2,
+                            backgroundColor: lightOrange,
+                            right: 20,
                         }}
-                        >
-                            <TemplateText size={12} medium color={WHITE}>
-                                Support
-                            </TemplateText>
-                        </View>
-                    )}
+                    >
+                        <TemplateText size={12} medium color={WHITE}>
+                            Support
+                        </TemplateText>
+                    </View>
+                )}
 
                 <TemplateBox
                     style={styles.image}
@@ -122,10 +122,13 @@ const ChatRoomCard = ({
                             });
                         }
 
-                        return !isSupport && navigation.navigate(CREATORS_PROFILES_STACK, {
-                            screen: PROFILE,
-                            params: { creatorId: receiver?.id },
-                        });
+                        return (
+                            !isSupport &&
+                            navigation.navigate(CREATORS_PROFILES_STACK, {
+                                screen: PROFILE,
+                                params: { creatorId: receiver?.id },
+                            })
+                        );
                     }}
                 >
                     <FastImage
@@ -171,8 +174,7 @@ const ChatRoomCard = ({
 ChatRoomCard.propTypes = {
     id: PropTypes.string.isRequired,
 };
-ChatRoomCard.defaultProps = {
-};
+ChatRoomCard.defaultProps = {};
 
 const styles = StyleSheet.create({
     image: {

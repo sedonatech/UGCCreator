@@ -5,17 +5,13 @@ import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
-import {
-    BLACK, BLACK_60, BRAND_BLUE, GREEN, WHITE,
-} from '../../../../theme/Colors';
+import { BLACK, BLACK_60, BRAND_BLUE, WHITE } from '../../../../theme/Colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
 import Avatar from '../../../../components/Avatar';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import useImageStorage from '../../../../hooks/Portfolio/useImageStorage';
 
-const PortfolioHeader = ({
-    userName, location, isUpdate, image, creatorId,
-}) => {
+const PortfolioHeader = ({ userName, location, isUpdate, image, creatorId }) => {
     const { onAddImage } = useImageStorage();
     return (
         <TemplateBox>
@@ -38,7 +34,6 @@ const PortfolioHeader = ({
                     justifyContent="center"
                     alignItems="center"
                 >
-
                     {creatorId ? (
                         <FastImage source={{ uri: image }} style={styles.image} />
                     ) : (
@@ -59,41 +54,35 @@ const PortfolioHeader = ({
                             alignItems="center"
                             onPress={() => onAddImage(true)}
                         >
-                            <TemplateIcon
-                                name="camera-outline"
-                                color={BLACK}
-                                size={30}
-                            />
+                            <TemplateIcon name="camera" color={BLACK} size={30} />
                         </TemplateBox>
                     )}
                 </TemplateBox>
             </TemplateBox>
-            { !isUpdate ? (
+            {!isUpdate ? (
                 <TemplateBox selfCenter slideIn slideInDelay={100} slideInDirection="left">
                     <TemplateBox row mt={120} alignItems="center" mb={6}>
-                        <TemplateText bold size={20} color={BLACK} center>{userName}</TemplateText>
-                        <TemplateIcon
-                            name="check-decagram"
-                            family="MaterialCommunity"
-                            color={GREEN}
-                            size={14}
-                            style={styles.icon}
-                        />
+                        <TemplateText bold size={20} color={BLACK} center>
+                            {userName}
+                        </TemplateText>
                     </TemplateBox>
                     {location && (
                         <TemplateBox row alignItems="center">
                             <TemplateText size={12} color={BLACK_60}>{`@${userName}`}</TemplateText>
                             <TemplateBox width={10} />
                             <TemplateBox row alignItems="center">
-                                <TemplateIcon size={12} color={BLACK_60} name="location-outline" />
-                                <TemplateText size={12} color={BLACK_60}>{location}</TemplateText>
+                                <TemplateText size={12} color={BLACK_60}>
+                                    {location}
+                                </TemplateText>
                             </TemplateBox>
                         </TemplateBox>
                     )}
                 </TemplateBox>
             ) : (
                 <TemplateBox mt={135} alignItems="center" mb={6} selfCenter>
-                    <TemplateText bold size={18} color={BLACK}>Update Your Portfolio</TemplateText>
+                    <TemplateText bold size={18} color={BLACK}>
+                        Update Your Portfolio
+                    </TemplateText>
                 </TemplateBox>
             )}
         </TemplateBox>
@@ -117,9 +106,6 @@ PortfolioHeader.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-    icon: {
-        marginTop: 5.5,
-    },
     image: {
         height: 176,
         width: 196,

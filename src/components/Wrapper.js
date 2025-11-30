@@ -1,7 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef } from 'react';
-import {
-    StyleSheet, ScrollView, View, ActivityIndicator,
-} from 'react-native';
+import { StyleSheet, ScrollView, View, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PropTypes from 'prop-types';
@@ -9,36 +8,18 @@ import TemplateTouchable from './TemplateTouchable';
 import Shadow from '../theme/Shadow';
 import comingSoonAlert from '../Utils/ComingSoonAlert';
 import TemplateIcon from './TemplateIcon';
-import {
-    RADIUS_LARGE,
-    SCREEN_HEIGHT,
-    WRAPPER_MARGIN,
-    SCREEN_WIDTH,
-} from '../theme/Layout';
+import { RADIUS_LARGE, SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../theme/Layout';
 import { WHITE } from '../theme/Colors';
 
 export const ScrollKeyboardContainer = forwardRef(
-    (
-        {
-            keyboard,
-            scroll,
-            children,
-            contentContainerStyle,
-            extraHeight,
-            ...restProps
-        },
-        ref,
-    ) => {
+    ({ keyboard, scroll, children, contentContainerStyle, extraHeight, ...restProps }, ref) => {
         if (!keyboard && !scroll) {
             return children;
         }
         if (keyboard) {
             return (
                 <KeyboardAwareScrollView
-                    contentContainerStyle={[
-                        styles.contentContainer,
-                        contentContainerStyle,
-                    ]}
+                    contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
                     enableOnAndroid
                     extraHeight={extraHeight}
                     scrollIndicatorInsets={styles.scrollIndicatorInsets}
@@ -67,10 +48,7 @@ ScrollKeyboardContainer.propTypes = {
     scroll: PropTypes.bool,
     children: PropTypes.node.isRequired,
     extraHeight: PropTypes.number,
-    contentContainerStyle: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.array,
-    ]),
+    contentContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 ScrollKeyboardContainer.defaultProps = {
@@ -80,14 +58,7 @@ ScrollKeyboardContainer.defaultProps = {
     contentContainerStyle: null,
 };
 
-export const BottomWrapper = ({
-    children,
-    style,
-    restProps,
-    background,
-    expandable,
-    radius,
-}) => (
+export const BottomWrapper = ({ children, style, restProps, background, expandable, radius }) => (
     <View
         style={[
             styles.bottomWrapper,
@@ -100,10 +71,7 @@ export const BottomWrapper = ({
         {...restProps}
     >
         {!!expandable && (
-            <TemplateTouchable
-                style={[Shadow.card, styles.toggleButton]}
-                onPress={comingSoonAlert}
-            >
+            <TemplateTouchable style={[Shadow.card, styles.toggleButton]} onPress={comingSoonAlert}>
                 <TemplateIcon name="Arrow-Down" color={background} />
             </TemplateTouchable>
         )}
@@ -146,11 +114,7 @@ const Wrapper = forwardRef(
         },
         ref,
     ) => {
-        const content = loading ? (
-            <ActivityIndicator style={styles.activityIndicator} size="large" />
-        ) : (
-            children
-        );
+        const content = loading ? <ActivityIndicator style={styles.activityIndicator} size="large" /> : children;
         const Inner = safe ? SafeAreaView : View;
         return (
             <View style={styles.container}>
@@ -162,15 +126,10 @@ const Wrapper = forwardRef(
                     endFillColor={WHITE}
                     extraHeight={extraHeight}
                     style={[styles.container, outerStyle]}
-                    contentContainerStyle={[
-                        { backgroundColor: background },
-                        contentContainerStyle,
-                    ]}
+                    contentContainerStyle={[{ backgroundColor: background }, contentContainerStyle]}
                     {...restProps}
                 >
-                    <Inner style={[styles.safeArea, loading && styles.loading, style]}>
-                        {content}
-                    </Inner>
+                    <Inner style={[styles.safeArea, loading && styles.loading, style]}>{content}</Inner>
                 </ScrollKeyboardContainer>
             </View>
         );

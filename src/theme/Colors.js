@@ -65,16 +65,18 @@ export const DARK_GREY = '#636363';
 export const GREY_SECONDARY = 'rgba(227, 231, 236, 1)';
 
 export const GREY_30 = 'rgba(227, 231, 236, 0.3)';
-
+export const GREY_50 = 'rgba(227, 231, 236, 0.5)';
+export const GREY_70 = 'rgba(227, 231, 236, 0.7)';
 export const PRIMARY_GRADIENT = [BLACK_10, BLACK_20, BLACK_50];
 
 export const SECONDARY_GRADIENT = [BLACK_20, BLACK_30, BLACK_60];
 
 export const YELLOW = '#FFF27C';
 
-export const DEFAULT_GRADIENT = ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.6)'];
+export const DEFAULT_GRADIENT = ['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.4)', 'rgba(0,0,0,0.7)'];
 
 export const LIGHT_GREEN = 'rgba(52, 199, 89, 0.3)';
+export const LIGHT_GREEN_10 = 'rgba(52, 199, 89, 0.1)';
 
 export const ONBOARDING_BLUE = '#3979E8';
 export const OFF_WHITE = '#EFEFEF';

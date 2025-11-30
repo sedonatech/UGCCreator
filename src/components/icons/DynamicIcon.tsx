@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import { BLACK } from '../../theme/Colors';
 import HomeIcon from './HomeIcon';
@@ -6,59 +6,51 @@ import ChatIcon from './ChatIcon';
 import ProfileIcon from './ProfileIcon';
 import ProjectsIcon from './ProjectsIcon';
 import { IconProps } from './IconProps';
+import Trophy from './Trophy';
 import PeopleIcon from './PeopleIcon';
 
-export type DynamicIconName = 'Home' | 'Chat' | 'Profile' | "Projects" | "People" | null;
+export type DynamicIconName = 'Home' | 'Chat' | 'Profile' | 'Projects' | 'People' | 'Trophy' | null;
 
 export interface DynamicIconProps extends IconProps {
-    name: DynamicIconName
+    name: DynamicIconName;
 }
 
 const IconList = [
     {
         name: 'Chat',
-        icon: ChatIcon
+        icon: ChatIcon,
     },
     {
         name: 'Home',
-        icon: HomeIcon
+        icon: HomeIcon,
     },
     {
         name: 'Profile',
-        icon: ProfileIcon
+        icon: ProfileIcon,
     },
     {
         name: 'Projects',
-        icon: ProjectsIcon
+        icon: ProjectsIcon,
     },
     {
         name: 'People',
-        icon: PeopleIcon
-    }
+        icon: PeopleIcon,
+    },
+    {
+        name: 'Trophy',
+        icon: Trophy,
+    },
 ];
 
-const DynamicIcon: React.FC<DynamicIconProps> = ({
-    name,
-    style,
-    color = BLACK,
-    size = 20,
-    active
-}) => {
+const DynamicIcon: React.FC<DynamicIconProps> = ({ name, style, color = BLACK, size = 20, active }) => {
     if (name === null) return null;
-    const Content = IconList.find((el) => el?.name.toLowerCase() === name.toLowerCase())?.icon;
+    const Content = IconList.find(el => el?.name.toLowerCase() === name.toLowerCase())?.icon;
 
     if (Content) {
-        return (
-            <Content
-                style={style}
-                size={size}
-                color={color}
-                active={active}
-            />
-        );
+        return <Content style={style} size={size} color={color} active={active} />;
     }
 
-    const IconStringList:string[] = IconList.map((el) => el?.name);
+    const IconStringList: string[] = IconList.map(el => el?.name);
     console.warn(`[Template icon] - name: ${name} must only equal one of:${IconStringList}`);
     return null;
 };

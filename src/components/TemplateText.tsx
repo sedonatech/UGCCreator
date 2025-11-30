@@ -8,36 +8,38 @@ import { BLACK, PRIMARY, WHITE } from '../theme/Colors';
 import { IS_SHORT_DEVICE } from '../theme/Layout';
 
 interface Props {
-    light?: boolean,
-    medium?: boolean,
-    bold?: boolean,
-    black?: boolean,
-    white?: boolean,
-    title?: boolean,
-    caps?: boolean,
-    subTitle?: boolean,
-    underLine?: boolean,
-    small?: boolean,
-    green?: boolean,
-    semiBold?: boolean,
-    center?: boolean,
-    left?: boolean,
-    right?: boolean,
-    color?: string | null,
-    size?: number | null,
-    lineThrough?: boolean,
-    numberOfLines?: number | null,
-    startCase?: boolean,
-    italic?: boolean,
-    children?: string | React.ReactNode | null | (string | React.ReactNode | null)[]
-    lineHeight?: number | null,
-    style?: any,
-    adjustsFontSizeToFit?: boolean,
-    allowFontScaling?: boolean,
-    ml?: number,
-    mr?: number,
-    mt?: number,
-    mb?: number,
+    light?: boolean;
+    medium?: boolean;
+    bold?: boolean;
+    black?: boolean;
+    white?: boolean;
+    title?: boolean;
+    caps?: boolean;
+    subTitle?: boolean;
+    underLine?: boolean;
+    small?: boolean;
+    green?: boolean;
+    semiBold?: boolean;
+    center?: boolean;
+    left?: boolean;
+    right?: boolean;
+    color?: string | null;
+    size?: number | null;
+    lineThrough?: boolean;
+    numberOfLines?: number | null;
+    startCase?: boolean;
+    italic?: boolean;
+    children?: string | React.ReactNode | null | (string | React.ReactNode | null)[];
+    lineHeight?: number | null;
+    style?: any;
+    adjustsFontSizeToFit?: boolean;
+    allowFontScaling?: boolean;
+    ml?: number;
+    mr?: number;
+    mt?: number;
+    mb?: number;
+    mv?: number;
+    mh?: number;
 }
 const TemplateText: FC<Props> = ({
     light,
@@ -69,6 +71,8 @@ const TemplateText: FC<Props> = ({
     mr,
     mt,
     mb,
+    mv,
+    mh,
     ...restProps
 }) => {
     const textStyle = {} as any;
@@ -149,17 +153,26 @@ const TemplateText: FC<Props> = ({
         textStyle.lineHeight = lineHeight;
     }
 
-    if(ml)textStyle.marginLeft = ml;
-    if(mr)textStyle.marginRight = mr;
-    if(mt)textStyle.marginTop = mt;
-    if(mb)textStyle.marginBottom = mb;
-    
+    if (ml) textStyle.marginLeft = ml;
+    if (mr) textStyle.marginRight = mr;
+    if (mt) textStyle.marginTop = mt;
+    if (mb) textStyle.marginBottom = mb;
+    if (mv) {
+        textStyle.marginVertical = mv;
+    }
+    if (mh) {
+        textStyle.marginHorizontal = mh;
+    }
 
     let content = children;
 
-    if (startCase) {
-        // @ts-ignore
-        content = children?.replace(/-/g, ' ')?.toLowerCase()?.split(' ')?.map((word) => word?.charAt(0).toUpperCase() + word?.slice(1))?.join(' ');
+    if (startCase && typeof children === 'string') {
+        content = children
+            .replace(/-/g, ' ')
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
     }
 
     return (
@@ -185,35 +198,10 @@ const TemplateText: FC<Props> = ({
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: 'Montserrat',
+        fontFamily: 'ShreddyRegular',
         fontSize: IS_SHORT_DEVICE ? 15 : 18,
         color: BLACK,
     },
 });
-
-TemplateText.defaultProps = {
-    light: true,
-    medium: false,
-    bold: false,
-    black: false,
-    white: false,
-    title: false,
-    caps: false,
-    subTitle: false,
-    underLine: false,
-    small: false,
-    green: false,
-    semiBold: false,
-    center: false,
-    left: false,
-    right: false,
-    color: null,
-    size: null,
-    lineThrough: false,
-    children: null,
-    numberOfLines: 0,
-    startCase: false,
-    italic: false,
-};
 
 export default TemplateText;

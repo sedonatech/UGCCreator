@@ -9,9 +9,7 @@ import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
-import {
-    FORGOT_PASSWORD, SUBSCRIPTION, UGCAI, UPDATE_PORTFOLIO, WEBVIEW,
-} from '../../../navigation/ScreenNames';
+import { FORGOT_PASSWORD, UGCAI, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
@@ -30,17 +28,9 @@ const SettingsScreen = ({ navigation }) => {
 
     const { features } = useFeatureFlags();
 
-    const {
-        checkApplicationPermissions,
-        isAuthorized,
-    } = useNotificationPermissions();
+    const { checkApplicationPermissions, isAuthorized } = useNotificationPermissions();
 
-    const {
-        getProfileCompleteStatus,
-        profileCompleteRatio,
-        profile,
-        user,
-    } = auth;
+    const { getProfileCompleteStatus, profileCompleteRatio, profile, user } = auth;
 
     useEffect(() => {
         if (isFocused) {
@@ -49,7 +39,7 @@ const SettingsScreen = ({ navigation }) => {
     }, [isFocused, profile, user]);
 
     const creatorToolsEnabled = features?.openAIScreen;
-    const [showDeleteUser, setShowDeleteUser] = useState(false)
+    const [showDeleteUser, setShowDeleteUser] = useState(false);
 
     const settings = [
         {
@@ -72,9 +62,10 @@ const SettingsScreen = ({ navigation }) => {
         {
             title: 'Change Password',
             description: 'Change your password',
-            onPress: () => navigation.navigate(FORGOT_PASSWORD, {
-                isUpdate: true,
-            }),
+            onPress: () =>
+                navigation.navigate(FORGOT_PASSWORD, {
+                    isUpdate: true,
+                }),
             icon: 'lock-closed-outline',
         },
         {
@@ -148,7 +139,7 @@ const SettingsScreen = ({ navigation }) => {
         {
             title: 'Delete Account',
             description: 'Delete your account',
-            onPress: ()=> setShowDeleteUser(true),
+            onPress: () => setShowDeleteUser(true),
             icon: 'trash-outline',
         },
         {
@@ -157,7 +148,6 @@ const SettingsScreen = ({ navigation }) => {
             onPress: handleLogout,
             icon: 'log-out-outline',
         },
-
     ];
 
     useLayoutEffect(() => {
@@ -175,34 +165,34 @@ const SettingsScreen = ({ navigation }) => {
 
     return (
         <>
-        <FlatList
-            showsVerticalScrollIndicator={false}
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            data={settings}
-            renderItem={({ item }) => (
-                <SettingsRow
-                    title={item.title}
-                    subtitle={item.description}
-                    onPress={item.onPress}
-                    icon={item.icon}
-                    isLast={item.title === 'Logout'}
-                    isFirst={item.title === 'Email'}
-                />
-            )}
-            keyExtractor={(item) => item.title}
-            ListHeaderComponent={() => (
-                <ProfileStatusCard
-                    title={PROFILE_INCOMPLETE_TITLE}
-                    description={PROFILE_INCOMPLETE_MESSAGE}
-                    progress={profileCompleteRatio}
-                    style={styles.statusCard}
-                    slideInDelay={100}
-                    showIcon={false}
-                />
-            )}
-        />
-        <DeleteUserModal onClose={()=> setShowDeleteUser(false)} visible={showDeleteUser} />
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                data={settings}
+                renderItem={({ item }) => (
+                    <SettingsRow
+                        title={item.title}
+                        subtitle={item.description}
+                        onPress={item.onPress}
+                        icon={item.icon}
+                        isLast={item.title === 'Logout'}
+                        isFirst={item.title === 'Email'}
+                    />
+                )}
+                keyExtractor={item => item.title}
+                ListHeaderComponent={() => (
+                    <ProfileStatusCard
+                        title={PROFILE_INCOMPLETE_TITLE}
+                        description={PROFILE_INCOMPLETE_MESSAGE}
+                        progress={profileCompleteRatio}
+                        style={styles.statusCard}
+                        slideInDelay={100}
+                        showIcon={false}
+                    />
+                )}
+            />
+            <DeleteUserModal onClose={() => setShowDeleteUser(false)} visible={showDeleteUser} />
         </>
     );
 };

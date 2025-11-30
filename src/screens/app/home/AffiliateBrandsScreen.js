@@ -1,13 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
-import {
-    HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
-    WRAPPER_MARGIN,
-} from '../../../theme/Layout';
-import {
-    BLACK, LIGHT_PURPLE, TRANSPARENT, WHITE,
-} from '../../../theme/Colors';
+import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { BLACK, LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
@@ -63,19 +58,11 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
             center
             selfCenter
         >
-            <TemplateText
-                startCase
-                size={wp(16)}
-                semiBold
-            >
+            <TemplateText startCase size={wp(16)} semiBold>
                 {item?.name}
             </TemplateText>
             <TemplateBox height={wp(8)} />
-            <TemplateText
-                size={wp(12)}
-            >
-                {item?.description}
-            </TemplateText>
+            <TemplateText size={wp(12)}>{item?.description}</TemplateText>
             <Button
                 title="Apply Now"
                 onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
@@ -98,26 +85,14 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
                 scrollEventThrottle={1}
-                ListHeaderComponent={(
+                ListHeaderComponent={
                     <TemplateBox backgroundColor={WHITE} style={{ alignItems: 'center' }}>
-                        <TemplateText
-                            size={18}
-                            startCase
-                            bold
-                            center
-                        >
+                        <TemplateText size={18} startCase bold center>
                             {title}
                         </TemplateText>
                         <TemplateBox center ph={WRAPPER_MARGIN} mt={8}>
-                            <TemplateText
-                                size={13}
-                                color={BLACK}
-                                center
-                                mt={8}
-                                ml={WRAPPER_MARGIN}
-                            >
-                                Discover brand collabs, ambassador deals, and affiliate programs
-                                matched to your niche.
+                            <TemplateText size={13} color={BLACK} center mt={8} ml={WRAPPER_MARGIN}>
+                                Discover brand collabs, ambassador deals, and affiliate programs matched to your niche.
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox selfCenter flex>
@@ -129,18 +104,18 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                         </TemplateBox>
                         <TemplateBox />
                     </TemplateBox>
-
-                )}
+                }
                 stickyHeaderIndices={[0]}
                 data={brandsData?.slice(0, limit)}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => `${item?.name}-${index}`}
                 initialNumToRender={6}
                 onEndReachedThreshold={0}
-                onEndReached={() => { setLimit((prevLimit) => prevLimit + 4); }}
+                onEndReached={() => {
+                    setLimit(prevLimit => prevLimit + 4);
+                }}
             />
         </TemplateBox>
-
     );
 };
 

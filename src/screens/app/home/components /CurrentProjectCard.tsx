@@ -3,17 +3,12 @@ import { StyleSheet } from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import TemplateBox from '../../../../components/TemplateBox';
-import {
-    BLACK, BLACK_20, BRAND_BLUE, GREY, PINK, WHITE_30
-} from '../../../../theme/Colors';
+import { BLACK, BLACK_20, BRAND_BLUE, GREY, PINK, WHITE_30 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
-import {
-    RADIUS_MEDIUM, SCREEN_WIDTH
-} from '../../../../theme/Layout';
+import { RADIUS_MEDIUM, SCREEN_WIDTH } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import AvatarOverlaps from '../../../../components/AvatarOverlaps';
 import useGetEnrolledCreatorsAvatars from '../../../brands/admin/hooks/useGetEnrolledCreatorsAvatars';
-import { wp } from '../../../../Utils/getResponsiveSize';
 
 interface Props {
     title?: string;
@@ -37,7 +32,6 @@ interface Props {
     slideInDelay?: number;
     isBrand?: boolean;
     projectId?: string;
-
 }
 
 const CurrentProjectCard: FC<Props> = ({
@@ -63,7 +57,7 @@ const CurrentProjectCard: FC<Props> = ({
 
     return (
         <TemplateBox
-            width={width || (SCREEN_WIDTH / 1.23)}
+            width={width || SCREEN_WIDTH / 1.23}
             borderRadius={RADIUS_MEDIUM}
             shadow
             pAll={20}
@@ -73,7 +67,6 @@ const CurrentProjectCard: FC<Props> = ({
             slideIn={slideInDelay !== undefined}
             slideInDelay={slideInDelay}
         >
-
             <TemplateBox row alignItems="center" mb={20}>
                 <TemplateBox
                     borderRadius={8}
@@ -82,9 +75,10 @@ const CurrentProjectCard: FC<Props> = ({
                     justifyContent="center"
                     ph={10}
                     pv={5}
-
                 >
-                    <TemplateText size={12} color={BLACK} medium>{status}</TemplateText>
+                    <TemplateText size={12} color={BLACK} medium>
+                        {status}
+                    </TemplateText>
                 </TemplateBox>
                 <TemplateBox flex />
                 {/* <TemplateIcon color={BLACK} size={24} name="bookmark-outline" /> */}
@@ -96,17 +90,11 @@ const CurrentProjectCard: FC<Props> = ({
             </TemplateText>
 
             {!!progress && (
-                <TemplateBox
-                    mb={16}
-                >
+                <TemplateBox mb={16}>
                     <TemplateText size={12} color={GREY}>
                         Progress
                     </TemplateText>
-                    <TemplateBox
-                        row
-                        alignItems="center"
-                        mt={5}
-                    >
+                    <TemplateBox row alignItems="center" mt={5}>
                         <Progress.Bar
                             progress={progress}
                             width={SCREEN_WIDTH / 1.6}
@@ -133,7 +121,7 @@ const CurrentProjectCard: FC<Props> = ({
                 )}
                 <TemplateBox flex />
 
-                {documentCount >= 0 && (
+                {documentCount !== undefined && documentCount >= 0 && (
                     <TemplateBox row alignItems="center">
                         <TemplateIcon color={BLACK} size={18} name="document-outline" />
                         <TemplateText size={12} color={BLACK}>
@@ -142,7 +130,7 @@ const CurrentProjectCard: FC<Props> = ({
                         </TemplateText>
                     </TemplateBox>
                 )}
-                {notificationCount >= 0 && (
+                {notificationCount !== undefined && notificationCount >= 0 && (
                     <TemplateBox row alignItems="center">
                         <TemplateIcon color={BLACK} size={18} name="chatbubble-ellipses-outline" />
                         <TemplateText size={12} color={BLACK}>
@@ -151,7 +139,7 @@ const CurrentProjectCard: FC<Props> = ({
                         </TemplateText>
                     </TemplateBox>
                 )}
-                {daysLeft >= 0 && (
+                {daysLeft !== undefined && daysLeft >= 0 && (
                     <TemplateBox row alignItems="center">
                         <TemplateIcon color={BLACK} size={18} name="time-outline" />
                         <TemplateText size={12} color={BLACK}>
@@ -171,7 +159,7 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: 10,
-    }
+    },
 });
 
 export default CurrentProjectCard;

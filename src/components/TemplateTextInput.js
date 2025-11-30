@@ -1,10 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-import Autocomplete from 'react-native-autocomplete-input';
-import {
-    BLACK, BLACK_SECONDARY, PRIMARY, WHITE,
-} from '../theme/Colors';
+import { BLACK, BLACK_SECONDARY, WHITE } from '../theme/Colors';
 
 const TemplateTextInput = ({
     focus,
@@ -27,36 +24,15 @@ const TemplateTextInput = ({
         }
     }, [focus]);
 
-    const Component = autoComplete ? Autocomplete : TextInput;
-    const autoCompleteProps = autoComplete
-        ? {
-            containerStyle: {
-                width: '100%',
-            },
-            inputContainerStyle: {
-                padding: 10,
-            },
-            listContainerStyle: {
-                border: 0,
-            },
-        }
-        : {};
-
     return (
-        <Component
+        <TextInput
             {...restProps}
             ref={ref}
             selectionColor={BLACK}
             placeholderTextColor={placeholderTextColor || BLACK_SECONDARY}
             value={value}
             editable={!disabled}
-            style={[
-                styles.default,
-                restProps.style && restProps.style,
-                !value && placeholderStyle,
-                style,
-            ]}
-            {...autoCompleteProps}
+            style={[styles.default, restProps.style && restProps.style, !value && placeholderStyle, style]}
         />
     );
 };
@@ -65,7 +41,7 @@ const styles = StyleSheet.create({
     default: {
         backgroundColor: WHITE,
         color: BLACK,
-        fontSize: 15,
+        fontSize: 17,
         paddingHorizontal: 0, // Needed for android
     },
 });
@@ -76,6 +52,9 @@ TemplateTextInput.propTypes = {
     placeholderTextColor: PropTypes.string,
     disabled: PropTypes.bool,
     style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    value: PropTypes.string.isRequired,
+    placeholderStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    autoComplete: PropTypes.bool,
 };
 
 TemplateTextInput.defaultProps = {
@@ -84,6 +63,8 @@ TemplateTextInput.defaultProps = {
     placeholderTextColor: null,
     disabled: false,
     style: null,
+    placeholderStyle: null,
+    autoComplete: false,
 };
 
 export default TemplateTextInput;

@@ -1,9 +1,14 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
 require_relative '../node_modules/react-native-permissions/scripts/setup'
 
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '15.0'
+platform :ios, min_ios_version_supported
 install! 'cocoapods', :deterministic_uuids => false
 $RNFirebaseAsStaticFramework = true
 
@@ -18,16 +23,9 @@ setup_permissions([
 target 'UGCCreatorApp' do
   use_frameworks! :linkage => :static
   config = use_native_modules!
-
   use_modular_headers!
-  flags = get_default_flags()
-
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
-
-  pod 'react-native-blob-util',
-      :path => '../node_modules/react-native-blob-util'
-
-  pod 'RNPurchases', :path => '../node_modules/react-native-purchases', :inhibit_warnings => true
+  pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
   pod 'react-native-restart', :path => '../node_modules/react-native-restart'
   pod 'react-native-fbsdk-next', :path => '../node_modules/react-native-fbsdk-next'
   pod 'FBSDKCoreKit'
@@ -36,19 +34,16 @@ target 'UGCCreatorApp' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => false,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'UGCCreatorAppTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
+ 
   post_install do |installer|
     react_native_post_install(
       installer,
-      :mac_catalyst_enabled => false
+       config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
     )
 
     installer.generated_projects.each do |project|
@@ -58,10 +53,6 @@ target 'UGCCreatorApp' do
           config.build_settings["DEVELOPMENT_TEAM"] = "XW576HXDLG"
         end
       end
-    end
-
-    installer.pods_project.build_configurations.each do |config|
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
     end
 
     # Fix for BoringSSL-GRPC warnings
@@ -76,7 +67,5 @@ target 'UGCCreatorApp' do
         end
       end
     end
-
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end

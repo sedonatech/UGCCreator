@@ -1,33 +1,20 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useLayoutEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import {
-    BLACK,
-    BLACK_10,
-    BLACK_20,
-    BLACK_SECONDARY,
-    BLUE,
-    BRAND_BLUE,
-    DARK_OVERLAY,
-    GREY_30,
-    ONBOARDING_BLUE,
-    WHITE,
-    WHITE_40,
-} from '../../theme/Colors';
+import { BLACK, BLACK_10, BLACK_20, BLACK_SECONDARY, GREY_30, ONBOARDING_BLUE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
 import { ONBOARDING } from '../../navigation/ScreenNames';
 import Wrapper from '../../components/Wrapper';
 import TemplateTextInput from '../../components/TemplateTextInput';
-import BrandLogo from '../../../assets/svgs/BrandLogo';
 import Error from '../../components/Error';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import TemplateBox from '../../components/TemplateBox';
 import ResizedImage from '../../components/ResizedImage';
 
 const lockImage = require('../../../assets/images/onboarding/lock.jpg');
-
 
 const ResetPasswordScreen = ({ navigation, route }) => {
     const isUpdate = route.params?.isUpdate;
@@ -62,11 +49,11 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                     },
                 ],
             );
-        } catch (error) {
-            if (error.code === 'au-email') {
+        } catch (err) {
+            if (err.code === 'au-email') {
                 setError('That email address is invalid!');
             }
-            if (error.code === 'auth/user-not-found') {
+            if (err.code === 'auth/user-not-found') {
                 setError('That user does not exist!');
             }
         }
@@ -87,27 +74,24 @@ const ResetPasswordScreen = ({ navigation, route }) => {
     }, [navigation]);
 
     return (
-        <Wrapper
-            contentContainerStyle={styles.contentContainerStyle}
-            style={styles.container}
-            keyboard
-        >
-            <TemplateBox borderRadius={20} overflow='hidden'>
-                <TemplateBox style={{position: 'absolute', paddingTop: 8, alignSelf: 'center', alignItems: 'center', zIndex: 99}} backgroundColor={`${BLACK_10}`}>
-                </TemplateBox>
-                <ResizedImage source={lockImage} style={{height: 345, width: WRAPPED_SCREEN_WIDTH}} />
+        <Wrapper contentContainerStyle={styles.contentContainerStyle} style={styles.container} keyboard>
+            <TemplateBox borderRadius={20} overflow="hidden">
+                <TemplateBox
+                    style={{
+                        position: 'absolute',
+                        paddingTop: 8,
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        zIndex: 99,
+                    }}
+                    backgroundColor={`${BLACK_10}`}
+                />
+                <ResizedImage source={lockImage} style={{ height: 380, width: SCREEN_WIDTH }} />
             </TemplateBox>
 
-
             <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={16}>
-                <TemplateText
-                    size={18}
-                    bold
-                    caps
-                    color={BLACK}
-                    style={styles.title}
-                >
-                    {isUpdate ? 'Update your Password!' : 'Reset your Password!' }
+                <TemplateText size={18} bold caps color={BLACK} style={styles.title}>
+                    {isUpdate ? 'Update your Password!' : 'Reset your Password!'}
                 </TemplateText>
                 <TemplateText size={16} color={BLACK_SECONDARY} medium>
                     Enter your email to continue
@@ -117,7 +101,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                 placeholder="Email"
                 style={styles.input}
                 value={email}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={text => setEmail(text)}
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
@@ -130,13 +114,13 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                     onPress={handleResetPassword}
                     style={styles.button}
                     loading={loading}
-                    color={ONBOARDING_BLUE}
+                    height={50}
+                    width={SCREEN_WIDTH - 40}
+                    color={BLACK}
                 />
                 {!isUpdate && (
                     <TemplateText size={16} center style={styles.signupLink} medium>
-                        New to the UGC creator app?
-                        {' '}
-
+                        New to the UGC creator app?{' '}
                         <TemplateText
                             color={ONBOARDING_BLUE}
                             underLine
@@ -157,15 +141,14 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
     },
-    contentContainerStyle: {
-        flex: 1,
-    },
+    contentContainerStyle: {},
     buttonContainer: {
         alignSelf: 'center',
     },
     button: {
         marginTop: 24,
         marginBottom: 16,
+        borderRadius: 26,
     },
     signupLink: {
         marginBottom: 16,
@@ -178,10 +161,10 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH - 32,
         borderWidth: 0.4,
         borderColor: BLACK_10,
-        borderRadius: 8,
+        borderRadius: 26,
         paddingLeft: 16,
         backgroundColor: GREY_30,
-        marginTop: 16
+        marginTop: 16,
     },
     generalError: {
         marginVertical: 10,

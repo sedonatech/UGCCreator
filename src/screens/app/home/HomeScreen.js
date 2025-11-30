@@ -1,25 +1,14 @@
-import React, { useEffect, useLayoutEffect, useMemo } from 'react';
-import {
-    ScrollView, StyleSheet, Alert,
-} from 'react-native';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { ScrollView, StyleSheet, Alert } from 'react-native';
 
 import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-import {
-    BLACK,
-    LIGHT_GREEN, TRANSPARENT,
-    WHITE,
-} from '../../../theme/Colors';
-import {
-    HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH,
-    WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { BLACK, LIGHT_GREEN, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import {
-    BRANDS_CATALOGUE, FEED_DETAILS, PROFILE_STACK, UGCAI,
-} from '../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -29,50 +18,39 @@ import useAppReview from '../../../hooks/useAppReview';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { wp } from '../../../Utils/getResponsiveSize';
 import FeedsTab from '../explore/components/FeedsTab';
-import FeedCard from '../explore/components/FeedCard';
-import getIconByType from '../../../Utils/getIconByType';
 import AffiliateBrandsCarousel from './components /AffiliateBrandsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
 import EventsCarousel from './components /EventsCarousel';
 import useProfile from '../../../hooks/user/useProfile';
-import FeaturedCreatorsCarousel from '../../brands/admin/components/FeaturedCreatorsCarousel';
-import ProjectsCarousel from './components /ProjectsCarousel';
-import BrandDealsCarousel from './components /BrandDealsCarousel';
 import FeaturedShowcaseCarousel from './components /FeaturedSamplesCarousel';
+import ChallengeCard from './components /ChallengeCard';
+import useChallenge from '../../../hooks/useChallenge';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
-
-    const { features, feed } = useFeatureFlags();
-
+    const { features } = useFeatureFlags();
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
-    const showUgcGigsCarousel = features?.showUgcGigsCarousel;
     const showAffiliateProgramsCarousel = features?.showAffiliateProgramsCarousel;
-
     const profile = auth?.profile;
     const { updateProfile } = useProfile();
-
     const profileImage = profile?.image;
-
     const isFocused = useIsFocused();
-
+    const { challenge, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
+    console.log('HomeScreen', challenge);
     useEffect(() => {
         if (isFocused && profile) {
             auth?.getProfileCompleteStatus();
         }
-    }, [
-        isFocused,
-        profile,
-    ]);
+    }, [isFocused, profile]);
 
     useEffect(() => {
-        const unsubscribe = messaging().onTokenRefresh((token) => {
+        const unsubscribe = messaging().onTokenRefresh(token => {
             if (token) updateFcmToken(token);
         });
         return unsubscribe;
     }, []);
 
-    const updateFcmToken = async (token) => {
+    const updateFcmToken = async token => {
         await updateProfile({ fcmToken: token }, profile?.id);
     };
 
@@ -93,33 +71,30 @@ const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (!profileImage) {
-            Alert.alert(
-                'Profile image',
-                'Please upload a profile image to continue',
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate(PROFILE_STACK),
-                    },
-                ],
-            );
+            Alert.alert('Profile image', 'Please upload a profile image to continue', [
+                {
+                    text: 'OK',
+                    onPress: () => navigation.navigate(PROFILE_STACK),
+                },
+            ]);
         }
     }, [profileImage]);
 
     const { previousResponse, handleRate } = useAppReview();
 
-    const ugcGuidePdfFeed = useMemo(() => {
-        if (!feed?.feeds?.length) return [];
-
-        return feed?.feeds?.[0];
-    }, [feed]);
-
     const updateLastLogin = async () => {
-        await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
+        await updateProfile({ lastLoginTime: new Date().toUTCString() }, profile?.id);
     };
 
     useEffect(() => {
         updateLastLogin();
+        // (async () => {
+        //     try {
+        //         await setChallengeShortDescription('viral-sprint-3-week');
+        //     } catch (error) {
+        //         console.log('Error fetching UGC Guide PDF feed:', error);
+        //     }
+        // })();
     }, []);
 
     return (
@@ -127,29 +102,35 @@ const HomeScreen = ({ navigation }) => {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}
-
         >
-
-            {!!profile?.userName && (
-                <Greeting userName={profile?.userName} style={styles.greeting} />
-            )}
-            {showAffiliateProgramsCarousel && (
-                <TemplateBox height={230} mt={15}>
-                    <AffiliateBrandsCarousel />
-                </TemplateBox>
-            )}
-            {showUgcGigsCarousel && (
+            {!!profile?.userName && <Greeting userName={profile?.userName} style={styles.greeting} showAvatar />}
+            <ChallengeCard
+                onPress={() =>
+                    navigation.navigate(CHALLENGE_DETAILS, {
+                        challengeId: challenge?.id,
+                    })
+                }
+                loading={challengeLoading}
+                prizePoolUsd={challenge?.prizePoolUsd}
+                challengeTitle={challenge?.title}
+                shortDescriptionSegments={challenge?.shortDescriptionSegments}
+                enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
+                challengeStartAt={challenge?.challengeStartAt?.toDate()}
+                challengeEndAt={challenge?.challengeEndAt?.toDate()}
+                getStatusLabel={getStatusLabel}
+                canEnrollNow={canEnrollNow}
+            />
+            {showAffiliateProgramsCarousel && <AffiliateBrandsCarousel style={styles.affiliateBrandsCarousel} />}
+            {/* {showUgcGigsCarousel && (
                 <TemplateBox height={180} mt={15}>
                     <BrandDealsCarousel />
                 </TemplateBox>
-            )}
+            )} */}
             <FeaturedShowcaseCarousel style={styles.showcase} />
 
-            <ProjectsCarousel style={styles.projectsCarousel} />
+            {/* <ProjectsCarousel style={styles.projectsCarousel} /> */}
             <EventsCarousel />
-            {features?.showBrandsCarousel && (
-                <BrandsCarousel />
-            )}
+            {features?.showBrandsCarousel && <BrandsCarousel />}
             {previousResponse === null && features?.showReviewPrompt && (
                 <TemplateBox
                     row
@@ -165,20 +146,9 @@ const HomeScreen = ({ navigation }) => {
                     <TemplateText size={13} onPress={handleRate}>
                         Please take a moment to rate our app
                     </TemplateText>
-                    <TemplateBox
-                        onPress={handleRate}
-                        absolute
-                        left={SCREEN_WIDTH - wp(70)}
-                        top={wp(8)}
-                    >
-                        <TemplateIcon
-                            name="close-outline"
-                            size={20}
-                            color={BLACK}
-
-                        />
+                    <TemplateBox onPress={handleRate} absolute left={SCREEN_WIDTH - wp(70)} top={wp(8)}>
+                        <TemplateIcon name="close-outline" size={20} color={BLACK} />
                     </TemplateBox>
-
                 </TemplateBox>
             )}
             {brandsCatalogueEnabled && (
@@ -197,11 +167,10 @@ const HomeScreen = ({ navigation }) => {
                 >
                     <CatalogueSvg />
                     <TemplateBox width={16} />
-                    <TemplateBox
-                        width={SCREEN_WIDTH / 1.6}
-                        onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
-                    >
-                        <TemplateText bold size={16}>Brands Catalogue</TemplateText>
+                    <TemplateBox width={SCREEN_WIDTH / 1.6} onPress={() => navigation.navigate(BRANDS_CATALOGUE)}>
+                        <TemplateText bold size={16}>
+                            Brands Catalogue
+                        </TemplateText>
                         <TemplateBox height={10} />
                         <TemplateText size={13}>
                             Discover and explore our extensive catalogue of hundreds of brands
@@ -209,8 +178,8 @@ const HomeScreen = ({ navigation }) => {
                     </TemplateBox>
                 </TemplateBox>
             )}
-            <FeaturedCreatorsCarousel style={styles.carousel} creator />
-            {!!ugcGuidePdfFeed?.title && (
+
+            {/* {!!ugcGuidePdfFeed?.title && (
                 <TemplateBox mt={wp(20)} mb={wp(10)}>
                     <FeedCard
                         image={{ uri: ugcGuidePdfFeed?.thumbnail }}
@@ -221,16 +190,16 @@ const HomeScreen = ({ navigation }) => {
                         cardWidth={SCREEN_WIDTH / 1.12}
                         aspectRatio={1.5}
                         icon={getIconByType(ugcGuidePdfFeed?.type)}
-                        onPress={() => navigation.navigate(FEED_DETAILS,
-                            {
+                        onPress={() =>
+                            navigation.navigate(FEED_DETAILS, {
                                 selectedFeed: ugcGuidePdfFeed,
-                            })}
+                            })
+                        }
                         style={styles.card}
                     />
                 </TemplateBox>
-            )}
+            )} */}
             <FeedsTab />
-
         </ScrollView>
     );
 };
@@ -252,18 +221,9 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginBottom: 8,
     },
-    carousel: {
-        flex: 1,
-        marginBottom: WRAPPER_MARGIN,
-    },
-    projectsCarousel: {
-        flex: 1,
-        marginTop: WRAPPER_MARGIN,
-    },
 
-    card: {
-        marginBottom: 10,
-        alignSelf: 'center',
+    affiliateBrandsCarousel: {
+        marginVertical: 15,
     },
 });
 export default HomeScreen;
