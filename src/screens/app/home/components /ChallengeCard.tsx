@@ -154,7 +154,6 @@ const ChallengeCard = ({
                     color={BLACK}
                     style={{ borderRadius: 20, marginTop: 14 }}
                     onPress={onPress}
-                    disabled={cta?.disabled || enrollmentLoading || loading}
                 />
             </TemplateBox>
         </TemplateBox>
