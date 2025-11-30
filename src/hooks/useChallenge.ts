@@ -17,7 +17,7 @@ export type ChallengeMetrics = {
     comments: number;
     shares: number;
     saves: number;
-    linkClicks?: number;
+    title?: string;
 };
 
 export type ChallengeSubmission = {
@@ -53,6 +53,7 @@ export type Challenge = {
     shortDescriptionSegments: ShortDescriptionSegment[];
     brief: {
         mission: string;
+        disqualificationRule: string;
         howToParticipate: BriefPoint[];
     };
     rules: string[];
@@ -103,15 +104,16 @@ const useChallenge = () => {
                         status: data.status,
                         prizePoolUsd: data.prizePoolUsd,
                         participantCount: data.participantCount,
-
                         enrollmentStartAt: data.enrollmentStartAt,
                         enrollmentEndAt: data.enrollmentEndAt,
                         challengeStartAt: data.challengeStartAt,
                         challengeEndAt: data.challengeEndAt,
-
                         shortDescriptionSegments,
-
-                        brief: data.brief,
+                        brief: {
+                            mission: data.brief?.mission,
+                            disqualificationRule: data.brief?.disqualificationRule,
+                            howToParticipate: data.brief?.howToParticipate,
+                        },
                         rules: data.rules,
                         prizes: data.prizes,
                     });

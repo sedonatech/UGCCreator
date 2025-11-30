@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect, useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, Alert } from 'react-native';
 

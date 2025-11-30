@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 //@ts-ignore
 import challengeBackground from '../../../../assets/images/challenge-background.jpg';
 import firestore from '@react-native-firebase/firestore';
-import { Image, ScrollView } from 'react-native';
+import { Image, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateText from '../../../components/TemplateText';
@@ -22,18 +22,33 @@ import ToggleTab from '../../../components/ToggleTab';
 import Button from '../../../components/Button';
 import useChallenge, {
     Challenge,
+    ChallengeMetrics,
+    ChallengeSubmission,
     enrollInChallenge,
     getChallengeCta,
     isUserEnrolledInChallenge,
+    upsertChallengeSubmission,
 } from '../../../hooks/useChallenge';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { useChallengeSubmission } from '../../../hooks/useChallengeSubmission';
+import ChallengeSubmissionModal from '../../../components/modals/ChallengeSubmissionModal';
+import ChallengeEntryCard from '../../../components/cards/ChallengeEntryCard';
 
-const TOGGLE_TABS = ['Brief', 'Rules', 'Prizes'];
+const TOGGLE_TABS = ['Brief', 'Rules', 'Prizes', 'Entries'];
 type RouteParams = {
     params?: {
         challengeId?: string;
     };
 };
+export type MetricsForm = {
+    views: string;
+    likes: string;
+    comments: string;
+    shares: string;
+    saves: string;
+    title: string;
+};
+
 interface ChallengeDetailsScreenProps {
     route: RouteParams;
     navigation: any;
@@ -43,11 +58,12 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     const { auth } = useAuthContext();
     const challengeId = route?.params?.challengeId;
     const profile = auth?.profile;
-    console.log('🚀 ~ ChallengeDetailsScreen ~ profile:', profile);
     const currentUserId = profile?.id;
     const [activeTab, setActiveTab] = useState(TOGGLE_TABS[0]);
     const [challenge, setChallenge] = useState<Challenge | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isEnrolled, setIsEnrolled] = useState(false);
+    const [enrollmentLoading, setEnrollmentLoading] = useState(true);
     const [enrolling, setEnrolling] = useState(false);
     useEffect(() => {
         const unsubscribe = firestore()
@@ -64,7 +80,129 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
 
         return () => unsubscribe();
     }, [challengeId]);
+    useEffect(() => {
+        if (!challengeId || !currentUserId) {
+            setIsEnrolled(false);
+            setEnrollmentLoading(false);
+            return;
+        }
 
+        let cancelled = false;
+
+        const checkEnrollment = async () => {
+            try {
+                const enrolled = await isUserEnrolledInChallenge({
+                    challengeId,
+                    userId: currentUserId,
+                });
+                if (!cancelled) {
+                    setIsEnrolled(enrolled);
+                }
+            } catch (error) {
+                console.error('Error checking enrollment:', error);
+                if (!cancelled) {
+                    setIsEnrolled(false);
+                }
+            } finally {
+                if (!cancelled) {
+                    setEnrollmentLoading(false);
+                }
+            }
+        };
+
+        checkEnrollment();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [challengeId, currentUserId]);
+
+    // challenge submission
+    const [isEntriesModalVisible, setIsEntriesModalVisible] = useState(false);
+    const { submissions, submissionsLoading } = useChallengeSubmission(challengeId, currentUserId);
+
+    const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
+    const [videoUrl, setVideoUrl] = useState('');
+    const [metricsForm, setMetricsForm] = useState<MetricsForm>({
+        views: '',
+        likes: '',
+        comments: '',
+        shares: '',
+        saves: '',
+        title: '',
+    });
+
+    const [savingEntry, setSavingEntry] = useState(false);
+
+    const startEditEntry = (entry: ChallengeSubmission) => {
+        if (!entry.id) return;
+        setEditingEntryId(entry.id);
+        setVideoUrl(entry.videoUrl);
+        setMetricsForm({
+            views: String(entry.metrics.views ?? 0),
+            likes: String(entry.metrics.likes ?? 0),
+            comments: String(entry.metrics.comments ?? 0),
+            shares: String(entry.metrics.shares ?? 0),
+            saves: String(entry.metrics.saves ?? 0),
+            title: entry.metrics.title ?? '',
+        });
+    };
+
+    const resetEntryForm = () => {
+        setEditingEntryId(null);
+        setVideoUrl('');
+        setMetricsForm({
+            views: '',
+            likes: '',
+            comments: '',
+            shares: '',
+            saves: '',
+            title: '',
+        });
+    };
+
+    const handleMetricChange = (field: keyof typeof metricsForm, value: string) => {
+        setMetricsForm(prev => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+
+    const handleSaveEntry = async () => {
+        if (!challengeId || !currentUserId) {
+            return;
+        }
+        if (!videoUrl.trim()) {
+            return;
+        }
+
+        const metrics: ChallengeMetrics = {
+            views: Number(metricsForm.views) || 0,
+            likes: Number(metricsForm.likes) || 0,
+            comments: Number(metricsForm.comments) || 0,
+            shares: Number(metricsForm.shares) || 0,
+            saves: Number(metricsForm.saves) || 0,
+            title: metricsForm.title || '',
+        };
+
+        try {
+            setSavingEntry(true);
+            await upsertChallengeSubmission({
+                challengeId,
+                userId: currentUserId,
+                videoUrl: videoUrl.trim(),
+                metrics,
+                submissionId: editingEntryId || undefined,
+            });
+            resetEntryForm();
+        } catch (error) {
+            console.error('Error saving challenge entry:', error);
+        } finally {
+            setSavingEntry(false);
+        }
+    };
+
+    // labels
     const { getStatusLabel, canEnrollNow, getEndsInLabel } = useChallenge();
     const now = useMemo(() => new Date(), []);
     const statusLabel = getStatusLabel(
@@ -79,12 +217,9 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         now,
     );
     const endsInLabel = getEndsInLabel(challenge?.challengeEndAt?.toDate(), now);
-    const isEnrolled =
-        isUserEnrolledInChallenge({ challengeId: challengeId || '', userId: currentUserId || '' }) || false;
     const enrollmentStartDate = challenge?.enrollmentStartAt?.toDate();
     const challengeStartDate = challenge?.challengeStartAt?.toDate();
     const challengeEndDate = challenge?.challengeEndAt?.toDate();
-
     const { title: enrollButtonTitle, disabled: enrollButtonDisabled } = getChallengeCta({
         enrollmentStartAt: enrollmentStartDate,
         challengeStartAt: challengeStartDate,
@@ -217,14 +352,14 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             <ToggleTab activeTab={activeTab} tabs={TOGGLE_TABS} onPress={setActiveTab} />
             {activeTab === TOGGLE_TABS[0] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={80}>
-                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} caps>
+                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
                         The mission
                     </TemplateText>
                     <TemplateText size={16} lineHeight={24} color={DARK_METAL} medium>
                         {challenge?.brief?.mission}
                     </TemplateText>
 
-                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} caps mt={20}>
+                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} mt={20}>
                         How to participate
                     </TemplateText>
                     {challenge?.brief?.howToParticipate.map((point, index) => (
@@ -241,7 +376,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             )}
             {activeTab === TOGGLE_TABS[1] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={80}>
-                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} caps>
+                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
                         Rules of the challenge
                     </TemplateText>
                     {challenge?.rules.map((rule, index) => (
@@ -249,11 +384,17 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                             key={index}
                             size={16}
                             lineHeight={24}
-                            color={index === challenge?.rules?.length - 1 ? DARK_METAL : METAL}
-                            mb={5}
+                            color={index === challenge?.rules?.length - 1 ? BLACK : METAL}
+                            mb={12}
                             medium={index === challenge?.rules?.length - 1}
                         >
-                            <TemplateText size={16} lineHeight={24} color={METAL} mb={5} semiBold>
+                            <TemplateText
+                                size={16}
+                                lineHeight={24}
+                                color={index === challenge?.rules?.length - 1 ? BLACK : METAL}
+                                mb={5}
+                                semiBold
+                            >
                                 {index + 1}.
                             </TemplateText>{' '}
                             {rule}
@@ -263,48 +404,119 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             )}
             {activeTab === TOGGLE_TABS[2] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={100}>
-                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} caps>
+                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
                         Prizes & rewards
                     </TemplateText>
-                    <TemplateText size={16} lineHeight={24} color={METAL} mb={5}>
-                        <TemplateText size={16} lineHeight={24} color={METAL} mb={5} semiBold>
+                    <TemplateText size={16} lineHeight={24} color={METAL} mb={10}>
+                        <TemplateText size={16} lineHeight={24} color={BLACK} mb={10} semiBold>
                             * Grand Prize:
                         </TemplateText>{' '}
                         {challenge?.prizes.grandPrize}
                     </TemplateText>
-                    <TemplateText size={16} lineHeight={24} color={METAL} mb={5}>
-                        <TemplateText size={16} lineHeight={24} color={METAL} mb={5} semiBold>
+                    <TemplateText size={16} lineHeight={24} color={METAL} mb={10}>
+                        <TemplateText size={16} lineHeight={24} color={BLACK} mb={10} semiBold>
                             * Runners Up:
                         </TemplateText>{' '}
                         {challenge?.prizes.runnersUp}
                     </TemplateText>
-                    <TemplateText size={16} lineHeight={24} color={METAL} mb={5}>
-                        <TemplateText size={16} lineHeight={24} color={METAL} mb={5} semiBold>
+                    <TemplateText size={16} lineHeight={24} color={METAL} mb={10}>
+                        <TemplateText size={16} lineHeight={24} color={BLACK} mb={10} semiBold>
                             * All Participants:
                         </TemplateText>{' '}
                         {challenge?.prizes.allParticipants}
                     </TemplateText>
                 </TemplateBox>
             )}
-            <TemplateBox
-                absolute
-                bottom={20}
-                selfCenter
-                backgroundColor={WHITE_30}
-                width={SCREEN_WIDTH}
-                alignItems="center"
-                pt={30}
-            >
-                <Button
-                    title={enrollButtonTitle}
-                    height={50}
-                    width={SCREEN_WIDTH - 40}
-                    color={BLACK}
-                    onPress={handleEnrollPress}
-                    disabled={enrollButtonDisabled}
-                />
-            </TemplateBox>
+            {activeTab === TOGGLE_TABS[3] && (
+                <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={100}>
+                    <TemplateBox>
+                        <TemplateBox row alignItems="center" justifyContent="space-between" mb={10}>
+                            <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={8}>
+                                {submissions?.length > 0 ? 'My Entries' : 'Submit Your Entries'}
+                            </TemplateText>
+                            {submissions?.length > 0 && (
+                                <TemplateBox
+                                    row
+                                    alignItems="center"
+                                    onPress={() => setIsEntriesModalVisible(true)}
+                                    mb={8}
+                                >
+                                    <DynamicIcon name="Add" size={20} color={BLACK} />
+                                    <TemplateText size={14}>Add Entry</TemplateText>
+                                </TemplateBox>
+                            )}
+                        </TemplateBox>
+                        <TemplateText size={14} color={METAL} mb={20}>
+                            {submissions?.length > 0
+                                ? 'Here’s what you’ve added for this challenge. Edit these or add more anytime.'
+                                : 'Show off your skills by submitting your best work for this challenge. You can add multiple entries to increase your chances of winning!'}
+                        </TemplateText>
+                    </TemplateBox>
+                    {submissions?.length === 0 ? (
+                        <TemplateBox justifyContent="center" alignItems="center" mt={100}>
+                            <TemplateText size={16} color={BLACK_SECONDARY} mb={30}>
+                                Start the challenge 💪🏼, drop your first piece
+                            </TemplateText>
+                            <Button
+                                title={'Submit  Entry'}
+                                height={50}
+                                width={SCREEN_WIDTH - 40}
+                                color={BLACK}
+                                onPress={() => setIsEntriesModalVisible(true)}
+                                loading={savingEntry}
+                            />
+                        </TemplateBox>
+                    ) : (
+                        <TemplateBox justifyContent="center" alignItems="center">
+                            {submissions?.map(submission => (
+                                <ChallengeEntryCard
+                                    key={submission.id}
+                                    entry={submission}
+                                    onEdit={() => {
+                                        startEditEntry(submission);
+                                        setTimeout(() => {
+                                            setIsEntriesModalVisible(true);
+                                        }, 300);
+                                    }}
+                                />
+                            ))}
+                        </TemplateBox>
+                    )}
+                </TemplateBox>
+            )}
+            {activeTab !== TOGGLE_TABS[3] && (
+                <TemplateBox
+                    absolute
+                    bottom={20}
+                    selfCenter
+                    backgroundColor={WHITE_30}
+                    width={SCREEN_WIDTH}
+                    alignItems="center"
+                    pt={30}
+                >
+                    <Button
+                        title={enrollButtonTitle}
+                        height={50}
+                        width={SCREEN_WIDTH - 40}
+                        color={BLACK}
+                        onPress={handleEnrollPress}
+                        disabled={enrollButtonDisabled}
+                        loading={enrollmentLoading || enrolling}
+                    />
+                </TemplateBox>
+            )}
+            <ChallengeSubmissionModal
+                visible={isEntriesModalVisible}
+                closeOnPress={() => setIsEntriesModalVisible(false)}
+                videoUrl={videoUrl}
+                setVideoUrl={setVideoUrl}
+                metricsForm={metricsForm}
+                handleMetricChange={handleMetricChange}
+                onSave={handleSaveEntry}
+                saving={savingEntry}
+            />
         </ScrollView>
     );
 };
+const styles = StyleSheet.create({});
 export default ChallengeDetailsScreen;

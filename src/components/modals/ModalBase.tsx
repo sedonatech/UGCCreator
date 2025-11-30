@@ -1,25 +1,17 @@
 import React from 'react';
-import {
-    StyleSheet, ViewStyle
-} from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 
 import Modal from 'react-native-modal';
 import { BLACK_30 } from '../../theme/Colors';
 
 export interface ModalBaseProps {
-    closeOnPress:()=>void;
-    visible:boolean;
-    style?:ViewStyle | ViewStyle[] | null;
-    children?:any;
+    closeOnPress: () => void;
+    visible: boolean;
+    style?: ViewStyle | ViewStyle[] | null;
+    children?: any;
 }
 
-const ModalBase:React.FC<ModalBaseProps> = ({
-    visible,
-    closeOnPress,
-    style,
-    children,
-    ...restProps
-}) => (
+const ModalBase: React.FC<ModalBaseProps> = ({ visible, closeOnPress, style, children, ...restProps }) => (
     <Modal
         isVisible={visible}
         onSwipeComplete={closeOnPress}

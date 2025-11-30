@@ -8,8 +8,31 @@ import ProjectsIcon from './ProjectsIcon';
 import { IconProps } from './IconProps';
 import Trophy from './Trophy';
 import PeopleIcon from './PeopleIcon';
+import LikesIcon from './LikesIcon';
+import LinkIcon from './LinkIcon';
+import SaveIcon from './SaveIcon';
+import ShareIcon from './ShareIcon';
+import ViewsIcon from './ViewsIcon';
+import CommentsIcon from './CommentsIcon';
+import EditIcon from './EditIcon';
+import AddIcon from './AddIcon';
 
-export type DynamicIconName = 'Home' | 'Chat' | 'Profile' | 'Projects' | 'People' | 'Trophy' | null;
+export type DynamicIconName =
+    | 'Home'
+    | 'Chat'
+    | 'Profile'
+    | 'Projects'
+    | 'People'
+    | 'Trophy'
+    | 'Likes'
+    | 'Link'
+    | 'Save'
+    | 'Share'
+    | 'Views'
+    | 'Comments'
+    | 'Edit'
+    | 'Add'
+    | null;
 
 export interface DynamicIconProps extends IconProps {
     name: DynamicIconName;
@@ -40,6 +63,26 @@ const IconList = [
         name: 'Trophy',
         icon: Trophy,
     },
+    { name: 'Likes', icon: LikesIcon },
+    {
+        name: 'Link',
+        icon: LinkIcon,
+    },
+    {
+        name: 'Save',
+        icon: SaveIcon,
+    },
+    {
+        name: 'Share',
+        icon: ShareIcon,
+    },
+    {
+        name: 'Views',
+        icon: ViewsIcon,
+    },
+    { name: 'Comments', icon: CommentsIcon },
+    { name: 'Edit', icon: EditIcon },
+    { name: 'Add', icon: AddIcon },
 ];
 
 const DynamicIcon: React.FC<DynamicIconProps> = ({ name, style, color = BLACK, size = 20, active }) => {
