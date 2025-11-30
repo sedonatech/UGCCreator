@@ -18,7 +18,6 @@ import { SHADOW } from '../../../theme/Shadow';
 import useAppReview from '../../../hooks/useAppReview';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { wp } from '../../../Utils/getResponsiveSize';
-import FeedsTab from '../explore/components/FeedsTab';
 import AffiliateBrandsCarousel from './components /AffiliateBrandsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
 import EventsCarousel from './components /EventsCarousel';
@@ -37,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
     const profileImage = profile?.image;
     const isFocused = useIsFocused();
     const { challenge, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
-    console.log('HomeScreen', challenge);
+
     useEffect(() => {
         if (isFocused && profile) {
             auth?.getProfileCompleteStatus();
@@ -89,13 +88,6 @@ const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
         updateLastLogin();
-        // (async () => {
-        //     try {
-        //         await setChallengeShortDescription('viral-sprint-3-week');
-        //     } catch (error) {
-        //         console.log('Error fetching UGC Guide PDF feed:', error);
-        //     }
-        // })();
     }, []);
 
     return (
@@ -122,14 +114,7 @@ const HomeScreen = ({ navigation }) => {
                 canEnrollNow={canEnrollNow}
             />
             {showAffiliateProgramsCarousel && <AffiliateBrandsCarousel style={styles.affiliateBrandsCarousel} />}
-            {/* {showUgcGigsCarousel && (
-                <TemplateBox height={180} mt={15}>
-                    <BrandDealsCarousel />
-                </TemplateBox>
-            )} */}
             <FeaturedShowcaseCarousel style={styles.showcase} />
-
-            {/* <ProjectsCarousel style={styles.projectsCarousel} /> */}
             <EventsCarousel />
             {features?.showBrandsCarousel && <BrandsCarousel />}
             {previousResponse === null && features?.showReviewPrompt && (
@@ -179,28 +164,6 @@ const HomeScreen = ({ navigation }) => {
                     </TemplateBox>
                 </TemplateBox>
             )}
-
-            {/* {!!ugcGuidePdfFeed?.title && (
-                <TemplateBox mt={wp(20)} mb={wp(10)}>
-                    <FeedCard
-                        image={{ uri: ugcGuidePdfFeed?.thumbnail }}
-                        title={ugcGuidePdfFeed?.title}
-                        shortDescription={ugcGuidePdfFeed?.description}
-                        subtitle={ugcGuidePdfFeed?.subtitle}
-                        showGradient
-                        cardWidth={SCREEN_WIDTH / 1.12}
-                        aspectRatio={1.5}
-                        icon={getIconByType(ugcGuidePdfFeed?.type)}
-                        onPress={() =>
-                            navigation.navigate(FEED_DETAILS, {
-                                selectedFeed: ugcGuidePdfFeed,
-                            })
-                        }
-                        style={styles.card}
-                    />
-                </TemplateBox>
-            )} */}
-            <FeedsTab />
         </ScrollView>
     );
 };

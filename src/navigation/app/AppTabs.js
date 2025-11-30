@@ -1,9 +1,9 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { CHATS_STACK, HOME_STACK, OFFERS_STACK, PROFILE_STACK } from '../ScreenNames';
+import { CHALLENGES_STACK, CHATS_STACK, HOME_STACK, PROFILE_STACK } from '../ScreenNames';
 import HomeStack from './HomeStack';
-import OffersStack from './OffersStack';
 import ProfileStack from './ProfileStack';
 import TabButton from '../../components/tabs/TabButton';
 import TabLabel from '../../components/tabs/TabLabel';
@@ -11,6 +11,7 @@ import useNotificationPermissions from '../../hooks/notifications/useNotificatio
 import ChatsStack from '../chats/ChatsStack';
 import { ANIMATION_DISABLED_HEADER } from '../../components/header/ScreenOptions';
 import useChatRooms from '../../hooks/chats/useChatRooms';
+import ChallengesStack from './ChallengesStack';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
@@ -50,11 +51,11 @@ const AppTabs = () => {
             />
 
             <Screen
-                name={OFFERS_STACK}
-                component={OffersStack}
+                name={CHALLENGES_STACK}
+                component={ChallengesStack}
                 options={{
-                    tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Projects" />,
-                    tabBarLabel: props => <TabLabel {...props}>My Projects</TabLabel>,
+                    tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Trophy" />,
+                    tabBarLabel: props => <TabLabel {...props}>Challenges</TabLabel>,
                 }}
             />
             <Screen

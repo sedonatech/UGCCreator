@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     default: {
         backgroundColor: WHITE,
         color: BLACK,
-        fontSize: 17,
+        fontSize: 16,
         paddingHorizontal: 0, // Needed for android
     },
 });

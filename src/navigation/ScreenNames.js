@@ -27,10 +27,10 @@ export const BRAND_DETAILS = 'BrandDetails';
 export const PROJECT_DETAILS = 'ProjectDetails';
 export const EXPLORE_STACK = 'ExploreStack';
 
-export const OFFERS = 'Offers';
+export const CHALLENGES = 'Challenges';
 
 export const CURRENT_PROJECT_DETAILS = 'CurrentProjectDetails';
-export const OFFERS_STACK = 'OffersStack';
+export const CHALLENGES_STACK = 'ChallengesStack';
 
 export const APP_TABS = 'AppTabs';
 

@@ -1,20 +1,17 @@
-import { ChallengeSubmission } from '../../hooks/useChallenge';
-import { BLACK, BLACK_10, BLACK_80, FUCSHIA_500, WHITE_30 } from '../../theme/Colors';
+import { ChallengeLeaderboardEntry } from '../../hooks/useChallengeSubmission';
+import { BLACK, BLACK_10, EMERALD_500, WHITE_30 } from '../../theme/Colors';
 import { WRAPPED_SCREEN_WIDTH } from '../../theme/Layout';
 import { getMetricIconName, MetricKey } from '../../Utils/challengeIcons';
 import { getMetricColor } from '../../Utils/challengeMetricColors';
-import { formatTimeAgo } from '../../Utils/date';
-import openUrl from '../../Utils/openUrl';
 import DynamicIcon from '../icons/DynamicIcon';
 import TemplateBox from '../TemplateBox';
 import TemplateText from '../TemplateText';
 
-interface ChallengeEntryCardProps {
-    entry: ChallengeSubmission;
-    onEdit?: () => void;
+interface LeaderBoardCardProps {
+    entry: ChallengeLeaderboardEntry;
 }
 
-const ChallengeEntryCard: React.FC<ChallengeEntryCardProps> = ({ entry, onEdit }) => {
+const LeaderBoardCard: React.FC<LeaderBoardCardProps> = ({ entry }) => {
     return (
         <TemplateBox
             borderRadius={16}
@@ -24,39 +21,31 @@ const ChallengeEntryCard: React.FC<ChallengeEntryCardProps> = ({ entry, onEdit }
             width={WRAPPED_SCREEN_WIDTH}
             borderWidth={1}
             borderColor={BLACK_10}
-            onPress={onEdit}
         >
             <TemplateBox row justifyContent="space-between" alignItems="center">
-                <TemplateBox width="60%">
-                    <TemplateText size={16} numberOfLines={1} adjustsFontSizeToFit medium>
-                        {entry?.metrics?.title}
+                <TemplateBox
+                    height={50}
+                    width={50}
+                    justifyContent="center"
+                    alignItems="center"
+                    borderRadius={30}
+                    borderColor={EMERALD_500}
+                    borderWidth={1}
+                >
+                    <TemplateText size={18} bold color={EMERALD_500}>
+                        {entry?.position}
                     </TemplateText>
                 </TemplateBox>
-                <TemplateBox backgroundColor={BLACK_10} borderRadius={10} ph={8} pv={4}>
-                    <TemplateText size={12} numberOfLines={1} adjustsFontSizeToFit medium color={BLACK_80}>
-                        {entry?.createdAt ? formatTimeAgo(entry.createdAt.toDate()) : ''}
+                <TemplateBox width="50%">
+                    <TemplateText size={16} numberOfLines={1} adjustsFontSizeToFit medium ml={10}>
+                        {entry?.userName}
                     </TemplateText>
                 </TemplateBox>
+                <TemplateBox flex />
                 <TemplateBox>
-                    <DynamicIcon name="Edit" size={24} color={BLACK} />
-                </TemplateBox>
-            </TemplateBox>
-            <TemplateBox
-                row
-                justifyContent="space-between"
-                mt={10}
-                mb={20}
-                onPress={() => {
-                    openUrl(entry?.videoUrl || '');
-                }}
-            >
-                <TemplateBox width="85%">
-                    <TemplateText size={14} color={FUCSHIA_500} mt={8} numberOfLines={2} adjustsFontSizeToFit>
-                        {entry?.videoUrl}
+                    <TemplateText size={14} numberOfLines={1} adjustsFontSizeToFit medium>
+                        {entry?.points} pts
                     </TemplateText>
-                </TemplateBox>
-                <TemplateBox mt={18}>
-                    <DynamicIcon name="Link" size={24} color={FUCSHIA_500} />
                 </TemplateBox>
             </TemplateBox>
 
@@ -64,6 +53,7 @@ const ChallengeEntryCard: React.FC<ChallengeEntryCardProps> = ({ entry, onEdit }
                 row
                 justifyContent="space-between"
                 mb={5}
+                mt={16}
                 borderRadius={16}
                 pAll={12}
                 borderWidth={1}
@@ -83,4 +73,4 @@ const ChallengeEntryCard: React.FC<ChallengeEntryCardProps> = ({ entry, onEdit }
     );
 };
 
-export default ChallengeEntryCard;
+export default LeaderBoardCard;

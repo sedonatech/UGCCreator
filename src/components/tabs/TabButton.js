@@ -7,12 +7,7 @@ import DynamicIcon from '../icons/DynamicIcon';
 
 const TabButton = ({ focused, icon }) => (
     <View style={[styles.container, focused && styles.activeContainer]}>
-        <DynamicIcon
-            name={icon}
-            size={24}
-            color={BLACK}
-        />
-
+        <DynamicIcon name={icon} size={24} color={BLACK} />
     </View>
 );
 
@@ -30,7 +25,6 @@ const styles = StyleSheet.create({
     activeContainer: {
         opacity: 1,
     },
-
 });
 
 export default TabButton;

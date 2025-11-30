@@ -8,12 +8,7 @@ import TemplateBox from '../TemplateBox';
 
 const TabLabel = ({ focused, children, showNotification }) => (
     <TemplateBox row center>
-        <TemplateText
-            opacity={focused ? 1 : 0.5}
-            black
-            semiBold
-            style={[styles.label, focused && styles.activeLabel]}
-        >
+        <TemplateText opacity={focused ? 1 : 0.5} black semiBold style={[styles.label, focused && styles.activeLabel]}>
             {children}
         </TemplateText>
         {!!showNotification && (

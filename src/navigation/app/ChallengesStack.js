@@ -2,18 +2,18 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { SWITCH, TRANSPARENT_HEADER } from '../../components/header/ScreenOptions';
-import OffersScreen from '../../screens/app/offers/OffersScreen';
-import { CURRENT_PROJECT_DETAILS, OFFERS } from '../ScreenNames';
+import { CHALLENGES, CURRENT_PROJECT_DETAILS } from '../ScreenNames';
 import CurrentProjectDetailsScreen from '../../screens/app/offers/CurrentProjectDetailsScreen';
+import ChallengesScreen from '../../screens/app/offers/ChallengesScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
 
-const OffersStack = () => (
-    <Navigator initialRouteName={OFFERS} screenOptions={SWITCH}>
-        <Screen name={OFFERS} options={TRANSPARENT_HEADER} component={OffersScreen} />
+const ChallengesStack = () => (
+    <Navigator initialRouteName={CHALLENGES} screenOptions={SWITCH}>
+        <Screen name={CHALLENGES} options={TRANSPARENT_HEADER} component={ChallengesScreen} />
         <Screen name={CURRENT_PROJECT_DETAILS} options={TRANSPARENT_HEADER} component={CurrentProjectDetailsScreen} />
     </Navigator>
 );
 
-export default OffersStack;
+export default ChallengesStack;

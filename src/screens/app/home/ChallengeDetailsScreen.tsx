@@ -1,19 +1,21 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 //@ts-ignore
 import challengeBackground from '../../../../assets/images/challenge-background.jpg';
 import firestore from '@react-native-firebase/firestore';
-import { Image, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
-import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateText from '../../../components/TemplateText';
 import {
     BLACK,
     BLACK_10,
     BLACK_20,
     BLACK_SECONDARY,
+    BLUE_500,
     DARK_GREY,
     DARK_METAL,
     METAL,
+    RED_500,
     WHITE_30,
     WHITE_40,
 } from '../../../theme/Colors';
@@ -33,6 +35,7 @@ import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { useChallengeSubmission } from '../../../hooks/useChallengeSubmission';
 import ChallengeSubmissionModal from '../../../components/modals/ChallengeSubmissionModal';
 import ChallengeEntryCard from '../../../components/cards/ChallengeEntryCard';
+import ChallengeLeaderBoardModal from '../../../components/modals/ChallengeLeaderBoardModal';
 
 const TOGGLE_TABS = ['Brief', 'Rules', 'Prizes', 'Entries'];
 type RouteParams = {
@@ -65,6 +68,8 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [enrollmentLoading, setEnrollmentLoading] = useState(true);
     const [enrolling, setEnrolling] = useState(false);
+    const [isLeaderBoardModalVisible, setIsLeaderBoardModalVisible] = useState(false);
+
     useEffect(() => {
         const unsubscribe = firestore()
             .collection('challenges')
@@ -80,6 +85,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
 
         return () => unsubscribe();
     }, [challengeId]);
+
     useEffect(() => {
         if (!challengeId || !currentUserId) {
             setIsEnrolled(false);
@@ -116,10 +122,34 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             cancelled = true;
         };
     }, [challengeId, currentUserId]);
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TemplateBox
+                    backgroundColor={WHITE_30}
+                    row
+                    mr={10}
+                    alignItems="center"
+                    borderWidth={1}
+                    borderColor={BLACK_20}
+                    borderRadius={26}
+                    onPress={() => setIsLeaderBoardModalVisible(true)}
+                    ph={16}
+                    pv={8}
+                >
+                    <TemplateText color={BLACK_SECONDARY} size={14} mr={6}>
+                        Leader Board
+                    </TemplateText>
+                    <DynamicIcon name={'ArrowRight'} color={BLACK_SECONDARY} size={18} />
+                </TemplateBox>
+            ),
+        });
+    }, [navigation]);
 
     // challenge submission
     const [isEntriesModalVisible, setIsEntriesModalVisible] = useState(false);
-    const { submissions, submissionsLoading } = useChallengeSubmission(challengeId, currentUserId);
+    const { submissions, submissionsLoading, leaderBoardEntries, topEntry, leaderBoardEntriesLoading } =
+        useChallengeSubmission(challengeId, currentUserId);
 
     const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
     const [videoUrl, setVideoUrl] = useState('');
@@ -175,7 +205,6 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         if (!videoUrl.trim()) {
             return;
         }
-
         const metrics: ChallengeMetrics = {
             views: Number(metricsForm.views) || 0,
             likes: Number(metricsForm.likes) || 0,
@@ -184,12 +213,13 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             saves: Number(metricsForm.saves) || 0,
             title: metricsForm.title || '',
         };
-
         try {
             setSavingEntry(true);
             await upsertChallengeSubmission({
                 challengeId,
                 userId: currentUserId,
+                userName: profile?.userName || '',
+                userEmail: profile?.email || '',
                 videoUrl: videoUrl.trim(),
                 metrics,
                 submissionId: editingEntryId || undefined,
@@ -257,6 +287,11 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
 
     return (
         <ScrollView>
+            {(loading || submissionsLoading) && (
+                <TemplateBox absolute selfCenter mt={SCREEN_HEIGHT / 2.5}>
+                    <ActivityIndicator color={BLUE_500} size={'large'} />
+                </TemplateBox>
+            )}
             <TemplateBox width={SCREEN_WIDTH} height={260}>
                 <TemplateBox absolute top={0} left={0} right={0} overflow="hidden" height={260}>
                     <Image source={challengeBackground} style={{ width: '100%', height: '100%' }} />
@@ -376,6 +411,9 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             )}
             {activeTab === TOGGLE_TABS[1] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={80}>
+                    <TemplateText size={16} lineHeight={24} color={RED_500} mb={10} center semiBold>
+                        ‼️{challenge?.brief?.disqualificationRule}
+                    </TemplateText>
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
                         Rules of the challenge
                     </TemplateText>
@@ -442,7 +480,9 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                                     mb={8}
                                 >
                                     <DynamicIcon name="Add" size={20} color={BLACK} />
-                                    <TemplateText size={14}>Add Entry</TemplateText>
+                                    <TemplateText size={14} semiBold>
+                                        Add Entry
+                                    </TemplateText>
                                 </TemplateBox>
                             )}
                         </TemplateBox>
@@ -507,13 +547,23 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             )}
             <ChallengeSubmissionModal
                 visible={isEntriesModalVisible}
-                closeOnPress={() => setIsEntriesModalVisible(false)}
+                closeOnPress={() => {
+                    setIsEntriesModalVisible(false);
+                    resetEntryForm();
+                }}
                 videoUrl={videoUrl}
                 setVideoUrl={setVideoUrl}
                 metricsForm={metricsForm}
                 handleMetricChange={handleMetricChange}
                 onSave={handleSaveEntry}
                 saving={savingEntry}
+            />
+            <ChallengeLeaderBoardModal
+                visible={isLeaderBoardModalVisible}
+                closeOnPress={() => setIsLeaderBoardModalVisible(false)}
+                leaderBoardEntries={leaderBoardEntries}
+                topEntry={topEntry}
+                loading={leaderBoardEntriesLoading}
             />
         </ScrollView>
     );

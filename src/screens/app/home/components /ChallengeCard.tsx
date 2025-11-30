@@ -45,9 +45,10 @@ const ChallengeCard = ({
     return (
         <TemplateBox
             mh={WRAPPER_MARGIN}
-            ph={15}
+            ph={10}
             borderRadius={20}
             mb={20}
+            mt={20}
             alignItems="center"
             backgroundColor={WHITE}
             height={250}
@@ -68,11 +69,13 @@ const ChallengeCard = ({
                         row
                     >
                         <DynamicIcon name="Trophy" size={16} />
-                        <TemplateText size={14} medium color={BLACK_SECONDARY} ml={8}>
+                        <TemplateText size={17} medium color={BLACK_SECONDARY} ml={8}>
                             Win up to {prizePoolUsd ? ` $${prizePoolUsd}` : ' 300 USD'}
                         </TemplateText>
                     </TemplateBox>
-                    {<TemplateText size={14}>{statusLabel}</TemplateText>}
+                    <TemplateText size={13} medium>
+                        {statusLabel}
+                    </TemplateText>
                 </TemplateBox>
                 <TemplateText bold size={18} mv={10} caps>
                     {challengeTitle}
@@ -99,7 +102,7 @@ const ChallengeCard = ({
                     color={BLACK}
                     style={{ borderRadius: 20, marginTop: 14 }}
                     onPress={onPress}
-                    //  disabled={!isEnrollmentOpen}
+                    disabled={!isEnrollmentOpen}
                 />
             </TemplateBox>
         </TemplateBox>

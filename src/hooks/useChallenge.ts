@@ -24,6 +24,8 @@ export type ChallengeSubmission = {
     id?: string;
     challengeId: string;
     userId: string;
+    userName?: string;
+    userEmail?: string;
     videoUrl: string;
     metrics: ChallengeMetrics;
     createdAt: FirebaseFirestoreTypes.Timestamp | null;
@@ -205,6 +207,8 @@ const useChallenge = () => {
         }
         return `Ends in ${diffDays} days`;
     };
+
+    console.log('🚀 ~ useChallenge ~ challenge-----------:', challenge);
     return { challenge, challengeLoading, getStatusLabel, canEnrollNow, getEndsInLabel };
 };
 
@@ -257,12 +261,14 @@ export async function enrollInChallenge(params: {
 export async function upsertChallengeSubmission(params: {
     challengeId: string;
     userId: string;
+    userName?: string;
+    userEmail?: string;
     videoUrl: string;
     metrics: ChallengeMetrics;
     submissionId?: string;
 }) {
     try {
-        const { challengeId, userId, videoUrl, metrics, submissionId } = params;
+        const { challengeId, userId, userName, userEmail, videoUrl, metrics, submissionId } = params;
         const submissionsRef = firestore().collection('challenges').doc(challengeId).collection('submissions');
         const docRef = submissionId ? submissionsRef.doc(submissionId) : submissionsRef.doc();
         await docRef.set(
@@ -270,6 +276,8 @@ export async function upsertChallengeSubmission(params: {
                 challengeId,
                 userId,
                 videoUrl,
+                userName,
+                userEmail,
                 metrics,
                 updatedAt: firestore.FieldValue.serverTimestamp(),
                 // createdAt is only set the first time

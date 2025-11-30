@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native';
+import { Alert, KeyboardAvoidingView, ScrollView, StyleSheet } from 'react-native';
 import ModalBase from './ModalBase';
 import { BLACK, BLACK_10, BLACK_30, BLACK_SECONDARY, DARK_GREY, GREY_30, WHITE } from '../../theme/Colors';
 import TemplateBox from '../TemplateBox';
@@ -22,12 +22,12 @@ const METRIC_FIELDS: MetricFieldConfig[] = [
     {
         key: 'views',
         label: 'Views',
-        placeholder: 'Enter views',
+        placeholder: 'Enter number of views',
     },
     {
         key: 'likes',
         label: 'Likes',
-        placeholder: 'Enter likes',
+        placeholder: 'Enter number of likes',
     },
     {
         key: 'comments',
@@ -37,19 +37,20 @@ const METRIC_FIELDS: MetricFieldConfig[] = [
     {
         key: 'shares',
         label: 'Shares',
-        placeholder: 'Enter shares',
+        placeholder: 'Enter number of shares',
     },
     {
         key: 'saves',
         label: 'Saves',
-        placeholder: 'Enter saves',
+        placeholder: 'Enter number of saves',
     },
     {
         key: 'title',
         label: 'Title',
-        placeholder: 'Eg.Morning Coffee Glow-Up with UGCCreator app',
+        placeholder: 'eg.Morning Glow-Up with UGCCreator app',
     },
 ];
+const NUMERIC_METRIC_KEYS: MetricFieldKey[] = ['views', 'likes', 'comments', 'shares', 'saves'];
 
 interface ChallengeSubmissionModalProps {
     visible: boolean;
@@ -72,6 +73,13 @@ const ChallengeSubmissionModal: React.FC<ChallengeSubmissionModalProps> = ({
     onSave,
     saving,
 }) => {
+    const isVideoValid = videoUrl.trim().length > 0;
+    const isTitleValid = metricsForm.title.trim().length > 0;
+
+    const allRequiredNumericFilled = NUMERIC_METRIC_KEYS.every(key => metricsForm[key].trim().length > 0);
+    const allRequiredNumericValid = NUMERIC_METRIC_KEYS.every(key => /^[0-9]+$/.test(metricsForm[key]));
+
+    const isFormValid = isVideoValid && isTitleValid && allRequiredNumericFilled && allRequiredNumericValid && !saving;
     return (
         <ModalBase visible={visible} closeOnPress={closeOnPress} style={styles.modal}>
             <KeyboardAvoidingView
@@ -84,16 +92,9 @@ const ChallengeSubmissionModal: React.FC<ChallengeSubmissionModalProps> = ({
                     style={styles.flexBackgroundWhite}
                     keyboardShouldPersistTaps="handled"
                 >
-                    <TemplateBox
-                        ph={WRAPPER_MARGIN}
-                        backgroundColor={WHITE}
-                        pAll={16}
-                        mt={50}
-                        borderTopLeftRadius={20}
-                        borderTopRightRadius={20}
-                    >
-                        <TemplateBox row justifyContent="space-between" alignItems="center">
-                            <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={16}>
+                    <TemplateBox ph={WRAPPER_MARGIN} backgroundColor={WHITE} pAll={16} mt={60}>
+                        <TemplateBox row justifyContent="space-between" alignItems="center" mb={20}>
+                            <TemplateText size={18} semiBold color={BLACK_SECONDARY}>
                                 Your Entries
                             </TemplateText>
                             <TemplateBox onPress={closeOnPress}>
@@ -145,6 +146,13 @@ const ChallengeSubmissionModal: React.FC<ChallengeSubmissionModalProps> = ({
                             width={SCREEN_WIDTH - 40}
                             color={BLACK}
                             onPress={() => {
+                                if (!isFormValid) {
+                                    Alert.alert(
+                                        'Invalid Input',
+                                        'Please fill all fields with valid data before submitting.',
+                                    );
+                                    return;
+                                }
                                 onSave();
                                 setTimeout(() => {
                                     closeOnPress();
