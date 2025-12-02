@@ -122,38 +122,6 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             cancelled = true;
         };
     }, [challengeId, currentUserId]);
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TemplateBox
-                    backgroundColor={WHITE_30}
-                    row
-                    mr={10}
-                    alignItems="center"
-                    borderWidth={1}
-                    borderColor={BLACK_20}
-                    borderRadius={26}
-                    onPress={() => {
-                        if (!isChallengeStarted) {
-                            Alert.alert(
-                                'Challenge Not Started',
-                                'The challenge has not started yet. Leader Board will be available once the challenge starts.',
-                            );
-                        } else {
-                            setIsLeaderBoardModalVisible(true);
-                        }
-                    }}
-                    ph={16}
-                    pv={8}
-                >
-                    <TemplateText color={BLACK_SECONDARY} size={14} mr={6}>
-                        Leader Board
-                    </TemplateText>
-                    <DynamicIcon name={'ArrowRight'} color={BLACK_SECONDARY} size={18} />
-                </TemplateBox>
-            ),
-        });
-    }, [navigation]);
 
     // challenge submission
     const [isEntriesModalVisible, setIsEntriesModalVisible] = useState(false);
@@ -245,6 +213,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     const { getStatusLabel, canEnrollNow, getEndsInLabel } = useChallenge();
     const now = useMemo(() => new Date(), []);
     const nowMs = now.getTime();
+
     const statusLabel = getStatusLabel(
         challenge?.enrollmentStartAt?.toDate(),
         challenge?.challengeStartAt?.toDate(),
@@ -270,6 +239,38 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     });
     const isChallengeStarted = nowMs >= challengeStartMs;
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TemplateBox
+                    backgroundColor={WHITE_30}
+                    row
+                    mr={10}
+                    alignItems="center"
+                    borderWidth={1}
+                    borderColor={BLACK_20}
+                    borderRadius={26}
+                    onPress={() => {
+                        if (!isChallengeStarted) {
+                            Alert.alert(
+                                'Challenge Not Started',
+                                'The challenge has not started yet. Leader Board will be available once the challenge starts.',
+                            );
+                        } else {
+                            setIsLeaderBoardModalVisible(true);
+                        }
+                    }}
+                    ph={16}
+                    pv={8}
+                >
+                    <TemplateText color={BLACK_SECONDARY} size={14} mr={6}>
+                        Leader Board
+                    </TemplateText>
+                    <DynamicIcon name={'ArrowRight'} color={BLACK_SECONDARY} size={18} />
+                </TemplateBox>
+            ),
+        });
+    }, [navigation, isChallengeStarted]);
     const onCtaPress = async () => {
         if (!challengeId) {
             return;

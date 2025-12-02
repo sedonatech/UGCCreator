@@ -96,6 +96,8 @@ const HomeScreen = ({ navigation }) => {
                 challengeTitle={challenge?.title}
                 challengeId={challenge?.id}
                 currentUserId={profile?.id}
+                userName={profile?.userName}
+                userEmail={profile?.email}
                 shortDescriptionSegments={challenge?.shortDescriptionSegments}
                 enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
                 challengeStartAt={challenge?.challengeStartAt?.toDate()}

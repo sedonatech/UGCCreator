@@ -93,13 +93,17 @@ const ChallengeCard = ({
         };
     }, [challengeId, currentUserId]);
 
-    const cta = getChallengeCta({
-        enrollmentStartAt,
-        challengeStartAt,
-        challengeEndAt,
-        now,
-        isEnrolled,
-    });
+    const cta = useMemo(
+        () =>
+            getChallengeCta({
+                enrollmentStartAt,
+                challengeStartAt,
+                challengeEndAt,
+                now,
+                isEnrolled,
+            }),
+        [enrollmentStartAt, challengeStartAt, challengeEndAt, now, isEnrolled],
+    );
 
     const onCtaChallengePress = async () => {
         if (!currentUserId || !challengeId || !cta) {
@@ -117,6 +121,7 @@ const ChallengeCard = ({
                 userName: userName || '',
                 userEmail: userEmail || '',
             });
+            setIsEnrolled(true);
         } catch (error) {
             console.error('Error enrolling in challenge:', error);
         } finally {

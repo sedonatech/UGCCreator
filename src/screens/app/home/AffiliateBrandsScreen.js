@@ -2,7 +2,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
-import { BLACK, LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import {
+    BLACK,
+    BLACK_10,
+    BLACK_20,
+    BLUE_500,
+    DARK_METAL,
+    FUCSHIA_500,
+    IOS_BLUE_20,
+    LIGHT_GREEN_10,
+    LIGHT_PURPLE,
+    METAL,
+    TRANSPARENT,
+    WHITE,
+} from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
@@ -10,7 +23,8 @@ import { wp } from '../../../Utils/getResponsiveSize';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
-import Button from '../../../components/Button';
+import DynamicIcon from '../../../components/icons/DynamicIcon';
+import { getCapitalizedFirstLetter } from '../../../Utils/texts';
 
 const AffiliateBrandsScreen = ({ navigation, route }) => {
     const { affiliate } = useFeatureFlags();
@@ -48,27 +62,98 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
     const renderItem = ({ item }) => (
         <TemplateBox
             borderRadius={wp(16)}
-            backgroundColor={LIGHT_PURPLE}
             pAll={wp(16)}
             onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
             style={styles.card}
             width={WRAPPED_SCREEN_WIDTH}
-            height={wp(150)}
-            mb={wp(16)}
-            center
+            borderWidth={1}
+            borderColor={BLACK_20}
             selfCenter
+            mb={20}
         >
-            <TemplateText startCase size={wp(16)} semiBold>
-                {item?.name}
+            {/* header row: avatar + name/link on the left, category pill on the right */}
+            <TemplateBox row alignItems="center" mb={10} justifyContent="space-between">
+                {/* left block takes remaining space */}
+                <TemplateBox row alignItems="center" flex={1} mr={10}>
+                    <TemplateBox
+                        height={50}
+                        width={50}
+                        mr={10}
+                        borderRadius={10}
+                        alignItems="center"
+                        justifyContent="center"
+                        backgroundColor={LIGHT_GREEN_10}
+                        shadow
+                        shadowColor={BLACK}
+                    >
+                        <TemplateText startCase size={20} bold color={DARK_METAL}>
+                            {getCapitalizedFirstLetter(item?.name)}
+                        </TemplateText>
+                    </TemplateBox>
+
+                    <TemplateBox flex={1}>
+                        <TemplateText
+                            startCase
+                            size={16}
+                            semiBold
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            mb={4}
+                            color={DARK_METAL}
+                        >
+                            {item?.name}
+                        </TemplateText>
+                        <TemplateBox row alignItems="center">
+                            <TemplateText
+                                size={10}
+                                mr={5}
+                                numberOfLines={2}
+                                ellipsizeMode="tail"
+                                color={FUCSHIA_500}
+                                maxWidth={100}
+                            >
+                                {item?.link}
+                            </TemplateText>
+                            <DynamicIcon name="Link" color={FUCSHIA_500} />
+                        </TemplateBox>
+                    </TemplateBox>
+                </TemplateBox>
+
+                {/* right block: fixed category pill */}
+                <TemplateBox
+                    pv={4}
+                    ph={16}
+                    borderRadius={10}
+                    backgroundColor={IOS_BLUE_20}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <TemplateText size={12} medium>
+                        {item?.category}
+                    </TemplateText>
+                </TemplateBox>
+            </TemplateBox>
+
+            <TemplateText size={14} numberOfLines={3} mv={10} color={METAL}>
+                {item?.description}
             </TemplateText>
-            <TemplateBox height={wp(8)} />
-            <TemplateText size={wp(12)}>{item?.description}</TemplateText>
-            <Button
-                title="Apply Now"
+
+            <TemplateBox height={1} width="98%" backgroundColor={BLACK_10} selfCenter mv={10} />
+            <TemplateBox
+                row
+                alignItems="center"
+                justifyContent="space-between"
                 onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
-                style={styles.button}
-                titleSize={12}
-            />
+            >
+                <TemplateText size={12} color={METAL} medium>
+                    Performance based
+                </TemplateText>
+                <TemplateBox flex />
+                <TemplateText size={14} color={BLUE_500} medium>
+                    View Details
+                </TemplateText>
+                <DynamicIcon name="ArrowRight" color={BLUE_500} />
+            </TemplateBox>
         </TemplateBox>
     );
 
@@ -132,14 +217,6 @@ const styles = StyleSheet.create({
         backgroundColor: WHITE,
         borderColor: LIGHT_PURPLE,
         borderWidth: 1.5,
-    },
-    button: {
-        marginVertical: 10,
-        height: 40,
-        width: 180,
-        borderRadius: 20,
-        alignSelf: 'center',
-        marginTop: 20,
     },
 });
 export default AffiliateBrandsScreen;
