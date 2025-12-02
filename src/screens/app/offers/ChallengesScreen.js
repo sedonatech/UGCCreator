@@ -7,6 +7,7 @@ import { HEADER_MARGIN, IS_ANDROID } from '../../../theme/Layout';
 import useChallenge from '../../../hooks/useChallenge';
 import ChallengeCard from '../home/components /ChallengeCard';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { CHALLENGE_DETAILS } from '../../../navigation/ScreenNames';
 
 const ChallengesScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -38,6 +39,11 @@ const ChallengesScreen = ({ navigation }) => {
                         challengeEndAt={challenge?.challengeEndAt?.toDate()}
                         getStatusLabel={getStatusLabel}
                         canEnrollNow={canEnrollNow}
+                        onPress={() =>
+                            navigation.navigate(CHALLENGE_DETAILS, {
+                                challengeId: challenge?.id,
+                            })
+                        }
                     />
                 )}
                 keyExtractor={item => item?.id}

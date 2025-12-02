@@ -269,7 +269,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         isEnrolled,
     });
     const isChallengeStarted = nowMs >= challengeStartMs;
-    console.log('🚀 ~ ChallengeDetailsScreen ~ isChallengeStarted:', isChallengeStarted);
+
     const handleEnrollPress = async () => {
         if (!challengeId) {
             return;

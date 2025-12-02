@@ -52,21 +52,6 @@ const HomeScreen = ({ navigation }) => {
         await updateProfile({ fcmToken: token }, profile?.id);
     };
 
-    const creatorToolsEnabled = features?.openAIScreen;
-
-    // useLayoutEffect(() => {
-    //     navigation.setOptions({
-    //         headerRight: () => (
-    //             <HeaderIconButton
-    //                 title="Creator tools"
-    //                 onPress={() => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null)}
-    //                 backDropColor={LIGHT_GREEN}
-    //                 mr={WRAPPER_MARGIN}
-    //             />
-    //         ),
-    //     });
-    // }, [navigation, creatorToolsEnabled]);
-
     useEffect(() => {
         if (!profileImage) {
             Alert.alert('Profile image', 'Please upload a profile image to continue', [
