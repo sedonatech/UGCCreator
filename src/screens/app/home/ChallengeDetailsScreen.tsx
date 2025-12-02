@@ -270,7 +270,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     });
     const isChallengeStarted = nowMs >= challengeStartMs;
 
-    const handleEnrollPress = async () => {
+    const onCtaPress = async () => {
         if (!challengeId) {
             return;
         }
@@ -278,6 +278,10 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             return;
         }
         if (enrolling) {
+            return;
+        }
+        if (isEnrolled) {
+            setActiveTab(TOGGLE_TABS[3]);
             return;
         }
 
@@ -297,7 +301,6 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         }
     };
 
-    const Submissions = () => {};
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollViewMain}>
             {(loading || submissionsLoading) && (
@@ -562,7 +565,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                         height={50}
                         width={SCREEN_WIDTH - 40}
                         color={BLACK}
-                        onPress={handleEnrollPress}
+                        onPress={onCtaPress}
                         disabled={enrollButtonDisabled}
                         loading={enrollmentLoading || enrolling}
                     />

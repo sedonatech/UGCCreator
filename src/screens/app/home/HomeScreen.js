@@ -86,6 +86,11 @@ const HomeScreen = ({ navigation }) => {
                         challengeId: challenge?.id,
                     })
                 }
+                secondaryOnPress={() =>
+                    navigation.navigate(CHALLENGE_DETAILS, {
+                        challengeId: challenge?.id,
+                    })
+                }
                 loading={challengeLoading}
                 prizePoolUsd={challenge?.prizePoolUsd}
                 challengeTitle={challenge?.title}

@@ -26,6 +26,7 @@ const ChallengesScreen = ({ navigation }) => {
                     </TemplateBox>
                 }
                 data={[challenge]}
+                keyExtractor={item => item?.id}
                 renderItem={({ item }) => (
                     <ChallengeCard
                         loading={challengeLoading}
@@ -44,9 +45,13 @@ const ChallengesScreen = ({ navigation }) => {
                                 challengeId: challenge?.id,
                             })
                         }
+                        secondaryOnPress={() =>
+                            navigation.navigate(CHALLENGE_DETAILS, {
+                                challengeId: challenge?.id,
+                            })
+                        }
                     />
                 )}
-                keyExtractor={item => item?.id}
                 initialNumToRender={5}
                 onEndReachedThreshold={0.5}
             />
