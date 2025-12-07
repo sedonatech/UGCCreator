@@ -1,6 +1,4 @@
-import React, {
-    useState, useEffect, createContext,
-} from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import Purchases from 'react-native-purchases';
 import PropTypes from 'prop-types';
 
@@ -31,7 +29,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
     // Updater
     const update = (key, data) => {
         console.log('[Subscription] Subscription Provider: Update called, updating store: ', key, data);
-        setStore((prevState) => ({
+        setStore(prevState => ({
             ...prevState,
             [key]: data,
         }));
@@ -49,7 +47,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
         (async () => {
             if (ready && userEmail) {
                 try {
-                    Purchases.addCustomerInfoUpdateListener((purchaserInfo) => {
+                    Purchases.addCustomerInfoUpdateListener(purchaserInfo => {
                         update('purchaserInfo', purchaserInfo);
                     });
                 } catch (e) {
@@ -91,9 +89,10 @@ const SubscriptionProvider = ({ children, purchase }) => {
                 const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages)?.flat();
                 const productIdentifiers = allAvailablePackages?.map(({ product }) => product?.identifier);
                 const introEligibility = await Purchases.checkTrialOrIntroductoryPriceEligibility(productIdentifiers);
-                update('introEligibility', Object.fromEntries(
-                    Object.entries(introEligibility).map((pair) => [pair[0], pair[1]?.status === 2]),
-                ));
+                update(
+                    'introEligibility',
+                    Object.fromEntries(Object.entries(introEligibility).map(pair => [pair[0], pair[1]?.status === 2])),
+                );
             }
         })();
     }, [store?.offerings, ready]);
@@ -105,39 +104,53 @@ const SubscriptionProvider = ({ children, purchase }) => {
             if (!isAndroid && Object.keys(store?.introEligibility)?.length) {
                 // get the available packages
                 const allOfferings = store?.offerings?.all && Object?.values(store?.offerings?.all);
-                const allAvailablePackages = allOfferings?.map(({ availablePackages }) => availablePackages)?.flat().filter(({ product }) => !store?.introEligibility[product?.identifier]);
-                const discountOfferings = await Promise.all(allAvailablePackages?.map(async ({ product }, index) => {
-                    // map over the packages to check if discount is available
-                    try {
-                        const productIdentifier = product?.identifier;
-                        const discountInfo = product?.discounts?.length && product?.discounts?.find((d) => d?.identifier === purchase?.metaData[productIdentifier]?.discountKey
-                            || d?.identifier === findDefaultDiscountKey(product));
-                        // if there is a valid discount identifier, get the payment discount
-                        // NOTE: Swapped this to always checking for reliability, monitor speed in prod
-                        const discount = !!discountInfo && await Purchases.getPromotionalOffer(product, discountInfo);
-                        // const discount = !!discountInfo || index >= 1 || await Purchases.getPromotionalOffer(product, discountInfo);
+                const allAvailablePackages = allOfferings
+                    ?.map(({ availablePackages }) => availablePackages)
+                    ?.flat()
+                    .filter(({ product }) => !store?.introEligibility[product?.identifier]);
+                const discountOfferings = await Promise.all(
+                    allAvailablePackages?.map(async ({ product }, index) => {
+                        // map over the packages to check if discount is available
+                        try {
+                            const productIdentifier = product?.identifier;
+                            const discountInfo =
+                                product?.discounts?.length &&
+                                product?.discounts?.find(
+                                    d =>
+                                        d?.identifier === purchase?.metaData[productIdentifier]?.discountKey ||
+                                        d?.identifier === findDefaultDiscountKey(product),
+                                );
+                            // if there is a valid discount identifier, get the payment discount
+                            // NOTE: Swapped this to always checking for reliability, monitor speed in prod
+                            const discount =
+                                !!discountInfo && (await Purchases.getPromotionalOffer(product, discountInfo));
+                            // const discount = !!discountInfo || index >= 1 || await Purchases.getPromotionalOffer(product, discountInfo);
 
-                        // if there is a discount, return to build discount array
-                        if (discount && discountInfo) {
-                            console.log('[Subscription Context] - discountInfo', discountInfo);
-                            return {
-                                identifier: product?.identifier,
-                                discountInfo,
-                                product,
-                            };
+                            // if there is a discount, return to build discount array
+                            if (discount && discountInfo) {
+                                console.log('[Subscription Context] - discountInfo', discountInfo);
+                                return {
+                                    identifier: product?.identifier,
+                                    discountInfo,
+                                    product,
+                                };
+                            }
+                            return null;
+                        } catch (e) {
+                            console.log('[Subscription Context] - discountPackages Error', e);
+                            setUserEligible(false);
+                            update('error', e);
+                            return null;
                         }
-                        return null;
-                    } catch (e) {
-                        console.log('[Subscription Context] - discountPackages Error', e);
-                        setUserEligible(false);
-                        update('error', e);
-                        return null;
-                    }
-                }));
+                    }),
+                );
                 // filter out the null packages, if there are set to context to be used on useAvailablePackages
-                if (discountOfferings?.filter((d) => !!d)?.length) {
+                if (discountOfferings?.filter(d => !!d)?.length) {
                     // console.log('[Subscription Context] - DiscountPackages', discountPackages);
-                    update('discountOfferings', discountOfferings?.filter((d) => !!d));
+                    update(
+                        'discountOfferings',
+                        discountOfferings?.filter(d => !!d),
+                    );
                 }
             }
         })();
@@ -148,19 +161,25 @@ const SubscriptionProvider = ({ children, purchase }) => {
         (async () => {
             try {
                 if (store?.discountOfferings?.length && !isAndroid) {
-                    const discountPackages = await Promise.all(store?.discountOfferings.map(async ({ product, discountInfo, identifier }) => {
-                        const discount = !!discountInfo && await Purchases.getPromotionalOffer(product, discountInfo);
-                        if (discount) {
-                            return {
-                                discountPackage: discount,
-                                identifier,
-                            };
-                        }
-                        return null;
-                    }));
+                    const discountPackages = await Promise.all(
+                        store?.discountOfferings.map(async ({ product, discountInfo, identifier }) => {
+                            const discount =
+                                !!discountInfo && (await Purchases.getPromotionalOffer(product, discountInfo));
+                            if (discount) {
+                                return {
+                                    discountPackage: discount,
+                                    identifier,
+                                };
+                            }
+                            return null;
+                        }),
+                    );
                     // console.log('DISCOUNT PACKS', discountPackages);
-                    if (discountPackages.filter((d) => !!d)?.length) {
-                        update('discountPackages', discountPackages.filter((d) => !!d));
+                    if (discountPackages.filter(d => !!d)?.length) {
+                        update(
+                            'discountPackages',
+                            discountPackages.filter(d => !!d),
+                        );
                     }
                 }
             } catch (e) {
@@ -169,11 +188,7 @@ const SubscriptionProvider = ({ children, purchase }) => {
         })();
     }, [store?.discountOfferings]);
 
-    return (
-        <Provider value={{ ...store, update }}>
-            {children}
-        </Provider>
-    );
+    return <Provider value={{ ...store, update }}>{children}</Provider>;
 };
 
 SubscriptionProvider.propTypes = {
@@ -189,8 +204,4 @@ SubscriptionProvider.defaultProps = {
     purchase: null,
 };
 
-export {
-    SubscriptionContext,
-    SubscriptionProvider,
-    SubscriptionConsumer,
-};
+export { SubscriptionContext, SubscriptionProvider, SubscriptionConsumer };

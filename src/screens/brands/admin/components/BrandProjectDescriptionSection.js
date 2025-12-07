@@ -11,44 +11,30 @@ import DescriptionRow from '../../../app/explore/components/DescriptionRow';
 import {
     ageFilters,
     countryFilters,
-    deliveryFormatFilters, genderFilters, languageFilters,
+    deliveryFormatFilters,
+    genderFilters,
+    languageFilters,
     projectDurationFilters,
-    projectFilters, projectTypeFilters,
+    projectFilters,
+    projectTypeFilters,
 } from '../../../../consts/AppFilters/ProjectFilters';
 import TemplateBox from '../../../../components/TemplateBox';
 
-const BrandProjectDescriptionSection = ({
-    selectedProject,
-}) => (
+const BrandProjectDescriptionSection = ({ selectedProject }) => (
     <TemplateBox ph={WRAPPER_MARGIN}>
-        {!!selectedProject?.description
-           && (
-               <>
-                   <TemplateText
-                       style={styles.title}
-                       bold
-                       size={18}
-                       color={BLACK}
-                   >
-                       Description
-                   </TemplateText>
-                   <TemplateText
-                       color={BLACK}
-                       size={16}
-                       lineHeight={22}
-                   >
-                       {selectedProject?.description}
-                   </TemplateText>
-               </>
-           )}
-        { (!!selectedProject?.startDate && !!selectedProject?.endDate) && (
+        {!!selectedProject?.description && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={18} color={BLACK}>
+                    Description
+                </TemplateText>
+                <TemplateText color={BLACK} size={16} lineHeight={22}>
+                    {selectedProject?.description}
+                </TemplateText>
+            </>
+        )}
+        {!!selectedProject?.startDate && !!selectedProject?.endDate && (
+            <>
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Timeline
                 </TemplateText>
                 <DescriptionRange
@@ -61,14 +47,9 @@ const BrandProjectDescriptionSection = ({
             </>
         )}
 
-        {(!!selectedProject?.priceRange?.max && !!selectedProject?.priceRange?.min) && (
+        {!!selectedProject?.priceRange?.max && !!selectedProject?.priceRange?.min && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Price Range
                 </TemplateText>
                 <DescriptionRange
@@ -83,15 +64,10 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.deliveryFormat?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Content Delivery Format
                 </TemplateText>
-                {selectedProject?.deliveryFormat?.map((format) => (
+                {selectedProject?.deliveryFormat?.map(format => (
                     <DescriptionRow
                         key={deliveryFormatFilters?.find(({ value }) => value === format)?.value}
                         title={deliveryFormatFilters?.find(({ value }) => value === format)?.name}
@@ -102,20 +78,13 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.duration?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Project Duration
                 </TemplateText>
-                {selectedProject?.duration?.map((duration) => (
+                {selectedProject?.duration?.map(duration => (
                     <DescriptionRow
                         key={projectDurationFilters?.find(({ value }) => value === duration)?.value}
-                        title={projectDurationFilters
-                            ?.find(({ value }) => value === duration)
-                            ?.name}
+                        title={projectDurationFilters?.find(({ value }) => value === duration)?.name}
                     />
                 ))}
             </>
@@ -123,15 +92,10 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.categories?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Categories
                 </TemplateText>
-                {selectedProject?.categories?.map((category) => (
+                {selectedProject?.categories?.map(category => (
                     <DescriptionRow
                         key={projectFilters?.find(({ value }) => value === category)?.value}
                         title={projectFilters?.find(({ value }) => value === category)?.name}
@@ -142,15 +106,10 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.countries?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Location
                 </TemplateText>
-                {selectedProject?.countries?.map((country) => (
+                {selectedProject?.countries?.map(country => (
                     <DescriptionRow
                         key={countryFilters?.find(({ value }) => value === country)?.value}
                         title={countryFilters?.find(({ value }) => value === country)?.name}
@@ -161,15 +120,10 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.gender?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Genders
                 </TemplateText>
-                {selectedProject?.gender?.map((gender) => (
+                {selectedProject?.gender?.map(gender => (
                     <DescriptionRow
                         key={genderFilters?.find(({ value }) => value === gender)?.value}
                         title={genderFilters?.find(({ value }) => value === gender)?.name}
@@ -180,15 +134,10 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.languages?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Content Languages
                 </TemplateText>
-                {selectedProject?.languages?.map((language) => (
+                {selectedProject?.languages?.map(language => (
                     <DescriptionRow
                         key={languageFilters?.find(({ value }) => value === language)?.value}
                         title={languageFilters?.find(({ value }) => value === language)?.name}
@@ -199,15 +148,10 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.ageRange?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Age Ranges
                 </TemplateText>
-                {selectedProject?.ageRange?.map((range) => (
+                {selectedProject?.ageRange?.map(range => (
                     <DescriptionRow
                         key={ageFilters?.find(({ value }) => value === range)?.value}
                         title={ageFilters?.find(({ value }) => value === range)?.name}
@@ -218,15 +162,10 @@ const BrandProjectDescriptionSection = ({
 
         {!!selectedProject?.projectType?.length && (
             <>
-                <TemplateText
-                    style={styles.title}
-                    bold
-                    size={20}
-                    color={BLACK}
-                >
+                <TemplateText style={styles.title} bold size={20} color={BLACK}>
                     Project Type
                 </TemplateText>
-                {selectedProject?.projectType?.map((type) => (
+                {selectedProject?.projectType?.map(type => (
                     <DescriptionRow
                         key={projectTypeFilters?.find(({ value }) => value === type)?.value}
                         title={projectTypeFilters?.find(({ value }) => value === type)?.name}

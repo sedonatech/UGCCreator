@@ -45,7 +45,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const restorePurchases = useRestorePurchases();
 
     const [packages, originalPackages] = useAvailablePackages(subscription?.purchase);
-
+    console.log('Original Packages:', originalPackages, 'Packages:', packages);
     const purchase = usePurchase();
 
     const { subscriptionBenefits } = useFeatureFlags();

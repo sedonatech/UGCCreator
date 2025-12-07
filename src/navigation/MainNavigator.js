@@ -5,7 +5,6 @@ import { View } from 'react-native';
 import { APP, AUTH, BRANDS_STACK, SUBSCRIPTION_STACK } from './ScreenNames';
 import AuthStack from './auth/AuthStack';
 
-import AppStack from './app/AppStack';
 import useAuthContext from '../hooks/auth/useAuthContext';
 import BrandsStack from './brands/BrandsStack';
 import { BRAND_BLUE } from '../theme/Colors';
@@ -58,7 +57,7 @@ const MainNavigator = () => {
                 headerShown: false,
             }}
         >
-            {isCreator && isSignedIn && hasSubscription && <Screen name={APP} component={AppStack} />}
+            {isCreator && isSignedIn && hasSubscription && <Screen name={APP} component={SubscriptionStack} />}
             {isSignedIn && !hasSubscription && <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />}
             {!isCreator && isSignedIn && <Screen name={BRANDS_STACK} component={BrandsStack} />}
             {!isSignedIn && <Screen name={AUTH} component={AuthStack} />}
