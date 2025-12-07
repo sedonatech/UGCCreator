@@ -63,6 +63,7 @@ export const DARK_OVERLAY = '#00000033';
 //New colors
 export const GRAY_500 = '#6B7280';
 export const BLUE_500 = '#3B82F6';
+export const BLUE_500_20 = 'rgba(59, 130, 246, 0.7)';
 export const RED_500 = '#EF4444';
 export const FUCSHIA_500 = '#D946EF';
 export const PINK_500 = '#EC4899';

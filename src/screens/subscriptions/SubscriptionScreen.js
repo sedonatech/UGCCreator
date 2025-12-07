@@ -45,7 +45,8 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const restorePurchases = useRestorePurchases();
 
     const [packages, originalPackages] = useAvailablePackages(subscription?.purchase);
-    console.log('Original Packages:', originalPackages, 'Packages:', packages);
+    console.log('Available Packages:iiiiiiiiiiiiiiiiiiii', JSON.stringify(packages, null, 2));
+
     const purchase = usePurchase();
 
     const { subscriptionBenefits } = useFeatureFlags();
@@ -123,20 +124,30 @@ const SubscriptionScreen = ({ navigation, route }) => {
         }
     };
     const getSavings = pack => {
-        const monthlyPackage = packages?.length && packages?.find(({ identifier }) => identifier?.includes('monthly'));
-        const monthlyPrice = monthlyPackage?.isSale
-            ? monthlyPackage?.originalPrice || monthlyPackage?.introPrice
-            : monthlyPackage?.price;
-        const convertedMonthlyPrice =
-            typeof monthlyPrice === 'string' ? parseFloat(monthlyPrice.replace(/[^0-9.,]+/, '')) : monthlyPrice;
-        const fullMonthlyPrice = convertedMonthlyPrice * 12;
+        if (!packages?.length) return null;
 
-        const packPrice = pack?.isSale ? pack?.introPrice : pack?.price;
+        const monthlyPackage = packages.find(({ identifier }) => identifier?.includes('monthly'));
+
+        const monthlyBasePrice = Number(monthlyPackage?.price);
+        if (!Number.isFinite(monthlyBasePrice) || monthlyBasePrice <= 0) {
+            return null;
+        }
+
+        const fullMonthlyPrice = monthlyBasePrice * 12;
+
+        const packBasePrice = Number(pack?.price);
+        if (!Number.isFinite(packBasePrice) || packBasePrice <= 0) {
+            return null;
+        }
 
         const isQuarterly = pack?.identifier?.includes('quarterly');
-        const savingPrice = packPrice * (isQuarterly ? 4 : 1);
+        const packAnnualEquivalent = packBasePrice * (isQuarterly ? 4 : 1);
 
-        const saving = Math.round(100 - (savingPrice / fullMonthlyPrice) * 100);
+        const saving = Math.round(100 - (packAnnualEquivalent / fullMonthlyPrice) * 100);
+
+        if (!Number.isFinite(saving) || saving <= 0) {
+            return null;
+        }
 
         return `${saving}%`;
     };
@@ -224,15 +235,15 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         packages.map((pack, index) => (
                             <SubscriptionCard
                                 onPress={() => setSelected(index)}
-                                key={pack?.title}
-                                title={pack?.title}
+                                key={pack?.label}
+                                title={pack?.label}
                                 price={pack?.priceString}
                                 description={pack?.description}
                                 selected={selected === index}
                                 index={index}
                                 isSale
                                 savingPercent={pack?.showSaving && getSavings(pack)}
-                                introPrice={pack?.introPrice}
+                                introPrice={pack?.introDiscountPrice}
                                 billed={pack?.billed}
                                 originalPrice={pack?.originalPrice}
                                 freeTrial={pack?.freeTrial}

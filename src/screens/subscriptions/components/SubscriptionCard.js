@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { BLACK, BLACK_70, LIGHT_GREEN, WHITE } from '../../../theme/Colors';
+import { BLACK, BLACK_30, BLACK_70, BLUE_500, EMERALD_500, WHITE } from '../../../theme/Colors';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -14,60 +14,86 @@ const SubscriptionCard = ({
     title,
     price,
     billed,
+    freeTrial,
     recommended,
     recommendedCopy,
     popularCopy,
     index,
-}) => (
-    <TemplateBox
-        backgroundColor={WHITE}
-        borderRadius={16}
-        mt={16}
-        width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
-        pAll={16}
-        slideIn
-        slideInDelay={(index + 1) * 100}
-        borderWidth={2}
-        borderColor={selected ? LIGHT_GREEN : 'transparent'}
-        onPress={onPress}
-        row
-        alignItems="center"
-    >
-        <TemplateBox mr={10}>{selected ? <SelectedSvg /> : <UnSelectedSvg />}</TemplateBox>
-        <TemplateBox onPress={onPress}>
-            <TemplateText bold size={15} color={BLACK} onPress={onPress}>
-                {}
-                {title?.includes('Annual') ? 'Annual' : title?.includes('Quarterly') ? 'Quarterly' : 'Monthly'}
-            </TemplateText>
-            <TemplateBox height={8} />
-            <TemplateBox row justifyContent="space-between" alignItems="center">
-                <TemplateText size={13} color={BLACK_70}>
-                    {price}{' '}
+}) => {
+    return (
+        <TemplateBox
+            backgroundColor={WHITE}
+            borderRadius={16}
+            mt={20}
+            width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
+            pAll={16}
+            slideIn
+            slideInDelay={(index + 1) * 100}
+            borderWidth={2}
+            borderColor={selected ? BLUE_500 : BLACK_30}
+            onPress={onPress}
+            row
+            alignItems="center"
+        >
+            <TemplateBox mr={10}>{selected ? <SelectedSvg /> : <UnSelectedSvg />}</TemplateBox>
+            <TemplateBox onPress={onPress}>
+                <TemplateText bold size={15} color={BLACK} onPress={onPress}>
+                    {title}
                 </TemplateText>
-                <TemplateText size={13} color={BLACK_70}>
-                    {billed}
+                <TemplateBox height={8} />
+                <TemplateBox row justifyContent="space-between" alignItems="center">
+                    <TemplateText size={13} color={BLACK_70}>
+                        {price}{' '}
+                    </TemplateText>
+                    <TemplateText size={13} color={BLACK_70}>
+                        {billed}
+                    </TemplateText>
+                </TemplateBox>
+            </TemplateBox>
+            <TemplateBox flex />
+
+            {recommended && (
+                <TemplateBox
+                    onPress={onPress}
+                    absolute
+                    top={-10}
+                    right={-10}
+                    backgroundColor={EMERALD_500}
+                    pv={6}
+                    ph={12}
+                    borderRadius={8}
+                >
+                    <TemplateText size={12} color={BLACK} bold caps>
+                        {recommendedCopy}
+                    </TemplateText>
+                </TemplateBox>
+            )}
+
+            {!!popularCopy && (
+                <TemplateBox
+                    onPress={onPress}
+                    absolute
+                    top={-10}
+                    right={-10}
+                    backgroundColor={EMERALD_500}
+                    pv={6}
+                    ph={12}
+                    borderRadius={8}
+                >
+                    <TemplateText size={12} color={BLACK} bold caps>
+                        {popularCopy}
+                    </TemplateText>
+                </TemplateBox>
+            )}
+
+            <TemplateBox onPress={onPress}>
+                <TemplateText size={12} color={BLACK} bold caps>
+                    {freeTrial?.copy}
                 </TemplateText>
             </TemplateBox>
         </TemplateBox>
-        <TemplateBox flex />
-
-        {recommended && (
-            <TemplateBox onPress={onPress}>
-                <TemplateText size={12} color={BLACK} bold caps>
-                    {recommendedCopy}
-                </TemplateText>
-            </TemplateBox>
-        )}
-
-        {!!popularCopy && (
-            <TemplateBox onPress={onPress}>
-                <TemplateText size={12} color={BLACK} bold caps>
-                    {popularCopy}
-                </TemplateText>
-            </TemplateBox>
-        )}
-    </TemplateBox>
-);
+    );
+};
 
 SubscriptionCard.propTypes = {
     selected: PropTypes.bool,

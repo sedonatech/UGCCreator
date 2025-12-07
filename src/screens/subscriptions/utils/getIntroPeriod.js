@@ -1,28 +1,32 @@
 // utils/getIntroPeriod.js
-export default function getIntroPeriod(product, discount, isDiscountSale) {
-    const introSource = !isDiscountSale ? product?.introPrice : discount;
 
-    const introPriceString = !isDiscountSale ? product?.introPrice?.priceString ?? null : discount?.priceString ?? null;
+export default function getIntroPeriod(product, discount, isDiscountSale) {
+    // Source of intro data:
+    // - normal intro: product.introPrice or first StoreKit discount
+    // - discounted intro (promo via discountOfferings): discount
+    const introSource = !isDiscountSale
+        ? product?.introPrice || (product?.discounts && product.discounts[0]) || null
+        : discount;
+
+    const introPriceString = !isDiscountSale
+        ? product?.introPrice?.priceString || (product?.discounts && product.discounts[0]?.priceString) || null
+        : discount?.priceString ?? null;
 
     const introPrice = introSource?.price ?? 0;
-
-    const periodNumberOfUnits = introSource?.periodNumberOfUnits != null ? introSource.periodNumberOfUnits : 0;
-
-    const introPriceCycle = introSource?.cycles != null ? introSource.cycles : 0;
+    const unitsPerCycle = introSource?.periodNumberOfUnits != null ? introSource.periodNumberOfUnits : 0;
+    const cycles = introSource?.cycles != null ? introSource.cycles : 0;
 
     let introPricePeriodUnit = introSource?.periodUnit ?? null;
-
-    // Normalise unit to upper case string if present
     if (introPricePeriodUnit != null) {
         introPricePeriodUnit = String(introPricePeriodUnit).toUpperCase();
     }
 
-    // No valid intro config, return empty meta
-    if (!introPriceString || !periodNumberOfUnits || !introPriceCycle || !introPricePeriodUnit) {
+    // No usable intro data
+    if (!introPriceString || !unitsPerCycle || !cycles || !introPricePeriodUnit) {
         return {
             discountIntroPriceString: introPriceString,
-            introPriceCycle: introPriceCycle || null,
-            periodNumberOfUnits: periodNumberOfUnits || null,
+            introPriceCycle: cycles || null,
+            periodNumberOfUnits: unitsPerCycle || null,
             introPricePeriodUnit,
             numberOfTotalIntroMonths: null,
             numberOfTotalIntroMonthsUnit: null,
@@ -30,46 +34,53 @@ export default function getIntroPeriod(product, discount, isDiscountSale) {
         };
     }
 
-    const numberOfTotalIntroMonths = periodNumberOfUnits * introPriceCycle;
-    const numberOfTotalIntroMonthsUnit = numberOfTotalIntroMonths > 1 ? 'months' : 'month';
+    // Total length of the intro in the product’s unit
+    const totalUnits = unitsPerCycle * cycles;
+
+    const unitSingular = (() => {
+        switch (introPricePeriodUnit) {
+            case 'DAY':
+                return 'day';
+            case 'WEEK':
+                return 'week';
+            case 'MONTH':
+                return 'month';
+            case 'YEAR':
+                return 'year';
+            default:
+                return introPricePeriodUnit.toLowerCase();
+        }
+    })();
+
+    const unitPlural = `${unitSingular}s`;
+    const totalUnitLabel = totalUnits === 1 ? unitSingular : unitPlural;
 
     const additionalInfo = {
         discountIntroPriceString: introPriceString,
-        introPriceCycle,
-        periodNumberOfUnits,
-        introPricePeriodUnit,
-        numberOfTotalIntroMonths,
-        numberOfTotalIntroMonthsUnit,
+        introPriceCycle: cycles,
+        periodNumberOfUnits: unitsPerCycle,
+        introPricePeriodUnit, // still the raw unit code (WEEK / MONTH / YEAR)
+        // keep field names for compatibility, but they now use the real unit
+        numberOfTotalIntroMonths: totalUnits,
+        numberOfTotalIntroMonthsUnit: totalUnitLabel,
     };
 
-    const unitLower = introPricePeriodUnit.toLowerCase();
+    let introPeriod;
 
-    // Year special case
-    if (introPricePeriodUnit === 'YEAR' || unitLower === 'year') {
-        const baseText =
-            introPrice === 0
-                ? `Free trial for ${periodNumberOfUnits} ${unitLower}${periodNumberOfUnits > 1 ? 's' : ''}`
-                : `${introPriceString}`;
+    if (introPrice === 0) {
+        // Free trial
+        introPeriod = `Free trial for ${totalUnits} ${totalUnitLabel}`;
+    } else {
+        // Paid intro (e.g. $X every 3 months for 6 months total)
+        const perCycleLabel = unitsPerCycle === 1 ? unitSingular : unitPlural;
 
-        const tail = `for ${numberOfTotalIntroMonths} ${unitLower}${numberOfTotalIntroMonths > 1 ? 's' : ''}`;
-
-        return {
-            ...additionalInfo,
-            introPeriod: `${baseText} ${tail}`,
-        };
+        introPeriod = `${introPriceString} every ${
+            unitsPerCycle > 1 ? `${unitsPerCycle} ` : ''
+        }${perCycleLabel} for ${totalUnits} ${totalUnitLabel}`;
     }
-
-    const unitLabel = `${periodNumberOfUnits > 1 ? `${periodNumberOfUnits} ` : ''}${unitLower}${
-        periodNumberOfUnits > 1 ? 's' : ''
-    }`;
-
-    const periodText =
-        introPrice === 0
-            ? `Free trial for ${periodNumberOfUnits} ${unitLower}${periodNumberOfUnits > 1 ? 's' : ''}`
-            : `${introPriceString} every ${unitLabel} for ${numberOfTotalIntroMonths} ${numberOfTotalIntroMonthsUnit}`;
 
     return {
         ...additionalInfo,
-        introPeriod: periodText,
+        introPeriod,
     };
 }
