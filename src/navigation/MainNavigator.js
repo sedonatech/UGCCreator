@@ -13,6 +13,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import useHasSubscription from '../screens/subscriptions/useHasSubscription';
 import SubscriptionStack from './subscription/SubscriptionStack';
 import useNotificationInteraction from '../hooks/notifications/useNotificationInteraction';
+import AppStack from './app/AppStack';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -57,7 +58,7 @@ const MainNavigator = () => {
                 headerShown: false,
             }}
         >
-            {isCreator && isSignedIn && hasSubscription && <Screen name={APP} component={SubscriptionStack} />}
+            {isCreator && isSignedIn && hasSubscription && <Screen name={APP} component={AppStack} />}
             {isSignedIn && !hasSubscription && <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />}
             {!isCreator && isSignedIn && <Screen name={BRANDS_STACK} component={BrandsStack} />}
             {!isSignedIn && <Screen name={AUTH} component={AuthStack} />}

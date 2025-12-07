@@ -26,6 +26,7 @@
 		DA1FA47E2ECE9BF0002D08C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DA6AC7BC2ECE8A9100C8761E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA6AC7BF2ECE8C9E00C8761E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		DABC3C692EE631D100ABDED1 /* UGCCreatorApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = UGCCreatorApp.entitlements; path = UGCCreatorApp/UGCCreatorApp.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -44,6 +45,7 @@
 		13B07FAE1A68108700A75B9A /* UGCCreatorApp */ = {
 			isa = PBXGroup;
 			children = (
+				DABC3C692EE631D100ABDED1 /* UGCCreatorApp.entitlements */,
 				DA1FA47E2ECE9BF0002D08C8 /* GoogleService-Info.plist */,
 				DA6AC7BF2ECE8C9E00C8761E /* PrivacyInfo.xcprivacy */,
 				DA6AC7BC2ECE8A9100C8761E /* AppDelegate.swift */,
@@ -304,6 +306,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = UGCCreatorApp/UGCCreatorApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XW576HXDLG;
 				ENABLE_BITCODE = NO;
@@ -335,6 +338,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = UGCCreatorApp/UGCCreatorApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = XW576HXDLG;
 				INFOPLIST_FILE = UGCCreatorApp/Info.plist;

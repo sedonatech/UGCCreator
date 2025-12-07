@@ -1,49 +1,51 @@
+// useNotificationInteraction.js
 import { useEffect, useState } from 'react';
-import { getMessaging, getInitialNotification } from '@react-native-firebase/messaging';
 import { useNavigation } from '@react-navigation/native';
+import messaging from '@react-native-firebase/messaging';
 import { APP_TABS } from '../../navigation/ScreenNames';
 
 const useNotificationInteraction = () => {
     const navigation = useNavigation();
-
     const [loading, setLoading] = useState(false);
 
+    // App opened from background via notification
     useEffect(() => {
         setLoading(true);
 
-        const messaging = getMessaging();
-        messaging.onNotificationOpenedApp((remoteMessage) => {
-            console.log(
-                'Notification caused app to open from background state:',
-                remoteMessage.notification,
-            );
+        const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+            console.log('[useNotificationInteraction] Opened from background:', remoteMessage?.notification);
             setLoading(false);
+
             navigation.reset({
                 index: 0,
                 routes: [{ name: APP_TABS }],
             });
         });
-    }, []);
 
+        return unsubscribe;
+    }, [navigation]);
+
+    // App opened from quit state via notification
     useEffect(() => {
-        setLoading(true);
-        // Check whether an initial notification is available
         (async () => {
-            setLoading(true);
-            const remoteMessage = await getInitialNotification();
-            if (remoteMessage) {
-                console.log(
-                    'Notification caused app to open from quit state:  ',
-                    remoteMessage,
-                );
+            try {
+                setLoading(true);
+                const remoteMessage = await messaging().getInitialNotification();
+                if (remoteMessage) {
+                    console.log('[useNotificationInteraction] Opened from quit state:', remoteMessage);
+
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: APP_TABS }],
+                    });
+                }
+            } catch (e) {
+                console.log('[useNotificationInteraction] getInitialNotification error', e);
+            } finally {
                 setLoading(false);
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: APP_TABS }],
-                });
             }
         })();
-    }, []);
+    }, [navigation]);
 
     return {
         loading,
