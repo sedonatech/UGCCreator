@@ -183,9 +183,9 @@ const SubscriptionScreen = ({ navigation, route }) => {
             <TemplateBox selfCenter mt={60}>
                 <BrandLogo height={45} width={SCREEN_WIDTH / 1.4} />
             </TemplateBox>
-            <TemplateBox flex backgroundColor={PAYWALL_PRIMARY_BACKGROUND} mt={16}>
+            <TemplateBox flex backgroundColor={PAYWALL_PRIMARY_BACKGROUND} mt={20}>
                 <TemplateBox selfCenter ph={WRAPPER_MARGIN}>
-                    <TemplateText bold size={18} center color={BLACK} lineHeight={22} startCase>
+                    <TemplateText bold size={20} center color={BLACK} lineHeight={22} startCase>
                         {subscriptionBenefits?.title}
                     </TemplateText>
                 </TemplateBox>
@@ -224,8 +224,8 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         </TemplateBox>
                     ))}
                 </TemplateBox>
-                <TemplateBox selfCenter>
-                    <TemplateText size={14} color={BLACK} medium center>
+                <TemplateBox selfCenter ph={WRAPPER_MARGIN}>
+                    <TemplateText size={16} color={BLACK} medium center>
                         {subscriptionBenefits?.subtitle}
                     </TemplateText>
                 </TemplateBox>

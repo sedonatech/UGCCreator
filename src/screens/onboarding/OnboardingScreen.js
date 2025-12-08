@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { BRAND_BLUE, DARK_OVERLAY, LIGHT_GREEN, WHITE } from '../../theme/Colors';
+import { BLUE_500, BRAND_BLUE, DARK_OVERLAY, WHITE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../theme/Layout';
 import Button from '../../components/Button';
@@ -28,7 +28,7 @@ const OnboardingScreen = ({ navigation }) => (
                 style={styles.button}
                 height={50}
                 width={SCREEN_WIDTH - 40}
-                color={LIGHT_GREEN}
+                color={BLUE_500}
             />
             <Button
                 title="Register as a Brand"

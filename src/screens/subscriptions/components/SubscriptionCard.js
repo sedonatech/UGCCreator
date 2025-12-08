@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { BLACK, BLACK_30, BLACK_70, BLUE_500, EMERALD_500, WHITE } from '../../../theme/Colors';
+import { ACCENT, BLACK, BLACK_30, BLACK_70, DARK_METAL, WHITE } from '../../../theme/Colors';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -29,65 +29,46 @@ const SubscriptionCard = ({
             pAll={16}
             slideIn
             slideInDelay={(index + 1) * 100}
-            borderWidth={2}
-            borderColor={selected ? BLUE_500 : BLACK_30}
+            borderWidth={1}
+            borderColor={selected ? ACCENT : BLACK_30}
             onPress={onPress}
             row
             alignItems="center"
         >
             <TemplateBox mr={10}>{selected ? <SelectedSvg /> : <UnSelectedSvg />}</TemplateBox>
             <TemplateBox onPress={onPress}>
-                <TemplateText bold size={15} color={BLACK} onPress={onPress}>
+                <TemplateText bold size={16} color={BLACK} onPress={onPress}>
                     {title}
                 </TemplateText>
                 <TemplateBox height={8} />
                 <TemplateBox row justifyContent="space-between" alignItems="center">
-                    <TemplateText size={13} color={BLACK_70}>
+                    <TemplateText size={16} color={BLACK_70}>
                         {price}{' '}
                     </TemplateText>
-                    <TemplateText size={13} color={BLACK_70}>
+                    <TemplateText size={16} color={BLACK_70}>
                         {billed}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
             <TemplateBox flex />
 
-            {recommended && (
-                <TemplateBox
-                    onPress={onPress}
-                    absolute
-                    top={-10}
-                    right={-10}
-                    backgroundColor={EMERALD_500}
-                    pv={6}
-                    ph={12}
-                    borderRadius={8}
-                >
-                    <TemplateText size={12} color={BLACK} bold caps>
-                        {recommendedCopy}
-                    </TemplateText>
-                </TemplateBox>
-            )}
+            <TemplateBox onPress={onPress} alignItems="center" justifyContent="center">
+                {recommended && (
+                    <TemplateBox backgroundColor={ACCENT} pv={6} ph={12} borderRadius={8} mb={8}>
+                        <TemplateText size={12} color={DARK_METAL} bold caps>
+                            {recommendedCopy}
+                        </TemplateText>
+                    </TemplateBox>
+                )}
+                {!!popularCopy && (
+                    <TemplateBox backgroundColor={ACCENT} pv={6} ph={12} borderRadius={8} mb={8}>
+                        <TemplateText size={12} color={DARK_METAL} bold caps>
+                            {popularCopy}
+                        </TemplateText>
+                    </TemplateBox>
+                )}
 
-            {!!popularCopy && (
-                <TemplateBox
-                    onPress={onPress}
-                    absolute
-                    top={-10}
-                    right={-10}
-                    backgroundColor={EMERALD_500}
-                    pv={6}
-                    ph={12}
-                    borderRadius={8}
-                >
-                    <TemplateText size={12} color={BLACK} bold caps>
-                        {popularCopy}
-                    </TemplateText>
-                </TemplateBox>
-            )}
-
-            <TemplateBox onPress={onPress}>
-                <TemplateText size={12} color={BLACK} bold caps>
+                <TemplateText size={12} color={DARK_METAL} caps semiBold>
                     {freeTrial?.copy}
                 </TemplateText>
             </TemplateBox>
