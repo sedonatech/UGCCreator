@@ -1,10 +1,12 @@
 import TemplateBox from '../../../../components/TemplateBox';
 import { BLACK, BLACK_SECONDARY, WHITE } from '../../../../theme/Colors';
-import { WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { WRAPPED_SCREEN_WIDTH } from '../../../../theme/Layout';
 import React, { useEffect, useMemo } from 'react';
 import { Image } from 'react-native';
 //@ts-ignore
 import challengeCardImage from '../../../../../assets/images/challenge-background.jpg';
+//@ts-ignore
+import kegelChallengeImage from '../../../../../assets/images/kegel-challenge-background.jpg';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
 import TemplateText from '../../../../components/TemplateText';
 import Button from '../../../../components/Button';
@@ -30,6 +32,8 @@ interface ChallengeCardProps {
         now: Date,
     ) => string;
     canEnrollNow: (enrollmentStartAt: Date | undefined, challengeEndAt: Date | undefined, now: Date) => boolean;
+    width?: number;
+    mr?: number;
 }
 const ChallengeCard = ({
     onPress,
@@ -47,6 +51,8 @@ const ChallengeCard = ({
     userName,
     userEmail,
     secondaryOnPress,
+    width = WRAPPED_SCREEN_WIDTH,
+    mr,
 }: ChallengeCardProps) => {
     const now = useMemo(() => new Date(), []);
     const statusLabel = getStatusLabel(enrollmentStartAt, challengeStartAt, challengeEndAt, now);
@@ -55,6 +61,12 @@ const ChallengeCard = ({
     const [enrollmentLoading, setEnrollmentLoading] = React.useState<boolean>(true);
     const [enrolling, setEnrolling] = React.useState<boolean>(false);
     const segments = shortDescriptionSegments ?? [];
+    const imageSource = useMemo(() => {
+        if (challengeId === 'three_week_kegel_app_video_challenge') {
+            return kegelChallengeImage;
+        }
+        return challengeCardImage;
+    }, [challengeId]);
 
     useEffect(() => {
         if (!challengeId || !currentUserId) {
@@ -130,19 +142,18 @@ const ChallengeCard = ({
     };
     return (
         <TemplateBox
-            mh={WRAPPER_MARGIN}
+            mr={mr}
             ph={10}
             borderRadius={20}
-            mb={20}
-            mt={20}
             alignItems="center"
             backgroundColor={WHITE}
             height={250}
             overflow="hidden"
             onPress={onPress}
+            width={width}
         >
             <TemplateBox absolute top={0} left={0} right={0} overflow="hidden" height={250}>
-                <Image source={challengeCardImage} style={{ width: '100%', height: '100%' }} />
+                <Image source={imageSource} style={{ width: '100%', height: '100%' }} />
             </TemplateBox>
             <TemplateBox alignItems="center" pAll={15}>
                 <TemplateBox row justifyContent="space-between" mb={10} alignItems="center" width="100%">
@@ -167,7 +178,7 @@ const ChallengeCard = ({
                 <TemplateText bold size={18} mv={10} caps>
                     {challengeTitle}
                 </TemplateText>
-                <TemplateText size={14} center lineHeight={20} color={BLACK_SECONDARY}>
+                <TemplateText size={14} center lineHeight={20} color={BLACK_SECONDARY} numberOfLines={3}>
                     <TemplateText size={14} center lineHeight={20} color={BLACK_SECONDARY}>
                         {segments.length > 0 &&
                             segments.map((segment, index) =>

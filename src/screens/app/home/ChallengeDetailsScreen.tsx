@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 //@ts-ignore
 import challengeBackground from '../../../../assets/images/challenge-background.jpg';
+//@ts-ignore
+import kegelChallengeImage from '../../../../assets/images/kegel-challenge-background.jpg';
 import firestore from '@react-native-firebase/firestore';
 import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet } from 'react-native';
 import TemplateBox from '../../../components/TemplateBox';
@@ -69,6 +71,12 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     const [enrollmentLoading, setEnrollmentLoading] = useState(true);
     const [enrolling, setEnrolling] = useState(false);
     const [isLeaderBoardModalVisible, setIsLeaderBoardModalVisible] = useState(false);
+    const imageSource = useMemo(() => {
+        if (challengeId === 'three_week_kegel_app_video_challenge') {
+            return kegelChallengeImage;
+        }
+        return challengeBackground;
+    }, [challengeId]);
 
     useEffect(() => {
         const unsubscribe = firestore()
@@ -311,7 +319,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             )}
             <TemplateBox width={SCREEN_WIDTH} height={260}>
                 <TemplateBox absolute top={0} left={0} right={0} overflow="hidden" height={260}>
-                    <Image source={challengeBackground} style={styles.backgroundImage} />
+                    <Image source={imageSource} style={styles.backgroundImage} />
                 </TemplateBox>
                 <TemplateBox absolute bottom={30} left={20}>
                     <TemplateText bold size={22} mb={16} caps style={{ maxWidth: SCREEN_WIDTH - 140 }}>

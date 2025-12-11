@@ -12,7 +12,7 @@ import { CHALLENGE_DETAILS } from '../../../navigation/ScreenNames';
 const ChallengesScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
     const profile = auth?.profile;
-    const { challenge, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
+    const { challenges, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
 
     return (
         <View style={styles.container}>
@@ -25,34 +25,36 @@ const ChallengesScreen = ({ navigation }) => {
                         </TemplateText>
                     </TemplateBox>
                 }
-                data={[challenge]}
+                data={challenges}
                 keyExtractor={item => item?.id}
                 renderItem={({ item }) => (
-                    <ChallengeCard
-                        loading={challengeLoading}
-                        prizePoolUsd={challenge?.prizePoolUsd}
-                        challengeTitle={challenge?.title}
-                        challengeId={challenge?.id}
-                        currentUserId={profile?.id}
-                        userName={profile?.userName}
-                        userEmail={profile?.email}
-                        shortDescriptionSegments={challenge?.shortDescriptionSegments}
-                        enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
-                        challengeStartAt={challenge?.challengeStartAt?.toDate()}
-                        challengeEndAt={challenge?.challengeEndAt?.toDate()}
-                        getStatusLabel={getStatusLabel}
-                        canEnrollNow={canEnrollNow}
-                        onPress={() =>
-                            navigation.navigate(CHALLENGE_DETAILS, {
-                                challengeId: challenge?.id,
-                            })
-                        }
-                        secondaryOnPress={() =>
-                            navigation.navigate(CHALLENGE_DETAILS, {
-                                challengeId: challenge?.id,
-                            })
-                        }
-                    />
+                    <TemplateBox selfCenter alignItems="center" justifyContent="center" mb={16}>
+                        <ChallengeCard
+                            loading={challengeLoading}
+                            prizePoolUsd={item?.prizePoolUsd}
+                            challengeTitle={item?.title}
+                            challengeId={item?.id}
+                            currentUserId={profile?.id}
+                            userName={profile?.userName}
+                            userEmail={profile?.email}
+                            shortDescriptionSegments={item?.shortDescriptionSegments}
+                            enrollmentStartAt={item?.enrollmentStartAt?.toDate()}
+                            challengeStartAt={item?.challengeStartAt?.toDate()}
+                            challengeEndAt={item?.challengeEndAt?.toDate()}
+                            getStatusLabel={getStatusLabel}
+                            canEnrollNow={canEnrollNow}
+                            onPress={() =>
+                                navigation.navigate(CHALLENGE_DETAILS, {
+                                    challengeId: item?.id,
+                                })
+                            }
+                            secondaryOnPress={() =>
+                                navigation.navigate(CHALLENGE_DETAILS, {
+                                    challengeId: item?.id,
+                                })
+                            }
+                        />
+                    </TemplateBox>
                 )}
                 initialNumToRender={5}
                 onEndReachedThreshold={0.5}

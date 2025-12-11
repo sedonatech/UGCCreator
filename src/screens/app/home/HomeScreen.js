@@ -23,6 +23,7 @@ import useProfile from '../../../hooks/user/useProfile';
 import FeaturedShowcaseCarousel from './components /FeaturedSamplesCarousel';
 import ChallengeCard from './components /ChallengeCard';
 import useChallenge from '../../../hooks/useChallenge';
+import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -33,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
     const { updateProfile } = useProfile();
     const profileImage = profile?.image;
     const isFocused = useIsFocused();
-    const { challenge, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
+    const { challenge, challenges, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
 
     useEffect(() => {
         if (isFocused && profile) {
@@ -80,31 +81,67 @@ const HomeScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
         >
             {!!profile?.userName && <Greeting userName={profile?.userName} style={styles.greeting} showAvatar />}
-            <ChallengeCard
-                onPress={() =>
-                    navigation.navigate(CHALLENGE_DETAILS, {
-                        challengeId: challenge?.id,
-                    })
-                }
-                secondaryOnPress={() =>
-                    navigation.navigate(CHALLENGE_DETAILS, {
-                        challengeId: challenge?.id,
-                    })
-                }
-                loading={challengeLoading}
-                prizePoolUsd={challenge?.prizePoolUsd}
-                challengeTitle={challenge?.title}
-                challengeId={challenge?.id}
-                currentUserId={profile?.id}
-                userName={profile?.userName}
-                userEmail={profile?.email}
-                shortDescriptionSegments={challenge?.shortDescriptionSegments}
-                enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
-                challengeStartAt={challenge?.challengeStartAt?.toDate()}
-                challengeEndAt={challenge?.challengeEndAt?.toDate()}
-                getStatusLabel={getStatusLabel}
-                canEnrollNow={canEnrollNow}
-            />
+            {challenges?.length > 0 ? (
+                <TemplateCarousel
+                    data={challenges}
+                    renderItem={({ item }) => (
+                        <ChallengeCard
+                            onPress={() =>
+                                navigation.navigate(CHALLENGE_DETAILS, {
+                                    challengeId: item?.id,
+                                })
+                            }
+                            secondaryOnPress={() =>
+                                navigation.navigate(CHALLENGE_DETAILS, {
+                                    challengeId: item?.id,
+                                })
+                            }
+                            loading={challengeLoading}
+                            prizePoolUsd={item?.prizePoolUsd}
+                            challengeTitle={item?.title}
+                            challengeId={item?.id}
+                            currentUserId={profile?.id}
+                            userName={profile?.userName}
+                            userEmail={profile?.email}
+                            shortDescriptionSegments={item?.shortDescriptionSegments}
+                            enrollmentStartAt={item?.enrollmentStartAt?.toDate()}
+                            challengeStartAt={item?.challengeStartAt?.toDate()}
+                            challengeEndAt={item?.challengeEndAt?.toDate()}
+                            getStatusLabel={getStatusLabel}
+                            canEnrollNow={canEnrollNow}
+                            width={WRAPPED_SCREEN_WIDTH - 10}
+                            mr={16}
+                        />
+                    )}
+                />
+            ) : (
+                <ChallengeCard
+                    onPress={() =>
+                        navigation.navigate(CHALLENGE_DETAILS, {
+                            challengeId: challenge?.id,
+                        })
+                    }
+                    secondaryOnPress={() =>
+                        navigation.navigate(CHALLENGE_DETAILS, {
+                            challengeId: challenge?.id,
+                        })
+                    }
+                    loading={challengeLoading}
+                    prizePoolUsd={challenge?.prizePoolUsd}
+                    challengeTitle={challenge?.title}
+                    challengeId={challenge?.id}
+                    currentUserId={profile?.id}
+                    userName={profile?.userName}
+                    userEmail={profile?.email}
+                    shortDescriptionSegments={challenge?.shortDescriptionSegments}
+                    enrollmentStartAt={challenge?.enrollmentStartAt?.toDate()}
+                    challengeStartAt={challenge?.challengeStartAt?.toDate()}
+                    challengeEndAt={challenge?.challengeEndAt?.toDate()}
+                    getStatusLabel={getStatusLabel}
+                    canEnrollNow={canEnrollNow}
+                />
+            )}
+
             {showAffiliateProgramsCarousel && <AffiliateBrandsCarousel style={styles.affiliateBrandsCarousel} />}
             <FeaturedShowcaseCarousel style={styles.showcase} />
             <EventsCarousel />

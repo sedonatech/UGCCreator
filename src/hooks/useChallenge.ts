@@ -86,21 +86,29 @@ type ChallengeCtaResult = {
 const useChallenge = () => {
     const [challenge, setChallenge] = useState<Challenge | null>(null);
     const [challengeLoading, setChallengeLoading] = useState(true);
+    const [challenges, setChallenges] = useState<Challenge[]>([]);
+    console.log('🚀 ~ useChallenge ~ challenges:', challenges);
 
     useEffect(() => {
         const unsubscribe = firestore()
             .collection('challenges')
             .orderBy('challengeStartAt', 'asc')
-            .limit(1)
             .onSnapshot(querySnapshot => {
-                const doc = querySnapshot.docs[0];
+                if (querySnapshot.empty) {
+                    setChallenge(null);
+                    setChallenges([]);
+                    setChallengeLoading(false);
+                    return;
+                }
 
-                if (doc) {
+                const all: Challenge[] = [];
+
+                querySnapshot.forEach(doc => {
                     const data = doc.data() as any;
 
                     const shortDescriptionSegments: ShortDescriptionSegment[] = data.shortDescriptionSegments ?? [];
 
-                    setChallenge({
+                    const mapped: Challenge = {
                         id: doc.id,
                         title: data.title,
                         status: data.status,
@@ -118,11 +126,13 @@ const useChallenge = () => {
                         },
                         rules: data.rules,
                         prizes: data.prizes,
-                    });
-                } else {
-                    setChallenge(null);
-                }
+                    };
 
+                    all.push(mapped);
+                });
+
+                setChallenges(all);
+                setChallenge(all[0] ?? null);
                 setChallengeLoading(false);
             });
 
@@ -208,7 +218,7 @@ const useChallenge = () => {
         return `Ends in ${diffDays} days`;
     };
 
-    return { challenge, challengeLoading, getStatusLabel, canEnrollNow, getEndsInLabel };
+    return { challenge, challenges, challengeLoading, getStatusLabel, canEnrollNow, getEndsInLabel };
 };
 
 export default useChallenge;
