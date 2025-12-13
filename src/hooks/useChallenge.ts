@@ -57,6 +57,13 @@ export type Challenge = {
         mission: string;
         disqualificationRule: string;
         howToParticipate: BriefPoint[];
+        productName?: string;
+        links: {
+            appStoreUrl?: string;
+            playStoreUrl?: string;
+            website?: string;
+        };
+        about?: string;
     };
     rules: string[];
     prizes: {
@@ -123,6 +130,9 @@ const useChallenge = () => {
                             mission: data.brief?.mission,
                             disqualificationRule: data.brief?.disqualificationRule,
                             howToParticipate: data.brief?.howToParticipate,
+                            productName: data.brief?.productName,
+                            links: data.brief?.links || {},
+                            about: data.brief?.about,
                         },
                         rules: data.rules,
                         prizes: data.prizes,

@@ -16,6 +16,7 @@ import {
     BLUE_500,
     DARK_GREY,
     DARK_METAL,
+    IOS_BLUE_20,
     METAL,
     RED_500,
     WHITE_30,
@@ -38,6 +39,7 @@ import { useChallengeSubmission } from '../../../hooks/useChallengeSubmission';
 import ChallengeSubmissionModal from '../../../components/modals/ChallengeSubmissionModal';
 import ChallengeEntryCard from '../../../components/cards/ChallengeEntryCard';
 import ChallengeLeaderBoardModal from '../../../components/modals/ChallengeLeaderBoardModal';
+import openUrl from '../../../Utils/openUrl';
 
 const TOGGLE_TABS = ['Brief', 'Rules', 'Prizes', 'Entries'];
 type RouteParams = {
@@ -413,6 +415,54 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             {activeTab === TOGGLE_TABS[0] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={80}>
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
+                        {`About ${challenge?.brief?.productName}`}
+                    </TemplateText>
+                    <TemplateText size={16} lineHeight={24} color={DARK_METAL} medium>
+                        {challenge?.brief?.about}
+                    </TemplateText>
+                    <TemplateBox row>
+                        <TemplateBox
+                            row
+                            mb={10}
+                            backgroundColor={IOS_BLUE_20}
+                            borderRadius={26}
+                            mt={20}
+                            mr={10}
+                            height={36}
+                            width={130}
+                            alignItems="center"
+                            justifyContent="center"
+                            onPress={() => {
+                                openUrl(challenge?.brief?.links?.appStoreUrl || '');
+                            }}
+                        >
+                            <TemplateText size={14} color={DARK_METAL} semiBold mr={8}>
+                                App Store
+                            </TemplateText>
+                            <DynamicIcon name={'Link'} size={14} />
+                        </TemplateBox>
+                        <TemplateBox
+                            row
+                            mb={10}
+                            backgroundColor={IOS_BLUE_20}
+                            borderRadius={26}
+                            mt={20}
+                            mr={10}
+                            height={36}
+                            width={130}
+                            alignItems="center"
+                            justifyContent="center"
+                            onPress={() => {
+                                openUrl(challenge?.brief?.links?.website || '');
+                            }}
+                        >
+                            <TemplateText size={14} color={DARK_METAL} semiBold mr={8}>
+                                Website
+                            </TemplateText>
+                            <DynamicIcon name={'Link'} size={14} />
+                        </TemplateBox>
+                    </TemplateBox>
+                    <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} mt={16}>
                         The mission
                     </TemplateText>
                     <TemplateText size={16} lineHeight={24} color={DARK_METAL} medium>
