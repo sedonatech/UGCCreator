@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
+import Toast from 'react-native-toast-message';
 import { StatusBar, View, StyleSheet } from 'react-native';
 import { AppEventsLogger, Settings } from 'react-native-fbsdk-next';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -49,6 +50,7 @@ const MainApp = () => {
                                     <StatusBar barStyle="dark-content" />
                                     <ChatsProvider>
                                         <MainNavigator />
+                                        <Toast />
                                     </ChatsProvider>
                                 </NavigationContainer>
                             </ActionSheetProvider>
@@ -75,6 +77,4 @@ const App = () => (
     </AuthProvider>
 );
 
-// export default App;
-// TODO: uncomment this when we are ready to use codepush
 export default App;

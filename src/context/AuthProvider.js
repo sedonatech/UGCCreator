@@ -1,6 +1,4 @@
-import React, {
-    useState, useEffect, createContext, useCallback,
-} from 'react';
+import React, { useState, useEffect, createContext, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import useAuthState from '../hooks/auth/useAuthState';
@@ -30,14 +28,16 @@ const AuthProvider = ({ children }) => {
         const profileCheckParamsObject = {
             name: profile?.name || profile?.userName,
             profileImage: profile?.image,
-            socials: profile?.socialMedia?.instagram
-               || profile?.socialMedia?.facebook
-               || profile?.socialMedia?.twitter || profile?.socialMedia?.youtube,
+            socials:
+                profile?.socialMedia?.instagram ||
+                profile?.socialMedia?.facebook ||
+                profile?.socialMedia?.twitter ||
+                profile?.socialMedia?.youtube,
         };
 
         const profileValues = Object.values(profileCheckParamsObject);
         const offset = profileValues?.length;
-        const completeCount = profileValues?.filter((value) => !!value)?.length;
+        const completeCount = profileValues?.filter(value => !!value)?.length;
         const completeRatio = completeCount / offset;
         const roundedCompleteRatio = Math.round(completeRatio * 10) / 10;
 
@@ -52,18 +52,12 @@ const AuthProvider = ({ children }) => {
         }
     }, [profile]);
 
-    const {
-        createCreatorProfile,
-        createBrandProfile,
-        updateProfile,
-        getProfile,
-        loading,
-        updateProfileLoading,
-    } = useProfile();
+    const { createCreatorProfile, createBrandProfile, updateProfile, getProfile, loading, updateProfileLoading } =
+        useProfile();
 
     const update = (key, data) => {
         console.log('[Profile] Auth Provider: Update called, updating profile: ', key, data);
-        setProfile((prevState) => ({
+        setProfile(prevState => ({
             ...prevState,
             [key]: data,
         }));
@@ -103,11 +97,7 @@ const AuthProvider = ({ children }) => {
         updateProfileLoading,
     };
 
-    return (
-        <Provider value={value}>
-            {children}
-        </Provider>
-    );
+    return <Provider value={value}>{children}</Provider>;
 };
 
 AuthProvider.propTypes = {
@@ -118,8 +108,4 @@ AuthProvider.defaultProps = {
     children: null,
 };
 
-export {
-    AuthContext,
-    AuthProvider,
-    AuthConsumer,
-};
+export { AuthContext, AuthProvider, AuthConsumer };

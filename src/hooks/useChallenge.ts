@@ -94,7 +94,6 @@ const useChallenge = () => {
     const [challenge, setChallenge] = useState<Challenge | null>(null);
     const [challengeLoading, setChallengeLoading] = useState(true);
     const [challenges, setChallenges] = useState<Challenge[]>([]);
-    console.log('🚀 ~ useChallenge ~ challenges:', challenges);
 
     useEffect(() => {
         const unsubscribe = firestore()
