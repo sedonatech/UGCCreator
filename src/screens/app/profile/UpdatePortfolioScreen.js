@@ -1,14 +1,10 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useLayoutEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
-import {
-    BLACK,
-    BLACK_40, GREY_SECONDARY, TRANSPARENT, WHITE,
-} from '../../../theme/Colors';
-import {
-    IS_ANDROID, SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { BLACK, BLACK_40, GREY_SECONDARY, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { IS_ANDROID, SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import PortfolioHeader from './components/PortfolioHeader';
 import TemplateTextInput from '../../../components/TemplateTextInput';
@@ -29,9 +25,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
     const { auth } = useAuthContext();
 
-    const {
-        profile: profileData, update, updateProfile, loading,
-    } = auth;
+    const { profile: profileData, update, updateProfile, loading } = auth;
 
     const { trackEvent } = useTrackEvent();
 
@@ -70,64 +64,68 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
     return (
         <>
-
-            <Wrapper
-                contentContainerStyle={styles.contentContainer}
-                style={styles.container}
-                keyboard
-                safe={false}
-            >
+            <Wrapper contentContainerStyle={styles.contentContainer} style={styles.container} keyboard safe={false}>
                 <PortfolioHeader isUpdate />
                 <TemplateBox height={WRAPPER_MARGIN} />
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>User Name</TemplateText>
+                    <TemplateText size={16} bold>
+                        User Name
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="User Name"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.userName}
-                        onChangeText={(text) => update('userName', text)}
+                        onChangeText={text => update('userName', text)}
                         autoCapitalize="none"
                     />
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Email</TemplateText>
+                    <TemplateText size={16} bold>
+                        Email
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Email"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.email}
-                        onChangeText={(text) => update('email', text)}
+                        onChangeText={text => update('email', text)}
                         keyboardType="email-address"
                         autoCapitalize="none"
                     />
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Phone Number</TemplateText>
+                    <TemplateText size={16} bold>
+                        Phone Number
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Phone Number"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.contact?.phoneNumber}
-                        onChangeText={(text) => update('contact', {
-                            phoneNumber: text,
-                            email: profileData?.contact?.email,
-                        })}
+                        onChangeText={text =>
+                            update('contact', {
+                                phoneNumber: text,
+                                email: profileData?.contact?.email,
+                            })
+                        }
                         keyboardType="phone-pad"
                         autoCapitalize="none"
                     />
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Short Description</TemplateText>
+                    <TemplateText size={16} bold>
+                        Short Description
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Short Description"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.shortDescription}
-                        onChangeText={(text) => update('shortDescription', text)}
+                        onChangeText={text => update('shortDescription', text)}
                         autoCapitalize="none"
                         multiline
                         numberOfLines={6}
@@ -135,13 +133,15 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Description</TemplateText>
+                    <TemplateText size={16} bold>
+                        Description
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Description"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.description}
-                        onChangeText={(text) => update('description', text)}
+                        onChangeText={text => update('description', text)}
                         autoCapitalize="none"
                         multiline
                         numberOfLines={26}
@@ -149,86 +149,106 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Portfolio Link</TemplateText>
+                    <TemplateText size={16} bold>
+                        Portfolio Link
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Portfolio Link"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.portfolioLink}
-                        onChangeText={(text) => update('portfolioLink', text)}
+                        onChangeText={text => update('portfolioLink', text)}
                         autoCapitalize="none"
                     />
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Instagram</TemplateText>
+                    <TemplateText size={16} bold>
+                        Instagram
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Instagram Link"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.instagram}
-                        onChangeText={(text) => update('socialMedia', {
-                            instagram: text,
-                            facebook: profileData?.socialMedia?.facebook || '',
-                            twitter: profileData?.socialMedia?.twitter || '',
-                            linkedin: profileData?.socialMedia?.linkedin || '',
-                        })}
+                        onChangeText={text =>
+                            update('socialMedia', {
+                                instagram: text,
+                                facebook: profileData?.socialMedia?.facebook || '',
+                                twitter: profileData?.socialMedia?.twitter || '',
+                                linkedin: profileData?.socialMedia?.linkedin || '',
+                            })
+                        }
                         autoCapitalize="none"
                     />
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Facebook</TemplateText>
+                    <TemplateText size={16} bold>
+                        Facebook
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Facebook Link"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.facebook}
-                        onChangeText={(text) => update('socialMedia', {
-                            instagram: profileData?.socialMedia?.instagram || '',
-                            facebook: text,
-                            twitter: profileData?.socialMedia?.twitter || '',
-                            linkedin: profileData?.socialMedia?.linkedin || '',
-                        })}
+                        onChangeText={text =>
+                            update('socialMedia', {
+                                instagram: profileData?.socialMedia?.instagram || '',
+                                facebook: text,
+                                twitter: profileData?.socialMedia?.twitter || '',
+                                linkedin: profileData?.socialMedia?.linkedin || '',
+                            })
+                        }
                         autoCapitalize="none"
                     />
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Twitter</TemplateText>
+                    <TemplateText size={16} bold>
+                        Twitter
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="Twitter Link"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.twitter}
-                        onChangeText={(text) => update('socialMedia', {
-                            instagram: profileData?.socialMedia?.instagram || '',
-                            facebook: profileData?.socialMedia?.facebook || '',
-                            twitter: text,
-                            linkedin: profileData?.socialMedia?.linkedin || '',
-                        })}
+                        onChangeText={text =>
+                            update('socialMedia', {
+                                instagram: profileData?.socialMedia?.instagram || '',
+                                facebook: profileData?.socialMedia?.facebook || '',
+                                twitter: text,
+                                linkedin: profileData?.socialMedia?.linkedin || '',
+                            })
+                        }
                         autoCapitalize="none"
                     />
                 </TemplateBox>
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>LinkedIn</TemplateText>
+                    <TemplateText size={16} bold>
+                        LinkedIn
+                    </TemplateText>
                     <TemplateTextInput
                         placeholder="LinkedIn Link"
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.linkedin}
-                        onChangeText={(text) => update('socialMedia', {
-                            instagram: profileData?.socialMedia?.instagram || '',
-                            facebook: profileData?.socialMedia?.facebook || '',
-                            twitter: profileData?.socialMedia?.twitter || '',
-                            linkedin: text,
-                        })}
+                        onChangeText={text =>
+                            update('socialMedia', {
+                                instagram: profileData?.socialMedia?.instagram || '',
+                                facebook: profileData?.socialMedia?.facebook || '',
+                                twitter: profileData?.socialMedia?.twitter || '',
+                                linkedin: text,
+                            })
+                        }
                         autoCapitalize="none"
                     />
                 </TemplateBox>
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                    <TemplateText size={16} bold>Location</TemplateText>
+                    <TemplateText size={16} bold>
+                        Location
+                    </TemplateText>
                     <TemplateBox
                         row
                         alignItems="center"
@@ -242,7 +262,9 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                         onPress={() => setCountryPickerVisible(true)}
                     >
-                        <TemplateText color={BLACK_40} size={16}>{profileData?.location?.country || 'Country'}</TemplateText>
+                        <TemplateText color={BLACK_40} size={16}>
+                            {profileData?.location?.country || 'Country'}
+                        </TemplateText>
                         <TemplateBox flex />
                         <CountryPicker
                             visible={countryPickerVisible}
@@ -254,7 +276,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                             withCallingCodeButton
                             withEmoji
                             countryCode={profileData?.location?.country?.name}
-                            onSelect={(country) => {
+                            onSelect={country => {
                                 update('location', {
                                     city: profileData?.location?.city,
                                     country: country?.name,
@@ -271,9 +293,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 {/* <UpdateWorkExamples /> */}
                 <UpdateRates />
             </Wrapper>
-            {loading && (
-                <LoadingOverlay message="Updating your portfolio...." />
-            )}
+            {loading && <LoadingOverlay message="Updating your portfolio...." />}
         </>
     );
 };

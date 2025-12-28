@@ -1,93 +1,70 @@
-/* eslint-disable indent */
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
-import {
-    options,
-    optionsLandscapeMode,
-    randomFileName,
-} from '../../Utils/ImageUpload';
+import { options, optionsLandscapeMode, randomFileName } from '../../Utils/ImageUpload';
 import { isIOS } from '../../Utils/Platform';
 
 const useFirebaseSetStorage = () => {
     const [progress, setProgress] = useState(0);
     const [picture, setPicture] = useState(false);
 
-    const saveAPicture = async ({
-        isAvatar = false,
-        customMetadata = {},
-        response,
-        uuid,
-    }) => new Promise((res, rej) => {
-        setProgress(0);
+    const saveAPicture = async ({ isAvatar = false, customMetadata = {}, response, uuid }) =>
+        new Promise((res, rej) => {
+            setProgress(0);
 
-        (async () => {
-            try {
-                const path = response?.path;
-                const filename = response?.filename;
-                const isProgressPicture = filename || randomFileName();
-                const imageName = isAvatar || isProgressPicture;
-                const metadata = { customMetadata };
-
-                const reference = storage().ref(`users/${uuid}/${imageName}`);
-                const save = () => reference.putFile(path, metadata);
-
-                save().on('state_changed', (taskSnapshot) => {
-                    console.log(
-                        `[IMAGE-LIBRARY]: ${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-                    );
-                });
+            (async () => {
                 try {
-                    const result = await save();
-                    console.log('[IMAGE-LIBRARY]: Image uploaded to the bucket!');
-                    setProgress(1);
-                    setTimeout(() => setProgress(0), 1000);
-                    return res(result);
-                } catch (error) {
-                    return rej(error);
+                    const path = response?.path;
+                    const filename = response?.filename;
+                    const isProgressPicture = filename || randomFileName();
+                    const imageName = isAvatar || isProgressPicture;
+                    const metadata = { customMetadata };
+
+                    const reference = storage().ref(`users/${uuid}/${imageName}`);
+                    const save = () => reference.putFile(path, metadata);
+
+                    save().on('state_changed', taskSnapshot => {
+                        console.log(
+                            `[IMAGE-LIBRARY]: ${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+                        );
+                    });
+                    try {
+                        const result = await save();
+                        console.log('[IMAGE-LIBRARY]: Image uploaded to the bucket!');
+                        setProgress(1);
+                        setTimeout(() => setProgress(0), 1000);
+                        return res(result);
+                    } catch (error) {
+                        return rej(error);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    return rej(err);
                 }
-            } catch (err) {
-                console.error(err);
-                return rej(err);
-            }
-        })();
-    });
+            })();
+        });
 
     const handlePermissionStatus = (status, name) => {
         switch (status) {
             case RESULTS.GRANTED:
                 break;
             case RESULTS.BLOCKED:
-                Alert.alert(
-                    `${name} permission`,
-                    `You have ${status} ${name} permission`,
-                    [{ text: 'OK' }],
-                );
+                Alert.alert(`${name} permission`, `You have ${status} ${name} permission`, [{ text: 'OK' }]);
                 break;
             case RESULTS.DENIED:
-                Alert.alert(
-                    `${name} permission`,
-                    `You have ${status} ${name} permission`,
-                    [{ text: 'OK' }],
-                );
+                Alert.alert(`${name} permission`, `You have ${status} ${name} permission`, [{ text: 'OK' }]);
                 break;
 
             case RESULTS.LIMITED:
-                Alert.alert(
-                    `${name} permission`,
-                    `Your device  ${name} is has ${status} capabilities`,
-                    [{ text: 'OK' }],
-                );
+                Alert.alert(`${name} permission`, `Your device  ${name} is has ${status} capabilities`, [
+                    { text: 'OK' },
+                ]);
                 break;
             case RESULTS.UNAVAILABLE:
-                Alert.alert(
-                    `${name} permission`,
-                    `Your device  ${name} is ${status}`,
-                    [{ text: 'OK' }],
-                );
+                Alert.alert(`${name} permission`, `Your device  ${name} is ${status}`, [{ text: 'OK' }]);
                 break;
             default:
                 break;
@@ -121,12 +98,14 @@ const useFirebaseSetStorage = () => {
             if (!path) throw new Error('No local image path from picker');
 
             // IMPORTANT: don’t leak boolean isAvatar into filename
-            const fileName = isAvatar
-                ? `profile.${ext}`
-                : `${(uuid && String(uuid)) || String(Date.now())}.${ext}`;
+            const fileName = isAvatar ? `profile.${ext}` : `${(uuid && String(uuid)) || String(Date.now())}.${ext}`;
 
             const response = {
-                ...base, mime, ext, path, fileName,
+                ...base,
+                mime,
+                ext,
+                path,
+                fileName,
             };
 
             if (saveAutomatically) {
@@ -143,17 +122,13 @@ const useFirebaseSetStorage = () => {
             console.log('[Image library] - take a picture error:', err?.code || String(err));
 
             if (err?.code === 'E_NO_LIBRARY_PERMISSION') {
-                const permissionType = isIOS
-                    ? PERMISSIONS.IOS.PHOTO_LIBRARY
-                    : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
+                const permissionType = isIOS ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
                 const result = await request(permissionType);
                 handlePermissionStatus(result, 'Photo library');
             }
 
             if (err?.code === 'E_NO_CAMERA_PERMISSION') {
-                const result = await request(
-                    isIOS ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA,
-                );
+                const result = await request(isIOS ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA);
                 handlePermissionStatus(result, 'Camera');
             }
         }

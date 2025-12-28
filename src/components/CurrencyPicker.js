@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import CPicker from 'react-native-currency-picker';
 import PropTypes from 'prop-types';

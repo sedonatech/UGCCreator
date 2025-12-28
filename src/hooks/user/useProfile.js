@@ -1,11 +1,6 @@
 // eslint-disable-file consistent-return
-import {
-    getFirestore,
-    doc,
-    setDoc,
-    updateDoc,
-    getDoc,
-} from '@react-native-firebase/firestore';
+import { getFirestore, doc, setDoc, updateDoc, getDoc } from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import { useState } from 'react';
 import {
     DEFAULT_BRAND_DESCRIPTION,
@@ -17,7 +12,7 @@ export const USERS_COLLECTION = 'users';
 
 const useProfile = () => {
     const [loading, setLoading] = useState(false);
-
+    const [mediaKitLoading, setMediaKitLoading] = useState(false);
     const [updateProfileLoading, setUpdateProfileLoading] = useState(false);
 
     const createCreatorProfile = async (userName, currentUser) => {
@@ -45,12 +40,20 @@ const useProfile = () => {
                     monthlyPackage: [
                         { title: 'Basic', price: 0, description: 'Only Short form photos or videos ' },
                         { title: 'Standard', price: 0, description: '20 Short form videos + 20 Short form photos' },
-                        { title: 'Premium', price: 0, description: '20 Short form videos + 20 Short form photos and social media posts' },
+                        {
+                            title: 'Premium',
+                            price: 0,
+                            description: '20 Short form videos + 20 Short form photos and social media posts',
+                        },
                     ],
                     videoStartingRate: [
                         { title: 'Basic', price: 0, description: '1 short form video (15-20 sec)' },
                         { title: 'Standard', price: 0, description: '1 mid form video (30-60 sec)' },
-                        { title: 'Premium', price: 0, description: '1 long form video (60-90 sec) and social media posts' },
+                        {
+                            title: 'Premium',
+                            price: 0,
+                            description: '1 long form video (60-90 sec) and social media posts',
+                        },
                     ],
                     photoStartingRate: [
                         { title: 'Basic', price: 0, description: '3 photos' },
@@ -171,7 +174,7 @@ const useProfile = () => {
         setUpdateProfileLoading(false);
     };
 
-    const getProfile = async (id) => {
+    const getProfile = async id => {
         try {
             const db = getFirestore();
             const userRef = doc(db, USERS_COLLECTION, id);
@@ -183,6 +186,44 @@ const useProfile = () => {
         }
     };
 
+    const saveMediaKitPdf = async ({ response, uuid }) =>
+        new Promise((res, rej) => {
+            (async () => {
+                try {
+                    const rawPath = response?.path;
+                    const filename = response?.filename || 'media-kit.pdf';
+                    if (!rawPath) return rej(new Error('No PDF path from picker'));
+
+                    const path = decodeURI(rawPath); // only decode; do not strip file://
+
+                    const metadata = { contentType: 'application/pdf' }; // valid settable metadata :contentReference[oaicite:2]{index=2}
+                    const reference = storage().ref(`users/${uuid}/media-kit.pdf`);
+
+                    const task = reference.putFile(path, metadata);
+
+                    task.on(
+                        'state_changed',
+                        snap => {
+                            console.log(`[MEDIA-KIT]: ${snap.bytesTransferred} / ${snap.totalBytes}`);
+                        },
+                        err => {
+                            console.log('[MEDIA-KIT]: upload error object:', err);
+                            console.log(
+                                '[MEDIA-KIT]: native code/message:',
+                                err?.nativeErrorCode,
+                                err?.nativeErrorMessage,
+                            );
+                            rej(err);
+                        },
+                        () => res(task),
+                    );
+                } catch (err) {
+                    rej(err);
+                }
+            })();
+        });
+
+    const updateMediaKit = async args => saveMediaKitPdf(args);
     return {
         createCreatorProfile,
         createBrandProfile,
@@ -191,6 +232,9 @@ const useProfile = () => {
         loading,
         updateProfileLoading,
         setLoading,
+        saveMediaKitPdf,
+        updateMediaKit,
+        mediaKitLoading,
     };
 };
 

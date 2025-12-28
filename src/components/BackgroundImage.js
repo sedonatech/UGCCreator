@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
@@ -11,7 +12,7 @@ const BackgroundImage = ({ style, source, width, ...rest }) => (
 
 BackgroundImage.propTypes = {
     style: PropTypes.shape({}),
-    source: PropTypes.shape({}) || PropTypes.number,
+    source: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.number]),
     width: PropTypes.number,
 };
 

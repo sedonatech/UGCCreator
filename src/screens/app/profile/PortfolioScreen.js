@@ -1,24 +1,31 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { getFirestore, collection, doc, getDoc } from '@react-native-firebase/firestore';
-import { TRANSPARENT, WHITE } from '../../../theme/Colors';
-import { IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import PortfolioHeader from './components/PortfolioHeader';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { DEFAULT_CREATOR_PAYPAL_LINK } from '../../../consts/content/Portfolio';
-import ContactSection from './components/ContactSection';
-import RatesSection from './components/RatesSection';
+import Pdf from 'react-native-pdf';
+import DocumentPicker, { types } from 'react-native-document-picker';
 import TemplateBox from '../../../components/TemplateBox';
 import Button from '../../../components/Button';
 import useChatsContext from '../../../hooks/chats/useChatsContext';
 import CreatorDetailsHeader from './components/CreatorDetailsHeader';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import PortfolioCarousel from './components/PortfolioCarousel';
+import TemplateText from '../../../components/TemplateText';
+import { WEBVIEW } from '../../../navigation/ScreenNames';
+import useProfile from '../../../hooks/user/useProfile';
+import ContactSection from './components/ContactSection';
 
 const USERS_COLLECTION = 'users';
+
 const PortfolioScreen = ({ navigation, route }) => {
     const creatorId = route?.params?.creatorId;
     const [selectedCreator, setSelectedCreator] = useState({});
+    const { saveMediaKitPdf } = useProfile();
 
     useEffect(() => {
         if (creatorId) getProfile();
@@ -43,15 +50,16 @@ const PortfolioScreen = ({ navigation, route }) => {
     };
 
     const { auth } = useAuthContext();
+
     const isBrand = auth?.profile?.type === 'brand';
     const creator = creatorId ? selectedCreator : auth?.profile;
+    const profile = auth?.profile;
     const userName = creator?.userName;
     const image = creator?.image;
     const contact = creator?.contact || '';
     const socials = creator?.socialMedia || '';
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
     const location = creator?.location?.country || creator?.location?.city;
-    const rates = creator?.rates;
     const email = creator?.email;
     const { createChatRoom } = useChatsContext();
     const creatorFCMToken = creator?.fcmToken;
@@ -62,6 +70,31 @@ const PortfolioScreen = ({ navigation, route }) => {
     const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
     const loading = Object.keys(selectedCreator)?.length === 0 && isBrand;
 
+    const pickPdf = async () => {
+        const res = await DocumentPicker.pickSingle({
+            type: [types.pdf],
+            copyTo: 'cachesDirectory',
+        });
+
+        // On iOS, res.uri may point at a provider location; use the copied file.
+        if (!res.fileCopyUri) throw new Error('No local fileCopyUri; picker did not copy the PDF to app storage');
+
+        return {
+            path: res.fileCopyUri,
+            filename: res.name || 'media-kit.pdf',
+        };
+    };
+    const onPickAndUploadMediaKit = async () => {
+        try {
+            const picked = await pickPdf();
+            await saveMediaKitPdf({
+                uuid: auth?.profile?.id,
+                response: picked,
+            });
+        } catch (e) {
+            console.log('pick/upload failed:', e);
+        }
+    };
     return (
         <>
             <ScrollView
@@ -74,9 +107,64 @@ const PortfolioScreen = ({ navigation, route }) => {
                 ) : (
                     <PortfolioHeader userName={userName} location={location} creatorId={creatorId} image={image} />
                 )}
+                {creator && (
+                    <TemplateBox
+                        selfCenter
+                        mv={WRAPPER_MARGIN}
+                        mh={WRAPPER_MARGIN}
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <TemplateText size={18} bold mb={16}>
+                            My Media Kit
+                        </TemplateText>
+                        <TemplateText size={14} mb={14} center>
+                            Generate your professional media kit to showcase your work to potential brands, then upload
+                            it here. You can always update it later when needed.
+                        </TemplateText>
+                        {!!profile?.mediaKit?.url && (
+                            <Pdf
+                                source={{ uri: profile?.mediaKit?.url, cache: false }}
+                                page={1}
+                                singlePage={true}
+                                fitPolicy={0}
+                                spacing={0}
+                                scrollEnabled={true}
+                                style={{
+                                    width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
+                                    height: 300,
+                                    marginBottom: 20,
+                                    borderRadius: 16,
+                                    // backgroundColor: TRANSPARENT,
+                                }}
+                                onError={e => console.log('[MEDIA-KIT]: thumb error', e)}
+                            />
+                        )}
+
+                        <Button
+                            title="Generate Media Kit"
+                            onPress={() =>
+                                navigation.navigate(WEBVIEW, { url: 'https://media-gen-free.emergent.host/' })
+                            }
+                            height={42}
+                            width={SCREEN_WIDTH - 60}
+                            style={{ marginBottom: 20 }}
+                            color={BLACK}
+                        />
+                        <Button
+                            title="Upload Media Kit"
+                            onPress={onPickAndUploadMediaKit}
+                            height={42}
+                            width={SCREEN_WIDTH - 60}
+                            style={{ marginBottom: 20 }}
+                            color={BLACK}
+                        />
+                    </TemplateBox>
+                )}
                 <PortfolioCarousel creatorId={creatorId} />
-                <RatesSection rates={rates} />
+
                 <ContactSection contactInfo={contact} socials={socials} paypalLink={paypalLink} email={email} />
+
                 {creatorId && (
                     <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                         <Button

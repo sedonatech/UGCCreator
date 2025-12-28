@@ -8,13 +8,17 @@ import TemplateIcon from './TemplateIcon';
 import { WHITE } from '../theme/Colors';
 
 const AddCustomImageButton = ({
-    image, onPress, index, handleClearImage, style,
+    image,
+
+    onPress,
+    index,
+    handleClearImage,
+    style,
 }) => {
     const [loading, setLoading] = useState();
 
     return (
         <TemplateBox onPress={onPress} style={style}>
-
             {image ? (
                 <TemplateBox>
                     <Image
@@ -23,20 +27,14 @@ const AddCustomImageButton = ({
                         onLoadStart={() => setLoading(true)}
                         onLoadEnd={() => setLoading(false)}
                     />
-                    {loading && (
-                        <ActivityIndicator size="small" color={WHITE} />
-                    )}
+                    {loading && <ActivityIndicator size="small" color={WHITE} />}
                     <TemplateBox
                         onPress={() => {
                             handleClearImage(index);
                         }}
                         style={styles.trash}
                     >
-                        <TemplateIcon
-                            name="trash-outline"
-                            color={WHITE}
-                            size={24}
-                        />
+                        <TemplateIcon name="trash-outline" color={WHITE} size={24} />
                     </TemplateBox>
                 </TemplateBox>
             ) : (

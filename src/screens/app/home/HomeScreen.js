@@ -99,7 +99,6 @@ const HomeScreen = ({ navigation }) => {
 
     const updateLastLogin = async () => {
         await updateProfile({ lastLoginTime: new Date().toUTCString() }, profile?.id);
-        awai;
     };
 
     useEffect(() => {
