@@ -16,7 +16,7 @@ import CreatorDetailsHeader from './components/CreatorDetailsHeader';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import PortfolioCarousel from './components/PortfolioCarousel';
 import TemplateText from '../../../components/TemplateText';
-import { WEBVIEW } from '../../../navigation/ScreenNames';
+import { MEDIA_KIT, WEBVIEW } from '../../../navigation/ScreenNames';
 import useProfile from '../../../hooks/user/useProfile';
 import ContactSection from './components/ContactSection';
 
@@ -107,7 +107,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                 ) : (
                     <PortfolioHeader userName={userName} location={location} creatorId={creatorId} image={image} />
                 )}
-                {creator && (
+                {!creatorId && (
                     <TemplateBox
                         selfCenter
                         mv={WRAPPER_MARGIN}
@@ -123,22 +123,27 @@ const PortfolioScreen = ({ navigation, route }) => {
                             it here. You can always update it later when needed.
                         </TemplateText>
                         {!!profile?.mediaKit?.url && (
-                            <Pdf
-                                source={{ uri: profile?.mediaKit?.url, cache: false }}
-                                page={1}
-                                singlePage={true}
-                                fitPolicy={0}
-                                spacing={0}
-                                scrollEnabled={true}
-                                style={{
-                                    width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
-                                    height: 300,
-                                    marginBottom: 20,
-                                    borderRadius: 16,
-                                    // backgroundColor: TRANSPARENT,
-                                }}
-                                onError={e => console.log('[MEDIA-KIT]: thumb error', e)}
-                            />
+                            <TemplateBox
+                                onPress={() => navigation.navigate(MEDIA_KIT, { uri: profile?.mediaKit?.url })}
+                            >
+                                <Pdf
+                                    source={{ uri: profile?.mediaKit?.url, cache: false }}
+                                    page={1}
+                                    singlePage={true}
+                                    fitPolicy={0}
+                                    spacing={0}
+                                    cache={false}
+                                    scrollEnabled={true}
+                                    style={{
+                                        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
+                                        height: 300,
+                                        marginBottom: 20,
+                                        borderRadius: 16,
+                                        // backgroundColor: TRANSPARENT,
+                                    }}
+                                    onError={e => console.log('[MEDIA-KIT]: thumb error', e)}
+                                />
+                            </TemplateBox>
                         )}
 
                         <Button

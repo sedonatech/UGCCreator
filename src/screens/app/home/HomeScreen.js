@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLACK, BLACK_20, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -24,6 +24,7 @@ import FeaturedShowcaseCarousel from './components /FeaturedSamplesCarousel';
 import ChallengeCard from './components /ChallengeCard';
 import useChallenge from '../../../hooks/useChallenge';
 import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
+import DynamicIcon from '../../../components/icons/DynamicIcon';
 
 const HomeScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
@@ -112,6 +113,32 @@ const HomeScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
         >
             {!!profile?.userName && <Greeting userName={profile?.userName} style={styles.greeting} showAvatar />}
+
+            <TemplateBox
+                pAll={WRAPPER_MARGIN}
+                mv={20}
+                mh={WRAPPER_MARGIN}
+                row
+                alignItems="center"
+                justifyContent="space-between"
+                borderRadius={16}
+                onPress={() => navigation.navigate(PROFILE_STACK)}
+                borderWidth={1}
+                borderColor={BLACK_20}
+            >
+                <TemplateBox>
+                    <TemplateText size={16} semiBold>
+                        Generate Media Kit
+                    </TemplateText>
+                    <TemplateBox mt={8} maxWidth={SCREEN_WIDTH / 1.5}>
+                        <TemplateText size={14}>
+                            Upload a one page PDF with your work. Brands can preview it on your profile, update it any
+                            time.
+                        </TemplateText>
+                    </TemplateBox>
+                </TemplateBox>
+                <DynamicIcon name={'ArrowRight'} size={24} />
+            </TemplateBox>
 
             <TemplateCarousel
                 data={challenges}

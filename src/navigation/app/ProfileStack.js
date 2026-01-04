@@ -7,6 +7,7 @@ import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import {
     CREATOR_TOOLS_RESULTS,
     FORGOT_PASSWORD,
+    MEDIA_KIT,
     PROFILE,
     RESULTS_HISTORY,
     SCRIPTS_GENERATOR,
@@ -25,6 +26,7 @@ import WebviewScreen from '../../screens/webview/WebviewScreen';
 import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorScreen';
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
 import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
+import MediaKitScreen from '../../screens/app/profile/MediaKitScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -60,6 +62,7 @@ const ProfileStack = () => (
         <Screen name={SCRIPTS_GENERATOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
         <Screen name={CREATOR_TOOLS_RESULTS} options={TRANSPARENT_HEADER} component={CreatorToolsResultsScreen} />
         <Screen name={RESULTS_HISTORY} options={TRANSPARENT_HEADER} component={ResultsHistoryScreen} />
+        <Screen name={MEDIA_KIT} options={TRANSPARENT_HEADER} component={MediaKitScreen} />
     </Navigator>
 );
 
