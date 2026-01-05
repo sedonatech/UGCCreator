@@ -100,6 +100,8 @@ export const CREATOR_TOOLS_RESULTS = 'CreatorToolsResults';
 
 export const RESULTS_HISTORY = 'ResultsHistory';
 
+export const MEDIA_KIT = 'MediaKit';
+
 export const BRANDS_CATALOGUE = 'BrandsCatalogue';
 
 export const BRANDS_SCREEN = 'BrandsScreen';

@@ -5,37 +5,34 @@ import { useState } from 'react';
 
 const useMailCompose = () => {
     const [mailEvent, setMailEvent] = useState('');
-    const sendEmailWithAttachment = async (metaData) => {
-        const {
-            recipients,
-            body,
-            attachments,
-            subject,
-        } = metaData;
+    const sendEmailWithAttachment = async metaData => {
+        const { recipients, body, attachments, subject } = metaData;
 
         try {
             if (__DEV__) return setMailEvent('sent');
-            await Mailer.mail({
-                recipients,
-                subject,
-                body,
-                attachments,
-            },
-            (error, event) => {
-                if (error) {
-                    console.error(error);
-                } else if (event === 'sent') {
-                    setMailEvent('sent');
-                } else if (event === 'cancelled') {
-                    setMailEvent('cancelled');
-                }
-            });
+            await Mailer.mail(
+                {
+                    recipients,
+                    subject,
+                    body,
+                    attachments,
+                },
+                (error, event) => {
+                    if (error) {
+                        console.error(error);
+                    } else if (event === 'sent') {
+                        setMailEvent('sent');
+                    } else if (event === 'cancelled') {
+                        setMailEvent('cancelled');
+                    }
+                },
+            );
         } catch (error) {
             console.error(error);
         }
     };
 
-    const composeEmailWithAttachment = async (recipientEmail) => {
+    const composeEmailWithAttachment = async recipientEmail => {
         try {
             if (__DEV__) return setMailEvent('sent');
             const res = await DocumentPicker.pickSingle({
@@ -48,11 +45,13 @@ const useMailCompose = () => {
                 recipients: [recipientEmail],
                 body: '',
                 subject: '',
-                attachments: [{
-                    uri,
-                    mimeType: type,
-                    name,
-                }],
+                attachments: [
+                    {
+                        uri,
+                        mimeType: type,
+                        name,
+                    },
+                ],
             };
             await sendEmailWithAttachment(metaData);
         } catch (error) {
@@ -74,11 +73,13 @@ useMailCompose.propTypes = {
         recipients: PropTypes.arrayOf(PropTypes.string),
         body: PropTypes.string,
         subject: PropTypes.string,
-        attachments: PropTypes.arrayOf(PropTypes.shape({
-            uri: PropTypes.string,
-            mimeType: PropTypes.string,
-            fileName: PropTypes.string,
-        })),
+        attachments: PropTypes.arrayOf(
+            PropTypes.shape({
+                uri: PropTypes.string,
+                mimeType: PropTypes.string,
+                fileName: PropTypes.string,
+            }),
+        ),
     }),
 };
 

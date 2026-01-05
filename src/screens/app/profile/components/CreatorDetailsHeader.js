@@ -5,16 +5,12 @@ import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
-import {
-    BLACK, BLACK_60, BRAND_BLUE, GREEN, WHITE,
-} from '../../../../theme/Colors';
+import { BLACK, BLACK_60, BRAND_BLUE, WHITE } from '../../../../theme/Colors';
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { wp } from '../../../../Utils/getResponsiveSize';
 
-const CreatorDetailsHeader = ({
-    userName, location, image,
-}) => (
+const CreatorDetailsHeader = ({ userName, location, image }) => (
     <TemplateBox>
         <TemplateBox
             backgroundColor={BRAND_BLUE}
@@ -43,14 +39,9 @@ const CreatorDetailsHeader = ({
         <TemplateBox selfCenter slideIn slideInDelay={100} slideInDirection="left">
             {userName && (
                 <TemplateBox row mt={120} alignItems="center" mb={6}>
-                    <TemplateText bold size={20} color={BLACK} center>{userName}</TemplateText>
-                    <TemplateIcon
-                        name="check-decagram"
-                        family="MaterialCommunity"
-                        color={GREEN}
-                        size={14}
-                        style={styles.icon}
-                    />
+                    <TemplateText bold size={20} color={BLACK} center>
+                        {userName}
+                    </TemplateText>
                 </TemplateBox>
             )}
             {location && (
@@ -58,7 +49,9 @@ const CreatorDetailsHeader = ({
                     <TemplateBox width={10} />
                     <TemplateBox row alignItems="center">
                         <TemplateIcon size={12} color={BLACK_60} name="location-outline" />
-                        <TemplateText size={12} color={BLACK_60}>{location}</TemplateText>
+                        <TemplateText size={12} color={BLACK_60}>
+                            {location}
+                        </TemplateText>
                     </TemplateBox>
                 </TemplateBox>
             )}
@@ -79,9 +72,6 @@ CreatorDetailsHeader.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-    icon: {
-        marginTop: 5.5,
-    },
     image: {
         height: 176,
         width: 196,

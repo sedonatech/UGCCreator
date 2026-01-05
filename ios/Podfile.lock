@@ -3341,7 +3341,7 @@ PODS:
     - Yoga
   - react-native-mail (6.1.1):
     - React-Core
-  - react-native-pdf (6.7.7):
+  - react-native-pdf (7.0.3):
     - boost
     - DoubleConversion
     - fast_float
@@ -5093,7 +5093,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 1baeeacf0ecdeb839cca16ca75cb16a9bbbf8e03
   react-native-keyboard-controller: 79abfb7d597e1601a66c64226881bc1ad1a63b01
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
-  react-native-pdf: b4ac635ae24275fe34f4075a58c6c27e2c9ba6c2
+  react-native-pdf: 5851482420f156606ae48d4f919b9208abd62a16
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
   react-native-safe-area-context: fea29ae0275beaa22f72d0a8be1eb0ab09c3feae
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457

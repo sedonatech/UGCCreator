@@ -47,7 +47,7 @@ export default function PortfolioCarousel({ creatorId }: { creatorId?: string })
 
     const canAddMore = isOwner && items.length < 3;
 
-    const titleText = isOwner ? 'Your Sample Work' : 'Creator Showcase';
+    const titleText = isOwner ? 'My Sample Work' : 'Creator Showcase';
     const subtitleText = isOwner
         ? 'Add sample works to your profile with a chance of being featured.'
         : 'Featured sample works from this creator.';
