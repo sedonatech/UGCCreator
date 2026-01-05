@@ -187,6 +187,9 @@ const PortfolioScreen = ({ navigation, route }) => {
                                     console.log('-> e', e);
                                 }
                             }}
+                            height={50}
+                            width={SCREEN_WIDTH - 40}
+                            color={BLACK}
                         />
                     </TemplateBox>
                 )}
