@@ -32,6 +32,10 @@ export const CHALLENGES = 'Challenges';
 export const CURRENT_PROJECT_DETAILS = 'CurrentProjectDetails';
 export const CHALLENGES_STACK = 'ChallengesStack';
 
+export const COURSES_STACK = 'CoursesStack';
+export const COURSES = 'Courses';
+export const COURSE_DETAILS = 'CourseDetails';
+
 export const APP_TABS = 'AppTabs';
 
 export const APP = 'App';
