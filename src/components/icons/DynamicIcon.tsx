@@ -17,6 +17,7 @@ import CommentsIcon from './CommentsIcon';
 import EditIcon from './EditIcon';
 import AddIcon from './AddIcon';
 import ArrowRightIcon from './ArrowRightIcon';
+import LevelUpIcon from './LevelUpIcon';
 
 export type DynamicIconName =
     | 'Home'
@@ -34,6 +35,7 @@ export type DynamicIconName =
     | 'Edit'
     | 'Add'
     | 'ArrowRight'
+    | 'LevelUp'
     | null;
 
 export interface DynamicIconProps extends IconProps {
@@ -86,6 +88,7 @@ const IconList = [
     { name: 'Edit', icon: EditIcon },
     { name: 'Add', icon: AddIcon },
     { name: 'ArrowRight', icon: ArrowRightIcon },
+    { name: 'LevelUp', icon: LevelUpIcon },
 ];
 
 const DynamicIcon: React.FC<DynamicIconProps> = ({ name, style, color = BLACK, size = 20, active }) => {

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { CHALLENGES_STACK, CHATS_STACK, HOME_STACK, PROFILE_STACK } from '../ScreenNames';
+import { CHALLENGES_STACK, CHATS_STACK, COURSES_STACK, HOME_STACK, PROFILE_STACK } from '../ScreenNames';
 import HomeStack from './HomeStack';
 import ProfileStack from './ProfileStack';
 import TabButton from '../../components/tabs/TabButton';
@@ -12,6 +12,7 @@ import ChatsStack from '../chats/ChatsStack';
 import { ANIMATION_DISABLED_HEADER } from '../../components/header/ScreenOptions';
 import useChatRooms from '../../hooks/chats/useChatRooms';
 import ChallengesStack from './ChallengesStack';
+import CoursesStack from './CoursesStack';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
@@ -71,11 +72,19 @@ const AppTabs = () => {
                 }}
             />
             <Screen
+                name={COURSES_STACK}
+                component={CoursesStack}
+                options={{
+                    tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="LevelUp" />,
+                    tabBarLabel: props => <TabLabel {...props}>LevelUp</TabLabel>,
+                }}
+            />
+            <Screen
                 name={PROFILE_STACK}
                 component={ProfileStack}
                 options={{
                     tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Profile" />,
-                    tabBarLabel: props => <TabLabel {...props}>My Portfolio</TabLabel>,
+                    tabBarLabel: props => <TabLabel {...props}>Portfolio</TabLabel>,
                 }}
             />
         </Navigator>
