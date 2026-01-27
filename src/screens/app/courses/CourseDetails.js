@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-color-literals */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -218,7 +219,7 @@ const CourseDetails = ({ route }) => {
                 <TemplateBox style={styles.heroOverlay} />
                 <TemplateBox style={styles.resetButton} onPress={handleResetCourse} center>
                     <TemplateIcon name="refresh" size={14} color="#FFFFFF" />
-                    <TemplateText size={11} color="#FFFFFF" ml={6} medium>
+                    <TemplateText size={12} color="#FFFFFF" ml={6} medium>
                         Reset
                     </TemplateText>
                 </TemplateBox>
@@ -233,7 +234,7 @@ const CourseDetails = ({ route }) => {
                 <TemplateText size={20} semiBold color={styles.textPrimary.color} mb={8}>
                     {course?.title || 'Course'}
                 </TemplateText>
-                <TemplateText size={13} color={styles.textMuted.color} lineHeight={20} mb={12}>
+                <TemplateText size={14} color={styles.textMuted.color} lineHeight={20} mb={12}>
                     {course?.description || 'Course details are loading.'}
                 </TemplateText>
                 <TemplateBox row alignItems="center" style={styles.metaRow}>
@@ -571,11 +572,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#C7D2FE',
     },
-    tagEmerald: {
-        backgroundColor: '#ECFDF5',
-        borderWidth: 1,
-        borderColor: '#A7F3D0',
-    },
+
     tagAmber: {
         backgroundColor: '#FFFBEB',
         borderWidth: 1,
@@ -666,21 +663,12 @@ const styles = StyleSheet.create({
         borderRadius: 999,
         backgroundColor: '#4F46E5',
     },
-    textPrimary: {
-        color: '#111827',
-    },
-    textSecondary: {
-        color: '#1F2937',
-    },
-    textMuted: {
-        color: '#4B5563',
-    },
 });
 
 const TAG_STYLES = {
     Learn: styles.tagIndigo,
     Action: styles.tagPink,
-    Build: styles.tagEmerald,
+    Build: styles.tagEmeral,
     Review: styles.tagAmber,
 };
 

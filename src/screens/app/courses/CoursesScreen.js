@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-color-literals */
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -40,9 +41,9 @@ const CoursesScreen = ({ navigation }) => {
             try {
                 unsubscribe = firestore()
                     .collection(COURSES_COLLECTION)
-                    .onSnapshot((snapshot) => {
+                    .onSnapshot(snapshot => {
                         const nextCourses = snapshot.docs
-                            .map((doc) => normalizeCourse(doc.data(), doc.id))
+                            .map(doc => normalizeCourse(doc.data(), doc.id))
                             .sort((a, b) => (a?.order || 0) - (b?.order || 0));
                         setCourses(nextCourses);
                         setLoading(false);
@@ -61,13 +62,10 @@ const CoursesScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (!userId) return null;
-        const progressRef = firestore()
-            .collection(USERS_COLLECTION)
-            .doc(userId)
-            .collection(COURSE_PROGRESS_COLLECTION);
-        const unsubscribe = progressRef.onSnapshot((snapshot) => {
+        const progressRef = firestore().collection(USERS_COLLECTION).doc(userId).collection(COURSE_PROGRESS_COLLECTION);
+        const unsubscribe = progressRef.onSnapshot(snapshot => {
             const nextProgress = {};
-            snapshot.docs.forEach((doc) => {
+            snapshot.docs.forEach(doc => {
                 nextProgress[doc.id] = doc.data();
             });
             setProgressMap(nextProgress);
@@ -80,7 +78,7 @@ const CoursesScreen = ({ navigation }) => {
         const ensureProgressDocs = async () => {
             try {
                 await Promise.all(
-                    courses.map(async (course) => {
+                    courses.map(async course => {
                         const progressRef = firestore()
                             .collection(USERS_COLLECTION)
                             .doc(userId)
@@ -113,9 +111,7 @@ const CoursesScreen = ({ navigation }) => {
             },
             { totalDays: 0, completedDays: 0, streak: 0 },
         );
-        const completionRatio = totals.totalDays
-            ? Math.round((totals.completedDays / totals.totalDays) * 100)
-            : 0;
+        const completionRatio = totals.totalDays ? Math.round((totals.completedDays / totals.totalDays) * 100) : 0;
         return {
             courseCount: courses.length,
             completionRatio,
@@ -123,7 +119,7 @@ const CoursesScreen = ({ navigation }) => {
         };
     }, [courses, progressMap]);
 
-    const formatUnlockDate = (releaseAt) => {
+    const formatUnlockDate = releaseAt => {
         if (!releaseAt) return null;
         const date = new Date(releaseAt);
         return `${months[date.getMonth()]} ${date.getDate()}`;
@@ -132,10 +128,7 @@ const CoursesScreen = ({ navigation }) => {
     const handleSeedCourses = async () => {
         try {
             const didWrite = await ensureCoursesSeeded({ isAdmin, allowDev: __DEV__ });
-            Alert.alert(
-                'Courses seeded',
-                didWrite ? 'Course data is now available.' : 'Courses already exist.',
-            );
+            Alert.alert('Courses seeded', didWrite ? 'Course data is now available.' : 'Courses already exist.');
         } catch (e) {
             console.log(e);
             Alert.alert('Seeding failed', 'Please check the console for details.');
@@ -202,7 +195,7 @@ const CoursesScreen = ({ navigation }) => {
                         </TemplateBox>
                     )}
                 </TemplateBox>
-                {courses.map((course) => {
+                {courses.map(course => {
                     const progress = progressMap[course.id] || {};
                     const totalDays = course?.totalDays || course?.days?.length || 0;
                     const completedDays = progress?.completedDays?.length || 0;
@@ -220,9 +213,7 @@ const CoursesScreen = ({ navigation }) => {
                         <TemplateBox
                             key={course.id}
                             onPress={
-                                isLocked
-                                    ? null
-                                    : () => navigation.navigate(COURSE_DETAILS, { courseId: course.id })
+                                isLocked ? null : () => navigation.navigate(COURSE_DETAILS, { courseId: course.id })
                             }
                             borderRadius={20}
                             overflow="hidden"
@@ -246,19 +237,23 @@ const CoursesScreen = ({ navigation }) => {
                             <TemplateBox pAll={18}>
                                 <TemplateBox row alignItems="center" justifyContent="space-between" mb={14}>
                                     <TemplateBox style={iconStyle} center>
-                                        <TemplateIcon name={course?.icon} size={20} color={isLocked ? '#71717A' : course?.accent} />
+                                        <TemplateIcon
+                                            name={course?.icon}
+                                            size={20}
+                                            color={isLocked ? '#71717A' : course?.accent}
+                                        />
                                     </TemplateBox>
                                     <TemplateBox style={statusPillStyle} center>
-                                        <TemplateText size={12} color={isLocked ? '#71717A' : '#4338CA'} medium>
+                                        <TemplateText size={14} color={isLocked ? '#71717A' : '#4338CA'} medium>
                                             {statusLabel}
                                         </TemplateText>
                                     </TemplateBox>
                                 </TemplateBox>
 
-                                <TemplateText size={17} semiBold color={styles.textPrimary.color} mb={6}>
+                                <TemplateText size={18} semiBold color={styles.textPrimary.color} mb={6}>
                                     {course?.title}
                                 </TemplateText>
-                                <TemplateText size={13} color={styles.textMuted.color} lineHeight={18} mb={14}>
+                                <TemplateText size={14} color={styles.textMuted.color} lineHeight={18} mb={14}>
                                     {course?.shortDescription}
                                 </TemplateText>
 
@@ -268,17 +263,17 @@ const CoursesScreen = ({ navigation }) => {
                                             <TemplateBox style={[styles.avatar, styles.avatarOne]} />
                                             <TemplateBox style={[styles.avatar, styles.avatarTwo]} />
                                             <TemplateBox style={[styles.avatar, styles.avatarThree]} center>
-                                                <TemplateText size={8} color="#FFFFFF" semiBold>
+                                                <TemplateText size={10} color="#FFFFFF" semiBold>
                                                     +2k
                                                 </TemplateText>
                                             </TemplateBox>
                                         </TemplateBox>
-                                        <TemplateText size={12} color={styles.textMuted.color} ml={8}>
+                                        <TemplateText size={14} color={styles.textMuted.color} ml={8}>
                                             enrolled
                                         </TemplateText>
                                     </TemplateBox>
                                     <TemplateBox row alignItems="center">
-                                        <TemplateText size={12} medium color={isLocked ? '#71717A' : '#4338CA'} mr={6}>
+                                        <TemplateText size={14} medium color={isLocked ? '#71717A' : '#4338CA'} mr={6}>
                                             {isComingSoon
                                                 ? `Unlocks ${unlockLabel}`
                                                 : `Day ${currentDay} of ${totalDays}`}
@@ -294,7 +289,7 @@ const CoursesScreen = ({ navigation }) => {
                     );
                 })}
                 {!loading && courses.length === 0 && (
-                    <TemplateText size={13} color={styles.textMuted.color} mt={16}>
+                    <TemplateText size={14} color={styles.textMuted.color} mt={16}>
                         No courses available right now.
                     </TemplateText>
                 )}
@@ -424,14 +419,5 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(99, 102, 241, 0.14)',
         borderWidth: 1,
         borderColor: 'rgba(99, 102, 241, 0.35)',
-    },
-    textPrimary: {
-        color: '#111827',
-    },
-    textSecondary: {
-        color: '#1F2937',
-    },
-    textMuted: {
-        color: '#4B5563',
     },
 });
