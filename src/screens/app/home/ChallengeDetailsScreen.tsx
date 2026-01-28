@@ -40,6 +40,9 @@ import ChallengeSubmissionModal from '../../../components/modals/ChallengeSubmis
 import ChallengeEntryCard from '../../../components/cards/ChallengeEntryCard';
 import ChallengeLeaderBoardModal from '../../../components/modals/ChallengeLeaderBoardModal';
 import openUrl from '../../../Utils/openUrl';
+import { WEBVIEW } from '../../../navigation/ScreenNames';
+const FEEDBACK_FORM_URL =
+    'https://docs.google.com/forms/d/e/1FAIpQLSe0PYFCmCOoPDZFuQdQV63Swk3AAKolNQnOc3ZN9md4LM2ZJw/viewform?usp=publish-editor';
 
 const TOGGLE_TABS = ['Brief', 'Rules', 'Prizes', 'Entries'];
 type RouteParams = {
@@ -252,31 +255,45 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TemplateBox
-                    backgroundColor={WHITE_30}
-                    row
-                    mr={10}
-                    alignItems="center"
-                    borderWidth={1}
-                    borderColor={BLACK_20}
-                    borderRadius={26}
-                    onPress={() => {
-                        if (!isChallengeStarted) {
-                            Alert.alert(
-                                'Challenge Not Started',
-                                'The challenge has not started yet. Leader Board will be available once the challenge starts.',
-                            );
-                        } else {
-                            setIsLeaderBoardModalVisible(true);
-                        }
-                    }}
-                    ph={16}
-                    pv={8}
-                >
-                    <TemplateText color={BLACK_SECONDARY} size={14} mr={6}>
-                        Leader Board
-                    </TemplateText>
-                    <DynamicIcon name={'ArrowRight'} color={BLACK_SECONDARY} size={18} />
+                <TemplateBox row>
+                    <TemplateBox
+                        onPress={() => navigation.navigate(WEBVIEW, { url: FEEDBACK_FORM_URL })}
+                        mr={WRAPPER_MARGIN}
+                        alignItems="center"
+                        row
+                    >
+                        <TemplateText size={13} medium color={BLACK} mr={6}>
+                            Feedback
+                        </TemplateText>
+                        <DynamicIcon name="Comments" size={20} />
+                    </TemplateBox>
+
+                    <TemplateBox
+                        backgroundColor={WHITE_30}
+                        row
+                        mr={10}
+                        alignItems="center"
+                        borderWidth={1}
+                        borderColor={BLACK_20}
+                        borderRadius={26}
+                        onPress={() => {
+                            if (!isChallengeStarted) {
+                                Alert.alert(
+                                    'Challenge Not Started',
+                                    'The challenge has not started yet. Leader Board will be available once the challenge starts.',
+                                );
+                            } else {
+                                setIsLeaderBoardModalVisible(true);
+                            }
+                        }}
+                        ph={16}
+                        pv={8}
+                    >
+                        <TemplateText color={BLACK_SECONDARY} size={14} mr={6}>
+                            Leader Board
+                        </TemplateText>
+                        <DynamicIcon name={'ArrowRight'} color={BLACK_SECONDARY} size={18} />
+                    </TemplateBox>
                 </TemplateBox>
             ),
         });

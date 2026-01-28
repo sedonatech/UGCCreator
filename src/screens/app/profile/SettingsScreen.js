@@ -48,6 +48,15 @@ const SettingsScreen = ({ navigation }) => {
             onPress: () => '',
         },
         {
+            title: 'Feedback',
+            description: 'Send us your feedback',
+            onPress: () =>
+                navigation.navigate('WebView', {
+                    url: 'https://docs.google.com/forms/d/e/1FAIpQLScOnFg0D06OPE5T5w7SZEcy12m9Si0JMAhOAGjGqj5NtMMVgA/viewform?usp=publish-editor',
+                }),
+            icon: 'chatbox-ellipses-outline',
+        },
+        {
             title: 'UGC Creator Tools',
             description: 'Explore our creator tools powered by OpenAI',
             onPress: () => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null),

@@ -1,9 +1,10 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-import { BLACK, BLACK_20, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLACK, BLACK_10, BLACK_20, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -25,8 +26,29 @@ import ChallengeCard from './components /ChallengeCard';
 import useChallenge from '../../../hooks/useChallenge';
 import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
+import { WEBVIEW } from '../../../navigation/ScreenNames';
+
+const FEEDBACK_FORM_URL =
+    'https://docs.google.com/forms/d/e/1FAIpQLScOnFg0D06OPE5T5w7SZEcy12m9Si0JMAhOAGjGqj5NtMMVgA/viewform?usp=publish-editor';
 
 const HomeScreen = ({ navigation }) => {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TemplateBox
+                    onPress={() => navigation.navigate(WEBVIEW, { url: FEEDBACK_FORM_URL })}
+                    mr={WRAPPER_MARGIN}
+                    alignItems="center"
+                    row
+                >
+                    <TemplateText size={13} medium color={BLACK} mr={6}>
+                        Feedback
+                    </TemplateText>
+                    <DynamicIcon name="Comments" size={20} />
+                </TemplateBox>
+            ),
+        });
+    }, [navigation]);
     const { auth } = useAuthContext();
     const { features } = useFeatureFlags();
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;

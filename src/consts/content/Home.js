@@ -1,8 +1,4 @@
-import {
-    BLACK,
-    BLACK_50,
-    BRAND_BLUE,
-} from '../../theme/Colors';
+import { BLACK, BLACK_50 } from '../../theme/Colors';
 
 export const CATEGORIES = [
     {
@@ -115,9 +111,7 @@ export const CATEGORIES = [
     },
 ];
 
-export const TRENDING_CATEGORIES = CATEGORIES.filter(
-    (category) => category?.proposals > 60,
-);
+export const TRENDING_CATEGORIES = CATEGORIES.filter(category => category?.proposals > 60);
 
 export const STATUS = [
     {
@@ -274,11 +268,13 @@ export const BRAND_PROFILE_INCOMPLETE_MESSAGE = 'Update your profile for creator
 
 export const NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
 
-export const NO_CURRENT_PROJECT_MESSAGE = 'You have not enrolled to any project. Check out the projects page to find a project to work on!';
+export const NO_CURRENT_PROJECT_MESSAGE =
+    'You have not enrolled to any project. Check out the projects page to find a project to work on!';
 
 export const BRAND_NO_CURRENT_PROJECT_TITLE = 'No Current Projects';
 
-export const BRAND_NO_CURRENT_PROJECT_MESSAGE = 'You have no current UGC projects with any creator on this platform. Click  the button above to add a project!';
+export const BRAND_NO_CURRENT_PROJECT_MESSAGE =
+    'You have no current UGC projects with any creator on this platform. Click  the button above to add a project!';
 
 export const FEED_CATEGORIES = [
     {
@@ -304,13 +300,11 @@ export const FEED_CATEGORIES = [
     {
         name: 'Hooks',
         value: 'hooks',
-
     },
     {
         name: 'CTA',
         value: 'ctaTips',
     },
-
 ];
 
 export const DEFAULT_AVATARS = [
@@ -329,12 +323,6 @@ export const chartData = {
         },
     ],
 
-};
-
-export const chartConfig = {
-    backgroundGradientFrom: BRAND_BLUE,
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: BRAND_BLUE,
     backgroundGradientToOpacity: 0.2,
     color: (opacity = 1) => BLACK_50,
     strokeWidth: 2,
