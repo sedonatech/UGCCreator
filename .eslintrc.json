@@ -2,9 +2,14 @@
     "root": true,
     "extends": ["@react-native", "prettier"],
     "plugins": ["react-native", "filenames", "prettier", "import"],
+    "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": 2021,
         "sourceType": "module",
+        "requireConfigFile": true,
+        "babelOptions": {
+            "configFile": "/Users/michaelamoabeng/Documents/Projects/UGCCreator/babel.config.js"
+        },
         "ecmaFeatures": {
             "jsx": true
         }
