@@ -72,3 +72,92 @@ export const AMBER_500 = '#F59E0B';
 export const CYAN_500 = '#06B6D4';
 export const TEAL_500 = '#14B8A6';
 export const PURPLE_500 = '#8B5CF6';
+
+// Zinc Colors (Course Components)
+export const ZINC_50 = '#FAFAFA';
+export const ZINC_100 = '#F4F4F5';
+export const ZINC_200 = '#E4E4E7';
+export const ZINC_300 = '#D4D4D8';
+export const ZINC_400 = '#A1A1AA';
+export const ZINC_500 = '#71717A';
+export const ZINC_600 = '#52525B';
+export const ZINC_700 = '#3F3F46';
+export const ZINC_800 = '#27272A';
+export const ZINC_900 = '#18181B';
+
+// Gray Colors
+export const GRAY_50 = '#F9FAFB';
+export const GRAY_100 = '#F3F4F6';
+export const GRAY_200 = '#E5E7EB';
+export const GRAY_300 = '#D1D5DB';
+export const GRAY_400 = '#9CA3AF';
+export const GRAY_600 = '#4B5563';
+export const GRAY_700 = '#374151';
+export const GRAY_800 = '#1F2937';
+export const GRAY_900 = '#111827';
+
+// Slate Colors
+export const SLATE_50 = '#F8FAFC';
+export const SLATE_100 = '#F1F5F9';
+export const SLATE_200 = '#E2E8F0';
+export const SLATE_300 = '#CBD5E1';
+export const SLATE_400 = '#94A3B8';
+export const SLATE_500 = '#64748B';
+export const SLATE_600 = '#475569';
+export const SLATE_700 = '#334155';
+export const SLATE_800 = '#1E293B';
+export const SLATE_900 = '#0F172A';
+export const SLATE_950 = 'rgba(15, 23, 42, 0.45)';
+
+// Indigo Colors (Primary Course Colors)
+export const INDIGO_50 = '#EEF2FF';
+export const INDIGO_100 = '#E0E7FF';
+export const INDIGO_200 = '#C7D2FE';
+export const INDIGO_300 = '#A5B4FC';
+export const INDIGO_400 = '#818CF8';
+export const INDIGO_500 = '#6366F1';
+export const INDIGO_600 = '#4F46E5';
+export const INDIGO_700 = '#4338CA';
+export const INDIGO_800 = '#3730A3';
+export const INDIGO_900 = '#312E81';
+
+// Purple/Violet Colors
+export const VIOLET_500 = '#8B5CF6';
+export const VIOLET_600 = '#7C3AED';
+export const VIOLET_50 = '#F5F3FF';
+
+// Emerald/Green Colors
+export const EMERALD_50 = '#ECFDF5';
+export const EMERALD_100 = '#D1FAE5';
+export const EMERALD_200 = '#A7F3D0';
+export const EMERALD_300 = '#6EE7B7';
+export const EMERALD_400 = '#34D399';
+export const EMERALD_600 = '#059669';
+
+// Pink Colors
+export const PINK_50 = '#FDF2F8';
+export const PINK_100 = '#FCE7F3';
+export const PINK_200 = '#FBCFE8';
+export const PINK_300 = '#F9A8D4';
+export const PINK_600 = '#DB2777';
+export const PINK_700 = '#BE185D';
+
+// Amber/Yellow Colors
+export const AMBER_50 = '#FFFBEB';
+export const AMBER_100 = '#FEF3C7';
+export const AMBER_200 = '#FDE68A';
+export const AMBER_300 = '#FCD34D';
+export const AMBER_600 = '#D97706';
+
+// Course Gradients
+export const INDIGO_PURPLE_GRADIENT = [INDIGO_600, VIOLET_600];
+export const INDIGO_PURPLE_PINK_GRADIENT = [INDIGO_600, VIOLET_600, PINK_500];
+export const COURSE_GRADIENT_DEFAULT = [INDIGO_50, WHITE, INDIGO_50];
+export const TIP_GRADIENT = [INDIGO_50, VIOLET_50];
+
+// Course Background Colors
+export const INDIGO_BG_16 = 'rgba(79, 70, 229, 0.16)';
+export const INDIGO_BG_18 = 'rgba(99, 102, 241, 0.18)';
+export const INDIGO_BG_14 = 'rgba(99, 102, 241, 0.14)';
+export const INDIGO_BORDER_35 = 'rgba(99, 102, 241, 0.35)';
+export const WHITE_BG_08 = 'rgba(255, 255, 255, 0.08)';

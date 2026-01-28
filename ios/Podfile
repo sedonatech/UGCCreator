@@ -23,7 +23,7 @@ setup_permissions([
 target 'UGCCreatorApp' do
   use_frameworks! :linkage => :static
   config = use_native_modules!
-  use_modular_headers!
+
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
   pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
   pod 'react-native-restart', :path => '../node_modules/react-native-restart'
