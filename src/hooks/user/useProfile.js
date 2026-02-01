@@ -224,9 +224,18 @@ const useProfile = () => {
         });
 
     const updateMediaKit = async args => saveMediaKitPdf(args);
+
+    const createProfile = async (userName, currentUser, type) => {
+        if (type === 'creator') {
+            return createCreatorProfile(userName, currentUser);
+        }
+        return createBrandProfile(userName, currentUser);
+    };
+
     return {
         createCreatorProfile,
         createBrandProfile,
+        createProfile,
         updateProfile,
         getProfile,
         loading,
