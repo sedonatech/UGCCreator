@@ -1,4 +1,5 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+/* eslint-disable react/no-unstable-nested-components */
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Alert, FlatList, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -9,28 +10,28 @@ import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
-import { FORGOT_PASSWORD, UGCAI, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
+import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import { useConfig } from '../../../context/core';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
-import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../Utils/getResponsiveSize';
 import DeleteUserModal from '../../../components/modals/DeleteUserModal';
+import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 
 const SettingsScreen = ({ navigation }) => {
-    const { logout: handleLogout, deleteAccount } = useLogout();
-
-    const { mainDomain } = useConfig();
-
+    const { logout: handleLogout } = useLogout();
     const { auth } = useAuthContext();
-
     const isFocused = useIsFocused();
-
-    const { features } = useFeatureFlags();
-
     const { checkApplicationPermissions, isAuthorized } = useNotificationPermissions();
-
     const { getProfileCompleteStatus, profileCompleteRatio, profile, user } = auth;
+    const { testers } = useFeatureFlags();
+
+    const testEmails = testers?.emails || [];
+    const isTester = useMemo(() => {
+        if (user?.email) {
+            return testEmails.includes(user?.email);
+        }
+        return false;
+    }, [user, testEmails]);
 
     useEffect(() => {
         if (isFocused) {
@@ -38,7 +39,6 @@ const SettingsScreen = ({ navigation }) => {
         }
     }, [isFocused, profile, user]);
 
-    const creatorToolsEnabled = features?.openAIScreen;
     const [showDeleteUser, setShowDeleteUser] = useState(false);
 
     const settings = [
@@ -56,11 +56,11 @@ const SettingsScreen = ({ navigation }) => {
                 }),
             icon: 'chatbox-ellipses-outline',
         },
-        {
-            title: 'UGC Creator Tools',
-            description: 'Explore our creator tools powered by OpenAI',
-            onPress: () => (creatorToolsEnabled ? navigation.navigate(UGCAI) : null),
-            icon: 'trending-up-outline',
+        isTester && {
+            title: 'Test Subscriptions',
+            description: 'Test subscription (testers only)',
+            onPress: () => navigation.navigate(SUBSCRIPTION, { fromSettings: true }),
+            icon: 'card-outline',
         },
         {
             title: 'Update Portfolio',
@@ -99,52 +99,6 @@ const SettingsScreen = ({ navigation }) => {
             },
             icon: 'notifications-outline',
         },
-        // {
-        //     title: 'Privacy',
-        //     description: 'Manage your privacy settings',
-        //     onPress: () => {
-        //         if (mainDomain) {
-        //             navigation.navigate(
-        //                 WEBVIEW,
-        //                 {
-        //                     url: mainDomain,
-
-        //                 },
-        //             );
-        //         }
-        //     },
-        //     icon: 'lock-closed-outline',
-        // },
-        // {
-        //     title: 'Help',
-        //     description: 'Get help with your account',
-        //     onPress: () => {
-        //         if (mainDomain) {
-        //             navigation.navigate(
-        //                 WEBVIEW,
-        //                 {
-        //                     url: mainDomain,
-
-        //                 },
-        //             );
-        //         }
-        //     },
-        //     icon: 'help-circle-outline',
-        // },
-        // {
-        //     title: 'About',
-        //     description: 'Learn more about us',
-        //     onPress: () => '',
-        //     icon: 'information-circle-outline',
-        // },
-        // {
-        //     title: 'Subscription',
-        //     description: 'Manage Subscription settings',
-        //     onPress: () => navigation.navigate(SUBSCRIPTION, {
-        //         fromSettings: true,
-        //     }),
-        //     icon: 'card-outline',
-        // },
         {
             title: 'Delete Account',
             description: 'Delete your account',

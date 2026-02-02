@@ -12,6 +12,7 @@ import {
     RESULTS_HISTORY,
     SCRIPTS_GENERATOR,
     SETTINGS,
+    SUBSCRIPTION,
     UGCAI,
     UPDATE_PORTFOLIO,
     WEBVIEW,
@@ -27,6 +28,7 @@ import ScriptsGeneratorScreen from '../../screens/app/profile/ScriptsGeneratorSc
 import CreatorToolsResultsScreen from '../../screens/app/profile/CreatorToolsResultsScreen';
 import ResultsHistoryScreen from '../../screens/app/profile/ResultsHistoryScreen';
 import MediaKitScreen from '../../screens/app/profile/MediaKitScreen';
+import SubscriptionScreen from '../../screens/subscriptions/SubscriptionScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -63,6 +65,7 @@ const ProfileStack = () => (
         <Screen name={CREATOR_TOOLS_RESULTS} options={TRANSPARENT_HEADER} component={CreatorToolsResultsScreen} />
         <Screen name={RESULTS_HISTORY} options={TRANSPARENT_HEADER} component={ResultsHistoryScreen} />
         <Screen name={MEDIA_KIT} options={TRANSPARENT_HEADER} component={MediaKitScreen} />
+        <Screen name={SUBSCRIPTION} options={TRANSPARENT_HEADER} component={SubscriptionScreen} />
     </Navigator>
 );
 

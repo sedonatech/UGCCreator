@@ -1,8 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { BLACK, BLACK_10, GREY_30, ONBOARDING_BLUE, WHITE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
@@ -17,6 +18,7 @@ import TemplateIcon from '../../components/TemplateIcon';
 import useProfile from '../../hooks/user/useProfile';
 import ResizedImage from '../../components/ResizedImage';
 import TemplateBox from '../../components/TemplateBox';
+import useAppleAuth from '../../hooks/auth/useAppleAuth';
 
 const loginImage = require('../../../assets/images/onboarding/login.jpg');
 
@@ -32,6 +34,8 @@ const LoginScreen = ({ navigation }) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const { updateProfile, getProfile } = useProfile();
+
+    const { onAppleButtonPress, loading: appleLoading, error: appleError } = useAppleAuth();
 
     const handleLogin = async () => {
         setLoading(true);
@@ -126,16 +130,36 @@ const LoginScreen = ({ navigation }) => {
             <Error show={!!error} style={styles.generalError}>
                 {error}
             </Error>
+            <Error show={!!appleError} style={styles.generalError}>
+                {appleError}
+            </Error>
             <View style={styles.buttonContainer}>
                 <Button
                     title="Login"
                     onPress={handleLogin}
                     style={styles.button}
                     loading={loading}
+                    disabled={loading || appleLoading}
                     height={50}
                     width={SCREEN_WIDTH - 40}
                     color={BLACK}
                 />
+
+                {Platform.OS === 'ios' && (
+                    <View style={[styles.appleButtonWrapper, (loading || appleLoading) && styles.disabledButton]}>
+                        <AppleButton
+                            buttonStyle={AppleButton.Style.BLACK}
+                            buttonType={AppleButton.Type.SIGN_IN}
+                            style={styles.appleButton}
+                            onPress={() => {
+                                if (!loading && !appleLoading) {
+                                    onAppleButtonPress().then(() => console.log('Apple sign-in complete!'));
+                                }
+                            }}
+                        />
+                    </View>
+                )}
+
                 <TemplateText size={16} center style={styles.signupLink} medium>
                     Forgot you password?{' '}
                     <TemplateText
@@ -205,6 +229,20 @@ const styles = StyleSheet.create({
     passwordContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    appleButtonWrapper: {
+        width: SCREEN_WIDTH - 40,
+        height: 50,
+        marginVertical: 16,
+        borderRadius: 26,
+        overflow: 'hidden',
+    },
+    appleButton: {
+        width: '100%',
+        height: 50,
+    },
+    disabledButton: {
+        opacity: 0.5,
     },
 });
 export default LoginScreen;

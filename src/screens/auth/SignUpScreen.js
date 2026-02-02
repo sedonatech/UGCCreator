@@ -1,8 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { BLACK, BLACK_10, ERROR_RED, GREY_30, ONBOARDING_BLUE, WHITE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
@@ -19,6 +20,7 @@ import TemplateTouchable from '../../components/TemplateTouchable';
 import TemplateIcon from '../../components/TemplateIcon';
 import TemplateBox from '../../components/TemplateBox';
 import ResizedImage from '../../components/ResizedImage';
+import useAppleAuth from '../../hooks/auth/useAppleAuth';
 
 const creatorAuthImage = require('../../../assets/images/onboarding/login.jpg');
 const brandAuthImage = require('../../../assets/images/onboarding/brand-auth.jpg');
@@ -63,16 +65,37 @@ const SignUpScreen = ({ navigation, route }) => {
 
     const [passwordVisible, setPasswordVisible] = useState(false);
 
+    const { createProfile } = useProfile();
+
+    const { onAppleButtonPress, loading: appleLoading, error: appleError } = useAppleAuth();
+
     const disabled = useMemo(
-        () => !emailValid(email) || !passwordValid(password) || isEmpty(name) || loading || !!error,
-        [email, password, name, loading, error],
+        () => !emailValid(email) || !passwordValid(password) || isEmpty(name) || loading || appleLoading || !!error,
+        [email, password, name, loading, appleLoading, error],
     );
 
     useEffect(() => {
         setError(null);
     }, []);
 
-    const { createCreatorProfile, createBrandProfile } = useProfile();
+    const handleAppleSignUp = async () => {
+        try {
+            const result = await onAppleButtonPress();
+
+            if (result && result.isNewUser) {
+                // Extract name from Apple auth response
+                const { fullName } = result.appleData;
+                const displayName = fullName
+                    ? `${fullName.givenName || ''} ${fullName.familyName || ''}`.trim()
+                    : result.user.email?.split('@')[0] || 'User';
+
+                // Create profile with the type from route params
+                await createProfile(displayName, result.user, type);
+            }
+        } catch (e) {
+            console.log('Apple Sign-Up error:', e);
+        }
+    };
 
     const handleSignUp = async () => {
         setLoading(true);
@@ -81,11 +104,7 @@ const SignUpScreen = ({ navigation, route }) => {
             const response = await auth().createUserWithEmailAndPassword(email, password);
 
             if (response?.user) {
-                if (isCreator) {
-                    await createCreatorProfile(name, response?.user);
-                } else {
-                    await createBrandProfile(name, response?.user);
-                }
+                await createProfile(name, response?.user, type);
             }
         } catch (e) {
             if (e.code === 'auth/email-already-in-use') {
@@ -176,6 +195,9 @@ const SignUpScreen = ({ navigation, route }) => {
                 <Error show={!!error} style={styles.generalError}>
                     {error}
                 </Error>
+                <Error show={!!appleError} style={styles.generalError}>
+                    {appleError}
+                </Error>
                 <Button
                     title="Create Account"
                     onPress={handleSignUp}
@@ -186,6 +208,22 @@ const SignUpScreen = ({ navigation, route }) => {
                     disabled={disabled}
                     color={BLACK}
                 />
+
+                {Platform.OS === 'ios' && (
+                    <View style={[styles.appleButtonWrapper, (loading || appleLoading) && styles.disabledButton]}>
+                        <AppleButton
+                            buttonStyle={AppleButton.Style.BLACK}
+                            buttonType={AppleButton.Type.SIGN_UP}
+                            style={styles.appleButton}
+                            onPress={() => {
+                                if (!loading && !appleLoading) {
+                                    handleAppleSignUp();
+                                }
+                            }}
+                        />
+                    </View>
+                )}
+
                 <TemplateText
                     size={14}
                     center
@@ -282,6 +320,20 @@ const styles = StyleSheet.create({
     passwordContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    appleButtonWrapper: {
+        width: SCREEN_WIDTH - 40,
+        height: 50,
+        marginTop: 16,
+        borderRadius: 26,
+        overflow: 'hidden',
+    },
+    appleButton: {
+        width: '100%',
+        height: 50,
+    },
+    disabledButton: {
+        opacity: 0.5,
     },
 });
 export default SignUpScreen;

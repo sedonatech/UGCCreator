@@ -79,6 +79,11 @@ const SubscriptionScreen = ({ navigation, route }) => {
             setLoading(false);
             setError(e);
             return false;
+        } finally {
+            setLoading(false);
+            if (fromSettings) {
+                navigation.goBack();
+            }
         }
     };
 
