@@ -1,22 +1,12 @@
-/* eslint-disable max-len */
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import {
-    getFirestore,
-    collection,
-    query,
-    where,
-    limit,
-    getDocs,
-} from '@react-native-firebase/firestore';
+import { getFirestore, collection, query, where, limit, getDocs } from '@react-native-firebase/firestore';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, CREATORS_PROFILES_STACK, PROFILE } from '../../../../navigation/ScreenNames';
-import {
-    BLACK, BLUE, IOS_BLUE, LIGHT_PURPLE,
-} from '../../../../theme/Colors';
+import { BLACK, BLUE, IOS_BLUE, LIGHT_PURPLE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import CreatorCard from '../../creators/CreatorCard';
@@ -44,16 +34,18 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
 
     const getCreators = async () => {
         const querySnapshot = await getDocs(creatorsRef);
-        const data = querySnapshot?.docs
-            ?.map((docSnap) => ({
-                id: docSnap?.id,
-                ...docSnap?.data(),
-                lastLoginTime: docSnap?.lastLoginTime ? calculateLastLoginTime(docSnap?.lastLoginTime) : 'days ago',
-            }));
+        const data = querySnapshot?.docs?.map(docSnap => ({
+            id: docSnap?.id,
+            ...docSnap?.data(),
+            lastLoginTime: docSnap?.lastLoginTime ? calculateLastLoginTime(docSnap?.lastLoginTime) : 'days ago',
+        }));
         setCreators(data);
     };
 
-    const creatorsDataSample = useMemo(() => creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE), [creatorsData, SAMPLE_SIZE]);
+    const creatorsDataSample = useMemo(
+        () => creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE),
+        [creatorsData, SAMPLE_SIZE],
+    );
 
     return creatorsDataSample?.length ? (
         <View style={style}>
@@ -70,7 +62,6 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
                             See All
                         </TemplateText>
                     </TemplateTouchable>
-
                 </TemplateBox>
 
                 <TemplateBox height={10} />
@@ -85,10 +76,9 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
                     <CreatorCard
                         name={item?.userName}
                         imageUrl={item?.image}
-                        shortDescription={item?.shortDescription
-                          || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                        shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
                         style={styles.card}
-                        width={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6)}
+                        width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
                         imageStyle={styles.image}
                         subtitleContainerWidth={94}
                         buttonOffset={50}
@@ -111,7 +101,7 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
                         mt={12}
                     />
                 )}
-                snapToInterval={SCREEN_WIDTH - (WRAPPER_MARGIN * 4.6) + 20}
+                snapToInterval={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6 + 20}
                 showPagination
                 paginationSize={creatorsDataSample?.length}
                 contentContainerStyle={styles.cardCarousel}
@@ -138,12 +128,11 @@ const styles = StyleSheet.create({
         marginTop: WRAPPER_MARGIN / 2,
     },
     cardCarousel: {
-        paddingHorizontal: WRAPPER_MARGIN,
+        // paddingHorizontal: WRAPPER_MARGIN,
     },
     card: {
-        marginRight: WRAPPER_MARGIN,
-        marginBottom: 10,
         backgroundColor: LIGHT_PURPLE,
+        marginRight: 0,
     },
     image: {
         width: wp(80),

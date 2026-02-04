@@ -8,10 +8,11 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { throttle, startCase, toLower } from 'lodash';
 import { useIsFocused } from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { getFirestore, collection, query, where, limit as fsLimit, getDocs } from '@react-native-firebase/firestore';
+import { getFirestore, collection, query, where, getDocs } from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
 import { wp } from '../../../Utils/getResponsiveSize';
 import {
@@ -51,6 +52,9 @@ import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const USERS_COLLECTION = 'users';
+const CREATORS_CACHE_KEY = '@creators_cache';
+const CREATORS_CACHE_TIMESTAMP_KEY = '@creators_cache_timestamp';
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
 
 const renderItem = (item, navigation) => (
     <CreatorCard
@@ -68,21 +72,20 @@ const renderItem = (item, navigation) => (
 
 const CreatorProfilesScreen = ({ navigation }) => {
     const [creatorsData, setCreatorsData] = useState([]);
-    const [limit, setLimit] = useState(10);
     const [search, setSearch] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState([]);
     const [filteredData, setFilteredCreators] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
 
     const searchActive = search?.length > 2 || selectedFilters?.length;
 
     const db = getFirestore();
 
-    const getCreatorsQuery = limitCount =>
-        query(collection(db, USERS_COLLECTION), where('type', '==', 'creator'), fsLimit(limitCount));
+    const getCreatorsQuery = () => query(collection(db, USERS_COLLECTION), where('type', '==', 'creator'));
 
-    const getFilteredCreatorsQuery = (limitCount, search, selectedFilters) => {
-        const constraints = [where('type', '==', 'creator'), fsLimit(limitCount)];
+    const getFilteredCreatorsQuery = (search, selectedFilters) => {
+        const constraints = [where('type', '==', 'creator')];
         if (search?.includes('.com')) {
             constraints.push(where('email', '==', search?.toLowerCase()));
         } else if (search?.length > 2 && !search?.includes('.com')) {
@@ -97,34 +100,65 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setFetching(true);
             try {
-                const q = getCreatorsQuery(limit);
+                // Check cache first
+                const cachedData = await AsyncStorage.getItem(CREATORS_CACHE_KEY);
+                const cachedTimestamp = await AsyncStorage.getItem(CREATORS_CACHE_TIMESTAMP_KEY);
+                const now = Date.now();
+
+                // Use cached data if it exists and is not expired
+                if (cachedData && cachedTimestamp) {
+                    const timestamp = parseInt(cachedTimestamp, 10);
+                    if (now - timestamp < CACHE_DURATION) {
+                        const parsedData = JSON.parse(cachedData);
+                        setCreatorsData(parsedData);
+                        setFetching(false);
+                        return; // Exit early with cached data
+                    }
+                }
+
+                // Fetch fresh data if cache is missing or expired
+                const q = getCreatorsQuery();
                 const querySnapshot = await getDocs(q);
-                const data = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    lastLoginTime: doc.data().lastLoginTime
-                        ? calculateLastLoginTime(doc.data().lastLoginTime)
-                        : 'days ago',
-                }));
+                const data = querySnapshot.docs
+                    .map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        lastLoginTime: doc.data().lastLoginTime
+                            ? calculateLastLoginTime(doc.data().lastLoginTime)
+                            : 'days ago',
+                    }))
+                    .filter(creator => creator.image); // Exclude creators without images
+
                 setCreatorsData(data);
+
+                // Cache the new data
+                await AsyncStorage.setItem(CREATORS_CACHE_KEY, JSON.stringify(data));
+                await AsyncStorage.setItem(CREATORS_CACHE_TIMESTAMP_KEY, now.toString());
             } catch (error) {
                 console.error('Error fetching data:', error);
+            } finally {
+                setFetching(false);
             }
         };
         fetchData(); // Call the fetch function
-    }, [limit]);
+    }, []);
 
     const searchCreator = async () => {
         setLoading(true);
         setFilteredCreators([]);
-        const q = getFilteredCreatorsQuery(limit, search, selectedFilters);
+        const q = getFilteredCreatorsQuery(search, selectedFilters);
         const querySnapshot = await getDocs(q);
-        const data = querySnapshot?.docs?.map(doc => ({
-            id: doc?.id,
-            ...doc?.data(),
-            lastLoginTime: doc?.data().lastLoginTime ? calculateLastLoginTime(doc?.data().lastLoginTime) : 'days ago',
-        }));
+        const data = querySnapshot?.docs
+            ?.map(doc => ({
+                id: doc?.id,
+                ...doc?.data(),
+                lastLoginTime: doc?.data().lastLoginTime
+                    ? calculateLastLoginTime(doc?.data().lastLoginTime)
+                    : 'days ago',
+            }))
+            .filter(creator => creator.image); // Exclude creators without images
         setLoading(false);
         setFilteredCreators(data);
     };
@@ -135,7 +169,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
     useEffect(() => {
         if (!searchActive) {
             setFilteredCreators([]);
-            setLimit(10);
             return;
         }
         throttledSearchCreator();
@@ -154,10 +187,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
     const filteredSearchedCreators = searchActive ? filteredData : creatorsData;
 
     const isFocused = useIsFocused();
-
-    useEffect(() => {
-        setLimit(10);
-    }, [isFocused]);
 
     const { auth } = useAuthContext();
     const isCreator = auth?.profile?.type === 'creator';
@@ -219,17 +248,20 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         center
                         selfCenter
                     >
-                        {(!creatorsData?.length || loading) && <ActivityIndicator size="large" color={IOS_BLUE} />}
-                        {creatorsData?.length > 0 && !filteredSearchedCreators?.length && !loading && (
+                        {(fetching || loading) && (
+                            <>
+                                <ActivityIndicator size="large" color={IOS_BLUE} />
+                                <TemplateText mt={SPACE_MEDIUM} color={BLACK}>
+                                    Fetching creators...
+                                </TemplateText>
+                            </>
+                        )}
+                        {!fetching && creatorsData?.length > 0 && !filteredSearchedCreators?.length && !loading && (
                             <TemplateText semiBold>No results found</TemplateText>
                         )}
                     </TemplateBox>
                 }
-                initialNumToRender={10}
-                onEndReachedThreshold={0.5}
-                onEndReached={() => {
-                    setLimit(prevLimit => prevLimit + 10);
-                }}
+                initialNumToRender={20}
                 removeClippedSubviews
             />
             <RBSheet

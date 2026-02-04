@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useState } from 'react';
 import {
     getFirestore,
@@ -40,12 +39,17 @@ const useChatRooms = () => {
             setLoading(true);
             const db = getFirestore();
             if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId || !name) {
-                Alert.alert('The user may not be available at the moment',
+                Alert.alert(
+                    'The user may not be available at the moment',
                     'Please try again later',
-                    [{
-                        text: 'OK',
-                        onPress: () => {},
-                    }], { cancelable: false });
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => {},
+                        },
+                    ],
+                    { cancelable: false },
+                );
                 return;
             }
             // Check if the chat room already exists, extend to handle creator to creator chat
@@ -62,15 +66,19 @@ const useChatRooms = () => {
             );
             const foundBrandToCreatorChat = await getDocs(brandToCreatorQuery);
             const foundCreatorToCreatorChat = await getDocs(creatorToCreatorQuery);
-            const existingChatRoom = foundBrandToCreatorChat?.docs?.length
-                || foundCreatorToCreatorChat?.docs?.length;
+            const existingChatRoom = foundBrandToCreatorChat?.docs?.length || foundCreatorToCreatorChat?.docs?.length;
             if (existingChatRoom) {
-                Alert.alert('A conversation has already been started',
+                Alert.alert(
+                    'A conversation has already been started',
                     'You can check the chats tab and continue chatting',
-                    [{
-                        text: 'OK',
-                        onPress: () => navigation.navigate(CHATS_STACK),
-                    }], { cancelable: false });
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => navigation.navigate(CHATS_STACK),
+                        },
+                    ],
+                    { cancelable: false },
+                );
                 return;
             }
             const response = await addDoc(chatRoomsRef, {
@@ -84,28 +92,38 @@ const useChatRooms = () => {
             });
             if (response) {
                 setChatRoomCreated(true);
-                Alert.alert('A conversation has been started',
+                Alert.alert(
+                    'A conversation has been started',
                     'You can check the chats tab and continue chatting',
-                    [{
-                        text: 'OK',
-                        onPress: () => navigation.navigate(CHATS_STACK),
-                    }], { cancelable: false });
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => navigation.navigate(CHATS_STACK),
+                        },
+                    ],
+                    { cancelable: false },
+                );
             }
         } catch (error) {
             console.log('[CREATE CHAT ROOM ERROR]', error);
             if (error.message) {
-                Alert.alert('The user may not be available at the moment',
+                Alert.alert(
+                    'The user may not be available at the moment',
                     'Please try again later',
-                    [{
-                        text: 'OK',
-                        onPress: () => {},
-                    }], { cancelable: false });
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => {},
+                        },
+                    ],
+                    { cancelable: false },
+                );
             }
         }
     };
 
     // Delete chat room
-    const deleteChatRoom = async (chatRoomId) => {
+    const deleteChatRoom = async chatRoomId => {
         try {
             setDeleteChatRoomLoading(true);
             const db = getFirestore();
@@ -135,14 +153,11 @@ const useChatRooms = () => {
             }
             const roomId = latestRoom.id;
             const messagesRef = collection(db, CHAT_ROOMS, roomId, 'messages');
-            const messagesQuery = query(
-                messagesRef,
-                where('read', '==', false),
-            );
+            const messagesQuery = query(messagesRef, where('read', '==', false));
             const messagesSnapshot = await getDocs(messagesQuery);
             const unreadMessages = messagesSnapshot.docs
-                .map((messageDoc) => ({ id: messageDoc.id, ...messageDoc.data() }))
-                .filter((message) => message.user?._id !== userId);
+                .map(messageDoc => ({ id: messageDoc.id, ...messageDoc.data() }))
+                .filter(message => message.user?._id !== userId);
             return unreadMessages.length;
         } catch (error) {
             console.log('[UNREAD MESSAGE CHECK ERROR]', error);

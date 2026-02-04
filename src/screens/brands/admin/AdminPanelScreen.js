@@ -1,27 +1,13 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable max-len */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import React, {
-    useEffect, useLayoutEffect, useMemo, useState,
-} from 'react';
-import {
-    ScrollView, StyleSheet, RefreshControl,
-    View,
-    TouchableWithoutFeedback,
-} from 'react-native';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { ScrollView, StyleSheet, RefreshControl, View, TouchableWithoutFeedback } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import { useIsFocused } from '@react-navigation/native';
 import { getMessaging } from '@react-native-firebase/messaging';
 import TemplateText from '../../../components/TemplateText';
-import {
-    BLACK,
-    LAVENDER,
-    WHITE,
-} from '../../../theme/Colors';
-import {
-    ADD_EVENT,
-    ADD_PROJECT, BRAND_PROJECT_DETAILS,
-} from '../../../navigation/ScreenNames';
+import { BLACK, LAVENDER, WHITE } from '../../../theme/Colors';
+import { ADD_EVENT, ADD_PROJECT, BRAND_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
 import { HEADER_MARGIN, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
@@ -29,10 +15,7 @@ import CurrentCreatorsCarousel from './components/CurrentCreatorsCarousel';
 import FeaturedCreatorsCarousel from './components/FeaturedCreatorsCarousel';
 import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
-import {
-    BRAND_NO_CURRENT_PROJECT_MESSAGE,
-    BRAND_NO_CURRENT_PROJECT_TITLE,
-} from '../../../consts/content/Home';
+import { BRAND_NO_CURRENT_PROJECT_MESSAGE, BRAND_NO_CURRENT_PROJECT_TITLE } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import TemplateBox from '../../../components/TemplateBox';
@@ -66,7 +49,7 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const projectsCarouselData = useMemo(() => {
         if (!projects?.length) return [];
-        return projects?.slice(0, 5)?.map((project) => ({
+        return projects?.slice(0, 5)?.map(project => ({
             id: project?.id,
             title: project?.title,
             brand: brandName,
@@ -75,9 +58,10 @@ const AdminPanelScreen = ({ navigation }) => {
             notifications: project?.applications?.length || 0,
             documents: project?.applications?.[0]?.documents?.length || 0,
             daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
-            onPress: () => navigation.navigate(BRAND_PROJECT_DETAILS, {
-                projectId: project?.id,
-            }),
+            onPress: () =>
+                navigation.navigate(BRAND_PROJECT_DETAILS, {
+                    projectId: project?.id,
+                }),
         }));
     }, [projects]);
 
@@ -100,10 +84,7 @@ const AdminPanelScreen = ({ navigation }) => {
         if (isFocused && profile) {
             auth?.getProfileCompleteStatus();
         }
-    }, [
-        isFocused,
-        profile,
-    ]);
+    }, [isFocused, profile]);
 
     const { previousResponse, handleRate } = useAppReview();
 
@@ -125,13 +106,13 @@ const AdminPanelScreen = ({ navigation }) => {
     ];
 
     useEffect(() => {
-        const unsubscribe = getMessaging().onTokenRefresh((token) => {
+        const unsubscribe = getMessaging().onTokenRefresh(token => {
             if (token) updateFcmToken(token);
         });
         return unsubscribe;
     }, []);
 
-    const updateFcmToken = async (token) => {
+    const updateFcmToken = async token => {
         await updateProfile({ fcmToken: token }, profile?.id);
     };
 
@@ -148,17 +129,10 @@ const AdminPanelScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
                 <ScrollView
                     style={styles.container}
-                    refreshControl={(
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={handleBrandRefresh}
-                        />
-                    )}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleBrandRefresh} />}
                     showsVerticalScrollIndicator={false}
                 >
-                    {profile?.name && (
-                        <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />
-                    )}
+                    {profile?.name && <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />}
                     {previousResponse === null && features?.showReviewPrompt && (
                         <TemplateBox
                             row
@@ -174,17 +148,8 @@ const AdminPanelScreen = ({ navigation }) => {
                             <TemplateText size={13} onPress={handleRate}>
                                 Please take a moment to rate our app
                             </TemplateText>
-                            <TemplateBox
-                                onPress={handleRate}
-                                ml={wp(60)}
-                                mt={-wp(8)}
-                            >
-                                <TemplateIcon
-                                    name="close-outline"
-                                    size={20}
-                                    color={BLACK}
-
-                                />
+                            <TemplateBox onPress={handleRate} ml={wp(60)} mt={-wp(8)}>
+                                <TemplateIcon name="close-outline" size={20} color={BLACK} />
                             </TemplateBox>
                         </TemplateBox>
                     )}
@@ -192,36 +157,29 @@ const AdminPanelScreen = ({ navigation }) => {
                     <FeaturedCreatorsCarousel style={styles.carousel} />
                     <FeaturedShowcaseCarousel style={styles.carousel} />
                     <BrandEventsCarousel brandId={profile?.id} />
-                    {
-                        projectsCarouselData?.length ? (
-                            <ActiveProjectsCarousel
-                                style={styles.carousel}
-                                projectsCarouselData={projectsCarouselData}
-                            />
-                        ) : (
-                            <ProfileStatusCard
-                                title={BRAND_NO_CURRENT_PROJECT_TITLE}
-                                description={BRAND_NO_CURRENT_PROJECT_MESSAGE}
-                                showProgress={false}
-                                showIcon={false}
-                                style={styles.statusCard}
-                                slideInDelay={200}
-                            />
-                        )
-                    }
+                    {projectsCarouselData?.length ? (
+                        <ActiveProjectsCarousel style={styles.carousel} projectsCarouselData={projectsCarouselData} />
+                    ) : (
+                        <ProfileStatusCard
+                            title={BRAND_NO_CURRENT_PROJECT_TITLE}
+                            description={BRAND_NO_CURRENT_PROJECT_MESSAGE}
+                            showProgress={false}
+                            showIcon={false}
+                            style={styles.statusCard}
+                            slideInDelay={200}
+                        />
+                    )}
                 </ScrollView>
-                {showOptions
-            && (
-                <View
-                    style={{
-                        position: 'absolute',
-                        right: WRAPPER_MARGIN,
-                        top: HEADER_MARGIN * 0.85,
-                        zIndex: 99,
-                    }}
-                >
-                    {
-                        options?.map(({ title, onPress }, index) => (
+                {showOptions && (
+                    <View
+                        style={{
+                            position: 'absolute',
+                            right: WRAPPER_MARGIN,
+                            top: HEADER_MARGIN * 0.85,
+                            zIndex: 99,
+                        }}
+                    >
+                        {options?.map(({ title, onPress }, index) => (
                             <TemplateBox
                                 key={`option-${index}`}
                                 zIndex={99}
@@ -234,20 +192,15 @@ const AdminPanelScreen = ({ navigation }) => {
                                 slideInX={20}
                                 debug
                             >
-                                <TemplateBox
-                                    onPress={onPress}
-                                    ph={12}
-                                    pv={8}
-                                >
+                                <TemplateBox onPress={onPress} ph={12} pv={8}>
                                     <TemplateText size={hp(12)} semiBold>
                                         {title}
                                     </TemplateText>
                                 </TemplateBox>
                             </TemplateBox>
-                        ))
-                    }
-                </View>
-            )}
+                        ))}
+                    </View>
+                )}
             </View>
         </TouchableWithoutFeedback>
     );

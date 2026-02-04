@@ -287,7 +287,14 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 )}
             </TemplateBox>
 
-            <Button title={buttonCta} style={styles.button} color={BLACK_SECONDARY} onPress={onEnroll} />
+            <Button
+                title={buttonCta}
+                style={styles.button}
+                color={BLACK_SECONDARY}
+                onPress={onEnroll}
+                height={50}
+                width={SCREEN_WIDTH - 40}
+            />
         </ScrollView>
     );
 };
