@@ -8,16 +8,16 @@ import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateBox from '../../../../components/TemplateBox';
-import ProjectCard from './ProjectCard';
-import {
-    PROJECT_DETAILS, PROJECTS_SCREEN,
-} from '../../../../navigation/ScreenNames';
+import UGCProjectsCard from './UGCProjectsCard';
+import { BRAND_OFFERS, PROJECT_DETAILS, PROJECTS_SCREEN } from '../../../../navigation/ScreenNames';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../../consts/content/Home';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import { projectTypeFilters } from '../../../../consts/AppFilters/ProjectFilters';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
+import DynamicIcon from '../../../../components/icons/DynamicIcon';
+import { PROJECTS_TAB } from '../../explore/ExploreScreen';
 
 const ProjectsCarousel = ({ style }) => {
     const { auth } = useAuthContext();
@@ -29,15 +29,23 @@ const ProjectsCarousel = ({ style }) => {
     const carouselData = useMemo(() => {
         if (!projects || projects.length === 0) return [];
 
-        return projects?.map((item) => ({
-            id: item?.id,
-            image: item?.image,
-            title: item?.title,
-            shortDescription: item?.shortDescription,
-            duration: (!!item?.startDate && !!item?.endDate) ? `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks` : 'Ongoing',
-            enrolled: item?.applications?.map((app) => app?.creatorId)?.includes(profile?.id),
-            projectType: item?.projectType?.length > 0 && projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
-        }))?.filter((item) => !!item?.image)?.slice(0, 5);
+        return projects
+            ?.map(item => ({
+                id: item?.id,
+                image: item?.image,
+                title: item?.title,
+                shortDescription: item?.shortDescription,
+                duration:
+                    !!item?.startDate && !!item?.endDate
+                        ? `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`
+                        : 'Ongoing',
+                enrolled: item?.applications?.map(app => app?.creatorId)?.includes(profile?.id),
+                projectType:
+                    item?.projectType?.length > 0 &&
+                    projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
+            }))
+            ?.filter(item => !!item?.image)
+            .slice(0, 5);
     }, [projects]);
 
     return !carouselData ? (
@@ -49,9 +57,11 @@ const ProjectsCarousel = ({ style }) => {
             slideInDelay={200}
         />
     ) : (
-        <TemplateBox style={style}>
+        <TemplateBox style={[style, styles.container]}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
-                <TemplateText size={18} bold>New Projects</TemplateText>
+                <TemplateText size={18} bold>
+                    New Projects
+                </TemplateText>
                 <TemplateBox flex />
                 {/* @ts-ignore */}
                 <TemplateTouchable onPress={() => navigation.navigate(PROJECTS_SCREEN)}>
@@ -62,21 +72,36 @@ const ProjectsCarousel = ({ style }) => {
             </TemplateBox>
             {/* @ts-ignore */}
             <TemplateText size={13} color={BLACK} style={styles.subtitle}>
-                Check out  new projects from trusted brands based on your interests and location
+                Check out new projects from trusted brands based on your interests and location
             </TemplateText>
+
+            <TemplateBox
+                row
+                alignItems="center"
+                mb={14}
+                ph={WRAPPER_MARGIN}
+                onPress={() => navigation.navigate(BRAND_OFFERS)}
+            >
+                <TemplateText size={14} medium color={IOS_BLUE}>
+                    My enrolled projects
+                </TemplateText>
+                <DynamicIcon name="ArrowRight" color={IOS_BLUE} />
+            </TemplateBox>
 
             <TemplateCarousel
                 data={carouselData}
                 renderItem={({ item }) => (
-                    <ProjectCard
+                    <UGCProjectsCard
                         key={item?.id}
                         image={!!item?.image && { uri: item?.image }}
                         title={item?.title}
                         shortDescription={item?.shortDescription}
                         // @ts-ignore
-                        onPress={() => navigation.navigate(PROJECT_DETAILS, {
-                            projectId: item?.id,
-                        })}
+                        onPress={() =>
+                            navigation.navigate(PROJECT_DETAILS, {
+                                projectId: item?.id,
+                            })
+                        }
                         enrolled={item?.enrolled}
                         style={styles.card}
                         projectType={item?.projectType}
@@ -84,7 +109,7 @@ const ProjectsCarousel = ({ style }) => {
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
-                snapToInterval={(SCREEN_WIDTH / 2) - 28}
+                snapToInterval={SCREEN_WIDTH / 2 - 28}
             />
         </TemplateBox>
     );
@@ -99,13 +124,15 @@ ProjectsCarousel.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        marginTop: 20,
+    },
     subtitle: {
         marginLeft: WRAPPER_MARGIN,
         marginBottom: 10,
     },
     card: {
         marginRight: 15,
-
     },
     cardCarousel: {
         paddingHorizontal: WRAPPER_MARGIN,

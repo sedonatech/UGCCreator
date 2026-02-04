@@ -6,6 +6,7 @@ import {
     AFFILIATE_BRANDS,
     BRAND_DEALS_SCREEN,
     BRAND_DETAILS,
+    BRAND_OFFERS,
     BRANDS_CATALOGUE,
     BRANDS_SCREEN,
     CHALLENGE_DETAILS,
@@ -40,6 +41,7 @@ import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
 import AffiliateBrandsScreen from '../../screens/app/home/AffiliateBrandsScreen';
 import BrandDealsScreen from '../../screens/app/home/BrandDealsScreen';
 import ChallengeDetailsScreen from '../../screens/app/home/ChallengeDetailsScreen';
+import BrandOffersScreen from '../../screens/brands/admin/BrandOffersScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -76,6 +78,7 @@ const HomeStack = () => (
         <Screen name={AFFILIATE_BRANDS} options={TRANSPARENT_HEADER} component={AffiliateBrandsScreen} />
         <Screen name={BRAND_DEALS_SCREEN} options={TRANSPARENT_HEADER} component={BrandDealsScreen} />
         <Screen name={CHALLENGE_DETAILS} options={TRANSPARENT_HEADER} component={ChallengeDetailsScreen} />
+        <Screen name={BRAND_OFFERS} options={TRANSPARENT_HEADER} component={BrandOffersScreen} />
     </Navigator>
 );
 

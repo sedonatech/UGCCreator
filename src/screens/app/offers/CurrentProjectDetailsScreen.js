@@ -1,18 +1,12 @@
-import React, {
-    useEffect,
-    useLayoutEffect, useMemo, useState,
-} from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
-import {
-    BLACK, GREEN, WHITE, WHITE_40,
-} from '../../../theme/Colors';
+import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
-import ToggleCarousel from '../../../components/ToggleCarousel';
 import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
@@ -53,14 +47,17 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
         const unsubscribe = db
             .collection(PROJECTS_COLLECTION)
             .doc(projectId)
-            .onSnapshot((doc) => {
-                if (doc.exists) {
-                    const result = { id: doc.id, ...doc.data() };
-                    setCurrentProject(result);
-                }
-            }, (error) => {
-                console.log('[PROJECT LISTENER ERROR]', error);
-            });
+            .onSnapshot(
+                doc => {
+                    if (doc.exists) {
+                        const result = { id: doc.id, ...doc.data() };
+                        setCurrentProject(result);
+                    }
+                },
+                error => {
+                    console.log('[PROJECT LISTENER ERROR]', error);
+                },
+            );
 
         return () => {
             unsubscribe(); // clean up listener on unmount
@@ -113,17 +110,9 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
             scrollEventThrottle={1}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox
-                height={SCREEN_HEIGHT / 2.4}
-            >
-                <BackgroundImage
-                    source={{ uri: currentProject?.image }}
-                    width={SCREEN_WIDTH}
-                    style={styles.image}
-                />
-                <TemplateBox
-                    pl={WRAPPER_MARGIN}
-                >
+            <TemplateBox height={SCREEN_HEIGHT / 2.4}>
+                <BackgroundImage source={{ uri: currentProject?.image }} width={SCREEN_WIDTH} style={styles.image} />
+                <TemplateBox pl={WRAPPER_MARGIN}>
                     <TemplateBox
                         borderRadius={10}
                         ph={WRAPPER_MARGIN}
@@ -134,33 +123,18 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
                         mt={SCREEN_HEIGHT / 2.4 - 66}
                     >
                         <TemplateText bold size={14} color={WHITE}>
-                            {
-                                application?.status?.find(({ status }) => status === 'active')?.name
-                            }
-
+                            {application?.status?.find(({ status }) => status === 'active')?.name}
                         </TemplateText>
                     </TemplateBox>
                 </TemplateBox>
-
             </TemplateBox>
 
-            <TemplateBox
-                mt={WRAPPER_MARGIN}
-                ph={WRAPPER_MARGIN}
-            >
-                <TemplateText
-                    bold
-                    size={18}
-                    color={BLACK}
-                >
+            <TemplateBox mt={WRAPPER_MARGIN} ph={WRAPPER_MARGIN}>
+                <TemplateText bold size={18} color={BLACK}>
                     {currentProject?.title}
                 </TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText
-                    size={14}
-                    color={BLACK}
-                    numberOfLines={21}
-                >
+                <TemplateText size={14} color={BLACK} numberOfLines={21}>
                     {currentProject?.shortDescription}
                 </TemplateText>
             </TemplateBox>
@@ -173,22 +147,16 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
                     flex={false}
                 /> */}
             </TemplateBox>
-            {
-                selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
-                    <OverviewTab
-                        application={application}
-                        currentProject={currentProject}
-                        creatorID={profile?.id}
-                        brandEmail={currentProjectBrand?.email}
-                        brandFCMToken={currentProjectBrand?.fcmToken}
-                    />
-                )
-            }
-            {
-                selectedTab?.value === CURRENT_PROJECT_TABS[1].value && (
-                    <ProjectNotificationsTab />
-                )
-            }
+            {selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
+                <OverviewTab
+                    application={application}
+                    currentProject={currentProject}
+                    creatorID={profile?.id}
+                    brandEmail={currentProjectBrand?.email}
+                    brandFCMToken={currentProjectBrand?.fcmToken}
+                />
+            )}
+            {selectedTab?.value === CURRENT_PROJECT_TABS[1].value && <ProjectNotificationsTab />}
         </ScrollView>
     );
 };
@@ -204,6 +172,5 @@ const styles = StyleSheet.create({
     image: {
         zIndex: -1,
     },
-
 });
 export default CurrentProjectDetailsScreen;

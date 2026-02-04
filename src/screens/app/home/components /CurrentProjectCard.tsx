@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import TemplateBox from '../../../../components/TemplateBox';
-import { BLACK, BLACK_20, BRAND_BLUE, GREY, PINK, WHITE_30 } from '../../../../theme/Colors';
+import { BLACK, BLACK_20, BRAND_BLUE, GREEN, GREY, LIGHT_GREEN, PINK, WHITE_30 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import { RADIUS_MEDIUM, SCREEN_WIDTH } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
@@ -16,19 +16,13 @@ interface Props {
     progress?: number;
     status?: string;
     notificationCount?: number;
-
     documentCount?: number;
-
     daysLeft?: number;
     onPress?: () => void;
-
     style?: any;
     cardColor?: string;
-
     tagColor?: string;
-
     width?: number;
-
     slideInDelay?: number;
     isBrand?: boolean;
     projectId?: string;
@@ -51,17 +45,15 @@ const CurrentProjectCard: FC<Props> = ({
     isBrand = false,
     projectId,
 }) => {
-    const color = status === 'High' ? PINK : BRAND_BLUE;
-
     const { enrolledCreatorsAvatars } = useGetEnrolledCreatorsAvatars(projectId);
-
     return (
         <TemplateBox
             width={width || SCREEN_WIDTH / 1.23}
             borderRadius={RADIUS_MEDIUM}
-            shadow
             pAll={20}
-            backgroundColor={cardColor || color}
+            backgroundColor={WHITE_30}
+            borderWidth={StyleSheet.hairlineWidth}
+            borderColor={BLACK_20}
             style={style}
             onPress={onPress}
             slideIn={slideInDelay !== undefined}
@@ -70,7 +62,7 @@ const CurrentProjectCard: FC<Props> = ({
             <TemplateBox row alignItems="center" mb={20}>
                 <TemplateBox
                     borderRadius={8}
-                    backgroundColor={tagColor || WHITE_30}
+                    backgroundColor={LIGHT_GREEN}
                     alignItems="center"
                     justifyContent="center"
                     ph={10}
@@ -85,7 +77,7 @@ const CurrentProjectCard: FC<Props> = ({
                 <TemplateIcon color={BLACK} size={24} name="ellipsis-vertical-outline" />
             </TemplateBox>
             {/* @ts-ignore */}
-            <TemplateText size={16} bold color={BLACK} style={styles.title}>
+            <TemplateText size={16} semiBold color={BLACK} style={styles.title}>
                 {title}
             </TemplateText>
 
@@ -99,7 +91,7 @@ const CurrentProjectCard: FC<Props> = ({
                             progress={progress}
                             width={SCREEN_WIDTH / 1.6}
                             height={4}
-                            color={BLACK}
+                            color={LIGHT_GREEN}
                             unfilledColor={BLACK_20}
                             style={styles.progress}
                             borderWidth={0}
@@ -115,7 +107,7 @@ const CurrentProjectCard: FC<Props> = ({
                 {isBrand ? (
                     <AvatarOverlaps imageUrls={enrolledCreatorsAvatars} />
                 ) : (
-                    <TemplateText size={14} color={BLACK} bold>
+                    <TemplateText size={14} color={BLACK} medium>
                         {brand}
                     </TemplateText>
                 )}

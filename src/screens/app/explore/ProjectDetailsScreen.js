@@ -1,29 +1,10 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable max-len */
-import React, {
-    useLayoutEffect, useMemo,
-} from 'react';
-import {
-    Alert,
-    ScrollView, StyleSheet,
-} from 'react-native';
+/* eslint-disable react/no-unstable-nested-components */
+import React, { useLayoutEffect, useMemo } from 'react';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 
-import {
-    getFirestore,
-    doc,
-    updateDoc,
-} from '@react-native-firebase/firestore';
-import {
-    BLACK,
-    BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN,
-    WHITE,
-    WHITE_40,
-} from '../../../theme/Colors';
-import {
-    SCREEN_HEIGHT,
-    WRAPPER_MARGIN,
-    SCREEN_WIDTH,
-} from '../../../theme/Layout';
+import { getFirestore, doc, updateDoc } from '@react-native-firebase/firestore';
+import { BLACK, BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
+import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
@@ -36,9 +17,12 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import {
     ageFilters,
     countryFilters,
-    deliveryFormatFilters, genderFilters, languageFilters,
+    deliveryFormatFilters,
+    genderFilters,
+    languageFilters,
     projectDurationFilters,
-    projectFilters, projectTypeFilters,
+    projectFilters,
+    projectTypeFilters,
 } from '../../../consts/AppFilters/ProjectFilters';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
@@ -67,45 +51,8 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
     const enrolled = useMemo(() => {
         if (!selectedProject) return false;
 
-        return selectedProject?.applications?.map((app) => app?.creatorId)?.includes(profile?.id);
+        return selectedProject?.applications?.map(app => app?.creatorId)?.includes(profile?.id);
     }, [selectedProject, profile]);
-
-    const updateProject = async (id, projectData) => {
-        try {
-            const db = getFirestore();
-            const projectRef = doc(db, PROJECTS_COLLECTION, id);
-            await updateDoc(projectRef, projectData);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const blockProject = () => {
-        Alert.alert(
-            'Confirm Action',
-            'Are you sure you want to block this project?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel',
-                    onPress: () => Alert.alert('Action cancelled.'),
-                },
-                {
-                    text: 'Block',
-                    style: 'destructive',
-                    onPress: async () => {
-                        try {
-                            await updateProject(projectId, { isBlocked: true });
-                            Alert.alert('Success', 'Project successfully blocked.');
-                        } catch (error) {
-                            console.error('Error blocking project:', error);
-                            Alert.alert('Error', 'Failed to block the project.');
-                        }
-                    },
-                },
-            ],
-        );
-    };
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -117,25 +64,15 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                     ml={WRAPPER_MARGIN}
                 />
             ),
-            headerRight: () => isTestUser && (
-                <HeaderIconButton
-                    title="block"
-                    onPress={blockProject}
-                    backDropColor={WHITE_40}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
-
         });
-    }, [navigation, isTestUser, blockProject, projectId]);
+    }, [navigation, projectId]);
 
     const onEnroll = () => {
         if (enrolled) {
-            navigation.navigate(CURRENT_PROJECT_DETAILS,
-                {
-                    projectId,
-                    fromProjectDetails: true,
-                });
+            navigation.navigate(CURRENT_PROJECT_DETAILS, {
+                projectId,
+                fromProjectDetails: true,
+            });
             return;
         }
         enrollToProject(profile?.id, selectedProject);
@@ -157,11 +94,12 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         return 'Enroll Now';
     }, [enrolled]);
 
-    const formatDate = (date) => new Date(date?.seconds * 1000).toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
+    const formatDate = date =>
+        new Date(date?.seconds * 1000).toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
 
     if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
 
@@ -173,38 +111,16 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
             contentContainerStyle={styles.contentContainer}
             bounces
         >
-            <TemplateBox
-                fullGradient
-                height={SCREEN_HEIGHT / 2.4}
-                gradientColors={DEFAULT_GRADIENT}
-            >
+            <TemplateBox fullGradient height={SCREEN_HEIGHT / 2.4} gradientColors={DEFAULT_GRADIENT}>
                 {/* @ts-ignore */}
-                <BackgroundImage
-                    source={{ uri: selectedProject?.image }}
-                    width={SCREEN_WIDTH}
-                    style={styles.image}
-                />
-                <TemplateBox
-                    absolute
-                    top={(SCREEN_HEIGHT / 3.4)}
-                    left={20}
-                    pr={20}
-                >
-                    <TemplateText
-                        bold
-                        size={18}
-                        color={WHITE}
-                    >
+                <BackgroundImage source={{ uri: selectedProject?.image }} width={SCREEN_WIDTH} style={styles.image} />
+                <TemplateBox absolute top={SCREEN_HEIGHT / 3.4} left={20} pr={20}>
+                    <TemplateText bold size={18} color={WHITE}>
                         {selectedProject?.title}
                     </TemplateText>
                     <TemplateBox height={10} />
-                    {!!selectedProject?.shortDescription
-                    && (
-                        <TemplateText
-                            size={14}
-                            color={WHITE}
-                            numberOfLines={2}
-                        >
+                    {!!selectedProject?.shortDescription && (
+                        <TemplateText size={14} color={WHITE} numberOfLines={2}>
                             {selectedProject?.shortDescription}
                         </TemplateText>
                     )}
@@ -222,60 +138,37 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         top={SCREEN_HEIGHT / 2.4 - 44}
                         left={SCREEN_HEIGHT / 2.4 - 46}
                     >
-                        <TemplateText bold size={12} color={WHITE}>Enrolled</TemplateText>
+                        <TemplateText bold size={12} color={WHITE}>
+                            Enrolled
+                        </TemplateText>
                     </TemplateBox>
                 )}
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN}>
-                {!!selectedProject?.description
-               && (
-                   <>
-                       <TemplateText
-                           style={styles.title}
-                           bold
-                           size={18}
-                           color={BLACK}
-                       >
-                           Description
-                       </TemplateText>
-                       <TemplateText
-                           color={BLACK}
-                           size={14}
-                           lineHeight={20}
-                       >
-                           {selectedProject?.description}
-                       </TemplateText>
-                   </>
-               )}
-                {!!selectedProject?.startDate && !!selectedProject?.endDate
-              && (
-                  <>
-                      <TemplateText
-                          style={styles.title}
-                          bold
-                          size={20}
-                          color={BLACK}
-                      >
-                          Timeline
-                      </TemplateText>
-                      <TemplateBox>
-                          <TemplateText
-                              size={14}
-                              color={BLACK}
-                              numberOfLines={2}
-                          >
-                              {`${formatDate(selectedProject?.startDate)} - ${formatDate(selectedProject?.endDate)}`}
-                          </TemplateText>
-                      </TemplateBox>
-                  </>
-              ) }
-                <TemplateText
-                    style={styles.title}
-                    boldr
-                    size={20}
-                    color={BLACK}
-                >
+                {!!selectedProject?.description && (
+                    <>
+                        <TemplateText style={styles.title} bold size={18} color={BLACK}>
+                            Description
+                        </TemplateText>
+                        <TemplateText color={BLACK} size={14} lineHeight={20}>
+                            {selectedProject?.description}
+                        </TemplateText>
+                    </>
+                )}
+                {!!selectedProject?.startDate && !!selectedProject?.endDate && (
+                    <>
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
+                            Timeline
+                        </TemplateText>
+                        <TemplateBox>
+                            <TemplateText size={14} color={BLACK} numberOfLines={2}>
+                                {`${formatDate(selectedProject?.startDate)} - ${formatDate(selectedProject?.endDate)}`}
+                            </TemplateText>
+                        </TemplateBox>
+                    </>
+                )}
+                <TemplateText style={styles.title} boldr size={20} color={BLACK}>
                     Price Range
                 </TemplateText>
                 <DescriptionRange
@@ -285,15 +178,9 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                     minSubtitle="Minimum Budget"
                     minTitle={`${selectedProject?.priceRange?.min || '--'} ${selectedProject?.currency?.symbol || '$'}`}
                 />
-                {!!selectedProject?.deliveryFormat && selectedProject?.deliveryFormat?.length > 0
-                && (
+                {!!selectedProject?.deliveryFormat && selectedProject?.deliveryFormat?.length > 0 && (
                     <>
-                        <TemplateText
-                            style={styles.title}
-                            bold
-                            size={20}
-                            color={BLACK}
-                        >
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
                             Content Delivery Format
                         </TemplateText>
                         {selectedProject?.deliveryFormat?.map((format, index) => (
@@ -304,39 +191,25 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         ))}
                     </>
                 )}
-                {!!selectedProject?.duration && selectedProject?.duration?.length > 0
-                    && (
-                        <>
-                            <TemplateText
-                                style={styles.title}
-                                bold
-                                size={20}
-                                color={BLACK}
-                            >
-                                Project Duration
-                            </TemplateText>
-                            {selectedProject?.duration?.map((duration) => (
-                                <DescriptionRow
-                                    key={projectDurationFilters?.find(({ value }) => value === duration)?.value}
-                                    title={projectDurationFilters
-                                        ?.find(({ value }) => value === duration)
-                                        ?.name}
-                                />
-                            ))}
-                        </>
-                    )}
-                {!!selectedProject?.categories && selectedProject?.categories?.length > 0
-                && (
+                {!!selectedProject?.duration && selectedProject?.duration?.length > 0 && (
                     <>
-                        <TemplateText
-                            style={styles.title}
-                            bold
-                            size={20}
-                            color={BLACK}
-                        >
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
+                            Project Duration
+                        </TemplateText>
+                        {selectedProject?.duration?.map(duration => (
+                            <DescriptionRow
+                                key={projectDurationFilters?.find(({ value }) => value === duration)?.value}
+                                title={projectDurationFilters?.find(({ value }) => value === duration)?.name}
+                            />
+                        ))}
+                    </>
+                )}
+                {!!selectedProject?.categories && selectedProject?.categories?.length > 0 && (
+                    <>
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
                             Categories
                         </TemplateText>
-                        {selectedProject?.categories?.map((category) => {
+                        {selectedProject?.categories?.map(category => {
                             if (!projectFilters?.find(({ value }) => value === category)?.name) return null;
                             return (
                                 <DescriptionRow
@@ -347,37 +220,25 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         })}
                     </>
                 )}
-                {!!selectedProject?.countries && selectedProject?.countries?.length > 0
-               && (
-                   <>
-                       <TemplateText
-                           style={styles.title}
-                           bold
-                           size={20}
-                           color={BLACK}
-                       >
-                           Location
-                       </TemplateText>
-                       {selectedProject?.countries?.map((country) => (
-                           <DescriptionRow
-                               key={countryFilters?.find(({ value }) => value === country)?.value}
-                               title={countryFilters?.find(({ value }) => value === country)?.name}
-                           />
-                       ))}
-                   </>
-               )}
-                {!!selectedProject?.gender && selectedProject?.gender?.length > 0
-                && (
+                {!!selectedProject?.countries && selectedProject?.countries?.length > 0 && (
                     <>
-                        <TemplateText
-                            style={styles.title}
-                            bold
-                            size={20}
-                            color={BLACK}
-                        >
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
+                            Location
+                        </TemplateText>
+                        {selectedProject?.countries?.map(country => (
+                            <DescriptionRow
+                                key={countryFilters?.find(({ value }) => value === country)?.value}
+                                title={countryFilters?.find(({ value }) => value === country)?.name}
+                            />
+                        ))}
+                    </>
+                )}
+                {!!selectedProject?.gender && selectedProject?.gender?.length > 0 && (
+                    <>
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
                             Genders
                         </TemplateText>
-                        {selectedProject?.gender?.map((gender) => (
+                        {selectedProject?.gender?.map(gender => (
                             <DescriptionRow
                                 key={genderFilters?.find(({ value }) => value === gender)?.value}
                                 title={genderFilters?.find(({ value }) => value === gender)?.name}
@@ -385,18 +246,12 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         ))}
                     </>
                 )}
-                {!!selectedProject?.languages && selectedProject?.languages?.length > 0
-                && (
+                {!!selectedProject?.languages && selectedProject?.languages?.length > 0 && (
                     <>
-                        <TemplateText
-                            style={styles.title}
-                            bold
-                            size={20}
-                            color={BLACK}
-                        >
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
                             Content Languages
                         </TemplateText>
-                        {selectedProject?.languages?.map((language) => (
+                        {selectedProject?.languages?.map(language => (
                             <DescriptionRow
                                 key={languageFilters?.find(({ value }) => value === language)?.value}
                                 title={languageFilters?.find(({ value }) => value === language)?.name}
@@ -404,18 +259,12 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         ))}
                     </>
                 )}
-                {!!selectedProject?.ageRange && selectedProject?.ageRange?.length > 0
-                && (
+                {!!selectedProject?.ageRange && selectedProject?.ageRange?.length > 0 && (
                     <>
-                        <TemplateText
-                            style={styles.title}
-                            bold
-                            size={20}
-                            color={BLACK}
-                        >
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
                             Age Ranges
                         </TemplateText>
-                        {selectedProject?.ageRange?.map((range) => (
+                        {selectedProject?.ageRange?.map(range => (
                             <DescriptionRow
                                 key={ageFilters?.find(({ value }) => value === range)?.value}
                                 title={ageFilters?.find(({ value }) => value === range)?.name}
@@ -423,18 +272,12 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         ))}
                     </>
                 )}
-                {!!selectedProject?.projectType && selectedProject?.projectType?.length > 0
-                && (
+                {!!selectedProject?.projectType && selectedProject?.projectType?.length > 0 && (
                     <>
-                        <TemplateText
-                            style={styles.title}
-                            bold
-                            size={20}
-                            color={BLACK}
-                        >
+                        <TemplateText style={styles.title} bold size={20} color={BLACK}>
                             Project Type
                         </TemplateText>
-                        {selectedProject?.projectType?.map((type) => (
+                        {selectedProject?.projectType?.map(type => (
                             <DescriptionRow
                                 key={projectTypeFilters?.find(({ value }) => value === type)?.value}
                                 title={projectTypeFilters?.find(({ value }) => value === type)?.name}
@@ -444,12 +287,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 )}
             </TemplateBox>
 
-            <Button
-                title={buttonCta}
-                style={styles.button}
-                color={BLACK_SECONDARY}
-                onPress={onEnroll}
-            />
+            <Button title={buttonCta} style={styles.button} color={BLACK_SECONDARY} onPress={onEnroll} />
         </ScrollView>
     );
 };

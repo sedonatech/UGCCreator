@@ -112,17 +112,12 @@ const useProjects = () => {
         setLoading(false);
     };
 
-    const getAllProjects = async (projectLimits = 8) => {
+    const getAllProjects = async () => {
         try {
             setLoading(true);
             const db = getFirestore();
             const projectsRef = collection(db, PROJECTS_COLLECTION);
-            const q = query(
-                projectsRef,
-                where('isBlocked', '==', false),
-                orderBy('createdAt', 'desc'),
-                limit(projectLimits),
-            );
+            const q = query(projectsRef, where('isBlocked', '==', false), orderBy('createdAt', 'desc'));
             const querySnapshot = await getDocs(q);
             const projectsData = [];
             querySnapshot.forEach(docSnap => {

@@ -39,7 +39,7 @@ const ProjectCard: FC<Props> = ({
     projectType,
     isShowcase,
 }) => (
-    <TemplateTouchable style={[styles.container, style]} onPress={onPress}>
+    <TemplateTouchable style={[styles.container, style]} onPress={onPress} activeOpacity={0.8} disabled={false}>
         {enrolled && (
             <TemplateBox
                 flex

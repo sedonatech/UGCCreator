@@ -1,105 +1,106 @@
-import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import TemplateText from '../../../components/TemplateText';
-import {
-    BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE,
-} from '../../../theme/Colors';
+import { BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
-import {
-    HEADER_MARGIN,
-    IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
-import {
-    NO_CURRENT_PROJECT_MESSAGE,
-    NO_CURRENT_PROJECT_TITLE,
-} from '../../../consts/content/Home';
+import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import { BRAND_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
+import { CURRENT_PROJECT_DETAILS, PROJECTS_SCREEN } from '../../../navigation/ScreenNames';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { projectStatuses } from '../../../consts/AppFilters/ProjectStatus';
+import HeaderIconButton from '../../../components/header/HeaderButton';
 import CurrentProjectCard from '../../app/home/components /CurrentProjectCard';
 
-const getTagColor = (status) => {
+const getTagColor = status => {
     if (status === 'backlog') {
         return BRAND_BLUE;
-    } if (status === 'inProgress') {
+    }
+    if (status === 'inProgress') {
         return PINK;
-    } if (status === 'inReview') {
+    }
+    if (status === 'inReview') {
         return LAVENDER;
-    } if (status === 'completed') {
+    }
+    if (status === 'completed') {
         return GREEN;
     }
     return BRAND_BLUE;
 };
 const BrandOffersScreen = ({ navigation }) => {
-    const { projects } = useProjectsContext();
-
+    const { projectLimits, setProjectLimits, getEnrolledProjects, enrolledProjects: projects } = useProjectsContext();
     const { auth } = useAuthContext();
+    const { profile } = auth;
 
-    const brandName = auth?.profile;
+    useEffect(() => {
+        getEnrolledProjects(profile?.id, projectLimits);
+    }, [projectLimits]);
 
     const enrolledProjects = useMemo(() => {
-        if (!projects?.length) return [];
-        return projects?.map((project) => ({
-            id: project?.id,
-            title: project?.title,
-            brand: brandName,
-            price: project?.price,
-            status: project?.applications?.length ? 'Enrolled Creators' : 'No Enrolled Creators',
-            notifications: project?.applications?.length || 0,
-            documents: project?.applications?.[0]?.documents?.length || 0,
-            daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
-            onPress: () => navigation.navigate(BRAND_PROJECT_DETAILS, {
-                projectId: project?.id,
-            }),
-        }));
-    }, [projects]);
+        if (!projects) return [];
+
+        if (projects?.length) {
+            return projects?.map(item => {
+                const application = item?.applications?.length
+                    ? item?.applications?.find(({ creatorId }) => creatorId === profile?.id)
+                    : {};
+                const completedStatuses = projectStatuses?.filter(({ status }) => status === 'completed');
+
+                const progress = completedStatuses?.length
+                    ? Math.round((completedStatuses?.length / projectStatuses?.length) * 10) / 10
+                    : 0;
+                return {
+                    ...item,
+                    ...application,
+                    progress,
+                    id: item?.id,
+                    title: item?.title,
+                    brand: item?.brandName,
+                    price: `From ${item?.priceRange?.max} to ${item?.priceRange?.min} ${item?.currency}`,
+                    status: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
+                    documentCount: application?.documents?.length,
+                    daysLeft: differenceInDays(new Date(item?.endDate), new Date()),
+                    currentStatus: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
+                };
+            });
+        }
+        return [];
+    }, [projects, profile]);
+
+    const renderItem = ({ item }, index) => (
+        <CurrentProjectCard
+            title={item?.title}
+            brand={item?.brand}
+            price={item?.price}
+            status={item?.status}
+            notificationCount={item?.notifications}
+            documentCount={item?.documents}
+            daysLeft={item?.daysLeft}
+            progress={item?.progress}
+            style={styles.card}
+            cardColor={getTagColor(item?.currentStatus?.value)}
+            width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
+            slideInDelay={(index + 1) * 100}
+            key={item?.id}
+            onPress={() => navigation.navigate(CURRENT_PROJECT_DETAILS, { projectId: item?.id })}
+        />
+    );
 
     return (
-        <ScrollView style={styles.container}>
-            <TemplateBox
-                mt={HEADER_MARGIN}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <TemplateText
-                    size={18}
-                    startCase
-                    bold
-                    center
-                >
-                    Check the status of your projects
-                </TemplateText>
-            </TemplateBox>
-
-            {
-                enrolledProjects?.length ? enrolledProjects?.map((item, index) => (
-                    item?.id && (
-                        <CurrentProjectCard
-                            title={item?.title}
-                            brand={item?.brand}
-                            price={item?.price}
-                            status={item?.status}
-                            notificationCount={item?.notifications}
-                            documentCount={item?.documents}
-                            daysLeft={item?.daysLeft}
-                            progress={item?.progress}
-                            style={styles.card}
-                            cardColor={getTagColor(item?.currentStatus?.value)}
-                            width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
-                            slideInDelay={(index + 1) * 100}
-                            key={item?.id}
-                            onPress={
-                                () => navigation.navigate(BRAND_PROJECT_DETAILS, {
-                                    projectId: item?.id,
-                                })
-                            }
-                            projectId={item?.id ? item?.id : ''}
-                            isBrand
-                        />
-                    )
-                )) : (
+        <View style={styles.container}>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: WRAPPER_MARGIN }}
+                ListHeaderComponent={
+                    <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center" mb={20}>
+                        <TemplateText size={18} startCase bold>
+                            Check the status of your offers
+                        </TemplateText>
+                    </TemplateBox>
+                }
+                ListEmptyComponent={
                     <ProfileStatusCard
                         title={NO_CURRENT_PROJECT_TITLE}
                         description={NO_CURRENT_PROJECT_MESSAGE}
@@ -107,10 +108,20 @@ const BrandOffersScreen = ({ navigation }) => {
                         style={styles.statusCard}
                         slideInDelay={200}
                         showIcon={false}
+                        onPress={() => navigation.navigate(PROJECTS_SCREEN)}
                     />
-                )
-            }
-        </ScrollView>
+                }
+                data={enrolledProjects}
+                renderItem={renderItem}
+                keyExtractor={item => item?.id}
+                extraData={projectLimits}
+                initialNumToRender={5}
+                onEndReachedThreshold={0.5}
+                onEndReached={() => {
+                    setProjectLimits(prevLimit => prevLimit + 10);
+                }}
+            />
+        </View>
     );
 };
 
@@ -120,8 +131,8 @@ const styles = StyleSheet.create({
         backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
     },
     card: {
-        marginHorizontal: WRAPPER_MARGIN,
-        marginVertical: SPACE_LARGE,
+        marginVertical: 8,
+        alignSelf: 'center',
     },
     statusCard: {
         marginTop: WRAPPER_MARGIN,

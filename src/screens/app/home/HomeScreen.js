@@ -27,6 +27,7 @@ import useChallenge from '../../../hooks/useChallenge';
 import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
+import ProjectsCarousel from './components /ProjectsCarousel';
 
 const FEEDBACK_FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLScOnFg0D06OPE5T5w7SZEcy12m9Si0JMAhOAGjGqj5NtMMVgA/viewform?usp=publish-editor';
@@ -197,6 +198,7 @@ const HomeScreen = ({ navigation }) => {
 
             {showAffiliateProgramsCarousel && <AffiliateBrandsCarousel style={styles.affiliateBrandsCarousel} />}
             <FeaturedShowcaseCarousel style={styles.showcase} />
+            <ProjectsCarousel />
             <EventsCarousel />
             {features?.showBrandsCarousel && <BrandsCarousel />}
             {previousResponse === null && features?.showReviewPrompt && (

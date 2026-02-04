@@ -1,34 +1,30 @@
-/* eslint-disable max-len */
-import React, {
-    useCallback,
-    useEffect, useRef, useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
-    FlatList, KeyboardAvoidingView, ScrollView, StatusBar, StyleSheet, View,
+    FlatList,
+    KeyboardAvoidingView,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    View,
 } from 'react-native';
-import {
-    throttle, startCase,
-    toLower,
-} from 'lodash';
+import { throttle, startCase, toLower } from 'lodash';
 import { useIsFocused } from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {
-    getFirestore, collection, query, where, limit as fsLimit, getDocs,
-} from '@react-native-firebase/firestore';
+import { getFirestore, collection, query, where, limit as fsLimit, getDocs } from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
 import { wp } from '../../../Utils/getResponsiveSize';
 import {
     HEADER_MARGIN,
     IS_ANDROID,
     SCREEN_HEIGHT,
-    SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL,
+    SPACE_LARGE,
+    SPACE_MEDIUM,
+    SPACE_SMALL,
     SPACE_XSMALL,
     WRAPPER_MARGIN,
 } from '../../../theme/Layout';
-import {
-    BLACK, BRAND_BLUE, IOS_BLUE, WHITE, WHITE_96,
-} from '../../../theme/Colors';
+import { BLACK, BRAND_BLUE, IOS_BLUE, WHITE, WHITE_96 } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import { SHADOW } from '../../../theme/Shadow';
@@ -36,10 +32,13 @@ import TemplateTouchable from '../../../components/TemplateTouchable';
 import Filter from '../../../../assets/svgs/Filter';
 import FilterCategory from '../../app/explore/components/FilterCategory';
 import {
-    countryFilters, deliveryFormatFilters,
+    countryFilters,
+    deliveryFormatFilters,
     genderFilters,
-    languageFilters, projectDurationFilters,
-    projectFilters, projectTypeFilters,
+    languageFilters,
+    projectDurationFilters,
+    projectFilters,
+    projectTypeFilters,
 } from '../../../consts/AppFilters/ProjectFilters';
 
 import CreatorCard from './CreatorCard';
@@ -58,8 +57,7 @@ const renderItem = (item, navigation) => (
         key={item?.id}
         name={item?.userName}
         imageUrl={item?.image}
-        shortDescription={item?.shortDescription
-                        || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+        shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
         location={item?.location?.country}
         email={item?.email}
         onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
@@ -80,11 +78,8 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const db = getFirestore();
 
-    const getCreatorsQuery = (limitCount) => query(
-        collection(db, USERS_COLLECTION),
-        where('type', '==', 'creator'),
-        fsLimit(limitCount),
-    );
+    const getCreatorsQuery = limitCount =>
+        query(collection(db, USERS_COLLECTION), where('type', '==', 'creator'), fsLimit(limitCount));
 
     const getFilteredCreatorsQuery = (limitCount, search, selectedFilters) => {
         const constraints = [where('type', '==', 'creator'), fsLimit(limitCount)];
@@ -94,7 +89,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
             constraints.push(where('userName', '==', startCase(toLower(search))));
         }
         if (selectedFilters?.length) {
-            const filterArray = selectedFilters.map((filter) => filter.toLowerCase());
+            const filterArray = selectedFilters.map(filter => filter.toLowerCase());
             constraints.push(where('categories', 'array-contains-any', filterArray));
         }
         return query(collection(db, USERS_COLLECTION), ...constraints);
@@ -105,10 +100,12 @@ const CreatorProfilesScreen = ({ navigation }) => {
             try {
                 const q = getCreatorsQuery(limit);
                 const querySnapshot = await getDocs(q);
-                const data = querySnapshot.docs.map((doc) => ({
+                const data = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data(),
-                    lastLoginTime: doc.data().lastLoginTime ? calculateLastLoginTime(doc.data().lastLoginTime) : 'days ago',
+                    lastLoginTime: doc.data().lastLoginTime
+                        ? calculateLastLoginTime(doc.data().lastLoginTime)
+                        : 'days ago',
                 }));
                 setCreatorsData(data);
             } catch (error) {
@@ -123,19 +120,16 @@ const CreatorProfilesScreen = ({ navigation }) => {
         setFilteredCreators([]);
         const q = getFilteredCreatorsQuery(limit, search, selectedFilters);
         const querySnapshot = await getDocs(q);
-        const data = querySnapshot?.docs
-            ?.map((doc) => ({
-                id: doc?.id,
-                ...doc?.data(),
-                lastLoginTime: doc?.data().lastLoginTime ? calculateLastLoginTime(doc?.data().lastLoginTime) : 'days ago',
-            }));
+        const data = querySnapshot?.docs?.map(doc => ({
+            id: doc?.id,
+            ...doc?.data(),
+            lastLoginTime: doc?.data().lastLoginTime ? calculateLastLoginTime(doc?.data().lastLoginTime) : 'days ago',
+        }));
         setLoading(false);
         setFilteredCreators(data);
     };
 
-    const throttledSearchCreator = useCallback(
-        throttle(searchCreator, 300), [search, selectedFilters],
-    );
+    const throttledSearchCreator = useCallback(throttle(searchCreator, 300), [search, selectedFilters]);
 
     // search creator by email / selected filters
     useEffect(() => {
@@ -149,9 +143,9 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const refRBSheet = useRef();
 
-    const onProjectFilterPress = (value) => {
+    const onProjectFilterPress = value => {
         if (selectedFilters.includes(value)) {
-            setSelectedFilters(selectedFilters?.filter((filter) => filter !== value));
+            setSelectedFilters(selectedFilters?.filter(filter => filter !== value));
         } else {
             setSelectedFilters([...selectedFilters, value]);
         }
@@ -169,28 +163,17 @@ const CreatorProfilesScreen = ({ navigation }) => {
     const isCreator = auth?.profile?.type === 'creator';
 
     return (
-        <KeyboardAvoidingView
-            behavior={isIOS ? 'padding' : 'height'}
-            style={styles.mainContainer}
-        >
+        <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.mainContainer}>
             <StatusBar barStyle="dark-content" />
             <FlatList
                 data={filteredSearchedCreators?.sort((a, b) => b?.image?.localeCompare(a?.image))}
                 renderItem={({ item }) => renderItem(item, navigation)}
                 showVerticalScrollIndicator={false}
-                keyExtractor={(item, index) => (`${item?.id}-${index}`)}
-                ListHeaderComponent={(
+                keyExtractor={(item, index) => `${item?.id}-${index}`}
+                ListHeaderComponent={
                     <>
-                        <TemplateBox
-                            mt={HEADER_MARGIN}
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            <TemplateText
-                                size={18}
-                                bold
-                                startCase
-                            >
+                        <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
+                            <TemplateText size={18} bold startCase>
                                 {`${isCreator ? 'Collaborate with' : 'FInd'} the perfect creator`}
                             </TemplateText>
                         </TemplateBox>
@@ -199,24 +182,21 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 placeholder="Search"
                                 style={[styles.input, SHADOW('default', WHITE)]}
                                 value={search}
-                                onChangeText={(text) => setSearch(text)}
+                                onChangeText={text => setSearch(text)}
                                 autoCapitalize="none"
                             />
-                            <TemplateTouchable
-                                onPress={() => refRBSheet?.current?.open()}
-                                style={styles.filterButton}
-                            >
+                            <TemplateTouchable onPress={() => refRBSheet?.current?.open()} style={styles.filterButton}>
                                 <Filter />
                             </TemplateTouchable>
                         </TemplateBox>
                         {!!selectedFilters?.length && (
                             <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
-                                {selectedFilters?.map((filter) => (
+                                {selectedFilters?.map(filter => (
                                     <FilterPill
                                         key={filter}
                                         title={filter}
                                         onPress={() => {
-                                            setSelectedFilters(selectedFilters?.filter((f) => f !== filter));
+                                            setSelectedFilters(selectedFilters?.filter(f => f !== filter));
                                         }}
                                         selected
                                     />
@@ -224,14 +204,13 @@ const CreatorProfilesScreen = ({ navigation }) => {
                             </TemplateBox>
                         )}
                     </>
-
-                )}
-                ListFooterComponent={(
+                }
+                ListFooterComponent={
                     <View style={styles.listFooter}>
                         <TemplateSafeAreaView ios />
                     </View>
-                )}
-                ListEmptyComponent={(
+                }
+                ListEmptyComponent={
                     <TemplateBox
                         flex={1}
                         alignItems="center"
@@ -241,14 +220,16 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         selfCenter
                     >
                         {(!creatorsData?.length || loading) && <ActivityIndicator size="large" color={IOS_BLUE} />}
-                        {((creatorsData?.length > 0 && !filteredSearchedCreators?.length)
-                        && !loading)
-                            && <TemplateText semiBold>No results found</TemplateText>}
+                        {creatorsData?.length > 0 && !filteredSearchedCreators?.length && !loading && (
+                            <TemplateText semiBold>No results found</TemplateText>
+                        )}
                     </TemplateBox>
-                )}
+                }
                 initialNumToRender={10}
                 onEndReachedThreshold={0.5}
-                onEndReached={() => { setLimit((prevLimit) => prevLimit + 10); }}
+                onEndReached={() => {
+                    setLimit(prevLimit => prevLimit + 10);
+                }}
                 removeClippedSubviews
             />
             <RBSheet
@@ -257,7 +238,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 closeOnPressMask
                 customStyles={{
                     wrapper: {
-
                         blurType: 'dark',
                         blurAmount: 10,
                     },
@@ -274,16 +254,11 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     },
                 }}
             >
-
                 <ScrollView>
-                    <TemplateBox
-                        mb={WRAPPER_MARGIN}
-                        mt={SPACE_XSMALL}
-                        alignItems="center"
-                        justifyContent="center"
-                        row
-                    >
-                        <TemplateText size={18} bold>Select Filters</TemplateText>
+                    <TemplateBox mb={WRAPPER_MARGIN} mt={SPACE_XSMALL} alignItems="center" justifyContent="center" row>
+                        <TemplateText size={18} bold>
+                            Select Filters
+                        </TemplateText>
 
                         {selectedFilters?.length > 0 && (
                             <TemplateText
@@ -315,12 +290,12 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
                     {!!selectedFilters?.length && (
                         <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
-                            {selectedFilters?.map((filter) => (
+                            {selectedFilters?.map(filter => (
                                 <FilterPill
                                     key={filter}
                                     title={filter}
                                     onPress={() => {
-                                        setSelectedFilters(selectedFilters?.filter((f) => f !== filter));
+                                        setSelectedFilters(selectedFilters?.filter(f => f !== filter));
                                     }}
                                     selected
                                 />
@@ -333,7 +308,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         filters={projectFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
-
                     />
                     <FilterCategory
                         title="Country"
@@ -371,9 +345,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
-
                 </ScrollView>
-
             </RBSheet>
         </KeyboardAvoidingView>
     );

@@ -1,32 +1,27 @@
-import React, {
-    useEffect, useMemo, useRef, useState,
-} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
 import differenceInWeeks from 'date-fns/differenceInWeeks';
 import TemplateText from '../../../components/TemplateText';
-import {
-    BLACK, BRAND_BLUE, TRANSPARENT, WHITE, WHITE_96,
-} from '../../../theme/Colors';
+import { BLACK, BRAND_BLUE, TRANSPARENT, WHITE, WHITE_96 } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateTextInput from '../../../components/TemplateTextInput';
-import {
-    HEADER_MARGIN,
-    IS_ANDROID,
-    SCREEN_HEIGHT, SPACE_XSMALL, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, SPACE_XSMALL, WRAPPER_MARGIN } from '../../../theme/Layout';
 import { SHADOW } from '../../../theme/Shadow';
 import TemplateTouchable from '../../../components/TemplateTouchable';
 import BrandsTab from './components/BrandsTab';
 import Filter from '../../../../assets/svgs/Filter';
 import {
     ageFilters,
-    countryFilters, deliveryFormatFilters,
+    countryFilters,
+    deliveryFormatFilters,
     genderFilters,
-    languageFilters, projectDurationFilters,
-    projectFilters, projectTypeFilters,
+    languageFilters,
+    projectDurationFilters,
+    projectFilters,
+    projectTypeFilters,
 } from '../../../consts/AppFilters/ProjectFilters';
 import FilterCategory from './components/FilterCategory';
 import ToggleCarousel from '../../../components/ToggleCarousel';
@@ -73,21 +68,24 @@ const ExploreScreen = ({ route }) => {
     const projectsCarouselData = useMemo(() => {
         if (!projects || projects.length === 0) return [];
 
-        return projects?.sort((a,b) => (a?.createdAt - b?.createdAt)).map((item) => ({
-            id: item?.id,
-            image: item?.image,
-            title: item?.title,
-            shortDescription: item?.shortDescription,
-            duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
-            projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
-        }))?.slice(0, 4);
+        return projects
+            ?.sort((a, b) => a?.createdAt - b?.createdAt)
+            .map(item => ({
+                id: item?.id,
+                image: item?.image,
+                title: item?.title,
+                shortDescription: item?.shortDescription,
+                duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
+                projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
+            }))
+            ?.slice(0, 4);
     }, [projects]);
 
     const { brands: brandsData } = useGetBrands();
 
-    const onProjectFilterPress = (value) => {
+    const onProjectFilterPress = value => {
         if (selectedFilters.includes(value)) {
-            setSelectedFilters(selectedFilters.filter((filter) => filter !== value));
+            setSelectedFilters(selectedFilters.filter(filter => filter !== value));
         } else {
             setSelectedFilters([...selectedFilters, value]);
         }
@@ -104,11 +102,7 @@ const ExploreScreen = ({ route }) => {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: [
-            'name',
-            'title',
-            'shortDescription',
-        ],
+        keys: ['name', 'title', 'shortDescription'],
     };
 
     useEffect(() => {
@@ -146,56 +140,38 @@ const ExploreScreen = ({ route }) => {
     }, [search, projectsCarouselData]);
 
     return (
-        <ScrollView
-            style={styles.container}
-            showsVerticalScrollIndicator={false}
-            alwaysBounceVertical={false}
-        >
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
             <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
-                <TemplateText size={18} bold startCase>Explore Brands and Projects</TemplateText>
+                <TemplateText size={18} bold startCase>
+                    Explore Brands and Projects
+                </TemplateText>
             </TemplateBox>
             <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
                 <TemplateTextInput
                     placeholder="Search"
                     style={[styles.input, SHADOW('default', WHITE)]}
                     value={search}
-                    onChangeText={(text) => setSearch(text)}
+                    onChangeText={text => setSearch(text)}
                     autoCapitalize="none"
                 />
-                <TemplateTouchable
-                    onPress={() => refRBSheet.current.open()}
-                    style={styles.filterButton}
-                >
+                <TemplateTouchable onPress={() => refRBSheet.current.open()} style={styles.filterButton}>
                     <Filter />
                 </TemplateTouchable>
             </TemplateBox>
 
             <TemplateBox selfCenter flex>
-                <ToggleCarousel
-                    data={TAB_DATA}
-                    selectedTab={selectedTab}
-                    onChange={setSelectedTab}
-                />
+                <ToggleCarousel data={TAB_DATA} selectedTab={selectedTab} onChange={setSelectedTab} />
             </TemplateBox>
-            {selectedTab === BRANDS_TAB && filteredBrands && (
-                <BrandsTab data={filteredBrands} />
-            )}
-            {selectedTab === PROJECTS_TAB && filteredProjects && (
-                <AllProjectsTab projects={filteredProjects} />
-            )}
-            {selectedTab === FEEDS_TAB && filteredProjects && (
-                <FeedsTab />
-            )}
-            {selectedTab === RECOMMENDED_TAB && (
-                <RecommendedBrandsCarousel style={styles.carousel} />
-            )}
+            {selectedTab === BRANDS_TAB && filteredBrands && <BrandsTab data={filteredBrands} />}
+            {selectedTab === PROJECTS_TAB && filteredProjects && <AllProjectsTab projects={filteredProjects} />}
+            {selectedTab === FEEDS_TAB && filteredProjects && <FeedsTab />}
+            {selectedTab === RECOMMENDED_TAB && <RecommendedBrandsCarousel style={styles.carousel} />}
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown
                 closeOnPressMask
                 customStyles={{
                     wrapper: {
-
                         blurType: 'dark',
                         blurAmount: 10,
                     },
@@ -212,19 +188,11 @@ const ExploreScreen = ({ route }) => {
                     },
                 }}
             >
-
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    alwaysBounceVertical={false}
-                >
-                    <TemplateBox
-                        mb={WRAPPER_MARGIN}
-                        mt={SPACE_XSMALL}
-                        alignItems="center"
-                        justifyContent="center"
-                        row
-                    >
-                        <TemplateText size={18} bold>Select Filters</TemplateText>
+                <ScrollView showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
+                    <TemplateBox mb={WRAPPER_MARGIN} mt={SPACE_XSMALL} alignItems="center" justifyContent="center" row>
+                        <TemplateText size={18} bold>
+                            Select Filters
+                        </TemplateText>
 
                         {selectedFilters.length > 0 && (
                             <TemplateText
@@ -259,7 +227,6 @@ const ExploreScreen = ({ route }) => {
                         filters={projectFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
-
                     />
                     <FilterCategory
                         title="Country"
@@ -303,11 +270,8 @@ const ExploreScreen = ({ route }) => {
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
-
                 </ScrollView>
-
             </RBSheet>
-
         </ScrollView>
     );
 };

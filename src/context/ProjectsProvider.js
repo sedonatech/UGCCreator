@@ -17,7 +17,7 @@ const ProjectsProvider = ({ children }) => {
 
     const { creators, getCreators } = useGetCreators();
 
-    const getEnrolledCreators = (creatorIds) => {
+    const getEnrolledCreators = creatorIds => {
         if (!creatorIds && !creators) return [];
         return getCreators(creatorIds);
     };
@@ -61,17 +61,13 @@ const ProjectsProvider = ({ children }) => {
 
     useEffect(() => {
         if (userType === 'creator') {
-            getAllProjects(projectLimits);
+            getAllProjects();
         } else {
             getProjects(projectLimits);
         }
     }, [userType, projectLimits]);
 
-    return (
-        <Provider value={value}>
-            {children}
-        </Provider>
-    );
+    return <Provider value={value}>{children}</Provider>;
 };
 
 ProjectsProvider.propTypes = {
@@ -82,8 +78,4 @@ ProjectsProvider.defaultProps = {
     children: null,
 };
 
-export {
-    ProjectsContext,
-    ProjectsProvider,
-    ProjectsConsumer,
-};
+export { ProjectsContext, ProjectsProvider, ProjectsConsumer };

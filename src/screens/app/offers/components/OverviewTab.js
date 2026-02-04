@@ -5,21 +5,26 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import LineSvg from '../../../../../assets/svgs/LineSvg';
 import {
-    BLACK, BLACK_50,
-    BRAND_BLUE, ERROR_RED, GREEN, GREY_30, GREY_SECONDARY, WHITE,
+    BLACK,
+    BLACK_50,
+    BRAND_BLUE,
+    ERROR_RED,
+    GREEN,
+    GREY_30,
+    GREY_SECONDARY,
+    WHITE,
 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import useProjectStatus from '../../../brands/admin/hooks/useProjectStatus';
 
-const OverviewTab = ({
-    application, currentProject, creatorID, brandEmail, brandFCMToken,
-}) => {
+const OverviewTab = ({ application, currentProject, creatorID, brandEmail, brandFCMToken }) => {
     const overviewStatus = useMemo(() => {
         if (!application?.status) return [];
 
         return application?.status;
     }, [application?.status]);
+    console.log('🚀 ~ OverviewTab ~ overviewStatus:', overviewStatus);
 
     const { handleOnPressCreatorStatus } = useProjectStatus(
         application,
@@ -33,33 +38,40 @@ const OverviewTab = ({
         <TemplateBox ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>
             {overviewStatus?.map((status, index) => {
                 const isProjectCompleted = overviewStatus?.[overviewStatus?.length - 2]?.status === 'completed';
+                console.log('🚀 ~ OverviewTab ~ isProjectCompleted:', isProjectCompleted);
                 const isActive = status.status === 'active';
+                console.log('🚀 ~ OverviewTab ~ isActive:', isActive);
                 return (
                     <TemplateBox row key={status.value}>
-                        <TemplateBox alignItems="center">
+                        <TemplateBox alignItems="center" zIndex={2}>
                             <TemplateBox
                                 pAll={4}
                                 borderRadius={20}
                                 backgroundColor={
-                                // eslint-disable-next-line no-nested-ternary
-                                    (status.status === 'completed' || isProjectCompleted)
-                                        ? GREEN : isActive ? BRAND_BLUE : status.status === 'rejected' ? ERROR_RED : GREY_SECONDARY
+                                    status.status === 'completed' || isProjectCompleted
+                                        ? GREEN
+                                        : isActive
+                                        ? BRAND_BLUE
+                                        : status.status === 'rejected'
+                                        ? ERROR_RED
+                                        : GREY_SECONDARY
                                 }
                             >
                                 <TemplateIcon name="checkmark-circle-outline" color={WHITE} size={20} />
                             </TemplateBox>
-                            {
-                                index !== overviewStatus.length - 1 && (
-                                // @ts-ignore
+                            {index !== overviewStatus.length - 1 && (
+                                <TemplateBox height={70} justifyContent="center" alignItems="center">
                                     <LineSvg
                                         color={
-                                        // eslint-disable-next-line no-nested-ternary
                                             status.status === 'completed'
-                                                ? GREEN : isActive ? BRAND_BLUE : GREY_SECONDARY
+                                                ? GREEN
+                                                : isActive
+                                                ? BRAND_BLUE
+                                                : GREY_SECONDARY
                                         }
                                     />
-                                )
-                            }
+                                </TemplateBox>
+                            )}
                         </TemplateBox>
 
                         <TemplateBox
@@ -69,6 +81,7 @@ const OverviewTab = ({
                             width={SCREEN_WIDTH / 1.3}
                             mt={-18.4}
                             ml={10}
+                            zIndex={1}
                             opacity={status.status === 'completed' ? 1 : isActive ? 1 : 0.4}
                             onPress={() => isActive && !isProjectCompleted && handleOnPressCreatorStatus(status, index)}
                         >
@@ -88,24 +101,26 @@ const OverviewTab = ({
 };
 
 OverviewTab.propTypes = {
-    application: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        creatorId: PropTypes.string,
-        status: PropTypes.shape({
-            current: {
-                name: PropTypes.string,
-                description: PropTypes.string,
-                status: PropTypes.string,
-            },
-            next: {
-                name: PropTypes.string,
-                description: PropTypes.string,
-                status: PropTypes.string,
-            },
+    application: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            creatorId: PropTypes.string,
+            status: PropTypes.shape({
+                current: {
+                    name: PropTypes.string,
+                    description: PropTypes.string,
+                    status: PropTypes.string,
+                },
+                next: {
+                    name: PropTypes.string,
+                    description: PropTypes.string,
+                    status: PropTypes.string,
+                },
+            }),
+            enrolledAt: PropTypes.string,
+            documents: PropTypes.arrayOf(PropTypes.string),
         }),
-        enrolledAt: PropTypes.string,
-        documents: PropTypes.arrayOf(PropTypes.string),
-    })),
+    ),
     currentProject: PropTypes.shape({}),
     brandEmail: PropTypes.string,
     brandFCMToken: PropTypes.string,
