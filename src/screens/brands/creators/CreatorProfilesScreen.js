@@ -1,18 +1,11 @@
+/* eslint-disable react-native/no-color-literals */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-    ActivityIndicator,
-    FlatList,
-    KeyboardAvoidingView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    View,
-} from 'react-native';
+import { ActivityIndicator, FlatList, KeyboardAvoidingView, StatusBar, StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { throttle, startCase, toLower } from 'lodash';
 import { useIsFocused } from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { getFirestore, collection, query, where, getDocs } from '@react-native-firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, limit, startAfter } from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
 import { wp } from '../../../Utils/getResponsiveSize';
 import {
@@ -52,158 +45,184 @@ import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const USERS_COLLECTION = 'users';
-const CREATORS_CACHE_KEY = '@creators_cache';
-const CREATORS_CACHE_TIMESTAMP_KEY = '@creators_cache_timestamp';
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
-
-const renderItem = (item, navigation) => (
-    <CreatorCard
-        key={item?.id}
-        name={item?.userName}
-        imageUrl={item?.image}
-        shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-        location={item?.location?.country}
-        email={item?.email}
-        onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-        height={wp(194)}
-        mt={SPACE_MEDIUM}
-    />
-);
+const PAGE_SIZE = 20;
 
 const CreatorProfilesScreen = ({ navigation }) => {
+    // State
     const [creatorsData, setCreatorsData] = useState([]);
-    const [search, setSearch] = useState(null);
-    const [selectedFilters, setSelectedFilters] = useState([]);
-    const [filteredData, setFilteredCreators] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [fetching, setFetching] = useState(true);
+    const [lastVisible, setLastVisible] = useState(null);
+    const [loading, setLoading] = useState(false); // Initial load
+    const [loadingMore, setLoadingMore] = useState(false); // Pagination load
+    const [hasMore, setHasMore] = useState(true); // Are there more docs?
 
-    const searchActive = search?.length > 2 || selectedFilters?.length;
+    // Search & Filter State
+    const [search, setSearch] = useState('');
+    const [selectedFilters, setSelectedFilters] = useState([]);
 
     const db = getFirestore();
+    const refRBSheet = useRef();
+    const { auth } = useAuthContext();
+    const isCreator = auth?.profile?.type === 'creator';
 
-    const getCreatorsQuery = () => query(collection(db, USERS_COLLECTION), where('type', '==', 'creator'));
+    /**
+     * Build the Firestore Query dynamically based on state
+     */
+    const buildQuery = (lastDoc = null) => {
+        const constraints = [where('type', '==', 'creator'), limit(PAGE_SIZE)];
 
-    const getFilteredCreatorsQuery = (search, selectedFilters) => {
-        const constraints = [where('type', '==', 'creator')];
-        if (search?.includes('.com')) {
-            constraints.push(where('email', '==', search?.toLowerCase()));
-        } else if (search?.length > 2 && !search?.includes('.com')) {
-            constraints.push(where('userName', '==', startCase(toLower(search))));
+        // 1. Search Logic
+        const searchTerm = search ? search.trim() : '';
+        if (searchTerm.length > 2) {
+            if (searchTerm.includes('.com')) {
+                constraints.push(where('email', '==', searchTerm.toLowerCase()));
+            } else {
+                constraints.push(where('userName', '==', startCase(toLower(searchTerm))));
+            }
         }
-        if (selectedFilters?.length) {
-            const filterArray = selectedFilters.map(filter => filter.toLowerCase());
-            constraints.push(where('categories', 'array-contains-any', filterArray));
+
+        // 2. Filter Logic (Fixes "invalid value" error)
+        if (selectedFilters && selectedFilters.length > 0) {
+            const filterArray = selectedFilters.map(f => f.toLowerCase());
+            // Firestore throws error if array is empty, strict check required
+            if (filterArray.length > 0) {
+                constraints.push(where('categories', 'array-contains-any', filterArray));
+            }
         }
+
+        // 3. Pagination Logic
+        if (lastDoc) {
+            constraints.push(startAfter(lastDoc));
+        }
+
         return query(collection(db, USERS_COLLECTION), ...constraints);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setFetching(true);
-            try {
-                // Check cache first
-                const cachedData = await AsyncStorage.getItem(CREATORS_CACHE_KEY);
-                const cachedTimestamp = await AsyncStorage.getItem(CREATORS_CACHE_TIMESTAMP_KEY);
-                const now = Date.now();
+    /**
+     * Main Fetch Function
+     * Handles both initial load and "load more"
+     */
+    const fetchCreators = async (isLoadMore = false) => {
+        // Prevent unnecessary fetching
+        if (isLoadMore && (loadingMore || !hasMore)) return;
 
-                // Use cached data if it exists and is not expired
-                if (cachedData && cachedTimestamp) {
-                    const timestamp = parseInt(cachedTimestamp, 10);
-                    if (now - timestamp < CACHE_DURATION) {
-                        const parsedData = JSON.parse(cachedData);
-                        setCreatorsData(parsedData);
-                        setFetching(false);
-                        return; // Exit early with cached data
-                    }
-                }
+        if (isLoadMore) {
+            setLoadingMore(true);
+        } else {
+            setLoading(true);
+        }
 
-                // Fetch fresh data if cache is missing or expired
-                const q = getCreatorsQuery();
-                const querySnapshot = await getDocs(q);
-                const data = querySnapshot.docs
-                    .map(doc => ({
-                        id: doc.id,
-                        ...doc.data(),
-                        lastLoginTime: doc.data().lastLoginTime
-                            ? calculateLastLoginTime(doc.data().lastLoginTime)
-                            : 'days ago',
-                    }))
-                    .filter(creator => creator.image); // Exclude creators without images
+        try {
+            // Determine which "lastDoc" to use. If resetting, use null.
+            const cursor = isLoadMore ? lastVisible : null;
+            const q = buildQuery(cursor);
 
-                setCreatorsData(data);
+            const querySnapshot = await getDocs(q);
+            const docs = querySnapshot.docs;
 
-                // Cache the new data
-                await AsyncStorage.setItem(CREATORS_CACHE_KEY, JSON.stringify(data));
-                await AsyncStorage.setItem(CREATORS_CACHE_TIMESTAMP_KEY, now.toString());
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setFetching(false);
+            if (docs.length === 0) {
+                setHasMore(false);
+                if (!isLoadMore) setCreatorsData([]);
+                setLoading(false);
+                setLoadingMore(false);
+                return;
             }
-        };
-        fetchData(); // Call the fetch function
-    }, []);
 
-    const searchCreator = async () => {
-        setLoading(true);
-        setFilteredCreators([]);
-        const q = getFilteredCreatorsQuery(search, selectedFilters);
-        const querySnapshot = await getDocs(q);
-        const data = querySnapshot?.docs
-            ?.map(doc => ({
-                id: doc?.id,
-                ...doc?.data(),
-                lastLoginTime: doc?.data().lastLoginTime
-                    ? calculateLastLoginTime(doc?.data().lastLoginTime)
-                    : 'days ago',
-            }))
-            .filter(creator => creator.image); // Exclude creators without images
-        setLoading(false);
-        setFilteredCreators(data);
+            // Capture the last document for the NEXT cursor
+            const lastDoc = docs[docs.length - 1];
+
+            // Process data
+            const newData = docs
+                .map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    lastLoginTime: doc.data().lastLoginTime
+                        ? calculateLastLoginTime(doc.data().lastLoginTime)
+                        : 'days ago',
+                }))
+                // Requirement: Creators without images need to be filtered out
+                .filter(creator => creator.image && creator.image !== '');
+
+            // Update State
+            if (isLoadMore) {
+                // Append new data, filter duplicates just in case
+                setCreatorsData(prev => {
+                    const existingIds = new Set(prev.map(c => c.id));
+                    const uniqueNew = newData.filter(c => !existingIds.has(c.id));
+                    return [...prev, ...uniqueNew];
+                });
+            } else {
+                setCreatorsData(newData);
+            }
+
+            setLastVisible(lastDoc);
+            // If we got fewer than PAGE_SIZE, we've reached the end
+            setHasMore(docs.length === PAGE_SIZE);
+        } catch (error) {
+            console.error('Fetch Error:', error);
+        } finally {
+            setLoading(false);
+            setLoadingMore(false);
+        }
     };
 
-    const throttledSearchCreator = useCallback(throttle(searchCreator, 300), [search, selectedFilters]);
-
-    // search creator by email / selected filters
+    // Debounce/Throttle Search & Filter changes
+    // This resets the list and starts from scratch
     useEffect(() => {
-        if (!searchActive) {
-            setFilteredCreators([]);
-            return;
-        }
-        throttledSearchCreator();
-    }, [searchActive, search, selectedFilters, throttledSearchCreator]);
+        const delayDebounce = setTimeout(() => {
+            setHasMore(true);
+            setLastVisible(null);
+            fetchCreators(false); // false = Reset (not load more)
+        }, 500); // 500ms delay to stop rapid-fire queries
 
-    const refRBSheet = useRef();
+        return () => clearTimeout(delayDebounce);
+    }, [search, selectedFilters]);
+
+    const renderItem = useCallback(
+        ({ item }) => (
+            <CreatorCard
+                key={item?.id}
+                name={item?.userName}
+                imageUrl={item?.image}
+                shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                location={item?.location?.country}
+                email={item?.email}
+                onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
+                height={wp(194)}
+                mt={SPACE_MEDIUM}
+            />
+        ),
+        [navigation],
+    );
 
     const onProjectFilterPress = value => {
         if (selectedFilters.includes(value)) {
-            setSelectedFilters(selectedFilters?.filter(filter => filter !== value));
+            setSelectedFilters(selectedFilters.filter(filter => filter !== value));
         } else {
             setSelectedFilters([...selectedFilters, value]);
         }
     };
 
-    const filteredSearchedCreators = searchActive ? filteredData : creatorsData;
-
-    const isFocused = useIsFocused();
-
-    const { auth } = useAuthContext();
-    const isCreator = auth?.profile?.type === 'creator';
-
     return (
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.mainContainer}>
             <StatusBar barStyle="dark-content" />
             <FlatList
-                data={filteredSearchedCreators?.sort((a, b) => b?.image?.localeCompare(a?.image))}
-                renderItem={({ item }) => renderItem(item, navigation)}
+                data={creatorsData}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
                 showVerticalScrollIndicator={false}
-                keyExtractor={(item, index) => `${item?.id}-${index}`}
+                // Pagination Props
+                onEndReached={() => fetchCreators(true)}
+                onEndReachedThreshold={0.5}
+                // Performance Props (Critical for avoiding crash)
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={5}
+                removeClippedSubviews={true}
                 ListHeaderComponent={
                     <>
                         <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                             <TemplateText size={18} bold startCase>
-                                {`${isCreator ? 'Collaborate with' : 'FInd'} the perfect creator`}
+                                {`${isCreator ? 'Collaborate with' : 'Find'} the perfect creator`}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
@@ -225,7 +244,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                         key={filter}
                                         title={filter}
                                         onPress={() => {
-                                            setSelectedFilters(selectedFilters?.filter(f => f !== filter));
+                                            setSelectedFilters(selectedFilters.filter(f => f !== filter));
                                         }}
                                         selected
                                     />
@@ -236,34 +255,29 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 }
                 ListFooterComponent={
                     <View style={styles.listFooter}>
+                        {loadingMore && <ActivityIndicator size="small" color={IOS_BLUE} />}
                         <TemplateSafeAreaView ios />
                     </View>
                 }
                 ListEmptyComponent={
-                    <TemplateBox
-                        flex={1}
-                        alignItems="center"
-                        justifyContent="center"
-                        mt={SPACE_LARGE}
-                        center
-                        selfCenter
-                    >
-                        {(fetching || loading) && (
-                            <>
-                                <ActivityIndicator size="large" color={IOS_BLUE} />
-                                <TemplateText mt={SPACE_MEDIUM} color={BLACK}>
-                                    Fetching creators...
-                                </TemplateText>
-                            </>
-                        )}
-                        {!fetching && creatorsData?.length > 0 && !filteredSearchedCreators?.length && !loading && (
+                    !loading && (
+                        <TemplateBox flex={1} alignItems="center" justifyContent="center" mt={SPACE_LARGE}>
                             <TemplateText semiBold>No results found</TemplateText>
-                        )}
-                    </TemplateBox>
+                        </TemplateBox>
+                    )
                 }
-                initialNumToRender={20}
-                removeClippedSubviews
             />
+
+            {/* Initial Loading State Overlay */}
+            {loading && !loadingMore && (
+                <View style={styles.loadingOverlay}>
+                    <ActivityIndicator size="large" color={IOS_BLUE} />
+                    <TemplateText mt={SPACE_MEDIUM} color={BLACK}>
+                        Fetching creators...
+                    </TemplateText>
+                </View>
+            )}
+
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown
@@ -286,98 +300,107 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     },
                 }}
             >
-                <ScrollView>
-                    <TemplateBox mb={WRAPPER_MARGIN} mt={SPACE_XSMALL} alignItems="center" justifyContent="center" row>
-                        <TemplateText size={18} bold>
-                            Select Filters
-                        </TemplateText>
-
-                        {selectedFilters?.length > 0 && (
-                            <TemplateText
-                                size={14}
-                                color={BRAND_BLUE}
-                                style={styles.applyText}
-                                onPress={() => {
-                                    refRBSheet?.current?.close();
-                                }}
+                <FlatList
+                    data={[]}
+                    ListHeaderComponent={
+                        <View>
+                            <TemplateBox
+                                mb={WRAPPER_MARGIN}
+                                mt={SPACE_XSMALL}
+                                alignItems="center"
+                                justifyContent="center"
+                                row
                             >
-                                Apply Filters
-                            </TemplateText>
-                        )}
+                                <TemplateText size={18} bold>
+                                    Select Filters
+                                </TemplateText>
 
-                        {selectedFilters.length > 0 && (
-                            <TemplateText
-                                size={14}
-                                color={BRAND_BLUE}
-                                style={styles.applyText}
-                                onPress={() => {
-                                    setSelectedFilters([]);
-                                    refRBSheet?.current?.close();
-                                }}
-                            >
-                                Clear Filters
-                            </TemplateText>
-                        )}
-                    </TemplateBox>
+                                {selectedFilters?.length > 0 && (
+                                    <TemplateText
+                                        size={14}
+                                        color={BRAND_BLUE}
+                                        style={styles.applyText}
+                                        onPress={() => refRBSheet?.current?.close()}
+                                    >
+                                        Apply Filters
+                                    </TemplateText>
+                                )}
 
-                    {!!selectedFilters?.length && (
-                        <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
-                            {selectedFilters?.map(filter => (
-                                <FilterPill
-                                    key={filter}
-                                    title={filter}
-                                    onPress={() => {
-                                        setSelectedFilters(selectedFilters?.filter(f => f !== filter));
-                                    }}
-                                    selected
-                                />
-                            ))}
-                        </TemplateBox>
-                    )}
+                                {selectedFilters.length > 0 && (
+                                    <TemplateText
+                                        size={14}
+                                        color={BRAND_BLUE}
+                                        style={styles.applyText}
+                                        onPress={() => {
+                                            setSelectedFilters([]);
+                                            refRBSheet?.current?.close();
+                                        }}
+                                    >
+                                        Clear Filters
+                                    </TemplateText>
+                                )}
+                            </TemplateBox>
 
-                    <FilterCategory
-                        title="Project Category"
-                        filters={projectFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
-                        title="Country"
-                        filters={countryFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
-                        title="Language"
-                        filters={languageFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
-                        title="Gender"
-                        filters={genderFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
-                        title="Project Type"
-                        filters={projectTypeFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
-                        title="Delivery Format"
-                        filters={deliveryFormatFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                    <FilterCategory
-                        title="Project Duration"
-                        filters={projectDurationFilters}
-                        onFilterPress={onProjectFilterPress}
-                        selectedFilters={selectedFilters}
-                    />
-                </ScrollView>
+                            {!!selectedFilters?.length && (
+                                <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
+                                    {selectedFilters?.map(filter => (
+                                        <FilterPill
+                                            key={filter}
+                                            title={filter}
+                                            onPress={() => {
+                                                setSelectedFilters(selectedFilters.filter(f => f !== filter));
+                                            }}
+                                            selected
+                                        />
+                                    ))}
+                                </TemplateBox>
+                            )}
+
+                            <FilterCategory
+                                title="Project Category"
+                                filters={projectFilters}
+                                onFilterPress={onProjectFilterPress}
+                                selectedFilters={selectedFilters}
+                            />
+                            <FilterCategory
+                                title="Country"
+                                filters={countryFilters}
+                                onFilterPress={onProjectFilterPress}
+                                selectedFilters={selectedFilters}
+                            />
+                            <FilterCategory
+                                title="Language"
+                                filters={languageFilters}
+                                onFilterPress={onProjectFilterPress}
+                                selectedFilters={selectedFilters}
+                            />
+                            <FilterCategory
+                                title="Gender"
+                                filters={genderFilters}
+                                onFilterPress={onProjectFilterPress}
+                                selectedFilters={selectedFilters}
+                            />
+                            <FilterCategory
+                                title="Project Type"
+                                filters={projectTypeFilters}
+                                onFilterPress={onProjectFilterPress}
+                                selectedFilters={selectedFilters}
+                            />
+                            <FilterCategory
+                                title="Delivery Format"
+                                filters={deliveryFormatFilters}
+                                onFilterPress={onProjectFilterPress}
+                                selectedFilters={selectedFilters}
+                            />
+                            <FilterCategory
+                                title="Project Duration"
+                                filters={projectDurationFilters}
+                                onFilterPress={onProjectFilterPress}
+                                selectedFilters={selectedFilters}
+                            />
+                        </View>
+                    }
+                />
             </RBSheet>
         </KeyboardAvoidingView>
     );
@@ -406,6 +429,14 @@ const styles = StyleSheet.create({
     },
     listFooter: {
         paddingBottom: wp(SPACE_MEDIUM),
+        alignItems: 'center',
+    },
+    loadingOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 10,
     },
 });
 export default CreatorProfilesScreen;
