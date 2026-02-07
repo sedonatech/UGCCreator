@@ -168,14 +168,14 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         </TemplateBox>
                     </>
                 )}
-                <TemplateText style={styles.title} boldr size={20} color={BLACK}>
-                    Price Range
+                <TemplateText style={styles.title} semiBold size={20} color={BLACK}>
+                    Budget
                 </TemplateText>
                 <DescriptionRange
-                    icon="wallet-outline"
-                    maxSubtitle="Maximum Budget"
+                    icon="Currency"
+                    maxSubtitle="Maximum"
                     maxTitle={`${selectedProject?.priceRange?.max || '--'} ${selectedProject?.currency?.symbol || '$'}`}
-                    minSubtitle="Minimum Budget"
+                    minSubtitle="Minimum"
                     minTitle={`${selectedProject?.priceRange?.min || '--'} ${selectedProject?.currency?.symbol || '$'}`}
                 />
                 {!!selectedProject?.deliveryFormat && selectedProject?.deliveryFormat?.length > 0 && (
