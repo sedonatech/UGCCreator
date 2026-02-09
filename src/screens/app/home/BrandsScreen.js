@@ -1,15 +1,10 @@
 /* eslint-disable max-len */
-import React, {
-    useEffect, useMemo, useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import Fuse from 'fuse.js';
-import {
-    getFirestore, collection, query, where, limit as fsLimit, getDocs,
-} from '@react-native-firebase/firestore';
-import {
-    HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { getFirestore, collection, query, where, limit as fsLimit, getDocs } from '@react-native-firebase/firestore';
+import useTranslation from '../../../hooks/useTranslation';
+import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -22,6 +17,7 @@ import { BRAND_DETAILS } from '../../../navigation/ScreenNames';
 const USERS_COLLECTION = 'users';
 
 const BrandsScreen = ({ navigation }) => {
+    const { t } = useTranslation();
     const [search, setSearch] = useState('');
 
     const [searchResults, setSearchResults] = useState([]);
@@ -31,17 +27,12 @@ const BrandsScreen = ({ navigation }) => {
     const [limit, setLimit] = useState(40);
 
     const db = getFirestore();
-    const brandsRef = query(
-        collection(db, USERS_COLLECTION),
-        where('type', '==', 'brand'),
-        fsLimit(limit),
-    );
+    const brandsRef = query(collection(db, USERS_COLLECTION), where('type', '==', 'brand'), fsLimit(limit));
     const fetchBrands = async () => {
         try {
             const querySnapshot = await getDocs(brandsRef);
-            const fetchedBrands = querySnapshot?.docs
-                ?.map((doc) => doc?.data());
-            const filtered = (fetchedBrands || [])?.filter((brand) => !brand?.isBlocked);
+            const fetchedBrands = querySnapshot?.docs?.map(doc => doc?.data());
+            const filtered = (fetchedBrands || [])?.filter(brand => !brand?.isBlocked);
             if (filtered?.length < 1) setLimit(limit + 20);
             setBrandsData(filtered);
         } catch (e) {
@@ -51,8 +42,7 @@ const BrandsScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchBrands();
-    },
-    [limit]);
+    }, [limit]);
 
     const options = {
         shouldSort: true,
@@ -61,11 +51,7 @@ const BrandsScreen = ({ navigation }) => {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: [
-            'name',
-            'title',
-            'shortDescription',
-        ],
+        keys: ['name', 'title', 'shortDescription'],
     };
 
     useEffect(() => {
@@ -83,10 +69,9 @@ const BrandsScreen = ({ navigation }) => {
     }, [search, brandsData]);
 
     return (
-
         <FlatList
             data={filteredBrands}
-            keyExtractor={(item, index) => (`${item?.id}-${index}`)}
+            keyExtractor={(item, index) => `${item?.id}-${index}`}
             renderItem={({ item }) => (
                 <BrandsCard
                     image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
@@ -105,21 +90,18 @@ const BrandsScreen = ({ navigation }) => {
             )}
             ListHeaderComponent={() => (
                 <TemplateBox>
-                    <TemplateBox
-                        ml={WRAPPER_MARGIN}
-                        mt={HEADER_MARGIN}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateText size={18} bold startCase center>Explore Brands and Projects</TemplateText>
+                    <TemplateBox ml={WRAPPER_MARGIN} mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
+                        <TemplateText size={18} bold startCase center>
+                            {t('home.brands.title')}
+                        </TemplateText>
                     </TemplateBox>
 
                     <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
                         <TemplateTextInput
-                            placeholder="Search"
+                            placeholder={t('home.brands.searchPlaceholder')}
                             style={[styles.input, SHADOW('default', WHITE)]}
                             value={search}
-                            onChangeText={(text) => setSearch(text)}
+                            onChangeText={text => setSearch(text)}
                             autoCapitalize="none"
                         />
                     </TemplateBox>
@@ -131,10 +113,11 @@ const BrandsScreen = ({ navigation }) => {
             contentContainerStyle={styles.contentContainer}
             initialNumToRender={10}
             onEndReachedThreshold={0.5}
-            onEndReached={() => { setLimit((prevLimit) => prevLimit + 10); }}
+            onEndReached={() => {
+                setLimit(prevLimit => prevLimit + 10);
+            }}
             removeClippedSubviews
         />
-
     );
 };
 
@@ -145,7 +128,6 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         alignItems: 'center',
-
     },
     input: {
         width: '100%',

@@ -8,8 +8,10 @@ import useChallenge from '../../../hooks/useChallenge';
 import ChallengeCard from '../home/components /ChallengeCard';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { CHALLENGE_DETAILS } from '../../../navigation/ScreenNames';
+import useTranslation from '../../../hooks/useTranslation';
 
 const ChallengesScreen = ({ navigation }) => {
+    const { t } = useTranslation();
     const { auth } = useAuthContext();
     const profile = auth?.profile;
     const { challenges, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
@@ -21,7 +23,7 @@ const ChallengesScreen = ({ navigation }) => {
                 ListHeaderComponent={
                     <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center" mb={20}>
                         <TemplateText size={18} startCase bold>
-                            Challenges
+                            {t('challenges.title')}
                         </TemplateText>
                     </TemplateBox>
                 }

@@ -6,24 +6,21 @@ import { chunk } from 'lodash';
 import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import {
-    ACTIVE_CREATORS,
-    CREATOR_PROJECT_STATUS,
-} from '../../../../navigation/ScreenNames';
+import { ACTIVE_CREATORS, CREATOR_PROJECT_STATUS } from '../../../../navigation/ScreenNames';
 import { BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, SPACE_MEDIUM, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
-import {
-    DEFAULT_CREATOR_WORK_SAMPLE_IMAGE,
-} from '../../../../consts/content/Portfolio';
+import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 import CreatorCard from '../../creators/CreatorCard';
 import { wp } from '../../../../Utils/getResponsiveSize';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const USERS_COLLECTION = 'users';
 const CurrentCreatorsCarousel = ({ style }) => {
     const navigation = useNavigation();
+    const { t } = useTranslation();
 
     const { projects } = useProjectsContext();
 
@@ -32,7 +29,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
 
         return projects?.slice(0, 5).reduce((acc, proj) => {
             if (proj?.applications?.length > 0) {
-                proj?.applications?.forEach((app) => {
+                proj?.applications?.forEach(app => {
                     if (app?.creatorId) {
                         acc.push({ creatorId: app?.creatorId, projectID: proj?.id });
                     }
@@ -53,16 +50,13 @@ const CurrentCreatorsCarousel = ({ style }) => {
 
     const getCreators = async () => {
         try {
-            const querySnapshot = await firestore()
-                .collection(USERS_COLLECTION)
-                .where('id', 'in', ids)
-                .get();
+            const querySnapshot = await firestore().collection(USERS_COLLECTION).where('id', 'in', ids).get();
 
-            const chunkCreators = querySnapshot.docs.map((doc) => ({
+            const chunkCreators = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            const unique = [...new Map(chunkCreators.map((u) => [u.email, u])).values()];
+            const unique = [...new Map(chunkCreators.map(u => [u.email, u])).values()];
             setEnrolledCreators(unique);
         } catch (error) {
             console.log(error);
@@ -78,15 +72,15 @@ const CurrentCreatorsCarousel = ({ style }) => {
         <View style={style}>
             <View style={styles.titleContainer}>
                 <TemplateText bold size={18}>
-                    Your Active Creators
-                    {' '}
+                    Your Active Creators{' '}
                 </TemplateText>
                 <TemplateTouchable
-                    onPress={() => navigation.navigate(ACTIVE_CREATORS,
-                        {
+                    onPress={() =>
+                        navigation.navigate(ACTIVE_CREATORS, {
                             creatorIds,
                             ids,
-                        })}
+                        })
+                    }
                 >
                     <TemplateText startCase size={14} underLine color={BLUE}>
                         See All
@@ -104,20 +98,20 @@ const CurrentCreatorsCarousel = ({ style }) => {
                         location={item?.location?.country}
                         email={item?.email}
                         style={styles.card}
-                        onPress={() => navigation.navigate(CREATOR_PROJECT_STATUS, {
-                            creatorID: item?.id,
-                            projectId: creatorIds
-                                ?.find(({ creatorId }) => creatorId === item?.id)?.projectID,
-                            creatorEmail: item?.contact?.email || item?.email,
-                            creatorFCMToken: item?.fcmToken,
-                        })}
+                        onPress={() =>
+                            navigation.navigate(CREATOR_PROJECT_STATUS, {
+                                creatorID: item?.id,
+                                projectId: creatorIds?.find(({ creatorId }) => creatorId === item?.id)?.projectID,
+                                creatorEmail: item?.contact?.email || item?.email,
+                                creatorFCMToken: item?.fcmToken,
+                            })
+                        }
                         height={wp(194)}
                         mt={SPACE_MEDIUM}
-                        ctaText="View Project Status"
+                        ctaText={t('brands.admin.currentCreators.viewProjectStatus')}
                     />
-
                 )}
-                snapToInterval={(SCREEN_WIDTH / 1.3) + 80}
+                snapToInterval={SCREEN_WIDTH / 1.3 + 80}
                 showPagination
                 paginationSize={filteredCreators?.length}
                 contentContainerStyle={styles.cardCarousel}

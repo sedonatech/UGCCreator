@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
+import useTranslation from '../../../../hooks/useTranslation';
 import {
     ZINC_900,
     ZINC_500,
@@ -58,6 +59,7 @@ const TAG_TEXT_COLORS = {
 };
 
 const TaskCard = ({ task, index, isComplete, onToggle, dayNumber, disabled }) => {
+    const { t } = useTranslation();
     const tagStyle = TAG_STYLES[task.tag] || TAG_STYLES.Learn;
     const tagTextColor = TAG_TEXT_COLORS[task.tag] || TAG_TEXT_COLORS.Learn;
 
@@ -85,7 +87,7 @@ const TaskCard = ({ task, index, isComplete, onToggle, dayNumber, disabled }) =>
                         </TemplateText>
                     </TemplateBox>
                     <TemplateText size={11} color={styles.textMuted.color} ml={8}>
-                        ~{task.durationMinutes} min
+                        {t('courses.task.duration', { minutes: task.durationMinutes })}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>

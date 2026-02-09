@@ -6,6 +6,7 @@ import { AppEventsLogger, Settings } from 'react-native-fbsdk-next';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { enableFreeze, enableScreens } from 'react-native-screens';
+import { I18nextProvider } from 'react-i18next';
 import MainNavigator from './src/navigation/MainNavigator';
 import { AuthProvider } from './src/context/AuthProvider';
 import { FeatureFlagProvider } from './src/context/FeatureFlagsContext';
@@ -19,6 +20,7 @@ import useSubscriptionConfig from './src/hooks/subscription/useSubscriptionConfi
 import { SubscriptionProvider } from './src/screens/subscriptions/context/context';
 import { ChatsProvider } from './src/context/ChatsProvider';
 import { isAndroid } from './src/Utils/Platform';
+import i18n from './src/i18n';
 
 enableScreens();
 enableFreeze(true);
@@ -40,25 +42,27 @@ const MainApp = () => {
     }, []);
 
     return (
-        <View style={styles.container}>
-            <CoreProvider config={config}>
-                <SubscriptionProvider purchase={purchase}>
-                    <ProjectsProvider>
-                        <ProjectApplicationProvider>
-                            <ActionSheetProvider>
-                                <NavigationContainer theme={NAVIGATION_THEME}>
-                                    <StatusBar barStyle="dark-content" />
-                                    <ChatsProvider>
-                                        <MainNavigator />
-                                        <Toast />
-                                    </ChatsProvider>
-                                </NavigationContainer>
-                            </ActionSheetProvider>
-                        </ProjectApplicationProvider>
-                    </ProjectsProvider>
-                </SubscriptionProvider>
-            </CoreProvider>
-        </View>
+        <I18nextProvider i18n={i18n}>
+            <View style={styles.container}>
+                <CoreProvider config={config}>
+                    <SubscriptionProvider purchase={purchase}>
+                        <ProjectsProvider>
+                            <ProjectApplicationProvider>
+                                <ActionSheetProvider>
+                                    <NavigationContainer theme={NAVIGATION_THEME}>
+                                        <StatusBar barStyle="dark-content" />
+                                        <ChatsProvider>
+                                            <MainNavigator />
+                                            <Toast />
+                                        </ChatsProvider>
+                                    </NavigationContainer>
+                                </ActionSheetProvider>
+                            </ProjectApplicationProvider>
+                        </ProjectsProvider>
+                    </SubscriptionProvider>
+                </CoreProvider>
+            </View>
+        </I18nextProvider>
     );
 };
 

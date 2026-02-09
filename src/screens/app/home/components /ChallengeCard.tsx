@@ -11,6 +11,7 @@ import DynamicIcon from '../../../../components/icons/DynamicIcon';
 import TemplateText from '../../../../components/TemplateText';
 import Button from '../../../../components/Button';
 import { enrollInChallenge, getChallengeCta, isUserEnrolledInChallenge } from '../../../../hooks/useChallenge';
+import useTranslation from '../../../../hooks/useTranslation';
 interface ChallengeCardProps {
     onPress: () => void;
     secondaryOnPress: () => void;
@@ -54,8 +55,9 @@ const ChallengeCard = ({
     width = WRAPPED_SCREEN_WIDTH,
     mr,
 }: ChallengeCardProps) => {
+    const { t } = useTranslation();
     const now = useMemo(() => new Date(), []);
-    const statusLabel = getStatusLabel(enrollmentStartAt, challengeStartAt, challengeEndAt, now);
+    const statusLabel = getStatusLabel(enrollmentStartAt, challengeStartAt, challengeEndAt, now, t);
     const isEnrollmentOpen = canEnrollNow(enrollmentStartAt, challengeEndAt, now);
     const [isEnrolled, setIsEnrolled] = React.useState<boolean>(false);
     const [enrollmentLoading, setEnrollmentLoading] = React.useState<boolean>(true);
@@ -113,8 +115,9 @@ const ChallengeCard = ({
                 challengeEndAt,
                 now,
                 isEnrolled,
+                t,
             }),
-        [enrollmentStartAt, challengeStartAt, challengeEndAt, now, isEnrolled],
+        [enrollmentStartAt, challengeStartAt, challengeEndAt, now, isEnrolled, t],
     );
 
     const onCtaChallengePress = async () => {
@@ -168,7 +171,8 @@ const ChallengeCard = ({
                     >
                         <DynamicIcon name="Trophy" size={16} />
                         <TemplateText size={17} medium color={BLACK_SECONDARY} ml={8}>
-                            Win up to {prizePoolUsd ? ` $${prizePoolUsd}` : ' 300 USD'}
+                            {t('challenges.card.winUpTo')}{' '}
+                            {prizePoolUsd ? ` $${prizePoolUsd}` : ` ${t('challenges.card.defaultPrize')}`}
                         </TemplateText>
                     </TemplateBox>
                     <TemplateText size={13} medium>

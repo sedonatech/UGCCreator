@@ -1,0 +1,988 @@
+{
+    "onboarding": {
+        "welcome": {
+            "title": "Bem-vindo ao\nUGCCreatorApp",
+            "getStarted": "Começar",
+            "alreadyHaveAccount": "Já tem uma conta?",
+            "login": "Entrar"
+        },
+        "selection": {
+            "registerCreator": "Registrar como criador",
+            "registerBrand": "Registrar como marca",
+            "alreadyHaveAccount": "Já tem uma conta?",
+            "login": "Entrar"
+        },
+        "education": {
+            "skip": "Pular",
+            "next": "Próximo"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Bem-vindo de volta!",
+            "emailPlaceholder": "E-mail",
+            "passwordPlaceholder": "Senha",
+            "loginButton": "Entrar",
+            "forgotPassword": "Esqueceu sua senha?",
+            "resetPassword": "Redefinir senha",
+            "newToApp": "Novo no app UGC creator?",
+            "signUp": "Cadastrar-se",
+            "appleSignInSuccess": "Login com Apple concluído!"
+        },
+        "signup": {
+            "namePlaceholder": "Seu nome",
+            "brandNamePlaceholder": "Nome da sua marca",
+            "createCreatorAccount": "Crie sua conta de criador",
+            "createBrandAccount": "Crie sua conta de marca",
+            "emailPlaceholder": "Seu e-mail",
+            "passwordPlaceholder": "Senha",
+            "createAccountButton": "Criar conta",
+            "termsPrefix": "Ao criar uma conta, você concorda com nossos",
+            "termsOfService": "Termos de Serviço",
+            "and": "e",
+            "privacyPolicy": "Política de Privacidade",
+            "alreadyMember": "Já é membro?",
+            "login": "Entrar"
+        },
+        "resetPassword": {
+            "updateTitle": "Atualize sua senha!",
+            "resetTitle": "Redefina sua senha!",
+            "instruction": "Digite seu e-mail para continuar",
+            "emailPlaceholder": "E-mail",
+            "resetButton": "Redefinir senha",
+            "alertUpdateTitle": "Atualização de senha",
+            "alertResetTitle": "Redefinição de senha",
+            "successMessage": "Um link de redefinição de senha foi enviado para seu e-mail",
+            "okButton": "OK",
+            "newToApp": "Novo no app UGC creator?",
+            "signUp": "Cadastrar-se"
+        },
+        "errors": {
+            "emailInUse": "Este endereço de e-mail já está em uso!",
+            "invalidEmail": "Este endereço de e-mail é inválido!",
+            "invalidPassword": "Esta senha é inválida!",
+            "userNotFound": "Este usuário não existe!",
+            "invalidName": "Por favor, insira um nome válido",
+            "invalidBrandName": "Por favor, insira um nome de marca válido",
+            "emptyEmail": "Por favor, insira seu endereço de e-mail"
+        }
+    },
+    "home": {
+        "feedback": "Comentários",
+        "greeting": {
+            "morning": "Bom dia",
+            "afternoon": "Boa tarde",
+            "evening": "Boa noite"
+        },
+        "mediaKit": {
+            "title": "Gerar Media Kit",
+            "description": "Envie um PDF de uma página com seu trabalho. As marcas podem visualizá-lo em seu perfil, atualize-o a qualquer momento."
+        },
+        "challenges": {
+            "toastTitle": "Desafios estão ao vivo",
+            "toastMessage": "Adicione suas inscrições agora."
+        },
+        "alerts": {
+            "profileImage": {
+                "title": "Imagem de perfil",
+                "message": "Por favor, envie uma imagem de perfil para continuar",
+                "ok": "OK"
+            },
+            "appReview": "Por favor, reserve um momento para avaliar nosso aplicativo"
+        },
+        "brandsCatalogue": {
+            "title": "Catálogo de marcas",
+            "description": "Descubra e explore nosso extenso catálogo de centenas de marcas"
+        },
+        "brands": {
+            "title": "Explorar marcas e projetos",
+            "searchPlaceholder": "Pesquisar"
+        },
+        "projects": {
+            "title": "Explorar projetos",
+            "searchPlaceholder": "Pesquisar"
+        },
+        "projectsCarousel": {
+            "title": "Novos projetos",
+            "seeAll": "Ver todos",
+            "description": "Confira novos projetos de marcas confiáveis com base em seus interesses e localização",
+            "enrolledProjects": "Meus projetos inscritos"
+        },
+        "brandsCarousel": {
+            "title": "Marcas em nossa plataforma",
+            "seeAll": "Ver todos",
+            "description": "Confira as marcas atualmente em nossa plataforma"
+        },
+        "eventsCarousel": {
+            "title": "Eventos de marca",
+            "seeAll": "Ver todos"
+        },
+        "affiliateBrandsCarousel": {
+            "title": "Colaborações de marca",
+            "seeAll": "Ver todos",
+            "subtitle": "Explore nossas colaborações de marca",
+            "description": "Descubra colaborações de marca, ofertas de embaixador e programas de afiliados combinados com seu nicho."
+        },
+        "showcase": {
+            "title": "Vitrine de criadores em destaque",
+            "description": "Descubra o que os criadores estão fazendo agora.\natualize seu trabalho de amostra no portfólio para ser destacado"
+        },
+        "sampleDetails": {
+            "viewCreator": "Ver criador",
+            "aboutThisWork": "Sobre este trabalho",
+            "openLink": "Abrir link",
+            "manage": "Gerenciar",
+            "featuredOnProfile": "Destacado no perfil",
+            "optInToShowcase": "Participar da vitrine",
+            "edit": "Editar",
+            "delete": "Excluir",
+            "deleteAlert": {
+                "title": "Excluir amostra",
+                "message": "Esta ação não pode ser desfeita.",
+                "cancel": "Cancelar",
+                "confirm": "Excluir"
+            },
+            "notFound": "Amostra não encontrada.",
+            "chips": {
+                "featured": "Destacado",
+                "showcase": "Vitrine"
+            }
+        },
+        "events": {
+            "title": "Explorar eventos",
+            "searchPlaceholder": "Pesquisar",
+            "emptyStates": {
+                "withSearch": "Evento não encontrado",
+                "withoutSearch": "Nenhum evento disponível"
+            }
+        },
+        "eventDetails": {
+            "endDateLabel": "Data de término:",
+            "viewMoreButton": "Ver mais"
+        }
+    },
+    "challenges": {
+        "title": "Desafios",
+        "feedbackButton": "Feedback",
+        "leaderBoardButton": "Classificação",
+        "notStartedAlert": {
+            "title": "Desafio não iniciado",
+            "message": "O desafio ainda não começou. A classificação estará disponível assim que o desafio começar."
+        },
+        "tabs": {
+            "brief": "Resumo",
+            "rules": "Regras",
+            "prizes": "Prêmios",
+            "entries": "Inscrições"
+        },
+        "card": {
+            "winUpTo": "Ganhe até",
+            "defaultPrize": "300 USD"
+        },
+        "status": {
+            "enrollmentStartsToday": "As inscrições começam hoje",
+            "dayToEnrollment": "1 dia para inscrição",
+            "daysToEnrollment": "{{days}} dias para inscrição",
+            "enrollmentOpen": "Inscrições abertas",
+            "challengeStarted": "Desafio iniciado",
+            "challengeCompleted": "Desafio concluído",
+            "ended": "Encerrado",
+            "endsInOneDay": "Termina em 1 dia",
+            "endsInDays": "Termina em {{days}} dias"
+        },
+        "cta": {
+            "comingSoon": "Em breve",
+            "challengeCompleted": "Desafio concluído",
+            "enrollNow": "Inscreva-se agora",
+            "submitEntries": "Enviar participações",
+            "challengeStartsInOneDay": "O desafio começa em 1 dia",
+            "challengeStartsInDays": "O desafio começa em {{days}} dias"
+        }
+    },
+    "tabs": {
+        "home": "Início",
+        "challenges": "Desafios",
+        "chats": "Conversas",
+        "levelUp": "LevelUp",
+        "portfolio": "Portfólio",
+        "admin": "Admin",
+        "explore": "Explorar",
+        "brandProfile": "Perfil da marca"
+    },
+    "settings": {
+        "title": "Configurações",
+        "rows": {
+            "email": {
+                "title": "E-mail",
+                "description": ""
+            },
+            "feedback": {
+                "title": "Feedback",
+                "description": "Envie-nos seu feedback"
+            },
+            "testSubscriptions": {
+                "title": "Testar assinaturas",
+                "description": "Testar assinatura (apenas testadores)"
+            },
+            "updatePortfolio": {
+                "title": "Atualizar portfólio",
+                "description": "Atualize os detalhes do seu portfólio"
+            },
+            "changePassword": {
+                "title": "Alterar senha",
+                "description": "Altere sua senha"
+            },
+            "notifications": {
+                "title": "Notificações",
+                "description": "Gerencie suas notificações",
+                "alertTitle": "Notificações",
+                "alertMessage": "Você já concedeu permissão para receber notificações. Se desejar alterar suas configurações de notificação, vá para as configurações do seu telefone.",
+                "cancelButton": "Cancelar"
+            },
+            "deleteAccount": {
+                "title": "Excluir conta",
+                "description": "Exclua sua conta"
+            },
+            "logout": {
+                "title": "Sair",
+                "description": "Saia da sua conta"
+            },
+            "language": {
+                "title": "Idioma",
+                "description": "Alterar idioma do aplicativo"
+            }
+        }
+    },
+    "profile": {
+        "portfolio": {
+            "mediaKitTitle": "Meu Media Kit",
+            "mediaKitDescription": "Gere seu media kit profissional para mostrar seu trabalho para marcas potenciais, depois envie-o aqui. Você sempre pode atualizá-lo mais tarde quando necessário.",
+            "generateButton": "Gerar Media Kit",
+            "uploadButton": "Enviar Media Kit",
+            "contactButton": "Contatar criador"
+        },
+        "updatePortfolio": {
+            "saveButton": "Salvar alterações",
+            "updatingMessage": "Atualizando seu portfólio....",
+            "fields": {
+                "userName": {
+                    "label": "Nome de usuário",
+                    "placeholder": "Nome de usuário"
+                },
+                "email": {
+                    "label": "E-mail",
+                    "placeholder": "E-mail"
+                },
+                "phoneNumber": {
+                    "label": "Número de telefone",
+                    "placeholder": "Número de telefone"
+                },
+                "shortDescription": {
+                    "label": "Descrição curta",
+                    "placeholder": "Descrição curta"
+                },
+                "description": {
+                    "label": "Descrição",
+                    "placeholder": "Descrição"
+                },
+                "portfolioLink": {
+                    "label": "Link do portfólio",
+                    "placeholder": "Link do portfólio"
+                },
+                "instagram": {
+                    "label": "Instagram",
+                    "placeholder": "Link do Instagram"
+                },
+                "facebook": {
+                    "label": "Facebook",
+                    "placeholder": "Link do Facebook"
+                },
+                "twitter": {
+                    "label": "Twitter",
+                    "placeholder": "Link do Twitter"
+                },
+                "linkedin": {
+                    "label": "LinkedIn",
+                    "placeholder": "Link do LinkedIn"
+                },
+                "location": {
+                    "label": "Localização",
+                    "placeholder": "País"
+                }
+            }
+        },
+        "ugcAi": {
+            "instruction": "Digite os detalhes e deixe a mágica acontecer!",
+            "fields": {
+                "brandName": "Digite o nome da marca (obrigatório)",
+                "productName": "Digite o nome do produto (obrigatório)",
+                "description": "Digite uma breve descrição do produto (obrigatório)",
+                "valueProposition": "Digite a proposta de valor (opcional)",
+                "targetAudience": "Digite a persona do público-alvo (opcional)"
+            },
+            "filterTitle": "Selecione pelo menos um (obrigatório)",
+            "submitButton": "Salvar e continuar",
+            "successAlert": {
+                "titlePrefix": "Criado com sucesso",
+                "messagePrefix": "Agora você pode copiar o",
+                "okButton": "OK"
+            }
+        }
+    },
+    "explore": {
+        "title": "Explorar marcas e projetos",
+        "searchPlaceholder": "Pesquisar",
+        "tabs": {
+            "brands": "Marcas",
+            "projects": "Projetos",
+            "feeds": "Feeds",
+            "recommended": "Recomendados"
+        },
+        "filters": {
+            "title": "Selecionar filtros",
+            "apply": "Aplicar filtros",
+            "clear": "Limpar filtros",
+            "categories": {
+                "projectCategory": "Categoria do projeto",
+                "country": "País",
+                "language": "Idioma",
+                "gender": "Gênero",
+                "ageGroup": "Faixa etária",
+                "projectType": "Tipo de projeto",
+                "deliveryFormat": "Formato de entrega",
+                "projectDuration": "Duração do projeto"
+            }
+        },
+        "projectDetails": {
+            "enrolledBadge": "Inscrito",
+            "sections": {
+                "description": "Descrição",
+                "timeline": "Cronograma",
+                "priceRange": "Faixa de preço",
+                "maxBudget": "Orçamento máximo",
+                "minBudget": "Orçamento mínimo",
+                "deliveryFormat": "Formato de entrega de conteúdo",
+                "duration": "Duração do projeto",
+                "categories": "Categorias",
+                "location": "Localização",
+                "genders": "Gêneros",
+                "languages": "Idiomas do conteúdo",
+                "ageRanges": "Faixas etárias",
+                "projectType": "Tipo de projeto"
+            },
+            "buttons": {
+                "viewProject": "Ver projeto",
+                "viewStatus": "Ver status do projeto",
+                "enrollNow": "Inscrever-se agora"
+            },
+            "alerts": {
+                "enrollSuccess": {
+                    "title": "Sucesso",
+                    "message": "Você se inscreveu com sucesso neste projeto",
+                    "ok": "OK"
+                }
+            }
+        },
+        "brandDetails": {
+            "tabs": {
+                "about": "Sobre",
+                "openProjects": "Projetos abertos"
+            },
+            "loadingMessage": "Buscando detalhes da marca...",
+            "blockAlert": {
+                "title": "Confirmar ação",
+                "message": "Tem certeza de que deseja bloquear esta marca?",
+                "cancel": "Cancelar",
+                "block": "Bloquear",
+                "cancelled": "Ação cancelada.",
+                "success": {
+                    "title": "Sucesso",
+                    "message": "Marca bloqueada com sucesso."
+                },
+                "error": {
+                    "title": "Erro",
+                    "message": "Falha ao bloquear o projeto."
+                }
+            },
+            "blockButton": "bloquear"
+        }
+    },
+    "courses": {
+        "title": "LevelUp",
+        "sections": {
+            "yourCourses": "Seus cursos"
+        },
+        "emptyState": "Nenhum curso disponível no momento.",
+        "seedAlerts": {
+            "success": {
+                "title": "Cursos adicionados",
+                "message": "Os dados do curso agora estão disponíveis."
+            },
+            "alreadyExists": {
+                "message": "Os cursos já existem."
+            },
+            "failure": {
+                "title": "Falha ao adicionar",
+                "message": "Por favor, verifique o console para mais detalhes."
+            }
+        },
+        "courseDetails": {
+            "todaysChecklist": "Lista de hoje",
+            "dayPrefix": "Dia",
+            "weekOverview": "Visão geral da semana",
+            "restartAlert": {
+                "title": "Reiniciar curso?",
+                "message": "Isso limpará seu progresso e iniciará o curso desde o início.",
+                "cancel": "Cancelar",
+                "restart": "Reiniciar"
+            }
+        },
+        "summary": {
+            "yourProgress": "Seu progresso",
+            "coursesCount": "{{count}} Cursos",
+            "dayStreak": "Sequência de dias",
+            "overallCompletion": "{{percent}}% de conclusão geral"
+        },
+        "courseCard": {
+            "status": {
+                "comingSoon": "Em breve",
+                "premium": "Premium",
+                "inProgress": "Em progresso"
+            },
+            "enrolled": "matriculado",
+            "unlocksOn": "Desbloqueia em {{date}}",
+            "dayOfTotal": "Dia {{current}} de {{total}}"
+        },
+        "details": {
+            "days": "{{count}} dias",
+            "tasks": "{{count}} tarefas",
+            "certificate": "Certificado",
+            "yourProgress": "Seu progresso",
+            "dayOfTotal": "Dia {{current}} de {{total}}",
+            "daysCompleted": "{{count}} dias completados",
+            "daysRemaining": "{{count}} dias restantes",
+            "todaysChecklist": "Lista do dia",
+            "dayPrefix": "Dia",
+            "weekOverview": "Visão geral da semana",
+            "dayProgram": "Programa de {{count}} dias",
+            "reset": "Reiniciar",
+            "restartAlert": {
+                "title": "Reiniciar curso?",
+                "message": "Isso apagará seu progresso e reiniciará o curso do início.",
+                "cancel": "Cancelar",
+                "restart": "Reiniciar"
+            }
+        },
+        "task": {
+            "duration": "~{{minutes}} min"
+        },
+        "proTip": {
+            "title": "Dica profissional do dia"
+        },
+        "weekItem": {
+            "locked": "Bloqueado",
+            "today": "Hoje",
+            "dayTitle": "Dia {{number}}: {{title}}",
+            "tasksCompleted": "{{completed}}/{{total}} tarefas completadas"
+        },
+        "lockedMessage": {
+            "comingSoon": "Este curso será desbloqueado no próximo mês.",
+            "premium": "Atualize para premium para acessar este curso."
+        }
+    },
+    "offers": {
+        "currentProject": {
+            "tabs": {
+                "overview": "Visão geral",
+                "notifications": "Notificações do projeto"
+            }
+        }
+    },
+    "chats": {
+        "messagePlaceholder": "Digite sua mensagem aqui...",
+        "notificationTitle": "Nova mensagem de",
+        "rooms": {
+            "title": "Continue suas conversas com suas {{userType}}",
+            "userType": {
+                "brands": "marcas",
+                "creators": "criadores"
+            },
+            "swipeToDelete": "Deslize para a esquerda para excluir o chat",
+            "searchPlaceholder": "Pesquisar",
+            "deleteAlert": {
+                "title": "Excluir chat",
+                "message": "Tem certeza de que deseja excluir este chat?",
+                "cancel": "Cancelar",
+                "delete": "Excluir"
+            },
+            "empty": {
+                "title": "Ainda não há conversas",
+                "button": "Iniciar uma conversa"
+            },
+            "delete": "Excluir",
+            "support": "Suporte",
+            "lastActive": "Última atividade {{time}}",
+            "contactUs": "Fale Conosco",
+            "options": {
+                "searchCreators": "Pesquisar criadores",
+                "supportBugs": "Suporte (Recursos / Bugs)"
+            },
+            "supportChatName": "Chat de suporte"
+        },
+        "support": {
+            "start": {
+                "title": "Vamos melhorar a criação de conteúdo gerado por usuários",
+                "subtitle": "Ajude-nos a melhorar sua experiência compartilhando seu feedback",
+                "button": "Entre em contato com nossa equipe de suporte"
+            }
+        }
+    },
+    "subscriptions": {
+        "restoreButton": "Restaurar assinatura",
+        "trustBadge": "Confiado por criadores UGC em todo o mundo",
+        "applyFilters": "Aplicar filtros"
+    },
+    "brands": {
+        "addProject": {
+            "title": "Adicionar um novo projeto",
+            "fields": {
+                "projectTitle": {
+                    "label": "Título do projeto",
+                    "placeholder": "Título do projeto"
+                },
+                "shortDescription": {
+                    "label": "Descrição curta",
+                    "placeholder": "Descrição curta"
+                },
+                "description": {
+                    "label": "Descrição",
+                    "placeholder": "Descrição"
+                },
+                "startDate": {
+                    "label": "Data de início"
+                },
+                "endDate": {
+                    "label": "Data de término"
+                },
+                "image": {
+                    "label": "Imagem",
+                    "replaceText": "Toque para substituir a imagem",
+                    "addText": "Toque para adicionar imagem do projeto"
+                },
+                "maxBudget": {
+                    "label": "Orçamento máximo",
+                    "placeholder": "Limite de orçamento máximo"
+                },
+                "minBudget": {
+                    "label": "Orçamento mínimo",
+                    "placeholder": "Limite de orçamento mínimo"
+                },
+                "currency": {
+                    "label": "Moeda"
+                }
+            },
+            "filters": {
+                "deliveryFormat": "Formato de entrega",
+                "projectType": "Tipo de projeto",
+                "categories": "Categorias do projeto",
+                "country": "País",
+                "language": "Idioma",
+                "gender": "Gênero",
+                "duration": "Duração do projeto"
+            },
+            "createButton": "Criar projeto",
+            "alerts": {
+                "missingFields": "Por favor, preencha todos os campos obrigatórios:",
+                "success": {
+                    "title": "Projeto criado com sucesso",
+                    "message": "Você pode ver seu projeto na seção de projetos"
+                },
+                "replaceImage": "Tem certeza de que deseja substituir a imagem?",
+                "cancel": "Cancelar",
+                "ok": "OK"
+            }
+        },
+        "creators": {
+            "titleCreator": "Colabore com o criador perfeito",
+            "titleBrand": "Encontre o criador perfeito",
+            "searchPlaceholder": "Pesquisar",
+            "noResults": "Nenhum resultado encontrado",
+            "loadingMessage": "Buscando criadores...",
+            "filters": {
+                "title": "Selecionar filtros",
+                "apply": "Aplicar filtros",
+                "clear": "Limpar filtros",
+                "categories": {
+                    "projectCategory": "Categoria do projeto",
+                    "country": "País",
+                    "language": "Idioma",
+                    "gender": "Gênero",
+                    "ageGroup": "Faixa etária",
+                    "projectType": "Tipo de projeto",
+                    "deliveryFormat": "Formato de entrega",
+                    "duration": "Duração do projeto"
+                }
+            }
+        }
+    },
+    "common": {
+        "actions": {
+            "viewMore": "Ver mais",
+            "viewAll": "Ver tudo",
+            "learnMore": "Saiba mais",
+            "submit": "Enviar",
+            "save": "Salvar",
+            "edit": "Editar",
+            "delete": "Excluir",
+            "cancel": "Cancelar",
+            "confirm": "Confirmar",
+            "close": "Fechar",
+            "back": "Voltar",
+            "next": "Próximo",
+            "previous": "Anterior",
+            "done": "Concluído",
+            "ok": "OK",
+            "yes": "Sim",
+            "no": "Não"
+        },
+        "status": {
+            "active": "Ativo",
+            "inactive": "Inativo",
+            "pending": "Pendente",
+            "completed": "Concluído",
+            "inProgress": "Em andamento",
+            "upcoming": "Próximo",
+            "expired": "Expirado",
+            "loading": "Carregando...",
+            "error": "Erro",
+            "success": "Sucesso",
+            "warning": "Aviso"
+        }
+    },
+    "subscriptions": {
+        "restoreButton": "Restaurar assinatura",
+        "trustBadge": "Confiança de criadores UGC em todo o mundo",
+        "termsPrefix": "Ao selecionar um plano de assinatura, você concorda com nossos",
+        "termsLink": "termos e condições",
+        "and": "e",
+        "privacyLink": "política de privacidade.",
+        "autoRenewText": "Sua assinatura será renovada automaticamente, a menos que a renovação automática seja desativada pelo menos 24 horas antes do final do período atual. Você pode gerenciar assinaturas a qualquer momento e desativar a renovação automática nas configurações do iTunes após a compra. Criaremos uma conta que permitirá acessar nosso conteúdo em todos os seus dispositivos iOS e você pode adicionar dispositivos adicionais conforme necessário.",
+        "logout": "sair"
+    },
+    "explore": {
+        "title": "Explorar marcas e projetos",
+        "searchPlaceholder": "Pesquisar",
+        "tabs": {
+            "brands": "Marcas",
+            "projects": "Projetos",
+            "feeds": "Feeds",
+            "recommended": "Recomendado"
+        },
+        "filters": {
+            "title": "Selecionar filtros",
+            "apply": "Aplicar filtros",
+            "clear": "Limpar filtros",
+            "categories": {
+                "projectCategory": "Categoria do projeto",
+                "country": "País",
+                "language": "Idioma",
+                "gender": "Gênero",
+                "ageGroup": "Faixa etária",
+                "projectType": "Tipo de projeto",
+                "deliveryFormat": "Formato de entrega",
+                "projectDuration": "Duração do projeto"
+            }
+        },
+        "projectDetails": {
+            "enrolledBadge": "Inscrito",
+            "sections": {
+                "description": "Descrição",
+                "timeline": "Cronograma",
+                "priceRange": "Faixa de preço",
+                "maxBudget": "Orçamento máximo",
+                "minBudget": "Orçamento mínimo",
+                "deliveryFormat": "Formato de entrega de conteúdo",
+                "duration": "Duração do projeto",
+                "categories": "Categorias",
+                "location": "Localização",
+                "genders": "Gêneros",
+                "languages": "Idiomas de conteúdo",
+                "ageRanges": "Faixas etárias",
+                "projectType": "Tipo de projeto"
+            },
+            "buttons": {
+                "viewProject": "Ver projeto",
+                "viewStatus": "Ver status do projeto",
+                "enrollNow": "Inscrever-se agora"
+            },
+            "alerts": {
+                "enrollSuccess": {
+                    "title": "Sucesso",
+                    "message": "Você se inscreveu com sucesso neste projeto",
+                    "ok": "OK"
+                }
+            }
+        }
+    },
+    "settings": {
+        "title": "Configurações",
+        "rows": {
+            "email": {
+                "title": "E-mail",
+                "description": ""
+            },
+            "language": {
+                "title": "Idioma",
+                "description": ""
+            },
+            "feedback": {
+                "title": "Feedback",
+                "description": "Envie-nos seu feedback"
+            },
+            "testSubscriptions": {
+                "title": "Assinaturas de teste",
+                "description": "Assinatura de teste (somente testadores)"
+            },
+            "updatePortfolio": {
+                "title": "Atualizar portfólio",
+                "description": "Atualize os detalhes do seu portfólio"
+            },
+            "changePassword": {
+                "title": "Alterar senha",
+                "description": "Altere sua senha"
+            },
+            "notifications": {
+                "title": "Notificações",
+                "description": "Gerencie suas notificações",
+                "alertTitle": "Notificações",
+                "alertMessage": "Você já concedeu permissão para receber notificações. Se desejar alterar as configurações de notificação, vá para as configurações do telefone.",
+                "cancelButton": "Cancelar"
+            },
+            "deleteAccount": {
+                "title": "Excluir conta",
+                "description": "Exclua sua conta"
+            },
+            "logout": {
+                "title": "Sair",
+                "description": "Sair da sua conta"
+            }
+        }
+    },
+    "navigation": {
+        "tabs": {
+            "home": "Início",
+            "explore": "Explorar",
+            "courses": "Cursos",
+            "profile": "Perfil",
+            "settings": "Configurações",
+            "chats": "Chats"
+        }
+    },
+    "validation": {
+        "required": "Este campo é obrigatório",
+        "invalidValue": "Por favor, insira um valor válido",
+        "maxCharsExceeded": "Máximo de caracteres excedido",
+        "minCharsRequired": "Mínimo de caracteres necessário",
+        "invalidEmail": "Por favor, insira um endereço de e-mail válido",
+        "invalidPhone": "Por favor, insira um número de telefone válido",
+        "invalidUrl": "Por favor, insira uma URL válida",
+        "passwordTooWeak": "A senha é muito fraca",
+        "passwordsDoNotMatch": "As senhas não coincidem"
+    },
+    "toast": {
+        "updateSuccess": "Atualizado com sucesso",
+        "deleteSuccess": "Excluído com sucesso",
+        "createSuccess": "Criado com sucesso",
+        "saveSuccess": "Salvo com sucesso",
+        "uploadSuccess": "Enviado com sucesso",
+        "somethingWentWrong": "Algo deu errado. Por favor, tente novamente.",
+        "networkError": "Erro de rede. Por favor, verifique sua conexão.",
+        "unauthorized": "Você não está autorizado a realizar esta ação."
+    },
+    "brands": {
+        "admin": {
+            "addProject": {
+                "title": "Adicionar um novo projeto",
+                "fields": {
+                    "projectTitle": "Título do projeto",
+                    "shortDescription": "Descrição breve",
+                    "description": "Descrição",
+                    "startDate": "Data de início",
+                    "endDate": "Data de término",
+                    "image": "Imagem",
+                    "maxBudget": "Orçamento máximo",
+                    "minBudget": "Orçamento mínimo",
+                    "currency": "Moeda"
+                },
+                "placeholders": {
+                    "projectTitle": "Título do projeto",
+                    "shortDescription": "Descrição breve",
+                    "description": "Descrição",
+                    "maxBudget": "Limite de orçamento máximo",
+                    "minBudget": "Limite de orçamento mínimo"
+                },
+                "categories": {
+                    "deliveryFormat": "Formato de entrega",
+                    "projectType": "Tipo de projeto",
+                    "projectCategories": "Categorias de projeto",
+                    "country": "País",
+                    "language": "Idioma",
+                    "gender": "Gênero",
+                    "projectDuration": "Duração do projeto"
+                },
+                "buttons": {
+                    "create": "Criar projeto"
+                },
+                "image": {
+                    "addInstruction": "Toque para adicionar imagem do projeto",
+                    "replaceInstruction": "Toque para substituir a imagem",
+                    "replaceConfirm": "Tem certeza de que deseja substituir a imagem?"
+                },
+                "alerts": {
+                    "fillRequired": "Por favor, preencha todos os campos obrigatórios:",
+                    "successTitle": "Projeto criado com sucesso",
+                    "successMessage": "Você pode ver seu projeto na seção de projetos"
+                }
+            },
+            "activeCreators": {
+                "title": "Criadores ativos",
+                "viewProjectStatus": "Ver status do projeto",
+                "empty": {
+                    "title": "Nenhum criador inscrito",
+                    "description": "Você ainda não inscreveu nenhum criador neste projeto."
+                },
+                "showMore": "Mostrar mais"
+            },
+            "enrolledCreators": {
+                "empty": {
+                    "title": "Nenhum criador inscrito",
+                    "description": "Nenhum criador inscrito neste projeto ainda."
+                }
+            },
+            "currentCreators": {
+                "viewProjectStatus": "Ver status do projeto",
+                "empty": {
+                    "title": "Nenhum criador ativo",
+                    "description": "Você não tem nenhum criador ativo com quem esteja trabalhando no momento"
+                }
+            },
+            "projectDescription": {
+                "startDate": "Data de início",
+                "endDate": "Data de término",
+                "maxBudget": "Orçamento máximo",
+                "minBudget": "Orçamento mínimo"
+            },
+            "loadingMessages": {
+                "fetchingProject": "Buscando detalhes do projeto...",
+                "loadingProject": "Carregando detalhes do projeto..."
+            }
+        },
+        "events": {
+            "search": "Pesquisar",
+            "emptyStates": {
+                "withSearch": "Evento não encontrado",
+                "withoutSearch": "Nenhum evento disponível"
+            },
+            "viewMore": "Ver mais",
+            "addEvent": {
+                "placeholders": {
+                    "title": "Título do evento",
+                    "description": "Descrição",
+                    "link": "https://www..."
+                },
+                "categories": "Categorias de eventos",
+                "alerts": {
+                    "fillRequired": "Por favor, preencha todos os campos obrigatórios:",
+                    "successCreated": "Evento criado com sucesso",
+                    "successEdited": "Evento editado com sucesso",
+                    "replaceImage": "Tem certeza de que deseja substituir a imagem?"
+                }
+            }
+        },
+        "profile": {
+            "settings": {
+                "rows": {
+                    "email": "E-mail",
+                    "language": "Idioma",
+                    "editProfile": "Editar perfil da marca",
+                    "editProfileDesc": "Estas informações serão visíveis para os criadores",
+                    "changePassword": "Alterar senha do administrador",
+                    "changePasswordDesc": "Altere sua senha de administrador",
+                    "notifications": "Notificações",
+                    "notificationsDesc": "Gerencie suas configurações de notificações",
+                    "supportChat": "Chat de suporte",
+                    "supportChatDesc": "Converse com o suporte",
+                    "deleteAccount": "Excluir conta",
+                    "logout": "Sair"
+                },
+                "alerts": {
+                    "notificationsTitle": "Notificações",
+                    "notificationsMessage": "Você já concedeu permissão para receber notificações. Se desejar alterar suas configurações de notificação, vá para as configurações do seu telefone."
+                }
+            },
+            "updateProfile": {
+                "saveButton": "Salvar alterações",
+                "fields": {
+                    "brandName": "Nome da marca",
+                    "email": "E-mail",
+                    "phoneNumber": "Número de telefone",
+                    "address": "Endereço",
+                    "shortDescription": "Descrição breve",
+                    "description": "Descrição",
+                    "instagram": "Link do Instagram",
+                    "facebook": "Link do Facebook",
+                    "twitter": "Link do Twitter",
+                    "linkedin": "Link do LinkedIn",
+                    "website": "Site",
+                    "location": "Localização"
+                }
+            }
+        }
+    },
+    "common": {
+        "actions": {
+            "viewMore": "Ver mais",
+            "viewAll": "Ver tudo",
+            "learnMore": "Saiba mais",
+            "submit": "Enviar",
+            "save": "Salvar",
+            "edit": "Editar",
+            "delete": "Excluir",
+            "cancel": "Cancelar",
+            "confirm": "Confirmar",
+            "close": "Fechar",
+            "back": "Voltar",
+            "next": "Próximo",
+            "previous": "Anterior",
+            "done": "Concluído",
+            "ok": "OK",
+            "yes": "Sim",
+            "no": "Não"
+        },
+        "buttons": {
+            "cancel": "Cancelar",
+            "ok": "OK",
+            "confirm": "Confirmar",
+            "save": "Salvar",
+            "delete": "Excluir",
+            "edit": "Editar",
+            "submit": "Enviar",
+            "showMore": "Mostrar mais",
+            "viewMore": "Ver mais",
+            "restart": "Reiniciar"
+        },
+        "status": {
+            "active": "Ativo",
+            "inactive": "Inativo",
+            "pending": "Pendente",
+            "completed": "Concluído",
+            "inProgress": "Em andamento",
+            "upcoming": "Próximo",
+            "expired": "Expirado",
+            "loading": "Carregando...",
+            "error": "Erro",
+            "success": "Sucesso",
+            "warning": "Aviso"
+        }
+    }
+}

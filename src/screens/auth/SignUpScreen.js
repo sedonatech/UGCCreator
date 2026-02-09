@@ -21,14 +21,14 @@ import TemplateIcon from '../../components/TemplateIcon';
 import TemplateBox from '../../components/TemplateBox';
 import ResizedImage from '../../components/ResizedImage';
 import useAppleAuth from '../../hooks/auth/useAppleAuth';
+import useTranslation from '../../hooks/useTranslation';
 
 const creatorAuthImage = require('../../../assets/images/onboarding/login.jpg');
 const brandAuthImage = require('../../../assets/images/onboarding/brand-auth.jpg');
 
-const CREATOR_PLACEHOLDER = 'Your Name';
-const BRAND_PLACEHOLDER = 'Your Brand Name';
 const SignUpScreen = ({ navigation, route }) => {
     const { mainDomain } = useConfig();
+    const { t } = useTranslation();
 
     const type = route.params?.type;
 
@@ -36,10 +36,10 @@ const SignUpScreen = ({ navigation, route }) => {
 
     const namePlaceholder = useMemo(() => {
         if (!type) {
-            return CREATOR_PLACEHOLDER;
+            return t('auth.signup.namePlaceholder');
         }
-        return isCreator ? CREATOR_PLACEHOLDER : BRAND_PLACEHOLDER;
-    }, [type, isCreator]);
+        return isCreator ? t('auth.signup.namePlaceholder') : t('auth.signup.brandNamePlaceholder');
+    }, [type, isCreator, t]);
 
     const [name, setName] = useState();
 
@@ -108,11 +108,11 @@ const SignUpScreen = ({ navigation, route }) => {
             }
         } catch (e) {
             if (e.code === 'auth/email-already-in-use') {
-                setError('That email address is already in use!');
+                setError(t('auth.signup.errors.emailInUse'));
             }
 
             if (e.code === 'auth/invalid-email') {
-                setPassword('That email address is invalid!');
+                setPassword(t('auth.signup.errors.emailInvalid'));
             }
             setLoading(false);
         }
@@ -144,7 +144,7 @@ const SignUpScreen = ({ navigation, route }) => {
 
             <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={20}>
                 <TemplateText size={22} medium center style={styles.title}>
-                    {`Create your ${isCreator ? 'creator' : 'brand'} account `}
+                    {isCreator ? t('auth.signup.createCreatorAccount') : t('auth.signup.createBrandAccount')}
                 </TemplateText>
             </TemplateBox>
 
@@ -155,9 +155,11 @@ const SignUpScreen = ({ navigation, route }) => {
                 onChangeText={text => setName(text)}
                 onBlur={() => setNameTouched(true)}
             />
-            <Error show={showNameError}>{`Please enter a valid ${isCreator ? 'name' : 'brand name'} `}</Error>
+            <Error show={showNameError}>
+                {isCreator ? t('auth.signup.errors.invalidName') : t('auth.signup.errors.invalidBrandName')}
+            </Error>
             <TemplateTextInput
-                placeholder="Your Email"
+                placeholder={t('auth.signup.emailPlaceholder')}
                 style={[styles.input, showEmailError && styles.error]}
                 value={email}
                 onChangeText={text => setEmail(text)}
@@ -165,11 +167,11 @@ const SignUpScreen = ({ navigation, route }) => {
                 onBlur={() => setEmailTouched(true)}
                 autoCapitalize="none"
             />
-            <Error show={showEmailError}>Please enter a valid email</Error>
+            <Error show={showEmailError}>{t('auth.signup.errors.invalidEmail')}</Error>
 
             <View style={styles.passwordContainer}>
                 <TemplateTextInput
-                    placeholder="Password"
+                    placeholder={t('auth.signup.passwordPlaceholder')}
                     style={[styles.input, showPasswordError && styles.error]}
                     value={password}
                     onChangeText={text => setPassword(text)}
@@ -189,7 +191,7 @@ const SignUpScreen = ({ navigation, route }) => {
                     />
                 </TemplateTouchable>
             </View>
-            <Error show={showPasswordError}>Please enter a valid password</Error>
+            <Error show={showPasswordError}>{t('auth.signup.errors.invalidPassword')}</Error>
 
             <View style={styles.buttonContainer}>
                 <Error show={!!error} style={styles.generalError}>
@@ -199,7 +201,7 @@ const SignUpScreen = ({ navigation, route }) => {
                     {appleError}
                 </Error>
                 <Button
-                    title="Create Account"
+                    title={t('auth.signup.createAccountButton')}
                     onPress={handleSignUp}
                     style={styles.button}
                     height={50}
@@ -237,7 +239,7 @@ const SignUpScreen = ({ navigation, route }) => {
                         }
                     }}
                 >
-                    By creating an account, you agree to our{' '}
+                    {t('auth.signup.termsPrefix')}{' '}
                     <TemplateText
                         medium
                         underLine
@@ -251,16 +253,16 @@ const SignUpScreen = ({ navigation, route }) => {
                         }}
                         color={ONBOARDING_BLUE}
                     >
-                        Terms of Service{' '}
+                        {t('auth.signup.termsOfService')}{' '}
                     </TemplateText>
-                    and{' '}
+                    {t('auth.signup.and')}{' '}
                     <TemplateText medium underLine size={14} color={ONBOARDING_BLUE}>
-                        Privacy Policy
+                        {t('auth.signup.privacyPolicy')}
                     </TemplateText>
                 </TemplateText>
 
                 <TemplateText size={16} center style={styles.signupLink} medium>
-                    Already a member?{' '}
+                    {t('auth.signup.alreadyMember')}{' '}
                     <TemplateText
                         color={ONBOARDING_BLUE}
                         underLine
@@ -268,7 +270,7 @@ const SignUpScreen = ({ navigation, route }) => {
                         medium
                         onPress={() => navigation.navigate(LOGIN)}
                     >
-                        Login
+                        {t('auth.signup.login')}
                     </TemplateText>
                 </TemplateText>
             </View>

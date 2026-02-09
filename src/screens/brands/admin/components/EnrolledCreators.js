@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import {
-    ActivityIndicator, FlatList, StyleSheet,
-} from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { chunk } from 'lodash';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import TemplateBox from '../../../../components/TemplateBox';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
+import useTranslation from '../../../../hooks/useTranslation';
 import {
     RADIUS_SMALL,
-
     RADIUS_XSMALL,
-    SCREEN_WIDTH, SPACE_MEDIUM, SPACE_XSMALL, WRAPPER_MARGIN,
+    SCREEN_WIDTH,
+    SPACE_MEDIUM,
+    SPACE_XSMALL,
+    WRAPPER_MARGIN,
 } from '../../../../theme/Layout';
 import CurrentCreatorsCard from './CurrentCreatorsCard';
 import { CREATOR_PROJECT_STATUS, PROFILE } from '../../../../navigation/ScreenNames';
-import {
-    BLACK, BRAND_BLUE, DEEP_LAVENDER, WHITE,
-} from '../../../../theme/Colors';
+import { BLACK, BRAND_BLUE, DEEP_LAVENDER, WHITE } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 
 const USERS_COLLECTION = 'users';
 const EnrolledCreators = ({ creatorIds, projectId }) => {
     const navigation = useNavigation();
+    const { t } = useTranslation();
 
     const [enrolledCreators, setEnrolledCreators] = useState([]);
 
@@ -44,11 +44,11 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                 .collection(USERS_COLLECTION)
                 .where('id', 'in', chunks?.[chunkIndex])
                 .get();
-            const chunkCreators = querySnapshot.docs.map((doc) => ({
+            const chunkCreators = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            const unique = [...new Map([...enrolledCreators, ...chunkCreators]?.map((u) => [u.email, u])).values()];
+            const unique = [...new Map([...enrolledCreators, ...chunkCreators]?.map(u => [u.email, u])).values()];
             setEnrolledCreators(unique);
             setLoading(false);
         } catch (error) {
@@ -68,26 +68,24 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                 width={140}
                 height={30}
                 mv={SPACE_MEDIUM}
-                onPress={() => setChunkIndex((prev) => prev + 1)}
+                onPress={() => setChunkIndex(prev => prev + 1)}
                 selfCenter
                 row
             >
                 <TemplateText color={WHITE} bold size={12}>
-                    Show More
+                    {t('brands.admin.activeCreators.showMore')}
                 </TemplateText>
-                {
-                    loading && <ActivityIndicator color={WHITE} size="small" style={styles.loading} />
-                }
+                {loading && <ActivityIndicator color={WHITE} size="small" style={styles.loading} />}
             </TemplateBox>
         );
     };
 
     return (
         <TemplateBox>
-            { !loading && !enrolledCreators?.length ? (
+            {!loading && !enrolledCreators?.length ? (
                 <ProfileStatusCard
-                    title="No enrolled creators"
-                    description="No creators enrolled to this project yet."
+                    title={t('brands.admin.enrolledCreators.empty.title')}
+                    description={t('brands.admin.enrolledCreators.empty.description')}
                     showProgress={false}
                     style={styles.statusCard}
                     slideInDelay={200}
@@ -96,11 +94,11 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={enrolledCreators}
-                    ListEmptyComponent={(
+                    ListEmptyComponent={
                         <TemplateBox bottom={10}>
                             <ActivityIndicator size="small" color={BLACK} />
                         </TemplateBox>
-                    )}
+                    }
                     renderItem={({ item }) => (
                         <CurrentCreatorsCard
                             key={item?.id}
@@ -110,18 +108,22 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                             style={styles.card}
                             cardWidth={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                             aspectRatio={1.5}
-                            onPress={() => navigation.navigate(CREATOR_PROJECT_STATUS, {
-                                creatorID: item?.id,
-                                projectId,
-                                creatorEmail: item?.contact?.email || item?.email,
-                                creatorFCMToken: item?.fcmToken,
-                            })}
-                            onViewCreatorPress={() => navigation.navigate(PROFILE, {
-                                creatorId: item?.id,
-                            })}
+                            onPress={() =>
+                                navigation.navigate(CREATOR_PROJECT_STATUS, {
+                                    creatorID: item?.id,
+                                    projectId,
+                                    creatorEmail: item?.contact?.email || item?.email,
+                                    creatorFCMToken: item?.fcmToken,
+                                })
+                            }
+                            onViewCreatorPress={() =>
+                                navigation.navigate(PROFILE, {
+                                    creatorId: item?.id,
+                                })
+                            }
                         />
                     )}
-                    keyExtractor={(item, index) => (`${item?.id}-${index}`)}
+                    keyExtractor={(item, index) => `${item?.id}-${index}`}
                     contentContainerStyle={styles.brandsListContentContainer}
                     removeClippedSubviews
                     initialNumToRender={10}
@@ -155,6 +157,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
 });
 export default EnrolledCreators;

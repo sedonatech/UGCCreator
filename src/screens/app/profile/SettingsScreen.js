@@ -16,6 +16,8 @@ import useNotificationPermissions from '../../../hooks/notifications/useNotifica
 import { wp } from '../../../Utils/getResponsiveSize';
 import DeleteUserModal from '../../../components/modals/DeleteUserModal';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+import LanguageSelector from '../../../components/LanguageSelector';
+import useTranslation from '../../../hooks/useTranslation';
 
 const SettingsScreen = ({ navigation }) => {
     const { logout: handleLogout } = useLogout();
@@ -24,6 +26,7 @@ const SettingsScreen = ({ navigation }) => {
     const { checkApplicationPermissions, isAuthorized } = useNotificationPermissions();
     const { getProfileCompleteStatus, profileCompleteRatio, profile, user } = auth;
     const { testers } = useFeatureFlags();
+    const { languageInfo, t } = useTranslation();
 
     const testEmails = testers?.emails || [];
     const isTester = useMemo(() => {
@@ -40,16 +43,23 @@ const SettingsScreen = ({ navigation }) => {
     }, [isFocused, profile, user]);
 
     const [showDeleteUser, setShowDeleteUser] = useState(false);
+    const [showLanguageSelector, setShowLanguageSelector] = useState(false);
 
     const settings = [
         {
-            title: 'Email',
+            title: t('settings.rows.email.title'),
             description: auth?.user?.email,
             onPress: () => '',
         },
         {
-            title: 'Feedback',
-            description: 'Send us your feedback',
+            title: t('settings.rows.language.title'),
+            description: languageInfo.nativeName,
+            onPress: () => setShowLanguageSelector(true),
+            icon: 'language-outline',
+        },
+        {
+            title: t('settings.rows.feedback.title'),
+            description: t('settings.rows.feedback.description'),
             onPress: () =>
                 navigation.navigate('WebView', {
                     url: 'https://docs.google.com/forms/d/e/1FAIpQLScOnFg0D06OPE5T5w7SZEcy12m9Si0JMAhOAGjGqj5NtMMVgA/viewform?usp=publish-editor',
@@ -57,20 +67,20 @@ const SettingsScreen = ({ navigation }) => {
             icon: 'chatbox-ellipses-outline',
         },
         isTester && {
-            title: 'Test Subscriptions',
-            description: 'Test subscription (testers only)',
+            title: t('settings.rows.testSubscriptions.title'),
+            description: t('settings.rows.testSubscriptions.description'),
             onPress: () => navigation.navigate(SUBSCRIPTION, { fromSettings: true }),
             icon: 'card-outline',
         },
         {
-            title: 'Update Portfolio',
-            description: 'Update your portfolio details',
+            title: t('settings.rows.updatePortfolio.title'),
+            description: t('settings.rows.updatePortfolio.description'),
             onPress: () => navigation.navigate(UPDATE_PORTFOLIO),
             icon: 'person-outline',
         },
         {
-            title: 'Change Password',
-            description: 'Change your password',
+            title: t('settings.rows.changePassword.title'),
+            description: t('settings.rows.changePassword.description'),
             onPress: () =>
                 navigation.navigate(FORGOT_PASSWORD, {
                     isUpdate: true,
@@ -78,16 +88,16 @@ const SettingsScreen = ({ navigation }) => {
             icon: 'lock-closed-outline',
         },
         {
-            title: 'Notifications',
-            description: 'Manage your notifications',
+            title: t('settings.rows.notifications.title'),
+            description: t('settings.rows.notifications.description'),
             onPress: async () => {
                 if (isAuthorized) {
                     Alert.alert(
-                        'Notifications',
-                        'You have already granted permission to receive notifications. If you would like to change your notification settings, please go to your phone settings.',
+                        t('settings.rows.notifications.alertTitle'),
+                        t('settings.rows.notifications.alertMessage'),
                         [
                             {
-                                text: 'Cancel',
+                                text: t('settings.rows.notifications.cancelButton'),
                                 onPress: () => {},
                                 style: 'cancel',
                             },
@@ -100,14 +110,14 @@ const SettingsScreen = ({ navigation }) => {
             icon: 'notifications-outline',
         },
         {
-            title: 'Delete Account',
-            description: 'Delete your account',
+            title: t('settings.rows.deleteAccount.title'),
+            description: t('settings.rows.deleteAccount.description'),
             onPress: () => setShowDeleteUser(true),
             icon: 'trash-outline',
         },
         {
-            title: 'Logout',
-            description: 'Logout of your account',
+            title: t('settings.rows.logout.title'),
+            description: t('settings.rows.logout.description'),
             onPress: handleLogout,
             icon: 'log-out-outline',
         },
@@ -156,6 +166,7 @@ const SettingsScreen = ({ navigation }) => {
                 )}
             />
             <DeleteUserModal onClose={() => setShowDeleteUser(false)} visible={showDeleteUser} />
+            <LanguageSelector visible={showLanguageSelector} onClose={() => setShowLanguageSelector(false)} />
         </>
     );
 };

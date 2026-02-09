@@ -22,6 +22,7 @@ import ProTipCard from './components/ProTipCard';
 import WeekOverviewItem from './components/WeekOverviewItem';
 import LockedCourseMessage from './components/LockedCourseMessage';
 import { WHITE, ZINC_900, ZINC_500, GRAY_100 } from '../../../theme/Colors';
+import useTranslation from '../../../hooks/useTranslation';
 
 const startOfDay = date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -29,6 +30,7 @@ const CourseDetails = ({ route }) => {
     const { auth } = useAuthContext();
     const userId = auth?.user?.uid;
     const { trackEvent } = useTrackEvent();
+    const { t } = useTranslation();
     const trackedCourseRef = useRef(null);
 
     const courseId = route?.params?.courseId;
@@ -180,10 +182,10 @@ const CourseDetails = ({ route }) => {
 
     const handleResetCourse = useCallback(() => {
         if (!userId || !courseId || !course) return;
-        Alert.alert('Restart course?', 'This will clear your progress and start the course from the beginning.', [
-            { text: 'Cancel', style: 'cancel' },
+        Alert.alert(t('courses.details.restartAlert.title'), t('courses.details.restartAlert.message'), [
+            { text: t('courses.details.restartAlert.cancel'), style: 'cancel' },
             {
-                text: 'Restart',
+                text: t('courses.details.restartAlert.restart'),
                 style: 'destructive',
                 onPress: async () => {
                     const progressRef = firestore()
@@ -200,7 +202,7 @@ const CourseDetails = ({ route }) => {
                 },
             },
         ]);
-    }, [course, courseId, userId]);
+    }, [course, courseId, userId, t, trackEvent]);
 
     useEffect(() => {
         if (!course?.id) return;
@@ -234,11 +236,11 @@ const CourseDetails = ({ route }) => {
             <TemplateBox style={styles.section}>
                 <TemplateBox row alignItems="center" justifyContent="space-between" mb={12}>
                     <TemplateText size={14} semiBold color={styles.textPrimary.color}>
-                        Today&apos;s Checklist
+                        {t('courses.details.todaysChecklist')}
                     </TemplateText>
                     <TemplateBox style={styles.dayPill}>
                         <TemplateText size={11} color={styles.textMuted.color}>
-                            Day {currentDayNumber}
+                            {t('courses.details.dayPrefix')} {currentDayNumber}
                         </TemplateText>
                     </TemplateBox>
                 </TemplateBox>
@@ -266,7 +268,7 @@ const CourseDetails = ({ route }) => {
 
             <TemplateBox style={styles.section}>
                 <TemplateText size={14} semiBold color={styles.textPrimary.color} mb={12}>
-                    {currentDayData?.weekTitle || 'Week Overview'}
+                    {currentDayData?.weekTitle || t('courses.details.weekOverview')}
                 </TemplateText>
 
                 {weekDays.map(day => {

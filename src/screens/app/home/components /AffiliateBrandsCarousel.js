@@ -26,8 +26,10 @@ import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import { getCapitalizedFirstLetter } from '../../../../Utils/texts';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const AffiliateBrandsCarousel = ({ style }) => {
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const { affiliate } = useFeatureFlags();
     const affiliateBrands = affiliate?.brands;
@@ -46,26 +48,26 @@ const AffiliateBrandsCarousel = ({ style }) => {
                     <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
                         <TemplateBox width={SCREEN_WIDTH * 0.8}>
                             <TemplateText size={16} semiBold>
-                                Brand Collabs
+                                {t('home.affiliateBrandsCarousel.title')}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox flex />
                         <TemplateTouchable
                             onPress={() =>
                                 navigation.navigate(AFFILIATE_BRANDS, {
-                                    title: 'Brand Collabs',
-                                    subtitle: 'Explore our brand collaborations',
+                                    title: t('home.affiliateBrandsCarousel.title'),
+                                    subtitle: t('home.affiliateBrandsCarousel.subtitle'),
                                 })
                             }
                         >
                             <TemplateText startCase size={14} underLine color={IOS_BLUE}>
-                                See All
+                                {t('home.affiliateBrandsCarousel.seeAll')}
                             </TemplateText>
                         </TemplateTouchable>
                     </TemplateBox>
                     <TemplateBox mh={WRAPPER_MARGIN} mb={16}>
                         <TemplateText size={13} color={BLACK}>
-                            Discover brand collabs, ambassador deals, and affiliate programs matched to your niche.
+                            {t('home.affiliateBrandsCarousel.description')}
                         </TemplateText>
                     </TemplateBox>
                 </TemplateBox>

@@ -25,12 +25,14 @@ import FilterCategory from '../../app/explore/components/FilterCategory';
 import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
 import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
 import { wp } from '../../../Utils/getResponsiveSize';
+import useTranslation from '../../../hooks/useTranslation';
 
 const AddProjectScreen = ({ navigation, route }) => {
     // TODO: Update project feature
     // const selectedProjectId = route?.params?.selectedProjectId;
     const setRefetchProjects = route?.params?.setRefetchProjects;
 
+    const { t } = useTranslation();
     const { update, project, createProject, loading } = useProjects();
     const [imageLoading, setImageLoading] = useState(false);
 
@@ -56,9 +58,10 @@ const AddProjectScreen = ({ navigation, route }) => {
     const getUnfilledFields = () => {
         const { image, title, shortDescription } = project;
         const unfilledFields = [];
-        if (!image?.trim()?.length) unfilledFields.push('Image');
-        if (!title?.trim()?.length) unfilledFields.push('Title');
-        if (!shortDescription?.trim()?.length) unfilledFields.push('Short Description');
+        if (!image?.trim()?.length) unfilledFields.push(t('brands.admin.addProject.fields.image'));
+        if (!title?.trim()?.length) unfilledFields.push(t('brands.admin.addProject.fields.projectTitle'));
+        if (!shortDescription?.trim()?.length)
+            unfilledFields.push(t('brands.admin.addProject.fields.shortDescription'));
         return unfilledFields?.join(', ');
     };
 
@@ -66,18 +69,22 @@ const AddProjectScreen = ({ navigation, route }) => {
         const { image, title, shortDescription } = project;
 
         if (!image?.trim()?.length || !title?.trim()?.length || !shortDescription?.trim()?.length)
-            return Alert.alert('Please fill all required fields:', getUnfilledFields());
+            return Alert.alert(t('brands.admin.addProject.alerts.fillRequired'), getUnfilledFields());
 
         createProject(project);
-        Alert.alert('Project created successfully', 'You can view your project in the projects section', [
-            {
-                text: 'OK',
-                onPress: () => {
-                    navigation.goBack();
-                    setRefetchProjects(new Date().toISOString());
+        Alert.alert(
+            t('brands.admin.addProject.alerts.successTitle'),
+            t('brands.admin.addProject.alerts.successMessage'),
+            [
+                {
+                    text: t('common.buttons.ok'),
+                    onPress: () => {
+                        navigation.goBack();
+                        setRefetchProjects(new Date().toISOString());
+                    },
                 },
-            },
-        ]);
+            ],
+        );
     };
 
     return (
@@ -85,14 +92,14 @@ const AddProjectScreen = ({ navigation, route }) => {
             <TemplateBox height={HEADER_MARGIN} />
             <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                 <TemplateText bold color={BLACK} size={18} startCase center>
-                    Add a new project
+                    {t('brands.admin.addProject.title')}
                 </TemplateText>
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Project Title</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.projectTitle')}</TemplateText>
                 <TemplateTextInput
-                    placeholder="Project Title"
+                    placeholder={t('brands.admin.addProject.placeholders.projectTitle')}
                     placeholderTextColor={BLACK_40}
                     style={styles.input}
                     value={project?.title}
@@ -102,9 +109,9 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Short Description</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.shortDescription')}</TemplateText>
                 <TemplateTextInput
-                    placeholder="Short description"
+                    placeholder={t('brands.admin.addProject.placeholders.shortDescription')}
                     placeholderTextColor={BLACK_40}
                     style={styles.input}
                     value={project?.shortDescription}
@@ -116,9 +123,9 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Description</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.description')}</TemplateText>
                 <TemplateTextInput
-                    placeholder="Description"
+                    placeholder={t('brands.admin.addProject.placeholders.description')}
                     placeholderTextColor={BLACK_40}
                     style={styles.input}
                     value={project?.description}
@@ -131,7 +138,7 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE} selfCenter>
-                <TemplateText size={16}>Start Date</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.startDate')}</TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} selfCenter>
                     <DateTimePicker
                         value={project?.startDate || new Date()}
@@ -148,7 +155,7 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE} selfCenter>
-                <TemplateText size={16}>End Date</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.endDate')}</TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} selfCenter>
                     <DateTimePicker
                         value={project?.endDate || new Date()}
@@ -167,7 +174,7 @@ const AddProjectScreen = ({ navigation, route }) => {
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                 <TemplateBox row>
                     <TemplateText size={16} mr={5}>
-                        Image
+                        {t('brands.admin.addProject.fields.image')}
                     </TemplateText>
                     {imageLoading && <ActivityIndicator size="small" color={BLUE} />}
                 </TemplateBox>
@@ -183,14 +190,14 @@ const AddProjectScreen = ({ navigation, route }) => {
                     onPress={() => {
                         console.log('[AddProject] Image button pressed, current image:', project?.image);
                         if (project?.image) {
-                            Alert.alert('Are you sure you want to replace the image?', '', [
+                            Alert.alert(t('brands.admin.addProject.image.replaceConfirm'), '', [
                                 {
-                                    text: 'Cancel',
+                                    text: t('common.buttons.cancel'),
                                     onPress: () => console.log('[AddProject] Cancel Pressed'),
                                     style: 'cancel',
                                 },
                                 {
-                                    text: 'OK',
+                                    text: t('common.buttons.ok'),
                                     onPress: () => {
                                         console.log('[AddProject] Replacing image, calling onAddPhoto');
                                         setImageLoading(true);
@@ -210,15 +217,17 @@ const AddProjectScreen = ({ navigation, route }) => {
                 >
                     <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} height={wp(62)} />
                     <TemplateText style={{ position: 'absolute' }} size={14} color={BLACK}>
-                        {project?.image ? 'Tap to replace image' : 'Tap to add project image'}
+                        {project?.image
+                            ? t('brands.admin.addProject.image.replaceInstruction')
+                            : t('brands.admin.addProject.image.addInstruction')}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Maximum Budget</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.maxBudget')}</TemplateText>
                 <TemplateTextInput
-                    placeholder="Maximum Budget limit"
+                    placeholder={t('brands.admin.addProject.placeholders.maxBudget')}
                     placeholderTextColor={BLACK_40}
                     style={styles.input}
                     value={project?.priceRange?.max}
@@ -233,9 +242,9 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Minimum Budget</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.minBudget')}</TemplateText>
                 <TemplateTextInput
-                    placeholder="Minimum Budget limit"
+                    placeholder={t('brands.admin.addProject.placeholders.minBudget')}
                     placeholderTextColor={BLACK_40}
                     style={styles.input}
                     value={project?.priceRange?.min}
@@ -250,7 +259,7 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Currency</TemplateText>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.currency')}</TemplateText>
                 <TemplateBox height={10} />
                 <CurrencyPicker
                     value={project?.currency?.code}
@@ -264,7 +273,7 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <FilterCategory
-                title="Delivery Format"
+                title={t('brands.admin.addProject.categories.deliveryFormat')}
                 filters={deliveryFormatFilters}
                 onFilterPress={value => {
                     if (project?.deliveryFormat.includes(value)) {
@@ -276,7 +285,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                 selectedFilters={project?.deliveryFormat}
             />
             <FilterCategory
-                title="Project Type"
+                title={t('brands.admin.addProject.categories.projectType')}
                 filters={projectTypeFilters}
                 onFilterPress={value => {
                     if (project?.projectType.includes(value)) {
@@ -288,7 +297,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                 selectedFilters={project?.projectType}
             />
             <FilterCategory
-                title="Project Categories"
+                title={t('brands.admin.addProject.categories.projectCategories')}
                 filters={projectFilters}
                 onFilterPress={value => {
                     if (project?.categories.includes(value)) {
@@ -300,7 +309,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                 selectedFilters={project?.categories}
             />
             <FilterCategory
-                title="Country"
+                title={t('brands.admin.addProject.categories.country')}
                 filters={countryFilters}
                 onFilterPress={value => {
                     if (project?.countries.includes(value)) {
@@ -312,7 +321,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                 selectedFilters={project?.countries}
             />
             <FilterCategory
-                title="Language"
+                title={t('brands.admin.addProject.categories.language')}
                 filters={languageFilters}
                 onFilterPress={value => {
                     if (project?.languages.includes(value)) {
@@ -324,7 +333,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                 selectedFilters={project?.languages}
             />
             <FilterCategory
-                title="Gender"
+                title={t('brands.admin.addProject.categories.gender')}
                 filters={genderFilters}
                 onFilterPress={value => {
                     if (project?.gender.includes(value)) {
@@ -336,7 +345,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                 selectedFilters={project?.gender}
             />
             <FilterCategory
-                title="Project Duration"
+                title={t('brands.admin.addProject.categories.projectDuration')}
                 filters={projectDurationFilters}
                 onFilterPress={value => {
                     if (project?.duration.includes(value)) {
@@ -348,7 +357,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                 selectedFilters={project?.duration}
             />
             <Button
-                title="Create Project"
+                title={t('brands.admin.addProject.buttons.create')}
                 onPress={handleCreateProject}
                 style={styles.button}
                 loading={loading}

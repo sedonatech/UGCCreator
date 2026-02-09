@@ -6,8 +6,10 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { ZINC_900, ZINC_500, WHITE, GRAY_200, GRAY_900, AMBER_500 } from '../../../../theme/Colors';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const CourseDetailsCard = ({ course, totalDays }) => {
+    const { t } = useTranslation();
     return (
         <TemplateBox style={styles.detailsCard}>
             <TemplateText size={20} semiBold color={styles.textPrimary.color} mb={8}>
@@ -20,19 +22,19 @@ const CourseDetailsCard = ({ course, totalDays }) => {
                 <TemplateBox row alignItems="center" mr={16}>
                     <TemplateIcon name="time-outline" size={14} color={styles.textMuted.color} />
                     <TemplateText size={12} color={styles.textMuted.color} ml={6}>
-                        {totalDays || 0} days
+                        {t('courses.details.days', { count: totalDays || 0 })}
                     </TemplateText>
                 </TemplateBox>
                 <TemplateBox row alignItems="center" mr={16}>
                     <TemplateIcon name="checkmark-circle-outline" size={14} color={styles.textMuted.color} />
                     <TemplateText size={12} color={styles.textMuted.color} ml={6}>
-                        {(course?.days?.length || 0) * 4} tasks
+                        {t('courses.details.tasks', { count: (course?.days?.length || 0) * 4 })}
                     </TemplateText>
                 </TemplateBox>
                 <TemplateBox row alignItems="center">
                     <TemplateIcon name="trophy-outline" size={14} color={AMBER_500} />
                     <TemplateText size={12} color={styles.textMuted.color} ml={6}>
-                        Certificate
+                        {t('courses.details.certificate')}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>

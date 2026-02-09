@@ -7,17 +7,20 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { ZINC_900, ZINC_500, ZINC_200, GRAY_200, INDIGO_PURPLE_GRADIENT, WHITE } from '../../../../theme/Colors';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const CoursesSummaryHeader = ({ summary }) => {
+    const { t } = useTranslation();
+
     return (
         <TemplateBox style={styles.hero}>
             <TemplateBox row alignItems="center" justifyContent="space-between" mb={18}>
                 <TemplateBox>
                     <TemplateText size={12} color={styles.textMuted.color} style={styles.uppercase}>
-                        Your Progress
+                        {t('courses.summary.yourProgress')}
                     </TemplateText>
                     <TemplateText size={24} semiBold color={styles.textPrimary.color}>
-                        {summary.courseCount || 0} Courses
+                        {t('courses.summary.coursesCount', { count: summary.courseCount || 0 })}
                     </TemplateText>
                 </TemplateBox>
                 <TemplateBox row alignItems="center">
@@ -29,7 +32,7 @@ const CoursesSummaryHeader = ({ summary }) => {
                             {summary.streak || 0}
                         </TemplateText>
                         <TemplateText size={12} color={styles.textMuted.color}>
-                            Day Streak
+                            {t('courses.summary.dayStreak')}
                         </TemplateText>
                     </TemplateBox>
                 </TemplateBox>
@@ -42,7 +45,7 @@ const CoursesSummaryHeader = ({ summary }) => {
                 />
             </TemplateBox>
             <TemplateText size={12} color={styles.textMuted.color} mt={8}>
-                {summary.completionRatio}% overall completion
+                {t('courses.summary.overallCompletion', { percent: summary.completionRatio })}
             </TemplateText>
         </TemplateBox>
     );

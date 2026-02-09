@@ -20,6 +20,7 @@ import { BLACK } from '../../../../theme/Colors';
 import { SAMPLE_DETAILS_SCREEN } from '../../../../navigation/ScreenNames';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
+import useTranslation from '../../../../hooks/useTranslation';
 
 type Item = {
     id: string;
@@ -41,6 +42,7 @@ type FeaturedShowcaseCarouselProps = {
 
 export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCarouselProps) {
     const [items, setItems] = useState<Item[]>([]);
+    const { t } = useTranslation();
 
     const navigation = useNavigation();
 
@@ -163,14 +165,14 @@ export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCaro
         <TemplateBox style={style} flex>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={12}>
                 <TemplateText size={18} bold>
-                    Featured Creator Showcase
+                    {t('home.showcase.title')}
                 </TemplateText>
                 <TemplateBox flex />
             </TemplateBox>
 
             <TemplateBox mh={WRAPPER_MARGIN} mb={16}>
                 <TemplateText size={13} color={BLACK}>
-                    {`Discover what creators are making now.\nupdate your sample work in portfolio to be featured`}
+                    {t('home.showcase.description')}
                 </TemplateText>
             </TemplateBox>
 

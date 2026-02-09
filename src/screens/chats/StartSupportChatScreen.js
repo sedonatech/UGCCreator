@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-    View, Text, StyleSheet, ScrollView,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { IS_ANDROID, WRAPPER_MARGIN } from '../../theme/Layout';
 import { TRANSPARENT, WHITE } from '../../theme/Colors';
@@ -13,17 +11,18 @@ import TemplateText from '../../components/TemplateText';
 import TemplateBox from '../../components/TemplateBox';
 import useChatsContext from '../../hooks/chats/useChatsContext';
 import useAuthContext from '../../hooks/auth/useAuthContext';
+import useTranslation from '../../hooks/useTranslation';
 
 const StartSupportChatScreen = () => {
     const navigation = useNavigation();
 
     const { auth } = useAuthContext();
 
+    const { t } = useTranslation();
+
     const userProfile = auth?.profile;
 
-    const {
-        chatRooms,
-    } = useChatsContext();
+    const { chatRooms } = useChatsContext();
 
     return (
         <ScrollView
@@ -33,22 +32,17 @@ const StartSupportChatScreen = () => {
         >
             <TemplateBox height={wp(130)} />
             <TemplateText bold size={wp(18)}>
-                Let's make user generated content creation better
+                {t('chats.support.start.title')}
             </TemplateText>
             <TemplateBox height={wp(20)} />
-            <TemplateText size={wp(14)}>
-                Help us to improve your experience by sharing your feedback
-            </TemplateText>
+            <TemplateText size={wp(14)}>{t('chats.support.start.subtitle')}</TemplateText>
             <TemplateBox height={wp(100)} />
 
-            <BrandLogo
-                width={wp(300)}
-                height={wp(200)}
-            />
+            <BrandLogo width={wp(300)} height={wp(200)} />
 
             <TemplateBox height={wp(100)} />
             <Button
-                title="Contact Our Support Team"
+                title={t('chats.support.start.button')}
                 onPress={() => navigation.navigate(SUPPORT_CHAT)}
                 style={styles.button}
             />

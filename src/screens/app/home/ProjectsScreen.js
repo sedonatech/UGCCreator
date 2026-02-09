@@ -3,6 +3,7 @@ import { StyleSheet, FlatList } from 'react-native';
 import differenceInWeeks from 'date-fns/differenceInWeeks';
 import Fuse from 'fuse.js';
 import { useNavigation } from '@react-navigation/native';
+import useTranslation from '../../../hooks/useTranslation';
 import { projectTypeFilters } from '../../../consts/AppFilters/ProjectFilters';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
@@ -17,6 +18,7 @@ import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { wp } from '../../../Utils/getResponsiveSize';
 
 const ProjectsScreen = () => {
+    const { t } = useTranslation();
     const { allProjects: projects, setProjectLimits, projectLimits } = useProjectsContext();
     const { auth } = useAuthContext();
     const { profile } = auth;
@@ -94,12 +96,12 @@ const ProjectsScreen = () => {
                 <TemplateBox alignItems="center" justifyContent="center">
                     <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                         <TemplateText size={18} bold startCase>
-                            Explore Projects
+                            {t('home.projects.title')}
                         </TemplateText>
                     </TemplateBox>
                     <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
                         <TemplateTextInput
-                            placeholder="Search"
+                            placeholder={t('home.projects.searchPlaceholder')}
                             style={[styles.input, SHADOW('default', WHITE)]}
                             value={search}
                             onChangeText={text => setSearch(text)}

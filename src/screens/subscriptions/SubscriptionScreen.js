@@ -24,8 +24,10 @@ import Button from '../../components/Button';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import ResizedImage from '../../components/ResizedImage';
 import Star from '../../../assets/svgs/Star';
+import useTranslation from '../../hooks/useTranslation';
 
 const SubscriptionScreen = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const fromSettings = route?.params?.fromSettings;
 
     const subscription = useSubscriptionContext();
@@ -274,14 +276,14 @@ const SubscriptionScreen = ({ navigation, route }) => {
                 />
                 <TemplateBox onPress={onRestore} selfCenter mv={WRAPPER_MARGIN} mh={WRAPPER_MARGIN}>
                     <TemplateText color={IOS_BLUE} semiBold size={16}>
-                        Restore Subscription
+                        {t('subscriptions.restoreButton')}
                     </TemplateText>
                 </TemplateBox>
 
                 {reviews?.length > 1 && (
                     <TemplateBox selfCenter>
                         <TemplateBox mb={16} alignItems="center">
-                            <TemplateText semiBold>Trusted by UGC creators worldwide</TemplateText>
+                            <TemplateText semiBold>{t('subscriptions.trustBadge')}</TemplateText>
                         </TemplateBox>
 
                         {reviews?.map(({ title, subtitle, image }, index) => (
@@ -321,7 +323,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN}>
                     <TemplateText size={12} color={BLACK_60} center small>
-                        By selecting a subscription plan you agree to our{' '}
+                        {t('subscriptions.termsPrefix')}{' '}
                         <TemplateText
                             black
                             size={14}
@@ -334,11 +336,11 @@ const SubscriptionScreen = ({ navigation, route }) => {
                                 }
                             }}
                         >
-                            terms and conditions
+                            {t('subscriptions.termsLink')}
                         </TemplateText>
                         <TemplateText black center size={14}>
                             {' '}
-                            and{' '}
+                            {t('subscriptions.and')}{' '}
                         </TemplateText>
                         <TemplateText
                             black
@@ -352,19 +354,15 @@ const SubscriptionScreen = ({ navigation, route }) => {
                                 }
                             }}
                         >
-                            privacy policy.{' '}
+                            {t('subscriptions.privacyLink')}{' '}
                         </TemplateText>
-                        Your subscription will automatically renew unless auto-renew is turned off at least 24 hours
-                        before the end of the current period. You can manage subscriptions at any time, and turn off
-                        auto-renewal in your iTunes settings after purchase if you choose. We will create you an account
-                        that will allow you to access our content on any iOS devices and you may choose to add
-                        additional devices as you require.
+                        {t('subscriptions.autoRenewText')}
                     </TemplateText>
                 </TemplateBox>
                 {!fromSettings && (
                     <TemplateBox selfCenter mb={WRAPPER_MARGIN * 2} mh={WRAPPER_MARGIN} onPress={() => handleLogout()}>
                         <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
-                            logout
+                            {t('subscriptions.logout')}
                         </TemplateText>
                     </TemplateBox>
                 )}

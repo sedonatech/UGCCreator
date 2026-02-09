@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
+import useTranslation from '../../../../hooks/useTranslation';
 import {
     ZINC_700,
     ZINC_500,
@@ -22,6 +23,7 @@ import {
 } from '../../../../theme/Colors';
 
 const WeekOverviewItem = ({ day, isCompleted, isToday, isLocked, completedTasksCount, totalTasksCount }) => {
+    const { t } = useTranslation();
     return (
         <TemplateBox
             style={[
@@ -45,16 +47,21 @@ const WeekOverviewItem = ({ day, isCompleted, isToday, isLocked, completedTasksC
             </TemplateBox>
             <TemplateBox style={styles.weekContent}>
                 <TemplateText size={13} medium color={isLocked ? GRAY_600 : styles.textSecondary.color}>
-                    Day {day.day}: {day.title}
+                    {t('courses.weekItem.dayTitle', { number: day.day, title: day.title })}
                 </TemplateText>
                 <TemplateText size={11} color={isLocked ? GRAY_400 : styles.textMuted.color}>
-                    {isLocked ? 'Locked' : `${completedTasksCount}/${totalTasksCount} tasks completed`}
+                    {isLocked
+                        ? t('courses.weekItem.locked')
+                        : t('courses.weekItem.tasksCompleted', {
+                              completed: completedTasksCount,
+                              total: totalTasksCount,
+                          })}
                 </TemplateText>
             </TemplateBox>
             {isToday && !isLocked && (
                 <TemplateBox style={styles.todayPill}>
                     <TemplateText size={10} color={WHITE} medium>
-                        Today
+                        {t('courses.weekItem.today')}
                     </TemplateText>
                 </TemplateBox>
             )}

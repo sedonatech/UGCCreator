@@ -8,8 +8,10 @@ import TemplateText from '../../../../components/TemplateText';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import { BLACK_SECONDARY } from '../../../../theme/Colors';
 import Avatar from '../../../../components/Avatar';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const Greeting = ({ userName, style, showAvatar }) => {
+    const { t } = useTranslation();
     const hour = new Date().getHours();
 
     const start = startOfDay(new Date());
@@ -19,12 +21,12 @@ const Greeting = ({ userName, style, showAvatar }) => {
 
     const getTimeGreeting = hour => {
         if (hour > 16) {
-            return 'Good evening, ';
+            return t('home.greeting.evening');
         }
         if (hour > 11) {
-            return 'Good afternoon, ';
+            return t('home.greeting.afternoon');
         }
-        return 'Good morning, ';
+        return t('home.greeting.morning');
     };
 
     return (

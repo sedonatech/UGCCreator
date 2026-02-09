@@ -4,6 +4,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
 import differenceInWeeks from 'date-fns/differenceInWeeks';
+import useTranslation from '../../../hooks/useTranslation';
 import TemplateText from '../../../components/TemplateText';
 import { BLACK, BRAND_BLUE, TRANSPARENT, WHITE, WHITE_96 } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
@@ -53,6 +54,7 @@ export const RECOMMENDED_TAB = {
 const TAB_DATA = [BRANDS_TAB, RECOMMENDED_TAB, PROJECTS_TAB, FEEDS_TAB];
 
 const ExploreScreen = ({ route }) => {
+    const { t } = useTranslation();
     const initialTab = route?.params?.initialTab || TAB_DATA[0];
 
     const refRBSheet = useRef();
@@ -143,12 +145,12 @@ const ExploreScreen = ({ route }) => {
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
             <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                 <TemplateText size={18} bold startCase>
-                    Explore Brands and Projects
+                    {t('explore.title')}
                 </TemplateText>
             </TemplateBox>
             <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mv={WRAPPER_MARGIN}>
                 <TemplateTextInput
-                    placeholder="Search"
+                    placeholder={t('explore.searchPlaceholder')}
                     style={[styles.input, SHADOW('default', WHITE)]}
                     value={search}
                     onChangeText={text => setSearch(text)}
@@ -191,7 +193,7 @@ const ExploreScreen = ({ route }) => {
                 <ScrollView showsVerticalScrollIndicator={false} alwaysBounceVertical={false}>
                     <TemplateBox mb={WRAPPER_MARGIN} mt={SPACE_XSMALL} alignItems="center" justifyContent="center" row>
                         <TemplateText size={18} bold>
-                            Select Filters
+                            {t('explore.filters.title')}
                         </TemplateText>
 
                         {selectedFilters.length > 0 && (
@@ -203,7 +205,7 @@ const ExploreScreen = ({ route }) => {
                                     refRBSheet.current.close();
                                 }}
                             >
-                                Apply Filters
+                                {t('explore.filters.apply')}
                             </TemplateText>
                         )}
 
@@ -217,55 +219,55 @@ const ExploreScreen = ({ route }) => {
                                     refRBSheet.current.close();
                                 }}
                             >
-                                Clear Filters
+                                {t('explore.filters.clear')}
                             </TemplateText>
                         )}
                     </TemplateBox>
 
                     <FilterCategory
-                        title="Project Category"
+                        title={t('explore.filters.categories.projectCategory')}
                         filters={projectFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Country"
+                        title={t('explore.filters.categories.country')}
                         filters={countryFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Language"
+                        title={t('explore.filters.categories.language')}
                         filters={languageFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Gender"
+                        title={t('explore.filters.categories.gender')}
                         filters={genderFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Age Group"
+                        title={t('explore.filters.categories.ageGroup')}
                         filters={ageFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Project Type"
+                        title={t('explore.filters.categories.projectType')}
                         filters={projectTypeFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Delivery Format"
+                        title={t('explore.filters.categories.deliveryFormat')}
                         filters={deliveryFormatFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
                     />
                     <FilterCategory
-                        title="Project Duration"
+                        title={t('explore.filters.categories.projectDuration')}
                         filters={projectDurationFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}

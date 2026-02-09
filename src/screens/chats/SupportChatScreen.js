@@ -8,11 +8,12 @@ import useChatsContext from '../../hooks/chats/useChatsContext';
 import useChatMessages from '../../hooks/chats/useChatMessages';
 import TemplateBox from '../../components/TemplateBox';
 import Blob from '../../../assets/svgs/Blob';
+import useTranslation from '../../hooks/useTranslation';
 
 const SupportChatScreen = () => {
-    const {
-        chatUser,
-    } = useChatsContext();
+    const { chatUser } = useChatsContext();
+
+    const { t } = useTranslation();
 
     const isFocused = useIsFocused();
 
@@ -25,9 +26,7 @@ const SupportChatScreen = () => {
     }, [isFocused]);
 
     return (
-        <View
-            style={styles.container}
-        >
+        <View style={styles.container}>
             <TemplateBox>
                 <Blob top color={LAVENDER} />
                 <Blob right color={LAVENDER} />
@@ -36,9 +35,9 @@ const SupportChatScreen = () => {
             </TemplateBox>
             <GiftedChat
                 messages={supportMessages}
-                onSend={(newMessages) => onSendSupportMessage(newMessages)}
+                onSend={newMessages => onSendSupportMessage(newMessages)}
                 user={chatUser}
-                placeholder="Type your message here..."
+                placeholder={t('chats.messagePlaceholder')}
                 alwaysShowSend
                 showUserAvatar
                 isTyping

@@ -6,13 +6,15 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { ZINC_500, GRAY_50, GRAY_200, GRAY_400 } from '../../../../theme/Colors';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const LockedCourseMessage = ({ isComingSoon }) => {
+    const { t } = useTranslation();
     return (
         <TemplateBox style={styles.lockedCard}>
             <TemplateIcon name="lock-closed" size={18} color={GRAY_400} />
             <TemplateText size={13} color={styles.textMuted.color} ml={10}>
-                {isComingSoon ? 'This course unlocks next month.' : 'Upgrade to premium to access this course.'}
+                {isComingSoon ? t('courses.lockedMessage.comingSoon') : t('courses.lockedMessage.premium')}
             </TemplateText>
         </TemplateBox>
     );

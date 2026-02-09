@@ -6,8 +6,10 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { INDIGO_PURPLE_PINK_GRADIENT, WHITE, WHITE_20, WHITE_BG_08, SLATE_950 } from '../../../../theme/Colors';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const CourseHeroHeader = ({ course, totalDays, onReset }) => {
+    const { t } = useTranslation();
     return (
         <TemplateBox style={styles.hero}>
             <LinearGradient colors={course?.gradient || INDIGO_PURPLE_PINK_GRADIENT} style={styles.heroGradient} />
@@ -15,12 +17,12 @@ const CourseHeroHeader = ({ course, totalDays, onReset }) => {
             <TemplateBox style={styles.resetButton} onPress={onReset} center>
                 <TemplateIcon name="refresh" size={14} color={WHITE} />
                 <TemplateText size={12} color={WHITE} ml={6} medium>
-                    Reset
+                    {t('courses.details.reset')}
                 </TemplateText>
             </TemplateBox>
             <TemplateBox style={styles.heroPill}>
                 <TemplateText size={12} medium color={WHITE}>
-                    {totalDays || 30}-Day Program
+                    {t('courses.details.dayProgram', { count: totalDays || 30 })}
                 </TemplateText>
             </TemplateBox>
         </TemplateBox>

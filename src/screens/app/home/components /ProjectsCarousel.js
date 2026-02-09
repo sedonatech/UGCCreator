@@ -18,8 +18,10 @@ import { projectTypeFilters } from '../../../../consts/AppFilters/ProjectFilters
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
 import { PROJECTS_TAB } from '../../explore/ExploreScreen';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const ProjectsCarousel = ({ style }) => {
+    const { t } = useTranslation();
     const { auth } = useAuthContext();
     const { profile } = auth;
     const navigation = useNavigation();
@@ -60,19 +62,19 @@ const ProjectsCarousel = ({ style }) => {
         <TemplateBox style={[style, styles.container]}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                 <TemplateText size={18} bold>
-                    New Projects
+                    {t('home.projectsCarousel.title')}
                 </TemplateText>
                 <TemplateBox flex />
                 {/* @ts-ignore */}
                 <TemplateTouchable onPress={() => navigation.navigate(PROJECTS_SCREEN)}>
                     <TemplateText startCase size={14} underLine color={IOS_BLUE}>
-                        See All
+                        {t('home.projectsCarousel.seeAll')}
                     </TemplateText>
                 </TemplateTouchable>
             </TemplateBox>
             {/* @ts-ignore */}
             <TemplateText size={13} color={BLACK} style={styles.subtitle}>
-                Check out new projects from trusted brands based on your interests and location
+                {t('home.projectsCarousel.description')}
             </TemplateText>
 
             <TemplateBox
@@ -83,7 +85,7 @@ const ProjectsCarousel = ({ style }) => {
                 onPress={() => navigation.navigate(BRAND_OFFERS)}
             >
                 <TemplateText size={14} medium color={IOS_BLUE}>
-                    My enrolled projects
+                    {t('home.projectsCarousel.enrolledProjects')}
                 </TemplateText>
                 <DynamicIcon name="ArrowRight" color={IOS_BLUE} />
             </TemplateBox>

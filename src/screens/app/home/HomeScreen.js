@@ -28,11 +28,13 @@ import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ProjectsCarousel from './components /ProjectsCarousel';
+import useTranslation from '../../../hooks/useTranslation';
 
 const FEEDBACK_FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLScOnFg0D06OPE5T5w7SZEcy12m9Si0JMAhOAGjGqj5NtMMVgA/viewform?usp=publish-editor';
 
 const HomeScreen = ({ navigation }) => {
+    const { t } = useTranslation();
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -43,13 +45,13 @@ const HomeScreen = ({ navigation }) => {
                     row
                 >
                     <TemplateText size={13} medium color={BLACK} mr={6}>
-                        Feedback
+                        {t('home.feedback')}
                     </TemplateText>
                     <DynamicIcon name="Comments" size={20} />
                 </TemplateBox>
             ),
         });
-    }, [navigation]);
+    }, [navigation, t]);
     const { auth } = useAuthContext();
     const { features } = useFeatureFlags();
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
@@ -82,8 +84,8 @@ const HomeScreen = ({ navigation }) => {
 
         Toast.show({
             type: 'info',
-            text1: 'Challenges are live',
-            text2: 'Add your submissions now.',
+            text1: t('home.challenges.toastTitle'),
+            text2: t('home.challenges.toastMessage'),
             position: 'top',
             visibilityTime: 3500,
             autoHide: true,
@@ -110,14 +112,14 @@ const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (!profileImage) {
-            Alert.alert('Profile image', 'Please upload a profile image to continue', [
+            Alert.alert(t('home.alerts.profileImage.title'), t('home.alerts.profileImage.message'), [
                 {
-                    text: 'OK',
+                    text: t('home.alerts.profileImage.ok'),
                     onPress: () => navigation.navigate(PROFILE_STACK),
                 },
             ]);
         }
-    }, [profileImage]);
+    }, [profileImage, t]);
 
     const { previousResponse, handleRate } = useAppReview();
 
@@ -151,13 +153,10 @@ const HomeScreen = ({ navigation }) => {
             >
                 <TemplateBox>
                     <TemplateText size={16} semiBold>
-                        Generate Media Kit
+                        {t('home.mediaKit.title')}
                     </TemplateText>
                     <TemplateBox mt={8} maxWidth={SCREEN_WIDTH / 1.5}>
-                        <TemplateText size={14}>
-                            Upload a one page PDF with your work. Brands can preview it on your profile, update it any
-                            time.
-                        </TemplateText>
+                        <TemplateText size={14}>{t('home.mediaKit.description')}</TemplateText>
                     </TemplateBox>
                 </TemplateBox>
                 <DynamicIcon name={'ArrowRight'} size={24} />
@@ -214,7 +213,7 @@ const HomeScreen = ({ navigation }) => {
                     selfCenter
                 >
                     <TemplateText size={13} onPress={handleRate}>
-                        Please take a moment to rate our app
+                        {t('home.alerts.appReview')}
                     </TemplateText>
                     <TemplateBox onPress={handleRate} absolute left={SCREEN_WIDTH - wp(70)} top={wp(8)}>
                         <TemplateIcon name="close-outline" size={20} color={BLACK} />
@@ -239,12 +238,10 @@ const HomeScreen = ({ navigation }) => {
                     <TemplateBox width={16} />
                     <TemplateBox width={SCREEN_WIDTH / 1.6} onPress={() => navigation.navigate(BRANDS_CATALOGUE)}>
                         <TemplateText bold size={16}>
-                            Brands Catalogue
+                            {t('home.brandsCatalogue.title')}
                         </TemplateText>
                         <TemplateBox height={10} />
-                        <TemplateText size={13}>
-                            Discover and explore our extensive catalogue of hundreds of brands
-                        </TemplateText>
+                        <TemplateText size={13}>{t('home.brandsCatalogue.description')}</TemplateText>
                     </TemplateBox>
                 </TemplateBox>
             )}
