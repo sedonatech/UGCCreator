@@ -197,6 +197,100 @@
             "submitEntries": "Submit Entries",
             "challengeStartsInOneDay": "Challenge starts in 1 day",
             "challengeStartsInDays": "Challenge starts in {{days}} days"
+        },
+        "details": {
+            "pricePool": "Price Pool",
+            "upTo": "Up to",
+            "participants": "Participants",
+            "about": "About {{product}}",
+            "appStore": "App Store",
+            "website": "Website",
+            "theMission": "The mission",
+            "howToParticipate": "How to participate",
+            "rulesOfChallenge": "Rules of the challenge",
+            "prizesAndRewards": "Prizes & rewards",
+            "grandPrize": "* Grand Prize:",
+            "runnersUp": "* Runners Up:",
+            "allParticipants": "* All Participants:",
+            "notStartedYet": "Challenge has not started yet. You can add entries once it starts.",
+            "myEntries": "My Entries",
+            "submitYourEntries": "Submit Your Entries",
+            "addEntry": "Add Entry",
+            "yourEntriesDescription": "Here's what you've added for this challenge. Edit these or add more anytime.",
+            "showOffDescription": "Show off your skills by submitting your best work for this challenge. You can add multiple entries to increase your chances of winning!",
+            "startChallenge": "Start the challenge 💪🏼, drop your first piece",
+            "submitEntry": "Submit  Entry",
+            "challengeTitle": "Challenge Title"
+        },
+        "modals": {
+            "submission": {
+                "title": "Your Entries",
+                "videoUrl": "Video URL",
+                "videoUrlPlaceholder": "Enter video URL",
+                "titleLabel": "Title",
+                "titlePlaceholder": "eg.Morning Glow-Up with UGCCreator app",
+                "views": "Views",
+                "viewsPlaceholder": "Enter number of views",
+                "likes": "Likes",
+                "likesPlaceholder": "Enter number of likes",
+                "comments": "Number of comments",
+                "commentsPlaceholder": "Enter number of comments",
+                "shares": "Shares",
+                "sharesPlaceholder": "Enter number of shares",
+                "saves": "Saves",
+                "savesPlaceholder": "Enter number of saves",
+                "submitButton": "Submit Entry",
+                "invalidTitle": "Invalid Input",
+                "invalidMessage": "Please fill all fields with valid data before submitting."
+            },
+            "leaderboard": {
+                "title": "Challenge Leaderboard",
+                "description": "Track the top performing videos in real time and check how your entry compares to other creators."
+            }
+        }
+    },
+    "modals": {
+        "deleteUser": {
+            "title": "Delete Account",
+            "warning": "Please note by taking this action you are permanently deleting your account and all data associated.",
+            "instruction": "Should you wish to proceed, please enter your password",
+            "passwordPlaceholder": "Password",
+            "confirmButton": "confirm",
+            "cancelButton": "Cancel",
+            "alerts": {
+                "noEmail": "Unable to verify email for re-authentication.",
+                "success": "User deleted successfully.",
+                "wrongPassword": "The password is incorrect.",
+                "error": "Error during re-authentication or deletion:",
+                "noUser": "No user is currently signed in."
+            }
+        },
+        "profileIncomplete": {
+            "defaultTitle": "Profile Incomplete",
+            "defaultSubtitle": "Please complete your profile before you can use the features of the app .",
+            "defaultButton": "Complete Profile"
+        },
+        "recommendedBrand": {
+            "defaultTitle": "Profile Incomplete",
+            "defaultSubtitle": "Please complete your profile before you can use the features of the app ."
+        },
+        "sampleWork": {
+            "addTitle": "Add Sample Work",
+            "editTitle": "Edit Sample Work",
+            "pickCover": "Pick Cover Image*",
+            "changeCover": "Change Cover*",
+            "titlePlaceholder": "Title*",
+            "descriptionPlaceholder": "Description*",
+            "socialLinkPlaceholder": "Social link: http:... (optional)",
+            "featuredLabel": "Featured (profile)",
+            "showcaseLabel": "Showcase (eligible for Home)",
+            "addButton": "Add Sample",
+            "saveButton": "Save Changes",
+            "closeButton": "Close",
+            "alerts": {
+                "requiredFields": "Add all required inputs",
+                "invalidUrl": "Enter a valid social link URL: https://..."
+            }
         }
     },
     "tabs": {
@@ -259,7 +353,25 @@
             "mediaKitDescription": "Generate your professional media kit to showcase your work to potential brands, then upload it here. You can always update it later when needed.",
             "generateButton": "Generate Media Kit",
             "uploadButton": "Upload Media Kit",
-            "contactButton": "Contact Creator"
+            "contactButton": "Contact Creator",
+            "updateTitle": "Update Your Portfolio",
+            "sampleWork": {
+                "myTitle": "My Sample Work",
+                "creatorTitle": "Creator Showcase",
+                "myDescription": "Add sample works to your profile with a chance of being featured.",
+                "creatorDescription": "Featured sample works from this creator.",
+                "addButton": "+ Add Sample",
+                "maxItems": "Max 3 items"
+            },
+            "contact": {
+                "title": "Contact Information",
+                "phoneNumber": "Phone Number",
+                "email": "Email",
+                "instagram": "Instagram",
+                "facebook": "FaceBook",
+                "twitter": "Twitter",
+                "linkedin": "LinkedIn"
+            }
         },
         "updatePortfolio": {
             "saveButton": "Save changes",

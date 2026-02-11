@@ -10,19 +10,14 @@ import {
     ActivityIndicator,
     Alert,
 } from 'react-native';
-import {
-    createSample,
-    updateSample,
-    uploadCover,
-    pickCoverImage,
-    SampleWork,
-} from '../../lib/sampleWorks';
+import { createSample, updateSample, uploadCover, pickCoverImage, SampleWork } from '../../lib/sampleWorks';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import { BLACK, BLACK_80, BLUE, DARK_GREY, GREY, GREY_SECONDARY, PRIMARY, WHITE } from '../../theme/Colors';
 import TemplateText from '../TemplateText';
 import { hp } from '../../Utils/getResponsiveSize';
 import TemplateBox from '../TemplateBox';
 import { SCREEN_WIDTH } from '../../theme/Layout';
+import useTranslation from '../../hooks/useTranslation';
 
 type Props = {
     open: boolean;
@@ -32,17 +27,14 @@ type Props = {
 
 export default function SampleWorkModal({ open, onClose, initial }: Props) {
     const { auth } = useAuthContext();
+    const { t } = useTranslation();
     const isEdit = !!initial?.id;
     const [title, setTitle] = useState(initial?.title || '');
     const [description, setDescription] = useState(initial?.description || '');
     const [socialUrl, setSocialUrl] = useState(initial?.socialUrl || '');
-    const [visibility, setVisibility] = useState<'public' | 'private'>(
-        initial?.visibility || 'public',
-    );
+    const [visibility, setVisibility] = useState<'public' | 'private'>(initial?.visibility || 'public');
     const [isFeatured, setIsFeatured] = useState(!!initial?.isFeatured || true);
-    const [showcaseOptIn, setShowcaseOptIn] = useState(
-        !!initial?.showcaseOptIn || true,
-    );
+    const [showcaseOptIn, setShowcaseOptIn] = useState(!!initial?.showcaseOptIn || true);
     const [localCover, setLocalCover] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -53,26 +45,23 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
 
     function isValidUrl(url: string) {
         try {
-          new URL(url);
-          return true;
+            new URL(url);
+            return true;
         } catch {
-          return false;
+            return false;
         }
-      }
+    }
 
     async function handleSave() {
         try {
-            if (!auth?.profile || !title?.trim() || !(localCover || initial?.coverUrl)) return Alert.alert('Add all required inputs');
-            if (!!socialUrl && !isValidUrl(socialUrl)) return Alert.alert('Enter a valid social link URL: https://...');
+            if (!auth?.profile || !title?.trim() || !(localCover || initial?.coverUrl))
+                return Alert.alert(t('modals.sampleWork.alerts.requiredFields'));
+            if (!!socialUrl && !isValidUrl(socialUrl)) return Alert.alert(t('modals.sampleWork.alerts.invalidUrl'));
             setLoading(true);
             try {
                 let coverUrl = (initial?.coverUrl as string) || '';
                 if (localCover) {
-                    coverUrl = await uploadCover(
-                        localCover,
-                        auth?.profile?.id,
-                        initial?.id as string | undefined,
-                    );
+                    coverUrl = await uploadCover(localCover, auth?.profile?.id, initial?.id as string | undefined);
                 }
                 if (isEdit) {
                     await updateSample(initial!.id!, {
@@ -107,13 +96,14 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
     }
 
     return (
-        <Modal visible={open} animationType="slide" transparent >
+        <Modal visible={open} animationType="slide" transparent>
             <View
                 style={{
                     flex: 1,
                     backgroundColor: BLACK_80,
                     justifyContent: 'flex-end',
-                }}>
+                }}
+            >
                 <TemplateBox flex width={SCREEN_WIDTH} onPress={onClose} />
                 <View
                     style={{
@@ -122,10 +112,11 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
                         maxHeight: '88%',
-                    }}>
+                    }}
+                >
                     <ScrollView>
                         <Text style={{ fontSize: 18, fontWeight: '700' }}>
-                            {isEdit ? 'Edit Sample Work' : 'Add Sample Work'}
+                            {isEdit ? t('modals.sampleWork.editTitle') : t('modals.sampleWork.addTitle')}
                         </Text>
 
                         <TouchableOpacity
@@ -136,14 +127,13 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                                 borderWidth: 1,
                                 borderColor: GREY_SECONDARY,
                                 borderRadius: 12,
-                            }}>
+                            }}
+                        >
                             <Text>
-                                {localCover ? 'Change Cover*' : 'Pick Cover Image*'}
+                                {localCover ? t('modals.sampleWork.changeCover') : t('modals.sampleWork.pickCover')}
                             </Text>
                             {(localCover || initial?.coverUrl) && (
-                                <Text
-                                    style={{ color: DARK_GREY, marginTop: 8 }}
-                                    numberOfLines={1}>
+                                <Text style={{ color: DARK_GREY, marginTop: 8 }} numberOfLines={1}>
                                     {localCover || initial?.coverUrl}
                                 </Text>
                             )}
@@ -152,7 +142,7 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                         <TextInput
                             value={title}
                             onChangeText={setTitle}
-                            placeholder="Title*"
+                            placeholder={t('modals.sampleWork.titlePlaceholder')}
                             placeholderTextColor={GREY}
                             style={{
                                 borderWidth: 1,
@@ -166,7 +156,7 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                         <TextInput
                             value={description}
                             onChangeText={setDescription}
-                            placeholder="Description*"
+                            placeholder={t('modals.sampleWork.descriptionPlaceholder')}
                             placeholderTextColor={GREY}
                             multiline
                             style={{
@@ -182,7 +172,7 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                         <TextInput
                             value={socialUrl}
                             onChangeText={setSocialUrl}
-                            placeholder="Social link: http:... (optional)"
+                            placeholder={t('modals.sampleWork.socialLinkPlaceholder')}
                             placeholderTextColor={GREY}
                             style={{
                                 borderWidth: 1,
@@ -198,8 +188,9 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 marginTop: 16,
-                            }}>
-                            <Text>Featured (profile)</Text>
+                            }}
+                        >
+                            <Text>{t('modals.sampleWork.featuredLabel')}</Text>
                             <Switch value={isFeatured} onValueChange={setIsFeatured} />
                         </View>
 
@@ -208,10 +199,9 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 marginTop: 12,
-                            }}>
-                            <Text>
-                                Showcase (eligible for Home)
-                            </Text>
+                            }}
+                        >
+                            <Text>{t('modals.sampleWork.showcaseLabel')}</Text>
                             <Switch value={showcaseOptIn} onValueChange={setShowcaseOptIn} />
                         </View>
 
@@ -224,20 +214,21 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                                 borderRadius: 12,
                                 alignItems: 'center',
                                 marginTop: 20,
-                            }}>
+                            }}
+                        >
                             {loading ? (
                                 <ActivityIndicator color={PRIMARY} />
                             ) : (
                                 <Text style={{ color: '#fff', fontWeight: '700' }}>
-                                    {isEdit ? 'Save Changes' : 'Add Sample'}
+                                    {isEdit ? t('modals.sampleWork.saveButton') : t('modals.sampleWork.addButton')}
                                 </Text>
                             )}
                         </TouchableOpacity>
 
-                        <TouchableOpacity
-                            onPress={onClose}
-                            style={{ padding: 14, alignItems: 'center', marginTop: 8 }}>
-                            <TemplateText color={BLACK} medium size={hp(14)}>Close</TemplateText>
+                        <TouchableOpacity onPress={onClose} style={{ padding: 14, alignItems: 'center', marginTop: 8 }}>
+                            <TemplateText color={BLACK} medium size={hp(14)}>
+                                {t('modals.sampleWork.closeButton')}
+                            </TemplateText>
                         </TouchableOpacity>
                     </ScrollView>
                 </View>

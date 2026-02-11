@@ -8,6 +8,7 @@ import TemplateText from '../TemplateText';
 import { BLACK, WHITE } from '../../theme/Colors';
 import Button from '../Button';
 import { WRAPPER_MARGIN } from '../../theme/Layout';
+import useTranslation from '../../hooks/useTranslation';
 
 const ProfileIncompleteModal = ({
     visible,
@@ -15,7 +16,9 @@ const ProfileIncompleteModal = ({
     title,
     subtitle,
     buttonTitle,
-}) => (
+}) => {
+    const { t } = useTranslation();
+    return (
     <ModalBase
         visible={visible}
         closeOnPress={closeOnPress}
@@ -31,15 +34,15 @@ const ProfileIncompleteModal = ({
             width="86%"
         >
             <TemplateText color={BLACK} size={20} bold>
-                {title}
+                {title || t('modals.profileIncomplete.defaultTitle')}
             </TemplateText>
             <TemplateBox height={20} />
             <TemplateText center color={BLACK} size={16}>
-                {subtitle}
+                {subtitle || t('modals.profileIncomplete.defaultSubtitle')}
             </TemplateText>
             <TemplateBox height={20} />
             <Button
-                title={buttonTitle}
+                title={buttonTitle || t('modals.profileIncomplete.defaultButton')}
                 onPress={closeOnPress}
                 style={styles.button}
             />
@@ -61,9 +64,9 @@ ProfileIncompleteModal.defaultProps = {
     visible: false,
     closeOnPress: () => {
     },
-    title: 'Profile Incomplete',
-    subtitle: 'Please complete your profile before you can use the features of the app .',
-    buttonTitle: 'Complete Profile',
+    title: null,
+    subtitle: null,
+    buttonTitle: null,
 };
 
 const styles = StyleSheet.create({

@@ -163,8 +163,8 @@
     },
     "challenges": {
         "title": "Desafíos",
-        "feedbackButton": "Comentarios",
-        "leaderBoardButton": "Tabla de clasificación",
+        "feedbackButton": "Opinión",
+        "leaderBoardButton": "Ranking",
         "notStartedAlert": {
             "title": "Desafío no iniciado",
             "message": "El desafío aún no ha comenzado. La tabla de clasificación estará disponible una vez que comience el desafío."
@@ -180,34 +180,128 @@
             "defaultPrize": "300 USD"
         },
         "status": {
-            "enrollmentStartsToday": "Las inscripciones comienzan hoy",
-            "dayToEnrollment": "1 día para la inscripción",
-            "daysToEnrollment": "{{days}} días para la inscripción",
-            "enrollmentOpen": "Inscripciones abiertas",
-            "challengeStarted": "Desafío iniciado",
-            "challengeCompleted": "Desafío completado",
+            "enrollmentStartsToday": "Inscripción hoy",
+            "dayToEnrollment": "1 día restante",
+            "daysToEnrollment": "{{days}} días restantes",
+            "enrollmentOpen": "Abierto",
+            "challengeStarted": "Iniciado",
+            "challengeCompleted": "Completado",
             "ended": "Finalizado",
-            "endsInOneDay": "Termina en 1 día",
-            "endsInDays": "Termina en {{days}} días"
+            "endsInOneDay": "1 día restante",
+            "endsInDays": "{{days}} días restantes"
         },
         "cta": {
             "comingSoon": "Próximamente",
-            "challengeCompleted": "Desafío completado",
-            "enrollNow": "Inscríbete ahora",
-            "submitEntries": "Enviar participaciones",
-            "challengeStartsInOneDay": "El desafío comienza en 1 día",
-            "challengeStartsInDays": "El desafío comienza en {{days}} días"
+            "challengeCompleted": "Completado",
+            "enrollNow": "Inscríbete",
+            "submitEntries": "Enviar",
+            "challengeStartsInOneDay": "Inicia en 1 día",
+            "challengeStartsInDays": "Inicia en {{days}} días"
+        },
+        "details": {
+            "pricePool": "Premio",
+            "upTo": "Hasta",
+            "participants": "Participantes",
+            "about": "Acerca de {{product}}",
+            "appStore": "App Store",
+            "website": "Sitio web",
+            "theMission": "La misión",
+            "howToParticipate": "Cómo participar",
+            "rulesOfChallenge": "Reglas del desafío",
+            "prizesAndRewards": "Premios y recompensas",
+            "grandPrize": "* Gran premio:",
+            "runnersUp": "* Finalistas:",
+            "allParticipants": "* Todos los participantes:",
+            "notStartedYet": "El desafío aún no ha comenzado. Podrás agregar participaciones cuando inicie.",
+            "myEntries": "Mis participaciones",
+            "submitYourEntries": "Enviar participaciones",
+            "addEntry": "Agregar",
+            "yourEntriesDescription": "Esto es lo que has agregado. Edita o agrega más en cualquier momento.",
+            "showOffDescription": "Muestra tus habilidades enviando tu mejor trabajo. ¡Puedes agregar varias participaciones para aumentar tus posibilidades!",
+            "startChallenge": "Inicia el desafío 💪🏼, comparte tu primera pieza",
+            "submitEntry": "Enviar",
+            "challengeTitle": "Título del desafío"
+        },
+        "modals": {
+            "submission": {
+                "title": "Tus participaciones",
+                "videoUrl": "URL del video",
+                "videoUrlPlaceholder": "Ingresa la URL del video",
+                "titleLabel": "Título",
+                "titlePlaceholder": "ej. Morning Glow-Up con la app UGCCreator",
+                "views": "Vistas",
+                "viewsPlaceholder": "Número de vistas",
+                "likes": "Me gusta",
+                "likesPlaceholder": "Número de me gusta",
+                "comments": "Comentarios",
+                "commentsPlaceholder": "Número de comentarios",
+                "shares": "Compartidos",
+                "sharesPlaceholder": "Número de compartidos",
+                "saves": "Guardados",
+                "savesPlaceholder": "Número de guardados",
+                "submitButton": "Enviar",
+                "invalidTitle": "Entrada inválida",
+                "invalidMessage": "Por favor completa todos los campos con datos válidos."
+            },
+            "leaderboard": {
+                "title": "Ranking",
+                "description": "Sigue los videos más exitosos en tiempo real y compara tu participación."
+            }
+        }
+    },
+    "modals": {
+        "deleteUser": {
+            "title": "Borrar cuenta",
+            "warning": "Nota: Esta acción borra tu cuenta y todos los datos de forma permanente.",
+            "instruction": "Para continuar, ingresa tu contraseña",
+            "passwordPlaceholder": "Contraseña",
+            "confirmButton": "OK",
+            "cancelButton": "Cancelar",
+            "alerts": {
+                "noEmail": "No se puede verificar el email.",
+                "success": "Cuenta borrada.",
+                "wrongPassword": "Contraseña incorrecta.",
+                "error": "Error al borrar:",
+                "noUser": "Sin usuario activo."
+            }
+        },
+        "profileIncomplete": {
+            "defaultTitle": "Perfil incompleto",
+            "defaultSubtitle": "Completa tu perfil para usar todas las funciones.",
+            "defaultButton": "Completar perfil"
+        },
+        "recommendedBrand": {
+            "defaultTitle": "Perfil incompleto",
+            "defaultSubtitle": "Completa tu perfil para continuar."
+        },
+        "sampleWork": {
+            "addTitle": "Agregar trabajo",
+            "editTitle": "Editar trabajo",
+            "pickCover": "Elegir imagen*",
+            "changeCover": "Cambiar imagen*",
+            "titlePlaceholder": "Título*",
+            "descriptionPlaceholder": "Descripción*",
+            "socialLinkPlaceholder": "Link: http:... (opcional)",
+            "featuredLabel": "Destacado (perfil)",
+            "showcaseLabel": "Showcase (inicio)",
+            "addButton": "Agregar",
+            "saveButton": "Guardar",
+            "closeButton": "Cerrar",
+            "alerts": {
+                "requiredFields": "Completa todos los campos",
+                "invalidUrl": "URL válida: https://..."
+            }
         }
     },
     "tabs": {
         "home": "Inicio",
-        "challenges": "Desafíos",
+        "challenges": "Retos",
         "chats": "Chats",
-        "levelUp": "LevelUp",
-        "portfolio": "Portafolio",
+        "levelUp": "Cursos",
+        "portfolio": "Perfil",
         "admin": "Admin",
         "explore": "Explorar",
-        "brandProfile": "Perfil de marca"
+        "brandProfile": "Perfil"
     },
     "settings": {
         "title": "Configuración",
@@ -259,7 +353,25 @@
             "mediaKitDescription": "Genera tu media kit profesional para mostrar tu trabajo a marcas potenciales, luego súbelo aquí. Siempre puedes actualizarlo más tarde cuando sea necesario.",
             "generateButton": "Generar Media Kit",
             "uploadButton": "Subir Media Kit",
-            "contactButton": "Contactar creador"
+            "contactButton": "Contactar creador",
+            "updateTitle": "Actualizar portafolio",
+            "sampleWork": {
+                "myTitle": "Mis trabajos",
+                "creatorTitle": "Showcase del creador",
+                "myDescription": "Agrega trabajos a tu perfil con chance de destacar.",
+                "creatorDescription": "Trabajos destacados de este creador.",
+                "addButton": "+ Agregar",
+                "maxItems": "Máx 3 items"
+            },
+            "contact": {
+                "title": "Información de contacto",
+                "phoneNumber": "Teléfono",
+                "email": "Email",
+                "instagram": "Instagram",
+                "facebook": "FaceBook",
+                "twitter": "Twitter",
+                "linkedin": "LinkedIn"
+            }
         },
         "updatePortfolio": {
             "saveButton": "Guardar cambios",

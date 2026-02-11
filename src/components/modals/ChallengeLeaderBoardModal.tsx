@@ -8,6 +8,7 @@ import TemplateIcon from '../TemplateIcon';
 import { isIOS } from '../../Utils/Platform';
 import { useChallengeSubmission } from '../../hooks/useChallengeSubmission';
 import LeaderBoardCard from '../cards/LeaderBoardCard';
+import useTranslation from '../../hooks/useTranslation';
 
 interface ChallengeLeaderBoardModalProps {
     visible: boolean;
@@ -24,6 +25,7 @@ const ChallengeLeaderBoardModal: React.FC<ChallengeLeaderBoardModalProps> = ({
     topEntry,
     loading,
 }) => {
+    const { t } = useTranslation();
     return (
         <ModalBase visible={visible} closeOnPress={closeOnPress} style={styles.modal}>
             <KeyboardAvoidingView
@@ -39,15 +41,14 @@ const ChallengeLeaderBoardModal: React.FC<ChallengeLeaderBoardModalProps> = ({
                     <TemplateBox ph={WRAPPER_MARGIN} backgroundColor={WHITE} pAll={16} mt={60}>
                         <TemplateBox row justifyContent="space-between" alignItems="center" mb={20}>
                             <TemplateText size={18} semiBold color={BLACK_SECONDARY}>
-                                Challenge Leaderboard
+                                {t('challenges.modals.leaderboard.title')}
                             </TemplateText>
                             <TemplateBox onPress={closeOnPress}>
                                 <TemplateIcon name="close" color={BLACK_SECONDARY} size={26} />
                             </TemplateBox>
                         </TemplateBox>
                         <TemplateText size={14} color={METAL} mb={16}>
-                            Track the top performing videos in real time and check how your entry compares to other
-                            creators.
+                            {t('challenges.modals.leaderboard.description')}
                         </TemplateText>
                         {/* Leaderboard entries would be rendered here */}
 

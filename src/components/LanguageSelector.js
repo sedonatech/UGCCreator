@@ -5,7 +5,7 @@ import { Modal, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-nat
 import TemplateText from './TemplateText';
 import TemplateBox from './TemplateBox';
 import { BLACK, BLACK_10, BLACK_20, BRAND_BLUE, GREY_30, WHITE } from '../theme/Colors';
-import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from '../theme/Layout';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../theme/Layout';
 import { supportedLanguages } from '../i18n';
 import useTranslation from '../hooks/useTranslation';
 import Button from './Button';
@@ -51,7 +51,7 @@ const LanguageSelector = ({ visible, onClose }) => {
         <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
             <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={onClose}>
                 <TouchableOpacity activeOpacity={1} style={styles.container} onPress={e => e.stopPropagation()}>
-                    <TemplateBox backgroundColor={WHITE} borderRadius={20} p={WRAPPER_MARGIN}>
+                    <TemplateBox backgroundColor={WHITE} borderRadius={28} pAll={24}>
                         <TemplateBox mb={20} alignItems="center">
                             <TemplateText size={20} bold>
                                 {t('settings.rows.language.title')}
@@ -111,7 +111,6 @@ const LanguageSelector = ({ visible, onClose }) => {
                                 onPress={handleLanguageChange}
                                 style={styles.button}
                                 height={48}
-                                loading={changing}
                                 disabled={changing}
                             />
                         </TemplateBox>
@@ -131,8 +130,7 @@ const styles = StyleSheet.create({
     },
     container: {
         width: SCREEN_WIDTH * 0.9,
-        maxWidth: 400,
-        maxHeight: SCREEN_HEIGHT * 0.7,
+        maxWidth: 450,
     },
     listContainer: {
         maxHeight: SCREEN_HEIGHT * 0.4,
@@ -143,12 +141,13 @@ const styles = StyleSheet.create({
     languageItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 16,
-        borderRadius: 12,
-        marginBottom: 8,
+        padding: 12,
+        borderRadius: 20,
+        marginBottom: 10,
         backgroundColor: BLACK_10,
         borderWidth: 2,
         borderColor: 'transparent',
+        alignSelf: 'center',
     },
     selectedItem: {
         backgroundColor: `${BRAND_BLUE}15`,
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
-        borderRadius: 12,
+        borderRadius: 26,
     },
     cancelButton: {
         marginRight: 0,

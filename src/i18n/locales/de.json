@@ -170,44 +170,138 @@
             "message": "Die Challenge hat noch nicht begonnen. Die Bestenliste ist verfügbar, sobald die Challenge startet."
         },
         "tabs": {
-            "brief": "Kurzbeschreibung",
+            "brief": "Info",
             "rules": "Regeln",
             "prizes": "Preise",
-            "entries": "Einreichungen"
+            "entries": "Beiträge"
         },
         "card": {
             "winUpTo": "Gewinnen Sie bis zu",
             "defaultPrize": "300 USD"
         },
         "status": {
-            "enrollmentStartsToday": "Anmeldung beginnt heute",
-            "dayToEnrollment": "1 Tag bis zur Anmeldung",
-            "daysToEnrollment": "{{days}} Tage bis zur Anmeldung",
-            "enrollmentOpen": "Anmeldung offen",
-            "challengeStarted": "Herausforderung gestartet",
-            "challengeCompleted": "Herausforderung abgeschlossen",
+            "enrollmentStartsToday": "Anmeldung heute",
+            "dayToEnrollment": "1 Tag übrig",
+            "daysToEnrollment": "{{days}} Tage übrig",
+            "enrollmentOpen": "Offen",
+            "challengeStarted": "Gestartet",
+            "challengeCompleted": "Abgeschlossen",
             "ended": "Beendet",
-            "endsInOneDay": "Endet in 1 Tag",
-            "endsInDays": "Endet in {{days}} Tagen"
+            "endsInOneDay": "1 Tag übrig",
+            "endsInDays": "{{days}} Tage übrig"
         },
         "cta": {
             "comingSoon": "Demnächst",
-            "challengeCompleted": "Herausforderung abgeschlossen",
-            "enrollNow": "Jetzt anmelden",
-            "submitEntries": "Beiträge einreichen",
-            "challengeStartsInOneDay": "Herausforderung beginnt in 1 Tag",
-            "challengeStartsInDays": "Herausforderung beginnt in {{days}} Tagen"
+            "challengeCompleted": "Abgeschlossen",
+            "enrollNow": "Anmelden",
+            "submitEntries": "Einreichen",
+            "challengeStartsInOneDay": "Startet in 1 Tag",
+            "challengeStartsInDays": "Startet in {{days}} Tagen"
+        },
+        "details": {
+            "pricePool": "Preis",
+            "upTo": "Bis zu",
+            "participants": "Teilnehmer",
+            "about": "Über {{product}}",
+            "appStore": "App Store",
+            "website": "Webseite",
+            "theMission": "Die Mission",
+            "howToParticipate": "So nehmen Sie teil",
+            "rulesOfChallenge": "Regeln der Challenge",
+            "prizesAndRewards": "Preise & Belohnungen",
+            "grandPrize": "* Hauptpreis:",
+            "runnersUp": "* Zweitplatzierte:",
+            "allParticipants": "* Alle Teilnehmer:",
+            "notStartedYet": "Die Challenge hat noch nicht begonnen. Sie können Beiträge hinzufügen, sobald sie startet.",
+            "myEntries": "Meine Beiträge",
+            "submitYourEntries": "Beiträge einreichen",
+            "addEntry": "Hinzufügen",
+            "yourEntriesDescription": "Das haben Sie hinzugefügt. Bearbeiten oder fügen Sie jederzeit mehr hinzu.",
+            "showOffDescription": "Zeigen Sie Ihre Fähigkeiten, indem Sie Ihre beste Arbeit einreichen. Sie können mehrere Beiträge hinzufügen, um Ihre Gewinnchancen zu erhöhen!",
+            "startChallenge": "Starten Sie die Challenge 💪🏼, teilen Sie Ihr erstes Stück",
+            "submitEntry": "Einreichen",
+            "challengeTitle": "Challenge-Titel"
+        },
+        "modals": {
+            "submission": {
+                "title": "Ihre Beiträge",
+                "videoUrl": "Video-URL",
+                "videoUrlPlaceholder": "Video-URL eingeben",
+                "titleLabel": "Titel",
+                "titlePlaceholder": "z.B. Morning Glow-Up mit UGCCreator App",
+                "views": "Aufrufe",
+                "viewsPlaceholder": "Anzahl der Aufrufe",
+                "likes": "Likes",
+                "likesPlaceholder": "Anzahl der Likes",
+                "comments": "Kommentare",
+                "commentsPlaceholder": "Anzahl der Kommentare",
+                "shares": "Teilungen",
+                "sharesPlaceholder": "Anzahl der Teilungen",
+                "saves": "Speicherungen",
+                "savesPlaceholder": "Anzahl der Speicherungen",
+                "submitButton": "Einreichen",
+                "invalidTitle": "Ungültige Eingabe",
+                "invalidMessage": "Bitte füllen Sie alle Felder mit gültigen Daten aus."
+            },
+            "leaderboard": {
+                "title": "Bestenliste",
+                "description": "Verfolgen Sie die erfolgreichsten Videos in Echtzeit und vergleichen Sie Ihren Beitrag."
+            }
+        }
+    },
+    "modals": {
+        "deleteUser": {
+            "title": "Konto löschen",
+            "warning": "Hinweis: Diese Aktion löscht Ihr Konto und alle Daten dauerhaft.",
+            "instruction": "Bitte geben Sie Ihr Passwort ein",
+            "passwordPlaceholder": "Passwort",
+            "confirmButton": "OK",
+            "cancelButton": "Abbrechen",
+            "alerts": {
+                "noEmail": "E-Mail kann nicht verifiziert werden.",
+                "success": "Konto gelöscht.",
+                "wrongPassword": "Passwort ist falsch.",
+                "error": "Fehler beim Löschen:",
+                "noUser": "Kein Benutzer angemeldet."
+            }
+        },
+        "profileIncomplete": {
+            "defaultTitle": "Profil unvollständig",
+            "defaultSubtitle": "Profil ausfüllen um alle Funktionen zu nutzen.",
+            "defaultButton": "Profil ausfüllen"
+        },
+        "recommendedBrand": {
+            "defaultTitle": "Profil unvollständig",
+            "defaultSubtitle": "Profil ausfüllen um fortzufahren."
+        },
+        "sampleWork": {
+            "addTitle": "Arbeit hinzufügen",
+            "editTitle": "Arbeit bearbeiten",
+            "pickCover": "Bild wählen*",
+            "changeCover": "Bild ändern*",
+            "titlePlaceholder": "Titel*",
+            "descriptionPlaceholder": "Beschreibung*",
+            "socialLinkPlaceholder": "Link: http:... (optional)",
+            "featuredLabel": "Empfohlen (Profil)",
+            "showcaseLabel": "Showcase (Home)",
+            "addButton": "Hinzufügen",
+            "saveButton": "Speichern",
+            "closeButton": "Schließen",
+            "alerts": {
+                "requiredFields": "Alle Felder ausfüllen",
+                "invalidUrl": "Gültige URL angeben: https://..."
+            }
         }
     },
     "tabs": {
-        "home": "Startseite",
-        "challenges": "Herausforderungen",
+        "home": "Start",
+        "challenges": "Aufgaben",
         "chats": "Chats",
-        "levelUp": "LevelUp",
-        "portfolio": "Portfolio",
+        "levelUp": "Kurse",
+        "portfolio": "Profil",
         "admin": "Admin",
         "explore": "Erkunden",
-        "brandProfile": "Markenprofil"
+        "brandProfile": "Profil"
     },
     "settings": {
         "title": "Einstellungen",
@@ -259,7 +353,25 @@
             "mediaKitDescription": "Erstellen Sie Ihr professionelles Media Kit, um Ihre Arbeit potenziellen Marken zu präsentieren, und laden Sie es hier hoch. Sie können es jederzeit aktualisieren.",
             "generateButton": "Media Kit erstellen",
             "uploadButton": "Media Kit hochladen",
-            "contactButton": "Creator kontaktieren"
+            "contactButton": "Creator kontaktieren",
+            "updateTitle": "Portfolio aktualisieren",
+            "sampleWork": {
+                "myTitle": "Meine Arbeiten",
+                "creatorTitle": "Creator Showcase",
+                "myDescription": "Arbeiten hinzufügen für Chance auf Feature.",
+                "creatorDescription": "Featured Arbeiten dieses Creators.",
+                "addButton": "+ Hinzufügen",
+                "maxItems": "Max 3 Items"
+            },
+            "contact": {
+                "title": "Kontakt",
+                "phoneNumber": "Telefon",
+                "email": "E-Mail",
+                "instagram": "Instagram",
+                "facebook": "FaceBook",
+                "twitter": "Twitter",
+                "linkedin": "LinkedIn"
+            }
         },
         "updatePortfolio": {
             "saveButton": "Änderungen speichern",
