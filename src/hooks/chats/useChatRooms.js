@@ -14,12 +14,14 @@ import {
 } from '@react-native-firebase/firestore';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import useAuthContext from '../auth/useAuthContext';
 import { CHATS_STACK } from '../../navigation/ScreenNames';
 
 export const CHAT_ROOMS = 'chatRooms';
 
 const useChatRooms = () => {
+    const { t } = useTranslation();
     const navigation = useNavigation();
 
     const [loading, setLoading] = useState(false);
@@ -40,11 +42,11 @@ const useChatRooms = () => {
             const db = getFirestore();
             if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId || !name) {
                 Alert.alert(
-                    'The user may not be available at the moment',
-                    'Please try again later',
+                    t('chats.alerts.userNotAvailable.title'),
+                    t('chats.alerts.userNotAvailable.message'),
                     [
                         {
-                            text: 'OK',
+                            text: t('common.buttons.ok'),
                             onPress: () => {},
                         },
                     ],
@@ -69,11 +71,11 @@ const useChatRooms = () => {
             const existingChatRoom = foundBrandToCreatorChat?.docs?.length || foundCreatorToCreatorChat?.docs?.length;
             if (existingChatRoom) {
                 Alert.alert(
-                    'A conversation has already been started',
-                    'You can check the chats tab and continue chatting',
+                    t('chats.alerts.conversationExists.title'),
+                    t('chats.alerts.conversationExists.message'),
                     [
                         {
-                            text: 'OK',
+                            text: t('common.buttons.ok'),
                             onPress: () => navigation.navigate(CHATS_STACK),
                         },
                     ],
@@ -93,11 +95,11 @@ const useChatRooms = () => {
             if (response) {
                 setChatRoomCreated(true);
                 Alert.alert(
-                    'A conversation has been started',
-                    'You can check the chats tab and continue chatting',
+                    t('chats.alerts.conversationStarted.title'),
+                    t('chats.alerts.conversationStarted.message'),
                     [
                         {
-                            text: 'OK',
+                            text: t('common.buttons.ok'),
                             onPress: () => navigation.navigate(CHATS_STACK),
                         },
                     ],
@@ -108,11 +110,11 @@ const useChatRooms = () => {
             console.log('[CREATE CHAT ROOM ERROR]', error);
             if (error.message) {
                 Alert.alert(
-                    'The user may not be available at the moment',
-                    'Please try again later',
+                    t('chats.alerts.userNotAvailable.title'),
+                    t('chats.alerts.userNotAvailable.message'),
                     [
                         {
-                            text: 'OK',
+                            text: t('common.buttons.ok'),
                             onPress: () => {},
                         },
                     ],

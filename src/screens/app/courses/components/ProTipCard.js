@@ -7,8 +7,10 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { ZINC_500, INDIGO_100, INDIGO_600, INDIGO_700, TIP_GRADIENT } from '../../../../theme/Colors';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const ProTipCard = ({ tip }) => {
+    const { t } = useTranslation();
     if (!tip) return null;
 
     return (
@@ -19,7 +21,7 @@ const ProTipCard = ({ tip }) => {
             </TemplateBox>
             <TemplateBox style={styles.tipContent}>
                 <TemplateText size={12} medium color={INDIGO_700} mb={4}>
-                    Pro Tip of the Day
+                    {t('courses.proTip.title')}
                 </TemplateText>
                 <TemplateBox width="80%">
                     <TemplateText size={12} color={styles.textMuted.color} lineHeight={18}>

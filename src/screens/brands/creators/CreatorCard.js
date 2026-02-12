@@ -10,6 +10,7 @@ import { SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layo
 import { BLACK, BLACK_30, BLACK_60, BLACK_SECONDARY, lightGreen, WHITE } from '../../../theme/Colors';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 import { wp } from '../../../Utils/getResponsiveSize';
+import useTranslation from '../../../hooks/useTranslation';
 
 const CreatorCard = ({
     name,
@@ -23,79 +24,86 @@ const CreatorCard = ({
     textContainerWidth,
     subtitleContainerWidth,
     lastLoginTime,
-    ctaText = 'View Profile',
+    ctaText,
     height = wp(180),
     ...extraProps
-}) => (
-    <TemplateBox
-        width={width}
-        height={height}
-        borderRadius={20}
-        borderWidth={StyleSheet.hairlineWidth}
-        borderColor={BLACK_30}
-        pAll={16}
-        mh={WRAPPER_MARGIN}
-        mt={SPACE_XXLARGE}
-        style={style}
-        onPress={onPress}
-        {...extraProps}
-    >
-        <TemplateBox row onPress={onPress}>
-            <FastImage
-                source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
-                style={[styles.image, imageStyle]}
-            />
-            <TemplateBox flex={1} height={60} onPress={onPress}>
-                <TemplateText size={16} bold color={BLACK} numberOfLines={1}>
-                    {name}
-                </TemplateText>
-                <TemplateBox height={10} />
-                <TemplateText size={12} color={BLACK_SECONDARY} numberOfLines={3}>
-                    {shortDescription}
-                </TemplateText>
-            </TemplateBox>
-        </TemplateBox>
+}) => {
+    const { t } = useTranslation();
+    const displayCtaText = ctaText || t('creatorExplore.creators.viewProfile');
 
-        <TemplateBox row alignItems="center" mt={20} onPress={onPress}>
-            <TemplateBox width={subtitleContainerWidth} onPress={onPress}>
-                <TemplateBox row alignItems="center">
-                    <TemplateIcon name="location-outline" color={BLACK_60} size={14} />
-                    <TemplateText size={10} color={BLACK_60} semiBold>
-                        {location || 'London'}
+    return (
+        <TemplateBox
+            width={width}
+            height={height}
+            borderRadius={20}
+            borderWidth={StyleSheet.hairlineWidth}
+            borderColor={BLACK_30}
+            pAll={16}
+            mh={WRAPPER_MARGIN}
+            mt={SPACE_XXLARGE}
+            style={style}
+            onPress={onPress}
+            {...extraProps}
+        >
+            <TemplateBox row onPress={onPress}>
+                <FastImage
+                    source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
+                    style={[styles.image, imageStyle]}
+                />
+                <TemplateBox flex={1} height={60} onPress={onPress}>
+                    <TemplateText size={16} bold color={BLACK} numberOfLines={1}>
+                        {name}
+                    </TemplateText>
+                    <TemplateBox height={10} />
+                    <TemplateText size={12} color={BLACK_SECONDARY} numberOfLines={3}>
+                        {shortDescription}
+                    </TemplateText>
+                </TemplateBox>
+            </TemplateBox>
+
+            <TemplateBox row alignItems="center" mt={20} onPress={onPress}>
+                <TemplateBox width={subtitleContainerWidth} onPress={onPress}>
+                    <TemplateBox row alignItems="center">
+                        <TemplateIcon name="location-outline" color={BLACK_60} size={14} />
+                        <TemplateText size={10} color={BLACK_60} semiBold>
+                            {location || 'London'}
+                        </TemplateText>
+                    </TemplateBox>
+                </TemplateBox>
+            </TemplateBox>
+            <TemplateBox row alignItems="center" justifyContent="space-between" width={width - wp(32)}>
+                <TemplateBox
+                    ph={8}
+                    pv={4}
+                    backgroundColor={lightGreen}
+                    borderRadius={6}
+                    alignItems="center"
+                    justifyContent="center"
+                    onPress={onPress}
+                >
+                    <TemplateText color={WHITE} size={wp(9)} semiBold>
+                        {`${t('creatorExplore.creators.active')} ${lastLoginTime}`}
+                    </TemplateText>
+                </TemplateBox>
+                <TemplateBox
+                    ph={wp(WRAPPER_MARGIN - 5)}
+                    pv={wp(WRAPPER_MARGIN / 2)}
+                    backgroundColor={BLACK}
+                    borderRadius={wp(10)}
+                    alignItems="center"
+                    justifyContent="center"
+                    onPress={onPress}
+                    alignSelf="flex-end"
+                    mb={wp(12)}
+                >
+                    <TemplateText color={WHITE} size={wp(10)} bold>
+                        {displayCtaText}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
         </TemplateBox>
-        <TemplateBox row alignItems="center" justifyContent="space-between" width={width - wp(32)}>
-            <TemplateBox
-                ph={8}
-                pv={4}
-                backgroundColor={lightGreen}
-                borderRadius={6}
-                alignItems="center"
-                justifyContent="center"
-                onPress={onPress}
-            >
-                <TemplateText color={WHITE} size={wp(9)} semiBold>{`Active ${lastLoginTime}`}</TemplateText>
-            </TemplateBox>
-            <TemplateBox
-                ph={wp(WRAPPER_MARGIN - 5)}
-                pv={wp(WRAPPER_MARGIN / 2)}
-                backgroundColor={BLACK}
-                borderRadius={wp(10)}
-                alignItems="center"
-                justifyContent="center"
-                onPress={onPress}
-                alignSelf="flex-end"
-                mb={wp(12)}
-            >
-                <TemplateText color={WHITE} size={wp(10)} bold>
-                    {ctaText}
-                </TemplateText>
-            </TemplateBox>
-        </TemplateBox>
-    </TemplateBox>
-);
+    );
+};
 
 CreatorCard.propTypes = {
     name: PropTypes.string,
@@ -126,7 +134,7 @@ CreatorCard.defaultProps = {
     subtitleContainerWidth: wp(100),
     lastLoginTime: 'days ago',
     height: wp(180),
-    ctaText: 'View Profile',
+    ctaText: undefined,
 };
 
 const styles = StyleSheet.create({

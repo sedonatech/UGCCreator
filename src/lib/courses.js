@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { COURSE_SEED } from '../consts/courses/courseSeed';
+import { getCourseSeed } from '../consts/courses/courseSeed';
 
 export const COURSES_COLLECTION = 'courses';
 export const COURSE_PROGRESS_COLLECTION = 'courseProgress';
@@ -33,7 +33,10 @@ export const ensureCoursesSeeded = async ({ isAdmin, allowDev = false } = {}) =>
     const batch = firestore().batch();
     let hasWrites = false;
 
-    COURSE_SEED.forEach(course => {
+    // Get course seed data for the current user's language
+    const courseSeed = getCourseSeed();
+
+    courseSeed.forEach(course => {
         if (existingIds.has(course.id)) return;
         const ref = firestore().collection(COURSES_COLLECTION).doc(course.id);
         const payload = {

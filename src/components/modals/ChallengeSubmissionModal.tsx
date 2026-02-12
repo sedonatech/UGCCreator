@@ -9,6 +9,7 @@ import TemplateTextInput from '../TemplateTextInput';
 import Button from '../Button';
 import { MetricsForm } from '../../screens/app/home/ChallengeDetailsScreen';
 import { isIOS } from '../../Utils/Platform';
+import useTranslation from '../../hooks/useTranslation';
 
 type MetricFieldKey = keyof MetricsForm;
 
@@ -18,36 +19,36 @@ type MetricFieldConfig = {
     placeholder: string;
 };
 
-const METRIC_FIELDS: MetricFieldConfig[] = [
+const getMetricFields = (t: (key: string, options?: any) => string): MetricFieldConfig[] => [
     {
         key: 'title',
-        label: 'Title',
-        placeholder: 'eg.Morning Glow-Up with UGCCreator app',
+        label: t('challenges.modals.submission.titleLabel'),
+        placeholder: t('challenges.modals.submission.titlePlaceholder'),
     },
     {
         key: 'views',
-        label: 'Views',
-        placeholder: 'Enter number of views',
+        label: t('challenges.modals.submission.views'),
+        placeholder: t('challenges.modals.submission.viewsPlaceholder'),
     },
     {
         key: 'likes',
-        label: 'Likes',
-        placeholder: 'Enter number of likes',
+        label: t('challenges.modals.submission.likes'),
+        placeholder: t('challenges.modals.submission.likesPlaceholder'),
     },
     {
         key: 'comments',
-        label: 'Number of comments',
-        placeholder: 'Enter number of comments',
+        label: t('challenges.modals.submission.comments'),
+        placeholder: t('challenges.modals.submission.commentsPlaceholder'),
     },
     {
         key: 'shares',
-        label: 'Shares',
-        placeholder: 'Enter number of shares',
+        label: t('challenges.modals.submission.shares'),
+        placeholder: t('challenges.modals.submission.sharesPlaceholder'),
     },
     {
         key: 'saves',
-        label: 'Saves',
-        placeholder: 'Enter number of saves',
+        label: t('challenges.modals.submission.saves'),
+        placeholder: t('challenges.modals.submission.savesPlaceholder'),
     },
 ];
 const NUMERIC_METRIC_KEYS: MetricFieldKey[] = ['views', 'likes', 'comments', 'shares', 'saves'];
@@ -73,6 +74,8 @@ const ChallengeSubmissionModal: React.FC<ChallengeSubmissionModalProps> = ({
     onSave,
     saving,
 }) => {
+    const { t } = useTranslation();
+    const METRIC_FIELDS = getMetricFields(t);
     const isVideoValid = videoUrl.trim().length > 0;
     const isTitleValid = metricsForm.title.trim().length > 0;
 
@@ -95,7 +98,7 @@ const ChallengeSubmissionModal: React.FC<ChallengeSubmissionModalProps> = ({
                     <TemplateBox ph={WRAPPER_MARGIN} backgroundColor={WHITE} pAll={16} mt={60}>
                         <TemplateBox row justifyContent="space-between" alignItems="center" mb={20}>
                             <TemplateText size={18} semiBold color={BLACK_SECONDARY}>
-                                Your Entries
+                                {t('challenges.modals.submission.title')}
                             </TemplateText>
                             <TemplateBox onPress={closeOnPress}>
                                 <TemplateIcon name="close" color={BLACK_SECONDARY} size={26} />
@@ -105,10 +108,10 @@ const ChallengeSubmissionModal: React.FC<ChallengeSubmissionModalProps> = ({
                         {/* Video URL */}
                         <TemplateBox mb={16}>
                             <TemplateText size={16} color={BLACK_SECONDARY} semiBold ml={10}>
-                                Video URL
+                                {t('challenges.modals.submission.videoUrl')}
                             </TemplateText>
                             <TemplateTextInput
-                                placeholder="Enter video URL"
+                                placeholder={t('challenges.modals.submission.videoUrlPlaceholder')}
                                 value={videoUrl}
                                 onChangeText={setVideoUrl}
                                 style={styles.input}
@@ -141,15 +144,15 @@ const ChallengeSubmissionModal: React.FC<ChallengeSubmissionModalProps> = ({
                     </TemplateBox>
                     <TemplateBox mb={30} alignItems="center">
                         <Button
-                            title={'Submit Entry'}
+                            title={t('challenges.modals.submission.submitButton')}
                             height={50}
                             width={SCREEN_WIDTH - 40}
                             color={BLACK}
                             onPress={() => {
                                 if (!isFormValid) {
                                     Alert.alert(
-                                        'Invalid Input',
-                                        'Please fill all fields with valid data before submitting.',
+                                        t('challenges.modals.submission.invalidTitle'),
+                                        t('challenges.modals.submission.invalidMessage'),
                                     );
                                     return;
                                 }

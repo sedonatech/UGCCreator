@@ -1,21 +1,23 @@
 import { Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const useLogout = () => {
+    const { t } = useTranslation();
     const logout = () => {
         Alert.alert(
-            'Logout',
-            'Are you sure you want to logout?',
+            t('settings.rows.logout.alertTitle'),
+            t('settings.rows.logout.alertMessage'),
             [
                 {
-                    text: 'Cancel',
+                    text: t('settings.rows.logout.cancelButton'),
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: t('settings.rows.logout.confirmButton'),
                     onPress: async () => {
                         try {
                             await auth().signOut();
@@ -32,16 +34,16 @@ const useLogout = () => {
 
     const deleteAccount = () => {
         Alert.alert(
-            'Delete Account Permanently',
-            'Are you sure you want to delete your account?',
+            t('settings.rows.deleteAccount.alertTitle'),
+            t('settings.rows.deleteAccount.alertMessage'),
             [
                 {
-                    text: 'Cancel',
+                    text: t('settings.rows.deleteAccount.cancelButton'),
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: t('settings.rows.deleteAccount.confirmButton'),
                     onPress: async () => {
                         try {
                             await auth().currentUser?.delete();

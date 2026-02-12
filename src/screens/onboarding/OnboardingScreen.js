@@ -8,48 +8,53 @@ import { LOGIN, SIGN_UP } from '../../navigation/ScreenNames';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import TemplateBox from '../../components/TemplateBox';
 import BackgroundImage from '../../components/BackgroundImage';
+import useTranslation from '../../hooks/useTranslation';
 
 const image = require('../../../assets/images/onboarding/auth-select.jpg');
 
-const OnboardingScreen = ({ navigation }) => (
-    <SafeAreaView style={styles.container}>
-        <BackgroundImage source={image} width={SCREEN_WIDTH} style={styles.bgImage} />
-        <TemplateBox absolute width={SCREEN_WIDTH} height={SCREEN_HEIGHT} backgroundColor={DARK_OVERLAY} />
-        <BrandLogo height={115} width={282} color={WHITE} />
+const OnboardingScreen = ({ navigation }) => {
+    const { t } = useTranslation();
 
-        <View style={styles.buttonContainer}>
-            <Button
-                title="Register as a Creator"
-                onPress={() =>
-                    navigation.navigate(SIGN_UP, {
-                        type: 'creator',
-                    })
-                }
-                style={styles.button}
-                height={50}
-                width={SCREEN_WIDTH - 40}
-                color={BLUE_500}
-            />
-            <Button
-                title="Register as a Brand"
-                onPress={() =>
-                    navigation.navigate(SIGN_UP, {
-                        type: 'brand',
-                    })
-                }
-                style={styles.button}
-                height={50}
-                width={SCREEN_WIDTH - 40}
-            />
-            <TemplateText size={16} center style={styles.loginText} medium color={WHITE}>
-                Already have an account?{' '}
-                <TemplateText color={WHITE} underLine size={16} medium onPress={() => navigation.navigate(LOGIN)}>
-                    Login
+    return (
+        <SafeAreaView style={styles.container}>
+            <BackgroundImage source={image} width={SCREEN_WIDTH} style={styles.bgImage} />
+            <TemplateBox absolute width={SCREEN_WIDTH} height={SCREEN_HEIGHT} backgroundColor={DARK_OVERLAY} />
+            <BrandLogo height={115} width={282} color={WHITE} />
+
+            <View style={styles.buttonContainer}>
+                <Button
+                    title={t('onboarding.selection.registerCreator')}
+                    onPress={() =>
+                        navigation.navigate(SIGN_UP, {
+                            type: 'creator',
+                        })
+                    }
+                    style={styles.button}
+                    height={50}
+                    width={SCREEN_WIDTH - 40}
+                    color={BLUE_500}
+                />
+                <Button
+                    title={t('onboarding.selection.registerBrand')}
+                    onPress={() =>
+                        navigation.navigate(SIGN_UP, {
+                            type: 'brand',
+                        })
+                    }
+                    style={styles.button}
+                    height={50}
+                    width={SCREEN_WIDTH - 40}
+                />
+                <TemplateText size={16} center style={styles.loginText} medium color={WHITE}>
+                    {t('onboarding.selection.alreadyHaveAccount')}{' '}
+                    <TemplateText color={WHITE} underLine size={16} medium onPress={() => navigation.navigate(LOGIN)}>
+                        {t('onboarding.selection.login')}
+                    </TemplateText>
                 </TemplateText>
-            </TemplateText>
-        </View>
-    </SafeAreaView>
-);
+            </View>
+        </SafeAreaView>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {

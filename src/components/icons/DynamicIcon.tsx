@@ -18,8 +18,10 @@ import EditIcon from './EditIcon';
 import AddIcon from './AddIcon';
 import ArrowRightIcon from './ArrowRightIcon';
 import LevelUpIcon from './LevelUpIcon';
+import Language from './Language';
 import Currency from './Currency';
 import Check from './Check';
+
 
 export type DynamicIconName =
     | 'Home'
@@ -38,6 +40,7 @@ export type DynamicIconName =
     | 'Add'
     | 'ArrowRight'
     | 'LevelUp'
+    | 'Language'
     | 'Currency'
     | 'Check'
     | null;
@@ -93,6 +96,7 @@ const IconList = [
     { name: 'Add', icon: AddIcon },
     { name: 'ArrowRight', icon: ArrowRightIcon },
     { name: 'LevelUp', icon: LevelUpIcon },
+    { name: 'Language', icon: Language },
     { name: 'Currency', icon: Currency },
     { name: 'Check', icon: Check },
 ];

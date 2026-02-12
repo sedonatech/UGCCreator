@@ -84,6 +84,7 @@ type ChallengeCtaParams = {
     challengeEndAt?: Date | null;
     now: Date;
     isEnrolled: boolean | Promise<() => boolean>;
+    t?: (key: string, options?: any) => string;
 };
 type ChallengeCtaResult = {
     title: string;
@@ -153,6 +154,7 @@ const useChallenge = () => {
         challengeStartAt?: Date | null,
         challengeEndAt?: Date | null,
         now: Date = new Date(),
+        t?: (key: string, options?: any) => string,
     ): string => {
         if (!enrollmentStartAt || !challengeStartAt || !challengeEndAt) {
             return '';
@@ -167,27 +169,27 @@ const useChallenge = () => {
         if (nowMs < enrollStartMs) {
             const diffDays = Math.ceil((enrollStartMs - nowMs) / MS_PER_DAY);
             if (diffDays <= 0) {
-                return 'Enrollment starts today';
+                return t?.('challenges.status.enrollmentStartsToday') || 'Enrollment starts today';
             }
             if (diffDays === 1) {
-                return '1 day to enrollment';
+                return t?.('challenges.status.dayToEnrollment') || '1 day to enrollment';
             }
-            return `${diffDays} days to enrollment`;
+            return t?.('challenges.status.daysToEnrollment', { days: diffDays }) || `${diffDays} days to enrollment`;
         }
 
         // enrollment open, before challenge start and before end
         if (nowMs >= enrollStartMs && nowMs < challengeStartMs && nowMs < challengeEndMs) {
-            return 'Enrollment open';
+            return t?.('challenges.status.enrollmentOpen') || 'Enrollment open';
         }
 
         // challenge active
         if (nowMs >= challengeStartMs && nowMs <= challengeEndMs) {
-            return 'Challenge started';
+            return t?.('challenges.status.challengeStarted') || 'Challenge started';
         }
 
         // after challenge end
         if (nowMs > challengeEndMs) {
-            return 'Challenge completed';
+            return t?.('challenges.status.challengeCompleted') || 'Challenge completed';
         }
 
         return '';
@@ -210,21 +212,25 @@ const useChallenge = () => {
         return nowMs >= enrollStartMs && nowMs <= challengeEndMs;
     };
 
-    const getEndsInLabel = (challengeEndAt?: Date | null, now: Date = new Date()): string => {
+    const getEndsInLabel = (
+        challengeEndAt?: Date | null,
+        now: Date = new Date(),
+        t?: (key: string, options?: any) => string,
+    ): string => {
         if (!challengeEndAt) {
             return '';
         }
 
         const diffMs = challengeEndAt.getTime() - now.getTime();
         if (diffMs <= 0) {
-            return 'Ended';
+            return t?.('challenges.status.ended') || 'Ended';
         }
 
         const diffDays = Math.ceil(diffMs / MS_PER_DAY);
         if (diffDays === 1) {
-            return 'Ends in 1 day';
+            return t?.('challenges.status.endsInOneDay') || 'Ends in 1 day';
         }
-        return `Ends in ${diffDays} days`;
+        return t?.('challenges.status.endsInDays', { days: diffDays }) || `Ends in ${diffDays} days`;
     };
 
     return { challenge, challenges, challengeLoading, getStatusLabel, canEnrollNow, getEndsInLabel };
@@ -328,9 +334,10 @@ export function getChallengeCta({
     challengeEndAt,
     now,
     isEnrolled,
+    t,
 }: ChallengeCtaParams): ChallengeCtaResult {
     if (!enrollmentStartAt || !challengeStartAt || !challengeEndAt) {
-        return { title: 'Coming Soon', disabled: true };
+        return { title: t?.('challenges.cta.comingSoon') || 'Coming Soon', disabled: true };
     }
 
     const nowMs = now.getTime();
@@ -345,34 +352,44 @@ export function getChallengeCta({
 
     // 1) Enrollment not open yet
     if (isBeforeEnrollment) {
-        return { title: 'Coming Soon', disabled: true };
+        return { title: t?.('challenges.cta.comingSoon') || 'Coming Soon', disabled: true };
     }
 
     // 2) Challenge already finished
     if (isAfterChallenge) {
-        return { title: 'Challenge Completed', disabled: true };
+        return { title: t?.('challenges.cta.challengeCompleted') || 'Challenge Completed', disabled: true };
     }
 
     // From here, enrollment is open (between enrollmentStart and challengeEnd)
 
     // 3) Enrollment open and user not enrolled
     if (!isEnrolled && isEnrollmentOpen) {
-        return { title: 'Enroll Now', disabled: false };
+        return { title: t?.('challenges.cta.enrollNow') || 'Enroll Now', disabled: false };
     }
 
     // 4) User enrolled and challenge started
     if (isEnrolled && isChallengeStarted) {
-        return { title: 'Submit Entries', disabled: false };
+        return { title: t?.('challenges.cta.submitEntries') || 'Submit Entries', disabled: false };
     }
 
     // 5) User enrolled, challenge not started yet
     if (isEnrolled && !isChallengeStarted) {
         const diffMs = challengeStartMs - nowMs;
         const diffDays = Math.max(1, Math.ceil(diffMs / MS_PER_DAY));
-        const daysText = diffDays === 1 ? '1 day' : `${diffDays} days`;
-        return { title: `Challenge starts in ${daysText}`, disabled: true };
+        if (diffDays === 1) {
+            return {
+                title: t?.('challenges.cta.challengeStartsInOneDay') || 'Challenge starts in 1 day',
+                disabled: true,
+            };
+        }
+        return {
+            title:
+                t?.('challenges.cta.challengeStartsInDays', { days: diffDays }) ||
+                `Challenge starts in ${diffDays} days`,
+            disabled: true,
+        };
     }
 
     // Fallback
-    return { title: 'Coming Soon', disabled: true };
+    return { title: t?.('challenges.cta.comingSoon') || 'Coming Soon', disabled: true };
 }

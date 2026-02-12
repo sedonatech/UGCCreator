@@ -20,9 +20,13 @@ import CoursesSummaryHeader from './components/CoursesSummaryHeader';
 import CourseListItem from './components/CourseListItem';
 import SeedCoursesButton from './components/SeedCoursesButton';
 import { WHITE, ZINC_900, ZINC_500 } from '../../../theme/Colors';
+import useTranslation from '../../../hooks/useTranslation';
+import { translateCourses } from '../../../lib/courseTranslations';
 
 const CoursesScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
+
+    const { t, language } = useTranslation();
 
     const userId = auth?.user?.uid;
     const isAdmin = !!(
@@ -46,7 +50,9 @@ const CoursesScreen = ({ navigation }) => {
                         const nextCourses = snapshot.docs
                             .map(doc => normalizeCourse(doc.data(), doc.id))
                             .sort((a, b) => (a?.order || 0) - (b?.order || 0));
-                        setCourses(nextCourses);
+                        // Translate courses to the current language
+                        const translatedCourses = translateCourses(nextCourses, language);
+                        setCourses(translatedCourses);
                         setLoading(false);
                     });
             } catch (e) {
@@ -59,7 +65,7 @@ const CoursesScreen = ({ navigation }) => {
         return () => {
             if (unsubscribe) unsubscribe();
         };
-    }, []);
+    }, [language]);
 
     useEffect(() => {
         if (!userId) return null;
@@ -129,10 +135,13 @@ const CoursesScreen = ({ navigation }) => {
     const handleSeedCourses = async () => {
         try {
             const didWrite = await ensureCoursesSeeded({ isAdmin, allowDev: __DEV__ });
-            Alert.alert('Courses seeded', didWrite ? 'Course data is now available.' : 'Courses already exist.');
+            Alert.alert(
+                t('courses.seedAlerts.success.title'),
+                didWrite ? t('courses.seedAlerts.success.message') : t('courses.seedAlerts.alreadyExists.message'),
+            );
         } catch (e) {
             console.log(e);
-            Alert.alert('Seeding failed', 'Please check the console for details.');
+            Alert.alert(t('courses.seedAlerts.failure.title'), t('courses.seedAlerts.failure.message'));
         }
     };
 
@@ -144,7 +153,7 @@ const CoursesScreen = ({ navigation }) => {
         >
             <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                 <TemplateText size={18} startCase bold>
-                    LevelUp
+                    {t('courses.title')}
                 </TemplateText>
             </TemplateBox>
 
@@ -153,7 +162,7 @@ const CoursesScreen = ({ navigation }) => {
             <TemplateBox style={styles.section}>
                 <TemplateBox row alignItems="center" justifyContent="space-between">
                     <TemplateText size={13} semiBold color={styles.textMuted.color} style={styles.uppercase}>
-                        Your Courses
+                        {t('courses.sections.yourCourses')}
                     </TemplateText>
                     {showSeedCourses && <SeedCoursesButton onPress={handleSeedCourses} />}
                 </TemplateBox>
@@ -171,7 +180,7 @@ const CoursesScreen = ({ navigation }) => {
                 })}
                 {!loading && courses.length === 0 && (
                     <TemplateText size={14} color={styles.textMuted.color} mt={16}>
-                        No courses available right now.
+                        {t('courses.emptyState')}
                     </TemplateText>
                 )}
             </TemplateBox>

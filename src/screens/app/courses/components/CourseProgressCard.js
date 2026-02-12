@@ -6,16 +6,18 @@ import LinearGradient from 'react-native-linear-gradient';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import { ZINC_500, SLATE_50, GRAY_200, INDIGO_700, INDIGO_PURPLE_GRADIENT } from '../../../../theme/Colors';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const CourseProgressCard = ({ progress, currentDayNumber, totalDays, completionRatio }) => {
+    const { t } = useTranslation();
     return (
         <TemplateBox style={styles.progressCard}>
             <TemplateBox row alignItems="center" justifyContent="space-between" mb={10}>
                 <TemplateText size={12} medium color={styles.textMuted.color}>
-                    Your Progress
+                    {t('courses.details.yourProgress')}
                 </TemplateText>
                 <TemplateText size={12} semiBold color={INDIGO_700}>
-                    Day {currentDayNumber} of {totalDays || 0}
+                    {t('courses.details.dayOfTotal', { current: currentDayNumber, total: totalDays || 0 })}
                 </TemplateText>
             </TemplateBox>
             <TemplateBox style={styles.progressTrack}>
@@ -26,10 +28,12 @@ const CourseProgressCard = ({ progress, currentDayNumber, totalDays, completionR
             </TemplateBox>
             <TemplateBox row alignItems="center" justifyContent="space-between" mt={8}>
                 <TemplateText size={11} color={styles.textMuted.color}>
-                    {progress?.completedDays?.length || 0} days completed
+                    {t('courses.details.daysCompleted', { count: progress?.completedDays?.length || 0 })}
                 </TemplateText>
                 <TemplateText size={11} color={styles.textMuted.color}>
-                    {(totalDays || 0) - (progress?.completedDays?.length || 0)} days remaining
+                    {t('courses.details.daysRemaining', {
+                        count: (totalDays || 0) - (progress?.completedDays?.length || 0),
+                    })}
                 </TemplateText>
             </TemplateBox>
         </TemplateBox>

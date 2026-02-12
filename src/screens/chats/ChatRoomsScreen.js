@@ -40,6 +40,7 @@ import HeaderIconButton from '../../components/header/HeaderButton';
 import ChatRoomCard from './ChatRoomCard';
 import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
+import useTranslation from '../../hooks/useTranslation';
 
 // info@ugccreatorapp.com brand details for support
 const brandId = 'ng64onQ318Q8LghDizaB2sARx7r2'; // support brand id
@@ -50,6 +51,8 @@ const ChatRoomsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
     const { features } = useFeatureFlags();
+
+    const { t } = useTranslation();
 
     const showSupportChat = features?.showSupportChat;
 
@@ -185,14 +188,14 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     // Handle chat room deletion
     const handleDeleteChat = chatRoomId => {
-        Alert.alert('Delete Chat', 'Are you sure you want to delete this chat?', [
+        Alert.alert(t('chats.rooms.deleteAlert.title'), t('chats.rooms.deleteAlert.message'), [
             {
-                text: 'Cancel',
+                text: t('chats.rooms.deleteAlert.cancel'),
                 onPress: () => swipeRef?.current?.close(),
                 style: 'cancel',
             },
             {
-                text: 'Delete',
+                text: t('chats.rooms.deleteAlert.delete'),
                 onPress: () => {
                     deleteChatRoom(chatRoomId);
                     swipeRef?.current?.close();
@@ -209,7 +212,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             navigation.setOptions({
                 headerRight: () => (
                     <HeaderIconButton
-                        title="Contact US"
+                        title={t('chats.rooms.contactUs')}
                         onPress={handleOnPressSupportChat}
                         backDropColor={LIGHT_GREEN}
                         mr={WRAPPER_MARGIN}
@@ -217,7 +220,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                 ),
             });
         }
-    }, [navigation, showSupportChat]);
+    }, [navigation, showSupportChat, t]);
 
     const chatRoomName = 'SUPPORT CHAT';
     const [supportPress, setSupportPress] = useState(false);
@@ -249,14 +252,14 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const options = [
         {
-            title: 'Search Creators',
+            title: t('chats.rooms.options.searchCreators'),
             onPress: () => {
                 setShowOptions(false);
                 navigation.navigate(CREATORS_PROFILES_STACK);
             },
         },
         {
-            title: 'Support (Features / Bugs)',
+            title: t('chats.rooms.options.supportBugs'),
             onPress: () => {
                 setShowOptions(false);
                 handleSupportPress();
@@ -269,12 +272,12 @@ const ChatRoomsScreen = ({ navigation }) => {
         if (supportChat && supportPress) {
             navigation.navigate(CHATS, {
                 chatRoomId: supportChat?.id,
-                name: 'Support Chat',
+                name: t('chats.rooms.supportChatName'),
                 receiverFcmToken: supportFcmToken,
             });
             setSupportPress(false);
         }
-    }, [supportChat, supportPress]);
+    }, [supportChat, supportPress, t]);
 
     return (
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.mainContainer}>
@@ -294,17 +297,21 @@ const ChatRoomsScreen = ({ navigation }) => {
                                     mh={WRAPPER_MARGIN}
                                 >
                                     <TemplateText size={wp(16)} startCase bold center>
-                                        {`Continue your conversations with your ${isCreator ? 'brands' : 'creators'}`}
+                                        {t('chats.rooms.title', {
+                                            userType: isCreator
+                                                ? t('chats.rooms.userType.brands')
+                                                : t('chats.rooms.userType.creators'),
+                                        })}
                                     </TemplateText>
                                     {!!searchedChatRooms?.length && (
                                         <TemplateText size={wp(13)} center style={styles.swipeToDeleteText}>
-                                            Swipe left to delete chat
+                                            {t('chats.rooms.swipeToDelete')}
                                         </TemplateText>
                                     )}
                                     <TemplateBox height={WRAPPER_MARGIN} />
                                     {!!searchedChatRooms?.length && (
                                         <TemplateTextInput
-                                            placeholder="Search"
+                                            placeholder={t('chats.rooms.searchPlaceholder')}
                                             style={[styles.input, SHADOW('default', WHITE)]}
                                             value={search}
                                             onChangeText={text => setSearch(text)}
@@ -337,7 +344,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                                 style={styles.deleteIcon}
                                             />
                                             <TemplateText color={ERROR_RED} size={wp(9)} bold>
-                                                Delete
+                                                {t('chats.rooms.delete')}
                                             </TemplateText>
                                         </TemplateBox>
                                     )}
@@ -366,10 +373,10 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 ) : (
                                     <TemplateBox alignItems="center">
                                         <TemplateText size={wp(16)} center>
-                                            There are no conversations yet
+                                            {t('chats.rooms.empty.title')}
                                         </TemplateText>
                                         <Button
-                                            title="Start a conversation"
+                                            title={t('chats.rooms.empty.button')}
                                             onPress={() => navigation.navigate(CREATORS_PROFILES_STACK)}
                                             style={styles.button}
                                         />

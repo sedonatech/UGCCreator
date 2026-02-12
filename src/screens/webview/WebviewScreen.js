@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH } from '../../theme/Layout';
 import { BLUE, TRANSPARENT, WHITE } from '../../theme/Colors';
 import isAndroid from '../subscriptions/utils/isAndroid';
@@ -18,14 +19,15 @@ const urlPattern = new RegExp(
 );
 
 const WebviewScreen = ({ route }) => {
+    const { t } = useTranslation();
     const url = route?.params?.url;
     const [loading, setLoading] = useState(true);
     // Check if url is valid
     useEffect(() => {
         if (!urlPattern.test(url)) {
-            Alert.alert('Error', 'Something went wrong with this link. Please try again later.', [
+            Alert.alert(t('common.alerts.linkError.title'), t('common.alerts.linkError.message'), [
                 {
-                    text: 'OK',
+                    text: t('common.buttons.ok'),
                     onPress: () => {
                         setLoading(false);
                     },
@@ -40,7 +42,7 @@ const WebviewScreen = ({ route }) => {
 
     const handleError = () => {
         setLoading(false);
-        Alert.alert('Error', 'Something went wrong with this link. Please try again later.');
+        Alert.alert(t('common.alerts.linkError.title'), t('common.alerts.linkError.message'));
     };
 
     return (

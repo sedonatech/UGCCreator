@@ -8,6 +8,7 @@ import TemplateText from '../TemplateText';
 import { BLACK, WHITE } from '../../theme/Colors';
 import Button from '../Button';
 import { WRAPPER_MARGIN } from '../../theme/Layout';
+import useTranslation from '../../hooks/useTranslation';
 
 const RecommendedBrandModal = ({
     visible,
@@ -20,47 +21,35 @@ const RecommendedBrandModal = ({
     onClose,
     height,
     width,
-}) => (
-    <ModalBase
-        visible={visible}
-        closeOnPress={onClose}
-        animationInTiming={250}
-    >
-        <TemplateBox
-            borderRadius={10}
-            alignItems="center"
-            justifyContent="center"
-            pAll={WRAPPER_MARGIN}
-            selfCenter
-            backgroundColor={WHITE}
-            height={height}
-            width={width}
-        >
-            <TemplateText color={BLACK} size={20} bold>
-                {title}
-            </TemplateText>
-            <TemplateBox height={20} />
-            <TemplateText center color={BLACK} size={16}>
-                {subtitle}
-            </TemplateText>
-            <TemplateBox height={20} />
-            {!!closeOnPress && (
-                <Button
-                    title={buttonTitle}
-                    onPress={closeOnPress}
-                    style={styles.button}
-                />
-            )}
+}) => {
+    const { t } = useTranslation();
+    return (
+        <ModalBase visible={visible} closeOnPress={onClose} animationInTiming={250}>
+            <TemplateBox
+                borderRadius={10}
+                alignItems="center"
+                justifyContent="center"
+                pAll={WRAPPER_MARGIN}
+                selfCenter
+                backgroundColor={WHITE}
+                height={height}
+                width={width}
+            >
+                <TemplateText color={BLACK} size={20} bold>
+                    {title || t('modals.recommendedBrand.defaultTitle')}
+                </TemplateText>
+                <TemplateBox height={20} />
+                <TemplateText center color={BLACK} size={16}>
+                    {subtitle || t('modals.recommendedBrand.defaultSubtitle')}
+                </TemplateText>
+                <TemplateBox height={20} />
+                {!!closeOnPress && <Button title={buttonTitle} onPress={closeOnPress} style={styles.button} />}
 
-            <Button
-                title={secondaryButtonTitle}
-                onPress={onSecondaryButtonPress}
-                style={styles.button}
-            />
-        </TemplateBox>
-
-    </ModalBase>
-);
+                <Button title={secondaryButtonTitle} onPress={onSecondaryButtonPress} style={styles.button} />
+            </TemplateBox>
+        </ModalBase>
+    );
+};
 
 RecommendedBrandModal.propTypes = {
     visible: PropTypes.bool,
@@ -78,14 +67,12 @@ RecommendedBrandModal.propTypes = {
 RecommendedBrandModal.defaultProps = {
     visible: false,
     closeOnPress: null,
-    title: 'Profile Incomplete',
-    subtitle: 'Please complete your profile before you can use the features of the app .',
-    buttonTitle: 'Complete Profile',
+    title: null,
+    subtitle: null,
+    buttonTitle: null,
     secondaryButtonTitle: '',
-    onSecondaryButtonPress: () => {
-    },
-    onClose: () => {
-    },
+    onSecondaryButtonPress: () => {},
+    onClose: () => {},
     height: '60%',
     width: '88%',
 };

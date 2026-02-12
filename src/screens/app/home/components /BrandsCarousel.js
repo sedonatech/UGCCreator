@@ -3,9 +3,7 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { useNavigation } from '@react-navigation/native';
-import {
-    getFirestore, collection, query, where, limit as fsLimit, getDocs,
-} from '@react-native-firebase/firestore';
+import { getFirestore, collection, query, where, limit as fsLimit, getDocs } from '@react-native-firebase/firestore';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -13,10 +11,9 @@ import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import BrandsCard from './BrandsCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import {
-    BRAND_DETAILS, BRANDS_SCREEN,
-} from '../../../../navigation/ScreenNames';
+import { BRAND_DETAILS, BRANDS_SCREEN } from '../../../../navigation/ScreenNames';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
+import useTranslation from '../../../../hooks/useTranslation';
 
 function generateRandomRange(min, max) {
     const rangeLength = 9;
@@ -27,6 +24,7 @@ function generateRandomRange(min, max) {
 
 const USERS_COLLECTION = 'users';
 const BrandsCarousel = ({ style }) => {
+    const { t } = useTranslation();
     const navigation = useNavigation();
 
     const [brands, setBrands] = useState([]);
@@ -43,10 +41,9 @@ const BrandsCarousel = ({ style }) => {
     const fetchBrands = async () => {
         try {
             const querySnapshot = await getDocs(brandsRef);
-            const fetchedBrands = querySnapshot?.docs
-                ?.map((doc) => doc?.data());
+            const fetchedBrands = querySnapshot?.docs?.map(doc => doc?.data());
 
-            const filtered = (fetchedBrands || [])?.filter((brand) => !brand?.isBlocked);
+            const filtered = (fetchedBrands || [])?.filter(brand => !brand?.isBlocked);
             if (filtered?.length < 1) setLimit(limit + 20);
             const range = generateRandomRange(0, filtered?.length - 1);
             const sorted = filtered?.slice(range?.start, range?.end);
@@ -60,7 +57,7 @@ const BrandsCarousel = ({ style }) => {
         if (!brands?.length) {
             return [];
         }
-        return brands?.map((brand) => ({
+        return brands?.map(brand => ({
             id: brand?.id,
             name: brand?.name,
             image: brand?.image,
@@ -71,25 +68,24 @@ const BrandsCarousel = ({ style }) => {
 
     useEffect(() => {
         fetchBrands();
-    },
-    [limit]);
+    }, [limit]);
 
     return (
         <TemplateBox style={style}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
-                <TemplateText size={18} bold>Brands on our Platform</TemplateText>
+                <TemplateText size={18} bold>
+                    {t('home.brandsCarousel.title')}
+                </TemplateText>
                 <TemplateBox flex />
-                <TemplateTouchable
-                    onPress={() => navigation.navigate(BRANDS_SCREEN)}
-                >
+                <TemplateTouchable onPress={() => navigation.navigate(BRANDS_SCREEN)}>
                     <TemplateText startCase size={14} underLine color={IOS_BLUE}>
-                        See All
+                        {t('home.brandsCarousel.seeAll')}
                     </TemplateText>
                 </TemplateTouchable>
             </TemplateBox>
 
             <TemplateText size={13} color={BLACK} style={styles.subtitle}>
-                Check out the brands currently on our platform
+                {t('home.brandsCarousel.description')}
             </TemplateText>
             <TemplateCarousel
                 data={brandsData?.sort((a, b) => {
@@ -108,7 +104,7 @@ const BrandsCarousel = ({ style }) => {
                     />
                 )}
                 contentContainerStyle={styles.cardCarousel}
-                snapToInterval={(SCREEN_WIDTH / 1.6) + 20}
+                snapToInterval={SCREEN_WIDTH / 1.6 + 20}
             />
         </TemplateBox>
     );

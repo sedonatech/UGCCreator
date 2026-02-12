@@ -26,6 +26,7 @@ import { hp } from '../../../Utils/getResponsiveSize';
 import TemplateBox from '../../../components/TemplateBox';
 import { CREATORS_PROFILES_STACK, PROFILE, WEBVIEW } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import useTranslation from '../../../hooks/useTranslation';
 
 type Sample = {
     id: string;
@@ -56,6 +57,7 @@ const COLORS = {
 };
 
 export default function SampleDetailsScreen({ route, navigation }) {
+    const { t } = useTranslation();
     const { auth } = useAuthContext();
     const isCreator = auth?.profile?.type && auth?.profile?.type === 'creator';
 
@@ -95,12 +97,12 @@ export default function SampleDetailsScreen({ route, navigation }) {
                     }}
                 >
                     <TemplateText color={WHITE} size={hp(14)} medium>
-                        View Creator
+                        {t('home.sampleDetails.viewCreator')}
                     </TemplateText>
                 </TemplateBox>
             ),
         });
-    }, [navigation, isCreator, owner]);
+    }, [navigation, isCreator, owner, t]);
 
     useEffect(() => {
         if (!id) return;
@@ -127,10 +129,10 @@ export default function SampleDetailsScreen({ route, navigation }) {
 
     function onDelete() {
         if (!sample) return;
-        Alert.alert('Delete sample', 'This action cannot be undone.', [
-            { text: 'Cancel', style: 'cancel' },
+        Alert.alert(t('home.sampleDetails.deleteAlert.title'), t('home.sampleDetails.deleteAlert.message'), [
+            { text: t('home.sampleDetails.deleteAlert.cancel'), style: 'cancel' },
             {
-                text: 'Delete',
+                text: t('home.sampleDetails.deleteAlert.confirm'),
                 style: 'destructive',
                 onPress: async () => {
                     const db = getFirestore();
@@ -167,7 +169,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
     if (!sample) {
         return (
             <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
-                <Text style={{ color: COLORS.textDim }}>Sample not found.</Text>
+                <Text style={{ color: COLORS.textDim }}>{t('home.sampleDetails.notFound')}</Text>
             </View>
         );
     }
@@ -194,11 +196,11 @@ export default function SampleDetailsScreen({ route, navigation }) {
                     {sample.title}
                 </Text>
                 <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
-                    {sample.isFeatured && <Chip label="Featured" tone="good" />}
-                    {sample.showcaseOptIn && <Chip label="Showcase" tone="good" />}
+                    {sample.isFeatured && <Chip label={t('home.sampleDetails.chips.featured')} tone="good" />}
+                    {sample.showcaseOptIn && <Chip label={t('home.sampleDetails.chips.showcase')} tone="good" />}
                 </View>
 
-                <Text style={styles.sectionTitle}>About this work</Text>
+                <Text style={styles.sectionTitle}>{t('home.sampleDetails.aboutThisWork')}</Text>
                 <Text style={styles.description}>{sample.description}</Text>
 
                 <TemplateBox row hCenter>
@@ -218,7 +220,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
                             mr={12}
                         >
                             <TemplateText color={WHITE} size={hp(16)} medium>
-                                Open Link
+                                {t('home.sampleDetails.openLink')}
                             </TemplateText>
                         </TemplateBox>
                     ) : null}
@@ -227,24 +229,24 @@ export default function SampleDetailsScreen({ route, navigation }) {
                 {/* Owner-only controls */}
                 {isOwner ? (
                     <View style={styles.ownerPanel}>
-                        <Text style={styles.sectionTitle}>Manage</Text>
+                        <Text style={styles.sectionTitle}>{t('home.sampleDetails.manage')}</Text>
 
                         <View style={styles.toggleRow}>
-                            <Text style={styles.toggleLabel}>Featured on profile</Text>
+                            <Text style={styles.toggleLabel}>{t('home.sampleDetails.featuredOnProfile')}</Text>
                             <Switch value={!!sample.isFeatured} onValueChange={toggleFeatured} thumbColor={'#fff'} />
                         </View>
 
                         <View style={styles.toggleRow}>
-                            <Text style={styles.toggleLabel}>Opt-in to Showcase</Text>
+                            <Text style={styles.toggleLabel}>{t('home.sampleDetails.optInToShowcase')}</Text>
                             <Switch value={!!sample.showcaseOptIn} onValueChange={toggleShowcase} thumbColor={'#fff'} />
                         </View>
 
                         <View style={{ flexDirection: 'row', gap: 12, marginTop: 12 }}>
                             <TouchableOpacity onPress={() => setEditOpen(true)} style={styles.ctaPrimary}>
-                                <Text style={styles.ctaPrimaryText}>Edit</Text>
+                                <Text style={styles.ctaPrimaryText}>{t('home.sampleDetails.edit')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={onDelete} style={styles.ctaDanger}>
-                                <Text style={styles.ctaDangerText}>Delete</Text>
+                                <Text style={styles.ctaDangerText}>{t('home.sampleDetails.delete')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

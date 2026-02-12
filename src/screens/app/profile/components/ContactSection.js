@@ -8,42 +8,42 @@ import { BLACK, BLACK_0_5 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { WEBVIEW } from '../../../../navigation/ScreenNames';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const ContactSection = ({ contactInfo, socials, email }) => {
     const navigation = useNavigation();
+    const { t } = useTranslation();
 
     return (
         <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN * 2}>
-            <TemplateText bold color={BLACK} size={16}>Contact Information</TemplateText>
+            <TemplateText bold color={BLACK} size={16}>
+                {t('profile.portfolio.contact.title')}
+            </TemplateText>
             <TemplateBox height={10} />
             {contactInfo?.phoneNumber && (
-                <TemplateBox
-                    row
-                    alignItems="center"
-                    backgroundColor={BLACK_0_5}
-                    borderRadius={10}
-                    mb={WRAPPER_MARGIN}
-                >
+                <TemplateBox row alignItems="center" backgroundColor={BLACK_0_5} borderRadius={10} mb={WRAPPER_MARGIN}>
                     <TemplateBox pr={20}>
-                        <TemplateText color={BLACK} semiBold size={16}>Phone Number</TemplateText>
+                        <TemplateText color={BLACK} semiBold size={16}>
+                            {t('profile.portfolio.contact.phoneNumber')}
+                        </TemplateText>
                         <TemplateBox height={10} />
-                        <TemplateText color={BLACK} size={16}>{contactInfo?.phoneNumber}</TemplateText>
+                        <TemplateText color={BLACK} size={16}>
+                            {contactInfo?.phoneNumber}
+                        </TemplateText>
                     </TemplateBox>
                     <TemplateBox flex />
                 </TemplateBox>
             )}
             {(contactInfo?.email || email) && (
-                <TemplateBox
-                    row
-                    alignItems="center"
-                    backgroundColor={BLACK_0_5}
-                    borderRadius={10}
-                    mb={WRAPPER_MARGIN}
-                >
+                <TemplateBox row alignItems="center" backgroundColor={BLACK_0_5} borderRadius={10} mb={WRAPPER_MARGIN}>
                     <TemplateBox pr={20}>
-                        <TemplateText color={BLACK} semiBold size={16}>Email</TemplateText>
+                        <TemplateText color={BLACK} semiBold size={16}>
+                            {t('profile.portfolio.contact.email')}
+                        </TemplateText>
                         <TemplateBox height={10} />
-                        <TemplateText color={BLACK} size={14}>{contactInfo?.email || email}</TemplateText>
+                        <TemplateText color={BLACK} size={14}>
+                            {contactInfo?.email || email}
+                        </TemplateText>
                     </TemplateBox>
                     <TemplateBox flex />
                 </TemplateBox>
@@ -62,19 +62,13 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                     borderRadius={10}
                     mb={WRAPPER_MARGIN}
                 >
-                    <TemplateIcon
-                        name="logo-instagram"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="logo-instagram" size={20} color={BLACK} />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} semiBold size={16}>Instagram</TemplateText>
+                    <TemplateText color={BLACK} semiBold size={16}>
+                        {t('profile.portfolio.contact.instagram')}
+                    </TemplateText>
                     <TemplateBox flex />
-                    <TemplateIcon
-                        name="open-outline"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="open-outline" size={20} color={BLACK} />
                 </TemplateBox>
             )}
             {socials?.facebook && (
@@ -91,19 +85,13 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                     borderRadius={10}
                     mb={WRAPPER_MARGIN}
                 >
-                    <TemplateIcon
-                        name="logo-facebook"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="logo-facebook" size={20} color={BLACK} />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} size={16} semiBold>FaceBook</TemplateText>
+                    <TemplateText color={BLACK} size={16} semiBold>
+                        {t('profile.portfolio.contact.facebook')}
+                    </TemplateText>
                     <TemplateBox flex />
-                    <TemplateIcon
-                        name="open-outline"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="open-outline" size={20} color={BLACK} />
                 </TemplateBox>
             )}
 
@@ -121,19 +109,13 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                     borderRadius={10}
                     mb={WRAPPER_MARGIN}
                 >
-                    <TemplateIcon
-                        name="logo-twitter"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="logo-twitter" size={20} color={BLACK} />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} size={16} semiBold>Twitter</TemplateText>
+                    <TemplateText color={BLACK} size={16} semiBold>
+                        {t('profile.portfolio.contact.twitter')}
+                    </TemplateText>
                     <TemplateBox flex />
-                    <TemplateIcon
-                        name="open-outline"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="open-outline" size={20} color={BLACK} />
                 </TemplateBox>
             )}
 
@@ -151,22 +133,15 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                     borderRadius={10}
                     mb={WRAPPER_MARGIN}
                 >
-                    <TemplateIcon
-                        name="logo-linkedin"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="logo-linkedin" size={20} color={BLACK} />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} size={16} semiBold>LinkedIn</TemplateText>
+                    <TemplateText color={BLACK} size={16} semiBold>
+                        {t('profile.portfolio.contact.linkedin')}
+                    </TemplateText>
                     <TemplateBox flex />
-                    <TemplateIcon
-                        name="open-outline"
-                        size={20}
-                        color={BLACK}
-                    />
+                    <TemplateIcon name="open-outline" size={20} color={BLACK} />
                 </TemplateBox>
             )}
-
         </TemplateBox>
     );
 };

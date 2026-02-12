@@ -13,11 +13,13 @@ import { ANIMATION_DISABLED_HEADER } from '../../components/header/ScreenOptions
 import useChatRooms from '../../hooks/chats/useChatRooms';
 import ChallengesStack from './ChallengesStack';
 import CoursesStack from './CoursesStack';
+import useTranslation from '../../hooks/useTranslation';
 
 const Tab = createBottomTabNavigator();
 const { Navigator, Screen } = Tab;
 
 const AppTabs = () => {
+    const { t } = useTranslation();
     useNotificationPermissions();
 
     const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
@@ -47,7 +49,7 @@ const AppTabs = () => {
                 component={HomeStack}
                 options={{
                     tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Home" />,
-                    tabBarLabel: props => <TabLabel {...props}>Home</TabLabel>,
+                    tabBarLabel: props => <TabLabel {...props}>{t('tabs.home')}</TabLabel>,
                 }}
             />
 
@@ -56,7 +58,7 @@ const AppTabs = () => {
                 component={ChallengesStack}
                 options={{
                     tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Trophy" />,
-                    tabBarLabel: props => <TabLabel {...props}>Challenges</TabLabel>,
+                    tabBarLabel: props => <TabLabel {...props}>{t('tabs.challenges')}</TabLabel>,
                 }}
             />
             <Screen
@@ -66,7 +68,7 @@ const AppTabs = () => {
                     tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Chat" />,
                     tabBarLabel: props => (
                         <TabLabel {...props} showNotification={unreadMessagesCount}>
-                            Chats
+                            {t('tabs.chats')}
                         </TabLabel>
                     ),
                 }}
@@ -76,7 +78,7 @@ const AppTabs = () => {
                 component={CoursesStack}
                 options={{
                     tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="LevelUp" />,
-                    tabBarLabel: props => <TabLabel {...props}>LevelUp</TabLabel>,
+                    tabBarLabel: props => <TabLabel {...props}>{t('tabs.levelUp')}</TabLabel>,
                 }}
             />
             <Screen
@@ -84,7 +86,7 @@ const AppTabs = () => {
                 component={ProfileStack}
                 options={{
                     tabBarIcon: ({ focused }) => <TabButton focused={focused} icon="Profile" />,
-                    tabBarLabel: props => <TabLabel {...props}>Portfolio</TabLabel>,
+                    tabBarLabel: props => <TabLabel {...props}>{t('tabs.portfolio')}</TabLabel>,
                 }}
             />
         </Navigator>

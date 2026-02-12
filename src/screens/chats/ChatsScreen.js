@@ -23,10 +23,13 @@ import { CHAT_ROOMS } from '../../hooks/chats/useChatRooms';
 import { DEFAULT_AVATAR } from '../../consts/content/Portfolio';
 import useNotifications from '../../hooks/notifications/useNotifications';
 import { CHATS } from '../../navigation/ScreenNames';
+import useTranslation from '../../hooks/useTranslation';
 
 const MESSAGES = 'messages';
 const ChatsScreen = ({ route }) => {
     const { sendNotification } = useNotifications();
+
+    const { t } = useTranslation();
 
     const isFocused = useIsFocused();
 
@@ -123,7 +126,7 @@ const ChatsScreen = ({ route }) => {
             // send notification
             await sendNotification(
                 receiverFcmToken,
-                `New message from ${chatRoomName || 'UGCCreatorapp'}`,
+                `${t('chats.notificationTitle')} ${chatRoomName || 'UGCCreatorapp'}`,
                 formattedMessages[0]?.text,
                 {
                     type: 'chats',
@@ -149,7 +152,7 @@ const ChatsScreen = ({ route }) => {
                     onSendMessage(newMessages, isCreator ? chatRoom?.brandFCMToken : chatRoom?.creatorFCMToken)
                 }
                 user={chatUser}
-                placeholder="Type your message here..."
+                placeholder={t('chats.messagePlaceholder')}
                 alwaysShowSend
                 showUserAvatar
                 isTyping={false}

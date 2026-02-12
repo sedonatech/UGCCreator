@@ -1,9 +1,7 @@
 /* eslint-disable react-native/no-color-literals */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, KeyboardAvoidingView, StatusBar, StyleSheet, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { throttle, startCase, toLower } from 'lodash';
-import { useIsFocused } from '@react-navigation/native';
+import { startCase, toLower } from 'lodash';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { getFirestore, collection, query, where, getDocs, limit, startAfter } from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
@@ -43,6 +41,7 @@ import { isIOS } from '../../../Utils/Platform';
 import FilterPill from '../../app/explore/components/FilterPill';
 import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import useTranslation from '../../../hooks/useTranslation';
 
 const USERS_COLLECTION = 'users';
 const PAGE_SIZE = 20;
@@ -62,13 +61,14 @@ const CreatorProfilesScreen = ({ navigation }) => {
     const db = getFirestore();
     const refRBSheet = useRef();
     const { auth } = useAuthContext();
+    const { t } = useTranslation();
     const isCreator = auth?.profile?.type === 'creator';
 
     /**
      * Build the Firestore Query dynamically based on state
      */
     const buildQuery = (lastDoc = null) => {
-        const constraints = [where('type', '==', 'creator'), limit(PAGE_SIZE)];
+        const constraints = [where('type', '==', 'creator')];
 
         // 1. Search Logic
         const searchTerm = search ? search.trim() : '';
@@ -94,6 +94,10 @@ const CreatorProfilesScreen = ({ navigation }) => {
             constraints.push(startAfter(lastDoc));
         }
 
+        // 4. Limit must come last
+        constraints.push(limit(PAGE_SIZE));
+
+        // Note: Sorting is handled in JavaScript after fetching to avoid index requirements
         return query(collection(db, USERS_COLLECTION), ...constraints);
     };
 
@@ -132,23 +136,37 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
             // Process data
             const newData = docs
-                .map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    lastLoginTime: doc.data().lastLoginTime
-                        ? calculateLastLoginTime(doc.data().lastLoginTime)
-                        : 'days ago',
-                }))
+                .map(doc => {
+                    const rawLastLoginTime = doc.data().lastLoginTime;
+                    return {
+                        id: doc.id,
+                        ...doc.data(),
+                        lastLoginTimeRaw: rawLastLoginTime, // Keep raw timestamp for sorting
+                        lastLoginTime: rawLastLoginTime ? calculateLastLoginTime(rawLastLoginTime) : 'days ago',
+                    };
+                })
                 // Requirement: Creators without images need to be filtered out
-                .filter(creator => creator.image && creator.image !== '');
+                .filter(creator => creator.image && creator.image !== '')
+                // Sort by last login time (most recent first)
+                .sort((a, b) => {
+                    const timeA = a.lastLoginTimeRaw?.seconds || 0;
+                    const timeB = b.lastLoginTimeRaw?.seconds || 0;
+                    return timeB - timeA; // Descending order (most recent first)
+                });
 
             // Update State
             if (isLoadMore) {
-                // Append new data, filter duplicates just in case
+                // Append new data, filter duplicates just in case, and sort the combined list
                 setCreatorsData(prev => {
                     const existingIds = new Set(prev.map(c => c.id));
                     const uniqueNew = newData.filter(c => !existingIds.has(c.id));
-                    return [...prev, ...uniqueNew];
+                    const combined = [...prev, ...uniqueNew];
+                    // Re-sort combined list to maintain order
+                    return combined.sort((a, b) => {
+                        const timeA = a.lastLoginTimeRaw?.seconds || 0;
+                        const timeB = b.lastLoginTimeRaw?.seconds || 0;
+                        return timeB - timeA;
+                    });
                 });
             } else {
                 setCreatorsData(newData);
@@ -186,6 +204,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
                 location={item?.location?.country}
                 email={item?.email}
+                lastLoginTime={item?.lastLoginTime}
                 onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
                 height={wp(194)}
                 mt={SPACE_MEDIUM}
@@ -222,12 +241,16 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     <>
                         <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center">
                             <TemplateText size={18} bold startCase>
-                                {`${isCreator ? 'Collaborate with' : 'Find'} the perfect creator`}
+                                {t(
+                                    isCreator
+                                        ? 'creatorExplore.creators.titleCreator'
+                                        : 'creatorExplore.creators.titleBrand',
+                                )}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
                             <TemplateTextInput
-                                placeholder="Search"
+                                placeholder={t('creatorExplore.creators.searchPlaceholder')}
                                 style={[styles.input, SHADOW('default', WHITE)]}
                                 value={search}
                                 onChangeText={text => setSearch(text)}
@@ -262,7 +285,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 ListEmptyComponent={
                     !loading && (
                         <TemplateBox flex={1} alignItems="center" justifyContent="center" mt={SPACE_LARGE}>
-                            <TemplateText semiBold>No results found</TemplateText>
+                            <TemplateText semiBold>{t('creatorExplore.creators.noResults')}</TemplateText>
                         </TemplateBox>
                     )
                 }
@@ -273,7 +296,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 <View style={styles.loadingOverlay}>
                     <ActivityIndicator size="large" color={IOS_BLUE} />
                     <TemplateText mt={SPACE_MEDIUM} color={BLACK}>
-                        Fetching creators...
+                        {t('creatorExplore.creators.loadingMessage')}
                     </TemplateText>
                 </View>
             )}
@@ -312,7 +335,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 row
                             >
                                 <TemplateText size={18} bold>
-                                    Select Filters
+                                    {t('creatorExplore.creators.filters.title')}
                                 </TemplateText>
 
                                 {selectedFilters?.length > 0 && (
@@ -322,7 +345,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                         style={styles.applyText}
                                         onPress={() => refRBSheet?.current?.close()}
                                     >
-                                        Apply Filters
+                                        {t('creatorExplore.creators.filters.apply')}
                                     </TemplateText>
                                 )}
 
@@ -336,7 +359,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                             refRBSheet?.current?.close();
                                         }}
                                     >
-                                        Clear Filters
+                                        {t('creatorExplore.creators.filters.clear')}
                                     </TemplateText>
                                 )}
                             </TemplateBox>
@@ -357,43 +380,43 @@ const CreatorProfilesScreen = ({ navigation }) => {
                             )}
 
                             <FilterCategory
-                                title="Project Category"
+                                title={t('creatorExplore.creators.filters.categories.projectCategory')}
                                 filters={projectFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
                             />
                             <FilterCategory
-                                title="Country"
+                                title={t('creatorExplore.creators.filters.categories.country')}
                                 filters={countryFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
                             />
                             <FilterCategory
-                                title="Language"
+                                title={t('creatorExplore.creators.filters.categories.language')}
                                 filters={languageFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
                             />
                             <FilterCategory
-                                title="Gender"
+                                title={t('creatorExplore.creators.filters.categories.gender')}
                                 filters={genderFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
                             />
                             <FilterCategory
-                                title="Project Type"
+                                title={t('creatorExplore.creators.filters.categories.projectType')}
                                 filters={projectTypeFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
                             />
                             <FilterCategory
-                                title="Delivery Format"
+                                title={t('creatorExplore.creators.filters.categories.deliveryFormat')}
                                 filters={deliveryFormatFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
                             />
                             <FilterCategory
-                                title="Project Duration"
+                                title={t('creatorExplore.creators.filters.categories.duration')}
                                 filters={projectDurationFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}

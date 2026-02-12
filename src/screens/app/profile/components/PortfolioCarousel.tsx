@@ -12,6 +12,7 @@ import TemplateCarousel from '../../../../components/carousels/TemplateCarousel'
 import ProjectCard from '../../home/components /ProjectCard';
 import { SAMPLE_DETAILS_SCREEN } from '../../../../navigation/ScreenNames';
 import { hp } from '../../../../Utils/getResponsiveSize';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_WIDTH = SCREEN_WIDTH / 2 - 28;
@@ -19,6 +20,7 @@ const CARD_HEIGHT = 240;
 
 export default function PortfolioCarousel({ creatorId }: { creatorId?: string }) {
     const { auth } = useAuthContext();
+    const { t } = useTranslation();
     const [items, setItems] = useState<SampleWork[]>([]);
     const [open, setOpen] = useState(false);
     const [editItem, setEditItem] = useState<SampleWork | null>(null);
@@ -45,12 +47,14 @@ export default function PortfolioCarousel({ creatorId }: { creatorId?: string })
         }, [uid]),
     );
 
-    const canAddMore = isOwner && items.length < 3;
+    const canAddMore = isOwner && items.length < 10;
 
-    const titleText = isOwner ? 'My Sample Work' : 'Creator Showcase';
+    const titleText = isOwner
+        ? t('profile.portfolio.sampleWork.myTitle')
+        : t('profile.portfolio.sampleWork.creatorTitle');
     const subtitleText = isOwner
-        ? 'Add sample works to your profile with a chance of being featured.'
-        : 'Featured sample works from this creator.';
+        ? t('profile.portfolio.sampleWork.myDescription')
+        : t('profile.portfolio.sampleWork.creatorDescription');
 
     if (items?.length < 1 && !isOwner) return null;
 
@@ -60,7 +64,7 @@ export default function PortfolioCarousel({ creatorId }: { creatorId?: string })
                 <TemplateText size={18} bold mr={8}>
                     {titleText}
                 </TemplateText>
-                {isOwner && <Text style={{ color: '#9ca3af' }}>{items.length}/3</Text>}
+                {isOwner && <Text style={{ color: '#9ca3af' }}>{items.length}/10</Text>}
             </TemplateBox>
             <TemplateText size={13} color={BLACK} style={styles.subtitle}>
                 {subtitleText}
@@ -85,10 +89,10 @@ export default function PortfolioCarousel({ creatorId }: { creatorId?: string })
                                 justifyContent="center"
                             >
                                 <TemplateText color={BLACK} bold size={hp(14)}>
-                                    + Add Sample
+                                    {t('profile.portfolio.sampleWork.addButton')}
                                 </TemplateText>
                                 <TemplateText mt={6} color={DARK_GREY} size={hp(12)}>
-                                    Max 3 items
+                                    {t('profile.portfolio.sampleWork.maxItems')}
                                 </TemplateText>
                             </TemplateBox>
                         );

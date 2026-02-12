@@ -14,10 +14,13 @@ import TemplateBox from '../../../../components/TemplateBox';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
+import useTranslation from '../../../../hooks/useTranslation';
+import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 
 const SAMPLE_SIZE = 5;
 const USERS_COLLECTION = 'users';
 const FeaturedCreatorsCarousel = ({ style, creator }) => {
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const [creatorsData, setCreators] = useState([]);
     const db = getFirestore();
@@ -52,21 +55,23 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
             <View style={styles.titleContainer}>
                 <TemplateBox row justifyContent="space-between">
                     <TemplateText bold size={18} color={BLACK}>
-                        Featured Creators
+                        {t('brands.admin.carousels.featuredCreators.title')}
                     </TemplateText>
                     <TemplateBox />
                     <TemplateTouchable
                         onPress={() => navigation.navigate(creator ? CREATORS_PROFILES_STACK : CREATORS_PROFILES)}
                     >
                         <TemplateText startCase size={14} underLine color={BLUE}>
-                            See All
+                            {t('brands.admin.carousels.featuredCreators.seeAll')}
                         </TemplateText>
                     </TemplateTouchable>
                 </TemplateBox>
 
                 <TemplateBox height={10} />
                 <TemplateText size={14} color={BLACK}>
-                    {creator ? 'Collaborate with other creators' : 'Based on your recent searches'}
+                    {creator
+                        ? t('brands.admin.carousels.featuredCreators.subtitleCreator')
+                        : t('brands.admin.carousels.featuredCreators.subtitleBrand')}
                 </TemplateText>
             </View>
 
@@ -108,7 +113,14 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
             />
         </View>
     ) : (
-        <ActivityIndicator color={IOS_BLUE} size="large" />
+        <ProfileStatusCard
+            title={t('brands.admin.carousels.featuredCreators.empty.title')}
+            description={t('brands.admin.carousels.featuredCreators.empty.description')}
+            showProgress={false}
+            showIcon={false}
+            style={styles.statusCard}
+            slideInDelay={200}
+        />
     );
 };
 
@@ -139,6 +151,9 @@ const styles = StyleSheet.create({
         height: wp(80),
         borderRadius: wp(16),
         marginRight: wp(14),
+    },
+    statusCard: {
+        marginBottom: 10,
     },
 });
 export default FeaturedCreatorsCarousel;

@@ -13,11 +13,13 @@ import Error from '../../components/Error';
 import HeaderIconButton from '../../components/header/HeaderButton';
 import TemplateBox from '../../components/TemplateBox';
 import ResizedImage from '../../components/ResizedImage';
+import useTranslation from '../../hooks/useTranslation';
 
 const lockImage = require('../../../assets/images/onboarding/lock.jpg');
 
 const ResetPasswordScreen = ({ navigation, route }) => {
     const isUpdate = route.params?.isUpdate;
+    const { t } = useTranslation();
     const [email, setEmail] = useState();
 
     const [error, setError] = useState(null);
@@ -28,17 +30,17 @@ const ResetPasswordScreen = ({ navigation, route }) => {
         try {
             setLoading(true);
             if (!email) {
-                setError('Please enter your email address');
+                setError(t('auth.resetPassword.errors.emptyEmail'));
                 setLoading(false);
                 return;
             }
             await auth().sendPasswordResetEmail(email);
             Alert.alert(
-                isUpdate ? 'Password Update' : 'Password Reset',
-                'A password reset link has been sent to your email address',
+                isUpdate ? t('auth.resetPassword.alertUpdateTitle') : t('auth.resetPassword.alertResetTitle'),
+                t('auth.resetPassword.successMessage'),
                 [
                     {
-                        text: 'OK',
+                        text: t('auth.resetPassword.okButton'),
                         onPress: () => {
                             if (isUpdate) {
                                 navigation.goBack();
@@ -51,10 +53,10 @@ const ResetPasswordScreen = ({ navigation, route }) => {
             );
         } catch (err) {
             if (err.code === 'au-email') {
-                setError('That email address is invalid!');
+                setError(t('auth.resetPassword.errors.invalidEmail'));
             }
             if (err.code === 'auth/user-not-found') {
-                setError('That user does not exist!');
+                setError(t('auth.resetPassword.errors.userNotFound'));
             }
         }
         setLoading(false);
@@ -91,14 +93,14 @@ const ResetPasswordScreen = ({ navigation, route }) => {
 
             <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={16}>
                 <TemplateText size={18} bold caps color={BLACK} style={styles.title}>
-                    {isUpdate ? 'Update your Password!' : 'Reset your Password!'}
+                    {isUpdate ? t('auth.resetPassword.updateTitle') : t('auth.resetPassword.resetTitle')}
                 </TemplateText>
                 <TemplateText size={16} color={BLACK_SECONDARY} medium>
-                    Enter your email to continue
+                    {t('auth.resetPassword.instruction')}
                 </TemplateText>
             </TemplateBox>
             <TemplateTextInput
-                placeholder="Email"
+                placeholder={t('auth.resetPassword.emailPlaceholder')}
                 style={styles.input}
                 value={email}
                 onChangeText={text => setEmail(text)}
@@ -110,7 +112,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
             </Error>
             <View style={styles.buttonContainer}>
                 <Button
-                    title="Reset Password"
+                    title={t('auth.resetPassword.resetButton')}
                     onPress={handleResetPassword}
                     style={styles.button}
                     loading={loading}
@@ -120,7 +122,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                 />
                 {!isUpdate && (
                     <TemplateText size={16} center style={styles.signupLink} medium>
-                        New to the UGC creator app?{' '}
+                        {t('auth.resetPassword.newToApp')}{' '}
                         <TemplateText
                             color={ONBOARDING_BLUE}
                             underLine
@@ -128,7 +130,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                             medium
                             onPress={() => navigation.navigate(ONBOARDING)}
                         >
-                            Sign Up
+                            {t('auth.resetPassword.signUp')}
                         </TemplateText>
                     </TemplateText>
                 )}

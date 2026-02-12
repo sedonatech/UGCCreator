@@ -3,6 +3,7 @@ import React, { useLayoutEffect, useMemo } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { getFirestore, doc, updateDoc } from '@react-native-firebase/firestore';
+import useTranslation from '../../../hooks/useTranslation';
 import { BLACK, BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
@@ -31,6 +32,7 @@ import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 const PROJECTS_COLLECTION = 'projects';
 
 const ProjectDetailsScreen = ({ route, navigation }) => {
+    const { t } = useTranslation();
     const projectId = route?.params?.projectId;
 
     const { testers } = useFeatureFlags();
@@ -77,11 +79,11 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         }
         enrollToProject(profile?.id, selectedProject);
         Alert.alert(
-            'Success',
-            'You have successfully enrolled to this project',
+            t('explore.projectDetails.alerts.enrollSuccess.title'),
+            t('explore.projectDetails.alerts.enrollSuccess.message'),
             [
                 {
-                    text: 'OK',
+                    text: t('explore.projectDetails.alerts.enrollSuccess.ok'),
                     onPress: () => navigation.goBack(),
                 },
             ],
@@ -90,9 +92,9 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
     };
 
     const buttonCta = useMemo(() => {
-        if (enrolled) return 'View Project Status';
-        return 'Enroll Now';
-    }, [enrolled]);
+        if (enrolled) return t('explore.projectDetails.buttons.viewStatus');
+        return t('explore.projectDetails.buttons.enrollNow');
+    }, [enrolled, t]);
 
     const formatDate = date =>
         new Date(date?.seconds * 1000).toLocaleString('en-US', {
@@ -139,7 +141,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         left={SCREEN_HEIGHT / 2.4 - 46}
                     >
                         <TemplateText bold size={12} color={WHITE}>
-                            Enrolled
+                            {t('explore.projectDetails.enrolledBadge')}
                         </TemplateText>
                     </TemplateBox>
                 )}
@@ -149,7 +151,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.description && (
                     <>
                         <TemplateText style={styles.title} bold size={18} color={BLACK}>
-                            Description
+                            {t('explore.projectDetails.sections.description')}
                         </TemplateText>
                         <TemplateText color={BLACK} size={14} lineHeight={20}>
                             {selectedProject?.description}
@@ -159,7 +161,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.startDate && !!selectedProject?.endDate && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Timeline
+                            {t('explore.projectDetails.sections.timeline')}
                         </TemplateText>
                         <TemplateBox>
                             <TemplateText size={14} color={BLACK} numberOfLines={2}>
@@ -168,20 +170,20 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         </TemplateBox>
                     </>
                 )}
-                <TemplateText style={styles.title} semiBold size={20} color={BLACK}>
-                    Budget
+                <TemplateText style={styles.title} boldr size={20} color={BLACK}>
+                    {t('explore.projectDetails.sections.priceRange')}
                 </TemplateText>
                 <DescriptionRange
-                    icon="Currency"
-                    maxSubtitle="Maximum"
+                    icon="wallet-outline"
+                    maxSubtitle={t('explore.projectDetails.sections.maxBudget')}
                     maxTitle={`${selectedProject?.priceRange?.max || '--'} ${selectedProject?.currency?.symbol || '$'}`}
-                    minSubtitle="Minimum"
+                    minSubtitle={t('explore.projectDetails.sections.minBudget')}
                     minTitle={`${selectedProject?.priceRange?.min || '--'} ${selectedProject?.currency?.symbol || '$'}`}
                 />
                 {!!selectedProject?.deliveryFormat && selectedProject?.deliveryFormat?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Content Delivery Format
+                            {t('explore.projectDetails.sections.deliveryFormat')}
                         </TemplateText>
                         {selectedProject?.deliveryFormat?.map((format, index) => (
                             <DescriptionRow
@@ -194,7 +196,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.duration && selectedProject?.duration?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Project Duration
+                            {t('explore.projectDetails.sections.duration')}
                         </TemplateText>
                         {selectedProject?.duration?.map(duration => (
                             <DescriptionRow
@@ -207,7 +209,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.categories && selectedProject?.categories?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Categories
+                            {t('explore.projectDetails.sections.categories')}
                         </TemplateText>
                         {selectedProject?.categories?.map(category => {
                             if (!projectFilters?.find(({ value }) => value === category)?.name) return null;
@@ -223,7 +225,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.countries && selectedProject?.countries?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Location
+                            {t('explore.projectDetails.sections.location')}
                         </TemplateText>
                         {selectedProject?.countries?.map(country => (
                             <DescriptionRow
@@ -236,7 +238,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.gender && selectedProject?.gender?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Genders
+                            {t('explore.projectDetails.sections.genders')}
                         </TemplateText>
                         {selectedProject?.gender?.map(gender => (
                             <DescriptionRow
@@ -249,7 +251,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.languages && selectedProject?.languages?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Content Languages
+                            {t('explore.projectDetails.sections.languages')}
                         </TemplateText>
                         {selectedProject?.languages?.map(language => (
                             <DescriptionRow
@@ -262,7 +264,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.ageRange && selectedProject?.ageRange?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Age Ranges
+                            {t('explore.projectDetails.sections.ageRanges')}
                         </TemplateText>
                         {selectedProject?.ageRange?.map(range => (
                             <DescriptionRow
@@ -275,7 +277,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 {!!selectedProject?.projectType && selectedProject?.projectType?.length > 0 && (
                     <>
                         <TemplateText style={styles.title} bold size={20} color={BLACK}>
-                            Project Type
+                            {t('explore.projectDetails.sections.projectType')}
                         </TemplateText>
                         {selectedProject?.projectType?.map(type => (
                             <DescriptionRow

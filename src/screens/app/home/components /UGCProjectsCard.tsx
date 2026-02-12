@@ -18,6 +18,7 @@ import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
+import useTranslation from '../../../../hooks/useTranslation';
 
 interface Props {
     image?: string | number | any;
@@ -49,54 +50,57 @@ const UGCProjectsCard: FC<Props> = ({
     isShowcase,
     width = CARD_WIDTH,
     height = IMAGE_HEIGHT,
-}) => (
-    <TemplateTouchable
-        style={[styles.container, { width: width }, style]}
-        onPress={onPress}
-        activeOpacity={0.8}
-        disabled={!onPress}
-    >
-        <TemplateBox style={styles.imageWrapper}>
-            {!!image && <Image style={[styles.image, { height: height }]} source={image} />}
-        </TemplateBox>
+}) => {
+    const { t } = useTranslation() as { t: (key: string) => string };
+    return (
+        <TemplateTouchable
+            style={[styles.container, { width: width }, style]}
+            onPress={onPress}
+            activeOpacity={0.8}
+            disabled={!onPress}
+        >
+            <TemplateBox style={styles.imageWrapper}>
+                {!!image && <Image style={[styles.image, { height: height }]} source={image} />}
+            </TemplateBox>
 
-        <TemplateBox style={styles.content}>
-            <TemplateText color={BLACK} medium size={16} style={styles.title} numberOfLines={2}>
-                {title}
-            </TemplateText>
-            {!!shortDescription && (
-                <TemplateText color={BLACK_80} size={14} style={styles.subtitle} numberOfLines={2}>
-                    {shortDescription}
+            <TemplateBox style={styles.content}>
+                <TemplateText color={BLACK} medium size={16} style={styles.title} numberOfLines={2}>
+                    {title}
                 </TemplateText>
-            )}
+                {!!shortDescription && (
+                    <TemplateText color={BLACK_80} size={14} style={styles.subtitle} numberOfLines={2}>
+                        {shortDescription}
+                    </TemplateText>
+                )}
 
-            {!!projectType && (
-                <TemplateBox row alignItems="center" style={styles.metaRow}>
-                    <TemplateIcon name="pricetag" color={BLACK_60} size={12} style={styles.icon} />
-                    <TemplateText color={BLACK_80} size={12} semiBold>
-                        {projectType}
-                    </TemplateText>
-                </TemplateBox>
-            )}
-            {!!duration && (
-                <TemplateBox row alignItems="center" style={styles.metaRow}>
-                    <TemplateIcon name="time" color={BLACK_60} size={12} style={styles.icon} />
-                    <TemplateText color={BLACK_80} size={12} semiBold>
-                        {duration}
-                    </TemplateText>
-                </TemplateBox>
-            )}
+                {!!projectType && (
+                    <TemplateBox row alignItems="center" style={styles.metaRow}>
+                        <TemplateIcon name="pricetag" color={BLACK_60} size={12} style={styles.icon} />
+                        <TemplateText color={BLACK_80} size={12} semiBold>
+                            {projectType}
+                        </TemplateText>
+                    </TemplateBox>
+                )}
+                {!!duration && (
+                    <TemplateBox row alignItems="center" style={styles.metaRow}>
+                        <TemplateIcon name="time" color={BLACK_60} size={12} style={styles.icon} />
+                        <TemplateText color={BLACK_80} size={12} semiBold>
+                            {duration}
+                        </TemplateText>
+                    </TemplateBox>
+                )}
 
-            <TemplateBox style={styles.actionRow}>
-                <TemplateBox style={styles.button}>
-                    <TemplateText color={WHITE} size={14} semiBold>
-                        View Project
-                    </TemplateText>
+                <TemplateBox style={styles.actionRow}>
+                    <TemplateBox style={styles.button}>
+                        <TemplateText color={WHITE} size={14} semiBold>
+                            {t('explore.projectDetails.buttons.viewProject')}
+                        </TemplateText>
+                    </TemplateBox>
                 </TemplateBox>
             </TemplateBox>
-        </TemplateBox>
-    </TemplateTouchable>
-);
+        </TemplateTouchable>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {

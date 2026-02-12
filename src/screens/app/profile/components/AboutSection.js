@@ -8,9 +8,11 @@ import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
 import useWebview from '../../../../hooks/webview/useWebview';
 import { UPDATE_PORTFOLIO } from '../../../../navigation/ScreenNames';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const AboutSection = ({ about, shortDescription, portfolioLink }) => {
     const navigation = useNavigation();
+    const { t } = useTranslation();
 
     const { openLink } = useWebview();
     const handleOnPress = () => {
@@ -22,7 +24,9 @@ const AboutSection = ({ about, shortDescription, portfolioLink }) => {
     };
     return (
         <TemplateBox mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN * 2} slideIn slideInDelay={200} slideInDirection="left">
-            <TemplateText bold color={BLACK} size={16}>About Me</TemplateText>
+            <TemplateText bold color={BLACK} size={16}>
+                {t('profile.portfolio.aboutMe')}
+            </TemplateText>
             <TemplateText color={BLACK} size={14} lineHeight={16}>
                 {'\n'}
                 {shortDescription}
@@ -32,16 +36,14 @@ const AboutSection = ({ about, shortDescription, portfolioLink }) => {
                 {about}
             </TemplateText>
             <TemplateBox height={10} />
-            { portfolioLink && (
+            {portfolioLink && (
                 <TemplateText color={BLACK} size={14} lineHeight={16} onPress={handleOnPress}>
-                    Check out my portfolio at:
-                    {' '}
+                    {t('profile.portfolio.portfolioLinkLabel')}{' '}
                     <TemplateText color={IOS_BLUE} size={14} lineHeight={16} onPress={handleOnPress}>
                         {portfolioLink}
                     </TemplateText>
                 </TemplateText>
             )}
-
         </TemplateBox>
     );
 };

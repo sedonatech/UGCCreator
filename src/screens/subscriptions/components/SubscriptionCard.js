@@ -67,10 +67,6 @@ const SubscriptionCard = ({
                         </TemplateText>
                     </TemplateBox>
                 )}
-
-                <TemplateText size={12} color={DARK_METAL} caps semiBold>
-                    {freeTrial?.copy}
-                </TemplateText>
             </TemplateBox>
         </TemplateBox>
     );

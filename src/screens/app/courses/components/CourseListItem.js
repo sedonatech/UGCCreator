@@ -6,6 +6,7 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import CourseAvatarStack from './CourseAvatarStack';
+import useTranslation from '../../../../hooks/useTranslation';
 import {
     ZINC_900,
     ZINC_500,
@@ -23,6 +24,7 @@ import {
 } from '../../../../theme/Colors';
 
 const CourseListItem = ({ course, progress, onPress, formatUnlockDate }) => {
+    const { t } = useTranslation();
     const totalDays = course?.totalDays || course?.days?.length || 0;
     const completedDays = progress?.completedDays?.length || 0;
     const completionRatio = totalDays ? Math.round((completedDays / totalDays) * 100) : 0;
@@ -30,7 +32,11 @@ const CourseListItem = ({ course, progress, onPress, formatUnlockDate }) => {
     const isComingSoon = course?.releaseAt && course.releaseAt > new Date();
     const isLocked = isComingSoon;
 
-    const statusLabel = isComingSoon ? 'Coming Soon' : isLocked ? 'Premium' : 'In Progress';
+    const statusLabel = isComingSoon
+        ? t('courses.courseCard.status.comingSoon')
+        : isLocked
+        ? t('courses.courseCard.status.premium')
+        : t('courses.courseCard.status.inProgress');
     const statusPillStyle = isLocked ? styles.comingSoonPill : styles.statusPill;
     const iconStyle = isLocked ? styles.iconMutedWrap : styles.iconWrap;
     const cardStyle = isLocked ? styles.comingSoonCard : styles.courseCard;
@@ -81,12 +87,14 @@ const CourseListItem = ({ course, progress, onPress, formatUnlockDate }) => {
                     <TemplateBox row alignItems="center">
                         <CourseAvatarStack />
                         <TemplateText size={14} color={styles.textMuted.color} ml={8}>
-                            enrolled
+                            {t('courses.courseCard.enrolled')}
                         </TemplateText>
                     </TemplateBox>
                     <TemplateBox row alignItems="center">
                         <TemplateText size={14} medium color={isLocked ? ZINC_500 : INDIGO_700} mr={6}>
-                            {isComingSoon ? `Unlocks ${unlockLabel}` : `Day ${currentDay} of ${totalDays}`}
+                            {isComingSoon
+                                ? t('courses.courseCard.unlocksOn', { date: unlockLabel })
+                                : t('courses.courseCard.dayOfTotal', { current: currentDay, total: totalDays })}
                         </TemplateText>
                         <TemplateIcon name="chevron-forward" size={16} color={GRAY_400} />
                     </TemplateBox>

@@ -10,9 +10,11 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../../theme/Layout';
 import Avatar from '../../../../components/Avatar';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import useImageStorage from '../../../../hooks/Portfolio/useImageStorage';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const PortfolioHeader = ({ userName, location, isUpdate, image, creatorId }) => {
     const { onAddImage } = useImageStorage();
+    const { t } = useTranslation();
     return (
         <TemplateBox>
             <TemplateBox
@@ -81,7 +83,7 @@ const PortfolioHeader = ({ userName, location, isUpdate, image, creatorId }) => 
             ) : (
                 <TemplateBox mt={135} alignItems="center" mb={6} selfCenter>
                     <TemplateText bold size={18} color={BLACK}>
-                        Update Your Portfolio
+                        {t('profile.portfolio.updateTitle')}
                     </TemplateText>
                 </TemplateBox>
             )}

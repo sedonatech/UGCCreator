@@ -19,8 +19,10 @@ import UpdateBrandsWorkedWith from './components/UpdateBrandsWorkedWith';
 import UpdateWorkExamples from './components/UpdateWorkExamples';
 import UpdateRates from './components/UpdateRates';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
+import useTranslation from '../../../hooks/useTranslation';
 
 const UpdatePortfolioScreen = ({ navigation }) => {
+    const { t } = useTranslation();
     const [countryPickerVisible, setCountryPickerVisible] = useState(false);
 
     const { auth } = useAuthContext();
@@ -53,7 +55,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
             ),
             headerRight: () => (
                 <HeaderIconButton
-                    title="Save changes"
+                    title={t('profile.updatePortfolio.saveButton')}
                     onPress={handleUpdate}
                     backDropColor={GREY_SECONDARY}
                     mr={WRAPPER_MARGIN}
@@ -69,10 +71,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 <TemplateBox height={WRAPPER_MARGIN} />
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        User Name
+                        {t('profile.updatePortfolio.fields.userName.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="User Name"
+                        placeholder={t('profile.updatePortfolio.fields.userName.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.userName}
@@ -83,10 +85,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Email
+                        {t('profile.updatePortfolio.fields.email.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Email"
+                        placeholder={t('profile.updatePortfolio.fields.email.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.email}
@@ -98,10 +100,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Phone Number
+                        {t('profile.updatePortfolio.fields.phoneNumber.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Phone Number"
+                        placeholder={t('profile.updatePortfolio.fields.phoneNumber.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.contact?.phoneNumber}
@@ -118,10 +120,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Short Description
+                        {t('profile.updatePortfolio.fields.shortDescription.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Short Description"
+                        placeholder={t('profile.updatePortfolio.fields.shortDescription.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.shortDescription}
@@ -134,10 +136,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Description
+                        {t('profile.updatePortfolio.fields.description.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Description"
+                        placeholder={t('profile.updatePortfolio.fields.description.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.description}
@@ -150,10 +152,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Portfolio Link
+                        {t('profile.updatePortfolio.fields.portfolioLink.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Portfolio Link"
+                        placeholder={t('profile.updatePortfolio.fields.portfolioLink.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.portfolioLink}
@@ -164,10 +166,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Instagram
+                        {t('profile.updatePortfolio.fields.instagram.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Instagram Link"
+                        placeholder={t('profile.updatePortfolio.fields.instagram.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.instagram}
@@ -185,10 +187,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Facebook
+                        {t('profile.updatePortfolio.fields.facebook.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Facebook Link"
+                        placeholder={t('profile.updatePortfolio.fields.facebook.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.facebook}
@@ -206,10 +208,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Twitter
+                        {t('profile.updatePortfolio.fields.twitter.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="Twitter Link"
+                        placeholder={t('profile.updatePortfolio.fields.twitter.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.twitter}
@@ -227,10 +229,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        LinkedIn
+                        {t('profile.updatePortfolio.fields.linkedin.label')}
                     </TemplateText>
                     <TemplateTextInput
-                        placeholder="LinkedIn Link"
+                        placeholder={t('profile.updatePortfolio.fields.linkedin.placeholder')}
                         placeholderTextColor={BLACK_40}
                         style={styles.input}
                         value={profileData?.socialMedia?.linkedin}
@@ -247,7 +249,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 </TemplateBox>
                 <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                     <TemplateText size={16} bold>
-                        Location
+                        {t('profile.updatePortfolio.fields.location.label')}
                     </TemplateText>
                     <TemplateBox
                         row
@@ -263,7 +265,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                         onPress={() => setCountryPickerVisible(true)}
                     >
                         <TemplateText color={BLACK_40} size={16}>
-                            {profileData?.location?.country || 'Country'}
+                            {profileData?.location?.country || t('profile.updatePortfolio.fields.location.placeholder')}
                         </TemplateText>
                         <TemplateBox flex />
                         <CountryPicker
@@ -293,7 +295,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 {/* <UpdateWorkExamples /> */}
                 <UpdateRates />
             </Wrapper>
-            {loading && <LoadingOverlay message="Updating your portfolio...." />}
+            {loading && <LoadingOverlay message={t('profile.updatePortfolio.updatingMessage')} />}
         </>
     );
 };

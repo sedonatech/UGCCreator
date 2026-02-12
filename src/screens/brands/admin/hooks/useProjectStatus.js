@@ -1,17 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import useMailCompose from '../../../../hooks/documents/useMailCompose';
 import useNotifications from '../../../../hooks/notifications/useNotifications';
 
-const useProjectStatus = (
-    application,
-    creatorID,
-    currentProject,
-    creatorEmail,
-    creatorFCMToken,
-) => {
+const useProjectStatus = (application, creatorID, currentProject, creatorEmail, creatorFCMToken) => {
+    const { t } = useTranslation();
     const [currentStatusIndex, setCurrentStatusIndex] = useState();
 
     const { sendNotification } = useNotifications();
@@ -29,17 +25,13 @@ const useProjectStatus = (
     useEffect(() => {
         if (mailEvent === 'sent') {
             Alert.alert(
-                'Proposal Sent',
-                'Please wait for the creator to approve your proposal',
+                t('projects.status.alerts.proposalSent.title'),
+                t('projects.status.alerts.proposalSent.message'),
                 [
                     {
-                        text: 'OK',
+                        text: t('common.buttons.ok'),
                         onPress: async () => {
-                            await updateProjectStatus(
-                                creatorID,
-                                currentProject,
-                                currentStatusIndex,
-                            );
+                            await updateProjectStatus(creatorID, currentProject, currentStatusIndex);
                             await sendNotification(
                                 creatorFCMToken,
                                 'Project Status Updated',
@@ -59,11 +51,11 @@ const useProjectStatus = (
             );
         } else if (mailEvent === 'failed' || mailEvent === 'cancelled') {
             Alert.alert(
-                'Proposal Not Sent',
-                'Please try again',
+                t('projects.status.alerts.proposalNotSent.title'),
+                t('projects.status.alerts.proposalNotSent.message'),
                 [
                     {
-                        text: 'OK',
+                        text: t('common.buttons.ok'),
                         onPress: () => setMailEvent(''),
                         style: 'cancel',
                     },
@@ -76,27 +68,26 @@ const useProjectStatus = (
         setCurrentStatusIndex(statusIndex);
         if (status.value === 'brand_approved_enrollment') {
             Alert.alert(
-                "You'll be prompted to attach your contract",
-                'Please attach your contract to continue',
+                t('projects.status.alerts.attachContract.title'),
+                t('projects.status.alerts.attachContract.message'),
                 [
                     {
-                        text: 'OK',
+                        text: t('common.buttons.ok'),
                         onPress: () => composeEmailWithAttachment(creatorEmail),
                         style: 'cancel',
                     },
                 ],
                 { cancelable: false },
-
             );
             return;
         }
         if (status.value === 'brand_proposal_submitted') {
             Alert.alert(
-                'Update Required by Creator',
-                'Please wait for the creator to update the status',
+                t('projects.status.alerts.updateRequired.title'),
+                t('projects.status.alerts.updateRequired.message'),
                 [
                     {
-                        text: 'OK',
+                        text: t('common.buttons.ok'),
                         onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel',
                     },
@@ -108,22 +99,24 @@ const useProjectStatus = (
 
         if (status.status === 'active' && !!creatorID && currentProject) {
             Alert.alert(
-                'Update Status',
-                `Are you sure you want to update the status to ${overviewStatus?.[statusIndex + 1]?.name}?`,
+                t('projects.status.alerts.updateStatus.title'),
+                t('projects.status.alerts.updateStatus.message', { status: overviewStatus?.[statusIndex + 1]?.name }),
                 [
                     {
-                        text: 'Cancel',
+                        text: t('common.actions.cancel'),
                         onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel',
                     },
                     {
-                        text: 'OK',
+                        text: t('common.buttons.ok'),
                         onPress: async () => {
                             await updateProjectStatus(creatorID, currentProject, statusIndex);
                             await sendNotification(
                                 creatorFCMToken,
                                 'Project Status Updated',
-                                `The status of your project has been updated to ${overviewStatus?.[statusIndex + 1]?.name}`,
+                                `The status of your project has been updated to ${
+                                    overviewStatus?.[statusIndex + 1]?.name
+                                }`,
                                 {
                                     type: 'project_status',
                                     projectID: currentProject?.id,
@@ -142,38 +135,39 @@ const useProjectStatus = (
         setCurrentStatusIndex(statusIndex);
         if (status.value === 'brand_contract_received') {
             Alert.alert(
-                "You'll be prompted to attach your signed contract",
-                'Please attach your signed contract to continue',
+                t('projects.status.alerts.attachSignedContract.title'),
+                t('projects.status.alerts.attachSignedContract.message'),
                 [
                     {
-                        text: 'OK',
+                        text: t('common.buttons.ok'),
                         onPress: () => composeEmailWithAttachment(creatorEmail),
                         style: 'cancel',
                     },
                 ],
                 { cancelable: false },
-
             );
             return;
         }
         if (!!creatorID && currentProject) {
             Alert.alert(
-                'Update Status',
-                `Are you sure you want to update the status to ${overviewStatus?.[statusIndex + 1]?.name}?`,
+                t('projects.status.alerts.updateStatus.title'),
+                t('projects.status.alerts.updateStatus.message', { status: overviewStatus?.[statusIndex + 1]?.name }),
                 [
                     {
-                        text: 'Cancel',
+                        text: t('common.actions.cancel'),
                         onPress: () => console.log('Cancel Pressed'),
                         style: 'cancel',
                     },
                     {
-                        text: 'OK',
+                        text: t('common.buttons.ok'),
                         onPress: async () => {
                             await updateProjectStatus(creatorID, currentProject, statusIndex);
                             await sendNotification(
                                 creatorFCMToken,
                                 'Project Status Updated',
-                                `The status of your project has been updated to ${overviewStatus?.[statusIndex + 1]?.name}`,
+                                `The status of your project has been updated to ${
+                                    overviewStatus?.[statusIndex + 1]?.name
+                                }`,
                                 {
                                     type: 'project_status',
                                     projectID: currentProject?.id,

@@ -19,6 +19,7 @@ import useProfile from '../../hooks/user/useProfile';
 import ResizedImage from '../../components/ResizedImage';
 import TemplateBox from '../../components/TemplateBox';
 import useAppleAuth from '../../hooks/auth/useAppleAuth';
+import useTranslation from '../../hooks/useTranslation';
 
 const loginImage = require('../../../assets/images/onboarding/login.jpg');
 
@@ -37,6 +38,8 @@ const LoginScreen = ({ navigation }) => {
 
     const { onAppleButtonPress, loading: appleLoading, error: appleError } = useAppleAuth();
 
+    const { t } = useTranslation();
+
     const handleLogin = async () => {
         setLoading(true);
         try {
@@ -53,17 +56,17 @@ const LoginScreen = ({ navigation }) => {
             await updateProfile(data, profile?.id);
         } catch (err) {
             if (err.code === 'auth/email-already-in-use') {
-                setError('That email address is already in use!');
+                setError(t('auth.errors.emailInUse'));
             }
 
             if (err.code === 'auth/invalid-email') {
-                setError('That email address is invalid!');
+                setError(t('auth.errors.invalidEmail'));
             }
             if (err.code === 'auth/wrong-password') {
-                setError('That password is invalid!');
+                setError(t('auth.errors.invalidPassword'));
             }
             if (err.code === 'auth/user-not-found') {
-                setError('That user does not exist!');
+                setError(t('auth.errors.userNotFound'));
             }
         }
         setLoading(false);
@@ -93,11 +96,11 @@ const LoginScreen = ({ navigation }) => {
 
             <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={20}>
                 <TemplateText size={22} semiBold>
-                    Welcome back!
+                    {t('auth.login.title')}
                 </TemplateText>
             </TemplateBox>
             <TemplateTextInput
-                placeholder="Email"
+                placeholder={t('auth.login.emailPlaceholder')}
                 style={styles.input}
                 value={email}
                 onChangeText={text => setEmail(text)}
@@ -107,7 +110,7 @@ const LoginScreen = ({ navigation }) => {
             />
             <View style={styles.passwordContainer}>
                 <TemplateTextInput
-                    placeholder="Password"
+                    placeholder={t('auth.login.passwordPlaceholder')}
                     style={styles.input}
                     value={password}
                     onChangeText={text => setPassword(text)}
@@ -135,7 +138,7 @@ const LoginScreen = ({ navigation }) => {
             </Error>
             <View style={styles.buttonContainer}>
                 <Button
-                    title="Login"
+                    title={t('auth.login.loginButton')}
                     onPress={handleLogin}
                     style={styles.button}
                     loading={loading}
@@ -153,7 +156,7 @@ const LoginScreen = ({ navigation }) => {
                             style={styles.appleButton}
                             onPress={() => {
                                 if (!loading && !appleLoading) {
-                                    onAppleButtonPress().then(() => console.log('Apple sign-in complete!'));
+                                    onAppleButtonPress().then(() => console.log(t('auth.login.appleSignInSuccess')));
                                 }
                             }}
                         />
@@ -161,7 +164,7 @@ const LoginScreen = ({ navigation }) => {
                 )}
 
                 <TemplateText size={16} center style={styles.signupLink} medium>
-                    Forgot you password?{' '}
+                    {t('auth.login.forgotPassword')}{' '}
                     <TemplateText
                         color={ONBOARDING_BLUE}
                         underLine
@@ -169,12 +172,12 @@ const LoginScreen = ({ navigation }) => {
                         medium
                         onPress={() => navigation.navigate(FORGOT_PASSWORD)}
                     >
-                        Reset Password
+                        {t('auth.login.resetPassword')}
                     </TemplateText>
                 </TemplateText>
 
                 <TemplateText size={16} center style={styles.signupLink} medium>
-                    New to the UGC creator app?{' '}
+                    {t('auth.login.newToApp')}{' '}
                     <TemplateText
                         color={ONBOARDING_BLUE}
                         underLine
@@ -182,7 +185,7 @@ const LoginScreen = ({ navigation }) => {
                         medium
                         onPress={() => navigation.navigate(ONBOARDING)}
                     >
-                        Sign Up
+                        {t('auth.login.signUp')}
                     </TemplateText>
                 </TemplateText>
             </View>

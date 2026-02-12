@@ -12,6 +12,7 @@ import TemplateTextInput from '../TemplateTextInput';
 import { SHADOW } from '../../theme/Shadow';
 import Button from '../Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useTranslation from '../../hooks/useTranslation';
 
 interface Props {
     onClose?: () => void;
@@ -27,6 +28,7 @@ const DeleteUserModal: FC<Props> = ({ onClose = () => {}, visible = false }) => 
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const { t } = useTranslation();
 
     const onModalClose = (): void => {
         onClose();
@@ -51,7 +53,7 @@ const DeleteUserModal: FC<Props> = ({ onClose = () => {}, visible = false }) => 
             const email: string | null = user.email;
             if (!email) {
                 setLoading(false);
-                Alert.alert('Unable to verify email for re-authentication.');
+                Alert.alert(t('modals.deleteUser.alerts.noEmail'));
                 return;
             }
 
@@ -64,20 +66,20 @@ const DeleteUserModal: FC<Props> = ({ onClose = () => {}, visible = false }) => 
                 })
                 .then(() => {
                     setLoading(false);
-                    Alert.alert('User deleted successfully.');
+                    Alert.alert(t('modals.deleteUser.alerts.success'));
                     logOut();
                 })
                 .catch((error: AuthError) => {
                     setLoading(false);
                     if (error.code === 'auth/wrong-password') {
-                        Alert.alert('The password is incorrect.');
+                        Alert.alert(t('modals.deleteUser.alerts.wrongPassword'));
                     } else {
-                        Alert.alert('Error during re-authentication or deletion:', error.message);
+                        Alert.alert(t('modals.deleteUser.alerts.error'), error.message);
                     }
                 });
         } else {
             setLoading(false);
-            Alert.alert('No user is currently signed in.');
+            Alert.alert(t('modals.deleteUser.alerts.noUser'));
         }
     };
 
@@ -97,16 +99,15 @@ const DeleteUserModal: FC<Props> = ({ onClose = () => {}, visible = false }) => 
                 >
                     <TemplateBox mb={16}>
                         <TemplateText semiBold center>
-                            Please note by taking this action you are permanently deleting your account and all data
-                            associated.
+                            {t('modals.deleteUser.warning')}
                         </TemplateText>
                     </TemplateBox>
                     <TemplateText size={hp(14)} mt={20} center>
-                        {'Should you wish to proceed, please enter your password'}
+                        {t('modals.deleteUser.instruction')}
                     </TemplateText>
                     <TemplateBox width="100%" mt={hp(20)}>
                         <TemplateTextInput
-                            placeholder="Password"
+                            placeholder={t('modals.deleteUser.passwordPlaceholder')}
                             style={[styles.input, SHADOW('default', WHITE)]}
                             value={password}
                             onChangeText={(text: string) => setPassword(text)}
@@ -125,14 +126,14 @@ const DeleteUserModal: FC<Props> = ({ onClose = () => {}, visible = false }) => 
 
                     <TemplateBox mt={hp(25)} row onPress={() => console.log('press')}>
                         <Button
-                            title="confirm"
+                            title={t('modals.deleteUser.confirmButton')}
                             onPress={reauthenticateAndDeleteUser}
                             style={{ width: wp(150), borderRadius: hp(12), backgroundColor: ERROR_RED, height: hp(45) }}
                             loading={loading}
                         />
                         <TemplateBox height={'100%'} width={wp(10)} />
                         <Button
-                            title="Cancel"
+                            title={t('modals.deleteUser.cancelButton')}
                             onPress={onModalClose}
                             style={{ width: wp(150), borderRadius: hp(12), height: hp(45) }}
                             loading={false}

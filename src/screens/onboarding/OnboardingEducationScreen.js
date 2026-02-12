@@ -12,9 +12,11 @@ import OnboardingCarousel from '../../components/carousels/OnboardingCarousel';
 import { ONBOARDING } from '../../navigation/ScreenNames';
 import TemplateIcon from '../../components/TemplateIcon';
 import { hp, wp } from '../../Utils/getResponsiveSize';
+import useTranslation from '../../hooks/useTranslation';
 
 const OnboardingEducationScreen = ({ navigation }) => {
     const { onboardingEducation } = useFeatureFlags();
+    const { t } = useTranslation();
 
     const onboardingContent = onboardingEducation?.content || [];
 
@@ -99,13 +101,13 @@ const OnboardingEducationScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate(ONBOARDING)}
                 >
                     <TemplateText size={16} semiBold caps>
-                        Skip
+                        {t('onboarding.education.skip')}
                     </TemplateText>
                 </TemplateBox>
 
                 <TemplateBox backgroundColor={BLACK} ph={46} pv={18} borderRadius={26} row center onPress={handleNext}>
                     <TemplateText color={WHITE} size={16} semiBold caps mr={19}>
-                        Next
+                        {t('onboarding.education.next')}
                     </TemplateText>
                     <TemplateIcon name="arrow-forward" color={WHITE} size={20} />
                 </TemplateBox>

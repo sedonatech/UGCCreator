@@ -4,31 +4,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import {
-    getFirestore,
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    getDocs,
-} from '@react-native-firebase/firestore';
-import {
-    SCREEN_WIDTH,
-    WRAPPED_SCREEN_WIDTH,
-    WRAPPER_MARGIN,
-} from '../../../../theme/Layout';
-import {
-    SHADOW,
-} from '../../../../theme/Shadow';
+import { getFirestore, collection, query, where, orderBy, limit, getDocs } from '@react-native-firebase/firestore';
+import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { SHADOW } from '../../../../theme/Shadow';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
-import {
-    DARK_GREY,
-    GREY,
-    IOS_BLUE,
-    WHITE,
-} from '../../../../theme/Colors';
+import { DARK_GREY, GREY, IOS_BLUE, WHITE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { EVENT_DETAILS_SCREEN, EVENTS_SCREEN } from '../../../../navigation/ScreenNames';
@@ -37,8 +18,10 @@ import { hp, wp } from '../../../../Utils/getResponsiveSize';
 import ResizedImage from '../../../../components/ResizedImage';
 import { months } from '../../../../consts/months';
 import TemplateIcon from '../../../../components/TemplateIcon';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const EventsCarousel = ({ style }) => {
+    const { t } = useTranslation();
     const navigation = useNavigation();
     const [events, setEvents] = useState([]);
     const today = useMemo(() => new Date(), []);
@@ -54,7 +37,7 @@ const EventsCarousel = ({ style }) => {
     const fetchEvents = async () => {
         try {
             const querySnapshot = await getDocs(eventsRef);
-            const fetchedEvents = querySnapshot?.docs?.map((docSnap) => ({ id: docSnap?.id, ...docSnap?.data() }));
+            const fetchedEvents = querySnapshot?.docs?.map(docSnap => ({ id: docSnap?.id, ...docSnap?.data() }));
             setEvents(fetchedEvents);
         } catch (e) {
             console.log(e);
@@ -65,15 +48,17 @@ const EventsCarousel = ({ style }) => {
         if (!events?.length) {
             return [];
         }
-        return events?.map((event) => ({
-            id: event?.id,
-            name: event?.title,
-            description: event?.description,
-            image: event?.image,
-            country: event?.country,
-            city: event?.city,
-            startDate: event?.startDate,
-        }))?.sort((a, b) => a?.startDate?.seconds - b?.startDate?.seconds);
+        return events
+            ?.map(event => ({
+                id: event?.id,
+                name: event?.title,
+                description: event?.description,
+                image: event?.image,
+                country: event?.country,
+                city: event?.city,
+                startDate: event?.startDate,
+            }))
+            ?.sort((a, b) => a?.startDate?.seconds - b?.startDate?.seconds);
     }, [events]);
 
     useEffect(() => {
@@ -86,12 +71,12 @@ const EventsCarousel = ({ style }) => {
         <TemplateBox style={style} mt={hp(30)} mb={hp(25)} height={145}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN}>
                 <TemplateText size={18} bold>
-                    Brand Events
+                    {t('home.eventsCarousel.title')}
                 </TemplateText>
                 <TemplateBox flex />
                 <TemplateTouchable onPress={() => navigation.navigate(EVENTS_SCREEN)}>
                     <TemplateText startCase size={14} underLine color={IOS_BLUE}>
-                        See All
+                        {t('home.eventsCarousel.seeAll')}
                     </TemplateText>
                 </TemplateTouchable>
             </TemplateBox>
@@ -115,20 +100,28 @@ const EventsCarousel = ({ style }) => {
                             pv={6}
                             borderRadius={10}
                         >
-                            <TemplateBox zIndex={99} absolute width="100%" height="200%" onPress={() => navigation.navigate(EVENT_DETAILS_SCREEN, { id: item?.id })} />
                             <TemplateBox
-                                backgroundColor={GREY}
-                                width={80}
-                                mr={12}
-                                borderRadius={8}
-                                overflow="hidden"
-                            >
-                                <ResizedImage
-                                    source={{ uri: item?.image }}
-                                    style={{ height: '100%', width: '100%' }}
-                                />
+                                zIndex={99}
+                                absolute
+                                width="100%"
+                                height="200%"
+                                onPress={() => navigation.navigate(EVENT_DETAILS_SCREEN, { id: item?.id })}
+                            />
+                            <TemplateBox backgroundColor={GREY} width={80} mr={12} borderRadius={8} overflow="hidden">
+                                <ResizedImage source={{ uri: item?.image }} style={{ height: '100%', width: '100%' }} />
 
-                                <TemplateBox zIndex={1} absolute top={8} left={8} backgroundColor={WHITE} width={25} height={25} justifyContent="center" alignItems="center" borderRadius={4}>
+                                <TemplateBox
+                                    zIndex={1}
+                                    absolute
+                                    top={8}
+                                    left={8}
+                                    backgroundColor={WHITE}
+                                    width={25}
+                                    height={25}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    borderRadius={4}
+                                >
                                     <TemplateText size={hp(10)} semiBold center>
                                         {day}
                                     </TemplateText>
@@ -151,7 +144,13 @@ const EventsCarousel = ({ style }) => {
                                             {item?.name}
                                         </TemplateText>
                                     </TemplateBox>
-                                    <TemplateText size={hp(12)} lineHeight={13} light color={DARK_GREY} numberOfLines={!item?.country ? 3 : 2}>
+                                    <TemplateText
+                                        size={hp(12)}
+                                        lineHeight={13}
+                                        light
+                                        color={DARK_GREY}
+                                        numberOfLines={!item?.country ? 3 : 2}
+                                    >
                                         {item?.description}
                                     </TemplateText>
                                 </TemplateBox>
@@ -175,7 +174,7 @@ const EventsCarousel = ({ style }) => {
                 }}
                 contentContainerStyle={styles.cardCarousel}
                 snapToInterval={WRAPPED_SCREEN_WIDTH - 60}
-                keyExtractor={(item) => item?.id}
+                keyExtractor={item => item?.id}
             />
         </TemplateBox>
     );
@@ -185,7 +184,6 @@ const styles = StyleSheet.create({
     cardCarousel: {
         paddingHorizontal: WRAPPER_MARGIN,
     },
-
 });
 
 EventsCarousel.propTypes = {

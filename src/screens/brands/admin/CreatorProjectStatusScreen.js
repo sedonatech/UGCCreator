@@ -1,16 +1,9 @@
-import React, {
-    useEffect,
-    useLayoutEffect, useMemo, useState,
-} from 'react';
-import {
-    ScrollView, StyleSheet,
-} from 'react-native';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
-import {
-    BLACK, GREEN, WHITE, WHITE_40,
-} from '../../../theme/Colors';
+import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
@@ -20,6 +13,7 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import { HOME } from '../../../navigation/ScreenNames';
 import CreatorProjectStatusOverviewTab from './components/CreatorProjectStatusOverviewTab';
 import ProjectNotificationsTab from '../../app/offers/components/ProjectNotificationsTab';
+import useTranslation from '../../../hooks/useTranslation';
 
 const PROJECTS_COLLECTION = 'projects';
 
@@ -36,6 +30,7 @@ const CURRENT_PROJECT_TABS = [
 
 const CreatorProjectStatusScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
+    const { t } = useTranslation();
 
     const creatorID = route?.params?.creatorID;
 
@@ -54,14 +49,17 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
         const unsubscribe = db
             .collection(PROJECTS_COLLECTION)
             .doc(projectId)
-            .onSnapshot((doc) => {
-                if (doc.exists) {
-                    const result = { id: doc.id, ...doc.data() };
-                    setCurrentProject(result);
-                }
-            }, (error) => {
-                console.log('[PROJECT LISTENER ERROR]', error);
-            });
+            .onSnapshot(
+                doc => {
+                    if (doc.exists) {
+                        const result = { id: doc.id, ...doc.data() };
+                        setCurrentProject(result);
+                    }
+                },
+                error => {
+                    console.log('[PROJECT LISTENER ERROR]', error);
+                },
+            );
 
         return () => {
             unsubscribe(); // clean up listener on unmount
@@ -95,7 +93,7 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    if (!currentProject) return <LoadingOverlay message="Loading project details..." />;
+    if (!currentProject) return <LoadingOverlay message={t('brands.admin.loadingMessages.loadingProject')} />;
 
     return (
         <ScrollView
@@ -104,18 +102,10 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
             scrollEventThrottle={1}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox
-                height={SCREEN_HEIGHT / 2.4}
-            >
+            <TemplateBox height={SCREEN_HEIGHT / 2.4}>
                 {/* @ts-ignore */}
-                <BackgroundImage
-                    source={{ uri: currentProject?.image }}
-                    width={SCREEN_WIDTH}
-                    style={styles.image}
-                />
-                <TemplateBox
-                    pl={WRAPPER_MARGIN}
-                >
+                <BackgroundImage source={{ uri: currentProject?.image }} width={SCREEN_WIDTH} style={styles.image} />
+                <TemplateBox pl={WRAPPER_MARGIN}>
                     <TemplateBox
                         borderRadius={10}
                         ph={WRAPPER_MARGIN}
@@ -126,32 +116,18 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                         mt={SCREEN_HEIGHT / 2.4 - 56}
                     >
                         <TemplateText bold size={10} color={WHITE}>
-                            {
-                                application?.status?.find(({ status }) => status === 'active')?.name
-                            }
+                            {application?.status?.find(({ status }) => status === 'active')?.name}
                         </TemplateText>
                     </TemplateBox>
                 </TemplateBox>
-
             </TemplateBox>
 
-            <TemplateBox
-                mt={WRAPPER_MARGIN}
-                ph={WRAPPER_MARGIN}
-            >
-                <TemplateText
-                    bold
-                    size={18}
-                    color={BLACK}
-                >
+            <TemplateBox mt={WRAPPER_MARGIN} ph={WRAPPER_MARGIN}>
+                <TemplateText bold size={18} color={BLACK}>
                     {currentProject?.title}
                 </TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText
-                    size={14}
-                    color={BLACK}
-                    numberOfLines={2}
-                >
+                <TemplateText size={14} color={BLACK} numberOfLines={2}>
                     {currentProject?.shortDescription}
                 </TemplateText>
             </TemplateBox>
@@ -163,22 +139,16 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                     flex={false}
                 /> */}
             </TemplateBox>
-            {
-                selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
-                    <CreatorProjectStatusOverviewTab
-                        application={application}
-                        creatorID={creatorID}
-                        currentProject={currentProject}
-                        creatorEmail={creatorEmail}
-                        creatorFCMToken={creatorFCMToken}
-                    />
-                )
-            }
-            {
-                selectedTab?.value === CURRENT_PROJECT_TABS[1].value && (
-                    <ProjectNotificationsTab />
-                )
-            }
+            {selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
+                <CreatorProjectStatusOverviewTab
+                    application={application}
+                    creatorID={creatorID}
+                    currentProject={currentProject}
+                    creatorEmail={creatorEmail}
+                    creatorFCMToken={creatorFCMToken}
+                />
+            )}
+            {selectedTab?.value === CURRENT_PROJECT_TABS[1].value && <ProjectNotificationsTab />}
         </ScrollView>
     );
 };
@@ -194,6 +164,5 @@ const styles = StyleSheet.create({
     image: {
         zIndex: -1,
     },
-
 });
 export default CreatorProjectStatusScreen;

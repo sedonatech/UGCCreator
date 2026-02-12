@@ -13,9 +13,11 @@ import TemplateText from '../../components/TemplateText';
 // import useChatMessages, { MESSAGES } from '../../hooks/chats/useChatMessages';
 import calculateLastLoginTime from '../../Utils/calculateLastLoginTime';
 import { CHATS, CREATORS_PROFILES_STACK, PROFILE } from '../../navigation/ScreenNames';
+import useTranslation from '../../hooks/useTranslation';
 
 const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) => {
     // const { unreadMessagesCount } = useChatMessages(id);
+    const { t } = useTranslation();
     const db = getFirestore();
     const usersRef = collection(db, 'users');
 
@@ -107,7 +109,7 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
                         }}
                     >
                         <TemplateText size={12} medium color={WHITE}>
-                            Support
+                            {t('chats.rooms.support')}
                         </TemplateText>
                     </View>
                 )}
@@ -144,7 +146,7 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
                     <TemplateBox height={wp(5)} />
                     {receiver?.lastLoginTime && !isSupport && (
                         <TemplateText size={wp(10)} color={GREY}>
-                            {`Last active ${receiver?.lastLoginTime}`}
+                            {t('chats.rooms.lastActive', { time: receiver?.lastLoginTime })}
                         </TemplateText>
                     )}
                 </TemplateBox>

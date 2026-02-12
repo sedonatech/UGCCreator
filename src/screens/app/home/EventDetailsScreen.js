@@ -2,33 +2,16 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
-import {
-    ActivityIndicator,
-    ScrollView,
-    StyleSheet,
-} from 'react-native';
-import {
-    getFirestore, collection, doc, getDoc, setDoc,
-} from '@react-native-firebase/firestore';
-import {
-    HEADER_MARGIN,
-    WRAPPED_SCREEN_WIDTH,
-    WRAPPER_MARGIN,
-} from '../../../theme/Layout';
-import {
-    ACCENT,
-    DARK_GREY,
-    ERROR_RED,
-    GREY,
-    IOS_BLUE,
-
-    WHITE,
-} from '../../../theme/Colors';
+import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import { getFirestore, collection, doc, getDoc, setDoc } from '@react-native-firebase/firestore';
+import { HEADER_MARGIN, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { ACCENT, DARK_GREY, ERROR_RED, GREY, IOS_BLUE, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import { SHADOW } from '../../../theme/Shadow';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import { EVENTS_COLLECTION } from '../../../hooks/brands/useEvents';
+import useTranslation from '../../../hooks/useTranslation';
 import { hp, wp } from '../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../components/TemplateIcon';
 import ResizedImage from '../../../components/ResizedImage';
@@ -38,6 +21,7 @@ import { USERS_COLLECTION } from '../../../hooks/user/useProfile';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 
 const EventDetailsScreen = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const [event, setEvent] = useState(null);
     const { auth } = useAuthContext();
     const { profile, update } = auth;
@@ -95,9 +79,13 @@ const EventDetailsScreen = ({ navigation, route }) => {
         try {
             const db = getFirestore();
             const userRef = doc(collection(db, USERS_COLLECTION), id);
-            await setDoc(userRef, {
-                ...data,
-            }, { merge: true });
+            await setDoc(
+                userRef,
+                {
+                    ...data,
+                },
+                { merge: true },
+            );
             console.log('profile updated successfully');
         } catch (e) {
             console.log('error updating profile:', e);
@@ -107,10 +95,19 @@ const EventDetailsScreen = ({ navigation, route }) => {
     const onFavPress = async () => {
         if (!profile) return;
         if (favEvents?.length > 0 && favEvents.includes(event?.eventId)) {
-            await updateProfile({ ...profile, favoriteEvents: favEvents.filter((id) => id !== event?.eventId) }, profile?.id);
-            update('favoriteEvents', favEvents?.filter((id) => id !== event?.eventId));
+            await updateProfile(
+                { ...profile, favoriteEvents: favEvents.filter(id => id !== event?.eventId) },
+                profile?.id,
+            );
+            update(
+                'favoriteEvents',
+                favEvents?.filter(id => id !== event?.eventId),
+            );
         } else {
-            await updateProfile({ ...profile, favoriteEvents: [...new Set([...(profile?.favoriteEvents || []), event?.eventId])] }, profile?.id);
+            await updateProfile(
+                { ...profile, favoriteEvents: [...new Set([...(profile?.favoriteEvents || []), event?.eventId])] },
+                profile?.id,
+            );
             update('favoriteEvents', [...new Set([...(profile?.favoriteEvents || []), event?.eventId])]);
         }
     };
@@ -154,10 +151,7 @@ const EventDetailsScreen = ({ navigation, route }) => {
                                 color={isFavEvent ? ERROR_RED : GREY}
                             />
                         </TemplateBox>
-                        <ResizedImage
-                            source={{ uri: event?.image }}
-                            style={{ height: '100%', width: '100%' }}
-                        />
+                        <ResizedImage source={{ uri: event?.image }} style={{ height: '100%', width: '100%' }} />
                     </TemplateBox>
 
                     <TemplateBox mt={hp(16)}>
@@ -206,14 +200,16 @@ const EventDetailsScreen = ({ navigation, route }) => {
                         <TemplateText size={hp(14)}>{event?.description}</TemplateText>
                     </TemplateBox>
                     <TemplateBox mt={hp(16)}>
-                        <TemplateText size={hp(12)} color={DARK_GREY}>{`End date: ${formattedEndDate}`}</TemplateText>
+                        <TemplateText size={hp(12)} color={DARK_GREY}>{`${t(
+                            'home.eventDetails.endDateLabel',
+                        )} ${formattedEndDate}`}</TemplateText>
                     </TemplateBox>
                 </TemplateBox>
             </ScrollView>
 
             {!!event?.link && (
                 <Button
-                    title="View More"
+                    title={t('home.eventDetails.viewMoreButton')}
                     onPress={() => navigation.navigate(WEBVIEW, { url: event?.link })}
                     style={styles.button}
                     loading={false}
@@ -224,7 +220,6 @@ const EventDetailsScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-
     button: {
         marginVertical: 40,
         alignSelf: 'center',

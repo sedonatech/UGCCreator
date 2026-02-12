@@ -1,11 +1,10 @@
 /* eslint-disable max-len */
 import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import TemplateText from '../../../components/TemplateText';
-import {
-    HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { HEADER_MARGIN, IS_ANDROID, SCREEN_HEIGHT, WRAPPER_MARGIN } from '../../../theme/Layout';
 import { TRANSPARENT, WHITE } from '../../../theme/Colors';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
@@ -18,6 +17,7 @@ import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const RecommendedBrandsScreen = ({ route }) => {
+    const { t } = useTranslation();
     const selectedCategory = route?.params?.selectedCategory;
 
     const { recommendedBrands } = useFeatureFlags();
@@ -28,7 +28,7 @@ const RecommendedBrandsScreen = ({ route }) => {
         if (!recommendedBrandsCategories) {
             return [];
         }
-        return recommendedBrandsCategories?.map((brand) => ({
+        return recommendedBrandsCategories?.map(brand => ({
             name: brand?.name,
             value: brand?.value,
         }));
@@ -38,9 +38,7 @@ const RecommendedBrandsScreen = ({ route }) => {
 
     useEffect(() => {
         if (selectedCategory) {
-            const selectedCategoryIndex = brandCategories?.findIndex(
-                (category) => category?.value === selectedCategory,
-            );
+            const selectedCategoryIndex = brandCategories?.findIndex(category => category?.value === selectedCategory);
             setSelectedTab(brandCategories?.[selectedCategoryIndex]);
         }
     }, [selectedCategory, brandCategories]);
@@ -49,8 +47,7 @@ const RecommendedBrandsScreen = ({ route }) => {
         if (!selectedTab) {
             return [];
         }
-        return recommendedBrandsCategories?.find((brand) => brand?.value
-            === selectedTab?.value)?.data;
+        return recommendedBrandsCategories?.find(brand => brand?.value === selectedTab?.value)?.data;
     }, [selectedTab, recommendedBrandsCategories]);
 
     const [selectedBrand, setSelectedBrand] = useState();
@@ -75,38 +72,24 @@ const RecommendedBrandsScreen = ({ route }) => {
             contentContainerStyle={styles.contentContainer}
             showsVerticalScrollIndicator={false}
         >
-            <TemplateBox
-                mt={HEADER_MARGIN}
-                mh={WRAPPER_MARGIN}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <TemplateText
-                    size={18}
-                    bold
-                    startCase
-                    center
-                >
+            <TemplateBox mt={HEADER_MARGIN} mh={WRAPPER_MARGIN} alignItems="center" justifyContent="center">
+                <TemplateText size={18} bold startCase center>
                     Weekly Brands based on your Portfolio and powered by AI
                 </TemplateText>
                 <TemplateBox height={10} />
-                <TemplateText
-                    size={16}
-                    center
-                >
-                    These brands may not be on our platform yet, but you can request them to be added and collaborate with them.
+                <TemplateText size={16} center>
+                    These brands may not be on our platform yet, but you can request them to be added and collaborate
+                    with them.
                 </TemplateText>
             </TemplateBox>
             <TemplateBox selfCenter flex>
-                <ToggleCarousel
-                    data={brandCategories}
-                    selectedTab={selectedTab}
-                    onChange={setSelectedTab}
-                />
+                <ToggleCarousel data={brandCategories} selectedTab={selectedTab} onChange={setSelectedTab} />
             </TemplateBox>
             <TemplateBox mh={WRAPPER_MARGIN} flex>
-                {
-                    brandData.sort(() => 0.5 - Math.random()).slice(0, 4)?.map((brand, index) => (
+                {brandData
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 4)
+                    ?.map((brand, index) => (
                         <ProfileStatusCard
                             key={brand?.id}
                             title={brand?.name}
@@ -122,8 +105,7 @@ const RecommendedBrandsScreen = ({ route }) => {
                                 }, 100);
                             }}
                         />
-                    ))
-                }
+                    ))}
             </TemplateBox>
             <RecommendedBrandModal
                 visible={modalVisible}
@@ -142,23 +124,22 @@ const RecommendedBrandsScreen = ({ route }) => {
                     setModalVisible(false);
                 }}
                 onSecondaryButtonPress={() => {
-                    Alert.alert('Reach Out to Brand',
-                        `Send an email to ${selectedBrand?.name} to invite them to collaborate with you on this platform. You'll be notified when they accept your request`, [
-                            {
-                                text: 'OK',
-                                onPress: () => {
-                                    sendEmailWithAttachment({
-                                        recipients: [selectedBrand?.email],
-                                        subject: warmReachOutEmail.subject,
-                                        body: warmReachOutEmail.body,
-                                    });
-                                    trackEvent('recommendation_message_sent', {
-                                        brand: selectedBrand?.name,
-                                    });
-                                    // setModalVisible(false);
-                                },
+                    Alert.alert(t('reachOut.title'), t('reachOut.message', { brandName: selectedBrand?.name }), [
+                        {
+                            text: t('common.buttons.ok'),
+                            onPress: () => {
+                                sendEmailWithAttachment({
+                                    recipients: [selectedBrand?.email],
+                                    subject: warmReachOutEmail.subject,
+                                    body: warmReachOutEmail.body,
+                                });
+                                trackEvent('recommendation_message_sent', {
+                                    brand: selectedBrand?.name,
+                                });
+                                // setModalVisible(false);
                             },
-                        ]);
+                        },
+                    ]);
                 }}
             />
         </ScrollView>

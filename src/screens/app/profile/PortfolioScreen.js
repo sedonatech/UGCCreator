@@ -19,10 +19,12 @@ import TemplateText from '../../../components/TemplateText';
 import { MEDIA_KIT, WEBVIEW } from '../../../navigation/ScreenNames';
 import useProfile from '../../../hooks/user/useProfile';
 import ContactSection from './components/ContactSection';
+import useTranslation from '../../../hooks/useTranslation';
 
 const USERS_COLLECTION = 'users';
 
 const PortfolioScreen = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const creatorId = route?.params?.creatorId;
     const [selectedCreator, setSelectedCreator] = useState({});
     const { saveMediaKitPdf } = useProfile();
@@ -116,11 +118,10 @@ const PortfolioScreen = ({ navigation, route }) => {
                         alignItems="center"
                     >
                         <TemplateText size={18} bold mb={16}>
-                            My Media Kit
+                            {t('profile.portfolio.mediaKitTitle')}
                         </TemplateText>
                         <TemplateText size={14} mb={14} center>
-                            Generate your professional media kit to showcase your work to potential brands, then upload
-                            it here. You can always update it later when needed.
+                            {t('profile.portfolio.mediaKitDescription')}
                         </TemplateText>
                         {!!profile?.mediaKit?.url && (
                             <TemplateBox
@@ -147,7 +148,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                         )}
 
                         <Button
-                            title="Generate Media Kit"
+                            title={t('profile.portfolio.generateButton')}
                             onPress={() =>
                                 navigation.navigate(WEBVIEW, { url: 'https://media-gen-free.emergent.host/' })
                             }
@@ -157,7 +158,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                             color={BLACK}
                         />
                         <Button
-                            title="Upload Media Kit"
+                            title={t('profile.portfolio.uploadButton')}
                             onPress={onPickAndUploadMediaKit}
                             height={42}
                             width={SCREEN_WIDTH - 60}
@@ -173,7 +174,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                 {creatorId && (
                     <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                         <Button
-                            title="Contact Creator"
+                            title={t('profile.portfolio.contactButton')}
                             onPress={async () => {
                                 try {
                                     await createChatRoom(

@@ -41,10 +41,10 @@ import ChallengeEntryCard from '../../../components/cards/ChallengeEntryCard';
 import ChallengeLeaderBoardModal from '../../../components/modals/ChallengeLeaderBoardModal';
 import openUrl from '../../../Utils/openUrl';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
+import useTranslation from '../../../hooks/useTranslation';
 const FEEDBACK_FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLSe0PYFCmCOoPDZFuQdQV63Swk3AAKolNQnOc3ZN9md4LM2ZJw/viewform?usp=publish-editor';
 
-const TOGGLE_TABS = ['Brief', 'Rules', 'Prizes', 'Entries'];
 type RouteParams = {
     params?: {
         challengeId?: string;
@@ -65,10 +65,17 @@ interface ChallengeDetailsScreenProps {
 }
 
 const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, navigation }) => {
+    const { t } = useTranslation();
     const { auth } = useAuthContext();
     const challengeId = route?.params?.challengeId;
     const profile = auth?.profile;
     const currentUserId = profile?.id;
+    const TOGGLE_TABS = [
+        t('challenges.tabs.brief'),
+        t('challenges.tabs.rules'),
+        t('challenges.tabs.prizes'),
+        t('challenges.tabs.entries'),
+    ];
     const [activeTab, setActiveTab] = useState(TOGGLE_TABS[0]);
     const [challenge, setChallenge] = useState<Challenge | null>(null);
     const [loading, setLoading] = useState(true);
@@ -232,13 +239,14 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         challenge?.challengeStartAt?.toDate(),
         challenge?.challengeEndAt?.toDate(),
         now,
+        t,
     );
     const isEnrollmentOpen = canEnrollNow(
         challenge?.enrollmentStartAt?.toDate(),
         challenge?.challengeEndAt?.toDate(),
         now,
     );
-    const endsInLabel = getEndsInLabel(challenge?.challengeEndAt?.toDate(), now);
+    const endsInLabel = getEndsInLabel(challenge?.challengeEndAt?.toDate(), now, t);
     const enrollmentStartDate = challenge?.enrollmentStartAt?.toDate();
     const challengeStartDate = challenge?.challengeStartAt?.toDate();
     const challengeStartMs = challengeStartDate?.getTime() ?? 0;
@@ -249,6 +257,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         challengeEndAt: challengeEndDate,
         now,
         isEnrolled,
+        t,
     });
     const isChallengeStarted = nowMs >= challengeStartMs;
 
@@ -263,7 +272,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                         row
                     >
                         <TemplateText size={13} medium color={BLACK} mr={6}>
-                            Feedback
+                            {t('challenges.feedbackButton')}
                         </TemplateText>
                         <DynamicIcon name="Comments" size={20} />
                     </TemplateBox>
@@ -279,8 +288,8 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                         onPress={() => {
                             if (!isChallengeStarted) {
                                 Alert.alert(
-                                    'Challenge Not Started',
-                                    'The challenge has not started yet. Leader Board will be available once the challenge starts.',
+                                    t('challenges.notStartedAlert.title'),
+                                    t('challenges.notStartedAlert.message'),
                                 );
                             } else {
                                 setIsLeaderBoardModalVisible(true);
@@ -290,7 +299,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                         pv={8}
                     >
                         <TemplateText color={BLACK_SECONDARY} size={14} mr={6}>
-                            Leader Board
+                            {t('challenges.leaderBoardButton')}
                         </TemplateText>
                         <DynamicIcon name={'ArrowRight'} color={BLACK_SECONDARY} size={18} />
                     </TemplateBox>
@@ -342,7 +351,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                 </TemplateBox>
                 <TemplateBox absolute bottom={30} left={20}>
                     <TemplateText bold size={22} mb={16} caps style={{ maxWidth: SCREEN_WIDTH - 140 }}>
-                        {challenge?.title || 'Challenge Title'}
+                        {challenge?.title || t('challenges.details.challengeTitle')}
                     </TemplateText>
                     <TemplateBox row>
                         <TemplateBox
@@ -400,11 +409,11 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                     <TemplateBox row alignItems="center" mb={6}>
                         <DynamicIcon name="Trophy" size={16} />
                         <TemplateText color={DARK_GREY} size={16} ml={6}>
-                            Price Pool
+                            {t('challenges.details.pricePool')}
                         </TemplateText>
                     </TemplateBox>
                     <TemplateText semiBold size={20}>
-                        Up to {challenge?.prizePoolUsd || 0}$
+                        {t('challenges.details.upTo')} {challenge?.prizePoolUsd || 0}$
                     </TemplateText>
                 </TemplateBox>
 
@@ -419,7 +428,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                     <TemplateBox row alignItems="center" mb={6}>
                         <DynamicIcon name="People" size={16} />
                         <TemplateText color={DARK_GREY} size={16} ml={6}>
-                            Participants
+                            {t('challenges.details.participants')}
                         </TemplateText>
                     </TemplateBox>
                     <TemplateText semiBold size={20}>
@@ -432,7 +441,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             {activeTab === TOGGLE_TABS[0] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={80}>
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
-                        {`About ${challenge?.brief?.productName}`}
+                        {t('challenges.details.about', { product: challenge?.brief?.productName })}
                     </TemplateText>
                     <TemplateText size={16} lineHeight={24} color={DARK_METAL} medium>
                         {challenge?.brief?.about}
@@ -454,7 +463,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                             }}
                         >
                             <TemplateText size={14} color={DARK_METAL} semiBold mr={8}>
-                                App Store
+                                {t('challenges.details.appStore')}
                             </TemplateText>
                             <DynamicIcon name={'Link'} size={14} />
                         </TemplateBox>
@@ -474,20 +483,20 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                             }}
                         >
                             <TemplateText size={14} color={DARK_METAL} semiBold mr={8}>
-                                Website
+                                {t('challenges.details.website')}
                             </TemplateText>
                             <DynamicIcon name={'Link'} size={14} />
                         </TemplateBox>
                     </TemplateBox>
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} mt={16}>
-                        The mission
+                        {t('challenges.details.theMission')}
                     </TemplateText>
                     <TemplateText size={16} lineHeight={24} color={DARK_METAL} medium>
                         {challenge?.brief?.mission}
                     </TemplateText>
 
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10} mt={20}>
-                        How to participate
+                        {t('challenges.details.howToParticipate')}
                     </TemplateText>
                     {challenge?.brief?.howToParticipate.map((point, index) => (
                         <TemplateBox key={index} mb={10}>
@@ -507,7 +516,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                         ‼️{challenge?.brief?.disqualificationRule}
                     </TemplateText>
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
-                        Rules of the challenge
+                        {t('challenges.details.rulesOfChallenge')}
                     </TemplateText>
                     {challenge?.rules.map((rule, index) => (
                         <TemplateText
@@ -535,23 +544,23 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             {activeTab === TOGGLE_TABS[2] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={100}>
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>
-                        Prizes & rewards
+                        {t('challenges.details.prizesAndRewards')}
                     </TemplateText>
                     <TemplateText size={16} lineHeight={24} color={METAL} mb={10}>
                         <TemplateText size={16} lineHeight={24} color={BLACK} mb={10} semiBold>
-                            * Grand Prize:
+                            {t('challenges.details.grandPrize')}
                         </TemplateText>{' '}
                         {challenge?.prizes.grandPrize}
                     </TemplateText>
                     <TemplateText size={16} lineHeight={24} color={METAL} mb={10}>
                         <TemplateText size={16} lineHeight={24} color={BLACK} mb={10} semiBold>
-                            * Runners Up:
+                            {t('challenges.details.runnersUp')}
                         </TemplateText>{' '}
                         {challenge?.prizes.runnersUp}
                     </TemplateText>
                     <TemplateText size={16} lineHeight={24} color={METAL} mb={10}>
                         <TemplateText size={16} lineHeight={24} color={BLACK} mb={10} semiBold>
-                            * All Participants:
+                            {t('challenges.details.allParticipants')}
                         </TemplateText>{' '}
                         {challenge?.prizes.allParticipants}
                     </TemplateText>
@@ -562,7 +571,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                     {!isChallengeStarted ? (
                         <TemplateBox mt={100} justifyContent="center" alignItems="center">
                             <TemplateText center size={16} color={BLACK_SECONDARY} mb={30}>
-                                Challenge has not started yet. You can add entries once it starts.
+                                {t('challenges.details.notStartedYet')}
                             </TemplateText>
                         </TemplateBox>
                     ) : (
@@ -570,7 +579,9 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                             <TemplateBox>
                                 <TemplateBox row alignItems="center" justifyContent="space-between" mb={10}>
                                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={8}>
-                                        {submissions?.length > 0 ? 'My Entries' : 'Submit Your Entries'}
+                                        {submissions?.length > 0
+                                            ? t('challenges.details.myEntries')
+                                            : t('challenges.details.submitYourEntries')}
                                     </TemplateText>
                                     {submissions?.length > 0 && (
                                         <TemplateBox
@@ -581,24 +592,24 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                                         >
                                             <DynamicIcon name="Add" size={20} color={BLACK} />
                                             <TemplateText size={14} semiBold>
-                                                Add Entry
+                                                {t('challenges.details.addEntry')}
                                             </TemplateText>
                                         </TemplateBox>
                                     )}
                                 </TemplateBox>
                                 <TemplateText size={14} color={METAL} mb={20}>
                                     {submissions?.length > 0
-                                        ? 'Here’s what you’ve added for this challenge. Edit these or add more anytime.'
-                                        : 'Show off your skills by submitting your best work for this challenge. You can add multiple entries to increase your chances of winning!'}
+                                        ? t('challenges.details.yourEntriesDescription')
+                                        : t('challenges.details.showOffDescription')}
                                 </TemplateText>
                             </TemplateBox>
                             {submissions?.length === 0 ? (
                                 <TemplateBox justifyContent="center" alignItems="center" mt={100}>
                                     <TemplateText size={16} color={BLACK_SECONDARY} mb={30}>
-                                        Start the challenge 💪🏼, drop your first piece
+                                        {t('challenges.details.startChallenge')}
                                     </TemplateText>
                                     <Button
-                                        title={'Submit  Entry'}
+                                        title={t('challenges.details.submitEntry')}
                                         height={50}
                                         width={SCREEN_WIDTH - 40}
                                         color={BLACK}

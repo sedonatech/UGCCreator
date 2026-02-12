@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-    StyleSheet, View, FlatList, Alert,
-} from 'react-native';
+import { StyleSheet, View, FlatList, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout';
@@ -15,6 +14,7 @@ import useMailCompose from '../../../hooks/documents/useMailCompose';
 import BrandsCatalogueCard from './BrandsCatalogueCard';
 
 const BrandsCatalogueScreen = ({ navigation }) => {
+    const { t } = useTranslation();
     const { brandsCatalogue } = useFeatureFlags();
 
     const [selectedBrand, setSelectedBrand] = useState();
@@ -46,36 +46,17 @@ const BrandsCatalogueScreen = ({ navigation }) => {
         />
     );
 
-    const keyExtractor = (item) => item?.['Brand Name'];
+    const keyExtractor = item => item?.['Brand Name'];
 
     return (
-        <View
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-        >
-            <TemplateBox
-                mt={HEADER_MARGIN}
-            >
-                <TemplateBox
-                    selfCenter
-                    alignItems="center"
-                    justifyContent="center"
-                    ph={WRAPPER_MARGIN}
-                >
-                    <TemplateText
-                        size={18}
-                        bold
-                        startCase
-                        center
-                    >
+        <View style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <TemplateBox mt={HEADER_MARGIN}>
+                <TemplateBox selfCenter alignItems="center" justifyContent="center" ph={WRAPPER_MARGIN}>
+                    <TemplateText size={18} bold startCase center>
                         {title}
                     </TemplateText>
                     <TemplateBox height={5} />
-                    <TemplateText
-                        size={14}
-                        startCase
-                        center
-                    >
+                    <TemplateText size={14} startCase center>
                         {subtitle}
                     </TemplateText>
                 </TemplateBox>
@@ -83,14 +64,14 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={brandsCatalogue?.brands?.slice(0, limit)}
-                    getItemLayout={(data, index) => (
-                        { length: 5, offset: 5 * index, index }
-                    )}
+                    getItemLayout={(data, index) => ({ length: 5, offset: 5 * index, index })}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
                     contentContainerStyle={styles.brandsListContentContainer}
                     onEndReachedThreshold={0}
-                    onEndReached={() => { setLimit((prevLimit) => prevLimit + 4); }}
+                    onEndReached={() => {
+                        setLimit(prevLimit => prevLimit + 4);
+                    }}
                 />
             </TemplateBox>
             <RecommendedBrandModal
@@ -103,10 +84,12 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                     setModalVisible(false);
                 }}
                 onSecondaryButtonPress={() => {
-                    Alert.alert('Reach Out to Brand',
-                        `Send an email to ${selectedBrand?.['Brand Name']} to invite them to collaborate with you on this platform. You'll be notified when they accept your request`, [
+                    Alert.alert(
+                        t('reachOut.title'),
+                        t('reachOut.message', { brandName: selectedBrand?.['Brand Name'] }),
+                        [
                             {
-                                text: 'OK',
+                                text: t('common.buttons.ok'),
                                 onPress: () => {
                                     sendEmailWithAttachment({
                                         recipients: [selectedBrand?.['Mail Address']],
@@ -118,7 +101,8 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                                     });
                                 },
                             },
-                        ]);
+                        ],
+                    );
                 }}
             />
         </View>
