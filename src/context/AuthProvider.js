@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import useAuthState from '../hooks/auth/useAuthState';
 import useProfile from '../hooks/user/useProfile';
 import config from '../../config';
+import { changeLanguage } from '../i18n';
 
 const AuthContext = createContext();
 
@@ -71,6 +72,11 @@ const AuthProvider = ({ children }) => {
                     const profileData = await getProfile(user?.uid);
                     if (profileData) {
                         setProfile(profileData);
+
+                        // Load user's language preference from profile
+                        if (profileData.appLanguage) {
+                            await changeLanguage(profileData.appLanguage);
+                        }
                     }
                 }
             } catch (e) {

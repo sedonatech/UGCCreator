@@ -13,7 +13,7 @@ import { useAuthContext } from '../context/AuthProvider';
 
 const LanguageSelector = ({ visible, onClose }) => {
     const { language, changeLanguage, t } = useTranslation();
-    const { profile, updateProfile } = useAuthContext();
+    const { profile, updateProfile, update } = useAuthContext();
     const [selectedLanguage, setSelectedLanguage] = useState(language);
     const [changing, setChanging] = useState(false);
 
@@ -37,6 +37,9 @@ const LanguageSelector = ({ visible, onClose }) => {
             // Update user profile with appLanguage
             if (profile?.id) {
                 await updateProfile({ appLanguage: selectedLanguage }, profile.id);
+
+                // Update local profile state to reflect the change
+                update('appLanguage', selectedLanguage);
             }
 
             onClose();
