@@ -121,10 +121,12 @@
             "title": "Markenkooperationen",
             "seeAll": "Alle ansehen",
             "subtitle": "Erkunden Sie unsere Markenkooperationen",
-            "description": "Entdecken Sie Markenkooperationen, Botschafter-Angebote und Partnerprogramme, die zu Ihrer Nische passen."
+            "description": "Entdecken Sie Markenkooperationen, Botschafter-Angebote und Partnerprogramme, die zu Ihrer Nische passen.",
+            "viewDetails": "Details anzeigen",
+            "performanceBased": "Leistungsbasiert"
         },
         "showcase": {
-            "title": "Featured Creator Showcase",
+            "title": "Ausgewählte Creator-Vitrine",
             "description": "Entdecken Sie, was Creator jetzt erstellen.\nAktualisieren Sie Ihre Beispielarbeiten im Portfolio, um vorgestellt zu werden"
         },
         "sampleDetails": {

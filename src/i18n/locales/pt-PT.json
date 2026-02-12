@@ -121,7 +121,9 @@
             "title": "Colaborações de marca",
             "seeAll": "Ver todos",
             "subtitle": "Explore as nossas colaborações de marca",
-            "description": "Descubra colaborações de marca, ofertas de embaixador e programas de afiliados adequados ao seu nicho."
+            "description": "Descubra colaborações de marca, ofertas de embaixador e programas de afiliados adequados ao seu nicho.",
+            "viewDetails": "Ver detalhes",
+            "performanceBased": "Baseado em desempenho"
         },
         "showcase": {
             "title": "Vitrine de criadores em destaque",
