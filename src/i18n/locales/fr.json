@@ -375,7 +375,7 @@
                 "myDescription": "Ajoutez des travaux avec chance d'être mis en avant.",
                 "creatorDescription": "Travaux vedette de ce créateur.",
                 "addButton": "+ Ajouter",
-                "maxItems": "Max 3 items"
+                "maxItems": "Max 10 items"
             },
             "contact": {
                 "title": "Contact",

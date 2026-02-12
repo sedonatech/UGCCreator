@@ -375,7 +375,7 @@
                 "myDescription": "Add sample works to your profile with a chance of being featured.",
                 "creatorDescription": "Featured sample works from this creator.",
                 "addButton": "+ Add Sample",
-                "maxItems": "Max 3 items"
+                "maxItems": "Max 10 items"
             },
             "contact": {
                 "title": "Contact Information",

@@ -374,7 +374,7 @@
                 "myDescription": "Adicione trabalhos ao perfil com chance de destaque.",
                 "creatorDescription": "Trabalhos em destaque deste criador.",
                 "addButton": "+ Adicionar",
-                "maxItems": "Máx 3 itens"
+                "maxItems": "Máx 10 itens"
             },
             "contact": {
                 "title": "Informações de contacto",

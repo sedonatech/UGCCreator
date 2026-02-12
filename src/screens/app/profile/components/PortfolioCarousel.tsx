@@ -47,7 +47,7 @@ export default function PortfolioCarousel({ creatorId }: { creatorId?: string })
         }, [uid]),
     );
 
-    const canAddMore = isOwner && items.length < 3;
+    const canAddMore = isOwner && items.length < 10;
 
     const titleText = isOwner
         ? t('profile.portfolio.sampleWork.myTitle')
@@ -64,7 +64,7 @@ export default function PortfolioCarousel({ creatorId }: { creatorId?: string })
                 <TemplateText size={18} bold mr={8}>
                     {titleText}
                 </TemplateText>
-                {isOwner && <Text style={{ color: '#9ca3af' }}>{items.length}/3</Text>}
+                {isOwner && <Text style={{ color: '#9ca3af' }}>{items.length}/10</Text>}
             </TemplateBox>
             <TemplateText size={13} color={BLACK} style={styles.subtitle}>
                 {subtitleText}
