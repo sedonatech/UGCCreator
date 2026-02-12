@@ -5,24 +5,18 @@ import TemplateText from '../../../../components/TemplateText';
 import { BLACK, GREY_SECONDARY } from '../../../../theme/Colors';
 import { WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import { wp } from '../../../../Utils/getResponsiveSize';
+import DynamicIcon, { DynamicIconName } from '../../../../components/icons/DynamicIcon';
 
 interface DescriptionRangeProps {
-    icon: string
-    maxTitle: string
-    maxSubtitle: string
-    minTitle: string
-    minSubtitle: string
-    style?: any
+    icon: DynamicIconName;
+    maxTitle: string;
+    maxSubtitle: string;
+    minTitle: string;
+    minSubtitle: string;
+    style?: any;
 }
 
-const DescriptionRange: FC<DescriptionRangeProps> = ({
-    icon,
-    maxTitle,
-    maxSubtitle,
-    minTitle,
-    minSubtitle,
-    style
-}) => (
+const DescriptionRange: FC<DescriptionRangeProps> = ({ icon, maxTitle, maxSubtitle, minTitle, minSubtitle, style }) => (
     <TemplateBox
         row
         pAll={WRAPPER_MARGIN}
@@ -43,17 +37,15 @@ const DescriptionRange: FC<DescriptionRangeProps> = ({
                 pAll={10}
                 mr={10}
             >
-                <TemplateIcon name={icon} color={BLACK} size={24} />
+                <DynamicIcon name={icon} color={BLACK} size={24} />
             </TemplateBox>
             <TemplateBox>
-                <TemplateText color={BLACK} size={10}>
+                <TemplateText color={BLACK} size={14}>
                     {maxSubtitle}
                 </TemplateText>
-                <TemplateBox height={10} />
-                <TemplateText color={BLACK} size={12} bold>
+                <TemplateText color={BLACK} size={14} semiBold>
                     {maxTitle}
                 </TemplateText>
-
             </TemplateBox>
         </TemplateBox>
 
@@ -66,17 +58,16 @@ const DescriptionRange: FC<DescriptionRangeProps> = ({
                 pAll={10}
                 mr={10}
             >
-                <TemplateIcon name={icon} color={BLACK} size={24} />
+                <DynamicIcon name={icon} color={BLACK} size={24} />
             </TemplateBox>
             <TemplateBox>
-                <TemplateText color={BLACK} size={10}>
+                <TemplateText color={BLACK} size={14}>
                     {minSubtitle}
                 </TemplateText>
-                <TemplateBox height={10} />
-                <TemplateText color={BLACK} size={12} bold>
+
+                <TemplateText color={BLACK} size={14} semiBold>
                     {minTitle}
                 </TemplateText>
-
             </TemplateBox>
         </TemplateBox>
     </TemplateBox>
