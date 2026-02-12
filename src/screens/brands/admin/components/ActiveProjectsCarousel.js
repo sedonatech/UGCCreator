@@ -9,26 +9,23 @@ import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CURRENT_PROJECTS_CAROUSEL } from '../../../../consts/content/Home';
 import { BLUE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
-import {
-    BRAND_OFFERS,
-} from '../../../../navigation/ScreenNames';
+import { BRAND_OFFERS } from '../../../../navigation/ScreenNames';
 import CurrentProjectCard from '../../../app/home/components /CurrentProjectCard';
+import useTranslation from '../../../../hooks/useTranslation';
 
 const ActiveProjectsCarousel = ({ style, projectsCarouselData }) => {
+    const { t } = useTranslation();
     const navigation = useNavigation();
 
     return (
         <View style={style}>
             <View style={styles.titleContainer}>
                 <TemplateText bold size={18}>
-                    Your Active Projects
-                    {' '}
+                    {t('brands.admin.carousels.activeProjects.title')}{' '}
                 </TemplateText>
-                <TemplateTouchable
-                    onPress={() => navigation.navigate(BRAND_OFFERS)}
-                >
+                <TemplateTouchable onPress={() => navigation.navigate(BRAND_OFFERS)}>
                     <TemplateText startCase size={14} underLine color={BLUE}>
-                        See All
+                        {t('brands.admin.carousels.activeProjects.seeAll')}
                     </TemplateText>
                 </TemplateTouchable>
             </View>

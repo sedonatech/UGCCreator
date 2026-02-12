@@ -3,11 +3,13 @@ import { Alert } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { useTranslation } from 'react-i18next';
 
 import { options, optionsLandscapeMode, randomFileName } from '../../Utils/ImageUpload';
 import { isIOS } from '../../Utils/Platform';
 
 const useFirebaseSetStorage = () => {
+    const { t } = useTranslation();
     const [progress, setProgress] = useState(0);
     const [picture, setPicture] = useState(false);
 
@@ -52,19 +54,33 @@ const useFirebaseSetStorage = () => {
             case RESULTS.GRANTED:
                 break;
             case RESULTS.BLOCKED:
-                Alert.alert(`${name} permission`, `You have ${status} ${name} permission`, [{ text: 'OK' }]);
+                Alert.alert(
+                    t('common.alerts.permissions.title', { name }),
+                    t('common.alerts.permissions.blocked', { status, name }),
+                    [{ text: t('common.buttons.ok') }],
+                );
                 break;
             case RESULTS.DENIED:
-                Alert.alert(`${name} permission`, `You have ${status} ${name} permission`, [{ text: 'OK' }]);
+                Alert.alert(
+                    t('common.alerts.permissions.title', { name }),
+                    t('common.alerts.permissions.denied', { status, name }),
+                    [{ text: t('common.buttons.ok') }],
+                );
                 break;
 
             case RESULTS.LIMITED:
-                Alert.alert(`${name} permission`, `Your device  ${name} is has ${status} capabilities`, [
-                    { text: 'OK' },
-                ]);
+                Alert.alert(
+                    t('common.alerts.permissions.title', { name }),
+                    t('common.alerts.permissions.limited', { status, name }),
+                    [{ text: t('common.buttons.ok') }],
+                );
                 break;
             case RESULTS.UNAVAILABLE:
-                Alert.alert(`${name} permission`, `Your device  ${name} is ${status}`, [{ text: 'OK' }]);
+                Alert.alert(
+                    t('common.alerts.permissions.title', { name }),
+                    t('common.alerts.permissions.unavailable', { status, name }),
+                    [{ text: t('common.buttons.ok') }],
+                );
                 break;
             default:
                 break;

@@ -72,7 +72,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
         <View style={style}>
             <View style={styles.titleContainer}>
                 <TemplateText bold size={18}>
-                    Your Active Creators{' '}
+                    {t('brands.admin.carousels.activeCreators.title')}{' '}
                 </TemplateText>
                 <TemplateTouchable
                     onPress={() =>
@@ -83,7 +83,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
                     }
                 >
                     <TemplateText startCase size={14} underLine color={BLUE}>
-                        See All
+                        {t('brands.admin.carousels.activeCreators.seeAll')}
                     </TemplateText>
                 </TemplateTouchable>
             </View>
@@ -119,8 +119,8 @@ const CurrentCreatorsCarousel = ({ style }) => {
         </View>
     ) : (
         <ProfileStatusCard
-            title="No Active Creators"
-            description="You don't have any active creators that you are working with at the moment"
+            title={t('brands.admin.carousels.activeCreators.empty.title')}
+            description={t('brands.admin.carousels.activeCreators.empty.description')}
             showProgress={false}
             showIcon={false}
             style={styles.statusCard}

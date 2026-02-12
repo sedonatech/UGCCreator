@@ -8,7 +8,6 @@ import { HEADER_MARGIN, IS_ANDROID, WRAPPER_MARGIN } from '../../../theme/Layout
 import useLogout from './useLogout';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import { PROFILE_INCOMPLETE_MESSAGE, PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import SettingsRow from './components/SettingsRow';
 import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -156,8 +155,8 @@ const SettingsScreen = ({ navigation }) => {
                 keyExtractor={item => item.title}
                 ListHeaderComponent={() => (
                     <ProfileStatusCard
-                        title={PROFILE_INCOMPLETE_TITLE}
-                        description={PROFILE_INCOMPLETE_MESSAGE}
+                        title={t('settings.profileIncompleteCard.title')}
+                        description={t('settings.profileIncompleteCard.description')}
                         progress={profileCompleteRatio}
                         style={styles.statusCard}
                         slideInDelay={100}

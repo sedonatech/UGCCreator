@@ -59,7 +59,7 @@ const MainNavigator = () => {
             }}
         >
             {isCreator && isSignedIn && hasSubscription && <Screen name={APP} component={AppStack} />}
-            {isSignedIn && !hasSubscription && <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />}
+            {isSignedIn && hasSubscription && <Screen name={SUBSCRIPTION_STACK} component={SubscriptionStack} />}
             {!isCreator && isSignedIn && <Screen name={BRANDS_STACK} component={BrandsStack} />}
             {!isSignedIn && <Screen name={AUTH} component={AuthStack} />}
         </Navigator>

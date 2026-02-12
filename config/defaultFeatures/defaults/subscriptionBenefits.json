@@ -1,27 +1,56 @@
 {
-  "benefits": [
-    {
-      "title": "Get Connected",
-      "description": "Get matched as a UGC content creator with brands based on your preferences.",
-      "icon": "vault"
-    },
-    {
-      "title": "Innovative",
-      "description": "Get  brand recommendations based on your profile preferences and powered by AI.",
-      "icon": "innovative"
-    },
-    {
-      "title": "AI UGC Tools",
-      "description": "Simplify your UGC content creation process with our AI tools designed for creators.",
-      "icon": "lightning"
-    },
-    {
-      "title": "Transparent and Efficient",
-      "description": "Manage your UGC content creation right in the app in a transparent and efficient way.",
-      "icon": "brush"
-    }
-  ],
-  "buttonCta": "Start My Free Trial",
-  "title": "Choose a plan that works suits you and get unlimited access",
-  "subtitle": "7 days free trial with free cancellation."
+    "benefits": [
+        {
+            "title": "Collab Feed",
+            "description": "Daily drop of brand collabs and ambassador deals you can apply to now.",
+            "icon": "lightning"
+        },
+        {
+            "title": "Ambassador & Affiliate Hub",
+            "description": "Verified ambassador, influencer, and affiliate programs with direct apply links.",
+            "icon": "vault"
+        },
+        {
+            "title": "Smart Matches",
+            "description": "Smart recommended collabs and ambassador offers that fit your niche and audience.",
+            "icon": "innovative"
+        }
+    ],
+    "brandBenefits": [
+        {
+            "title": "Get Connected",
+            "description": "Get matched as a brand with UGC content creators based on your preferences.",
+            "icon": "vault"
+        },
+        {
+            "title": "Innovative",
+            "description": "Get UGC creator recommendations based on your profile preferences.",
+            "icon": "innovative"
+        },
+        {
+            "title": "Transparent and Efficient",
+            "description": "Manage your UGC content creation right in the app in a transparent and efficient way.",
+            "icon": "brush"
+        }
+    ],
+    "buttonCta": "Start Full Access",
+    "title": "Get serious about paid UGC work",
+    "subtitle": "Find brand deals, ambassador and affiliate programs",
+    "reviews": [
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage.png?alt=media&token=6019525c-1c03-4b35-8a4f-93c059fae439",
+            "title": "Truly Amazing",
+            "subtitle": "I liked this app from the first sight - the UI is so intuitive and it has a ton of great features too."
+        },
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage-3.png?alt=media&token=3ff20ef9-aaa9-467f-9b7e-26516b6433fb",
+            "title": "I am happy",
+            "subtitle": "I wasn't sure if this app would suit me, but after trying it out for a few days, I can confirm it's awesome!"
+        },
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage-4.png?alt=media&token=05ae1cda-348c-4d6c-8148-adb2baa82615",
+            "title": "Loving this app!!",
+            "subtitle": "Such a nice app, has everything I would ever want plus a lot more for a low fee"
+        }
+    ]
 }

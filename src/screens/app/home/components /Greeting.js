@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { format } from 'date-fns';
 import startOfDay from 'date-fns/startOfDay';
 import PropTypes from 'prop-types';
+import { enUS, de, fr, es, ptBR, pt } from 'date-fns/locale';
 
 import TemplateText from '../../../../components/TemplateText';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
@@ -11,13 +12,26 @@ import Avatar from '../../../../components/Avatar';
 import useTranslation from '../../../../hooks/useTranslation';
 
 const Greeting = ({ userName, style, showAvatar }) => {
-    const { t } = useTranslation();
+    const { t, language } = useTranslation();
     const hour = new Date().getHours();
 
     const start = startOfDay(new Date());
     const today = useMemo(() => start, []);
 
-    const activeDay = useMemo(() => format(start, 'MMMM dd yyyy'), [today]);
+    // Get the appropriate date-fns locale based on the current language
+    const getDateLocale = () => {
+        const localeMap = {
+            en: enUS,
+            de: de,
+            fr: fr,
+            es: es,
+            'pt-BR': ptBR,
+            'pt-PT': pt,
+        };
+        return localeMap[language] || enUS;
+    };
+
+    const activeDay = useMemo(() => format(start, 'MMMM dd yyyy', { locale: getDateLocale() }), [today, language]);
 
     const getTimeGreeting = hour => {
         if (hour > 16) {

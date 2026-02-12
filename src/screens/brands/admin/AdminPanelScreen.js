@@ -15,7 +15,6 @@ import CurrentCreatorsCarousel from './components/CurrentCreatorsCarousel';
 import FeaturedCreatorsCarousel from './components/FeaturedCreatorsCarousel';
 import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
-import { BRAND_NO_CURRENT_PROJECT_MESSAGE, BRAND_NO_CURRENT_PROJECT_TITLE } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import useRefresh from '../../../hooks/creators/useRefresh';
 import TemplateBox from '../../../components/TemplateBox';
@@ -28,8 +27,10 @@ import BrandEventsCarousel from '../../app/home/components /BrandEventsCarousel'
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import useProfile from '../../../hooks/user/useProfile';
 import FeaturedShowcaseCarousel from '../../app/home/components /FeaturedSamplesCarousel';
+import useTranslation from '../../../hooks/useTranslation';
 
 const AdminPanelScreen = ({ navigation }) => {
+    const { t } = useTranslation();
     const { auth } = useAuthContext();
     const profile = auth?.profile;
     const { updateProfile } = useProfile();
@@ -54,7 +55,9 @@ const AdminPanelScreen = ({ navigation }) => {
             title: project?.title,
             brand: brandName,
             price: project?.price,
-            status: project?.applications?.length ? 'Enrolled Creators' : 'No Enrolled Creators',
+            status: project?.applications?.length
+                ? t('brands.admin.carousels.activeProjects.enrolledCreators')
+                : t('brands.admin.carousels.activeProjects.noEnrolledCreators'),
             notifications: project?.applications?.length || 0,
             documents: project?.applications?.[0]?.documents?.length || 0,
             daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
@@ -90,14 +93,14 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const options = [
         {
-            title: 'Add Project',
+            title: t('brands.admin.panel.addProject'),
             onPress: () => {
                 setShowOptions(false);
                 navigation.navigate(ADD_PROJECT, { setRefetchProjects });
             },
         },
         {
-            title: 'Add Event',
+            title: t('brands.admin.panel.addEvent'),
             onPress: () => {
                 setShowOptions(false);
                 navigation.navigate(ADD_EVENT);
@@ -146,7 +149,7 @@ const AdminPanelScreen = ({ navigation }) => {
                             selfCenter
                         >
                             <TemplateText size={13} onPress={handleRate}>
-                                Please take a moment to rate our app
+                                {t('brands.admin.panel.ratePrompt')}
                             </TemplateText>
                             <TemplateBox onPress={handleRate} ml={wp(60)} mt={-wp(8)}>
                                 <TemplateIcon name="close-outline" size={20} color={BLACK} />
@@ -161,8 +164,8 @@ const AdminPanelScreen = ({ navigation }) => {
                         <ActiveProjectsCarousel style={styles.carousel} projectsCarouselData={projectsCarouselData} />
                     ) : (
                         <ProfileStatusCard
-                            title={BRAND_NO_CURRENT_PROJECT_TITLE}
-                            description={BRAND_NO_CURRENT_PROJECT_MESSAGE}
+                            title={t('brands.admin.panel.noCurrentProject.title')}
+                            description={t('brands.admin.panel.noCurrentProject.message')}
                             showProgress={false}
                             showIcon={false}
                             style={styles.statusCard}

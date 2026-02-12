@@ -15,17 +15,20 @@ export default (expiryLength = 7, debug = true) => {
 
     const overrideSubscription = __DEV__ ? true : features?.subscription?.overrideSubscription;
 
-    const setHasSubscription = (value) => update('hasSubscription', value);
+    const setHasSubscription = value => update('hasSubscription', value);
 
     const updateAsync = async (hasLocalSubscription = false, expiryDate) => {
         try {
             const now = new Date();
             now.setDate(now.getDate() + expiryLength);
-            await AsyncStorage.setItem(storageKey, JSON.stringify({
-                hasSubscription: hasLocalSubscription,
-                expiryDate: expiryDate || now.toISOString(),
-            }));
-            if (debug)console.log('[subscriptions] - updateAsyncStore:', { hasLocalSubscription, expiryDate });
+            await AsyncStorage.setItem(
+                storageKey,
+                JSON.stringify({
+                    hasSubscription: hasLocalSubscription,
+                    expiryDate: expiryDate || now.toISOString(),
+                }),
+            );
+            if (debug) console.log('[subscriptions] - updateAsyncStore:', { hasLocalSubscription, expiryDate });
         } catch (e) {
             console.log('[subscriptions] ERROR: updateAsyncStorage:', e);
         }
@@ -65,7 +68,7 @@ export default (expiryLength = 7, debug = true) => {
                 // if there is a local subscription check, run through the saved data
                 if (localSubscriptionCheck) {
                     const localJsonCheck = JSON.parse(localSubscriptionCheck);
-                    if (debug)console.log('[subscriptions] - LOCALE SUBSCRIPTION', localJsonCheck);
+                    if (debug) console.log('[subscriptions] - LOCALE SUBSCRIPTION', localJsonCheck);
 
                     const localHasSubscription = localJsonCheck?.hasSubscription;
                     const localExpiry = localJsonCheck?.expiryDate;
@@ -80,7 +83,7 @@ export default (expiryLength = 7, debug = true) => {
                     }
                 } else {
                     // if no local subscription check, set to defaults.
-                    if (debug)console.log('[subscriptions] - LOCAL SUBSCRIPTION DEFAULT');
+                    if (debug) console.log('[subscriptions] - LOCAL SUBSCRIPTION DEFAULT');
                     await updateAsync(false);
                 }
             } catch (e) {

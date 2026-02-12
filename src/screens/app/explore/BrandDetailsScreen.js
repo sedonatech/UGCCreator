@@ -1,26 +1,9 @@
-import React, {
-    useEffect,
-    useLayoutEffect, useState,
-} from 'react';
-import {
-    Alert,
-    ScrollView, StyleSheet,
-} from 'react-native';
-import {
-    getFirestore,
-    doc,
-    getDoc,
-    updateDoc,
-} from '@react-native-firebase/firestore';
-import {
-    DEFAULT_GRADIENT,
-    WHITE, WHITE_40,
-} from '../../../theme/Colors';
-import {
-    SCREEN_HEIGHT,
-    SCREEN_WIDTH,
-    WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { getFirestore, doc, getDoc, updateDoc } from '@react-native-firebase/firestore';
+import { DEFAULT_GRADIENT, WHITE, WHITE_40 } from '../../../theme/Colors';
+import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import BackgroundImage from '../../../components/BackgroundImage';
 import TemplateText from '../../../components/TemplateText';
@@ -46,6 +29,7 @@ const BRAND_DETAILS_TABS = [
 const USERS_COLLECTION = 'users';
 
 const BrandDetailsScreen = ({ route, navigation }) => {
+    const { t } = useTranslation();
     const brandId = route?.params?.brandId;
 
     const [selectedTab, setSelectedTab] = useState(BRAND_DETAILS_TABS[0]);
@@ -57,7 +41,7 @@ const BrandDetailsScreen = ({ route, navigation }) => {
     const isTestUser = testers?.emails?.includes(profile?.email);
 
     useEffect(() => {
-        if (brandId)getProfile();
+        if (brandId) getProfile();
     }, [brandId]);
 
     const getProfile = async () => {
@@ -89,30 +73,26 @@ const BrandDetailsScreen = ({ route, navigation }) => {
     };
 
     const blockBrand = () => {
-        Alert.alert(
-            'Confirm Action',
-            'Are you sure you want to block this brand?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel',
-                    onPress: () => Alert.alert('Action cancelled.'),
+        Alert.alert(t('brandDetails.block.title'), t('brandDetails.block.message'), [
+            {
+                text: t('common.actions.cancel'),
+                style: 'cancel',
+                onPress: () => Alert.alert(t('brandDetails.block.cancelled')),
+            },
+            {
+                text: 'Block',
+                style: 'destructive',
+                onPress: async () => {
+                    try {
+                        await updateBrand(brandId, { isBlocked: true });
+                        Alert.alert(t('common.alerts.success'), t('brandDetails.block.success'));
+                    } catch (error) {
+                        console.error('Error blocking project:', error);
+                        Alert.alert(t('common.alerts.error'), t('brandDetails.block.error'));
+                    }
                 },
-                {
-                    text: 'Block',
-                    style: 'destructive',
-                    onPress: async () => {
-                        try {
-                            await updateBrand(brandId, { isBlocked: true });
-                            Alert.alert('Success', 'brand successfully blocked.');
-                        } catch (error) {
-                            console.error('Error blocking project:', error);
-                            Alert.alert('Error', 'Failed to block the project.');
-                        }
-                    },
-                },
-            ],
-        );
+            },
+        ]);
     };
 
     useLayoutEffect(() => {
@@ -125,66 +105,38 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                     ml={WRAPPER_MARGIN}
                 />
             ),
-            headerRight: () => isTestUser && (
-                <HeaderIconButton
-                    title="block"
-                    onPress={blockBrand}
-                    backDropColor={WHITE_40}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
+            headerRight: () =>
+                isTestUser && (
+                    <HeaderIconButton title="block" onPress={blockBrand} backDropColor={WHITE_40} mr={WRAPPER_MARGIN} />
+                ),
         });
     }, [navigation, blockBrand]);
 
     if (!selectedBrand) return <LoadingOverlay message="Fetching brand details..." />;
 
     return (
-
         <ScrollView
             style={styles.container}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox
-                fullGradient
-                height={SCREEN_HEIGHT / 2.4}
-                gradientColors={DEFAULT_GRADIENT}
-            >
+            <TemplateBox fullGradient height={SCREEN_HEIGHT / 2.4} gradientColors={DEFAULT_GRADIENT}>
                 {/* @ts-ignore */}
-                <BackgroundImage
-                    source={{ uri: selectedBrand?.image }}
-                    width={SCREEN_WIDTH}
-                    style={styles.image}
-                />
-                <TemplateBox
-                    absolute
-                    top={(SCREEN_HEIGHT / 3.4)}
-                    left={20}
-                >
-                    <TemplateText
-                        bold
-                        size={18}
-                        color={WHITE}
-                    >
+                <BackgroundImage source={{ uri: selectedBrand?.image }} width={SCREEN_WIDTH} style={styles.image} />
+                <TemplateBox absolute top={SCREEN_HEIGHT / 3.4} left={20}>
+                    <TemplateText bold size={18} color={WHITE}>
                         {selectedBrand?.name}
                     </TemplateText>
                     <TemplateBox height={10} />
-                    <TemplateText
-                        size={14}
-                        color={WHITE}
-                    >
+                    <TemplateText size={14} color={WHITE}>
                         {selectedBrand?.shortDescription}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
 
             <TemplateBox selfCenter flex>
-                <ToggleCarousel
-                    data={BRAND_DETAILS_TABS}
-                    selectedTab={selectedTab}
-                    onChange={setSelectedTab}
-                />
+                <ToggleCarousel data={BRAND_DETAILS_TABS} selectedTab={selectedTab} onChange={setSelectedTab} />
             </TemplateBox>
 
             {selectedTab?.value === BRAND_DETAILS_TABS[0]?.value && (
@@ -204,12 +156,8 @@ const BrandDetailsScreen = ({ route, navigation }) => {
                     brandId={selectedBrand?.id}
                 />
             )}
-            {selectedTab?.value === BRAND_DETAILS_TABS[1]?.value && (
-                <ProjectsTab id={brandId} />
-            )}
-
+            {selectedTab?.value === BRAND_DETAILS_TABS[1]?.value && <ProjectsTab id={brandId} />}
         </ScrollView>
-
     );
 };
 

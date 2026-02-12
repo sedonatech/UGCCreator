@@ -1,11 +1,13 @@
 import { Alert } from 'react-native';
 import storage from '@react-native-firebase/storage';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useFirebaseDeleteStorage = () => {
+    const { t } = useTranslation();
     const [deleteProgress, setDeleteProgress] = useState(0);
 
-    const handleFirebaseDelete = async (item) => {
+    const handleFirebaseDelete = async item => {
         try {
             setDeleteProgress(0);
             const reference = storage().ref(item?.fullPath);
@@ -25,16 +27,16 @@ const useFirebaseDeleteStorage = () => {
             return;
         }
         Alert.alert(
-            'Remove Image',
-            'Are you sure you want to remove this image?',
+            t('common.alerts.removeImage.title'),
+            t('common.alerts.removeImage.message'),
             [
                 {
-                    text: 'Cancel',
+                    text: t('common.actions.cancel'),
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                 },
                 {
-                    text: 'Yes',
+                    text: t('common.actions.yes'),
                     onPress: () => {
                         handleFirebaseDelete(item);
                     },

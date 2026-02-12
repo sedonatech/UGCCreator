@@ -6,7 +6,6 @@ import { BLACK_60, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SPACE_XLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import { BRAND_PROFILE_INCOMPLETE_MESSAGE, BRAND_PROFILE_INCOMPLETE_TITLE } from '../../../consts/content/Home';
 import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW } from '../../../navigation/ScreenNames';
 import SettingsRow from '../../app/profile/components/SettingsRow';
 import useLogout from '../../app/profile/useLogout';
@@ -114,8 +113,8 @@ const BrandSettingsScreen = ({ navigation }) => {
         //     icon: 'card-outline',
         // },
         {
-            title: 'Help',
-            description: 'Get help with your account',
+            title: t('brands.profile.settings.rows.help'),
+            description: t('brands.profile.settings.rows.helpDesc'),
             onPress: () => {
                 if (mainDomain) {
                     navigation.navigate(WEBVIEW, {
@@ -126,8 +125,8 @@ const BrandSettingsScreen = ({ navigation }) => {
             icon: 'help-circle-outline',
         },
         {
-            title: 'About',
-            description: 'Learn more about us',
+            title: t('brands.profile.settings.rows.about'),
+            description: t('brands.profile.settings.rows.aboutDesc'),
             onPress: () => {
                 if (mainDomain) {
                     navigation.navigate(WEBVIEW, {
@@ -156,8 +155,8 @@ const BrandSettingsScreen = ({ navigation }) => {
             {profileCompleteRatio < 1 && (
                 <TemplateBox mv={SPACE_XLARGE} mt={HEADER_MARGIN}>
                     <ProfileStatusCard
-                        title={BRAND_PROFILE_INCOMPLETE_TITLE}
-                        description={BRAND_PROFILE_INCOMPLETE_MESSAGE}
+                        title={t('brands.profile.settings.profileIncompleteCard.title')}
+                        description={t('brands.profile.settings.profileIncompleteCard.description')}
                         progress={profileCompleteRatio}
                         slideInDelay={100}
                         onPress={() => navigation.navigate(UPDATE_BRAND_PROFILE)}
@@ -171,8 +170,8 @@ const BrandSettingsScreen = ({ navigation }) => {
             >
                 {isSupportChatAdmin && (
                     <SettingsRow
-                        title="Support Chat"
-                        subtitle="Chat with support"
+                        title={t('brands.profile.settings.rows.supportChat')}
+                        subtitle={t('brands.profile.settings.rows.supportChatDesc')}
                         onPress={() => 'TO BE ADDED TO NEXT RELEASE'}
                         icon="chatbubble-ellipses-outline"
                     />
@@ -189,7 +188,9 @@ const BrandSettingsScreen = ({ navigation }) => {
                     />
                 ))}
                 <TemplateBox selfCenter mv={20}>
-                    <TemplateText size={14} color={BLACK_60}>{`App Version: ${nativeAppVersion}`}</TemplateText>
+                    <TemplateText size={14} color={BLACK_60}>
+                        {`${t('brands.profile.settings.appVersionLabel')}: ${nativeAppVersion}`}
+                    </TemplateText>
                 </TemplateBox>
             </TemplateBox>
             <LanguageSelector visible={showLanguageSelector} onClose={() => setShowLanguageSelector(false)} />

@@ -1,6 +1,7 @@
 import { Alert, Linking } from 'react-native';
+import i18n from '../i18n';
 
-export default (url, message = 'This link is not available') => {
+export default (url, message = i18n.t('common.alerts.linkNotAvailable')) => {
     if (!url) {
         Alert.alert(message);
         return;

@@ -2,20 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Alert, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
-import {
-    BLACK,
-    BLACK_40, BLACK_SECONDARY, GREY_SECONDARY, WHITE,
-} from '../../../../theme/Colors';
+import { BLACK, BLACK_40, BLACK_SECONDARY, GREY_SECONDARY, WHITE } from '../../../../theme/Colors';
 import TemplateTextInput from '../../../../components/TemplateTextInput';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 
-const AddSampleWorkItem = ({
-    onClose,
-}) => {
+const AddSampleWorkItem = ({ onClose }) => {
+    const { t } = useTranslation();
     const [info, setInfo] = useState({
         title: '',
         description: '',
@@ -26,7 +23,7 @@ const AddSampleWorkItem = ({
     const { profile: profileData, update } = auth;
     const handleUpdatePhotos = () => {
         if (!info.title || !info.description || !info.link) {
-            Alert.alert('Please fill all fields');
+            Alert.alert(t('common.alerts.fillAllFields'));
             return;
         }
         update('samplePhotos', [
@@ -44,13 +41,15 @@ const AddSampleWorkItem = ({
             <TemplateBox>
                 <TemplateBox mt={10}>
                     <TemplateBox mv={10}>
-                        <TemplateText size={12} bold>Link</TemplateText>
+                        <TemplateText size={12} bold>
+                            Link
+                        </TemplateText>
                         <TemplateTextInput
                             placeholder="Link"
                             placeholderTextColor={BLACK_40}
                             style={styles.shortInput}
                             value={info.link}
-                            onChangeText={(text) => {
+                            onChangeText={text => {
                                 setInfo({
                                     ...info,
                                     link: text,
@@ -60,13 +59,15 @@ const AddSampleWorkItem = ({
                         />
                     </TemplateBox>
                     <TemplateBox mv={10}>
-                        <TemplateText size={12} bold>Title</TemplateText>
+                        <TemplateText size={12} bold>
+                            Title
+                        </TemplateText>
                         <TemplateTextInput
                             placeholder="Title"
                             placeholderTextColor={BLACK_40}
                             style={styles.shortInput}
                             value={info.title}
-                            onChangeText={(text) => {
+                            onChangeText={text => {
                                 setInfo({
                                     ...info,
                                     title: text,
@@ -76,13 +77,15 @@ const AddSampleWorkItem = ({
                         />
                     </TemplateBox>
                     <TemplateBox mv={10}>
-                        <TemplateText size={12} bold>Description</TemplateText>
+                        <TemplateText size={12} bold>
+                            Description
+                        </TemplateText>
                         <TemplateTextInput
                             placeholder="Description"
                             placeholderTextColor={BLACK_40}
                             style={styles.shortInput}
                             value={info.description}
-                            onChangeText={(text) => {
+                            onChangeText={text => {
                                 setInfo({
                                     ...info,
                                     description: text,
@@ -108,7 +111,9 @@ const AddSampleWorkItem = ({
             >
                 <TemplateIcon name="add-outline" color={WHITE} size={16} />
                 <TemplateBox width={5} />
-                <TemplateText color={WHITE} bold size={12}>Add</TemplateText>
+                <TemplateText color={WHITE} bold size={12}>
+                    Add
+                </TemplateText>
             </TemplateBox>
         </TemplateBox>
     );
@@ -117,7 +122,7 @@ const AddSampleWorkItem = ({
 const styles = StyleSheet.create({
     shortInput: {
         height: 40,
-        width: SCREEN_WIDTH - (WRAPPER_MARGIN * 2),
+        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
         borderWidth: 1,
         borderColor: GREY_SECONDARY,
         borderRadius: 10,

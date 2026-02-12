@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useLayoutEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
@@ -29,26 +30,15 @@ import useTranslation from '../../hooks/useTranslation';
 const SubscriptionScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
     const fromSettings = route?.params?.fromSettings;
-
     const subscription = useSubscriptionContext();
-
     const { logout: handleLogout } = useLogout();
-
     const { mainDomain } = useConfig();
-
     const [loading, setLoading] = useState(false);
-
     const [subscribing, setSubscribing] = useState(null);
-
     const [selected, setSelectedPackage] = useState(0);
-
     const [error, setError] = useState(null);
-
     const restorePurchases = useRestorePurchases();
-
     const [packages, originalPackages] = useAvailablePackages(subscription?.purchase);
-    console.log('Available Packages:iiiiiiiiiiiiiiiiiiii', JSON.stringify(packages, null, 2));
-
     const purchase = usePurchase();
 
     const { subscriptionBenefits } = useFeatureFlags();
@@ -281,9 +271,11 @@ const SubscriptionScreen = ({ navigation, route }) => {
                 </TemplateBox>
 
                 {reviews?.length > 1 && (
-                    <TemplateBox selfCenter>
+                    <TemplateBox selfCenter alignItems="center">
                         <TemplateBox mb={16} alignItems="center">
-                            <TemplateText semiBold>{t('subscriptions.trustBadge')}</TemplateText>
+                            <TemplateText medium center>
+                                {t('subscriptions.trustBadge')}
+                            </TemplateText>
                         </TemplateBox>
 
                         {reviews?.map(({ title, subtitle, image }, index) => (

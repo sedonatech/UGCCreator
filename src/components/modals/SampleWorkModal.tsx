@@ -27,14 +27,14 @@ type Props = {
 
 export default function SampleWorkModal({ open, onClose, initial }: Props) {
     const { auth } = useAuthContext();
-    const { t } = useTranslation();
+    const { t } = useTranslation() as { t: (key: string) => string };
     const isEdit = !!initial?.id;
     const [title, setTitle] = useState(initial?.title || '');
     const [description, setDescription] = useState(initial?.description || '');
     const [socialUrl, setSocialUrl] = useState(initial?.socialUrl || '');
     const [visibility, setVisibility] = useState<'public' | 'private'>(initial?.visibility || 'public');
-    const [isFeatured, setIsFeatured] = useState(!!initial?.isFeatured || true);
-    const [showcaseOptIn, setShowcaseOptIn] = useState(!!initial?.showcaseOptIn || true);
+    const [isFeatured, setIsFeatured] = useState<boolean>(!!initial?.isFeatured || true);
+    const [showcaseOptIn, setShowcaseOptIn] = useState<boolean>(!!initial?.showcaseOptIn || true);
     const [localCover, setLocalCover] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 

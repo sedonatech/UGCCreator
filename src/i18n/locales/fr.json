@@ -296,7 +296,7 @@
     "tabs": {
         "home": "Accueil",
         "challenges": "Tâches",
-        "chats": "Chats",
+        "chats": "Discussions",
         "levelUp": "Cours",
         "portfolio": "Profil",
         "admin": "Admin",
@@ -335,7 +335,11 @@
             },
             "deleteAccount": {
                 "title": "Supprimer le compte",
-                "description": "Supprimez votre compte"
+                "description": "Supprimez votre compte",
+                "alertTitle": "Supprimer le compte définitivement",
+                "alertMessage": "Êtes-vous sûr de vouloir supprimer votre compte ?",
+                "cancelButton": "Annuler",
+                "confirmButton": "OK"
             },
             "logout": {
                 "title": "Se déconnecter",
@@ -345,6 +349,10 @@
                 "title": "Langue",
                 "description": "Changer la langue de l'application"
             }
+        },
+        "profileIncompleteCard": {
+            "title": "Portfolio incomplet",
+            "description": "Mettez à jour votre portfolio pour que les marques vous remarquent."
         }
     },
     "profile": {
@@ -355,6 +363,8 @@
             "uploadButton": "Télécharger un Media Kit",
             "contactButton": "Contacter le créateur",
             "updateTitle": "Actualiser portfolio",
+            "aboutMe": "À propos de moi",
+            "portfolioLinkLabel": "Découvrez mon portfolio sur :",
             "sampleWork": {
                 "myTitle": "Mes travaux",
                 "creatorTitle": "Showcase créateur",
@@ -636,14 +646,34 @@
                 "subtitle": "Aidez-nous à améliorer votre expérience en partageant vos commentaires",
                 "button": "Contactez notre équipe de support"
             }
+        },
+        "alerts": {
+            "userNotAvailable": {
+                "title": "L'utilisateur n'est peut-être pas disponible pour le moment",
+                "message": "Veuillez réessayer plus tard"
+            },
+            "conversationExists": {
+                "title": "Une conversation a déjà été commencée",
+                "message": "Vous pouvez consulter l'onglet des discussions et continuer à discuter"
+            },
+            "conversationStarted": {
+                "title": "Une conversation a été commencée",
+                "message": "Vous pouvez consulter l'onglet des discussions et continuer à discuter"
+            }
         }
     },
     "subscriptions": {
         "restoreButton": "Restaurer l'abonnement",
         "trustBadge": "Approuvé par les créateurs UGC du monde entier",
-        "applyFilters": "Appliquer les filtres"
+        "applyFilters": "Appliquer les filtres",
+        "termsPrefix": "En sélectionnant un plan d'abonnement, vous acceptez nos",
+        "termsLink": "conditions générales",
+        "and": "et",
+        "privacyLink": "politique de confidentialité.",
+        "autoRenewText": "Votre abonnement sera automatiquement renouvelé sauf si le renouvellement automatique est désactivé au moins 24 heures avant la fin de la période en cours. Vous pouvez gérer les abonnements à tout moment et désactiver le renouvellement automatique dans vos paramètres iTunes après l'achat. Nous créerons un compte qui vous permettra d'accéder à notre contenu sur tous vos appareils iOS et vous pourrez ajouter des appareils supplémentaires selon vos besoins.",
+        "logout": "déconnexion"
     },
-    "brands": {
+    "creatorExplore": {
         "addProject": {
             "title": "Ajouter un nouveau projet",
             "fields": {
@@ -709,6 +739,8 @@
             "searchPlaceholder": "Rechercher",
             "noResults": "Aucun résultat trouvé",
             "loadingMessage": "Récupération des créateurs...",
+            "viewProfile": "Voir le profil",
+            "active": "Actif",
             "filters": {
                 "title": "Sélectionner les filtres",
                 "apply": "Appliquer les filtres",
@@ -746,6 +778,18 @@
             "yes": "Oui",
             "no": "Non"
         },
+        "buttons": {
+            "cancel": "Annuler",
+            "ok": "OK",
+            "confirm": "Confirmer",
+            "save": "Enregistrer",
+            "delete": "Supprimer",
+            "edit": "Modifier",
+            "submit": "Soumettre",
+            "showMore": "Afficher plus",
+            "viewMore": "Voir plus",
+            "restart": "Redémarrer"
+        },
         "status": {
             "active": "Actif",
             "inactive": "Inactif",
@@ -758,114 +802,46 @@
             "error": "Erreur",
             "success": "Succès",
             "warning": "Avertissement"
-        }
-    },
-    "subscriptions": {
-        "restoreButton": "Restaurer l'abonnement",
-        "trustBadge": "Approuvé par les créateurs UGC du monde entier",
-        "termsPrefix": "En sélectionnant un plan d'abonnement, vous acceptez nos",
-        "termsLink": "conditions générales",
-        "and": "et",
-        "privacyLink": "politique de confidentialité.",
-        "autoRenewText": "Votre abonnement sera automatiquement renouvelé sauf si le renouvellement automatique est désactivé au moins 24 heures avant la fin de la période en cours. Vous pouvez gérer les abonnements à tout moment et désactiver le renouvellement automatique dans vos paramètres iTunes après l'achat. Nous créerons un compte qui vous permettra d'accéder à notre contenu sur tous vos appareils iOS et vous pourrez ajouter des appareils supplémentaires selon vos besoins.",
-        "logout": "déconnexion"
-    },
-    "explore": {
-        "title": "Explorer les marques et les projets",
-        "searchPlaceholder": "Rechercher",
-        "tabs": {
-            "brands": "Marques",
-            "projects": "Projets",
-            "feeds": "Flux",
-            "recommended": "Recommandé"
         },
-        "filters": {
-            "title": "Sélectionner des filtres",
-            "apply": "Appliquer les filtres",
-            "clear": "Effacer les filtres",
-            "categories": {
-                "projectCategory": "Catégorie de projet",
-                "country": "Pays",
-                "language": "Langue",
-                "gender": "Genre",
-                "ageGroup": "Tranche d'âge",
-                "projectType": "Type de projet",
-                "deliveryFormat": "Format de livraison",
-                "projectDuration": "Durée du projet"
-            }
-        },
-        "projectDetails": {
-            "enrolledBadge": "Inscrit",
-            "sections": {
-                "description": "Description",
-                "timeline": "Calendrier",
-                "priceRange": "Fourchette de prix",
-                "maxBudget": "Budget maximum",
-                "minBudget": "Budget minimum",
-                "deliveryFormat": "Format de livraison de contenu",
-                "duration": "Durée du projet",
-                "categories": "Catégories",
-                "location": "Emplacement",
-                "genders": "Genres",
-                "languages": "Langues de contenu",
-                "ageRanges": "Tranches d'âge",
-                "projectType": "Type de projet"
+        "alerts": {
+            "error": "Erreur",
+            "success": "Succès",
+            "warning": "Avertissement",
+            "comingSoon": {
+                "title": "Bientôt disponible",
+                "message": "Cette fonctionnalité n'est pas encore disponible."
             },
-            "buttons": {
-                "viewProject": "Voir le projet",
-                "viewStatus": "Voir l'état du projet",
-                "enrollNow": "S'inscrire maintenant"
+            "linkError": {
+                "title": "Erreur",
+                "message": "Une erreur s'est produite avec ce lien. Veuillez réessayer plus tard."
             },
-            "alerts": {
-                "enrollSuccess": {
-                    "title": "Succès",
-                    "message": "Vous vous êtes inscrit avec succès à ce projet",
-                    "ok": "OK"
-                }
-            }
-        }
-    },
-    "settings": {
-        "title": "Paramètres",
-        "rows": {
-            "email": {
-                "title": "E-mail",
-                "description": ""
+            "linkNotAvailable": "Ce lien n'est pas disponible",
+            "genericError": "Une erreur s'est produite",
+            "invalidFields": "Veuillez remplir tous les champs obligatoires",
+            "fillAllFields": "Veuillez remplir tous les champs",
+            "fillRequiredFields": "Veuillez remplir tous les champs obligatoires :",
+            "imageTooLarge": {
+                "title": "Image trop grande",
+                "message": "Veuillez sélectionner une image de moins de 3 Mo à télécharger."
             },
-            "language": {
-                "title": "Langue",
-                "description": ""
+            "removeImage": {
+                "title": "Supprimer l'image",
+                "message": "Êtes-vous sûr de vouloir supprimer cette image ?"
             },
-            "feedback": {
-                "title": "Commentaires",
-                "description": "Envoyez-nous vos commentaires"
+            "replaceImage": {
+                "title": "Remplacer l'image",
+                "message": "Êtes-vous sûr de vouloir remplacer l'image ?"
             },
-            "testSubscriptions": {
-                "title": "Abonnements de test",
-                "description": "Abonnement de test (testeurs uniquement)"
+            "permissions": {
+                "title": "Permission {{name}}",
+                "blocked": "Vous avez {{status}} la permission {{name}}",
+                "denied": "Vous avez {{status}} la permission {{name}}",
+                "limited": "Votre appareil {{name}} a des capacités {{status}}",
+                "unavailable": "Votre appareil {{name}} est {{status}}"
             },
-            "updatePortfolio": {
-                "title": "Mettre à jour le portfolio",
-                "description": "Mettez à jour les détails de votre portfolio"
-            },
-            "changePassword": {
-                "title": "Changer le mot de passe",
-                "description": "Changez votre mot de passe"
-            },
-            "notifications": {
-                "title": "Notifications",
-                "description": "Gérez vos notifications",
-                "alertTitle": "Notifications",
-                "alertMessage": "Vous avez déjà autorisé la réception de notifications. Si vous souhaitez modifier vos paramètres de notification, veuillez accéder aux paramètres de votre téléphone.",
-                "cancelButton": "Annuler"
-            },
-            "deleteAccount": {
-                "title": "Supprimer le compte",
-                "description": "Supprimez votre compte"
-            },
-            "logout": {
-                "title": "Déconnexion",
-                "description": "Déconnectez-vous de votre compte"
+            "copiedToClipboard": {
+                "title": "Copié dans le presse-papiers",
+                "message": "Vous pouvez maintenant coller les résultats dans n'importe quel champ de texte et y accéder plus tard depuis votre historique."
             }
         }
     },
@@ -902,6 +878,45 @@
     },
     "brands": {
         "admin": {
+            "panel": {
+                "ratePrompt": "Veuillez prendre un moment pour noter notre application",
+                "addProject": "Ajouter un projet",
+                "addEvent": "Ajouter un événement",
+                "noCurrentProject": {
+                    "title": "Aucun projet actif",
+                    "message": "Vous n'avez actuellement aucun projet actif. Cliquez sur le bouton + ci-dessus pour ajouter un projet !"
+                }
+            },
+            "carousels": {
+                "activeCreators": {
+                    "title": "Vos créateurs actifs",
+                    "seeAll": "Voir tout",
+                    "empty": {
+                        "title": "Aucun créateur actif",
+                        "description": "Vous n'avez actuellement aucun créateur actif avec lequel vous travaillez"
+                    }
+                },
+                "featuredCreators": {
+                    "title": "Créateurs en vedette",
+                    "seeAll": "Voir tout",
+                    "subtitleCreator": "Collaborez avec d'autres créateurs",
+                    "subtitleBrand": "Basé sur vos recherches récentes"
+                },
+                "activeProjects": {
+                    "title": "Vos projets actifs",
+                    "seeAll": "Voir tout",
+                    "enrolledCreators": "Créateurs inscrits",
+                    "noEnrolledCreators": "Aucun créateur inscrit"
+                },
+                "events": {
+                    "title": "Vos événements",
+                    "seeAll": "Voir tout",
+                    "noEvents": {
+                        "title": "Aucun événement de marque",
+                        "description": "Vous n'avez actuellement aucun événement de marque actif. Cliquez sur le bouton + ci-dessus pour ajouter des événements de marque !"
+                    }
+                }
+            },
             "addProject": {
                 "title": "Ajouter un nouveau projet",
                 "fields": {
@@ -1013,13 +1028,22 @@
                     "notificationsDesc": "Gérez vos paramètres de notification",
                     "supportChat": "Chat de support",
                     "supportChatDesc": "Chattez avec le support",
+                    "help": "Aide",
+                    "helpDesc": "Obtenez de l'aide pour votre compte",
+                    "about": "À propos",
+                    "aboutDesc": "En savoir plus sur nous",
                     "deleteAccount": "Supprimer le compte",
                     "logout": "Se déconnecter"
                 },
                 "alerts": {
                     "notificationsTitle": "Notifications",
                     "notificationsMessage": "Vous avez déjà accordé l'autorisation de recevoir des notifications. Si vous souhaitez modifier vos paramètres de notification, veuillez accéder aux paramètres de votre téléphone."
-                }
+                },
+                "profileIncompleteCard": {
+                    "title": "Profil incomplet",
+                    "description": "Mettez à jour votre profil pour que les créateurs vous remarquent."
+                },
+                "appVersionLabel": "Version de l'app"
             },
             "updateProfile": {
                 "saveButton": "Enregistrer les modifications",
@@ -1040,50 +1064,61 @@
             }
         }
     },
-    "common": {
-        "actions": {
-            "viewMore": "Voir plus",
-            "viewAll": "Tout voir",
-            "learnMore": "En savoir plus",
-            "submit": "Soumettre",
-            "save": "Enregistrer",
-            "edit": "Modifier",
-            "delete": "Supprimer",
-            "cancel": "Annuler",
-            "confirm": "Confirmer",
-            "close": "Fermer",
-            "back": "Retour",
-            "next": "Suivant",
-            "previous": "Précédent",
-            "done": "Terminé",
-            "ok": "OK",
-            "yes": "Oui",
-            "no": "Non"
-        },
-        "buttons": {
-            "cancel": "Annuler",
-            "ok": "OK",
-            "confirm": "Confirmer",
-            "save": "Enregistrer",
-            "delete": "Supprimer",
-            "edit": "Modifier",
-            "submit": "Soumettre",
-            "showMore": "Afficher plus",
-            "viewMore": "Voir plus",
-            "restart": "Redémarrer"
-        },
-        "status": {
-            "active": "Actif",
-            "inactive": "Inactif",
-            "pending": "En attente",
-            "completed": "Terminé",
-            "inProgress": "En cours",
-            "upcoming": "À venir",
-            "expired": "Expiré",
-            "loading": "Chargement...",
-            "error": "Erreur",
-            "success": "Succès",
-            "warning": "Avertissement"
+    "creatorTools": {
+        "alerts": {
+            "successTitle": "{{type}} créé avec succès 🎉",
+            "successMessage": "Vous pouvez maintenant copier le {{type}} dans votre presse-papiers !"
         }
+    },
+    "events": {
+        "alerts": {
+            "successTitle": "Événement {{action}} avec succès",
+            "successMessage": "Vous pouvez voir votre événement dans la section événements",
+            "created": "créé",
+            "edited": "modifié"
+        }
+    },
+    "projects": {
+        "status": {
+            "alerts": {
+                "proposalSent": {
+                    "title": "Proposition envoyée",
+                    "message": "Veuillez attendre que le créateur approuve votre proposition"
+                },
+                "proposalNotSent": {
+                    "title": "Proposition non envoyée",
+                    "message": "Veuillez réessayer"
+                },
+                "attachContract": {
+                    "title": "Vous serez invité à joindre votre contrat",
+                    "message": "Veuillez joindre votre contrat pour continuer"
+                },
+                "attachSignedContract": {
+                    "title": "Vous serez invité à joindre votre contrat signé",
+                    "message": "Veuillez joindre votre contrat signé pour continuer"
+                },
+                "updateRequired": {
+                    "title": "Mise à jour requise par le créateur",
+                    "message": "Veuillez attendre que le créateur mette à jour le statut"
+                },
+                "updateStatus": {
+                    "title": "Mettre à jour le statut",
+                    "message": "Êtes-vous sûr de vouloir mettre à jour le statut à {{status}} ?"
+                }
+            }
+        }
+    },
+    "brandDetails": {
+        "block": {
+            "title": "Confirmer l'action",
+            "message": "Êtes-vous sûr de vouloir bloquer cette marque ?",
+            "cancelled": "Action annulée.",
+            "success": "Marque bloquée avec succès.",
+            "error": "Échec du blocage du projet."
+        }
+    },
+    "reachOut": {
+        "title": "Contacter la marque",
+        "message": "Envoyez un e-mail à {{brandName}} pour les inviter à collaborer avec vous sur cette plateforme. Vous serez averti lorsqu'ils accepteront votre demande"
     }
 }
