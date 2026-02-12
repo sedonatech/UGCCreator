@@ -343,7 +343,11 @@
             },
             "logout": {
                 "title": "Sair",
-                "description": "Saia da sua conta"
+                "description": "Saia da sua conta",
+                "alertTitle": "Sair",
+                "alertMessage": "Tem certeza de que deseja sair?",
+                "cancelButton": "Cancelar",
+                "confirmButton": "OK"
             },
             "language": {
                 "title": "Idioma",
@@ -530,7 +534,7 @@
         }
     },
     "courses": {
-        "title": "LevelUp",
+        "title": "Cursos",
         "sections": {
             "yourCourses": "Seus cursos"
         },
@@ -624,7 +628,7 @@
         "messagePlaceholder": "Digite sua mensagem aqui...",
         "notificationTitle": "Nova mensagem de",
         "rooms": {
-            "title": "Continue suas conversas com suas {{userType}}",
+            "title": "Continue suas conversas com {{userType}}",
             "userType": {
                 "brands": "marcas",
                 "creators": "criadores"
@@ -770,6 +774,7 @@
         }
     },
     "common": {
+        "localeCode": "pt-BR",
         "actions": {
             "viewMore": "Ver mais",
             "viewAll": "Ver tudo",
@@ -911,7 +916,11 @@
                     "title": "Criadores em destaque",
                     "seeAll": "Ver tudo",
                     "subtitleCreator": "Colabore com outros criadores",
-                    "subtitleBrand": "Com base em suas pesquisas recentes"
+                    "subtitleBrand": "Com base em suas pesquisas recentes",
+                    "empty": {
+                        "title": "Nenhum criador em destaque",
+                        "description": "Estamos carregando criadores em destaque para você. Por favor, volte em breve!"
+                    }
                 },
                 "activeProjects": {
                     "title": "Seus projetos ativos",
@@ -1012,12 +1021,34 @@
             },
             "viewMore": "Ver mais",
             "addEvent": {
+                "title": "Adicionar um evento",
+                "editTitle": "Editar evento",
+                "fields": {
+                    "eventTitle": "Título do evento",
+                    "description": "Descrição",
+                    "country": "País",
+                    "city": "Cidade",
+                    "startDate": "Data de início",
+                    "endDate": "Data de término",
+                    "startTime": "Horário de início",
+                    "image": "Imagem",
+                    "eventLink": "Link do evento"
+                },
                 "placeholders": {
                     "title": "Título do evento",
                     "description": "Descrição",
-                    "link": "https://www..."
+                    "link": "https://www...",
+                    "selectStartDate": "Selecionar data de início",
+                    "selectEndDate": "Selecionar data de término",
+                    "selectStartTime": "Selecionar horário de início"
                 },
                 "categories": "Categorias de eventos",
+                "buttons": {
+                    "create": "Criar evento",
+                    "edit": "Editar evento",
+                    "replaceImage": "Substituir imagem"
+                },
+                "required": "  <Obrigatório>",
                 "alerts": {
                     "fillRequired": "Por favor, preencha todos os campos obrigatórios:",
                     "successCreated": "Evento criado com sucesso",

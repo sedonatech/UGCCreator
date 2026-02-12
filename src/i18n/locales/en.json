@@ -297,7 +297,7 @@
         "home": "Home",
         "challenges": "Challenges",
         "chats": "Chats",
-        "levelUp": "LevelUp",
+        "levelUp": "Courses",
         "portfolio": "Portfolio",
         "admin": "Admin",
         "explore": "Explore",
@@ -343,7 +343,11 @@
             },
             "logout": {
                 "title": "Logout",
-                "description": "Logout of your account"
+                "description": "Logout of your account",
+                "alertTitle": "Logout",
+                "alertMessage": "Are you sure you want to logout?",
+                "cancelButton": "Cancel",
+                "confirmButton": "OK"
             },
             "language": {
                 "title": "Language",
@@ -530,7 +534,7 @@
         }
     },
     "courses": {
-        "title": "LevelUp",
+        "title": "Courses",
         "sections": {
             "yourCourses": "Your Courses"
         },
@@ -613,7 +617,7 @@
         "messagePlaceholder": "Type your message here...",
         "notificationTitle": "New message from",
         "rooms": {
-            "title": "Continue your conversations with your {{userType}}",
+            "title": "Continue your conversations with {{userType}}",
             "userType": {
                 "brands": "brands",
                 "creators": "creators"
@@ -759,6 +763,7 @@
         }
     },
     "common": {
+        "localeCode": "en-US",
         "actions": {
             "viewMore": "View More",
             "viewAll": "View All",
@@ -900,7 +905,11 @@
                     "title": "Featured Creators",
                     "seeAll": "See All",
                     "subtitleCreator": "Collaborate with other creators",
-                    "subtitleBrand": "Based on your recent searches"
+                    "subtitleBrand": "Based on your recent searches",
+                    "empty": {
+                        "title": "No Featured Creators",
+                        "description": "We're loading featured creators for you. Please check back in a moment!"
+                    }
                 },
                 "activeProjects": {
                     "title": "Your Active Projects",
@@ -1001,12 +1010,34 @@
             },
             "viewMore": "View More",
             "addEvent": {
+                "title": "Add an event",
+                "editTitle": "Edit Event",
+                "fields": {
+                    "eventTitle": "Event Title",
+                    "description": "Description",
+                    "country": "Country",
+                    "city": "City",
+                    "startDate": "Start Date",
+                    "endDate": "End Date",
+                    "startTime": "Start Time",
+                    "image": "Image",
+                    "eventLink": "Event Link"
+                },
                 "placeholders": {
                     "title": "Event Title",
                     "description": "Description",
-                    "link": "https://www..."
+                    "link": "https://www...",
+                    "selectStartDate": "Select Start Date",
+                    "selectEndDate": "Select End Date",
+                    "selectStartTime": "Select a start time"
                 },
                 "categories": "Event Categories",
+                "buttons": {
+                    "create": "Create Event",
+                    "edit": "Edit Event",
+                    "replaceImage": "Replace Image"
+                },
+                "required": "  <Required>",
                 "alerts": {
                     "fillRequired": "Please fill all required fields:",
                     "successCreated": "Event created successfully",

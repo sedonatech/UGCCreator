@@ -343,7 +343,11 @@
             },
             "logout": {
                 "title": "Abmelden",
-                "description": "Von Ihrem Konto abmelden"
+                "description": "Von Ihrem Konto abmelden",
+                "alertTitle": "Abmelden",
+                "alertMessage": "Möchten Sie sich wirklich abmelden?",
+                "cancelButton": "Abbrechen",
+                "confirmButton": "OK"
             },
             "language": {
                 "title": "Sprache",
@@ -530,7 +534,7 @@
         }
     },
     "courses": {
-        "title": "LevelUp",
+        "title": "Kurse",
         "sections": {
             "yourCourses": "Ihre Kurse"
         },
@@ -759,6 +763,7 @@
         }
     },
     "common": {
+        "localeCode": "de-DE",
         "actions": {
             "viewMore": "Mehr anzeigen",
             "viewAll": "Alle anzeigen",
@@ -900,7 +905,11 @@
                     "title": "Vorgestellte Creators",
                     "seeAll": "Alle anzeigen",
                     "subtitleCreator": "Mit anderen Creators zusammenarbeiten",
-                    "subtitleBrand": "Basierend auf Ihren letzten Suchen"
+                    "subtitleBrand": "Basierend auf Ihren letzten Suchen",
+                    "empty": {
+                        "title": "Keine vorgestellten Creators",
+                        "description": "Wir laden vorgestellte Creators für Sie. Bitte schauen Sie gleich wieder vorbei!"
+                    }
                 },
                 "activeProjects": {
                     "title": "Ihre aktiven Projekte",
@@ -1001,12 +1010,34 @@
             },
             "viewMore": "Mehr anzeigen",
             "addEvent": {
+                "title": "Eine Veranstaltung hinzufügen",
+                "editTitle": "Veranstaltung bearbeiten",
+                "fields": {
+                    "eventTitle": "Veranstaltungstitel",
+                    "description": "Beschreibung",
+                    "country": "Land",
+                    "city": "Stadt",
+                    "startDate": "Startdatum",
+                    "endDate": "Enddatum",
+                    "startTime": "Startzeit",
+                    "image": "Bild",
+                    "eventLink": "Veranstaltungslink"
+                },
                 "placeholders": {
                     "title": "Veranstaltungstitel",
                     "description": "Beschreibung",
-                    "link": "https://www..."
+                    "link": "https://www...",
+                    "selectStartDate": "Startdatum auswählen",
+                    "selectEndDate": "Enddatum auswählen",
+                    "selectStartTime": "Startzeit auswählen"
                 },
                 "categories": "Veranstaltungskategorien",
+                "buttons": {
+                    "create": "Veranstaltung erstellen",
+                    "edit": "Veranstaltung bearbeiten",
+                    "replaceImage": "Bild ersetzen"
+                },
+                "required": "  <Erforderlich>",
                 "alerts": {
                     "fillRequired": "Bitte füllen Sie alle erforderlichen Felder aus:",
                     "successCreated": "Veranstaltung erfolgreich erstellt",

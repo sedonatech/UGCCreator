@@ -8,16 +8,16 @@ const useLogout = () => {
     const { t } = useTranslation();
     const logout = () => {
         Alert.alert(
-            'Logout',
-            'Are you sure you want to logout?',
+            t('settings.rows.logout.alertTitle'),
+            t('settings.rows.logout.alertMessage'),
             [
                 {
-                    text: 'Cancel',
+                    text: t('settings.rows.logout.cancelButton'),
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: t('settings.rows.logout.confirmButton'),
                     onPress: async () => {
                         try {
                             await auth().signOut();

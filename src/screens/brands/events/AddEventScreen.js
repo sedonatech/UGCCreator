@@ -137,19 +137,19 @@ const AddEventScreen = ({ navigation, route }) => {
             <TemplateBox height={HEADER_MARGIN * 0.7} />
             <TemplateBox mv={WRAPPER_MARGIN} width={WRAPPED_SCREEN_WIDTH}>
                 <TemplateText bold color={BLACK} size={18} startCase>
-                    Add an event
+                    {eventData ? t('brands.events.addEvent.editTitle') : t('brands.events.addEvent.title')}
                 </TemplateText>
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_LARGE}>
                 <TemplateText size={16}>
-                    Event Title
+                    {t('brands.events.addEvent.fields.eventTitle')}
                     <TemplateText size={12} ml={10} color={GREY}>
-                        {'  <Required>'}
+                        {t('brands.events.addEvent.required')}
                     </TemplateText>
                 </TemplateText>
                 <TemplateTextInput
-                    placeholder="Event Title"
+                    placeholder={t('brands.events.addEvent.placeholders.title')}
                     placeholderTextColor={BLACK_40}
                     style={styles.input}
                     value={event?.title}
@@ -159,13 +159,13 @@ const AddEventScreen = ({ navigation, route }) => {
             </TemplateBox>
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_LARGE}>
                 <TemplateText size={16}>
-                    Description
+                    {t('brands.events.addEvent.fields.description')}
                     <TemplateText size={12} ml={10} color={GREY}>
-                        {'  <Required>'}
+                        {t('brands.events.addEvent.required')}
                     </TemplateText>
                 </TemplateText>
                 <TemplateTextInput
-                    placeholder="Description"
+                    placeholder={t('brands.events.addEvent.placeholders.description')}
                     placeholderTextColor={BLACK_40}
                     style={[styles.input, { height: 80 }]}
                     value={event?.description}
@@ -178,7 +178,7 @@ const AddEventScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <DropdownSearch
-                title={event?.country || 'Country'}
+                title={event?.country || t('brands.events.addEvent.fields.country')}
                 filters={uniq(countries)?.map(country => ({
                     name: country,
                     value: country,
@@ -191,7 +191,7 @@ const AddEventScreen = ({ navigation, route }) => {
             />
             <TemplateBox mb={SPACE_SMALL} width={SPACE_XXLARGE} />
             <DropdownSearch
-                title={event?.city || 'City'}
+                title={event?.city || t('brands.events.addEvent.fields.city')}
                 filters={uniq(cities)?.map(country => ({
                     name: country,
                     value: country,
@@ -205,9 +205,9 @@ const AddEventScreen = ({ navigation, route }) => {
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_SMALL} selfCenter>
                 <TemplateText size={16}>
-                    Start Date
+                    {t('brands.events.addEvent.fields.startDate')}
                     <TemplateText size={12} ml={10} color={GREY}>
-                        {'  <Required>'}
+                        {t('brands.events.addEvent.required')}
                     </TemplateText>
                 </TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} selfCenter>
@@ -215,7 +215,7 @@ const AddEventScreen = ({ navigation, route }) => {
                         <DateTimePicker
                             value={event?.startDate || new Date()}
                             mode="date"
-                            // display="inline"
+                            display="spinner"
                             onChange={(e, selectedDate) => {
                                 const currentDate = selectedDate || event?.startDate;
                                 update('startDate', currentDate);
@@ -239,7 +239,15 @@ const AddEventScreen = ({ navigation, route }) => {
                             selfCenter
                             onPress={() => setShowStartDate(true)}
                         >
-                            <TemplateText>{event?.startDate?.toDateString() || 'Select Start Date'}</TemplateText>
+                            <TemplateText>
+                                {event?.startDate
+                                    ? event.startDate.toLocaleDateString(t('common.localeCode'), {
+                                          year: 'numeric',
+                                          month: 'long',
+                                          day: 'numeric',
+                                      })
+                                    : t('brands.events.addEvent.placeholders.selectStartDate')}
+                            </TemplateText>
                         </TemplateBox>
                     )}
                 </TemplateBox>
@@ -247,9 +255,9 @@ const AddEventScreen = ({ navigation, route }) => {
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_SMALL} selfCenter>
                 <TemplateText size={16}>
-                    End Date
+                    {t('brands.events.addEvent.fields.endDate')}
                     <TemplateText size={12} ml={10} color={GREY}>
-                        {'  <Required>'}
+                        {t('brands.events.addEvent.required')}
                     </TemplateText>
                 </TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} selfCenter>
@@ -257,7 +265,7 @@ const AddEventScreen = ({ navigation, route }) => {
                         <DateTimePicker
                             value={event?.endDate || new Date()}
                             mode="date"
-                            display="inline"
+                            display="spinner"
                             onChange={(e, selectedDate) => {
                                 const currentDate = selectedDate || event?.endDate;
                                 update('endDate', currentDate);
@@ -281,7 +289,15 @@ const AddEventScreen = ({ navigation, route }) => {
                             selfCenter
                             onPress={() => setShowEndDate(true)}
                         >
-                            <TemplateText>{event?.endDate?.toDateString() || 'Select End Date'}</TemplateText>
+                            <TemplateText>
+                                {event?.endDate
+                                    ? event.endDate.toLocaleDateString(t('common.localeCode'), {
+                                          year: 'numeric',
+                                          month: 'long',
+                                          day: 'numeric',
+                                      })
+                                    : t('brands.events.addEvent.placeholders.selectEndDate')}
+                            </TemplateText>
                         </TemplateBox>
                     )}
                 </TemplateBox>
@@ -289,9 +305,9 @@ const AddEventScreen = ({ navigation, route }) => {
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_SMALL} selfCenter>
                 <TemplateText size={16}>
-                    Start Time
+                    {t('brands.events.addEvent.fields.startTime')}
                     <TemplateText size={12} ml={10} color={GREY}>
-                        {'  <Required>'}
+                        {t('brands.events.addEvent.required')}
                     </TemplateText>
                 </TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} mt={hp(8)}>
@@ -300,7 +316,7 @@ const AddEventScreen = ({ navigation, route }) => {
                             value={event?.startTime || new Date()}
                             mode="time"
                             is24Hour
-                            display="default"
+                            display="spinner"
                             onChange={(e, selectedDate) => {
                                 const currentDate = selectedDate || event?.startTime;
                                 update('startTime', currentDate);
@@ -324,7 +340,12 @@ const AddEventScreen = ({ navigation, route }) => {
                             onPress={() => setShowStartTime(true)}
                         >
                             <TemplateText>
-                                {event?.startTime?.toLocaleTimeString() || 'Select a start time'}
+                                {event?.startTime
+                                    ? event.startTime.toLocaleTimeString(t('common.localeCode'), {
+                                          hour: '2-digit',
+                                          minute: '2-digit',
+                                      })
+                                    : t('brands.events.addEvent.placeholders.selectStartTime')}
                             </TemplateText>
                         </TemplateBox>
                     )}
@@ -333,9 +354,9 @@ const AddEventScreen = ({ navigation, route }) => {
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
                 <TemplateText size={16}>
-                    Image
+                    {t('brands.events.addEvent.fields.image')}
                     <TemplateText size={12} ml={10} color={GREY}>
-                        {'  <Required>'}
+                        {t('brands.events.addEvent.required')}
                     </TemplateText>
                 </TemplateText>
                 <TemplateBox height={10} />
@@ -345,9 +366,9 @@ const AddEventScreen = ({ navigation, route }) => {
                     </TemplateBox>
                 )}
 
-                <TemplateBox
-                    onPress={() => {
-                        if (event?.image) {
+                {event?.image ? (
+                    <TemplateBox
+                        onPress={() => {
                             Alert.alert(t('common.alerts.replaceImage.message'), '', [
                                 {
                                     text: t('common.actions.cancel'),
@@ -362,19 +383,29 @@ const AddEventScreen = ({ navigation, route }) => {
                                     },
                                 },
                             ]);
-                            return;
-                        }
-                        onAddPhoto();
-                    }}
-                >
-                    <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} />
-                </TemplateBox>
+                        }}
+                        width={WRAPPED_SCREEN_WIDTH}
+                        pAll={SPACE_MEDIUM}
+                        backgroundColor={LAVENDER}
+                        borderRadius={RADIUS_SMALL}
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <TemplateText size={16} color={DEEP_PURPLE} semiBold>
+                            {t('brands.events.addEvent.buttons.replaceImage')}
+                        </TemplateText>
+                    </TemplateBox>
+                ) : (
+                    <TemplateBox onPress={() => onAddPhoto()}>
+                        <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} />
+                    </TemplateBox>
+                )}
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>Event Link</TemplateText>
+                <TemplateText size={16}>{t('brands.events.addEvent.fields.eventLink')}</TemplateText>
                 <TemplateTextInput
-                    placeholder="https://www..."
+                    placeholder={t('brands.events.addEvent.placeholders.link')}
                     placeholderTextColor={BLACK_40}
                     style={styles.input}
                     value={event?.link}
@@ -384,7 +415,7 @@ const AddEventScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <FilterCategory
-                title="Event Categories"
+                title={t('brands.events.addEvent.categories')}
                 filters={projectFilters}
                 onFilterPress={value => {
                     if (event?.categories.includes(value)) {
@@ -397,11 +428,15 @@ const AddEventScreen = ({ navigation, route }) => {
             />
 
             <Button
-                title={eventData ? 'Edit Event' : 'Create Event'}
+                title={
+                    eventData ? t('brands.events.addEvent.buttons.edit') : t('brands.events.addEvent.buttons.create')
+                }
                 onPress={handleCreateEvent}
                 style={styles.button}
                 loading={loading}
                 disabled={false}
+                height={50}
+                width={SCREEN_WIDTH - 40}
             />
         </Wrapper>
     );

@@ -20,7 +20,7 @@ import InnovativeSvg from '../../../assets/svgs/InnovativeSvg';
 import VaultSvg from '../../../assets/svgs/VaultSvg';
 import LightningSvg from '../../../assets/svgs/LightningSvg';
 import BrushSvg from '../../../assets/svgs/BrushSvg';
-import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
+import useLocalizedSubscriptionBenefits from '../../hooks/featureFlags/useLocalizedSubscriptionBenefits';
 import Button from '../../components/Button';
 import useAuthContext from '../../hooks/auth/useAuthContext';
 import ResizedImage from '../../components/ResizedImage';
@@ -41,7 +41,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const [packages, originalPackages] = useAvailablePackages(subscription?.purchase);
     const purchase = usePurchase();
 
-    const { subscriptionBenefits } = useFeatureFlags();
+    const subscriptionBenefits = useLocalizedSubscriptionBenefits();
 
     const subscriptionBenefitsIconsMap = {
         innovative: InnovativeSvg(),

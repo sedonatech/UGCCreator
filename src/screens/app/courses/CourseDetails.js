@@ -23,6 +23,7 @@ import WeekOverviewItem from './components/WeekOverviewItem';
 import LockedCourseMessage from './components/LockedCourseMessage';
 import { WHITE, ZINC_900, ZINC_500, GRAY_100 } from '../../../theme/Colors';
 import useTranslation from '../../../hooks/useTranslation';
+import { translateCourse } from '../../../lib/courseTranslations';
 
 const startOfDay = date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -30,7 +31,7 @@ const CourseDetails = ({ route }) => {
     const { auth } = useAuthContext();
     const userId = auth?.user?.uid;
     const { trackEvent } = useTrackEvent();
-    const { t } = useTranslation();
+    const { t, language } = useTranslation();
     const trackedCourseRef = useRef(null);
 
     const courseId = route?.params?.courseId;
@@ -52,7 +53,10 @@ const CourseDetails = ({ route }) => {
                             setLoading(false);
                             return;
                         }
-                        setCourse(normalizeCourse(snapshot.data(), snapshot.id));
+                        const normalizedCourse = normalizeCourse(snapshot.data(), snapshot.id);
+                        // Translate course to the current language
+                        const translatedCourse = translateCourse(normalizedCourse, language);
+                        setCourse(translatedCourse);
                         setLoading(false);
                     });
             } catch (e) {
@@ -64,7 +68,7 @@ const CourseDetails = ({ route }) => {
         return () => {
             if (unsubscribe) unsubscribe();
         };
-    }, [courseId]);
+    }, [courseId, language]);
 
     useEffect(() => {
         if (!userId || !courseId) return null;

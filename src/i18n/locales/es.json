@@ -343,7 +343,11 @@
             },
             "logout": {
                 "title": "Cerrar sesión",
-                "description": "Cierra sesión de tu cuenta"
+                "description": "Cierra sesión de tu cuenta",
+                "alertTitle": "Cerrar sesión",
+                "alertMessage": "¿Estás seguro de que quieres cerrar sesión?",
+                "cancelButton": "Cancelar",
+                "confirmButton": "Aceptar"
             },
             "language": {
                 "title": "Idioma",
@@ -530,7 +534,7 @@
         }
     },
     "courses": {
-        "title": "LevelUp",
+        "title": "Cursos",
         "sections": {
             "yourCourses": "Tus cursos"
         },
@@ -759,6 +763,7 @@
         }
     },
     "common": {
+        "localeCode": "es-ES",
         "actions": {
             "viewMore": "Ver más",
             "viewAll": "Ver todo",
@@ -900,7 +905,11 @@
                     "title": "Creadores destacados",
                     "seeAll": "Ver todo",
                     "subtitleCreator": "Colabora con otros creadores",
-                    "subtitleBrand": "Basado en tus búsquedas recientes"
+                    "subtitleBrand": "Basado en tus búsquedas recientes",
+                    "empty": {
+                        "title": "No hay creadores destacados",
+                        "description": "Estamos cargando creadores destacados para ti. ¡Vuelve a consultar en un momento!"
+                    }
                 },
                 "activeProjects": {
                     "title": "Tus proyectos activos",
@@ -1001,12 +1010,34 @@
             },
             "viewMore": "Ver más",
             "addEvent": {
+                "title": "Añadir un evento",
+                "editTitle": "Editar evento",
+                "fields": {
+                    "eventTitle": "Título del evento",
+                    "description": "Descripción",
+                    "country": "País",
+                    "city": "Ciudad",
+                    "startDate": "Fecha de inicio",
+                    "endDate": "Fecha de finalización",
+                    "startTime": "Hora de inicio",
+                    "image": "Imagen",
+                    "eventLink": "Enlace del evento"
+                },
                 "placeholders": {
                     "title": "Título del evento",
                     "description": "Descripción",
-                    "link": "https://www..."
+                    "link": "https://www...",
+                    "selectStartDate": "Seleccionar fecha de inicio",
+                    "selectEndDate": "Seleccionar fecha de finalización",
+                    "selectStartTime": "Seleccionar hora de inicio"
                 },
                 "categories": "Categorías de eventos",
+                "buttons": {
+                    "create": "Crear evento",
+                    "edit": "Editar evento",
+                    "replaceImage": "Reemplazar imagen"
+                },
+                "required": "  <Obligatorio>",
                 "alerts": {
                     "fillRequired": "Por favor, completa todos los campos obligatorios:",
                     "successCreated": "Evento creado exitosamente",

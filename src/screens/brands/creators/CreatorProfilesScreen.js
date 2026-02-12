@@ -68,7 +68,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
      * Build the Firestore Query dynamically based on state
      */
     const buildQuery = (lastDoc = null) => {
-        const constraints = [where('type', '==', 'creator'), limit(PAGE_SIZE)];
+        const constraints = [where('type', '==', 'creator')];
 
         // 1. Search Logic
         const searchTerm = search ? search.trim() : '';
@@ -94,6 +94,10 @@ const CreatorProfilesScreen = ({ navigation }) => {
             constraints.push(startAfter(lastDoc));
         }
 
+        // 4. Limit must come last
+        constraints.push(limit(PAGE_SIZE));
+
+        // Note: Sorting is handled in JavaScript after fetching to avoid index requirements
         return query(collection(db, USERS_COLLECTION), ...constraints);
     };
 
@@ -132,23 +136,37 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
             // Process data
             const newData = docs
-                .map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    lastLoginTime: doc.data().lastLoginTime
-                        ? calculateLastLoginTime(doc.data().lastLoginTime)
-                        : 'days ago',
-                }))
+                .map(doc => {
+                    const rawLastLoginTime = doc.data().lastLoginTime;
+                    return {
+                        id: doc.id,
+                        ...doc.data(),
+                        lastLoginTimeRaw: rawLastLoginTime, // Keep raw timestamp for sorting
+                        lastLoginTime: rawLastLoginTime ? calculateLastLoginTime(rawLastLoginTime) : 'days ago',
+                    };
+                })
                 // Requirement: Creators without images need to be filtered out
-                .filter(creator => creator.image && creator.image !== '');
+                .filter(creator => creator.image && creator.image !== '')
+                // Sort by last login time (most recent first)
+                .sort((a, b) => {
+                    const timeA = a.lastLoginTimeRaw?.seconds || 0;
+                    const timeB = b.lastLoginTimeRaw?.seconds || 0;
+                    return timeB - timeA; // Descending order (most recent first)
+                });
 
             // Update State
             if (isLoadMore) {
-                // Append new data, filter duplicates just in case
+                // Append new data, filter duplicates just in case, and sort the combined list
                 setCreatorsData(prev => {
                     const existingIds = new Set(prev.map(c => c.id));
                     const uniqueNew = newData.filter(c => !existingIds.has(c.id));
-                    return [...prev, ...uniqueNew];
+                    const combined = [...prev, ...uniqueNew];
+                    // Re-sort combined list to maintain order
+                    return combined.sort((a, b) => {
+                        const timeA = a.lastLoginTimeRaw?.seconds || 0;
+                        const timeB = b.lastLoginTimeRaw?.seconds || 0;
+                        return timeB - timeA;
+                    });
                 });
             } else {
                 setCreatorsData(newData);
@@ -186,6 +204,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
                 location={item?.location?.country}
                 email={item?.email}
+                lastLoginTime={item?.lastLoginTime}
                 onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
                 height={wp(194)}
                 mt={SPACE_MEDIUM}

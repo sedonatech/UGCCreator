@@ -343,7 +343,11 @@
             },
             "logout": {
                 "title": "Terminar sessão",
-                "description": "Termine sessão na sua conta"
+                "description": "Termine sessão na sua conta",
+                "alertTitle": "Terminar sessão",
+                "alertMessage": "Tem a certeza de que deseja terminar sessão?",
+                "cancelButton": "Cancelar",
+                "confirmButton": "OK"
             },
             "language": {
                 "title": "Idioma",
@@ -529,7 +533,7 @@
         }
     },
     "courses": {
-        "title": "LevelUp",
+        "title": "Cursos",
         "sections": {
             "yourCourses": "Os seus cursos"
         },
@@ -623,7 +627,7 @@
         "messagePlaceholder": "Escreva a sua mensagem aqui...",
         "notificationTitle": "Nova mensagem de",
         "rooms": {
-            "title": "Continue as suas conversas com os seus {{userType}}",
+            "title": "Continue as suas conversas com {{userType}}",
             "userType": {
                 "brands": "marcas",
                 "creators": "criadores"
@@ -769,6 +773,7 @@
         }
     },
     "common": {
+        "localeCode": "pt-PT",
         "actions": {
             "viewMore": "Ver mais",
             "viewAll": "Ver tudo",
@@ -888,6 +893,92 @@
     },
     "brands": {
         "admin": {
+            "panel": {
+                "ratePrompt": "Por favor, reserve um momento para avaliar a nossa aplicação",
+                "addProject": "Adicionar projeto",
+                "addEvent": "Adicionar evento",
+                "noCurrentProject": {
+                    "title": "Nenhum projeto ativo",
+                    "message": "Não tem nenhum projeto ativo no momento. Clique no botão + acima para adicionar um projeto!"
+                }
+            },
+            "carousels": {
+                "activeCreators": {
+                    "title": "Os seus criadores ativos",
+                    "seeAll": "Ver todos",
+                    "empty": {
+                        "title": "Nenhum criador ativo",
+                        "description": "Não tem nenhum criador ativo com quem esteja a trabalhar no momento"
+                    }
+                },
+                "featuredCreators": {
+                    "title": "Criadores em destaque",
+                    "seeAll": "Ver todos",
+                    "subtitleCreator": "Colabore com outros criadores",
+                    "subtitleBrand": "Com base nas suas pesquisas recentes",
+                    "empty": {
+                        "title": "Nenhum criador em destaque",
+                        "description": "Estamos a carregar criadores em destaque para si. Por favor, volte dentro de momentos!"
+                    }
+                },
+                "activeProjects": {
+                    "title": "Os seus projetos ativos",
+                    "seeAll": "Ver todos",
+                    "enrolledCreators": "Criadores inscritos",
+                    "noEnrolledCreators": "Nenhum criador inscrito"
+                },
+                "events": {
+                    "title": "Os seus eventos",
+                    "seeAll": "Ver todos",
+                    "noEvents": {
+                        "title": "Nenhum evento de marca",
+                        "description": "Não tem nenhum evento de marca ativo no momento. Clique no botão + acima para adicionar eventos de marca!"
+                    }
+                }
+            },
+            "addProject": {
+                "title": "Adicionar um novo projeto",
+                "fields": {
+                    "projectTitle": "Título do projeto",
+                    "shortDescription": "Descrição breve",
+                    "description": "Descrição",
+                    "startDate": "Data de início",
+                    "endDate": "Data de término",
+                    "image": "Imagem",
+                    "maxBudget": "Orçamento máximo",
+                    "minBudget": "Orçamento mínimo",
+                    "currency": "Moeda"
+                },
+                "placeholders": {
+                    "projectTitle": "Título do projeto",
+                    "shortDescription": "Descrição breve",
+                    "description": "Descrição",
+                    "maxBudget": "Limite de orçamento máximo",
+                    "minBudget": "Limite de orçamento mínimo"
+                },
+                "categories": {
+                    "deliveryFormat": "Formato de entrega",
+                    "projectType": "Tipo de projeto",
+                    "projectCategories": "Categorias de projeto",
+                    "country": "País",
+                    "language": "Idioma",
+                    "gender": "Género",
+                    "projectDuration": "Duração do projeto"
+                },
+                "buttons": {
+                    "create": "Criar projeto"
+                },
+                "image": {
+                    "addInstruction": "Toque para adicionar imagem do projeto",
+                    "replaceInstruction": "Toque para substituir imagem",
+                    "replaceConfirm": "Tem a certeza de que deseja substituir a imagem?"
+                },
+                "alerts": {
+                    "fillRequired": "Por favor, preencha todos os campos obrigatórios:",
+                    "successTitle": "Projeto criado com sucesso",
+                    "successMessage": "Pode ver o seu projeto na secção de projetos"
+                }
+            },
             "activeCreators": {
                 "title": "Criadores ativos",
                 "viewProjectStatus": "Ver estado do projeto",
@@ -929,12 +1020,34 @@
             },
             "viewMore": "Ver mais",
             "addEvent": {
+                "title": "Adicionar um evento",
+                "editTitle": "Editar evento",
+                "fields": {
+                    "eventTitle": "Título do evento",
+                    "description": "Descrição",
+                    "country": "País",
+                    "city": "Cidade",
+                    "startDate": "Data de início",
+                    "endDate": "Data de término",
+                    "startTime": "Horário de início",
+                    "image": "Imagem",
+                    "eventLink": "Link do evento"
+                },
                 "placeholders": {
                     "title": "Título do evento",
                     "description": "Descrição",
-                    "link": "https://www..."
+                    "link": "https://www...",
+                    "selectStartDate": "Selecionar data de início",
+                    "selectEndDate": "Selecionar data de término",
+                    "selectStartTime": "Selecionar horário de início"
                 },
                 "categories": "Categorias de eventos",
+                "buttons": {
+                    "create": "Criar evento",
+                    "edit": "Editar evento",
+                    "replaceImage": "Substituir imagem"
+                },
+                "required": "  <Obrigatório>",
                 "alerts": {
                     "fillRequired": "Por favor, preencha todos os campos obrigatórios:",
                     "successCreated": "Evento criado com sucesso",
@@ -993,6 +1106,7 @@
         }
     },
     "common": {
+        "localeCode": "pt-PT",
         "actions": {
             "viewMore": "Ver mais",
             "viewAll": "Ver tudo",

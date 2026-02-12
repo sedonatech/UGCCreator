@@ -21,11 +21,12 @@ import CourseListItem from './components/CourseListItem';
 import SeedCoursesButton from './components/SeedCoursesButton';
 import { WHITE, ZINC_900, ZINC_500 } from '../../../theme/Colors';
 import useTranslation from '../../../hooks/useTranslation';
+import { translateCourses } from '../../../lib/courseTranslations';
 
 const CoursesScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
 
-    const { t } = useTranslation();
+    const { t, language } = useTranslation();
 
     const userId = auth?.user?.uid;
     const isAdmin = !!(
@@ -49,7 +50,9 @@ const CoursesScreen = ({ navigation }) => {
                         const nextCourses = snapshot.docs
                             .map(doc => normalizeCourse(doc.data(), doc.id))
                             .sort((a, b) => (a?.order || 0) - (b?.order || 0));
-                        setCourses(nextCourses);
+                        // Translate courses to the current language
+                        const translatedCourses = translateCourses(nextCourses, language);
+                        setCourses(translatedCourses);
                         setLoading(false);
                     });
             } catch (e) {
@@ -62,7 +65,7 @@ const CoursesScreen = ({ navigation }) => {
         return () => {
             if (unsubscribe) unsubscribe();
         };
-    }, []);
+    }, [language]);
 
     useEffect(() => {
         if (!userId) return null;

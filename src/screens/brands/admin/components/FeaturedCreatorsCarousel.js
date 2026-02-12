@@ -15,6 +15,7 @@ import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Po
 import { wp } from '../../../../Utils/getResponsiveSize';
 import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
 import useTranslation from '../../../../hooks/useTranslation';
+import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 
 const SAMPLE_SIZE = 5;
 const USERS_COLLECTION = 'users';
@@ -112,7 +113,14 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
             />
         </View>
     ) : (
-        <ActivityIndicator color={IOS_BLUE} size="large" />
+        <ProfileStatusCard
+            title={t('brands.admin.carousels.featuredCreators.empty.title')}
+            description={t('brands.admin.carousels.featuredCreators.empty.description')}
+            showProgress={false}
+            showIcon={false}
+            style={styles.statusCard}
+            slideInDelay={200}
+        />
     );
 };
 
@@ -143,6 +151,9 @@ const styles = StyleSheet.create({
         height: wp(80),
         borderRadius: wp(16),
         marginRight: wp(14),
+    },
+    statusCard: {
+        marginBottom: 10,
     },
 });
 export default FeaturedCreatorsCarousel;
