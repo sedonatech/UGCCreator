@@ -161,11 +161,11 @@ const AffiliateBrandsCarousel = ({ style }) => {
                             onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                         >
                             <TemplateText size={12} color={METAL} medium>
-                                Performance based
+                                {t('home.affiliateBrandsCarousel.performanceBased')}
                             </TemplateText>
                             <TemplateBox flex />
                             <TemplateText size={14} color={BLUE_500} medium>
-                                View Details
+                                {t('home.affiliateBrandsCarousel.viewDetails')}
                             </TemplateText>
                             <DynamicIcon name="ArrowRight" color={BLUE_500} />
                         </TemplateBox>

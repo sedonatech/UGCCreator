@@ -121,7 +121,9 @@
             "title": "Brand Collabs",
             "seeAll": "See All",
             "subtitle": "Explore our brand collaborations",
-            "description": "Discover brand collabs, ambassador deals, and affiliate programs matched to your niche."
+            "description": "Discover brand collabs, ambassador deals, and affiliate programs matched to your niche.",
+            "viewDetails": "View Details",
+            "performanceBased": "Performance based"
         },
         "showcase": {
             "title": "Featured Creator Showcase",

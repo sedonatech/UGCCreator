@@ -25,8 +25,10 @@ import ToggleCarousel from '../../../components/ToggleCarousel';
 import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
 import { getCapitalizedFirstLetter } from '../../../Utils/texts';
+import useTranslation from '../../../hooks/useTranslation';
 
 const AffiliateBrandsScreen = ({ navigation, route }) => {
+    const { t } = useTranslation();
     const { affiliate } = useFeatureFlags();
     const title = route?.params?.title;
     const affiliateBrands = affiliate?.brands;
@@ -146,11 +148,11 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                 onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
             >
                 <TemplateText size={12} color={METAL} medium>
-                    Performance based
+                    {t('home.affiliateBrandsCarousel.performanceBased')}
                 </TemplateText>
                 <TemplateBox flex />
                 <TemplateText size={14} color={BLUE_500} medium>
-                    View Details
+                    {t('home.affiliateBrandsCarousel.viewDetails')}
                 </TemplateText>
                 <DynamicIcon name="ArrowRight" color={BLUE_500} />
             </TemplateBox>
@@ -177,7 +179,7 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                         </TemplateText>
                         <TemplateBox center ph={WRAPPER_MARGIN} mt={8}>
                             <TemplateText size={13} color={BLACK} center mt={8} ml={WRAPPER_MARGIN}>
-                                Discover brand collabs, ambassador deals, and affiliate programs matched to your niche.
+                                {t('home.affiliateBrandsCarousel.description')}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox selfCenter flex>
