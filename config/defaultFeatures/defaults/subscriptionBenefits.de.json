@@ -1,0 +1,56 @@
+{
+    "benefits": [
+        {
+            "title": "Collab-Feed",
+            "description": "Taegliche Updates mit Marken-Collabs und Ambassador-Deals, auf die du dich jetzt bewerben kannst.",
+            "icon": "lightning"
+        },
+        {
+            "title": "Ambassador- und Affiliate-Hub",
+            "description": "Verifizierte Ambassador-, Influencer- und Affiliate-Programme mit direkten Bewerbungslinks.",
+            "icon": "vault"
+        },
+        {
+            "title": "Intelligente Matches",
+            "description": "Empfohlene Collabs und Ambassador-Angebote, die zu deiner Nische und Zielgruppe passen.",
+            "icon": "innovative"
+        }
+    ],
+    "brandBenefits": [
+        {
+            "title": "Vernetze dich",
+            "description": "Finde als Marke passende UGC-Creator basierend auf deinen Praeferenzen.",
+            "icon": "vault"
+        },
+        {
+            "title": "Innovativ",
+            "description": "Erhalte UGC-Creator-Empfehlungen passend zu deinem Profil.",
+            "icon": "innovative"
+        },
+        {
+            "title": "Transparent und effizient",
+            "description": "Verwalte deine UGC-Content-Erstellung direkt in der App transparent und effizient.",
+            "icon": "brush"
+        }
+    ],
+    "buttonCta": "Vollzugriff starten",
+    "title": "Nimm bezahlte UGC-Arbeit ernst",
+    "subtitle": "Finde Brand-Deals, Ambassador- und Affiliate-Programme",
+    "reviews": [
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage.png?alt=media&token=6019525c-1c03-4b35-8a4f-93c059fae439",
+            "title": "Wirklich stark",
+            "subtitle": "Mir hat die App auf Anhieb gefallen - die UI ist sehr intuitiv und die Funktionen sind richtig gut."
+        },
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage-3.png?alt=media&token=3ff20ef9-aaa9-467f-9b7e-26516b6433fb",
+            "title": "Ich bin begeistert",
+            "subtitle": "Ich war unsicher, ob die App zu mir passt, aber nach ein paar Tagen Test kann ich sagen: richtig gut."
+        },
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage-4.png?alt=media&token=05ae1cda-348c-4d6c-8148-adb2baa82615",
+            "title": "Ich liebe diese App",
+            "subtitle": "Tolle App, hat alles was ich brauche und noch mehr - fuer einen fairen Preis."
+        }
+    ]
+}

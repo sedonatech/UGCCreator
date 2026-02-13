@@ -1,0 +1,56 @@
+{
+    "benefits": [
+        {
+            "title": "Fil de collaborations",
+            "description": "Arrivages quotidiens de collaborations de marque et d'offres d'ambassadeur auxquelles vous pouvez postuler maintenant.",
+            "icon": "lightning"
+        },
+        {
+            "title": "Hub ambassadeurs et affiliation",
+            "description": "Programmes verifies d'ambassadeurs, d'influence et d'affiliation avec liens directs pour postuler.",
+            "icon": "vault"
+        },
+        {
+            "title": "Matchs intelligents",
+            "description": "Collaborations et offres d'ambassadeur recommandees selon votre niche et votre audience.",
+            "icon": "innovative"
+        }
+    ],
+    "brandBenefits": [
+        {
+            "title": "Connectez-vous",
+            "description": "Associez votre marque a des createurs UGC selon vos preferences.",
+            "icon": "vault"
+        },
+        {
+            "title": "Innovant",
+            "description": "Recevez des recommandations de createurs UGC selon les preferences de votre profil.",
+            "icon": "innovative"
+        },
+        {
+            "title": "Transparent et efficace",
+            "description": "Gerez votre production de contenu UGC dans l'application de maniere transparente et efficace.",
+            "icon": "brush"
+        }
+    ],
+    "buttonCta": "Demarrer l'acces complet",
+    "title": "Passez au niveau superieur en UGC paye",
+    "subtitle": "Trouvez des deals de marque, programmes d'ambassadeur et d'affiliation",
+    "reviews": [
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage.png?alt=media&token=6019525c-1c03-4b35-8a4f-93c059fae439",
+            "title": "Vraiment genial",
+            "subtitle": "J'ai aime cette application des le premier regard: l'interface est intuitive et les fonctionnalites sont excellentes."
+        },
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage-3.png?alt=media&token=3ff20ef9-aaa9-467f-9b7e-26516b6433fb",
+            "title": "Je suis ravie",
+            "subtitle": "Je n'etais pas sure que cette application me convienne, mais apres quelques jours d'essai, je peux dire qu'elle est top."
+        },
+        {
+            "image": "https://firebasestorage.googleapis.com/v0/b/ugccreatorapp.appspot.com/o/onboardingImages%2FImage-4.png?alt=media&token=05ae1cda-348c-4d6c-8148-adb2baa82615",
+            "title": "J'adore cette app",
+            "subtitle": "Super application, elle offre tout ce que je veux et bien plus, pour un prix abordable."
+        }
+    ]
+}
