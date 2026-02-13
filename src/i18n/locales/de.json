@@ -591,7 +591,19 @@
             }
         },
         "task": {
-            "duration": "~{{minutes}} Min"
+            "duration": "~{{minutes}} Min",
+            "viewDetails": "Details ansehen",
+            "label": "Aufgabe"
+        },
+        "taskDetails": {
+            "overview": "Überblick",
+            "whyItMatters": "Warum das wichtig ist",
+            "steps": "Schritte",
+            "deliverable": "Ergebnis",
+            "suggestedSources": "Empfohlene Quellen",
+            "doneWhen": "Fertig, wenn",
+            "markComplete": "Als erledigt markieren",
+            "markIncomplete": "Als nicht erledigt markieren"
         },
         "proTip": {
             "title": "Profi-Tipp des Tages"

@@ -602,7 +602,19 @@
             }
         },
         "task": {
-            "duration": "~{{minutes}} min"
+            "duration": "~{{minutes}} min",
+            "viewDetails": "Ver detalhes",
+            "label": "Tarefa"
+        },
+        "taskDetails": {
+            "overview": "Visão geral",
+            "whyItMatters": "Por que isso importa",
+            "steps": "Passos",
+            "deliverable": "Entregável",
+            "suggestedSources": "Fontes sugeridas",
+            "doneWhen": "Concluído quando",
+            "markComplete": "Marcar como concluída",
+            "markIncomplete": "Marcar como incompleta"
         },
         "proTip": {
             "title": "Dica profissional do dia"

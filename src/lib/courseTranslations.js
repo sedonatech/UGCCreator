@@ -1,4 +1,43 @@
 import { getCourseSeed } from '../consts/courses/courseSeed';
+import { ensureTaskHasDetails } from '../Utils/courseTaskDetails';
+
+const mergeTranslatedTasks = (translatedDay, sourceDay, language) => {
+    const translatedTasks = translatedDay?.tasks || [];
+    const sourceTasks = sourceDay?.tasks || [];
+    const taskCount = Math.max(translatedTasks.length, sourceTasks.length);
+    const shouldReuseSourceDetails = (language || 'en').toLowerCase().startsWith('en');
+
+    return Array.from({ length: taskCount }).map((_, index) => {
+        const translatedTask = translatedTasks[index] || {};
+        const sourceTask = sourceTasks[index] || {};
+        return ensureTaskHasDetails(
+            {
+                ...sourceTask,
+                ...translatedTask,
+                details: translatedTask?.details || (shouldReuseSourceDetails ? sourceTask?.details : undefined),
+            },
+            translatedDay?.title || sourceDay?.title,
+            language,
+        );
+    });
+};
+
+const mergeTranslatedDays = (translatedDays, sourceDays, language) => {
+    const source = sourceDays || [];
+    const translated = translatedDays || [];
+    const dayCount = Math.max(translated.length, source.length);
+
+    return Array.from({ length: dayCount }).map((_, index) => {
+        const translatedDay = translated[index] || source[index] || {};
+        const sourceDay = source.find(day => day.day === translatedDay?.day) || source[index] || {};
+
+        return {
+            ...sourceDay,
+            ...translatedDay,
+            tasks: mergeTranslatedTasks(translatedDay, sourceDay, language),
+        };
+    });
+};
 
 /**
  * Translates a course object to the current language
@@ -20,14 +59,14 @@ export const translateCourse = (course, language = 'en') => {
         return course;
     }
 
-    // Merge the translated content with the original course data
+    // Merge translated content while preserving computed task details
     return {
         ...course,
         title: courseTemplate.title,
         subtitle: courseTemplate.subtitle,
         shortDescription: courseTemplate.shortDescription,
         description: courseTemplate.description,
-        days: courseTemplate.days,
+        days: mergeTranslatedDays(courseTemplate.days, course.days, language),
     };
 };
 

@@ -591,7 +591,19 @@
             }
         },
         "task": {
-            "duration": "~{{minutes}} min"
+            "duration": "~{{minutes}} min",
+            "viewDetails": "Ver detalles",
+            "label": "Tarea"
+        },
+        "taskDetails": {
+            "overview": "Resumen",
+            "whyItMatters": "Por qué importa",
+            "steps": "Pasos",
+            "deliverable": "Entregable",
+            "suggestedSources": "Fuentes sugeridas",
+            "doneWhen": "Completado cuando",
+            "markComplete": "Marcar como completada",
+            "markIncomplete": "Marcar como incompleta"
         },
         "proTip": {
             "title": "Consejo profesional del día"

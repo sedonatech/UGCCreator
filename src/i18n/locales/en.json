@@ -591,7 +591,19 @@
             }
         },
         "task": {
-            "duration": "~{{minutes}} min"
+            "duration": "~{{minutes}} min",
+            "viewDetails": "View details",
+            "label": "Task"
+        },
+        "taskDetails": {
+            "overview": "Overview",
+            "whyItMatters": "Why This Matters",
+            "steps": "Steps",
+            "deliverable": "Deliverable",
+            "suggestedSources": "Suggested Sources",
+            "doneWhen": "Done When",
+            "markComplete": "Mark as Complete",
+            "markIncomplete": "Mark as Incomplete"
         },
         "proTip": {
             "title": "Pro Tip of the Day"
