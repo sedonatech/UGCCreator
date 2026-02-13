@@ -120,7 +120,8 @@ const SettingsScreen = ({ navigation }) => {
             onPress: handleLogout,
             icon: 'log-out-outline',
         },
-    ];
+    ]?.filter(Boolean);
+
 
     useLayoutEffect(() => {
         navigation.setOptions({
