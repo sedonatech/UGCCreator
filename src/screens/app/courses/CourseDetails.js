@@ -21,6 +21,7 @@ import TaskCard from './components/TaskCard';
 import ProTipCard from './components/ProTipCard';
 import WeekOverviewItem from './components/WeekOverviewItem';
 import LockedCourseMessage from './components/LockedCourseMessage';
+import TaskDetailsModal from './components/TaskDetailsModal';
 import { WHITE, ZINC_900, ZINC_500, GRAY_100 } from '../../../theme/Colors';
 import useTranslation from '../../../hooks/useTranslation';
 import { translateCourse } from '../../../lib/courseTranslations';
@@ -38,6 +39,7 @@ const CourseDetails = ({ route }) => {
     const [course, setCourse] = useState(null);
     const [progress, setProgress] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [selectedTaskIndex, setSelectedTaskIndex] = useState(null);
 
     useEffect(() => {
         if (!courseId) return null;
@@ -93,6 +95,8 @@ const CourseDetails = ({ route }) => {
     const completedDays = progress?.completedDays || [];
     const completedTasks = progress?.completedTasks?.[String(currentDayNumber)] || [];
     const completionRatio = totalDays ? Math.round(((progress?.completedDays?.length || 0) / totalDays) * 100) : 0;
+    const selectedTask = selectedTaskIndex === null ? null : currentDayData?.tasks?.[selectedTaskIndex];
+    const isSelectedTaskComplete = selectedTaskIndex === null ? false : completedTasks.includes(selectedTaskIndex);
 
     const weekDays = useMemo(() => {
         if (!course?.days?.length) return [];
@@ -208,6 +212,23 @@ const CourseDetails = ({ route }) => {
         ]);
     }, [course, courseId, userId, t, trackEvent]);
 
+    const handleOpenTaskDetails = useCallback(
+        taskIndex => {
+            if (isLocked || !currentDayData?.tasks?.[taskIndex]) return;
+            setSelectedTaskIndex(taskIndex);
+        },
+        [currentDayData?.tasks, isLocked],
+    );
+
+    const handleCloseTaskDetails = useCallback(() => {
+        setSelectedTaskIndex(null);
+    }, []);
+
+    const handleToggleTaskFromModal = useCallback(async () => {
+        if (selectedTaskIndex === null) return;
+        await handleToggleTask(selectedTaskIndex);
+    }, [handleToggleTask, selectedTaskIndex]);
+
     useEffect(() => {
         if (!course?.id) return;
         if (trackedCourseRef.current === course.id) return;
@@ -217,6 +238,13 @@ const CourseDetails = ({ route }) => {
             courseName: course?.title,
         });
     }, [course?.id, course?.title]);
+
+    useEffect(() => {
+        if (selectedTaskIndex === null) return;
+        if (!currentDayData?.tasks?.[selectedTaskIndex]) {
+            setSelectedTaskIndex(null);
+        }
+    }, [currentDayData?.tasks, selectedTaskIndex]);
 
     return (
         <ScrollView
@@ -261,6 +289,7 @@ const CourseDetails = ({ route }) => {
                                 index={index}
                                 isComplete={isComplete}
                                 onToggle={handleToggleTask}
+                                onOpenDetails={handleOpenTaskDetails}
                                 dayNumber={currentDayData.day}
                                 disabled={loading}
                             />
@@ -295,6 +324,14 @@ const CourseDetails = ({ route }) => {
                     );
                 })}
             </TemplateBox>
+
+            <TaskDetailsModal
+                visible={selectedTaskIndex !== null}
+                task={selectedTask}
+                isComplete={isSelectedTaskComplete}
+                onClose={handleCloseTaskDetails}
+                onToggleComplete={handleToggleTaskFromModal}
+            />
         </ScrollView>
     );
 };

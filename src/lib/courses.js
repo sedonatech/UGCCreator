@@ -1,5 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import { getCourseSeed } from '../consts/courses/courseSeed';
+import { ensureTaskHasDetails } from '../Utils/courseTaskDetails';
 
 export const COURSES_COLLECTION = 'courses';
 export const COURSE_PROGRESS_COLLECTION = 'courseProgress';
@@ -10,9 +11,15 @@ export const normalizeCourse = (data, id) => {
         : data?.releaseAt
         ? new Date(data.releaseAt)
         : null;
+    const days = (data?.days || []).map(day => ({
+        ...day,
+        tasks: (day?.tasks || []).map(task => ensureTaskHasDetails(task, day?.title)),
+    }));
+
     return {
         id: id || data?.id,
         ...data,
+        days,
         releaseAt,
     };
 };

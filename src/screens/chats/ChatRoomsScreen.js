@@ -9,7 +9,7 @@ import {
     ActivityIndicator,
     TouchableWithoutFeedback,
 } from 'react-native';
-import React, { useEffect, useMemo, useState, useRef, useLayoutEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect } from 'react';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import {
     getFirestore,
@@ -68,7 +68,12 @@ const ChatRoomsScreen = ({ navigation }) => {
 
     const [limit, setLimit] = useState(10);
 
-    const { createChatRoom } = useChatsContext();
+    const {
+        createChatRoom,
+        deleteChatRoom,
+        fetchChatRooms: refreshChatRoomsFromContext,
+        fetchingChatRooms: fetchingChatRoomsFromContext,
+    } = useChatsContext();
 
     const [supportFcmToken, setSupportFcmToken] = useState({});
 
@@ -148,12 +153,7 @@ const ChatRoomsScreen = ({ navigation }) => {
         };
     }, [isCreator, userId, limit]);
 
-    const {
-        // chatRooms,
-        fetchChatRooms,
-        fetchingChatRooms,
-        deleteChatRoom,
-    } = useChatsContext();
+    const [isPullRefreshing, setIsPullRefreshing] = useState(false);
 
     const [search, setSearch] = useState('');
 
@@ -200,12 +200,27 @@ const ChatRoomsScreen = ({ navigation }) => {
                     deleteChatRoom(chatRoomId);
                     swipeRef?.current?.close();
                     setChatRooms(chatRooms?.filter(item => item?.id !== chatRoomId));
-                    fetchChatRooms();
+                    if (typeof refreshChatRoomsFromContext === 'function') {
+                        refreshChatRoomsFromContext();
+                    }
                 },
                 style: 'destructive',
             },
         ]);
     };
+
+    const handleRefresh = useCallback(async () => {
+        setIsPullRefreshing(true);
+        try {
+            if (typeof refreshChatRoomsFromContext === 'function') {
+                await refreshChatRoomsFromContext();
+            }
+        } finally {
+            setIsPullRefreshing(false);
+        }
+    }, [refreshChatRoomsFromContext]);
+
+    const isRefreshing = Boolean(fetchingChatRoomsFromContext) || isPullRefreshing;
 
     useLayoutEffect(() => {
         if (showSupportChat) {
@@ -282,7 +297,7 @@ const ChatRoomsScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.mainContainer}>
             <StatusBar barStyle="dark-content" />
-            <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ backgroundColor: 'red', flex: 1 }}>
+            <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     <FlatList
                         data={searchedChatRooms}
@@ -291,7 +306,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                         ListHeaderComponent={
                             <>
                                 <TemplateBox
-                                    mt={HEADER_MARGIN}
+                                    mt={HEADER_MARGIN * 1.5}
                                     alignItems="center"
                                     justifyContent="center"
                                     mh={WRAPPER_MARGIN}
@@ -368,7 +383,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 justifyContent="center"
                                 mh={WRAPPER_MARGIN}
                             >
-                                {fetchingChatRooms ? (
+                                {isRefreshing ? (
                                     <ActivityIndicator size="large" color={IOS_BLUE} />
                                 ) : (
                                     <TemplateBox alignItems="center">
@@ -393,7 +408,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                         }
                         style={styles.container}
                         contentContainerStyle={styles.contentContainer}
-                        refreshControl={<RefreshControl refreshing={fetchingChatRooms} onRefresh={fetchChatRooms} />}
+                        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
                         initialNumToRender={5}
                         onEndReachedThreshold={0.5}
                         onEndReached={() => {
@@ -406,8 +421,8 @@ const ChatRoomsScreen = ({ navigation }) => {
                             style={{
                                 position: 'absolute',
                                 right: WRAPPER_MARGIN,
-                                top: HEADER_MARGIN * 0.85,
-                                zIndex: 99,
+                                top: HEADER_MARGIN * 1.5,
+                                zIndex: 9999,
                             }}
                         >
                             {options?.map(({ title, onPress }, index) => (
