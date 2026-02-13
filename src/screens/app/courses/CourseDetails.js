@@ -227,6 +227,7 @@ const CourseDetails = ({ route }) => {
     const handleToggleTaskFromModal = useCallback(async () => {
         if (selectedTaskIndex === null) return;
         await handleToggleTask(selectedTaskIndex);
+        handleCloseTaskDetails();
     }, [handleToggleTask, selectedTaskIndex]);
 
     useEffect(() => {

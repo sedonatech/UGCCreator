@@ -1,11 +1,13 @@
 import firestore from '@react-native-firebase/firestore';
 import { getCourseSeed } from '../consts/courses/courseSeed';
 import { ensureTaskHasDetails } from '../Utils/courseTaskDetails';
+import { getCurrentLanguage } from '../i18n';
 
 export const COURSES_COLLECTION = 'courses';
 export const COURSE_PROGRESS_COLLECTION = 'courseProgress';
 
 export const normalizeCourse = (data, id) => {
+    const language = getCurrentLanguage();
     const releaseAt = data?.releaseAt?.toDate
         ? data.releaseAt.toDate()
         : data?.releaseAt
@@ -13,7 +15,7 @@ export const normalizeCourse = (data, id) => {
         : null;
     const days = (data?.days || []).map(day => ({
         ...day,
-        tasks: (day?.tasks || []).map(task => ensureTaskHasDetails(task, day?.title)),
+        tasks: (day?.tasks || []).map(task => ensureTaskHasDetails(task, day?.title, language)),
     }));
 
     return {
@@ -35,16 +37,13 @@ export const getDefaultCourseProgress = (course, isLocked) => ({
 
 export const ensureCoursesSeeded = async ({ isAdmin, allowDev = false } = {}) => {
     if (!isAdmin && !allowDev) return false;
-    const snapshot = await firestore().collection(COURSES_COLLECTION).get();
-    const existingIds = new Set(snapshot.docs.map(doc => doc.id));
     const batch = firestore().batch();
     let hasWrites = false;
 
-    // Get course seed data for the current user's language
-    const courseSeed = getCourseSeed();
+    // Seed canonical course content in English so older app versions read predictable data.
+    const courseSeed = getCourseSeed('en');
 
     courseSeed.forEach(course => {
-        if (existingIds.has(course.id)) return;
         const ref = firestore().collection(COURSES_COLLECTION).doc(course.id);
         const payload = {
             ...course,
