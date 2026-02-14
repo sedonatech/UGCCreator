@@ -1,10 +1,11 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-import { BLACK, BLACK_10, BLACK_20, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLACK, BLACK_20, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -61,14 +62,11 @@ const HomeScreen = ({ navigation }) => {
     const profileImage = profile?.image;
     const isFocused = useIsFocused();
     const { challenges, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
-    const hasShownOngoingChallengeToastRef = useRef(false);
+    const CHALLENGE_TOAST_DISMISSED_KEY = 'challenge_toast_dismissed';
 
     useEffect(() => {
-        if (!isFocused) {
-            hasShownOngoingChallengeToastRef.current = false;
-            return;
-        }
-        if (challengeLoading) return;
+        if (!isFocused || challengeLoading) return;
+
         const nowMs = Date.now();
         const ongoingChallenges = (challenges ?? []).filter(challenge => {
             const startMs = challenge.challengeStartAt?.toDate?.()?.getTime?.();
@@ -78,18 +76,25 @@ const HomeScreen = ({ navigation }) => {
         });
 
         if (ongoingChallenges.length === 0) return;
-        if (hasShownOngoingChallengeToastRef.current) return;
 
-        hasShownOngoingChallengeToastRef.current = true;
+        AsyncStorage.getItem(CHALLENGE_TOAST_DISMISSED_KEY).then(dismissed => {
+            if (dismissed) return;
 
-        Toast.show({
-            type: 'info',
-            text1: t('home.challenges.toastTitle'),
-            text2: t('home.challenges.toastMessage'),
-            position: 'top',
-            visibilityTime: 3500,
-            autoHide: true,
-            topOffset: 56,
+            Toast.show({
+                type: 'info',
+                text1: t('home.challenges.toastTitle'),
+                text2: t('home.challenges.toastMessage'),
+                position: 'top',
+                visibilityTime: 3500,
+                autoHide: true,
+                topOffset: 56,
+                onPress: () => {
+                    AsyncStorage.setItem(CHALLENGE_TOAST_DISMISSED_KEY, 'true');
+                    Toast.hide();
+                },
+            });
+
+            AsyncStorage.setItem(CHALLENGE_TOAST_DISMISSED_KEY, 'true');
         });
     }, [isFocused, challengeLoading, challenges]);
 
