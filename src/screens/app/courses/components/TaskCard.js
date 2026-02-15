@@ -58,37 +58,75 @@ const TAG_TEXT_COLORS = {
     Review: AMBER_600,
 };
 
-const TaskCard = ({ task, index, isComplete, onToggle, dayNumber, disabled }) => {
+const TAG_TYPE_BY_KEY = {
+    learn: 'Learn',
+    lernen: 'Learn',
+    aprende: 'Learn',
+    apprendre: 'Learn',
+    aprender: 'Learn',
+    action: 'Action',
+    accion: 'Action',
+    aktion: 'Action',
+    acao: 'Action',
+    build: 'Build',
+    construye: 'Build',
+    construire: 'Build',
+    construir: 'Build',
+    erstellen: 'Build',
+    review: 'Review',
+    revisa: 'Review',
+    revision: 'Review',
+    revisao: 'Review',
+    uberprufung: 'Review',
+};
+
+const normalizeTagKey = value =>
+    (value || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+const resolveTagType = tag => TAG_TYPE_BY_KEY[normalizeTagKey(tag)] || 'Learn';
+
+const TaskCard = ({ task, index, isComplete, onToggle, onOpenDetails, dayNumber, disabled }) => {
     const { t } = useTranslation();
-    const tagStyle = TAG_STYLES[task.tag] || TAG_STYLES.Learn;
-    const tagTextColor = TAG_TEXT_COLORS[task.tag] || TAG_TEXT_COLORS.Learn;
+    const tagType = resolveTagType(task.tag);
+    const tagStyle = TAG_STYLES[tagType] || TAG_STYLES.Learn;
+    const tagTextColor = TAG_TEXT_COLORS[tagType] || TAG_TEXT_COLORS.Learn;
 
     return (
-        <TemplateBox
-            key={`${dayNumber}-${index}`}
-            style={styles.taskCard}
-            onPress={() => onToggle(index)}
-            disabled={disabled}
-        >
-            <TemplateBox style={isComplete ? styles.checkBox : styles.uncheckedBox}>
+        <TemplateBox key={`${dayNumber}-${index}`} style={styles.taskCard}>
+            <TemplateBox
+                style={isComplete ? styles.checkBox : styles.uncheckedBox}
+                onPress={() => onToggle(index)}
+                disabled={disabled}
+            >
                 {isComplete && <TemplateIcon name="checkmark" size={12} color={WHITE} />}
             </TemplateBox>
-            <TemplateBox style={styles.taskContent}>
+            <TemplateBox style={styles.taskContent} onPress={() => onOpenDetails(index)} disabled={disabled}>
                 <TemplateText size={14} medium color={styles.textPrimary.color} mb={4}>
                     {task.title}
                 </TemplateText>
                 <TemplateText size={12} color={styles.textMuted.color} lineHeight={18}>
                     {task.description}
                 </TemplateText>
-                <TemplateBox row alignItems="center" mt={8}>
-                    <TemplateBox style={[styles.tagPill, tagStyle]}>
-                        <TemplateText size={10} color={tagTextColor}>
-                            {task.tag}
+                <TemplateBox row alignItems="center" mt={8} justifyContent="space-between">
+                    <TemplateBox row alignItems="center">
+                        <TemplateBox style={[styles.tagPill, tagStyle]}>
+                            <TemplateText size={10} color={tagTextColor}>
+                                {task.tag}
+                            </TemplateText>
+                        </TemplateBox>
+                        <TemplateText size={11} color={styles.textMuted.color} ml={8}>
+                            {t('courses.task.duration', { minutes: task.durationMinutes })}
                         </TemplateText>
                     </TemplateBox>
-                    <TemplateText size={11} color={styles.textMuted.color} ml={8}>
-                        {t('courses.task.duration', { minutes: task.durationMinutes })}
-                    </TemplateText>
+                    <TemplateBox style={[styles.tagPill, tagStyle]}>
+                        <TemplateText size={10} color={tagTextColor} medium>
+                            {t('courses.task.viewDetails')}
+                        </TemplateText>
+                    </TemplateBox>
                 </TemplateBox>
             </TemplateBox>
         </TemplateBox>
@@ -105,6 +143,7 @@ TaskCard.propTypes = {
     index: PropTypes.number.isRequired,
     isComplete: PropTypes.bool.isRequired,
     onToggle: PropTypes.func.isRequired,
+    onOpenDetails: PropTypes.func.isRequired,
     dayNumber: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
 };
@@ -130,6 +169,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 2,
+        borderWidth: 1,
+        borderColor: INDIGO_600,
     },
     uncheckedBox: {
         width: 20,

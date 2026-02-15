@@ -24,9 +24,23 @@ export const subscriptionBenefitsMap = {
     'pt-PT': subscriptionBenefitsPtPT,
 };
 
+const resolveSubscriptionBenefitsLanguage = (language = 'en') => {
+    if (subscriptionBenefitsMap[language]) return language;
+
+    const normalized = (language || 'en').replace('_', '-');
+    if (subscriptionBenefitsMap[normalized]) return normalized;
+
+    const baseLanguage = normalized.split('-')[0];
+    if (baseLanguage === 'pt') return 'pt-BR';
+    if (subscriptionBenefitsMap[baseLanguage]) return baseLanguage;
+
+    return 'en';
+};
+
 // Function to get subscription benefits for a specific language
 export const getSubscriptionBenefits = (language = 'en') => {
-    return subscriptionBenefitsMap[language] || subscriptionBenefits;
+    const targetLanguage = resolveSubscriptionBenefitsLanguage(language);
+    return subscriptionBenefitsMap[targetLanguage] || subscriptionBenefits;
 };
 
 export default {
