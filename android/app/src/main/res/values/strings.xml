@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">UGCCreatorApp</string>
-    <string moduleConfig="true" name="CodePushDeploymentKey">IkZfLpe-xQGFMpxqoN_655oHjE7XnmeW75Oil</string>
     <string name="facebook_app_id">2996542933821709</string>
 </resources>

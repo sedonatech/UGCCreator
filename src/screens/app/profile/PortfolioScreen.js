@@ -133,7 +133,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                                     singlePage={true}
                                     fitPolicy={0}
                                     spacing={0}
-                                    cache={false}
+                                    trustAllCerts={false}
                                     scrollEnabled={true}
                                     style={{
                                         width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,

@@ -18,9 +18,6 @@
 | <ul><li>- [ ] </li></ul> | <ul><li>- [ ] </li></ul> | Created Automated Tests(Sofy) |
 | <ul><li>- [ ] </li></ul> | <ul><li>- [ ] </li></ul> | Removed Redundant code        |
 
-### CodePush:
-- [ ] This PR contains native changes
-
 ### Screenshots/Videos
 
 * a gif or screenshot of both platforms. 
