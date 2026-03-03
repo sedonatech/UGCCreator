@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
 import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
+import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
 import OverviewTab from './components/OverviewTab';
@@ -112,7 +112,7 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
         >
             <TemplateBox height={SCREEN_HEIGHT / 2.4}>
                 <BackgroundImage source={{ uri: currentProject?.image }} width={SCREEN_WIDTH} style={styles.image} />
-                <TemplateBox pl={WRAPPER_MARGIN}>
+                <TemplateBox>
                     <TemplateBox
                         borderRadius={10}
                         ph={WRAPPER_MARGIN}
@@ -121,6 +121,8 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
                         justifyContent="center"
                         height={40}
                         mt={SCREEN_HEIGHT / 2.4 - 66}
+                        width={WRAPPED_SCREEN_WIDTH}
+                        selfCenter
                     >
                         <TemplateText bold size={14} color={WHITE}>
                             {application?.status?.find(({ status }) => status === 'active')?.name}
