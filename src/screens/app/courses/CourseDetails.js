@@ -25,6 +25,7 @@ import TaskDetailsModal from './components/TaskDetailsModal';
 import { WHITE, ZINC_900, ZINC_500, GRAY_100 } from '../../../theme/Colors';
 import useTranslation from '../../../hooks/useTranslation';
 import { translateCourse } from '../../../lib/courseTranslations';
+import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 
 const startOfDay = date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -184,6 +185,10 @@ const CourseDetails = ({ route }) => {
                 taskTitle: currentDayData.tasks[taskIndex]?.title,
                 isCompleted: !hasTask,
             });
+
+            if (!wasComplete && isComplete) {
+                markReviewPromptEligibleForTrigger('creator_course_checklist_completed');
+            }
         },
         [completedDays, course, courseId, currentDayData, isLocked, progress, totalDays, trackEvent, userId],
     );
