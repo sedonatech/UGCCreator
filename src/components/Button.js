@@ -6,9 +6,10 @@ import TemplateTouchable from './TemplateTouchable';
 import { BLACK, WHITE } from '../theme/Colors';
 import { SCREEN_WIDTH } from '../theme/Layout';
 import TemplateText from './TemplateText';
+import { hp } from '../Utils/getResponsiveSize';
 
 const Button = ({
-    height,
+    height = hp(45),
     width,
     color = BLACK,
     onPress,
