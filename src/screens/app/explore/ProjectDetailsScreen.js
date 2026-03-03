@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useLayoutEffect, useMemo } from 'react';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
+import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 
 import { getFirestore, doc, updateDoc } from '@react-native-firebase/firestore';
 import useTranslation from '../../../hooks/useTranslation';
@@ -28,8 +28,26 @@ import {
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 
 const PROJECTS_COLLECTION = 'projects';
+
+const getValidExternalUrl = url => {
+    if (!url || typeof url !== 'string') return '';
+
+    const sanitizedUrl = url
+        .replace(/[\u200B-\u200D\uFEFF]/g, '')
+        .replace(/\s+/g, '')
+        .trim();
+
+    if (!sanitizedUrl) return '';
+
+    const urlWithProtocol = /^https?:\/\//i.test(sanitizedUrl) ? sanitizedUrl : `https://${sanitizedUrl}`;
+
+    if (!/^https?:\/\/[^\s]+$/i.test(urlWithProtocol)) return '';
+
+    return encodeURI(urlWithProtocol);
+};
 
 const ProjectDetailsScreen = ({ route, navigation }) => {
     const { t } = useTranslation();
@@ -56,6 +74,20 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         return selectedProject?.applications?.map(app => app?.creatorId)?.includes(profile?.id);
     }, [selectedProject, profile]);
 
+    const projectLink = useMemo(() => getValidExternalUrl(selectedProject?.link), [selectedProject?.link]);
+    const shouldShowViewMore = !!projectLink;
+
+    const handleOpenProjectLink = useCallback(async () => {
+        if (!shouldShowViewMore) return;
+
+        try {
+            await Linking.openURL(projectLink);
+        } catch (error) {
+            console.log('open project link error:', error);
+            Alert.alert(t('common.alerts.linkNotAvailable'));
+        }
+    }, [projectLink, shouldShowViewMore, t]);
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -66,10 +98,26 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                     ml={WRAPPER_MARGIN}
                 />
             ),
+            headerRight: () =>
+                (shouldShowViewMore ? (
+                    <HeaderIconButton
+                        name="open-outline"
+                        title={t('common.actions.viewMore')}
+                        onPress={handleOpenProjectLink}
+                        backDropColor={WHITE_40}
+                        mr={WRAPPER_MARGIN}
+                    />
+                ) : null),
         });
-    }, [navigation, projectId]);
+    }, [navigation, handleOpenProjectLink, shouldShowViewMore, t]);
 
-    const onEnroll = () => {
+    useEffect(() => {
+        if (selectedProject?.id) {
+            markReviewPromptEligibleForTrigger('creator_project_viewed');
+        }
+    }, [selectedProject?.id]);
+
+    const onEnroll = async () => {
         if (enrolled) {
             navigation.navigate(CURRENT_PROJECT_DETAILS, {
                 projectId,
@@ -77,7 +125,14 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
             });
             return;
         }
-        enrollToProject(profile?.id, selectedProject);
+        const didEnroll = await enrollToProject(profile?.id, selectedProject);
+
+        if (!didEnroll) {
+            return;
+        }
+
+        markReviewPromptEligibleForTrigger('creator_project_enrolled');
+
         Alert.alert(
             t('explore.projectDetails.alerts.enrollSuccess.title'),
             t('explore.projectDetails.alerts.enrollSuccess.message'),
@@ -103,7 +158,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
             day: 'numeric',
         });
 
-    if (!selectedProject) return <LoadingOverlay message="Fetching project details..." />;
+    if (!selectedProject) return <LoadingOverlay message={t('explore.projectDetails.loadingMessage')} />;
 
     return (
         <ScrollView
