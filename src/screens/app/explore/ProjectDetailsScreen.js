@@ -83,7 +83,6 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         try {
             await Linking.openURL(projectLink);
         } catch (error) {
-            console.log('open project link error:', error);
             Alert.alert(t('common.alerts.linkNotAvailable'));
         }
     }, [projectLink, shouldShowViewMore, t]);
