@@ -85,7 +85,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         } catch (error) {
             Alert.alert(t('common.alerts.linkNotAvailable'));
         }
-    }, [projectLink, shouldShowViewMore, t]);
+    }, [projectLink, shouldShowViewMore]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
