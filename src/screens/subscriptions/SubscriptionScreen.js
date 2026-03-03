@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import TemplateText from '../../components/TemplateText';
 import useSubscriptionContext from './useSubscriptionContext';
 import useRestorePurchases from './useRestorePurchases';
@@ -9,7 +10,21 @@ import usePurchase from './usePurchase';
 import useAvailablePackages from './useAvailablePackages';
 import TemplateBox from '../../components/TemplateBox';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
-import { BLACK, BLACK_10, BLACK_60, DARK_GREY, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND, WHITE } from '../../theme/Colors';
+import {
+    ACCENT,
+    BLACK,
+    BLACK_10,
+    BLACK_60,
+    BLACK_70,
+    IOS_BLUE,
+    RED,
+    WHITE,
+    WHITE_10,
+    WHITE_20,
+    WHITE_60,
+    WHITE_70,
+    WHITE_80,
+} from '../../theme/Colors';
 import BrandLogo from '../../../assets/svgs/BrandLogo';
 import SubscriptionCard from './components/SubscriptionCard';
 import useLogout from '../app/profile/useLogout';
@@ -35,7 +50,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
     const { mainDomain } = useConfig();
     const [loading, setLoading] = useState(false);
     const [subscribing, setSubscribing] = useState(null);
-    const [selected, setSelectedPackage] = useState(0);
+    const [selected, setSelectedPackage] = useState(null);
     const [error, setError] = useState(null);
     const restorePurchases = useRestorePurchases();
     const [packages, originalPackages] = useAvailablePackages(subscription?.purchase);
@@ -50,6 +65,20 @@ const SubscriptionScreen = ({ navigation, route }) => {
         brush: BrushSvg(),
     };
 
+    useEffect(() => {
+        if (!packages?.length) return;
+
+        const recommendedIndex = packages.findIndex(pack => pack?.recommended);
+
+        setSelectedPackage(currentSelected => {
+            if (typeof currentSelected === 'number' && packages[currentSelected]) {
+                return currentSelected;
+            }
+
+            return recommendedIndex >= 0 ? recommendedIndex : 0;
+        });
+    }, [packages]);
+
     const onSubscribe = async i => {
         setLoading(true);
         if (error) setError(null);
@@ -59,7 +88,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
         }
         try {
             const availablePackage = originalPackages[index];
-            if (selected === null || !availablePackage) {
+            if (index === null || !availablePackage) {
                 setLoading(false);
                 throw Error('No selected package option');
             }
@@ -73,9 +102,6 @@ const SubscriptionScreen = ({ navigation, route }) => {
             return false;
         } finally {
             setLoading(false);
-            if (fromSettings) {
-                navigation.goBack();
-            }
         }
     };
 
@@ -100,6 +126,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
             );
             return;
         }
+        setError(null);
         setSelectedPackage(item);
     };
 
@@ -107,19 +134,17 @@ const SubscriptionScreen = ({ navigation, route }) => {
         try {
             setSelected(index);
             setSubscribing(index);
-            await onSubscribe(index);
-            setSubscribing(false);
-            if (fromSettings) {
+            const purchaseCompleted = await onSubscribe(index);
+            setSubscribing(null);
+            if (purchaseCompleted && fromSettings) {
                 navigation.goBack();
             }
         } catch (er) {
             console.log('handleSubscription error:', er);
-            setSubscribing(false);
-            if (fromSettings) {
-                navigation.goBack();
-            }
+            setSubscribing(null);
         }
     };
+
     const getSavings = pack => {
         if (!packages?.length) return null;
 
@@ -156,7 +181,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
                     <HeaderIconButton
                         name="chevron-back-outline"
                         onPress={() => navigation.goBack()}
-                        backDropColor={BLACK_10}
+                        backDropColor={WHITE_10}
                         ml={WRAPPER_MARGIN}
                     />
                 ),
@@ -170,6 +195,13 @@ const SubscriptionScreen = ({ navigation, route }) => {
 
     const appBenefits = isBrand ? subscriptionBenefits?.brandBenefits : subscriptionBenefits?.benefits;
     const reviews = subscriptionBenefits?.reviews;
+    const selectedPackage = typeof selected === 'number' ? packages?.[selected] : null;
+    const selectedSummary = selectedPackage?.introPrice
+        ? t('subscriptions.screen.todayThenSummary', {
+            introPrice: selectedPackage?.introPrice,
+            nextCharge: selectedPackage?.billed || selectedPackage?.priceString,
+        })
+        : selectedPackage?.billed || selectedPackage?.priceString;
 
     return (
         <ScrollView
@@ -177,148 +209,198 @@ const SubscriptionScreen = ({ navigation, route }) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.contentContainer}
         >
-            <TemplateBox selfCenter mt={60}>
-                <BrandLogo height={45} width={SCREEN_WIDTH / 1.4} />
-            </TemplateBox>
-            <TemplateBox flex backgroundColor={PAYWALL_PRIMARY_BACKGROUND} mt={20}>
-                <TemplateBox selfCenter ph={WRAPPER_MARGIN}>
-                    <TemplateText bold size={20} center color={BLACK} lineHeight={22} startCase>
+            <StatusBar  barStyle='light-content' />
+            <LinearGradient colors={[BLACK, '#24174b', '#4462a8']} style={styles.hero}>
+                <View style={styles.heroOrbPrimary} />
+                <View style={styles.heroOrbSecondary} />
+
+                <TemplateBox ph={WRAPPER_MARGIN} pt={fromSettings ? 24 : 56} pb={36}>
+                    <TemplateBox flex center>
+                        <BrandLogo height={44} width={SCREEN_WIDTH / 1.55} color={WHITE} />
+                    </TemplateBox>
+
+                    <TemplateText size={31} bold color={WHITE} lineHeight={36} mt={18}>
                         {subscriptionBenefits?.title}
                     </TemplateText>
-                </TemplateBox>
 
-                <TemplateBox
-                    backgroundColor={WHITE}
-                    borderRadius={16}
-                    mh={WRAPPER_MARGIN}
-                    mt={WRAPPER_MARGIN}
-                    mb={WRAPPER_MARGIN}
-                >
-                    {appBenefits?.map(benefit => (
+                    <TemplateText size={16} color={WHITE_80} lineHeight={24} mt={12}>
+                        {subscriptionBenefits?.subtitle}
+                    </TemplateText>
+                </TemplateBox>
+            </LinearGradient>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mt={-20}>
+                <TemplateBox style={styles.sectionCard}>
+                    <TemplateText size={22} bold color={BLACK}>
+                        {t('subscriptions.screen.unlockSectionTitle')}
+                    </TemplateText>
+
+                    {appBenefits?.map((benefit, index) => (
                         <TemplateBox
                             key={benefit?.title}
                             row
                             alignItems="center"
-                            justifyContent="space-between"
-                            ph={WRAPPER_MARGIN}
-                            pv={WRAPPER_MARGIN}
-                            borderBottomWidth={1}
-                            borderBottomColor={BLACK_10}
-                            width={WRAPPED_SCREEN_WIDTH}
+                            style={[
+                                styles.benefitRow,
+                                index === appBenefits.length - 1 ? styles.benefitRowLast : null,
+                            ]}
                         >
-                            <TemplateBox row alignItems="center">
+                            <TemplateBox style={styles.benefitIconWrap}>
                                 {subscriptionBenefitsIconsMap[benefit?.icon]}
-                                <TemplateBox width={10} />
-                                <TemplateBox width={WRAPPED_SCREEN_WIDTH - WRAPPER_MARGIN * 5.5}>
-                                    <TemplateText size={16} color={BLACK} semiBold>
-                                        {benefit?.title}
-                                    </TemplateText>
-                                    <TemplateText size={13} color={BLACK}>
-                                        {benefit?.description}
-                                    </TemplateText>
-                                </TemplateBox>
+                            </TemplateBox>
+
+                            <TemplateBox flex ml={14}>
+                                <TemplateText size={16} color={BLACK} semiBold>
+                                    {benefit?.title}
+                                </TemplateText>
+                                <TemplateText size={13} color={BLACK_70} lineHeight={18} mt={4}>
+                                    {benefit?.description}
+                                </TemplateText>
+                            </TemplateBox>
+
+                            <TemplateBox style={styles.benefitIndex}>
+                                <TemplateText size={12} color={BLACK_60} semiBold>
+                                    0{index + 1}
+                                </TemplateText>
                             </TemplateBox>
                         </TemplateBox>
                     ))}
                 </TemplateBox>
-                <TemplateBox selfCenter ph={WRAPPER_MARGIN}>
-                    <TemplateText size={16} color={BLACK} medium center>
-                        {subscriptionBenefits?.subtitle}
-                    </TemplateText>
-                </TemplateBox>
+            </TemplateBox>
 
-                <TemplateBox mh={WRAPPER_MARGIN}>
-                    {packages?.length ? (
-                        packages.map((pack, index) => (
-                            <SubscriptionCard
-                                onPress={() => setSelected(index)}
-                                key={pack?.label}
-                                title={pack?.label}
-                                price={pack?.priceString}
-                                description={pack?.description}
-                                selected={selected === index}
-                                index={index}
-                                isSale
-                                savingPercent={pack?.showSaving && getSavings(pack)}
-                                introPrice={pack?.introDiscountPrice}
-                                billed={pack?.billed}
-                                originalPrice={pack?.originalPrice}
-                                freeTrial={pack?.freeTrial}
-                                recommended={pack?.recommended}
-                                recommendedCopy={pack?.recommendedCopy}
-                                popularCopy={pack?.popularCopy}
-                            />
-                        ))
-                    ) : (
-                        <TemplateBox selfCenter alignItems="center" justifyContent="center">
-                            <ActivityIndicator color={BLACK} size="small" />
-                        </TemplateBox>
+            <TemplateBox ph={WRAPPER_MARGIN} mt={20}>
+                <TemplateText size={22} bold color={WHITE}>
+                    {t('subscriptions.screen.plansSectionTitle')}
+                </TemplateText>
+                <TemplateText size={14} color={WHITE_70} lineHeight={20} mt={8}>
+                    {t('subscriptions.screen.plansSectionSubtitle')}
+                </TemplateText>
+            </TemplateBox>
+
+            <TemplateBox mh={WRAPPER_MARGIN} mt={18}>
+                {packages?.length ? (
+                    packages.map((pack, index) => (
+                        <SubscriptionCard
+                            onPress={() => setSelected(index)}
+                            key={pack?.label}
+                            title={pack?.label}
+                            price={pack?.priceString}
+                            description={pack?.description}
+                            selected={selected === index}
+                            index={index}
+                            isSale
+                            savingPercent={pack?.showSaving && getSavings(pack)}
+                            introPrice={pack?.introPrice || pack?.introDiscountPrice}
+                            billed={pack?.billed}
+                            originalPrice={pack?.originalPrice}
+                            freeTrial={pack?.freeTrial}
+                            recommended={pack?.recommended}
+                            recommendedCopy={pack?.recommendedCopy}
+                            popularCopy={pack?.popularCopy}
+                        />
+                    ))
+                ) : (
+                    <TemplateBox style={styles.loadingCard}>
+                        <ActivityIndicator color={WHITE} size="small" />
+                    </TemplateBox>
+                )}
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mt={20}>
+                <TemplateBox style={styles.checkoutCard}>
+                    <TemplateBox row alignItems="center" flexWrap='wrap' >
+                        <TemplateText size={18} bold color={BLACK}>
+                            {t('subscriptions.screen.checkoutTitle')}
+                        </TemplateText>
+                        {!!selectedPackage?.recommended && (
+                            <TemplateBox backgroundColor={ACCENT} borderRadius={999} pv={5} ph={10} >
+                                <TemplateText size={11} color={BLACK} bold caps>
+                                    {t('subscriptions.screen.bestValueBadge')}
+                                </TemplateText>
+                            </TemplateBox>
+                        )}
+
+                        <TemplateText size={14} color={BLACK_70} lineHeight={20} mt={10} ml={8}>
+                            {selectedSummary || t('subscriptions.screen.selectPlanFallback')}
+                         </TemplateText>
+                    </TemplateBox>
+
+                    
+
+                    {!!error && (
+                        <TemplateText size={13} color={RED} mt={12}>
+                            {t('subscriptions.screen.checkoutError')}
+                        </TemplateText>
                     )}
-                </TemplateBox>
-                <Button
-                    title={subscriptionBenefits?.buttonCta}
-                    onPress={() => handleSubscription(selected)}
-                    style={styles.button}
-                    loading={loading}
-                    height={50}
-                    width={SCREEN_WIDTH - 40}
-                    color={BLACK}
-                />
-                <TemplateBox onPress={onRestore} selfCenter mv={WRAPPER_MARGIN} mh={WRAPPER_MARGIN}>
-                    <TemplateText color={IOS_BLUE} semiBold size={16}>
-                        {t('subscriptions.restoreButton')}
+
+                    <Button
+                        title={subscriptionBenefits?.buttonCta}
+                        onPress={() => handleSubscription(selected)}
+                        style={styles.button}
+                        loading={loading || (typeof selected === 'number' && subscribing === selected)}
+                        disabled={!selectedPackage}
+                        height={54}
+                        width={SCREEN_WIDTH - WRAPPER_MARGIN * 4}
+                        color={BLACK}
+                    />
+
+                    <TemplateBox onPress={onRestore} selfCenter mt={16}>
+                        <TemplateText color={IOS_BLUE} semiBold size={16}>
+                            {t('subscriptions.restoreButton')}
+                        </TemplateText>
+                    </TemplateBox>
+
+                    <TemplateText size={12} color={BLACK_60} center lineHeight={18} mt={16}>
+                        {t('subscriptions.screen.checkoutFooter')}
                     </TemplateText>
                 </TemplateBox>
+            </TemplateBox>
 
-                {reviews?.length > 1 && (
-                    <TemplateBox selfCenter alignItems="center">
-                        <TemplateBox mb={16} alignItems="center">
-                            <TemplateText medium center>
-                                {t('subscriptions.trustBadge')}
-                            </TemplateText>
-                        </TemplateBox>
+            {reviews?.length ? (
+                <TemplateBox ph={WRAPPER_MARGIN} mt={28}>
+                    <TemplateText size={22} bold color={WHITE}>
+                        {t('subscriptions.trustBadge')}
+                    </TemplateText>
 
-                        {reviews?.map(({ title, subtitle, image }, index) => (
-                            <TemplateBox
-                                key={index}
-                                row
-                                backgroundColor={WHITE}
-                                width={WRAPPED_SCREEN_WIDTH}
-                                borderRadius={12}
-                                pAll={16}
-                                mb={16}
-                            >
-                                <ResizedImage
-                                    source={{ uri: image }}
-                                    style={{ width: 48, aspectRatio: 1, borderRadius: 12 }}
-                                />
-                                <TemplateBox ml={16} width="75%">
-                                    <TemplateText size={16} medium>
-                                        {title}
-                                    </TemplateText>
-                                    <TemplateText size={14} color={`${DARK_GREY}b3`} mt={4} light>
-                                        {subtitle}
-                                    </TemplateText>
+                    {reviews?.map(({ title, subtitle, image }, index) => (
+                        <TemplateBox key={index} style={styles.reviewCard}>
+                            <ResizedImage
+                                source={{ uri: image }}
+                                style={{ width: 52, aspectRatio: 1, borderRadius: 14 }}
+                            />
 
-                                    <TemplateBox row mt={6}>
+                            <TemplateBox flex ml={16}>
+                                <TemplateBox row alignItems="center" justifyContent="space-between">
+                                    <TemplateBox flex mr={12}>
+                                        <TemplateText size={16} color={WHITE} semiBold>
+                                            {title}
+                                        </TemplateText>
+                                    </TemplateBox>
+                                    <TemplateBox row>
                                         {Array(5)
                                             .fill(0)
                                             .map((_, indx) => (
-                                                <Star key={`star-${indx}`} style={{ marginRight: 4 }} />
+                                                <Star key={`star-${index}-${indx}`} style={{ marginLeft: 2 }} />
                                             ))}
                                     </TemplateBox>
                                 </TemplateBox>
-                            </TemplateBox>
-                        ))}
-                    </TemplateBox>
-                )}
 
-                <TemplateBox ph={WRAPPER_MARGIN} mb={WRAPPER_MARGIN}>
-                    <TemplateText size={12} color={BLACK_60} center small>
+                                <TemplateText size={13} color={WHITE_70} lineHeight={19} mt={8}>
+                                    {subtitle}
+                                </TemplateText>
+                            </TemplateBox>
+                        </TemplateBox>
+                    ))}
+                </TemplateBox>
+            ) : null}
+
+            <TemplateBox ph={WRAPPER_MARGIN} mt={28}>
+                <TemplateBox style={styles.legalCard}>
+                    <TemplateText size={12} color={WHITE_60} center lineHeight={18}>
                         {t('subscriptions.termsPrefix')}{' '}
                         <TemplateText
-                            black
-                            size={14}
+                            color={WHITE}
+                            size={13}
                             underLine
                             onPress={() => {
                                 if (mainDomain) {
@@ -330,13 +412,13 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         >
                             {t('subscriptions.termsLink')}
                         </TemplateText>
-                        <TemplateText black center size={14}>
+                        <TemplateText color={WHITE} center size={13}>
                             {' '}
                             {t('subscriptions.and')}{' '}
                         </TemplateText>
                         <TemplateText
-                            black
-                            size={14}
+                            color={WHITE}
+                            size={13}
                             underLine
                             onPress={() => {
                                 if (mainDomain) {
@@ -351,14 +433,15 @@ const SubscriptionScreen = ({ navigation, route }) => {
                         {t('subscriptions.autoRenewText')}
                     </TemplateText>
                 </TemplateBox>
-                {!fromSettings && (
-                    <TemplateBox selfCenter mb={WRAPPER_MARGIN * 2} mh={WRAPPER_MARGIN} onPress={() => handleLogout()}>
-                        <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
-                            {t('subscriptions.logout')}
-                        </TemplateText>
-                    </TemplateBox>
-                )}
             </TemplateBox>
+
+            {!fromSettings && (
+                <TemplateBox selfCenter mt={24} mb={WRAPPER_MARGIN * 2} onPress={() => handleLogout()}>
+                    <TemplateText caps color={IOS_BLUE} semiBold size={12} underLine>
+                        {t('subscriptions.logout')}
+                    </TemplateText>
+                </TemplateBox>
+            )}
         </ScrollView>
     );
 };
@@ -366,15 +449,126 @@ const SubscriptionScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: BLACK_10,
+        backgroundColor: BLACK,
     },
     contentContainer: {
-        backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
+        paddingBottom: 12,
+    },
+    hero: {
+        overflow: 'hidden',
+        borderBottomLeftRadius: 32,
+        borderBottomRightRadius: 32,
+    },
+    heroOrbPrimary: {
+        position: 'absolute',
+        right: -50,
+        top: 32,
+        width: 180,
+        height: 180,
+        borderRadius: 90,
+        backgroundColor: 'rgba(255, 255, 255, 0.07)',
+    },
+    heroOrbSecondary: {
+        position: 'absolute',
+        left: -70,
+        bottom: 50,
+        width: 170,
+        height: 170,
+        borderRadius: 85,
+        backgroundColor: 'rgba(165, 196, 253, 0.16)',
+    },
+    heroPanel: {
+        marginTop: 24,
+        backgroundColor: WHITE,
+        borderRadius: 28,
+        padding: 20,
+        shadowColor: BLACK,
+        shadowOffset: { width: 0, height: 18 },
+        shadowOpacity: 0.2,
+        shadowRadius: 24,
+        elevation: 10,
+    },
+    metricCard: {
+        flex: 1,
+        backgroundColor: BLACK_10,
+        borderRadius: 18,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        alignItems: 'center',
+    },
+    sectionCard: {
+        backgroundColor: WHITE,
+        borderRadius: 28,
+        padding: 20,
+        shadowColor: BLACK,
+        shadowOffset: { width: 0, height: 16 },
+        shadowOpacity: 0.08,
+        shadowRadius: 24,
+        elevation: 8,
+    },
+    benefitRow: {
+        marginTop: 18,
+        paddingBottom: 18,
+        borderBottomWidth: 1,
+        borderBottomColor: BLACK_10,
+    },
+    benefitRowLast: {
+        borderBottomWidth: 0,
+        paddingBottom: 0,
+    },
+    benefitIconWrap: {
+        width: 48,
+        height: 48,
+        borderRadius: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: BLACK_10,
+    },
+    benefitIndex: {
+        minWidth: 34,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 7,
+        paddingHorizontal: 8,
+        borderRadius: 999,
+        backgroundColor: BLACK_10,
+        marginLeft: 12,
+    },
+    loadingCard: {
+        width: WRAPPED_SCREEN_WIDTH,
+        borderRadius: 24,
+        paddingVertical: 26,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: WHITE_10,
+        borderWidth: 1,
+        borderColor: WHITE_20,
+    },
+    checkoutCard: {
+        backgroundColor: WHITE,
+        borderRadius: 28,
+        padding: 20,
     },
     button: {
-        marginTop: 20,
+        marginTop: 18,
         alignSelf: 'center',
         borderRadius: 26,
     },
+    reviewCard: {
+        flexDirection: 'row',
+        width: WRAPPED_SCREEN_WIDTH,
+        borderRadius: 22,
+        padding: 18,
+        marginTop: 16,
+        backgroundColor: '#1e143e',
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.08)',
+    },
+    legalCard: {
+        borderRadius: 22,
+        padding: 18,
+    },
 });
+
 export default SubscriptionScreen;
