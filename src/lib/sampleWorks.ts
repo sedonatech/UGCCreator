@@ -20,6 +20,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { stat } from 'react-native-fs';
 import { Alert } from 'react-native';
 import i18n from '../i18n';
+import { markReviewPromptEligibleForTrigger } from '../hooks/useAppReview';
 
 export type SampleWork = {
     id?: string;
@@ -93,6 +94,7 @@ export async function createSample(input: Omit<SampleWork, 'id' | 'createdAt' | 
         showcaseOptIn: input.showcaseOptIn,
         visibility: input.visibility,
     });
+    await markReviewPromptEligibleForTrigger('creator_sample_work_added');
 
     return docRef;
 }
