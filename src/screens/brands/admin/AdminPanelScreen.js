@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, RefreshControl, View, TouchableWithoutFeedback } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import { useIsFocused } from '@react-navigation/native';
@@ -33,10 +33,12 @@ const AdminPanelScreen = ({ navigation }) => {
     const { t } = useTranslation();
     const { auth } = useAuthContext();
     const profile = auth?.profile;
+    const profileCompleteRatio = auth?.profileCompleteRatio;
     const { updateProfile } = useProfile();
     const [refetchProjects, setRefetchProjects] = useState(null);
     const isFocused = useIsFocused();
     const { projects, getProjects } = useProjectsContext();
+    const hasArmedReviewPromptRef = useRef(false);
 
     useEffect(() => {
         getProjects();
@@ -89,7 +91,28 @@ const AdminPanelScreen = ({ navigation }) => {
         }
     }, [isFocused, profile]);
 
-    const { previousResponse, handleRate } = useAppReview();
+    const {
+        handleRate,
+        shouldShowReviewPrompt,
+        dismissReviewPrompt,
+        markReviewPromptEligible,
+        refreshReviewPromptState,
+    } = useAppReview();
+
+    useEffect(() => {
+        if (isFocused) {
+            refreshReviewPromptState();
+        }
+    }, [isFocused, refreshReviewPromptState]);
+
+    useEffect(() => {
+        if (!isFocused || profileCompleteRatio !== 1 || hasArmedReviewPromptRef.current) {
+            return;
+        }
+
+        hasArmedReviewPromptRef.current = true;
+        markReviewPromptEligible('brand_profile_completed');
+    }, [isFocused, markReviewPromptEligible, profileCompleteRatio]);
 
     const options = [
         {
@@ -136,7 +159,7 @@ const AdminPanelScreen = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                 >
                     {profile?.name && <Greeting userName={profile?.name} style={styles.greeting} showAvatar={false} />}
-                    {previousResponse === null && features?.showReviewPrompt && (
+                    {shouldShowReviewPrompt && features?.showReviewPrompt && (
                         <TemplateBox
                             row
                             backgroundColor={WHITE}
@@ -151,7 +174,7 @@ const AdminPanelScreen = ({ navigation }) => {
                             <TemplateText size={13} onPress={handleRate}>
                                 {t('brands.admin.panel.ratePrompt')}
                             </TemplateText>
-                            <TemplateBox onPress={handleRate} ml={wp(60)} mt={-wp(8)}>
+                            <TemplateBox onPress={dismissReviewPrompt} ml={wp(60)} mt={-wp(8)}>
                                 <TemplateIcon name="close-outline" size={20} color={BLACK} />
                             </TemplateBox>
                         </TemplateBox>
@@ -177,7 +200,7 @@ const AdminPanelScreen = ({ navigation }) => {
                     <View
                         style={{
                             position: 'absolute',
-                            right: WRAPPER_MARGIN,
+                            right: WRAPPER_MARGIN * 3.2,
                             top: HEADER_MARGIN * 0.85,
                             zIndex: 99,
                         }}

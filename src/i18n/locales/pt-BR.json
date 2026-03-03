@@ -14,7 +14,51 @@
         },
         "education": {
             "skip": "Pular",
-            "next": "Próximo"
+            "next": "Próximo",
+            "meta": {
+                "deals": {
+                    "eyebrow": "Parcerias pagas",
+                    "highlight": "Aplique mais rápido"
+                },
+                "matches": {
+                    "eyebrow": "Match inteligente",
+                    "highlight": "Mais compatibilidade"
+                },
+                "aiTools": {
+                    "eyebrow": "Fluxo com IA",
+                    "highlight": "Crie mais rápido"
+                },
+                "courses": {
+                    "eyebrow": "Educação para creators",
+                    "highlight": "Aumente seu cachê"
+                },
+                "portfolio": {
+                    "eyebrow": "Perfil profissional",
+                    "highlight": "Gere confiança"
+                }
+            },
+            "slides": {
+                "deals": {
+                    "title": "Encontre oportunidades UGC pagas mais rápido",
+                    "message": "Deixe a prospecção fria de lado. Veja colaborações ativas com marcas, campanhas de embaixadores e ofertas de afiliados em um só lugar para se candidatar em minutos."
+                },
+                "matches": {
+                    "title": "Receba matches com marcas que combinam com você",
+                    "message": "Veja oportunidades adaptadas ao seu nicho, público e estilo para gastar menos tempo procurando e mais tempo fechando trabalhos."
+                },
+                "aiTools": {
+                    "title": "Crie conteúdos melhores com ferramentas de IA integradas",
+                    "message": "Gere hooks, roteiros e ideias de conteúdo rapidamente para fazer pitches mais rápido e entregar UGC com melhor performance."
+                },
+                "courses": {
+                    "title": "Evolua sua jornada como creator com cursos guiados",
+                    "message": "Siga treinamentos passo a passo feitos para ajudar você a melhorar suas habilidades, manter consistência e crescer com mais confiança como creator de UGC."
+                },
+                "portfolio": {
+                    "title": "Monte um perfil em que as marcas confiam",
+                    "message": "Mostre seu portfólio, media kit e contatos em um só lugar profissional e desbloqueie o acesso completo para começar a fechar mais oportunidades."
+                }
+            }
         }
     },
     "auth": {
@@ -69,6 +113,7 @@
     },
     "home": {
         "feedback": "Comentários",
+        "aiTools": "Ferramentas de IA",
         "greeting": {
             "morning": "Bom dia",
             "afternoon": "Boa tarde",
@@ -483,6 +528,7 @@
         },
         "projectDetails": {
             "enrolledBadge": "Inscrito",
+            "loadingMessage": "Buscando detalhes do projeto...",
             "sections": {
                 "description": "Descrição",
                 "timeline": "Cronograma",
@@ -700,7 +746,22 @@
         "and": "e",
         "privacyLink": "política de privacidade.",
         "autoRenewText": "Sua assinatura será renovada automaticamente, a menos que a renovação automática seja desativada pelo menos 24 horas antes do final do período atual. Você pode gerenciar assinaturas a qualquer momento e desativar a renovação automática nas configurações do iTunes após a compra. Criaremos uma conta que permitirá acessar nosso conteúdo em todos os seus dispositivos iOS e você pode adicionar dispositivos adicionais conforme necessário.",
-        "logout": "sair"
+        "logout": "sair",
+        "screen": {
+            "unlockSectionTitle": "Tudo o que você desbloqueia",
+            "plansSectionTitle": "Escolha seu nível de acesso",
+            "plansSectionSubtitle": "O plano recomendado já vem selecionado para que a opção com melhor custo-benefício esteja a um toque.",
+            "checkoutTitle": "Pronto para desbloquear o premium?",
+            "bestValueBadge": "Melhor custo-benefício",
+            "selectPlanFallback": "Selecione um plano para continuar",
+            "checkoutError": "Não foi possível iniciar o checkout. Tente novamente.",
+            "checkoutFooter": "Checkout seguro. Seu acesso é liberado instantaneamente e você pode restaurar compras a qualquer momento.",
+            "todayThenSummary": "{{introPrice}} hoje, depois {{nextCharge}}"
+        },
+        "card": {
+            "thenPrice": "Depois {{price}} {{billed}}",
+            "saveBadge": "Economize {{percent}}"
+        }
     },
     "creatorExplore": {
         "addProject": {
@@ -717,6 +778,10 @@
                 "description": {
                     "label": "Descrição",
                     "placeholder": "Descrição"
+                },
+                "link": {
+                    "label": "Link do projeto",
+                    "placeholder": "https://sua-url-completa.com"
                 },
                 "startDate": {
                     "label": "Data de início"
@@ -1022,6 +1087,12 @@
                 "maxBudget": "Orçamento máximo",
                 "minBudget": "Orçamento mínimo"
             },
+            "projectDetails": {
+                "tabs": {
+                    "details": "Detalhes",
+                    "enrolledCreators": "Criadores inscritos"
+                }
+            },
             "loadingMessages": {
                 "fetchingProject": "Buscando detalhes do projeto...",
                 "loadingProject": "Carregando detalhes do projeto..."
@@ -1123,7 +1194,52 @@
     "creatorTools": {
         "alerts": {
             "successTitle": "{{type}} criado com sucesso 🎉",
-            "successMessage": "Agora você pode copiar o {{type}} para sua área de transferência!"
+            "successMessage": "Agora você pode copiar o {{type}} para sua área de transferência!",
+            "missingApiKeyTitle": "Chave de API da Groq ausente",
+            "missingApiKeyMessage": "Adicione sua chave da Groq em src/config/aiConfig.js.",
+            "usageLimitTitle": "Limite de uso atingido",
+            "cooldownMessage": "Aguarde {{seconds}} segundos antes de gerar novamente.",
+            "dailyLimitMessage": "O limite diário de IA foi atingido. Tente novamente amanhã.",
+            "rateLimitTitle": "Limite de taxa da Groq atingido",
+            "rateLimitMessage": "O plano gratuito está ocupado no momento. Tente novamente em instantes."
+        },
+        "ugcAiScreen": {
+            "title": "Explore nossas ferramentas para criadores",
+            "viewResultsHistory": "Ver histórico de resultados",
+            "tools": {
+                "scripts": {
+                    "title": "Gerador de roteiros",
+                    "description": "Esta ferramenta ajuda você a gerar roteiros para seus vídeos com base nos requisitos do seu projeto.",
+                    "screenTitle": "Crie roteiros envolventes com IA em minutos"
+                },
+                "contentSuggestion": {
+                    "title": "Sugeridor de conteúdo",
+                    "description": "Esta ferramenta sugere conteúdo para você criar com base nos requisitos do seu projeto.",
+                    "screenTitle": "Crie conteúdo envolvente com IA em minutos"
+                },
+                "hooks": {
+                    "title": "Gerador de hooks",
+                    "description": "Esta ferramenta ajuda você a gerar hooks para o seu projeto.",
+                    "screenTitle": "Crie hooks envolventes com IA em minutos"
+                }
+            }
+        },
+        "resultsScreen": {
+            "copyButton": "Copiar resultados para a área de transferência",
+            "viewResultsHistory": "Ver histórico de resultados"
+        },
+        "toolTypes": {
+            "scripts": "Roteiros",
+            "contentSuggestion": "Sugestões de conteúdo",
+            "hooks": "Hooks"
+        },
+        "resultsHistoryScreen": {
+            "title": "Histórico de resultados",
+            "emptyTitle": "Nenhum histórico no momento",
+            "emptyDescription": "Você não tem histórico no momento. Gere algum conteúdo para ver seu histórico aqui.",
+            "fetchedTitle": "{{type}} recuperados com sucesso 🎉🎊",
+            "fetchedSubtitle": "Agora você pode copiar {{type}} para a sua área de transferência!",
+            "loadingMessage": "Buscando seu histórico...."
         }
     },
     "events": {

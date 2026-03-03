@@ -26,6 +26,7 @@ import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
 import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
 import { wp } from '../../../Utils/getResponsiveSize';
 import useTranslation from '../../../hooks/useTranslation';
+import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 
 const AddProjectScreen = ({ navigation, route }) => {
     // TODO: Update project feature
@@ -65,13 +66,19 @@ const AddProjectScreen = ({ navigation, route }) => {
         return unfilledFields?.join(', ');
     };
 
-    const handleCreateProject = () => {
+    const handleCreateProject = async () => {
         const { image, title, shortDescription } = project;
 
         if (!image?.trim()?.length || !title?.trim()?.length || !shortDescription?.trim()?.length)
             return Alert.alert(t('brands.admin.addProject.alerts.fillRequired'), getUnfilledFields());
 
-        createProject(project);
+        const createdProject = await createProject(project);
+
+        if (!createdProject) {
+            return;
+        }
+
+        markReviewPromptEligibleForTrigger('brand_project_created');
         Alert.alert(
             t('brands.admin.addProject.alerts.successTitle'),
             t('brands.admin.addProject.alerts.successMessage'),
@@ -134,6 +141,20 @@ const AddProjectScreen = ({ navigation, route }) => {
                     multiline
                     numberOfLines={6}
                     maxLength={500}
+                />
+            </TemplateBox>
+
+            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
+                <TemplateText size={16}>{t('brands.admin.addProject.fields.link')}</TemplateText>
+                <TemplateTextInput
+                    placeholder={t('brands.admin.addProject.placeholders.link')}
+                    placeholderTextColor={BLACK_40}
+                    style={styles.input}
+                    value={project?.link}
+                    onChangeText={text => update('link', text)}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    keyboardType="url"
                 />
             </TemplateBox>
 

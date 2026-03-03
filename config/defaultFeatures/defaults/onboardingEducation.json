@@ -1,16 +1,29 @@
 {
   "content": [
-      {
-        "title": "Find Brands or creators based on your interests",
-        "message": "Get matched with brands or creators based on your interests and our in built AI engine"
+    {
+      "title": "Find paid UGC deals faster",
+      "message": "Skip cold outreach. Browse active brand collabs, ambassador campaigns, and affiliate offers in one place so you can apply in minutes.",
+      "imageKey": "deals"
     },
     {
-        "title": "UGC Creator Tools",
-        "message": "Discover our AI-powered tools to create UGC content as a creator or a brand"
+      "title": "Get matched with brands that fit you",
+      "message": "See opportunities tailored to your niche, audience, and style so you spend less time searching and more time booking work.",
+      "imageKey": "matches"
     },
     {
-        "title": "Manage your UGC Projects",
-        "message": "Manage your different UGC projects as a creator or a brand all in one place"
+      "title": "Create better content with built-in AI tools",
+      "message": "Generate hooks, scripts, and content ideas fast so you can pitch quicker and deliver stronger-performing UGC.",
+      "imageKey": "aiTools"
+    },
+    {
+      "title": "Level up your creator journey with guided courses",
+      "message": "Follow step-by-step creator training designed to help you improve your skills, stay consistent, and grow into a more confident UGC creator.",
+      "imageKey": "courses"
+    },
+    {
+      "title": "Build a profile brands can trust",
+      "message": "Showcase your portfolio, media kit, and contact details in one professional place and unlock full access to start landing more deals.",
+      "imageKey": "portfolio"
     }
   ]
 }

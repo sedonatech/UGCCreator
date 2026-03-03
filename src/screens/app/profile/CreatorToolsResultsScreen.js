@@ -39,9 +39,11 @@ const CreatorToolsResultsScreen = ({ navigation, route }) => {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             <TemplateBox mt={HEADER_MARGIN} selfCenter mb={50}>
                 <TemplateBox mh={WRAPPER_MARGIN} selfCenter>
-                    <TemplateText size={18} bold startCase center>
-                        {title}
-                    </TemplateText>
+                    <TemplateBox mh={WRAPPER_MARGIN}>
+                        <TemplateText size={18} bold startCase center>
+                            {title}
+                        </TemplateText>
+                    </TemplateBox>
                     <TemplateBox height={20} />
                     <TemplateBox selfCenter>
                         <TemplateText size={16} center semibold>
@@ -66,7 +68,7 @@ const CreatorToolsResultsScreen = ({ navigation, route }) => {
                 )}
 
                 <Button
-                    title="Copy Results To Clipboard"
+                    title={t('creatorTools.resultsScreen.copyButton')}
                     onPress={() => {
                         Clipboard.setString(results);
                         setCopied(true);
@@ -76,7 +78,7 @@ const CreatorToolsResultsScreen = ({ navigation, route }) => {
                 />
                 {!fromHistory && (
                     <Button
-                        title="View Results History"
+                        title={t('creatorTools.resultsScreen.viewResultsHistory')}
                         onPress={() => navigation.navigate(RESULTS_HISTORY)}
                         style={styles.button}
                         loading={false}

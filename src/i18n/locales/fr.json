@@ -14,7 +14,51 @@
         },
         "education": {
             "skip": "Passer",
-            "next": "Suivant"
+            "next": "Suivant",
+            "meta": {
+                "deals": {
+                    "eyebrow": "Offres de marque payées",
+                    "highlight": "Postulez plus vite"
+                },
+                "matches": {
+                    "eyebrow": "Matching intelligent",
+                    "highlight": "Meilleur fit"
+                },
+                "aiTools": {
+                    "eyebrow": "Workflow IA",
+                    "highlight": "Créez plus vite"
+                },
+                "courses": {
+                    "eyebrow": "Formation créateur",
+                    "highlight": "Augmentez vos tarifs"
+                },
+                "portfolio": {
+                    "eyebrow": "Profil professionnel",
+                    "highlight": "Inspirez confiance"
+                }
+            },
+            "slides": {
+                "deals": {
+                    "title": "Trouvez plus vite des missions UGC rémunérées",
+                    "message": "Laissez tomber la prospection à froid. Parcourez des collaborations de marque actives, des campagnes d'ambassadeurs et des offres d'affiliation au même endroit pour postuler en quelques minutes."
+                },
+                "matches": {
+                    "title": "Trouvez des marques qui vous correspondent",
+                    "message": "Découvrez des opportunités adaptées à votre niche, votre audience et votre style pour passer moins de temps à chercher et plus de temps à décrocher des contrats."
+                },
+                "aiTools": {
+                    "title": "Créez de meilleurs contenus avec des outils IA intégrés",
+                    "message": "Générez rapidement des hooks, des scripts et des idées de contenu pour pitcher plus vite et livrer un UGC plus performant."
+                },
+                "courses": {
+                    "title": "Faites évoluer votre parcours créateur avec des cours guidés",
+                    "message": "Suivez une formation créateur étape par étape conçue pour vous aider à améliorer vos compétences, rester régulier et évoluer avec plus de confiance en tant que créateur UGC."
+                },
+                "portfolio": {
+                    "title": "Créez un profil auquel les marques font confiance",
+                    "message": "Présentez votre portfolio, votre media kit et vos coordonnées dans un espace professionnel unique et débloquez l'accès complet pour décrocher plus de contrats."
+                }
+            }
         }
     },
     "auth": {
@@ -69,6 +113,7 @@
     },
     "home": {
         "feedback": "Commentaires",
+        "aiTools": "Outils IA",
         "greeting": {
             "morning": "Bonjour",
             "afternoon": "Bon après-midi",
@@ -483,6 +528,7 @@
         },
         "projectDetails": {
             "enrolledBadge": "Inscrit",
+            "loadingMessage": "Récupération des détails du projet...",
             "sections": {
                 "description": "Description",
                 "timeline": "Chronologie",
@@ -689,7 +735,22 @@
         "and": "et",
         "privacyLink": "politique de confidentialité.",
         "autoRenewText": "Votre abonnement sera automatiquement renouvelé sauf si le renouvellement automatique est désactivé au moins 24 heures avant la fin de la période en cours. Vous pouvez gérer les abonnements à tout moment et désactiver le renouvellement automatique dans vos paramètres iTunes après l'achat. Nous créerons un compte qui vous permettra d'accéder à notre contenu sur tous vos appareils iOS et vous pourrez ajouter des appareils supplémentaires selon vos besoins.",
-        "logout": "déconnexion"
+        "logout": "déconnexion",
+        "screen": {
+            "unlockSectionTitle": "Tout ce que vous débloquez",
+            "plansSectionTitle": "Choisissez votre niveau d'accès",
+            "plansSectionSubtitle": "Le forfait recommandé est présélectionné afin que l'option la plus avantageuse soit à un geste.",
+            "checkoutTitle": "Prêt à débloquer le premium ?",
+            "bestValueBadge": "Meilleur rapport qualité-prix",
+            "selectPlanFallback": "Sélectionnez une offre pour continuer",
+            "checkoutError": "Nous n'avons pas pu démarrer le paiement. Veuillez réessayer.",
+            "checkoutFooter": "Paiement sécurisé. Votre accès est débloqué instantanément et vous pouvez restaurer vos achats à tout moment.",
+            "todayThenSummary": "{{introPrice}} aujourd'hui, puis {{nextCharge}}"
+        },
+        "card": {
+            "thenPrice": "Puis {{price}} {{billed}}",
+            "saveBadge": "Économisez {{percent}}"
+        }
     },
     "creatorExplore": {
         "addProject": {
@@ -706,6 +767,10 @@
                 "description": {
                     "label": "Description",
                     "placeholder": "Description"
+                },
+                "link": {
+                    "label": "Lien du projet",
+                    "placeholder": "https://votre-url-complete.com"
                 },
                 "startDate": {
                     "label": "Date de début"
@@ -1011,6 +1076,12 @@
                 "maxBudget": "Budget maximum",
                 "minBudget": "Budget minimum"
             },
+            "projectDetails": {
+                "tabs": {
+                    "details": "Détails",
+                    "enrolledCreators": "Créateurs inscrits"
+                }
+            },
             "loadingMessages": {
                 "fetchingProject": "Récupération des détails du projet...",
                 "loadingProject": "Chargement des détails du projet..."
@@ -1112,7 +1183,52 @@
     "creatorTools": {
         "alerts": {
             "successTitle": "{{type}} créé avec succès 🎉",
-            "successMessage": "Vous pouvez maintenant copier le {{type}} dans votre presse-papiers !"
+            "successMessage": "Vous pouvez maintenant copier le {{type}} dans votre presse-papiers !",
+            "missingApiKeyTitle": "Clé API Groq manquante",
+            "missingApiKeyMessage": "Ajoutez votre clé Groq dans src/config/aiConfig.js.",
+            "usageLimitTitle": "Limite d'utilisation atteinte",
+            "cooldownMessage": "Veuillez attendre {{seconds}} secondes avant de générer à nouveau.",
+            "dailyLimitMessage": "La limite quotidienne d'IA est atteinte. Réessayez demain.",
+            "rateLimitTitle": "Limite de débit Groq atteinte",
+            "rateLimitMessage": "L'offre gratuite est saturée pour le moment. Veuillez réessayer dans quelques instants."
+        },
+        "ugcAiScreen": {
+            "title": "Explorez nos outils créateur",
+            "viewResultsHistory": "Voir l'historique des résultats",
+            "tools": {
+                "scripts": {
+                    "title": "Générateur de scripts",
+                    "description": "Cet outil vous aide à générer des scripts pour vos vidéos selon les exigences de votre projet.",
+                    "screenTitle": "Créez des scripts engageants avec l'IA en quelques minutes"
+                },
+                "contentSuggestion": {
+                    "title": "Suggesteur de contenu",
+                    "description": "Cet outil vous suggère du contenu à créer selon les exigences de votre projet.",
+                    "screenTitle": "Créez du contenu engageant avec l'IA en quelques minutes"
+                },
+                "hooks": {
+                    "title": "Générateur d'accroches",
+                    "description": "Cet outil vous aide à générer des accroches pour votre projet.",
+                    "screenTitle": "Créez des accroches engageantes avec l'IA en quelques minutes"
+                }
+            }
+        },
+        "resultsScreen": {
+            "copyButton": "Copier les résultats dans le presse-papiers",
+            "viewResultsHistory": "Voir l'historique des résultats"
+        },
+        "toolTypes": {
+            "scripts": "Scripts",
+            "contentSuggestion": "Suggestions de contenu",
+            "hooks": "Accroches"
+        },
+        "resultsHistoryScreen": {
+            "title": "Historique des résultats",
+            "emptyTitle": "Aucun historique pour le moment",
+            "emptyDescription": "Vous n'avez aucun historique pour le moment. Générez du contenu pour voir votre historique ici.",
+            "fetchedTitle": "{{type}} récupérés avec succès 🎉🎊",
+            "fetchedSubtitle": "Vous pouvez maintenant copier {{type}} dans votre presse-papiers !",
+            "loadingMessage": "Récupération de votre historique...."
         }
     },
     "events": {

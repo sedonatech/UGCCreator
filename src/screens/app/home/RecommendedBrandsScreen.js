@@ -15,6 +15,7 @@ import useWebview from '../../../hooks/webview/useWebview';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 import { warmReachOutEmail } from '../../../consts/emails/CreatorEmails';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
+import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 
 const RecommendedBrandsScreen = ({ route }) => {
     const { t } = useTranslation();
@@ -99,6 +100,7 @@ const RecommendedBrandsScreen = ({ route }) => {
                             slideInDelay={(index + 1) * 100}
                             descriptionLines={3}
                             onPress={() => {
+                                markReviewPromptEligibleForTrigger('creator_brand_collab_viewed');
                                 setSelectedBrand(brand);
                                 setTimeout(() => {
                                     setModalVisible(true);

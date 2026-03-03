@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { BLACK_30, WHITE, WHITE_40 } from '../../../theme/Colors';
@@ -15,16 +15,30 @@ import EnrolledCreators from './components/EnrolledCreators';
 import useTranslation from '../../../hooks/useTranslation';
 
 export const DETAILS_TAB = {
-    name: 'Details',
     value: 'details',
 };
 export const ENROLLED_CREATORS = {
-    name: 'Enrolled Creators',
     value: 'enrolledCreators',
 };
 
 const PROJECTS_COLLECTION = 'projects';
-const TAB_DATA = [DETAILS_TAB, ENROLLED_CREATORS];
+
+const getValidExternalUrl = url => {
+    if (!url || typeof url !== 'string') return '';
+
+    const sanitizedUrl = url
+        .replace(/[\u200B-\u200D\uFEFF]/g, '')
+        .replace(/\s+/g, '')
+        .trim();
+
+    if (!sanitizedUrl) return '';
+
+    const urlWithProtocol = /^https?:\/\//i.test(sanitizedUrl) ? sanitizedUrl : `https://${sanitizedUrl}`;
+
+    if (!/^https?:\/\/[^\s]+$/i.test(urlWithProtocol)) return '';
+
+    return encodeURI(urlWithProtocol);
+};
 
 const BrandProjectDetailsScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
@@ -47,12 +61,44 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
         }
     };
 
-    const [selectedTab, setSelectedTab] = useState(TAB_DATA[0]);
+    const tabData = useMemo(
+        () => [
+            {
+                ...DETAILS_TAB,
+                name: t('brands.admin.projectDetails.tabs.details'),
+            },
+            {
+                ...ENROLLED_CREATORS,
+                name: t('brands.admin.projectDetails.tabs.enrolledCreators'),
+            },
+        ],
+        [t],
+    );
+    const [selectedTab, setSelectedTab] = useState(tabData[0]);
+
+    useEffect(() => {
+        setSelectedTab(currentTab => tabData.find(({ value }) => value === currentTab?.value) || tabData[0]);
+    }, [tabData]);
 
     const enrolledCreatorIds = useMemo(() => {
         if (!selectedProject) return null;
         return selectedProject?.applications?.map(({ creatorId }) => creatorId);
     }, [selectedProject]);
+
+    const projectLink = useMemo(() => getValidExternalUrl(selectedProject?.link), [selectedProject?.link]);
+    const shouldShowViewMore = !!projectLink;
+
+
+    const handleOpenProjectLink = useCallback(async () => {
+        if (!shouldShowViewMore) return;
+
+        try {
+            await Linking.openURL(projectLink);
+        } catch (error) {
+            console.log('open project link error:', error);
+            Alert.alert(t('common.alerts.linkNotAvailable'));
+        }
+    }, [projectLink, shouldShowViewMore, t]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -64,8 +110,18 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                     ml={WRAPPER_MARGIN}
                 />
             ),
+            headerRight: () =>
+                (shouldShowViewMore ? (
+                    <HeaderIconButton
+                        name="open-outline"
+                        title={t('common.actions.viewMore')}
+                        onPress={handleOpenProjectLink}
+                        backDropColor={WHITE_40}
+                        mr={WRAPPER_MARGIN}
+                    />
+                ) : null),
         });
-    }, [navigation]);
+    }, [navigation, shouldShowViewMore, t, handleOpenProjectLink]);
 
     if (!selectedProject)
         return <LoadingOverlay message={t('brands.admin.loadingMessages.fetchingProject')} backgroundColor={WHITE} />;
@@ -87,7 +143,7 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
             </TemplateBox>
 
             <TemplateBox selfCenter flex>
-                <ToggleCarousel data={TAB_DATA} selectedTab={selectedTab} onChange={setSelectedTab} />
+                <ToggleCarousel data={tabData} selectedTab={selectedTab} onChange={setSelectedTab} />
             </TemplateBox>
 
             {selectedTab?.value === DETAILS_TAB?.value && selectedProject && (

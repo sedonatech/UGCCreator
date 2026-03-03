@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
@@ -9,15 +9,15 @@ import { BLACK, BLACK_20, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK } from '../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import CatalogueSvg from '../../../../assets/svgs/CatalogueSvg';
 import { SHADOW } from '../../../theme/Shadow';
-import useAppReview from '../../../hooks/useAppReview';
+import useAppReview, { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 import TemplateIcon from '../../../components/TemplateIcon';
-import { wp } from '../../../Utils/getResponsiveSize';
+import { hp, wp } from '../../../Utils/getResponsiveSize';
 import AffiliateBrandsCarousel from './components /AffiliateBrandsCarousel';
 import BrandsCarousel from './components /BrandsCarousel';
 import EventsCarousel from './components /EventsCarousel';
@@ -36,33 +36,58 @@ const FEEDBACK_FORM_URL =
 
 const HomeScreen = ({ navigation }) => {
     const { t } = useTranslation();
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TemplateBox
-                    onPress={() => navigation.navigate(WEBVIEW, { url: FEEDBACK_FORM_URL })}
-                    mr={WRAPPER_MARGIN}
-                    alignItems="center"
-                    row
-                >
-                    <TemplateText size={13} medium color={BLACK} mr={6}>
-                        {t('home.feedback')}
-                    </TemplateText>
-                    <DynamicIcon name="Comments" size={20} />
-                </TemplateBox>
-            ),
-        });
-    }, [navigation, t]);
+
     const { auth } = useAuthContext();
     const { features } = useFeatureFlags();
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
     const showAffiliateProgramsCarousel = features?.showAffiliateProgramsCarousel;
     const profile = auth?.profile;
+    const profileCompleteRatio = auth?.profileCompleteRatio;
     const { updateProfile } = useProfile();
     const profileImage = profile?.image;
     const isFocused = useIsFocused();
     const { challenges, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
+    const hasArmedReviewPromptRef = useRef(false);
+    const creatorToolsEnabled = features?.openAIScreen;
     const CHALLENGE_TOAST_DISMISSED_KEY = 'challenge_toast_dismissed';
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TemplateBox>
+                    {creatorToolsEnabled && (
+                        <TemplateBox
+                            onPress={() => navigation.navigate(UGCAI)}
+                            mr={WRAPPER_MARGIN}
+                            alignItems="center"
+                            row
+                            mb={hp(8)}
+                        >
+                            <TemplateText size={13} medium color={BLACK} mr={6}>
+                                {t('home.aiTools')}
+                            </TemplateText>
+                            <DynamicIcon name="Edit" size={20} />
+                        </TemplateBox>
+                    )}
+
+                    <TemplateBox
+                        onPress={() => {
+                            markReviewPromptEligibleForTrigger('creator_feedback_sent');
+                            navigation.navigate(WEBVIEW, { url: FEEDBACK_FORM_URL });
+                        }}
+                        mr={WRAPPER_MARGIN}
+                        alignItems="center"
+                        row
+                    >
+                        <TemplateText size={13} medium color={BLACK} mr={6}>
+                            {t('home.feedback')}
+                        </TemplateText>
+                        <DynamicIcon name="Comments" size={20} />
+                    </TemplateBox>
+                </TemplateBox>
+            ),
+        });
+    }, [creatorToolsEnabled, navigation, t]);
 
     useEffect(() => {
         if (!isFocused || challengeLoading) return;
@@ -96,7 +121,7 @@ const HomeScreen = ({ navigation }) => {
 
             AsyncStorage.setItem(CHALLENGE_TOAST_DISMISSED_KEY, 'true');
         });
-    }, [isFocused, challengeLoading, challenges]);
+    }, [CHALLENGE_TOAST_DISMISSED_KEY, challengeLoading, challenges, isFocused, t]);
 
     useEffect(() => {
         if (isFocused && profile) {
@@ -126,7 +151,28 @@ const HomeScreen = ({ navigation }) => {
         }
     }, [profileImage, t]);
 
-    const { previousResponse, handleRate } = useAppReview();
+    const {
+        handleRate,
+        shouldShowReviewPrompt,
+        dismissReviewPrompt,
+        markReviewPromptEligible,
+        refreshReviewPromptState,
+    } = useAppReview();
+
+    useEffect(() => {
+        if (isFocused) {
+            refreshReviewPromptState();
+        }
+    }, [isFocused, refreshReviewPromptState]);
+
+    useEffect(() => {
+        if (!isFocused || profileCompleteRatio !== 1 || hasArmedReviewPromptRef.current) {
+            return;
+        }
+
+        hasArmedReviewPromptRef.current = true;
+        markReviewPromptEligible('creator_profile_completed');
+    }, [isFocused, markReviewPromptEligible, profileCompleteRatio]);
 
     const updateLastLogin = async () => {
         await updateProfile({ lastLoginTime: new Date().toUTCString() }, profile?.id);
@@ -205,7 +251,7 @@ const HomeScreen = ({ navigation }) => {
             <ProjectsCarousel />
             <EventsCarousel />
             {features?.showBrandsCarousel && <BrandsCarousel />}
-            {previousResponse === null && features?.showReviewPrompt && (
+            {shouldShowReviewPrompt && features?.showReviewPrompt && (
                 <TemplateBox
                     row
                     backgroundColor={WHITE}
@@ -220,7 +266,7 @@ const HomeScreen = ({ navigation }) => {
                     <TemplateText size={13} onPress={handleRate}>
                         {t('home.alerts.appReview')}
                     </TemplateText>
-                    <TemplateBox onPress={handleRate} absolute left={SCREEN_WIDTH - wp(70)} top={wp(8)}>
+                    <TemplateBox onPress={dismissReviewPrompt} absolute left={SCREEN_WIDTH - wp(70)} top={wp(8)}>
                         <TemplateIcon name="close-outline" size={20} color={BLACK} />
                     </TemplateBox>
                 </TemplateBox>

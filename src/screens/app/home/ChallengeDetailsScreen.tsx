@@ -42,6 +42,7 @@ import ChallengeLeaderBoardModal from '../../../components/modals/ChallengeLeade
 import openUrl from '../../../Utils/openUrl';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import useTranslation from '../../../hooks/useTranslation';
+import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 const FEEDBACK_FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLSe0PYFCmCOoPDZFuQdQV63Swk3AAKolNQnOc3ZN9md4LM2ZJw/viewform?usp=publish-editor';
 
@@ -266,7 +267,10 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             headerRight: () => (
                 <TemplateBox row>
                     <TemplateBox
-                        onPress={() => navigation.navigate(WEBVIEW, { url: FEEDBACK_FORM_URL })}
+                        onPress={() => {
+                            markReviewPromptEligibleForTrigger('creator_feedback_sent');
+                            navigation.navigate(WEBVIEW, { url: FEEDBACK_FORM_URL });
+                        }}
                         mr={WRAPPER_MARGIN}
                         alignItems="center"
                         row

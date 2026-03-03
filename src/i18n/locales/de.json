@@ -14,7 +14,51 @@
         },
         "education": {
             "skip": "Überspringen",
-            "next": "Weiter"
+            "next": "Weiter",
+            "meta": {
+                "deals": {
+                    "eyebrow": "Bezahlte Brand-Deals",
+                    "highlight": "Schneller bewerben"
+                },
+                "matches": {
+                    "eyebrow": "Intelligentes Matching",
+                    "highlight": "Bessere Passung"
+                },
+                "aiTools": {
+                    "eyebrow": "KI-Workflow",
+                    "highlight": "Schneller erstellen"
+                },
+                "courses": {
+                    "eyebrow": "Creator-Ausbildung",
+                    "highlight": "Honorare steigern"
+                },
+                "portfolio": {
+                    "eyebrow": "Professionelles Profil",
+                    "highlight": "Vertrauen aufbauen"
+                }
+            },
+            "slides": {
+                "deals": {
+                    "title": "Finde schneller bezahlte UGC-Deals",
+                    "message": "Vergiss Kaltakquise. Durchsuche aktive Markenkooperationen, Ambassador-Kampagnen und Affiliate-Angebote an einem Ort, damit du dich in wenigen Minuten bewerben kannst."
+                },
+                "matches": {
+                    "title": "Finde Marken, die zu dir passen",
+                    "message": "Sieh dir Chancen an, die auf deine Nische, Zielgruppe und deinen Stil zugeschnitten sind, damit du weniger suchst und mehr Aufträge gewinnst."
+                },
+                "aiTools": {
+                    "title": "Erstelle bessere Inhalte mit integrierten KI-Tools",
+                    "message": "Erzeuge schnell Hooks, Skripte und Content-Ideen, damit du schneller pitchen und leistungsstärkeren UGC liefern kannst."
+                },
+                "courses": {
+                    "title": "Entwickle dich mit geführten Kursen weiter",
+                    "message": "Folge einem Schritt-für-Schritt-Training für Creator, das dir hilft, deine Fähigkeiten zu verbessern, konstant zu bleiben und als UGC-Creator selbstbewusster zu wachsen."
+                },
+                "portfolio": {
+                    "title": "Erstelle ein Profil, dem Marken vertrauen",
+                    "message": "Präsentiere dein Portfolio, Media Kit und deine Kontaktdaten an einem professionellen Ort und schalte den vollen Zugang frei, um mehr Deals zu landen."
+                }
+            }
         }
     },
     "auth": {
@@ -69,6 +113,7 @@
     },
     "home": {
         "feedback": "Feedback",
+        "aiTools": "KI-Tools",
         "greeting": {
             "morning": "Guten Morgen",
             "afternoon": "Guten Tag",
@@ -483,6 +528,7 @@
         },
         "projectDetails": {
             "enrolledBadge": "Eingeschrieben",
+            "loadingMessage": "Projektdetails werden abgerufen...",
             "sections": {
                 "description": "Beschreibung",
                 "timeline": "Zeitplan",
@@ -689,7 +735,22 @@
         "and": "und",
         "privacyLink": "Datenschutzrichtlinien zu.",
         "autoRenewText": "Ihr Abonnement wird automatisch verlängert, es sei denn, die automatische Verlängerung wird mindestens 24 Stunden vor Ende des aktuellen Zeitraums deaktiviert. Sie können Abonnements jederzeit verwalten und die automatische Verlängerung in Ihren iTunes-Einstellungen nach dem Kauf deaktivieren. Wir erstellen Ihnen ein Konto, mit dem Sie auf all Ihren iOS-Geräten auf unsere Inhalte zugreifen können, und Sie können nach Bedarf weitere Geräte hinzufügen.",
-        "logout": "Abmelden"
+        "logout": "Abmelden",
+        "screen": {
+            "unlockSectionTitle": "Alles, was Sie freischalten",
+            "plansSectionTitle": "Wählen Sie Ihren Zugang",
+            "plansSectionSubtitle": "Der empfohlene Plan ist vorausgewählt, damit die wertvollste Option nur einen Fingertipp entfernt ist.",
+            "checkoutTitle": "Bereit, Premium freizuschalten?",
+            "bestValueBadge": "Bestes Angebot",
+            "selectPlanFallback": "Wählen Sie einen Plan, um fortzufahren",
+            "checkoutError": "Der Checkout konnte nicht gestartet werden. Bitte versuchen Sie es erneut.",
+            "checkoutFooter": "Sicherer Checkout. Ihr Zugriff wird sofort freigeschaltet und Sie können Käufe jederzeit wiederherstellen.",
+            "todayThenSummary": "{{introPrice}} heute, danach {{nextCharge}}"
+        },
+        "card": {
+            "thenPrice": "Danach {{price}} {{billed}}",
+            "saveBadge": "{{percent}} sparen"
+        }
     },
     "creatorExplore": {
         "addProject": {
@@ -706,6 +767,10 @@
                 "description": {
                     "label": "Beschreibung",
                     "placeholder": "Beschreibung"
+                },
+                "link": {
+                    "label": "Projektlink",
+                    "placeholder": "https://ihre-vollständige-url.de"
                 },
                 "startDate": {
                     "label": "Startdatum"
@@ -1011,6 +1076,12 @@
                 "maxBudget": "Maximales Budget",
                 "minBudget": "Minimales Budget"
             },
+            "projectDetails": {
+                "tabs": {
+                    "details": "Details",
+                    "enrolledCreators": "Eingeschriebene Creator"
+                }
+            },
             "loadingMessages": {
                 "fetchingProject": "Projektdetails werden abgerufen...",
                 "loadingProject": "Projektdetails werden geladen..."
@@ -1112,7 +1183,52 @@
     "creatorTools": {
         "alerts": {
             "successTitle": "{{type}} erfolgreich erstellt 🎉",
-            "successMessage": "Sie können das {{type}} jetzt in Ihre Zwischenablage kopieren!"
+            "successMessage": "Sie können das {{type}} jetzt in Ihre Zwischenablage kopieren!",
+            "missingApiKeyTitle": "Groq-API-Schlüssel fehlt",
+            "missingApiKeyMessage": "Fügen Sie Ihren Groq-Schlüssel in src/config/aiConfig.js hinzu.",
+            "usageLimitTitle": "Nutzungslimit erreicht",
+            "cooldownMessage": "Bitte warten Sie {{seconds}} Sekunden, bevor Sie erneut Inhalte generieren.",
+            "dailyLimitMessage": "Tägliches KI-Limit erreicht. Versuchen Sie es morgen erneut.",
+            "rateLimitTitle": "Groq-Ratenlimit erreicht",
+            "rateLimitMessage": "Die kostenlose Stufe ist gerade ausgelastet. Bitte versuchen Sie es in Kürze erneut."
+        },
+        "ugcAiScreen": {
+            "title": "Entdecken Sie unsere Creator-Tools",
+            "viewResultsHistory": "Ergebnisverlauf anzeigen",
+            "tools": {
+                "scripts": {
+                    "title": "Skriptgenerator",
+                    "description": "Dieses Tool hilft Ihnen, Skripte für Ihre Videos anhand Ihrer Projektanforderungen zu erstellen.",
+                    "screenTitle": "Erstellen Sie in wenigen Minuten ansprechende Skripte mit KI"
+                },
+                "contentSuggestion": {
+                    "title": "Inhaltsvorschläge",
+                    "description": "Dieses Tool schlägt Inhalte vor, die Sie anhand Ihrer Projektanforderungen erstellen können.",
+                    "screenTitle": "Erstellen Sie in wenigen Minuten ansprechende Inhalte mit KI"
+                },
+                "hooks": {
+                    "title": "Hook-Generator",
+                    "description": "Dieses Tool hilft Ihnen, Hooks für Ihr Projekt zu erstellen.",
+                    "screenTitle": "Erstellen Sie in wenigen Minuten ansprechende Hooks mit KI"
+                }
+            }
+        },
+        "resultsScreen": {
+            "copyButton": "Ergebnisse in die Zwischenablage kopieren",
+            "viewResultsHistory": "Ergebnisverlauf anzeigen"
+        },
+        "toolTypes": {
+            "scripts": "Skripte",
+            "contentSuggestion": "Inhaltsvorschläge",
+            "hooks": "Hooks"
+        },
+        "resultsHistoryScreen": {
+            "title": "Ergebnisverlauf",
+            "emptyTitle": "Noch kein Verlauf",
+            "emptyDescription": "Sie haben derzeit keinen Verlauf. Erstellen Sie Inhalte, um Ihren Verlauf hier zu sehen.",
+            "fetchedTitle": "{{type}} erfolgreich geladen 🎉🎊",
+            "fetchedSubtitle": "Sie können {{type}} jetzt in Ihre Zwischenablage kopieren!",
+            "loadingMessage": "Ihr Verlauf wird geladen...."
         }
     },
     "events": {

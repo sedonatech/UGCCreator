@@ -3,7 +3,7 @@ import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import TemplateBox from '../../../components/TemplateBox';
-import { BLACK_10, BLACK_50, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND } from '../../../theme/Colors';
+import { BLACK_10, BLACK_20, BLACK_80, IOS_BLUE, PAYWALL_PRIMARY_BACKGROUND, WHITE } from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
 import { HEADER_MARGIN, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateTextInput from '../../../components/TemplateTextInput';
@@ -13,6 +13,7 @@ import useAITools from '../../../hooks/creatorTools/useAITools';
 import Button from '../../../components/Button';
 import { CREATOR_TOOLS_RESULTS } from '../../../navigation/ScreenNames';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
+import { hp } from '../../../Utils/getResponsiveSize';
 
 const ScriptsGeneratorScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
@@ -70,7 +71,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             <TemplateBox mt={HEADER_MARGIN} mb={50}>
-                <TemplateText size={18} bold startCase center>
+                <TemplateText size={18} bold startCase center mh={20}>
                     {title}
                 </TemplateText>
                 <TemplateBox height={20} />
@@ -88,7 +89,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     autoCapitalize="none"
                     returnKeyType="next"
                     placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
+                    placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
                     placeholder="Enter product name (required)"
@@ -98,7 +99,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     autoCapitalize="none"
                     returnKeyType="next"
                     placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
+                    placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
                     placeholder="Enter short description of the product (required)"
@@ -108,7 +109,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     autoCapitalize="none"
                     returnKeyType="next"
                     placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
+                    placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
                     placeholder="Enter the value proposition (optional)"
@@ -118,7 +119,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     autoCapitalize="none"
                     returnKeyType="next"
                     placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
+                    placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
                     placeholder="Enter target audience persona (optional)"
@@ -128,7 +129,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     autoCapitalize="none"
                     returnKeyType="next"
                     placeholderStyle={styles.placeholderStyle}
-                    placeholderTextColor={BLACK_50}
+                    placeholderTextColor={BLACK_80}
                 />
                 <TemplateBox width={WRAPPED_SCREEN_WIDTH} selfCenter>
                     <FilterCategory
@@ -153,17 +154,17 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
+        backgroundColor: WHITE,
     },
     contentContainer: {
-        backgroundColor: PAYWALL_PRIMARY_BACKGROUND,
+        backgroundColor: WHITE,
         alignItems: 'center',
     },
     input: {
         height: 60,
         width: SCREEN_WIDTH - 32,
-        borderWidth: 0.4,
-        borderColor: BLACK_10,
+        borderWidth: 0.8,
+        borderColor: BLACK_20,
         borderRadius: 8,
         paddingLeft: 16,
         marginTop: 10,
@@ -176,6 +177,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         backgroundColor: IOS_BLUE,
         width: WRAPPED_SCREEN_WIDTH,
+        height: hp(45)
     },
     placeholderStyle: {
         fontSize: 13,
