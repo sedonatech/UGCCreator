@@ -23,6 +23,7 @@ const initialProjectState = {
     brandId: '',
     image: '',
     title: '',
+    link: '',
     deliveryFormat: [],
     socials: [],
     startDate: '',
@@ -80,10 +81,13 @@ const useProjects = () => {
                 isBlocked: false,
             });
             console.log('Document written with ID: ', docRef.id);
+            return docRef;
         } catch (error) {
             console.log(error);
+            return null;
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const getProjects = async (projectLimits = 8) => {
@@ -240,9 +244,12 @@ const useProjects = () => {
                     applications: selectedProjectApplications,
                     enrolledUserIds: newUserIds,
                 });
+                return true;
             }
+            return false;
         } catch (error) {
             console.log(error);
+            return false;
         }
     };
 
