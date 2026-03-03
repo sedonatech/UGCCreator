@@ -1,5 +1,4 @@
 apply plugin: "com.android.application"
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
@@ -97,6 +96,7 @@ android {
         versionCode 71
         versionName "1.9.8"
         vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [usesCleartextTraffic: "true"]
     }
 
     signingConfigs {
@@ -135,7 +135,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation project(':react-native-vector-icons')
     implementation project(':react-native-fbsdk-next')
     implementation 'org.jetbrains:annotations:16.0.2'
 //     implementation 'com.google.firebase:firebase-crashlytics-ktx'

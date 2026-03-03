@@ -12,6 +12,7 @@ const MediaKitScreen = ({ route }) => {
             <Pdf
                 source={uri ? { uri, cache: true } : null}
                 page={page}
+                trustAllCerts={false}
                 style={styles.pdf}
                 onLoadComplete={(numberOfPages, filePath) => {
                     console.log('[MEDIA-KIT]: pages', numberOfPages);

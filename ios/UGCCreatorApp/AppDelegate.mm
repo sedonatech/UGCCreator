@@ -3,7 +3,7 @@
 #import <Firebase.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
-#import <CodePush/CodePush.h>
+
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
@@ -44,7 +44,7 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [CodePush bundleURL];
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
 

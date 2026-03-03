@@ -31,9 +31,7 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>CodePushDeploymentKey</key>
-	<string>p2eYR3u3COEvClpTmLRSsi9F7ael52jeUSogL</string>
-	<key>FacebookAppID</key>
+<key>FacebookAppID</key>
 	<string>2996542933821709</string>
 	<key>FacebookClientToken</key>
 	<string>d8ed6a8ab7f71859642caee5f5de5f52</string>
