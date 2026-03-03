@@ -14,7 +14,51 @@
         },
         "education": {
             "skip": "Skip",
-            "next": "Next"
+            "next": "Next",
+            "meta": {
+                "deals": {
+                    "eyebrow": "Paid brand deals",
+                    "highlight": "Apply faster"
+                },
+                "matches": {
+                    "eyebrow": "Smart brand matching",
+                    "highlight": "Higher fit"
+                },
+                "aiTools": {
+                    "eyebrow": "AI content workflow",
+                    "highlight": "Create faster"
+                },
+                "courses": {
+                    "eyebrow": "Creator education",
+                    "highlight": "Grow your rates"
+                },
+                "portfolio": {
+                    "eyebrow": "Professional profile",
+                    "highlight": "Build trust"
+                }
+            },
+            "slides": {
+                "deals": {
+                    "title": "Find paid UGC deals faster",
+                    "message": "Skip cold outreach. Browse active brand collabs, ambassador campaigns, and affiliate offers in one place so you can apply in minutes."
+                },
+                "matches": {
+                    "title": "Get matched with brands that fit you",
+                    "message": "See opportunities tailored to your niche, audience, and style so you spend less time searching and more time booking work."
+                },
+                "aiTools": {
+                    "title": "Create better content with built-in AI tools",
+                    "message": "Generate hooks, scripts, and content ideas fast so you can pitch quicker and deliver stronger-performing UGC."
+                },
+                "courses": {
+                    "title": "Level up your creator journey with guided courses",
+                    "message": "Follow step-by-step creator training designed to help you improve your skills, stay consistent, and grow into a more confident UGC creator."
+                },
+                "portfolio": {
+                    "title": "Build a profile brands can trust",
+                    "message": "Showcase your portfolio, media kit, and contact details in one professional place and unlock full access to start landing more deals."
+                }
+            }
         }
     },
     "auth": {
@@ -69,6 +113,7 @@
     },
     "home": {
         "feedback": "Feedback",
+        "aiTools": "AI Tools",
         "greeting": {
             "morning": "Good morning",
             "afternoon": "Good afternoon",
@@ -483,6 +528,7 @@
         },
         "projectDetails": {
             "enrolledBadge": "Enrolled",
+            "loadingMessage": "Fetching project details...",
             "sections": {
                 "description": "Description",
                 "timeline": "Timeline",
@@ -689,7 +735,22 @@
         "and": "and",
         "privacyLink": "privacy policy.",
         "autoRenewText": "Your subscription will automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period. You can manage subscriptions at any time, and turn off auto-renewal in your iTunes settings after purchase if you choose. We will create you an account that will allow you to access our content on any iOS devices and you may choose to add additional devices as you require.",
-        "logout": "logout"
+        "logout": "logout",
+        "screen": {
+            "unlockSectionTitle": "Everything you unlock",
+            "plansSectionTitle": "Choose your access level",
+            "plansSectionSubtitle": "The recommended plan is preselected so the highest-value option is one tap away.",
+            "checkoutTitle": "Ready to unlock premium?",
+            "bestValueBadge": "Best value",
+            "selectPlanFallback": "Select a plan to continue",
+            "checkoutError": "We could not start checkout. Please try again.",
+            "checkoutFooter": "Secure checkout. Your access unlocks instantly and you can restore purchases at any time.",
+            "todayThenSummary": "{{introPrice}} today, then {{nextCharge}}"
+        },
+        "card": {
+            "thenPrice": "Then {{price}} {{billed}}",
+            "saveBadge": "Save {{percent}}"
+        }
     },
     "creatorExplore": {
         "addProject": {
@@ -946,6 +1007,7 @@
                     "projectTitle": "Project Title",
                     "shortDescription": "Short Description",
                     "description": "Description",
+                    "link": "Project Link",
                     "startDate": "Start Date",
                     "endDate": "End Date",
                     "image": "Image",
@@ -957,6 +1019,7 @@
                     "projectTitle": "Project Title",
                     "shortDescription": "Short description",
                     "description": "Description",
+                    "link": "https://your-full-url.com",
                     "maxBudget": "Maximum Budget limit",
                     "minBudget": "Minimum Budget limit"
                 },
@@ -1010,6 +1073,12 @@
                 "endDate": "End Date",
                 "maxBudget": "Maximum Budget",
                 "minBudget": "Minimum Budget"
+            },
+            "projectDetails": {
+                "tabs": {
+                    "details": "Details",
+                    "enrolledCreators": "Enrolled Creators"
+                }
             },
             "loadingMessages": {
                 "fetchingProject": "Fetching project details...",
@@ -1112,7 +1181,52 @@
     "creatorTools": {
         "alerts": {
             "successTitle": "Successfully created {{type}} 🎉",
-            "successMessage": "You can now copy the {{type}} to your clipboard!"
+            "successMessage": "You can now copy the {{type}} to your clipboard!",
+            "missingApiKeyTitle": "Groq API key missing",
+            "missingApiKeyMessage": "Add your Groq key in src/config/aiConfig.js.",
+            "usageLimitTitle": "Usage limit reached",
+            "cooldownMessage": "Please wait {{seconds}} seconds before generating again.",
+            "dailyLimitMessage": "Daily AI limit reached. Try again tomorrow.",
+            "rateLimitTitle": "Groq rate limit reached",
+            "rateLimitMessage": "The free tier is busy right now. Please try again shortly."
+        },
+        "ugcAiScreen": {
+            "title": "Explore our Creator Tools",
+            "viewResultsHistory": "View Results History",
+            "tools": {
+                "scripts": {
+                    "title": "Scripts Generator",
+                    "description": "This tool helps you generate scripts for your videos based on your project requirements.",
+                    "screenTitle": "Create Engaging Scripts With AI in minutes"
+                },
+                "contentSuggestion": {
+                    "title": "Content Suggester",
+                    "description": "This tool suggests content for you to create based on your project requirements.",
+                    "screenTitle": "Create Engaging Content With AI in minutes"
+                },
+                "hooks": {
+                    "title": "Hooks Generator",
+                    "description": "This tool helps you generate hooks for your project.",
+                    "screenTitle": "Create Engaging Hooks With AI in minutes"
+                }
+            }
+        },
+        "resultsScreen": {
+            "copyButton": "Copy Results To Clipboard",
+            "viewResultsHistory": "View Results History"
+        },
+        "toolTypes": {
+            "scripts": "Scripts",
+            "contentSuggestion": "Content Suggestions",
+            "hooks": "Hooks"
+        },
+        "resultsHistoryScreen": {
+            "title": "Results History",
+            "emptyTitle": "No Current History",
+            "emptyDescription": "You have no current history. Please generate some content to see your history.",
+            "fetchedTitle": "{{type}} Results Successfully Fetched 🎉🎊",
+            "fetchedSubtitle": "You can now copy the {{type}} to your clipboard!",
+            "loadingMessage": "Fetching your history...."
         }
     },
     "events": {
