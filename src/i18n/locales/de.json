@@ -114,11 +114,7 @@
     "home": {
         "feedback": "Feedback",
         "aiTools": "KI-Tools",
-        "greeting": {
-            "morning": "Guten Morgen",
-            "afternoon": "Guten Tag",
-            "evening": "Guten Abend"
-        },
+        "greeting": "Hallo",
         "mediaKit": {
             "title": "Media Kit erstellen",
             "description": "Laden Sie ein einseitiges PDF mit Ihrer Arbeit hoch. Marken können es in Ihrem Profil ansehen und Sie können es jederzeit aktualisieren."
@@ -223,7 +219,7 @@
             "entries": "Beiträge"
         },
         "card": {
-            "winUpTo": "Gewinnen Sie bis zu",
+            "winUpTo": "Gewinne bis zu",
             "defaultPrize": "300 USD"
         },
         "status": {
@@ -1182,53 +1178,65 @@
     },
     "creatorTools": {
         "alerts": {
-            "successTitle": "{{type}} erfolgreich erstellt 🎉",
-            "successMessage": "Sie können das {{type}} jetzt in Ihre Zwischenablage kopieren!",
-            "missingApiKeyTitle": "Groq-API-Schlüssel fehlt",
-            "missingApiKeyMessage": "Fügen Sie Ihren Groq-Schlüssel in src/config/aiConfig.js hinzu.",
-            "usageLimitTitle": "Nutzungslimit erreicht",
-            "cooldownMessage": "Bitte warten Sie {{seconds}} Sekunden, bevor Sie erneut Inhalte generieren.",
-            "dailyLimitMessage": "Tägliches KI-Limit erreicht. Versuchen Sie es morgen erneut.",
-            "rateLimitTitle": "Groq-Ratenlimit erreicht",
-            "rateLimitMessage": "Die kostenlose Stufe ist gerade ausgelastet. Bitte versuchen Sie es in Kürze erneut."
+            "successTitle": "{{type}} erstellt 🎉",
+            "successMessage": "Kopiere {{type}} jetzt in die Zwischenablage!",
+            "missingApiKeyTitle": "Groq-API-Key fehlt",
+            "missingApiKeyMessage": "Groq-Key in src/config/aiConfig.js einfügen.",
+            "usageLimitTitle": "Limit erreicht",
+            "cooldownMessage": "Bitte {{seconds}} Sek. warten.",
+            "dailyLimitMessage": "Tageslimit erreicht. Versuch es morgen.",
+            "rateLimitTitle": "Groq-Limit erreicht",
+            "rateLimitMessage": "Gerade ausgelastet. Versuch es gleich nochmal."
         },
         "ugcAiScreen": {
-            "title": "Entdecken Sie unsere Creator-Tools",
-            "viewResultsHistory": "Ergebnisverlauf anzeigen",
+            "title": "Unsere Creator-Tools",
+            "viewResultsHistory": "Verlauf anzeigen",
             "tools": {
                 "scripts": {
                     "title": "Skriptgenerator",
-                    "description": "Dieses Tool hilft Ihnen, Skripte für Ihre Videos anhand Ihrer Projektanforderungen zu erstellen.",
-                    "screenTitle": "Erstellen Sie in wenigen Minuten ansprechende Skripte mit KI"
+                    "description": "Erstelle Skripte für deine Videos basierend auf deinem Projekt.",
+                    "screenTitle": "Skripte mit KI erstellen"
                 },
                 "contentSuggestion": {
                     "title": "Inhaltsvorschläge",
-                    "description": "Dieses Tool schlägt Inhalte vor, die Sie anhand Ihrer Projektanforderungen erstellen können.",
-                    "screenTitle": "Erstellen Sie in wenigen Minuten ansprechende Inhalte mit KI"
+                    "description": "Erhalte Content-Ideen passend zu deinem Projekt.",
+                    "screenTitle": "Inhalte mit KI erstellen"
                 },
                 "hooks": {
                     "title": "Hook-Generator",
-                    "description": "Dieses Tool hilft Ihnen, Hooks für Ihr Projekt zu erstellen.",
-                    "screenTitle": "Erstellen Sie in wenigen Minuten ansprechende Hooks mit KI"
+                    "description": "Erstelle Hooks für dein Projekt.",
+                    "screenTitle": "Hooks mit KI erstellen"
                 }
             }
         },
         "resultsScreen": {
-            "copyButton": "Ergebnisse in die Zwischenablage kopieren",
-            "viewResultsHistory": "Ergebnisverlauf anzeigen"
+            "copyButton": "Ergebnisse kopieren",
+            "viewResultsHistory": "Verlauf anzeigen"
         },
         "toolTypes": {
             "scripts": "Skripte",
             "contentSuggestion": "Inhaltsvorschläge",
             "hooks": "Hooks"
         },
+        "scriptsGeneratorScreen": {
+            "subtitle": "Details eingeben und los geht's!",
+            "brandNamePlaceholder": "Markenname (Pflicht)",
+            "productNamePlaceholder": "Produktname (Pflicht)",
+            "productDescriptionPlaceholder": "Kurze Beschreibung (Pflicht)",
+            "valuePropositionPlaceholder": "Wertversprechen (optional)",
+            "personaPlaceholder": "Zielgruppe (optional)",
+            "categoryTitle": "Mind. eine wählen (Pflicht)",
+            "saveAndContinue": "Speichern & weiter",
+            "resultsTitle": "{{type}} erstellt 🎉🎊",
+            "resultsSubtitle": "Kopiere {{type}} jetzt in die Zwischenablage!"
+        },
         "resultsHistoryScreen": {
-            "title": "Ergebnisverlauf",
+            "title": "Verlauf",
             "emptyTitle": "Noch kein Verlauf",
-            "emptyDescription": "Sie haben derzeit keinen Verlauf. Erstellen Sie Inhalte, um Ihren Verlauf hier zu sehen.",
-            "fetchedTitle": "{{type}} erfolgreich geladen 🎉🎊",
-            "fetchedSubtitle": "Sie können {{type}} jetzt in Ihre Zwischenablage kopieren!",
-            "loadingMessage": "Ihr Verlauf wird geladen...."
+            "emptyDescription": "Erstelle Inhalte, um deinen Verlauf hier zu sehen.",
+            "fetchedTitle": "{{type}} geladen 🎉🎊",
+            "fetchedSubtitle": "Kopiere {{type}} jetzt in die Zwischenablage!",
+            "loadingMessage": "Verlauf wird geladen...."
         }
     },
     "events": {
@@ -1281,5 +1289,91 @@
     "reachOut": {
         "title": "Marke kontaktieren",
         "message": "Senden Sie eine E-Mail an {{brandName}}, um sie zur Zusammenarbeit auf dieser Plattform einzuladen. Sie werden benachrichtigt, wenn sie Ihre Anfrage akzeptieren"
+    },
+    "filterCategories": {
+        "fitness-wellness": "Fitness/Wellness",
+        "food-beverages": "Essen/Getränke",
+        "beauty": "Schönheit",
+        "travel": "Reisen",
+        "diy": "Heimwerken",
+        "apps-tech": "Apps/Technik",
+        "fashion": "Mode",
+        "business": "Geschäft",
+        "real-estate": "Immobilien",
+        "art": "Kunst"
+    },
+    "filterCountries": {
+        "united-states": "Vereinigte Staaten",
+        "united-kingdom": "Vereinigtes Königreich",
+        "canada": "Kanada",
+        "australia": "Australien",
+        "new-zealand": "Neuseeland",
+        "germany": "Deutschland",
+        "france": "Frankreich",
+        "italy": "Italien",
+        "spain": "Spanien",
+        "netherlands": "Niederlande",
+        "belgium": "Belgien",
+        "austria": "Österreich",
+        "switzerland": "Schweiz",
+        "sweden": "Schweden",
+        "norway": "Norwegen",
+        "denmark": "Dänemark",
+        "finland": "Finnland",
+        "ireland": "Irland",
+        "portugal": "Portugal",
+        "greece": "Griechenland",
+        "poland": "Polen",
+        "czech-republic": "Tschechische Republik",
+        "hungary": "Ungarn",
+        "romania": "Rumänien",
+        "slovakia": "Slowakei",
+        "bulgaria": "Bulgarien",
+        "croatia": "Kroatien",
+        "slovenia": "Slowenien",
+        "ukraine": "Ukraine",
+        "south-africa": "Südafrika",
+        "nigeria": "Nigeria",
+        "kenya": "Kenia",
+        "ghana": "Ghana",
+        "tanzania": "Tansania",
+        "egypt": "Ägypten",
+        "morocco": "Marokko",
+        "algeria": "Algerien",
+        "saudi-arabia": "Saudi-Arabien",
+        "uae": "VAE"
+    },
+    "filterLanguages": {
+        "english": "Englisch",
+        "spanish": "Spanisch",
+        "french": "Französisch",
+        "german": "Deutsch",
+        "italian": "Italienisch",
+        "dutch": "Niederländisch",
+        "portuguese": "Portugiesisch",
+        "swedish": "Schwedisch",
+        "norwegian": "Norwegisch"
+    },
+    "filterGenders": {
+        "male": "Männlich",
+        "female": "Weiblich",
+        "non-binary": "Nicht-binär",
+        "other": "Andere"
+    },
+    "filterProjectTypes": {
+        "affiliate": "Affiliate",
+        "sponsored": "Gesponsert",
+        "paidCollaboration": "Bezahlte Zusammenarbeit",
+        "giftedCollaboration": "Geschenkte Zusammenarbeit"
+    },
+    "filterDeliveryFormats": {
+        "videos": "Videos",
+        "photos": "Fotos",
+        "rawFootage": "Rohmaterial",
+        "post": "Social-Media-Beitrag"
+    },
+    "filterProjectDurations": {
+        "oneTimeProject": "Einmalig",
+        "recurring": "Wiederkehrend"
     }
 }

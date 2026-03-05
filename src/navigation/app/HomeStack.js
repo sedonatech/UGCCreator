@@ -17,6 +17,8 @@ import {
     PROJECT_DETAILS,
     PROJECTS_SCREEN,
     RECOMMENDED_BRANDS,
+    CONTENT_SUGGESTOR,
+    HOOKS_GENERATOR,
     RESULTS_HISTORY,
     SCRIPTS_GENERATOR,
     UGCAI,
@@ -69,6 +71,8 @@ const HomeStack = () => (
         <Screen name={WEBVIEW} options={TRANSPARENT_HEADER} component={WebviewScreen} />
         <Screen name={UGCAI} options={TRANSPARENT_HEADER} component={UGCAiScreen} />
         <Screen name={SCRIPTS_GENERATOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
+        <Screen name={CONTENT_SUGGESTOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
+        <Screen name={HOOKS_GENERATOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
         <Screen name={CREATOR_TOOLS_RESULTS} options={TRANSPARENT_HEADER} component={CreatorToolsResultsScreen} />
         <Screen name={RESULTS_HISTORY} options={TRANSPARENT_HEADER} component={ResultsHistoryScreen} />
         <Screen name={BRANDS_CATALOGUE} options={TRANSPARENT_HEADER} component={BrandsCatalogueScreen} />

@@ -136,18 +136,21 @@ const UpdateCategories = () => {
                         filters={projectFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterCategories"
                     />
                     <FilterCategory
                         title="Language"
                         filters={languageFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterLanguages"
                     />
                     <FilterCategory
                         title="Gender"
                         filters={genderFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterGenders"
                     />
                     <FilterCategory
                         title="Age Group"
@@ -160,18 +163,21 @@ const UpdateCategories = () => {
                         filters={projectTypeFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterProjectTypes"
                     />
                     <FilterCategory
                         title="Delivery Format"
                         filters={deliveryFormatFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterDeliveryFormats"
                     />
                     <FilterCategory
                         title="Project Duration"
                         filters={projectDurationFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterProjectDurations"
                     />
 
                 </ScrollView>

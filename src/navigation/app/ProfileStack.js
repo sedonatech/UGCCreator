@@ -5,8 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import PortfolioScreen from '../../screens/app/profile/PortfolioScreen';
 import {
+    CONTENT_SUGGESTOR,
     CREATOR_TOOLS_RESULTS,
     FORGOT_PASSWORD,
+    HOOKS_GENERATOR,
     MEDIA_KIT,
     PROFILE,
     RESULTS_HISTORY,
@@ -62,6 +64,8 @@ const ProfileStack = () => (
         <Screen name={UGCAI} options={TRANSPARENT_HEADER} component={UGCAiScreen} />
         <Screen name={WEBVIEW} options={TRANSPARENT_HEADER} component={WebviewScreen} />
         <Screen name={SCRIPTS_GENERATOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
+        <Screen name={CONTENT_SUGGESTOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
+        <Screen name={HOOKS_GENERATOR} options={TRANSPARENT_HEADER} component={ScriptsGeneratorScreen} />
         <Screen name={CREATOR_TOOLS_RESULTS} options={TRANSPARENT_HEADER} component={CreatorToolsResultsScreen} />
         <Screen name={RESULTS_HISTORY} options={TRANSPARENT_HEADER} component={ResultsHistoryScreen} />
         <Screen name={MEDIA_KIT} options={TRANSPARENT_HEADER} component={MediaKitScreen} />

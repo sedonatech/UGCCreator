@@ -384,42 +384,49 @@ const CreatorProfilesScreen = ({ navigation }) => {
                                 filters={projectFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
+                                translationPrefix="filterCategories"
                             />
                             <FilterCategory
                                 title={t('creatorExplore.creators.filters.categories.country')}
                                 filters={countryFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
+                                translationPrefix="filterCountries"
                             />
                             <FilterCategory
                                 title={t('creatorExplore.creators.filters.categories.language')}
                                 filters={languageFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
+                                translationPrefix="filterLanguages"
                             />
                             <FilterCategory
                                 title={t('creatorExplore.creators.filters.categories.gender')}
                                 filters={genderFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
+                                translationPrefix="filterGenders"
                             />
                             <FilterCategory
                                 title={t('creatorExplore.creators.filters.categories.projectType')}
                                 filters={projectTypeFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
+                                translationPrefix="filterProjectTypes"
                             />
                             <FilterCategory
                                 title={t('creatorExplore.creators.filters.categories.deliveryFormat')}
                                 filters={deliveryFormatFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
+                                translationPrefix="filterDeliveryFormats"
                             />
                             <FilterCategory
                                 title={t('creatorExplore.creators.filters.categories.duration')}
                                 filters={projectDurationFilters}
                                 onFilterPress={onProjectFilterPress}
                                 selectedFilters={selectedFilters}
+                                translationPrefix="filterProjectDurations"
                             />
                         </View>
                     }

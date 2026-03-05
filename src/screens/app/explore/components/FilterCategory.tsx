@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ProjectFilters } from '../../../../consts/AppFilters/ProjectFilters';
 import {
     RADIUS_SMALL, SPACE_LARGE, SPACE_MEDIUM, SPACE_SMALL, SPACE_XSMALL, WRAPPED_SCREEN_WIDTH
@@ -15,6 +16,7 @@ interface Props {
     filters: ProjectFilters[]
     onFilterPress: (value: string) => void
     selectedFilters?: string[]
+    translationPrefix?: string
 }
 
 const FilterCategory: FC<Props> = ({
@@ -22,7 +24,9 @@ const FilterCategory: FC<Props> = ({
     filters,
     onFilterPress,
     selectedFilters = [],
+    translationPrefix,
 }) => {
+    const { t } = useTranslation();
     const [toggleFilters, setToggleFilters] = useState(false);
 
     return (
@@ -52,11 +56,15 @@ const FilterCategory: FC<Props> = ({
             {toggleFilters && (
                 <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
                     {
-                        filters?.sort((a, b) => a?.name?.localeCompare(b.name)).map(({ value, name }, index) => (
+                        filters?.sort((a, b) => {
+                                const nameA = translationPrefix ? t(`${translationPrefix}.${a.value}`, { defaultValue: a.name }) : a.name;
+                                const nameB = translationPrefix ? t(`${translationPrefix}.${b.value}`, { defaultValue: b.name }) : b.name;
+                                return nameA.localeCompare(nameB);
+                            }).map(({ value, name }, index) => (
                             <FilterPill
                                 onPress={() => onFilterPress(value)}
                                 key={value}
-                                title={name}
+                                title={translationPrefix ? t(`${translationPrefix}.${value}`, { defaultValue: name }) : name}
                                 fadeInDelay={(index + 1) * 50}
                                 selected={selectedFilters?.includes(value)}
                             />

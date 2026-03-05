@@ -13,7 +13,6 @@ import useTranslation from '../../../../hooks/useTranslation';
 
 const Greeting = ({ userName, style, showAvatar }) => {
     const { t, language } = useTranslation();
-    const hour = new Date().getHours();
 
     const start = startOfDay(new Date());
     const today = useMemo(() => start, []);
@@ -33,22 +32,12 @@ const Greeting = ({ userName, style, showAvatar }) => {
 
     const activeDay = useMemo(() => format(start, 'MMMM dd yyyy', { locale: getDateLocale() }), [today, language]);
 
-    const getTimeGreeting = hour => {
-        if (hour > 16) {
-            return t('home.greeting.evening');
-        }
-        if (hour > 11) {
-            return t('home.greeting.afternoon');
-        }
-        return t('home.greeting.morning');
-    };
-
     return (
         <View style={[styles.container, style]}>
             {showAvatar && <Avatar style={styles.avatar} />}
             <View>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
-                    {`${getTimeGreeting(hour)}`}
+                    {t('home.greeting')}
                 </TemplateText>
                 <TemplateText bold size={18} style={styles.greetingTitle}>
                     {`${userName

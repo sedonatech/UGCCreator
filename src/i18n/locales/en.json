@@ -114,11 +114,7 @@
     "home": {
         "feedback": "Feedback",
         "aiTools": "AI Tools",
-        "greeting": {
-            "morning": "Good morning",
-            "afternoon": "Good afternoon",
-            "evening": "Good evening"
-        },
+        "greeting": "Hi",
         "mediaKit": {
             "title": "Generate Media Kit",
             "description": "Upload a one page PDF with your work. Brands can preview it on your profile, update it any time."
@@ -1220,6 +1216,18 @@
             "contentSuggestion": "Content Suggestions",
             "hooks": "Hooks"
         },
+        "scriptsGeneratorScreen": {
+            "subtitle": "Enter Details and let the magic happen!",
+            "brandNamePlaceholder": "Enter brand name (required)",
+            "productNamePlaceholder": "Enter product name (required)",
+            "productDescriptionPlaceholder": "Enter short description of the product (required)",
+            "valuePropositionPlaceholder": "Enter the value proposition (optional)",
+            "personaPlaceholder": "Enter target audience persona (optional)",
+            "categoryTitle": "Select at least one (required)",
+            "saveAndContinue": "Save and Continue",
+            "resultsTitle": "{{type}} Results Successfully Created 🎉🎊",
+            "resultsSubtitle": "You can now copy the {{type}} to your clipboard!"
+        },
         "resultsHistoryScreen": {
             "title": "Results History",
             "emptyTitle": "No Current History",
@@ -1279,5 +1287,91 @@
     "reachOut": {
         "title": "Reach Out to Brand",
         "message": "Send an email to {{brandName}} to invite them to collaborate with you on this platform. You'll be notified when they accept your request"
+    },
+    "filterCategories": {
+        "fitness-wellness": "Fitness/Wellness",
+        "food-beverages": "Food/Beverages",
+        "beauty": "Beauty",
+        "travel": "Travel",
+        "diy": "DIY",
+        "apps-tech": "Apps/Tech",
+        "fashion": "Fashion",
+        "business": "Business",
+        "real-estate": "Real Estate",
+        "art": "Art"
+    },
+    "filterCountries": {
+        "united-states": "United States",
+        "united-kingdom": "United Kingdom",
+        "canada": "Canada",
+        "australia": "Australia",
+        "new-zealand": "New Zealand",
+        "germany": "Germany",
+        "france": "France",
+        "italy": "Italy",
+        "spain": "Spain",
+        "netherlands": "Netherlands",
+        "belgium": "Belgium",
+        "austria": "Austria",
+        "switzerland": "Switzerland",
+        "sweden": "Sweden",
+        "norway": "Norway",
+        "denmark": "Denmark",
+        "finland": "Finland",
+        "ireland": "Ireland",
+        "portugal": "Portugal",
+        "greece": "Greece",
+        "poland": "Poland",
+        "czech-republic": "Czech Republic",
+        "hungary": "Hungary",
+        "romania": "Romania",
+        "slovakia": "Slovakia",
+        "bulgaria": "Bulgaria",
+        "croatia": "Croatia",
+        "slovenia": "Slovenia",
+        "ukraine": "Ukraine",
+        "south-africa": "South Africa",
+        "nigeria": "Nigeria",
+        "kenya": "Kenya",
+        "ghana": "Ghana",
+        "tanzania": "Tanzania",
+        "egypt": "Egypt",
+        "morocco": "Morocco",
+        "algeria": "Algeria",
+        "saudi-arabia": "Saudi Arabia",
+        "uae": "UAE"
+    },
+    "filterLanguages": {
+        "english": "English",
+        "spanish": "Spanish",
+        "french": "French",
+        "german": "German",
+        "italian": "Italian",
+        "dutch": "Dutch",
+        "portuguese": "Portuguese",
+        "swedish": "Swedish",
+        "norwegian": "Norwegian"
+    },
+    "filterGenders": {
+        "male": "Male",
+        "female": "Female",
+        "non-binary": "Non-binary",
+        "other": "Other"
+    },
+    "filterProjectTypes": {
+        "affiliate": "Affiliate",
+        "sponsored": "Sponsored",
+        "paidCollaboration": "Paid Collaboration",
+        "giftedCollaboration": "Gifted Collaboration"
+    },
+    "filterDeliveryFormats": {
+        "videos": "Videos",
+        "photos": "Photos",
+        "rawFootage": "Raw Footage",
+        "post": "Social Media Post"
+    },
+    "filterProjectDurations": {
+        "oneTimeProject": "One time",
+        "recurring": "Recurring"
     }
 }

@@ -51,10 +51,8 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                         text: t('common.buttons.ok'),
                         onPress: () => {
                             navigation.navigate(CREATOR_TOOLS_RESULTS, {
-                                title: `${
-                                    toolType[0]?.toUpperCase() + toolType?.slice(1)
-                                } Results Successfully Created 🎉🎊`,
-                                subTitle: `You can now copy the ${toolType} to your clipboard!`,
+                                title: t('creatorTools.scriptsGeneratorScreen.resultsTitle', { type: toolType }),
+                                subTitle: t('creatorTools.scriptsGeneratorScreen.resultsSubtitle', { type: toolType }),
                                 results: responseMessage,
                             });
                             trackEvent('creator_tool_results_viewed', {
@@ -77,12 +75,12 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                 <TemplateBox height={20} />
                 <TemplateBox selfCenter>
                     <TemplateText size={16} center>
-                        Enter Details and let the magic happen!
+                        {t('creatorTools.scriptsGeneratorScreen.subtitle')}
                     </TemplateText>
                 </TemplateBox>
                 <TemplateBox height={20} />
                 <TemplateTextInput
-                    placeholder="Enter brand name (required)"
+                    placeholder={t('creatorTools.scriptsGeneratorScreen.brandNamePlaceholder')}
                     style={styles.input}
                     value={brandName}
                     onChangeText={text => setBrandName(text)}
@@ -92,7 +90,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
-                    placeholder="Enter product name (required)"
+                    placeholder={t('creatorTools.scriptsGeneratorScreen.productNamePlaceholder')}
                     style={styles.input}
                     value={productName}
                     onChangeText={text => setProductName(text)}
@@ -102,7 +100,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
-                    placeholder="Enter short description of the product (required)"
+                    placeholder={t('creatorTools.scriptsGeneratorScreen.productDescriptionPlaceholder')}
                     style={styles.input}
                     value={productDescription}
                     onChangeText={text => setProductDescription(text)}
@@ -112,7 +110,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
-                    placeholder="Enter the value proposition (optional)"
+                    placeholder={t('creatorTools.scriptsGeneratorScreen.valuePropositionPlaceholder')}
                     style={styles.input}
                     value={valueProposition}
                     onChangeText={text => setValueProposition(text)}
@@ -122,7 +120,7 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                     placeholderTextColor={BLACK_80}
                 />
                 <TemplateTextInput
-                    placeholder="Enter target audience persona (optional)"
+                    placeholder={t('creatorTools.scriptsGeneratorScreen.personaPlaceholder')}
                     style={styles.input}
                     value={persona}
                     onChangeText={text => setPersona(text)}
@@ -133,15 +131,16 @@ const ScriptsGeneratorScreen = ({ navigation, route }) => {
                 />
                 <TemplateBox width={WRAPPED_SCREEN_WIDTH} selfCenter>
                     <FilterCategory
-                        title="Select at least one (required)"
+                        title={t('creatorTools.scriptsGeneratorScreen.categoryTitle')}
                         filters={projectFilters}
                         onFilterPress={onCategoriesPress}
                         selectedFilters={selectedCategories}
+                        translationPrefix="filterCategories"
                     />
                 </TemplateBox>
 
                 <Button
-                    title="Save and Continue"
+                    title={t('creatorTools.scriptsGeneratorScreen.saveAndContinue')}
                     onPress={handleSaveAndSubmit}
                     style={styles.button}
                     loading={loading}

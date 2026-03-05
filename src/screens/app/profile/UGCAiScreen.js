@@ -77,7 +77,7 @@ const UGCAiScreen = ({ navigation }) => {
                             mt={WRAPPER_MARGIN}
                             key={`${item.title}-${index}`}
                             onPress={() => {
-                                navigation.navigate(SCRIPTS_GENERATOR, {
+                                navigation.navigate(item.screen, {
                                     type: item.type,
                                     title: item.screenTitle,
                                 });
