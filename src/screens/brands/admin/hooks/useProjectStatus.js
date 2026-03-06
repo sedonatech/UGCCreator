@@ -5,10 +5,14 @@ import { useTranslation } from 'react-i18next';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import useMailCompose from '../../../../hooks/documents/useMailCompose';
 import useNotifications from '../../../../hooks/notifications/useNotifications';
+import useAuthContext from '../../../../hooks/auth/useAuthContext';
 
 const useProjectStatus = (application, creatorID, currentProject, creatorEmail, creatorFCMToken) => {
     const { t } = useTranslation();
     const [currentStatusIndex, setCurrentStatusIndex] = useState();
+
+    const { auth } = useAuthContext();
+    const currentUserFCMToken = auth?.profile?.fcmToken;
 
     const { sendNotification } = useNotifications();
 
@@ -22,6 +26,11 @@ const useProjectStatus = (application, creatorID, currentProject, creatorEmail, 
 
     const { composeEmailWithAttachment, mailEvent, setMailEvent } = useMailCompose();
 
+    const notifyBothParties = async (title, body, data) => {
+        const tokens = [creatorFCMToken, currentUserFCMToken].filter(Boolean);
+        await Promise.all(tokens.map(token => sendNotification(token, title, body, data)));
+    };
+
     useEffect(() => {
         if (mailEvent === 'sent') {
             Alert.alert(
@@ -32,8 +41,7 @@ const useProjectStatus = (application, creatorID, currentProject, creatorEmail, 
                         text: t('common.buttons.ok'),
                         onPress: async () => {
                             await updateProjectStatus(creatorID, currentProject, currentStatusIndex);
-                            await sendNotification(
-                                creatorFCMToken,
+                            await notifyBothParties(
                                 'Project Status Updated',
                                 `The status of your project has been updated to ${overviewStatus?.[currentStatusIndex]?.name}`,
                                 {
@@ -111,8 +119,7 @@ const useProjectStatus = (application, creatorID, currentProject, creatorEmail, 
                         text: t('common.buttons.ok'),
                         onPress: async () => {
                             await updateProjectStatus(creatorID, currentProject, statusIndex);
-                            await sendNotification(
-                                creatorFCMToken,
+                            await notifyBothParties(
                                 'Project Status Updated',
                                 `The status of your project has been updated to ${
                                     overviewStatus?.[statusIndex + 1]?.name
@@ -162,8 +169,7 @@ const useProjectStatus = (application, creatorID, currentProject, creatorEmail, 
                         text: t('common.buttons.ok'),
                         onPress: async () => {
                             await updateProjectStatus(creatorID, currentProject, statusIndex);
-                            await sendNotification(
-                                creatorFCMToken,
+                            await notifyBothParties(
                                 'Project Status Updated',
                                 `The status of your project has been updated to ${
                                     overviewStatus?.[statusIndex + 1]?.name

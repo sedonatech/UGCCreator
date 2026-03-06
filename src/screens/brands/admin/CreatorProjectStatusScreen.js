@@ -5,7 +5,7 @@ import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
-import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
+import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH } from '../../../theme/Layout';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
 import ToggleCarousel from '../../../components/ToggleCarousel';
@@ -105,15 +105,17 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
             <TemplateBox height={SCREEN_HEIGHT / 2.4}>
                 {/* @ts-ignore */}
                 <BackgroundImage source={{ uri: currentProject?.image }} width={SCREEN_WIDTH} style={styles.image} />
-                <TemplateBox pl={WRAPPER_MARGIN}>
+                <TemplateBox>
                     <TemplateBox
                         borderRadius={10}
                         ph={WRAPPER_MARGIN}
                         backgroundColor={GREEN}
                         alignItems="center"
                         justifyContent="center"
-                        height={34}
-                        mt={SCREEN_HEIGHT / 2.4 - 56}
+                        height={40}
+                        mt={SCREEN_HEIGHT / 2.4 - 66}
+                        width={WRAPPED_SCREEN_WIDTH}
+                        selfCenter
                     >
                         <TemplateText bold size={10} color={WHITE}>
                             {application?.status?.find(({ status }) => status === 'active')?.name}

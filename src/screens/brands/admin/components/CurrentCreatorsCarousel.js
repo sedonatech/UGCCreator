@@ -2,17 +2,18 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { chunk } from 'lodash';
 import firestore from '@react-native-firebase/firestore';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { ACTIVE_CREATORS, CREATOR_PROJECT_STATUS } from '../../../../navigation/ScreenNames';
-import { BLUE } from '../../../../theme/Colors';
+import { BLACK, BLUE, LIGHT_PURPLE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
-import { SCREEN_WIDTH, SPACE_MEDIUM, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import TemplateBox from '../../../../components/TemplateBox';
+import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
-import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
+import { DEFAULT_CREATOR_SHORT_DESCRIPTION, DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
 import CreatorCard from '../../creators/CreatorCard';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import useTranslation from '../../../../hooks/useTranslation';
@@ -71,21 +72,24 @@ const CurrentCreatorsCarousel = ({ style }) => {
     return filteredCreators?.length ? (
         <View style={style}>
             <View style={styles.titleContainer}>
-                <TemplateText bold size={18}>
-                    {t('brands.admin.carousels.activeCreators.title')}{' '}
-                </TemplateText>
-                <TemplateTouchable
-                    onPress={() =>
-                        navigation.navigate(ACTIVE_CREATORS, {
-                            creatorIds,
-                            ids,
-                        })
-                    }
-                >
-                    <TemplateText startCase size={14} underLine color={BLUE}>
-                        {t('brands.admin.carousels.activeCreators.seeAll')}
+                <TemplateBox row justifyContent="space-between">
+                    <TemplateText bold size={18} color={BLACK}>
+                        {t('brands.admin.carousels.activeCreators.title')}
                     </TemplateText>
-                </TemplateTouchable>
+                    <TemplateBox />
+                    <TemplateTouchable
+                        onPress={() =>
+                            navigation.navigate(ACTIVE_CREATORS, {
+                                creatorIds,
+                                ids,
+                            })
+                        }
+                    >
+                        <TemplateText startCase size={14} underLine color={BLUE}>
+                            {t('brands.admin.carousels.activeCreators.seeAll')}
+                        </TemplateText>
+                    </TemplateTouchable>
+                </TemplateBox>
             </View>
 
             <TemplateCarousel
@@ -94,10 +98,13 @@ const CurrentCreatorsCarousel = ({ style }) => {
                     <CreatorCard
                         name={item?.userName}
                         imageUrl={item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE}
-                        shortDescription={item?.shortDescription}
-                        location={item?.location?.country}
-                        email={item?.email}
+                        shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
                         style={styles.card}
+                        width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
+                        imageStyle={styles.image}
+                        subtitleContainerWidth={94}
+                        textContainerWidth="68%"
+                        location={item?.location?.city || item?.location?.country}
                         onPress={() =>
                             navigation.navigate(CREATOR_PROJECT_STATUS, {
                                 creatorID: item?.id,
@@ -106,12 +113,12 @@ const CurrentCreatorsCarousel = ({ style }) => {
                                 creatorFCMToken: item?.fcmToken,
                             })
                         }
-                        height={wp(194)}
-                        mt={SPACE_MEDIUM}
+                        lastLoginTime={item?.lastLoginTime ? calculateLastLoginTime(item?.lastLoginTime) : 'days ago'}
+                        mt={12}
                         ctaText={t('brands.admin.currentCreators.viewProjectStatus')}
                     />
                 )}
-                snapToInterval={SCREEN_WIDTH / 1.3 + 80}
+                snapToInterval={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6 + 20}
                 showPagination
                 paginationSize={filteredCreators?.length}
                 contentContainerStyle={styles.cardCarousel}
@@ -139,18 +146,19 @@ CurrentCreatorsCarousel.defaultProps = {
 
 const styles = StyleSheet.create({
     titleContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         paddingHorizontal: WRAPPER_MARGIN,
-        marginVertical: WRAPPER_MARGIN,
+        marginTop: WRAPPER_MARGIN / 2,
     },
-    cardCarousel: {
-        paddingHorizontal: WRAPPER_MARGIN,
-    },
+    cardCarousel: {},
     card: {
-        marginRight: WRAPPER_MARGIN,
-        marginBottom: 10,
+        backgroundColor: LIGHT_PURPLE,
+        marginRight: 0,
+    },
+    image: {
+        width: wp(80),
+        height: wp(80),
+        borderRadius: wp(16),
+        marginRight: wp(14),
     },
     statusCard: {
         marginBottom: 10,

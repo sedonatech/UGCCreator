@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Progress from 'react-native-progress';
+import FastImage from 'react-native-fast-image';
 
 import TemplateBox from '../../../../components/TemplateBox';
 import { BLACK, BLACK_20, BRAND_BLUE, GREEN, GREY, LIGHT_GREEN, PINK, WHITE_30 } from '../../../../theme/Colors';
@@ -13,6 +14,7 @@ import useGetEnrolledCreatorsAvatars from '../../../brands/admin/hooks/useGetEnr
 interface Props {
     title?: string;
     brand?: string;
+    image?: string;
     progress?: number;
     status?: string;
     notificationCount?: number;
@@ -31,6 +33,7 @@ interface Props {
 const CurrentProjectCard: FC<Props> = ({
     title,
     brand,
+    image,
     progress,
     status,
     notificationCount,
@@ -50,7 +53,6 @@ const CurrentProjectCard: FC<Props> = ({
         <TemplateBox
             width={width || SCREEN_WIDTH / 1.23}
             borderRadius={RADIUS_MEDIUM}
-            pAll={20}
             backgroundColor={WHITE_30}
             borderWidth={StyleSheet.hairlineWidth}
             borderColor={BLACK_20}
@@ -58,7 +60,16 @@ const CurrentProjectCard: FC<Props> = ({
             onPress={onPress}
             slideIn={slideInDelay !== undefined}
             slideInDelay={slideInDelay}
+            overflow="hidden"
         >
+            {!!image && (
+                <FastImage
+                    source={{ uri: image }}
+                    style={styles.cardImage}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
+            )}
+            <TemplateBox pAll={20}>
             <TemplateBox row alignItems="center" mb={20}>
                 <TemplateBox
                     borderRadius={8}
@@ -141,11 +152,16 @@ const CurrentProjectCard: FC<Props> = ({
                     </TemplateBox>
                 )}
             </TemplateBox>
+            </TemplateBox>
         </TemplateBox>
     );
 };
 
 const styles = StyleSheet.create({
+    cardImage: {
+        width: '100%',
+        height: 140,
+    },
     progress: {
         marginRight: 10,
     },
