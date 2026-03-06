@@ -425,6 +425,7 @@ const AddEventScreen = ({ navigation, route }) => {
                     update('categories', [...event?.categories, value]);
                 }}
                 selectedFilters={event?.categories}
+                translationPrefix="filterCategories"
             />
 
             <Button

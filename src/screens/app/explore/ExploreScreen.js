@@ -229,24 +229,28 @@ const ExploreScreen = ({ route }) => {
                         filters={projectFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterCategories"
                     />
                     <FilterCategory
                         title={t('explore.filters.categories.country')}
                         filters={countryFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterCountries"
                     />
                     <FilterCategory
                         title={t('explore.filters.categories.language')}
                         filters={languageFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterLanguages"
                     />
                     <FilterCategory
                         title={t('explore.filters.categories.gender')}
                         filters={genderFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterGenders"
                     />
                     <FilterCategory
                         title={t('explore.filters.categories.ageGroup')}
@@ -259,18 +263,21 @@ const ExploreScreen = ({ route }) => {
                         filters={projectTypeFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterProjectTypes"
                     />
                     <FilterCategory
                         title={t('explore.filters.categories.deliveryFormat')}
                         filters={deliveryFormatFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterDeliveryFormats"
                     />
                     <FilterCategory
                         title={t('explore.filters.categories.projectDuration')}
                         filters={projectDurationFilters}
                         onFilterPress={onProjectFilterPress}
                         selectedFilters={selectedFilters}
+                        translationPrefix="filterProjectDurations"
                     />
                 </ScrollView>
             </RBSheet>

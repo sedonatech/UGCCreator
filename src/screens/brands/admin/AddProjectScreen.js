@@ -304,6 +304,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                     update('deliveryFormat', [...project?.deliveryFormat, value]);
                 }}
                 selectedFilters={project?.deliveryFormat}
+                translationPrefix="filterDeliveryFormats"
             />
             <FilterCategory
                 title={t('brands.admin.addProject.categories.projectType')}
@@ -316,6 +317,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                     update('projectType', [...project?.projectType, value]);
                 }}
                 selectedFilters={project?.projectType}
+                translationPrefix="filterProjectTypes"
             />
             <FilterCategory
                 title={t('brands.admin.addProject.categories.projectCategories')}
@@ -328,6 +330,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                     update('categories', [...project?.categories, value]);
                 }}
                 selectedFilters={project?.categories}
+                translationPrefix="filterCategories"
             />
             <FilterCategory
                 title={t('brands.admin.addProject.categories.country')}
@@ -340,6 +343,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                     update('countries', [...project?.countries, value]);
                 }}
                 selectedFilters={project?.countries}
+                translationPrefix="filterCountries"
             />
             <FilterCategory
                 title={t('brands.admin.addProject.categories.language')}
@@ -352,6 +356,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                     update('languages', [...project?.languages, value]);
                 }}
                 selectedFilters={project?.languages}
+                translationPrefix="filterLanguages"
             />
             <FilterCategory
                 title={t('brands.admin.addProject.categories.gender')}
@@ -364,6 +369,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                     update('gender', [...project?.gender, value]);
                 }}
                 selectedFilters={project?.gender}
+                translationPrefix="filterGenders"
             />
             <FilterCategory
                 title={t('brands.admin.addProject.categories.projectDuration')}
@@ -376,6 +382,7 @@ const AddProjectScreen = ({ navigation, route }) => {
                     update('duration', [...project?.duration, value]);
                 }}
                 selectedFilters={project?.duration}
+                translationPrefix="filterProjectDurations"
             />
             <Button
                 title={t('brands.admin.addProject.buttons.create')}

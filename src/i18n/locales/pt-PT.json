@@ -114,11 +114,7 @@
     "home": {
         "feedback": "Comentários",
         "aiTools": "Ferramentas de IA",
-        "greeting": {
-            "morning": "Bom dia",
-            "afternoon": "Boa tarde",
-            "evening": "Boa noite"
-        },
+        "greeting": "Olá",
         "mediaKit": {
             "title": "Gerar Media Kit",
             "description": "Carregue um PDF de uma página com o seu trabalho. As marcas podem visualizá-lo no seu perfil, atualize-o a qualquer momento."
@@ -1320,6 +1316,18 @@
             "contentSuggestion": "Sugestões de conteúdo",
             "hooks": "Hooks"
         },
+        "scriptsGeneratorScreen": {
+            "subtitle": "Insira os detalhes e deixe a magia acontecer!",
+            "brandNamePlaceholder": "Insira o nome da marca (obrigatório)",
+            "productNamePlaceholder": "Insira o nome do produto (obrigatório)",
+            "productDescriptionPlaceholder": "Insira uma breve descrição do produto (obrigatório)",
+            "valuePropositionPlaceholder": "Insira a proposta de valor (opcional)",
+            "personaPlaceholder": "Insira o perfil do público-alvo (opcional)",
+            "categoryTitle": "Selecione pelo menos uma (obrigatório)",
+            "saveAndContinue": "Guardar e continuar",
+            "resultsTitle": "Resultados de {{type}} criados com sucesso 🎉🎊",
+            "resultsSubtitle": "Agora pode copiar os {{type}} para a sua área de transferência!"
+        },
         "resultsHistoryScreen": {
             "title": "Histórico de resultados",
             "emptyTitle": "Sem histórico de momento",
@@ -1379,5 +1387,91 @@
     "reachOut": {
         "title": "Entre em contacto com a marca",
         "message": "Envie um e-mail para {{brandName}} para convidá-los a colaborar consigo nesta plataforma. Será notificado quando aceitarem o seu pedido"
+    },
+    "filterCategories": {
+        "fitness-wellness": "Fitness/Bem-estar",
+        "food-beverages": "Comida/Bebidas",
+        "beauty": "Beleza",
+        "travel": "Viagem",
+        "diy": "Bricolagem",
+        "apps-tech": "Apps/Tecnologia",
+        "fashion": "Moda",
+        "business": "Negócios",
+        "real-estate": "Imobiliário",
+        "art": "Arte"
+    },
+    "filterCountries": {
+        "united-states": "Estados Unidos",
+        "united-kingdom": "Reino Unido",
+        "canada": "Canadá",
+        "australia": "Austrália",
+        "new-zealand": "Nova Zelândia",
+        "germany": "Alemanha",
+        "france": "França",
+        "italy": "Itália",
+        "spain": "Espanha",
+        "netherlands": "Países Baixos",
+        "belgium": "Bélgica",
+        "austria": "Áustria",
+        "switzerland": "Suíça",
+        "sweden": "Suécia",
+        "norway": "Noruega",
+        "denmark": "Dinamarca",
+        "finland": "Finlândia",
+        "ireland": "Irlanda",
+        "portugal": "Portugal",
+        "greece": "Grécia",
+        "poland": "Polónia",
+        "czech-republic": "República Checa",
+        "hungary": "Hungria",
+        "romania": "Roménia",
+        "slovakia": "Eslováquia",
+        "bulgaria": "Bulgária",
+        "croatia": "Croácia",
+        "slovenia": "Eslovénia",
+        "ukraine": "Ucrânia",
+        "south-africa": "África do Sul",
+        "nigeria": "Nigéria",
+        "kenya": "Quénia",
+        "ghana": "Gana",
+        "tanzania": "Tanzânia",
+        "egypt": "Egito",
+        "morocco": "Marrocos",
+        "algeria": "Argélia",
+        "saudi-arabia": "Arábia Saudita",
+        "uae": "EAU"
+    },
+    "filterLanguages": {
+        "english": "Inglês",
+        "spanish": "Espanhol",
+        "french": "Francês",
+        "german": "Alemão",
+        "italian": "Italiano",
+        "dutch": "Holandês",
+        "portuguese": "Português",
+        "swedish": "Sueco",
+        "norwegian": "Norueguês"
+    },
+    "filterGenders": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "non-binary": "Não-binário",
+        "other": "Outro"
+    },
+    "filterProjectTypes": {
+        "affiliate": "Afiliado",
+        "sponsored": "Patrocinado",
+        "paidCollaboration": "Colaboração paga",
+        "giftedCollaboration": "Colaboração com oferta"
+    },
+    "filterDeliveryFormats": {
+        "videos": "Vídeos",
+        "photos": "Fotos",
+        "rawFootage": "Material em bruto",
+        "post": "Publicação nas redes sociais"
+    },
+    "filterProjectDurations": {
+        "oneTimeProject": "Uma vez",
+        "recurring": "Recorrente"
     }
 }
