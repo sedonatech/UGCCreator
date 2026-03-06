@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-
 import { BLACK_30, WHITE, WHITE_40 } from '../../../theme/Colors';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
@@ -88,7 +87,6 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
     const projectLink = useMemo(() => getValidExternalUrl(selectedProject?.link), [selectedProject?.link]);
     const shouldShowViewMore = !!projectLink;
 
-
     const handleOpenProjectLink = useCallback(async () => {
         if (!shouldShowViewMore) return;
 
@@ -111,7 +109,7 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                 />
             ),
             headerRight: () =>
-                (shouldShowViewMore ? (
+                shouldShowViewMore ? (
                     <HeaderIconButton
                         name="open-outline"
                         title={t('common.actions.viewMore')}
@@ -119,7 +117,7 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                         backDropColor={WHITE_40}
                         mr={WRAPPER_MARGIN}
                     />
-                ) : null),
+                ) : null,
         });
     }, [navigation, shouldShowViewMore, t, handleOpenProjectLink]);
 

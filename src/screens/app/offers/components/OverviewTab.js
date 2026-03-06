@@ -24,7 +24,6 @@ const OverviewTab = ({ application, currentProject, creatorID, brandEmail, brand
 
         return application?.status;
     }, [application?.status]);
-    console.log('🚀 ~ OverviewTab ~ overviewStatus:', overviewStatus);
 
     const { handleOnPressCreatorStatus } = useProjectStatus(
         application,

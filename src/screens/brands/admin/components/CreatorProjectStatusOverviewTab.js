@@ -31,7 +31,7 @@ const CreatorProjectStatusOverviewTab = ({
 
                 return (
                     <TemplateBox row key={status.value}>
-                        <TemplateBox alignItems="center">
+                        <TemplateBox alignItems="center" zIndex={2}>
                             <TemplateBox
                                 pAll={4}
                                 borderRadius={20}
@@ -45,14 +45,15 @@ const CreatorProjectStatusOverviewTab = ({
                             </TemplateBox>
                             {
                                 index !== overviewStatus.length - 1 && (
-                                // @ts-ignore
-                                    <LineSvg
-                                        color={
-                                        // eslint-disable-next-line no-nested-ternary
-                                            status.status === 'completed'
-                                                ? GREEN : isActive ? BRAND_BLUE : GREY_SECONDARY
-                                        }
-                                    />
+                                    <TemplateBox height={70} justifyContent="center" alignItems="center">
+                                        <LineSvg
+                                            color={
+                                            // eslint-disable-next-line no-nested-ternary
+                                                status.status === 'completed'
+                                                    ? GREEN : isActive ? BRAND_BLUE : GREY_SECONDARY
+                                            }
+                                        />
+                                    </TemplateBox>
                                 )
                             }
                         </TemplateBox>
@@ -64,6 +65,7 @@ const CreatorProjectStatusOverviewTab = ({
                             width={SCREEN_WIDTH / 1.3}
                             mt={-18.4}
                             ml={10}
+                            zIndex={1}
                             opacity={status.status === 'completed' ? 1 : isActive ? 1 : 0.4}
                             onPress={() => isActive && !isProjectCompleted && handleOnPressStatus(status, index)}
                         >
