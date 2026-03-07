@@ -50,12 +50,12 @@ const CreatorCard = ({
                     source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                     style={[styles.image, imageStyle]}
                 />
-                <TemplateBox flex={1} height={60} onPress={onPress}>
+                <TemplateBox flex={1} onPress={onPress}>
                     <TemplateText size={16} bold color={BLACK} numberOfLines={1}>
                         {name}
                     </TemplateText>
-                    <TemplateBox height={10} />
-                    <TemplateText size={12} color={BLACK_SECONDARY} numberOfLines={3}>
+                    <TemplateBox height={6} />
+                    <TemplateText size={12} color={BLACK_SECONDARY} numberOfLines={2}>
                         {shortDescription}
                     </TemplateText>
                 </TemplateBox>
