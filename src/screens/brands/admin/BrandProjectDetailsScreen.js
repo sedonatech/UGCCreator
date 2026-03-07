@@ -88,7 +88,6 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
     const projectLink = useMemo(() => getValidExternalUrl(selectedProject?.link), [selectedProject?.link]);
     const shouldShowViewMore = !!projectLink;
 
-
     const handleOpenProjectLink = useCallback(async () => {
         if (!shouldShowViewMore) return;
 
@@ -111,7 +110,7 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                 />
             ),
             headerRight: () =>
-                (shouldShowViewMore ? (
+                shouldShowViewMore ? (
                     <HeaderIconButton
                         name="open-outline"
                         title={t('common.actions.viewMore')}
@@ -119,7 +118,7 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
                         backDropColor={WHITE_40}
                         mr={WRAPPER_MARGIN}
                     />
-                ) : null),
+                ) : null,
         });
     }, [navigation, shouldShowViewMore, t, handleOpenProjectLink]);
 

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
-import { StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, Alert } from 'react-native';
 import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
     BLACK,
@@ -20,7 +20,9 @@ import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../Utils/getResponsiveSize';
-import { WEBVIEW } from '../../../navigation/ScreenNames';
+import { BRAND_APPLICATIONS, WEBVIEW } from '../../../navigation/ScreenNames';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { createBrandApplication } from '../../../lib/brandApplications';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
@@ -29,9 +31,30 @@ import useTranslation from '../../../hooks/useTranslation';
 
 const AffiliateBrandsScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
+    const { auth } = useAuthContext();
     const { affiliate } = useFeatureFlags();
     const title = route?.params?.title;
     const affiliateBrands = affiliate?.brands;
+
+    const handleTrackApplication = async item => {
+        const uid = auth?.profile?.id;
+        if (!uid) {
+            Alert.alert('Error', 'Please log in to track applications.');
+            return;
+        }
+        try {
+            await createBrandApplication({
+                ownerId: uid,
+                brandName: item?.name,
+                link: item?.link,
+                status: 'applied',
+            });
+            Alert.alert('Tracked!', `"${item?.name}" added to your application tracker.`);
+        } catch (e) {
+            console.log('Error tracking application:', e);
+            Alert.alert('Error', `Failed to track application: ${e?.message || e}`);
+        }
+    };
 
     const allCategory = {
         name: 'All',
@@ -65,7 +88,6 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
         <TemplateBox
             borderRadius={wp(16)}
             pAll={wp(16)}
-            onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
             style={styles.card}
             width={WRAPPED_SCREEN_WIDTH}
             borderWidth={1}
@@ -141,20 +163,24 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
             </TemplateText>
 
             <TemplateBox height={1} width="98%" backgroundColor={BLACK_10} selfCenter mv={10} />
-            <TemplateBox
-                row
-                alignItems="center"
-                justifyContent="space-between"
-                onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
-            >
-                <TemplateText size={12} color={METAL} medium>
-                    {t('home.affiliateBrandsCarousel.performanceBased')}
-                </TemplateText>
-                <TemplateBox flex />
-                <TemplateText size={14} color={BLUE_500} medium>
-                    {t('home.affiliateBrandsCarousel.viewDetails')}
-                </TemplateText>
-                <DynamicIcon name="ArrowRight" color={BLUE_500} />
+            <TemplateBox row alignItems="center" justifyContent="space-between">
+                <TemplateBox
+                    pv={6}
+                    ph={12}
+                    borderRadius={8}
+                    backgroundColor={LIGHT_GREEN_10}
+                    onPress={() => handleTrackApplication(item)}
+                >
+                    <TemplateText size={12} medium color={DARK_METAL}>
+                        Track Application
+                    </TemplateText>
+                </TemplateBox>
+                <TemplateBox row alignItems="center" onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}>
+                    <TemplateText size={14} color={BLUE_500} medium>
+                        {t('home.affiliateBrandsCarousel.viewDetails')}
+                    </TemplateText>
+                    <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                </TemplateBox>
             </TemplateBox>
         </TemplateBox>
     );
@@ -180,6 +206,18 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                         <TemplateBox center ph={WRAPPER_MARGIN} mt={8}>
                             <TemplateText size={13} color={BLACK} center mt={8} ml={WRAPPER_MARGIN}>
                                 {t('home.affiliateBrandsCarousel.description')}
+                            </TemplateText>
+                        </TemplateBox>
+                        <TemplateBox
+                            pv={8}
+                            ph={16}
+                            borderRadius={10}
+                            backgroundColor={BLUE_500}
+                            mt={12}
+                            onPress={() => navigation.navigate(BRAND_APPLICATIONS)}
+                        >
+                            <TemplateText size={13} medium color={WHITE}>
+                                View Application Tracker
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox selfCenter flex>

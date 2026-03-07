@@ -132,3 +132,5 @@ export const BRAND_EVENTS_COMPLETED_SCREEN = 'BrandEventsCompletedScreen';
 
 export const BRAND_EVENT_DETAILS_SCREEN = 'BrandEventDetailsScreen';
 export const CHALLENGE_DETAILS = 'ChallengeDetailsScreen';
+
+export const BRAND_APPLICATIONS = 'BrandApplications';

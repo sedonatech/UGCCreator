@@ -138,9 +138,10 @@ const useFirebaseSetStorage = () => {
             console.log('[Image library] - take a picture error:', err?.code || String(err));
 
             if (err?.code === 'E_NO_LIBRARY_PERMISSION') {
-                const permissionType = isIOS ? PERMISSIONS.IOS.PHOTO_LIBRARY : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
-                const result = await request(permissionType);
-                handlePermissionStatus(result, 'Photo library');
+                if (isIOS) {
+                    const result = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+                    handlePermissionStatus(result, 'Photo library');
+                }
             }
 
             if (err?.code === 'E_NO_CAMERA_PERMISSION') {
