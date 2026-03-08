@@ -32,6 +32,10 @@ const BrandsCatalogueScreen = ({ navigation }) => {
     const { sendEmailWithAttachment, mailEvent } = useMailCompose();
 
     useEffect(() => {
+        trackEvent('screen_viewed', { screen: 'brands_catalogue' });
+    }, []);
+
+    useEffect(() => {
         if (mailEvent) {
             setModalVisible(false);
         }
@@ -41,7 +45,12 @@ const BrandsCatalogueScreen = ({ navigation }) => {
         <BrandsCatalogueCard
             navigation={navigation}
             item={item}
-            setModalVisible={setModalVisible}
+            setModalVisible={(visible) => {
+                if (visible) {
+                    trackEvent('catalogue_brand_viewed', { brandName: item?.['Brand Name'] });
+                }
+                setModalVisible(visible);
+            }}
             setSelectedBrand={setSelectedBrand}
         />
     );
@@ -81,6 +90,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                 secondaryButtonTitle="Reach Out to Brand"
                 height="30%"
                 onClose={() => {
+                    trackEvent('catalogue_brand_modal_closed');
                     setModalVisible(false);
                 }}
                 onSecondaryButtonPress={() => {
@@ -91,6 +101,7 @@ const BrandsCatalogueScreen = ({ navigation }) => {
                             {
                                 text: t('common.buttons.ok'),
                                 onPress: () => {
+                                    trackEvent('catalogue_brand_reached_out', { brandName: selectedBrand?.['Brand Name'] });
                                     sendEmailWithAttachment({
                                         recipients: [selectedBrand?.['Mail Address']],
                                         subject: warmReachOutEmail.subject,

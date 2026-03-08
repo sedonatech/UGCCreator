@@ -13,12 +13,18 @@ import ToggleCarousel from '../../../components/ToggleCarousel';
 import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { createBrandApplication } from '../../../lib/brandApplications';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const BrandDealsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
     const { ugcGigs } = useFeatureFlags();
+    const { trackEvent } = useTrackEvent();
 
     const gigs = ugcGigs?.gigs;
+
+    useEffect(() => {
+        trackEvent('screen_viewed', { screen: 'brand_deals' });
+    }, []);
 
     const handleTrackApplication = async (item) => {
         const uid = auth?.profile?.id;
@@ -33,6 +39,7 @@ const BrandDealsScreen = ({ navigation }) => {
                 link: item?.link,
                 status: 'applied',
             });
+            trackEvent('application_tracked', { brandName: item?.company || item?.title, link: item?.link });
             Alert.alert('Tracked!', `"${item?.company || item?.title}" added to your application tracker.`);
         } catch (e) {
             console.log('Error tracking application:', e);
@@ -112,7 +119,7 @@ const BrandDealsScreen = ({ navigation }) => {
                         Track Application
                     </TemplateText>
                 </TemplateBox>
-                <TemplateBox onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}>
+                <TemplateBox onPress={() => { trackEvent('brand_deal_details_viewed', { brandName: item?.company || item?.title }); navigation.navigate(WEBVIEW, { url: item?.link }); }}>
                     <TemplateText size={12} color={BLUE_500} medium>
                         View Details
                     </TemplateText>
@@ -151,7 +158,7 @@ const BrandDealsScreen = ({ navigation }) => {
                             borderRadius={10}
                             backgroundColor={BLUE_500}
                             mt={12}
-                            onPress={() => navigation.navigate(BRAND_APPLICATIONS)}
+                            onPress={() => { trackEvent('application_tracker_opened'); navigation.navigate(BRAND_APPLICATIONS); }}
                         >
                             <TemplateText size={13} medium color={WHITE}>
                                 View Application Tracker
@@ -161,7 +168,7 @@ const BrandDealsScreen = ({ navigation }) => {
                             <ToggleCarousel
                                 data={gigsCategories}
                                 selectedTab={selectedTab}
-                                onChange={setSelectedTab}
+                                onChange={(tab) => { trackEvent('brand_deal_category_selected', { category: tab?.name || tab?.value }); setSelectedTab(tab); }}
                             />
                         </TemplateBox>
                         <TemplateBox />

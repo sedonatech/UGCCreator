@@ -30,6 +30,7 @@ import DynamicIcon from '../../../components/icons/DynamicIcon';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ProjectsCarousel from './components /ProjectsCarousel';
 import useTranslation from '../../../hooks/useTranslation';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const FEEDBACK_FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLScOnFg0D06OPE5T5w7SZEcy12m9Si0JMAhOAGjGqj5NtMMVgA/viewform?usp=publish-editor';
@@ -49,6 +50,7 @@ const HomeScreen = ({ navigation }) => {
     const { challenges, challengeLoading, getStatusLabel, canEnrollNow } = useChallenge();
     const hasArmedReviewPromptRef = useRef(false);
     const creatorToolsEnabled = features?.openAIScreen;
+    const { trackEvent } = useTrackEvent();
     const CHALLENGE_TOAST_DISMISSED_KEY = 'challenge_toast_dismissed';
 
     React.useLayoutEffect(() => {
@@ -57,7 +59,10 @@ const HomeScreen = ({ navigation }) => {
                 <TemplateBox>
                     {creatorToolsEnabled && (
                         <TemplateBox
-                            onPress={() => navigation.navigate(UGCAI)}
+                            onPress={() => {
+                                trackEvent('home_ai_tools_tapped');
+                                navigation.navigate(UGCAI);
+                            }}
                             mr={WRAPPER_MARGIN}
                             alignItems="center"
                             row
@@ -72,6 +77,7 @@ const HomeScreen = ({ navigation }) => {
 
                     <TemplateBox
                         onPress={() => {
+                            trackEvent('home_feedback_tapped');
                             markReviewPromptEligibleForTrigger('creator_feedback_sent');
                             navigation.navigate(WEBVIEW, { url: FEEDBACK_FORM_URL });
                         }}
@@ -124,6 +130,9 @@ const HomeScreen = ({ navigation }) => {
     }, [CHALLENGE_TOAST_DISMISSED_KEY, challengeLoading, challenges, isFocused, t]);
 
     useEffect(() => {
+        if (isFocused) {
+            trackEvent('screen_viewed', { screen: 'home' });
+        }
         if (isFocused && profile) {
             auth?.getProfileCompleteStatus();
         }
@@ -198,7 +207,10 @@ const HomeScreen = ({ navigation }) => {
                 alignItems="center"
                 justifyContent="space-between"
                 borderRadius={16}
-                onPress={() => navigation.navigate(PROFILE_STACK)}
+                onPress={() => {
+                    trackEvent('home_media_kit_tapped');
+                    navigation.navigate(PROFILE_STACK);
+                }}
                 borderWidth={1}
                 borderColor={BLACK_20}
             >
@@ -217,16 +229,18 @@ const HomeScreen = ({ navigation }) => {
                 data={challenges}
                 renderItem={({ item }) => (
                     <ChallengeCard
-                        onPress={() =>
+                        onPress={() => {
+                            trackEvent('home_challenge_tapped', { challengeId: item?.id });
                             navigation.navigate(CHALLENGE_DETAILS, {
                                 challengeId: item?.id,
-                            })
-                        }
-                        secondaryOnPress={() =>
+                            });
+                        }}
+                        secondaryOnPress={() => {
+                            trackEvent('home_challenge_tapped', { challengeId: item?.id });
                             navigation.navigate(CHALLENGE_DETAILS, {
                                 challengeId: item?.id,
-                            })
-                        }
+                            });
+                        }}
                         loading={challengeLoading}
                         prizePoolUsd={item?.prizePoolUsd}
                         challengeTitle={item?.title}
@@ -279,7 +293,10 @@ const HomeScreen = ({ navigation }) => {
                     borderRadius={16}
                     pAll={20}
                     width={WRAPPED_SCREEN_WIDTH}
-                    onPress={() => navigation.navigate(BRANDS_CATALOGUE)}
+                    onPress={() => {
+                        trackEvent('home_brands_catalogue_tapped');
+                        navigation.navigate(BRANDS_CATALOGUE);
+                    }}
                     style={SHADOW('card', WHITE)}
                     selfCenter
                     mt={35}
@@ -287,7 +304,13 @@ const HomeScreen = ({ navigation }) => {
                 >
                     <CatalogueSvg />
                     <TemplateBox width={16} />
-                    <TemplateBox width={SCREEN_WIDTH / 1.6} onPress={() => navigation.navigate(BRANDS_CATALOGUE)}>
+                    <TemplateBox
+                        width={SCREEN_WIDTH / 1.6}
+                        onPress={() => {
+                            trackEvent('home_brands_catalogue_tapped');
+                            navigation.navigate(BRANDS_CATALOGUE);
+                        }}
+                    >
                         <TemplateText bold size={16}>
                             {t('home.brandsCatalogue.title')}
                         </TemplateText>

@@ -28,9 +28,11 @@ import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliate
 import DynamicIcon from '../../../components/icons/DynamicIcon';
 import { getCapitalizedFirstLetter } from '../../../Utils/texts';
 import useTranslation from '../../../hooks/useTranslation';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const AffiliateBrandsScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
+    const { trackEvent } = useTrackEvent();
     const { auth } = useAuthContext();
     const { affiliate } = useFeatureFlags();
     const title = route?.params?.title;
@@ -43,6 +45,7 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
             return;
         }
         try {
+            trackEvent('application_tracked', { brandName: item?.name, link: item?.link });
             await createBrandApplication({
                 ownerId: uid,
                 brandName: item?.name,
@@ -175,7 +178,14 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                         Track Application
                     </TemplateText>
                 </TemplateBox>
-                <TemplateBox row alignItems="center" onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}>
+                <TemplateBox
+                    row
+                    alignItems="center"
+                    onPress={() => {
+                        trackEvent('affiliate_brand_details_viewed', { brandName: item?.name });
+                        navigation.navigate(WEBVIEW, { url: item?.link });
+                    }}
+                >
                     <TemplateText size={14} color={BLUE_500} medium>
                         {t('home.affiliateBrandsCarousel.viewDetails')}
                     </TemplateText>
@@ -186,6 +196,10 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
     );
 
     const [limit, setLimit] = useState(6);
+
+    useEffect(() => {
+        trackEvent('screen_viewed', { screen: 'affiliate_brands' });
+    }, []);
 
     useEffect(() => {
         setLimit(6);
@@ -214,7 +228,10 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                             borderRadius={10}
                             backgroundColor={BLUE_500}
                             mt={12}
-                            onPress={() => navigation.navigate(BRAND_APPLICATIONS)}
+                            onPress={() => {
+                                trackEvent('application_tracker_opened');
+                                navigation.navigate(BRAND_APPLICATIONS);
+                            }}
                         >
                             <TemplateText size={13} medium color={WHITE}>
                                 View Application Tracker
@@ -224,7 +241,10 @@ const AffiliateBrandsScreen = ({ navigation, route }) => {
                             <ToggleCarousel
                                 data={brandCategories}
                                 selectedTab={selectedTab}
-                                onChange={setSelectedTab}
+                                onChange={tab => {
+                                    trackEvent('affiliate_category_selected', { category: tab?.value || tab });
+                                    setSelectedTab(tab);
+                                }}
                             />
                         </TemplateBox>
                         <TemplateBox />

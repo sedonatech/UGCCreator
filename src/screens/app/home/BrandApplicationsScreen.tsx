@@ -8,7 +8,7 @@ import {
     BrandApplication,
     ApplicationStatus,
     getMyBrandApplications,
-    updateBrandApplication,
+    updateApplicationStatus,
     deleteBrandApplication,
     snoozeFollowUp,
 } from '../../../lib/brandApplications';
@@ -16,7 +16,6 @@ import {
     BLACK_20,
     BLUE_500,
     DARK_METAL,
-    GREEN,
     GREY,
     METAL,
     RED_500,
@@ -28,11 +27,12 @@ import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH } from '../../../theme/
 import { wp } from '../../../Utils/getResponsiveSize';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const STATUS_CONFIG: Record<ApplicationStatus, { label: string; color: string }> = {
     applied: { label: 'Applied', color: BLUE_500 },
     heard_back: { label: 'Heard Back', color: '#F59E0B' },
-    accepted: { label: 'Accepted', color: GREEN },
+    accepted: { label: 'Accepted', color: '#00C566' },
     rejected: { label: 'Rejected', color: RED_500 },
 };
 
@@ -40,6 +40,7 @@ const STATUS_ORDER: ApplicationStatus[] = ['applied', 'heard_back', 'accepted', 
 
 const BrandApplicationsScreen = ({ navigation }: any) => {
     const { auth } = useAuthContext();
+    const { trackEvent } = useTrackEvent();
     const uid = auth?.profile?.id;
     const [applications, setApplications] = useState<BrandApplication[]>([]);
     const [loading, setLoading] = useState(true);
@@ -59,28 +60,26 @@ const BrandApplicationsScreen = ({ navigation }: any) => {
 
     useFocusEffect(
         useCallback(() => {
+            trackEvent('screen_viewed', { screen: 'brand_applications' });
             void refresh();
         }, [refresh]),
     );
 
-    const handleStatusChange = async (app: BrandApplication) => {
-        const currentIndex = STATUS_ORDER.indexOf(app.status);
-        const nextStatus = STATUS_ORDER[(currentIndex + 1) % STATUS_ORDER.length];
+    const handleStatusChange = (app: BrandApplication) => {
+        const options = STATUS_ORDER.filter(s => s !== app.status).map(s => ({
+            text: STATUS_CONFIG[s].label,
+            onPress: async () => {
+                if (!app.id) return;
+                trackEvent('application_status_updated', { applicationId: app.id, newStatus: s });
+                await updateApplicationStatus(app.id, s);
+                refresh();
+            },
+        }));
 
         Alert.alert(
             'Update Status',
-            `Change status to "${STATUS_CONFIG[nextStatus].label}"?`,
-            [
-                { text: 'Cancel', style: 'cancel' },
-                {
-                    text: 'Update',
-                    onPress: async () => {
-                        if (!app.id) return;
-                        await updateBrandApplication(app.id, { status: nextStatus });
-                        refresh();
-                    },
-                },
-            ],
+            `Current: ${STATUS_CONFIG[app.status].label}`,
+            [{ text: 'Cancel', style: 'cancel' }, ...options],
         );
     };
 
@@ -99,7 +98,8 @@ const BrandApplicationsScreen = ({ navigation }: any) => {
                     text: '3 Days',
                     onPress: async () => {
                         if (!app.id) return;
-                        await snoozeFollowUp(app.id, 3);
+                        trackEvent('application_snoozed', { applicationId: app.id, days: 3 });
+                        await snoozeFollowUp(app.id, app.brandName, 3);
                         refresh();
                     },
                 },
@@ -107,7 +107,8 @@ const BrandApplicationsScreen = ({ navigation }: any) => {
                     text: '7 Days',
                     onPress: async () => {
                         if (!app.id) return;
-                        await snoozeFollowUp(app.id, 7);
+                        trackEvent('application_snoozed', { applicationId: app.id, days: 7 });
+                        await snoozeFollowUp(app.id, app.brandName, 7);
                         refresh();
                     },
                 },
@@ -126,6 +127,7 @@ const BrandApplicationsScreen = ({ navigation }: any) => {
                     style: 'destructive',
                     onPress: async () => {
                         if (!app.id) return;
+                        trackEvent('application_deleted', { applicationId: app.id, brandName: app.brandName });
                         await deleteBrandApplication(app.id);
                         refresh();
                     },
@@ -173,11 +175,16 @@ const BrandApplicationsScreen = ({ navigation }: any) => {
                     row
                     alignItems="center"
                     mb={8}
-                    onPress={() => navigation.navigate(WEBVIEW, { url: item.link })}
+                    onPress={() => {
+                        trackEvent('application_link_opened', { brandName: item.brandName });
+                        navigation.navigate(WEBVIEW, { url: item.link });
+                    }}
                 >
-                    <TemplateText size={12} numberOfLines={1} color={BLUE_500} mr={4}>
-                        {item.link}
-                    </TemplateText>
+                    <TemplateBox flex={1} mr={4}>
+                        <TemplateText size={12} numberOfLines={1} color={BLUE_500}>
+                            {item.link}
+                        </TemplateText>
+                    </TemplateBox>
                     <DynamicIcon name="Link" color={BLUE_500} />
                 </TemplateBox>
 
@@ -216,6 +223,48 @@ const BrandApplicationsScreen = ({ navigation }: any) => {
                         {item.notes}
                     </TemplateText>
                 ) : null}
+
+                {/* Update Status */}
+                <TemplateText size={12} semiBold color={DARK_METAL} mb={6}>
+                    Update Status:
+                </TemplateText>
+                <TemplateBox row flexWrap="wrap" mb={8}>
+                    {STATUS_ORDER.map(s => {
+                        const conf = STATUS_CONFIG[s];
+                        const isActive = s === item.status;
+                        return (
+                            <TemplateBox
+                                key={s}
+                                pv={6}
+                                ph={12}
+                                mr={8}
+                                mb={6}
+                                borderRadius={8}
+                                borderWidth={1.5}
+                                borderColor={conf.color}
+                                backgroundColor={isActive ? conf.color : `${conf.color}10`}
+                                onPress={
+                                    isActive
+                                        ? undefined
+                                        : async () => {
+                                              if (!item.id) return;
+                                              trackEvent('application_status_updated', { applicationId: item.id, newStatus: s });
+                                              await updateApplicationStatus(item.id, s);
+                                              refresh();
+                                          }
+                                }
+                            >
+                                <TemplateText
+                                    size={11}
+                                    semiBold
+                                    color={isActive ? WHITE : conf.color}
+                                >
+                                    {conf.label}
+                                </TemplateText>
+                            </TemplateBox>
+                        );
+                    })}
+                </TemplateBox>
 
                 {/* Footer: date + delete */}
                 <TemplateBox row alignItems="center" justifyContent="space-between">

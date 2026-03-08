@@ -21,7 +21,7 @@ import {
 } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import { AFFILIATE_BRANDS, WEBVIEW } from '../../../../navigation/ScreenNames';
+import { AFFILIATE_BRANDS, BRAND_APPLICATIONS, WEBVIEW } from '../../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import { getCapitalizedFirstLetter } from '../../../../Utils/texts';
@@ -92,6 +92,23 @@ const AffiliateBrandsCarousel = ({ style }) => {
                         <TemplateText size={13} color={BLACK}>
                             {t('home.affiliateBrandsCarousel.description')}
                         </TemplateText>
+                    </TemplateBox>
+                    <TemplateBox mh={WRAPPER_MARGIN} mb={12}>
+                        <TemplateBox
+                            row
+                            alignItems="center"
+                            alignSelf="flex-start"
+                            pv={8}
+                            ph={14}
+                            borderRadius={10}
+                            backgroundColor={`${FUCSHIA_500}15`}
+                            onPress={() => navigation.navigate(BRAND_APPLICATIONS)}
+                        >
+                            <DynamicIcon name="List" color={FUCSHIA_500} size={16} />
+                            <TemplateText size={12} semiBold color={FUCSHIA_500} ml={6}>
+                                View Application Tracker
+                            </TemplateText>
+                        </TemplateBox>
                     </TemplateBox>
                 </TemplateBox>
             )}

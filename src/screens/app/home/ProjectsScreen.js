@@ -15,6 +15,7 @@ import { SHADOW } from '../../../theme/Shadow';
 import UGCProjectsCard from './components /UGCProjectsCard';
 import { PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 import { wp } from '../../../Utils/getResponsiveSize';
 
 const ProjectsScreen = () => {
@@ -23,6 +24,11 @@ const ProjectsScreen = () => {
     const { auth } = useAuthContext();
     const { profile } = auth;
     const navigation = useNavigation();
+    const { trackEvent } = useTrackEvent();
+
+    useEffect(() => {
+        trackEvent('screen_viewed', { screen: 'projects' });
+    }, []);
 
     useEffect(() => setProjectLimits(10), []);
     const [search, setSearch] = useState('');
@@ -58,6 +64,9 @@ const ProjectsScreen = () => {
             const results = fuse.search(search).map(({ item }) => item);
             setProjectsSearchResults(results);
         }
+        if (search?.length > 2) {
+            trackEvent('project_searched', { query: search });
+        }
     }, [search, projectsCarouselData]);
 
     const filteredProjects = useMemo(() => {
@@ -77,11 +86,12 @@ const ProjectsScreen = () => {
             width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
             height={190}
             // @ts-ignore
-            onPress={() =>
+            onPress={() => {
+                trackEvent('project_tapped', { projectId: item?.id });
                 navigation.navigate(PROJECT_DETAILS, {
                     projectId: item?.id,
-                })
-            }
+                });
+            }}
             enrolled={item?.applications?.map(app => app?.creatorId)?.includes(profile?.id)}
             duration={item?.duration}
             projectType={item?.projectType}

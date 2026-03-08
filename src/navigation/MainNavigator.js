@@ -14,6 +14,7 @@ import useHasSubscription from '../screens/subscriptions/useHasSubscription';
 import SubscriptionStack from './subscription/SubscriptionStack';
 import useNotificationInteraction from '../hooks/notifications/useNotificationInteraction';
 import AppStack from './app/AppStack';
+import { setupFollowUpAutoRepeat } from '../lib/brandApplicationNotifications';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -37,6 +38,10 @@ const MainNavigator = () => {
     const { hasSubscription } = useHasSubscription();
 
     useNotificationInteraction();
+
+    useEffect(() => {
+        setupFollowUpAutoRepeat();
+    }, []);
 
     useEffect(() => {
         if (!loading || auth?.user || !showSplash) {
