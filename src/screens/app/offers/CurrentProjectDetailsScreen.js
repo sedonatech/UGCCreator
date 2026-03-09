@@ -9,11 +9,13 @@ import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
 import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
-import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import useChatsContext from '../../../hooks/chats/useChatsContext';
 import { HOME } from '../../../navigation/ScreenNames';
 import useGetUser from '../../../hooks/creators/useGetUser';
+import useTranslation from '../../../hooks/useTranslation';
 import TemplateBox from '../../../components/TemplateBox';
+import Button from '../../../components/Button';
 
 const PROJECTS_COLLECTION = 'projects';
 
@@ -34,6 +36,8 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
 
     const { auth } = useAuthContext();
     const { profile } = auth;
+    const { t } = useTranslation();
+    const { createChatRoom } = useChatsContext();
     const [selectedTab, setSelectedTab] = useState(CURRENT_PROJECT_TABS[0]);
 
     const { getProject } = useProjectsContext();
@@ -101,6 +105,13 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
         });
     }, [navigation]);
 
+    const creatorId = profile?.id;
+    const creatorFCMToken = profile?.fcmToken;
+    const creatorName = profile?.userName || profile?.name;
+    const brandName = currentProjectBrand?.userName || currentProjectBrand?.name;
+    const brandFCMToken = currentProjectBrand?.fcmToken;
+    const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
+
     if (!currentProject) return <LoadingOverlay backgroundColor={WHITE} />;
 
     return (
@@ -139,6 +150,28 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
                 <TemplateText size={14} color={BLACK} numberOfLines={21}>
                     {currentProject?.shortDescription}
                 </TemplateText>
+            </TemplateBox>
+
+            <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
+                <Button
+                    title={t('offers.messageBrand')}
+                    onPress={async () => {
+                        try {
+                            await createChatRoom(
+                                chatRoomName,
+                                creatorId,
+                                currentProject?.brandId,
+                                creatorFCMToken,
+                                brandFCMToken,
+                            );
+                        } catch (e) {
+                            console.log('-> e', e);
+                        }
+                    }}
+                    height={50}
+                    width={SCREEN_WIDTH - 40}
+                    color={BLACK}
+                />
             </TemplateBox>
 
             <TemplateBox height={20}>

@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 
-import { getFirestore, doc, updateDoc } from '@react-native-firebase/firestore';
 import useTranslation from '../../../hooks/useTranslation';
 import { BLACK, BLACK_SECONDARY, DEFAULT_GRADIENT, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
@@ -29,8 +28,6 @@ import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
-
-const PROJECTS_COLLECTION = 'projects';
 
 const getValidExternalUrl = url => {
     if (!url || typeof url !== 'string') return '';
@@ -98,7 +95,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 />
             ),
             headerRight: () =>
-                (shouldShowViewMore ? (
+                shouldShowViewMore ? (
                     <HeaderIconButton
                         name="open-outline"
                         title={t('common.actions.viewMore')}
@@ -106,7 +103,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                         backDropColor={WHITE_40}
                         mr={WRAPPER_MARGIN}
                     />
-                ) : null),
+                ) : null,
         });
     }, [navigation, handleOpenProjectLink, shouldShowViewMore, t]);
 

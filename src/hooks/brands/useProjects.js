@@ -16,8 +16,10 @@ import auth from '@react-native-firebase/auth';
 import { useState } from 'react';
 import { projectStatuses } from '../../consts/AppFilters/ProjectStatus';
 import useAuthContext from '../auth/useAuthContext';
+import useNotifications from '../notifications/useNotifications';
 
 const PROJECTS_COLLECTION = 'projects';
+const USERS_COLLECTION = 'users';
 
 const initialProjectState = {
     brandId: '',
@@ -59,6 +61,29 @@ const useProjects = () => {
     const [project, setProject] = useState(initialProjectState);
 
     const [loading, setLoading] = useState(false);
+    const { sendNotification } = useNotifications();
+
+    const getFCMToken = async userId => {
+        try {
+            const db = getFirestore();
+            const userRef = doc(db, USERS_COLLECTION, userId);
+            const userSnap = await getDoc(userRef);
+            return userSnap?.data()?.fcmToken || null;
+        } catch (error) {
+            console.log('getFCMToken error:', error);
+            return null;
+        }
+    };
+
+    const notifyBothParties = async (creatorId, brandId, title, body, data) => {
+        try {
+            const [creatorToken, brandToken] = await Promise.all([getFCMToken(creatorId), getFCMToken(brandId)]);
+            const tokens = [creatorToken, brandToken].filter(Boolean);
+            await Promise.all(tokens.map(token => sendNotification(token, title, body, data)));
+        } catch (error) {
+            console.log('notifyBothParties error:', error);
+        }
+    };
 
     const update = (key, data) => {
         console.log('[Projects] Use projects: ', key, data);
@@ -244,6 +269,18 @@ const useProjects = () => {
                     applications: selectedProjectApplications,
                     enrolledUserIds: newUserIds,
                 });
+
+                await notifyBothParties(
+                    creatorID,
+                    selectedProject?.brandId,
+                    'New Project Enrollment',
+                    `A creator has enrolled in "${selectedProject?.title}"`,
+                    {
+                        type: 'project_enrollment',
+                        projectID: selectedProject?.id,
+                    },
+                );
+
                 return true;
             }
             return false;

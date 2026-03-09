@@ -161,6 +161,23 @@
             "applyWithMediaKit": "Mit Media Kit bewerben",
             "visitWebsite": "Website besuchen",
             "allCategory": "Alle",
+            "paidPackageReviews": "Bezahlte Paketbewertungen",
+            "categories": {
+                "Skincare": "Hautpflege",
+                "Makeup": "Make-up",
+                "Haircare": "Haarpflege",
+                "Fashion": "Mode",
+                "Bodycare": "Körperpflege",
+                "Fragrance": "Düfte",
+                "Jewelry": "Schmuck",
+                "Food & Drink": "Essen & Trinken",
+                "Health": "Gesundheit",
+                "Lifestyle": "Lebensstil",
+                "Vegan Skincare": "Vegane Hautpflege",
+                "Vegan Makeup": "Veganes Make-up",
+                "Vegan Haircare": "Vegane Haarpflege",
+                "Vegan Fashion": "Vegane Mode"
+            },
             "applicationTracked": "Bewerbung verfolgt!",
             "alreadyApplied": "Bereits beworben",
             "viewApplications": "Bewerbungen ansehen",
@@ -683,6 +700,12 @@
         }
     },
     "offers": {
+        "headerTitle": "Überprüfen Sie den Status Ihrer Angebote",
+        "emptyTitle": "Keine aktuellen Projekte",
+        "emptyMessage": "Sie haben sich noch für kein Projekt angemeldet. Schauen Sie sich die Projektseite an, um ein Projekt zu finden!",
+        "enrolledCreators": "Angemeldete Creator",
+        "noEnrolledCreators": "Keine angemeldeten Creator",
+        "messageBrand": "Marke kontaktieren",
         "currentProject": {
             "tabs": {
                 "overview": "Übersicht",

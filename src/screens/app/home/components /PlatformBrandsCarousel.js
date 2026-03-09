@@ -22,7 +22,6 @@ import {
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { BRAND_APPLICATIONS, PLATFORM_BRANDS_SCREEN, WEBVIEW } from '../../../../navigation/ScreenNames';
-import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import { getCapitalizedFirstLetter } from '../../../../Utils/texts';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
@@ -33,6 +32,7 @@ import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import useTrackEvent from '../../../../hooks/events/useTrackEvent';
 import { createBrandApplication, getMyBrandApplications } from '../../../../lib/brandApplications';
 import BrandDetailModal from '../../../../components/modals/BrandDetailModal';
+import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import useMailCompose from '../../../../hooks/documents/useMailCompose';
 
 const getLocalizedDescription = (item, language) => {
@@ -88,6 +88,7 @@ const PlatformBrandsCarousel = ({ style }) => {
     const language = i18n.language;
     const { platformBrands } = useFeatureFlags();
     const brands = platformBrands?.brands;
+    const translateCategory = cat => t(`home.platformBrandsCarousel.categories.${cat}`, cat);
     const { auth } = useAuthContext();
     const { trackEvent } = useTrackEvent();
     const { sendEmailWithAttachment } = useMailCompose();
@@ -118,7 +119,7 @@ const PlatformBrandsCarousel = ({ style }) => {
     }, [refreshApplications]);
 
     const randomFourBrands = useMemo(() => {
-        if (!brands) return [];
+        if (!brands?.length) return [];
         if (brands.length <= 4) return brands;
         const shuffled = [...brands].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 4);
@@ -268,7 +269,7 @@ const PlatformBrandsCarousel = ({ style }) => {
                                         justifyContent="center"
                                     >
                                         <TemplateText size={12} medium>
-                                            {item?.category}
+                                            {translateCategory(item?.category)}
                                         </TemplateText>
                                     </TemplateBox>
                                 </TemplateBox>

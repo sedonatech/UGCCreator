@@ -14,6 +14,7 @@ import support from './defaults/support.json';
 import testers from './defaults/testers.json';
 import ugcGigs from './defaults/ugcGigs.json';
 import platformBrands from './defaults/platformBrands.json';
+import carouselBrands from './defaults/carouselBrands.json';
 
 // Map of subscription benefits by language
 export const subscriptionBenefitsMap = {
@@ -56,4 +57,5 @@ export default {
     support,
     testers,
     platformBrands,
+    carouselBrands,
 };

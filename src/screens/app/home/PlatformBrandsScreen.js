@@ -116,7 +116,11 @@ const PlatformBrandsScreen = ({ navigation }) => {
 
     const brands = useMemo(() => {
         if (!platformBrands?.brands) return [];
-        return [...platformBrands.brands].sort(() => 0.5 - Math.random());
+        return [...platformBrands.brands].sort((a, b) => {
+            const aHasLink = a?.link?.startsWith('http') ? 0 : 1;
+            const bHasLink = b?.link?.startsWith('http') ? 0 : 1;
+            return aHasLink - bHasLink;
+        });
     }, [platformBrands?.brands]);
 
     useEffect(() => {
@@ -134,14 +138,17 @@ const PlatformBrandsScreen = ({ navigation }) => {
         value: 'all',
     };
 
+    const prCategory = { name: t('home.platformBrandsCarousel.paidPackageReviews'), value: 'Paid Package Reviews' };
+
+    const translateCategory = cat => t(`home.platformBrandsCarousel.categories.${cat}`, cat);
+
     const brandCategories = useMemo(() => {
         if (!brands) return [];
-        const categories = brands?.map(({ category }) => ({
-            name: category,
-            value: category,
-        }));
-        categories.unshift(allCategory);
-        return removeDuplicatesFromAffiliateBrands(categories);
+        const categories = brands
+            ?.filter(({ category }) => category !== 'Paid Package Reviews')
+            .map(({ category }) => ({ name: translateCategory(category), value: category }));
+        const deduped = removeDuplicatesFromAffiliateBrands(categories);
+        return [allCategory, prCategory, ...deduped];
     }, [brands]);
 
     const [selectedTab, setSelectedTab] = useState(brandCategories?.[0] ?? 'Makeup');
@@ -238,17 +245,34 @@ const PlatformBrandsScreen = ({ navigation }) => {
                         </TemplateBox>
                     </TemplateBox>
 
-                    <TemplateBox
-                        pv={4}
-                        ph={16}
-                        borderRadius={10}
-                        backgroundColor={IOS_BLUE_20}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateText size={12} medium>
-                            {item?.category}
-                        </TemplateText>
+                    <TemplateBox row alignItems="center">
+                        {item?.category === 'Paid Package Reviews' && (
+                            <TemplateBox
+                                pv={4}
+                                ph={10}
+                                borderRadius={10}
+                                backgroundColor="#EDE7F6"
+                                alignItems="center"
+                                justifyContent="center"
+                                mr={6}
+                            >
+                                <TemplateText size={11} bold color="#6A1B9A">
+                                    📦 PR
+                                </TemplateText>
+                            </TemplateBox>
+                        )}
+                        <TemplateBox
+                            pv={4}
+                            ph={16}
+                            borderRadius={10}
+                            backgroundColor={IOS_BLUE_20}
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <TemplateText size={12} medium>
+                                {translateCategory(item?.category)}
+                            </TemplateText>
+                        </TemplateBox>
                     </TemplateBox>
                 </TemplateBox>
 

@@ -5,13 +5,13 @@ import TemplateText from '../../../components/TemplateText';
 import { BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
-import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { CURRENT_PROJECT_DETAILS, PROJECTS_SCREEN } from '../../../navigation/ScreenNames';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import HeaderIconButton from '../../../components/header/HeaderButton';
 import CurrentProjectCard from '../../app/home/components /CurrentProjectCard';
+import Loading from '../../../components/Loading';
+import useTranslation from '../../../hooks/useTranslation';
 
 const getTagColor = status => {
     if (status === 'backlog') {
@@ -29,31 +29,45 @@ const getTagColor = status => {
     return BRAND_BLUE;
 };
 const BrandOffersScreen = ({ navigation }) => {
-    const { projects, projectLimits, setProjectLimits, getProjects } = useProjectsContext();
+    const { projects, projectLimits, setProjectLimits, getProjects, loading, getEnrolledProjects, enrolledProjects } =
+        useProjectsContext();
     const { auth } = useAuthContext();
     const { profile } = auth;
+    const { t } = useTranslation();
+
+    const isBrand = profile?.type === 'brand';
 
     useEffect(() => {
-        getProjects(projectLimits);
-    }, [projectLimits]);
+        if (isBrand) {
+            getProjects(projectLimits);
+        } else {
+            getEnrolledProjects(profile?.id, projectLimits);
+        }
+    }, [projectLimits, isBrand]);
 
     const brandName = profile?.userName || profile?.name;
 
-    const brandProjects = useMemo(() => {
-        if (!projects?.length) return [];
+    const sourceProjects = isBrand ? projects : enrolledProjects;
 
-        return projects?.map(project => ({
+    const brandProjects = useMemo(() => {
+        if (!sourceProjects?.length) return [];
+
+        return sourceProjects?.map(project => ({
             id: project?.id,
             title: project?.title,
-            brand: brandName,
+            brand: isBrand ? brandName : project?.brandName,
             image: project?.image,
             price: project?.price,
-            status: project?.applications?.length ? 'Enrolled Creators' : 'No Enrolled Creators',
+            status: isBrand
+                ? project?.applications?.length
+                    ? t('offers.enrolledCreators')
+                    : t('offers.noEnrolledCreators')
+                : project?.brandName,
             notifications: project?.applications?.length || 0,
             documents: project?.applications?.[0]?.documents?.length || 0,
             daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
         }));
-    }, [projects, brandName]);
+    }, [sourceProjects, brandName, isBrand, t]);
 
     const renderItem = ({ item }, index) => (
         <CurrentProjectCard
@@ -72,10 +86,18 @@ const BrandOffersScreen = ({ navigation }) => {
             slideInDelay={(index + 1) * 100}
             key={item?.id}
             projectId={item?.id}
-            isBrand
+            isBrand={isBrand}
             onPress={() => navigation.navigate(CURRENT_PROJECT_DETAILS, { projectId: item?.id })}
         />
     );
+
+    if (loading && !sourceProjects?.length) {
+        return (
+            <View style={styles.container}>
+                <Loading />
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -85,14 +107,14 @@ const BrandOffersScreen = ({ navigation }) => {
                 ListHeaderComponent={
                     <TemplateBox mt={HEADER_MARGIN} alignItems="center" justifyContent="center" mb={20}>
                         <TemplateText size={18} startCase bold>
-                            Check the status of your offers
+                            {t('offers.headerTitle')}
                         </TemplateText>
                     </TemplateBox>
                 }
                 ListEmptyComponent={
                     <ProfileStatusCard
-                        title={NO_CURRENT_PROJECT_TITLE}
-                        description={NO_CURRENT_PROJECT_MESSAGE}
+                        title={t('offers.emptyTitle')}
+                        description={t('offers.emptyMessage')}
                         showProgress={false}
                         style={styles.statusCard}
                         slideInDelay={200}
@@ -107,7 +129,9 @@ const BrandOffersScreen = ({ navigation }) => {
                 initialNumToRender={5}
                 onEndReachedThreshold={0.5}
                 onEndReached={() => {
-                    setProjectLimits(prevLimit => prevLimit + 10);
+                    if (!loading && sourceProjects?.length) {
+                        setProjectLimits(prevLimit => prevLimit + 10);
+                    }
                 }}
             />
         </View>
