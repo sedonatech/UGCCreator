@@ -140,11 +140,11 @@
             "searchPlaceholder": "Suchen"
         },
         "projects": {
-            "title": "Projekte erkunden",
+            "title": "Aktive UGC-Projekte 💰",
             "searchPlaceholder": "Suchen"
         },
         "projectsCarousel": {
-            "title": "Neue Projekte",
+            "title": "Aktive UGC-Projekte",
             "seeAll": "Alle ansehen",
             "description": "Schauen Sie sich neue Projekte vertrauenswürdiger Marken basierend auf Ihren Interessen und Ihrem Standort an",
             "enrolledProjects": "Meine eingeschriebenen Projekte"
@@ -153,6 +153,25 @@
             "title": "Marken auf unserer Plattform",
             "seeAll": "Alle ansehen",
             "description": "Schauen Sie sich die Marken an, die derzeit auf unserer Plattform sind"
+        },
+        "platformBrandsCarousel": {
+            "title": "Marken auf unserer Plattform",
+            "seeAll": "Alle ansehen",
+            "description": "Diese Marken suchen aktiv UGC-Creator. Bewirb dich direkt mit deinem Media Kit und verfolge deine Bewerbungen.",
+            "applyWithMediaKit": "Mit Media Kit bewerben",
+            "visitWebsite": "Website besuchen",
+            "allCategory": "Alle",
+            "applicationTracked": "Bewerbung verfolgt!",
+            "alreadyApplied": "Bereits beworben",
+            "viewApplications": "Bewerbungen ansehen",
+            "emailGreeting": "Hallo {{brandName}} Team,",
+            "emailIntro": "Mein Name ist {{userName}} und ich würde gerne mit Ihrer Marke an UGC-Inhalten zusammenarbeiten.",
+            "emailIntroDefault": "Ich bin UGC-Creator und würde gerne mit Ihrer Marke an UGC-Inhalten zusammenarbeiten.",
+            "emailMediaKit": "Anbei finden Sie mein Media Kit.",
+            "emailPitch": "Ich bin spezialisiert auf die Erstellung authentischer, konversionsstarker Inhalte und würde gerne besprechen, wie ich Ihrer Marke helfen kann.",
+            "emailClosing": "Ich freue mich auf Ihre Rückmeldung!",
+            "emailRegards": "Mit freundlichen Grüßen,",
+            "emailSubject": "UGC-Creator Bewerbung - {{brandName}}"
         },
         "eventsCarousel": {
             "title": "Markenveranstaltungen",

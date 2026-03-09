@@ -116,6 +116,8 @@ export const AFFILIATE_BRANDS = 'AffiliateBrands';
 
 export const BRAND_DEALS_SCREEN = 'BrandDealsScreen';
 
+export const PLATFORM_BRANDS_SCREEN = 'PlatformBrandsScreen';
+
 export const ACTIVE_CREATORS = 'ActiveCreators';
 
 export const EVENTS_SCREEN = 'EventsScreen';
@@ -132,3 +134,5 @@ export const BRAND_EVENTS_COMPLETED_SCREEN = 'BrandEventsCompletedScreen';
 
 export const BRAND_EVENT_DETAILS_SCREEN = 'BrandEventDetailsScreen';
 export const CHALLENGE_DETAILS = 'ChallengeDetailsScreen';
+
+export const BRAND_APPLICATIONS = 'BrandApplications';

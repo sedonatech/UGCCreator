@@ -2,10 +2,19 @@
 /* eslint-disable react-native/no-inline-styles */
 /* @ts-ignore */
 import React, { FC } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Platform, Text, StyleSheet } from 'react-native';
 
 import { BLACK, PRIMARY, WHITE } from '../theme/Colors';
 import { IS_SHORT_DEVICE } from '../theme/Layout';
+
+const isAndroid = Platform.OS === 'android';
+
+const androidFontMap: Record<string, string> = {
+    '400': 'Montserrat-Regular',
+    '500': 'Montserrat-Medium',
+    '600': 'Montserrat-SemiBold',
+    '700': 'Montserrat-Bold',
+};
 
 interface Props {
     light?: boolean;
@@ -78,18 +87,34 @@ const TemplateText: FC<Props> = ({
     const textStyle = {} as any;
 
     if (light) {
-        textStyle.fontWeight = '400';
+        if (isAndroid) {
+            textStyle.fontFamily = androidFontMap['400'];
+        } else {
+            textStyle.fontWeight = '400';
+        }
     }
 
     if (medium) {
-        textStyle.fontWeight = '500';
+        if (isAndroid) {
+            textStyle.fontFamily = androidFontMap['500'];
+        } else {
+            textStyle.fontWeight = '500';
+        }
     }
 
     if (bold) {
-        textStyle.fontWeight = '700';
+        if (isAndroid) {
+            textStyle.fontFamily = androidFontMap['700'];
+        } else {
+            textStyle.fontWeight = '700';
+        }
     }
     if (semiBold) {
-        textStyle.fontWeight = '600';
+        if (isAndroid) {
+            textStyle.fontFamily = androidFontMap['600'];
+        } else {
+            textStyle.fontWeight = '600';
+        }
     }
 
     if (black) {
@@ -198,7 +223,7 @@ const TemplateText: FC<Props> = ({
 
 const styles = StyleSheet.create({
     default: {
-        fontFamily: 'ShreddyRegular',
+        fontFamily: isAndroid ? 'Montserrat-Regular' : 'ShreddyRegular',
         fontSize: IS_SHORT_DEVICE ? 15 : 18,
         color: BLACK,
     },

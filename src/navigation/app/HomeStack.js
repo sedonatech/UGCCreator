@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { SWITCH, TRANSPARENT_HEADER } from '../../components/header/ScreenOptions';
 import {
     AFFILIATE_BRANDS,
+    BRAND_APPLICATIONS,
     BRAND_DEALS_SCREEN,
     BRAND_DETAILS,
     BRAND_OFFERS,
@@ -14,6 +15,7 @@ import {
     CURRENT_PROJECT_DETAILS,
     FEED_DETAILS,
     HOME,
+    PLATFORM_BRANDS_SCREEN,
     PROJECT_DETAILS,
     PROJECTS_SCREEN,
     RECOMMENDED_BRANDS,
@@ -41,9 +43,11 @@ import FeedDetailsScreen from '../../screens/app/explore/FeedDetailsScreen';
 import BrandsScreen from '../../screens/app/home/BrandsScreen';
 import ProjectsScreen from '../../screens/app/home/ProjectsScreen';
 import AffiliateBrandsScreen from '../../screens/app/home/AffiliateBrandsScreen';
+import BrandApplicationsScreen from '../../screens/app/home/BrandApplicationsScreen';
 import BrandDealsScreen from '../../screens/app/home/BrandDealsScreen';
 import ChallengeDetailsScreen from '../../screens/app/home/ChallengeDetailsScreen';
 import BrandOffersScreen from '../../screens/brands/admin/BrandOffersScreen';
+import PlatformBrandsScreen from '../../screens/app/home/PlatformBrandsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -80,9 +84,11 @@ const HomeStack = () => (
         <Screen name={BRANDS_SCREEN} options={TRANSPARENT_HEADER} component={BrandsScreen} />
         <Screen name={PROJECTS_SCREEN} options={TRANSPARENT_HEADER} component={ProjectsScreen} />
         <Screen name={AFFILIATE_BRANDS} options={TRANSPARENT_HEADER} component={AffiliateBrandsScreen} />
+        <Screen name={BRAND_APPLICATIONS} options={TRANSPARENT_HEADER} component={BrandApplicationsScreen} />
         <Screen name={BRAND_DEALS_SCREEN} options={TRANSPARENT_HEADER} component={BrandDealsScreen} />
         <Screen name={CHALLENGE_DETAILS} options={TRANSPARENT_HEADER} component={ChallengeDetailsScreen} />
         <Screen name={BRAND_OFFERS} options={TRANSPARENT_HEADER} component={BrandOffersScreen} />
+        <Screen name={PLATFORM_BRANDS_SCREEN} options={TRANSPARENT_HEADER} component={PlatformBrandsScreen} />
     </Navigator>
 );
 

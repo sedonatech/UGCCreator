@@ -62,7 +62,7 @@ const ProjectsCarousel = ({ style }) => {
         <TemplateBox style={[style, styles.container]}>
             <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={16}>
                 <TemplateText size={18} bold>
-                    {t('home.projectsCarousel.title')}
+                    {t('home.projectsCarousel.title')} 💰
                 </TemplateText>
                 <TemplateBox flex />
                 {/* @ts-ignore */}

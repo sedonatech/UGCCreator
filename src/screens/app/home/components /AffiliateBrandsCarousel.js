@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,18 +21,41 @@ import {
 } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import { AFFILIATE_BRANDS, WEBVIEW } from '../../../../navigation/ScreenNames';
+import { AFFILIATE_BRANDS, BRAND_APPLICATIONS, WEBVIEW } from '../../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import { getCapitalizedFirstLetter } from '../../../../Utils/texts';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
 import useTranslation from '../../../../hooks/useTranslation';
+import useAuthContext from '../../../../hooks/auth/useAuthContext';
+import { createBrandApplication } from '../../../../lib/brandApplications';
 
 const AffiliateBrandsCarousel = ({ style }) => {
     const { t } = useTranslation();
     const navigation = useNavigation();
+    const { auth } = useAuthContext();
     const { affiliate } = useFeatureFlags();
     const affiliateBrands = affiliate?.brands;
+
+    const handleTrackApplication = async (item) => {
+        const uid = auth?.profile?.id;
+        if (!uid) {
+            Alert.alert('Error', 'Please log in to track applications.');
+            return;
+        }
+        try {
+            await createBrandApplication({
+                ownerId: uid,
+                brandName: item?.name,
+                link: item?.link,
+                status: 'applied',
+            });
+            Alert.alert('Tracked!', `"${item?.name}" added to your application tracker.`);
+        } catch (e) {
+            console.log('Error tracking application:', e);
+            Alert.alert('Error', `Failed to track application: ${e?.message || e}`);
+        }
+    };
 
     const randomFourBrands = useMemo(() => {
         if (!affiliateBrands) return [];
@@ -70,6 +93,23 @@ const AffiliateBrandsCarousel = ({ style }) => {
                             {t('home.affiliateBrandsCarousel.description')}
                         </TemplateText>
                     </TemplateBox>
+                    <TemplateBox mh={WRAPPER_MARGIN} mb={12}>
+                        <TemplateBox
+                            row
+                            alignItems="center"
+                            alignSelf="flex-start"
+                            pv={8}
+                            ph={14}
+                            borderRadius={10}
+                            backgroundColor={`${FUCSHIA_500}15`}
+                            onPress={() => navigation.navigate(BRAND_APPLICATIONS)}
+                        >
+                            <DynamicIcon name="List" color={FUCSHIA_500} size={16} />
+                            <TemplateText size={12} semiBold color={FUCSHIA_500} ml={6}>
+                                View Application Tracker
+                            </TemplateText>
+                        </TemplateBox>
+                    </TemplateBox>
                 </TemplateBox>
             )}
 
@@ -79,7 +119,6 @@ const AffiliateBrandsCarousel = ({ style }) => {
                     <TemplateBox
                         borderRadius={wp(16)}
                         pAll={wp(16)}
-                        onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                         style={styles.card}
                         width={WRAPPED_SCREEN_WIDTH - 20}
                         mr={wp(16)}
@@ -158,16 +197,28 @@ const AffiliateBrandsCarousel = ({ style }) => {
                             row
                             alignItems="center"
                             justifyContent="space-between"
-                            onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
                         >
-                            <TemplateText size={12} color={METAL} medium>
-                                {t('home.affiliateBrandsCarousel.performanceBased')}
-                            </TemplateText>
-                            <TemplateBox flex />
-                            <TemplateText size={14} color={BLUE_500} medium>
-                                {t('home.affiliateBrandsCarousel.viewDetails')}
-                            </TemplateText>
-                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                            <TemplateBox
+                                pv={6}
+                                ph={12}
+                                borderRadius={8}
+                                backgroundColor={LIGHT_GREEN_10}
+                                onPress={() => handleTrackApplication(item)}
+                            >
+                                <TemplateText size={12} medium color={DARK_METAL}>
+                                    Track Application
+                                </TemplateText>
+                            </TemplateBox>
+                            <TemplateBox
+                                row
+                                alignItems="center"
+                                onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
+                            >
+                                <TemplateText size={14} color={BLUE_500} medium>
+                                    {t('home.affiliateBrandsCarousel.viewDetails')}
+                                </TemplateText>
+                                <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                            </TemplateBox>
                         </TemplateBox>
                     </TemplateBox>
                 )}

@@ -42,6 +42,7 @@ import ChallengeLeaderBoardModal from '../../../components/modals/ChallengeLeade
 import openUrl from '../../../Utils/openUrl';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import useTranslation from '../../../hooks/useTranslation';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 const FEEDBACK_FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLSe0PYFCmCOoPDZFuQdQV63Swk3AAKolNQnOc3ZN9md4LM2ZJw/viewform?usp=publish-editor';
@@ -67,6 +68,7 @@ interface ChallengeDetailsScreenProps {
 
 const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, navigation }) => {
     const { t } = useTranslation();
+    const { trackEvent } = useTrackEvent();
     const { auth } = useAuthContext();
     const challengeId = route?.params?.challengeId;
     const profile = auth?.profile;
@@ -89,6 +91,10 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             return kegelChallengeImage;
         }
         return challengeBackground;
+    }, [challengeId]);
+
+    useEffect(() => {
+        trackEvent('screen_viewed', { screen: 'challenge_details', challengeId });
     }, [challengeId]);
 
     useEffect(() => {
@@ -222,6 +228,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                 metrics,
                 submissionId: editingEntryId || undefined,
             });
+            trackEvent('challenge_entry_submitted', { challengeId });
             resetEntryForm();
         } catch (error) {
             console.error('Error saving challenge entry:', error);
@@ -297,6 +304,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                                 );
                             } else {
                                 setIsLeaderBoardModalVisible(true);
+                                trackEvent('challenge_leaderboard_viewed', { challengeId });
                             }
                         }}
                         ph={16}
@@ -334,6 +342,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                 userName: profile?.userName || '',
                 userEmail: profile?.email || '',
             });
+            trackEvent('challenge_enrolled', { challengeId });
             navigation.goBack();
         } catch (error) {
             console.error('Error enrolling in challenge:', error);
@@ -441,7 +450,10 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
                 </TemplateBox>
             </TemplateBox>
 
-            <ToggleTab activeTab={activeTab} tabs={TOGGLE_TABS} onPress={setActiveTab} />
+            <ToggleTab activeTab={activeTab} tabs={TOGGLE_TABS} onPress={(tab) => {
+                setActiveTab(tab);
+                trackEvent('challenge_tab_switched', { tab });
+            }} />
             {activeTab === TOGGLE_TABS[0] && (
                 <TemplateBox ph={WRAPPER_MARGIN} mt={20} mb={80}>
                     <TemplateText size={18} semiBold color={BLACK_SECONDARY} mb={10}>

@@ -140,11 +140,11 @@
             "searchPlaceholder": "Rechercher"
         },
         "projects": {
-            "title": "Explorer les projets",
+            "title": "Projets UGC actifs 💰",
             "searchPlaceholder": "Rechercher"
         },
         "projectsCarousel": {
-            "title": "Nouveaux projets",
+            "title": "Projets UGC actifs",
             "seeAll": "Voir tout",
             "description": "Découvrez de nouveaux projets de marques de confiance en fonction de vos intérêts et de votre localisation",
             "enrolledProjects": "Mes projets inscrits"
@@ -153,6 +153,25 @@
             "title": "Marques sur notre plateforme",
             "seeAll": "Voir tout",
             "description": "Découvrez les marques actuellement sur notre plateforme"
+        },
+        "platformBrandsCarousel": {
+            "title": "Marques sur notre plateforme",
+            "seeAll": "Voir tout",
+            "description": "Ces marques recrutent activement des créateurs UGC. Postulez directement avec votre media kit et suivez vos candidatures.",
+            "applyWithMediaKit": "Postuler avec Media Kit",
+            "visitWebsite": "Visiter le site",
+            "allCategory": "Tout",
+            "applicationTracked": "Candidature suivie !",
+            "alreadyApplied": "Déjà postulé",
+            "viewApplications": "Voir les candidatures",
+            "emailGreeting": "Bonjour l'équipe {{brandName}},",
+            "emailIntro": "Je m'appelle {{userName}} et j'aimerais collaborer avec votre marque sur du contenu UGC.",
+            "emailIntroDefault": "Je suis créateur UGC et j'aimerais collaborer avec votre marque sur du contenu UGC.",
+            "emailMediaKit": "Veuillez trouver mon media kit en pièce jointe.",
+            "emailPitch": "Je me spécialise dans la création de contenu authentique et à fort taux de conversion, et j'aimerais discuter de la façon dont je peux aider votre marque.",
+            "emailClosing": "Au plaisir de vous lire !",
+            "emailRegards": "Cordialement,",
+            "emailSubject": "Candidature créateur UGC - {{brandName}}"
         },
         "eventsCarousel": {
             "title": "Événements de marque",

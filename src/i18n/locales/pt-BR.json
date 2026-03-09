@@ -140,11 +140,11 @@
             "searchPlaceholder": "Pesquisar"
         },
         "projects": {
-            "title": "Explorar projetos",
+            "title": "Projetos UGC ativos 💰",
             "searchPlaceholder": "Pesquisar"
         },
         "projectsCarousel": {
-            "title": "Novos projetos",
+            "title": "Projetos UGC ativos",
             "seeAll": "Ver todos",
             "description": "Confira novos projetos de marcas confiáveis com base em seus interesses e localização",
             "enrolledProjects": "Meus projetos inscritos"
@@ -153,6 +153,25 @@
             "title": "Marcas em nossa plataforma",
             "seeAll": "Ver todos",
             "description": "Confira as marcas atualmente em nossa plataforma"
+        },
+        "platformBrandsCarousel": {
+            "title": "Marcas em nossa plataforma",
+            "seeAll": "Ver todos",
+            "description": "Essas marcas estão contratando criadores UGC. Candidate-se diretamente com seu media kit e acompanhe suas candidaturas.",
+            "applyWithMediaKit": "Candidatar com Media Kit",
+            "visitWebsite": "Visitar site",
+            "allCategory": "Todos",
+            "applicationTracked": "Candidatura registrada!",
+            "alreadyApplied": "Já candidatado",
+            "viewApplications": "Ver candidaturas",
+            "emailGreeting": "Olá equipe {{brandName}},",
+            "emailIntro": "Meu nome é {{userName}} e adoraria colaborar com a sua marca em conteúdo UGC.",
+            "emailIntroDefault": "Sou criador de conteúdo UGC e adoraria colaborar com a sua marca.",
+            "emailMediaKit": "Segue em anexo o meu media kit.",
+            "emailPitch": "Sou especialista em criar conteúdo autêntico e de alta conversão, e adoraria discutir como posso ajudar a sua marca.",
+            "emailClosing": "Aguardo seu retorno!",
+            "emailRegards": "Atenciosamente,",
+            "emailSubject": "Candidatura de criador UGC - {{brandName}}"
         },
         "eventsCarousel": {
             "title": "Eventos de marca",

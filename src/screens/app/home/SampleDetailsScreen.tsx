@@ -27,6 +27,7 @@ import TemplateBox from '../../../components/TemplateBox';
 import { CREATORS_PROFILES_STACK, PROFILE, WEBVIEW } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import useTranslation from '../../../hooks/useTranslation';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 type Sample = {
     id: string;
@@ -58,6 +59,7 @@ const COLORS = {
 
 export default function SampleDetailsScreen({ route, navigation }) {
     const { t } = useTranslation();
+    const { trackEvent } = useTrackEvent();
     const { auth } = useAuthContext();
     const isCreator = auth?.profile?.type && auth?.profile?.type === 'creator';
 
@@ -105,6 +107,10 @@ export default function SampleDetailsScreen({ route, navigation }) {
     }, [navigation, isCreator, owner, t]);
 
     useEffect(() => {
+        trackEvent('screen_viewed', { screen: 'sample_details' });
+    }, []);
+
+    useEffect(() => {
         if (!id) return;
         const db = getFirestore();
         const ref = doc(collection(db, 'sampleWorks'), id);
@@ -135,6 +141,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
                 text: t('home.sampleDetails.deleteAlert.confirm'),
                 style: 'destructive',
                 onPress: async () => {
+                    trackEvent('sample_deleted');
                     const db = getFirestore();
                     const sampleRef = doc(collection(db, 'sampleWorks'), sample.id);
                     await deleteDoc(sampleRef);
@@ -149,6 +156,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
         const db = getFirestore();
         const sampleRef = doc(collection(db, 'sampleWorks'), sample.id);
         await updateDoc(sampleRef, { isFeatured: v });
+        trackEvent('sample_featured_toggled', { featured: v });
     }
 
     async function toggleShowcase(v: boolean) {
@@ -156,6 +164,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
         const db = getFirestore();
         const sampleRef = doc(collection(db, 'sampleWorks'), sample.id);
         await updateDoc(sampleRef, { showcaseOptIn: v });
+        trackEvent('sample_showcase_toggled', { showcase: v });
     }
 
     if (loading) {
@@ -216,7 +225,10 @@ export default function SampleDetailsScreen({ route, navigation }) {
                             alignItems="center"
                             alignSelf="flex-start"
                             mt={hp(20)}
-                            onPress={() => navigation.navigate(WEBVIEW, { url: sample.socialUrl })}
+                            onPress={() => {
+                                trackEvent('sample_link_opened');
+                                navigation.navigate(WEBVIEW, { url: sample.socialUrl });
+                            }}
                             mr={12}
                         >
                             <TemplateText color={WHITE} size={hp(16)} medium>
@@ -242,7 +254,10 @@ export default function SampleDetailsScreen({ route, navigation }) {
                         </View>
 
                         <View style={{ flexDirection: 'row', gap: 12, marginTop: 12 }}>
-                            <TouchableOpacity onPress={() => setEditOpen(true)} style={styles.ctaPrimary}>
+                            <TouchableOpacity onPress={() => {
+                                trackEvent('sample_edit_opened');
+                                setEditOpen(true);
+                            }} style={styles.ctaPrimary}>
                                 <Text style={styles.ctaPrimaryText}>{t('home.sampleDetails.edit')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={onDelete} style={styles.ctaDanger}>

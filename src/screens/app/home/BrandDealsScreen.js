@@ -1,21 +1,51 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, Alert } from 'react-native';
 import {
     HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH,
 } from '../../../theme/Layout';
-import { LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLUE_500, DARK_METAL, LIGHT_GREEN_10, LIGHT_PURPLE, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../Utils/getResponsiveSize';
-import { WEBVIEW } from '../../../navigation/ScreenNames';
+import { BRAND_APPLICATIONS, WEBVIEW } from '../../../navigation/ScreenNames';
 import ToggleCarousel from '../../../components/ToggleCarousel';
 import removeDuplicatesFromAffiliateBrands from '../../../Utils/removeAffliliateCategoryDuplicates';
+import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { createBrandApplication } from '../../../lib/brandApplications';
+import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const BrandDealsScreen = ({ navigation }) => {
+    const { auth } = useAuthContext();
     const { ugcGigs } = useFeatureFlags();
+    const { trackEvent } = useTrackEvent();
 
     const gigs = ugcGigs?.gigs;
+
+    useEffect(() => {
+        trackEvent('screen_viewed', { screen: 'brand_deals' });
+    }, []);
+
+    const handleTrackApplication = async (item) => {
+        const uid = auth?.profile?.id;
+        if (!uid) {
+            Alert.alert('Error', 'Please log in to track applications.');
+            return;
+        }
+        try {
+            await createBrandApplication({
+                ownerId: uid,
+                brandName: item?.company || item?.title,
+                link: item?.link,
+                status: 'applied',
+            });
+            trackEvent('application_tracked', { brandName: item?.company || item?.title, link: item?.link });
+            Alert.alert('Tracked!', `"${item?.company || item?.title}" added to your application tracker.`);
+        } catch (e) {
+            console.log('Error tracking application:', e);
+            Alert.alert('Error', `Failed to track application: ${e?.message || e}`);
+        }
+    };
 
     const allCategory = {
         name: 'All',
@@ -50,12 +80,9 @@ const BrandDealsScreen = ({ navigation }) => {
             borderRadius={wp(16)}
             backgroundColor={LIGHT_PURPLE}
             pAll={wp(16)}
-            onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
             style={styles.card}
             width={WRAPPED_SCREEN_WIDTH}
-            height={wp(110)}
             mb={wp(16)}
-            center
             selfCenter
         >
             <TemplateText
@@ -79,6 +106,25 @@ const BrandDealsScreen = ({ navigation }) => {
             >
                 Dive into descriptions, insights with just a tap.
             </TemplateText>
+            <TemplateBox height={wp(8)} />
+            <TemplateBox row alignItems="center" justifyContent="space-between">
+                <TemplateBox
+                    pv={6}
+                    ph={12}
+                    borderRadius={8}
+                    backgroundColor={LIGHT_GREEN_10}
+                    onPress={() => handleTrackApplication(item)}
+                >
+                    <TemplateText size={12} medium color={DARK_METAL}>
+                        Track Application
+                    </TemplateText>
+                </TemplateBox>
+                <TemplateBox onPress={() => { trackEvent('brand_deal_details_viewed', { brandName: item?.company || item?.title }); navigation.navigate(WEBVIEW, { url: item?.link }); }}>
+                    <TemplateText size={12} color={BLUE_500} medium>
+                        View Details
+                    </TemplateText>
+                </TemplateBox>
+            </TemplateBox>
         </TemplateBox>
     );
 
@@ -106,11 +152,23 @@ const BrandDealsScreen = ({ navigation }) => {
                         >
                             {ugcGigs?.subtitle || 'High-intent teams investing in creator content right now'}
                         </TemplateText>
+                        <TemplateBox
+                            pv={8}
+                            ph={16}
+                            borderRadius={10}
+                            backgroundColor={BLUE_500}
+                            mt={12}
+                            onPress={() => { trackEvent('application_tracker_opened'); navigation.navigate(BRAND_APPLICATIONS); }}
+                        >
+                            <TemplateText size={13} medium color={WHITE}>
+                                View Application Tracker
+                            </TemplateText>
+                        </TemplateBox>
                         <TemplateBox selfCenter flex>
                             <ToggleCarousel
                                 data={gigsCategories}
                                 selectedTab={selectedTab}
-                                onChange={setSelectedTab}
+                                onChange={(tab) => { trackEvent('brand_deal_category_selected', { category: tab?.name || tab?.value }); setSelectedTab(tab); }}
                             />
                         </TemplateBox>
                         <TemplateBox />
