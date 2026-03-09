@@ -2,33 +2,28 @@ import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import differenceInDays from 'date-fns/differenceInDays';
 import TemplateText from '../../../components/TemplateText';
-import {
-    BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE,
-} from '../../../theme/Colors';
+import { BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
-import {
-    HEADER_MARGIN,
-    IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 
-import {
-    NO_CURRENT_PROJECT_MESSAGE,
-    NO_CURRENT_PROJECT_TITLE,
-} from '../../../consts/content/Home';
+import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import CurrentProjectCard from '../../app/home/components /CurrentProjectCard';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 
-const getTagColor = (status) => {
+const getTagColor = status => {
     if (status === 'backlog') {
         return BRAND_BLUE;
-    } if (status === 'inProgress') {
+    }
+    if (status === 'inProgress') {
         return PINK;
-    } if (status === 'inReview') {
+    }
+    if (status === 'inReview') {
         return LAVENDER;
-    } if (status === 'completed') {
+    }
+    if (status === 'completed') {
         return GREEN;
     }
     return BRAND_BLUE;
@@ -42,7 +37,7 @@ const BrandProjectsScreen = ({ navigation }) => {
 
     const projectsData = useMemo(() => {
         if (!projects?.length) return [];
-        return projects?.map((project) => ({
+        return projects?.map(project => ({
             id: project?.id,
             title: project?.title,
             brand: brandName,
@@ -56,23 +51,14 @@ const BrandProjectsScreen = ({ navigation }) => {
 
     return (
         <ScrollView style={styles.container}>
-            <TemplateBox
-                mt={HEADER_MARGIN}
-                mb={WRAPPER_MARGIN}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <TemplateText
-                    size={18}
-                    startCase
-                    bold
-                >
+            <TemplateBox mt={HEADER_MARGIN} mb={WRAPPER_MARGIN} alignItems="center" justifyContent="center">
+                <TemplateText size={18} startCase bold>
                     Check the status of your offers
                 </TemplateText>
             </TemplateBox>
 
-            {
-                projectsData?.length ? projectsData.map((item, index) => (
+            {projectsData?.length ? (
+                projectsData.map((item, index) => (
                     <CurrentProjectCard
                         title={item?.title}
                         brand={item?.brand}
@@ -87,22 +73,19 @@ const BrandProjectsScreen = ({ navigation }) => {
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                         slideInDelay={(index + 1) * 100}
                         key={item?.id}
-                        onPress={
-                            () => navigation.navigate(CURRENT_PROJECT_DETAILS,
-                                { projectId: item?.id })
-                        }
+                        onPress={() => navigation.navigate(CURRENT_PROJECT_DETAILS, { projectId: item?.id })}
                     />
-                )) : (
-                    <ProfileStatusCard
-                        title={NO_CURRENT_PROJECT_TITLE}
-                        description={NO_CURRENT_PROJECT_MESSAGE}
-                        showProgress={false}
-                        style={styles.statusCard}
-                        slideInDelay={200}
-                        showIcon={false}
-                    />
-                )
-            }
+                ))
+            ) : (
+                <ProfileStatusCard
+                    title={NO_CURRENT_PROJECT_TITLE}
+                    description={NO_CURRENT_PROJECT_MESSAGE}
+                    showProgress={false}
+                    style={styles.statusCard}
+                    slideInDelay={200}
+                    showIcon={false}
+                />
+            )}
         </ScrollView>
     );
 };

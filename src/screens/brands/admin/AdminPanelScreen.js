@@ -56,6 +56,7 @@ const AdminPanelScreen = ({ navigation }) => {
             id: project?.id,
             title: project?.title,
             brand: brandName,
+            image: project?.image,
             price: project?.price,
             status: project?.applications?.length
                 ? t('brands.admin.carousels.activeProjects.enrolledCreators')

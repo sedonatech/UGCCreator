@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-
 import { BLACK_30, WHITE, WHITE_40 } from '../../../theme/Colors';
 import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
