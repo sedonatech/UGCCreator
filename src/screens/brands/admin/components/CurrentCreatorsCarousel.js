@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import firestore from '@react-native-firebase/firestore';
@@ -13,7 +13,10 @@ import TemplateBox from '../../../../components/TemplateBox';
 import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
-import { DEFAULT_CREATOR_SHORT_DESCRIPTION, DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../../consts/content/Portfolio';
+import {
+    DEFAULT_CREATOR_SHORT_DESCRIPTION,
+    DEFAULT_CREATOR_WORK_SAMPLE_IMAGE,
+} from '../../../../consts/content/Portfolio';
 import CreatorCard from '../../creators/CreatorCard';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import useTranslation from '../../../../hooks/useTranslation';
@@ -43,6 +46,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
 
     const ids = useMemo(() => creatorIds?.map(({ creatorId }) => creatorId), [creatorIds]);
     const [enrolledCreators, setEnrolledCreators] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     // fetch 10 creators for carousel
     useEffect(() => {
@@ -51,16 +55,23 @@ const CurrentCreatorsCarousel = ({ style }) => {
 
     const getCreators = async () => {
         try {
+            setLoading(true);
             const querySnapshot = await firestore().collection(USERS_COLLECTION).where('id', 'in', ids).get();
 
-            const chunkCreators = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
+            const chunkCreators = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    ...data,
+                    lastLoginTime: data?.lastLoginTime ? calculateLastLoginTime(data.lastLoginTime) : 'days ago',
+                };
+            });
             const unique = [...new Map(chunkCreators.map(u => [u.email, u])).values()];
             setEnrolledCreators(unique);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -68,6 +79,14 @@ const CurrentCreatorsCarousel = ({ style }) => {
         if (!enrolledCreators?.length) return [];
         return enrolledCreators?.sort(() => 0.5 - Math.random()).slice(0, 5);
     }, [enrolledCreators]);
+
+    if (loading) {
+        return (
+            <View style={[style, styles.loadingContainer]}>
+                <ActivityIndicator size="small" color={BLACK} />
+            </View>
+        );
+    }
 
     return filteredCreators?.length ? (
         <View style={style}>
@@ -99,12 +118,13 @@ const CurrentCreatorsCarousel = ({ style }) => {
                         name={item?.userName}
                         imageUrl={item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE}
                         shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                        location={item?.location?.city || item?.location?.country}
                         style={styles.card}
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
                         imageStyle={styles.image}
                         subtitleContainerWidth={94}
                         textContainerWidth="68%"
-                        location={item?.location?.city || item?.location?.country}
+                        lastLoginTime={item?.lastLoginTime}
                         onPress={() =>
                             navigation.navigate(CREATOR_PROJECT_STATUS, {
                                 creatorID: item?.id,
@@ -113,7 +133,6 @@ const CurrentCreatorsCarousel = ({ style }) => {
                                 creatorFCMToken: item?.fcmToken,
                             })
                         }
-                        lastLoginTime={item?.lastLoginTime ? calculateLastLoginTime(item?.lastLoginTime) : 'days ago'}
                         mt={12}
                         ctaText={t('brands.admin.currentCreators.viewProjectStatus')}
                     />
@@ -159,6 +178,11 @@ const styles = StyleSheet.create({
         height: wp(80),
         borderRadius: wp(16),
         marginRight: wp(14),
+    },
+    loadingContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: WRAPPER_MARGIN * 2,
     },
     statusCard: {
         marginBottom: 10,

@@ -63,95 +63,91 @@ const CurrentProjectCard: FC<Props> = ({
             overflow="hidden"
         >
             {!!image && (
-                <FastImage
-                    source={{ uri: image }}
-                    style={styles.cardImage}
-                    resizeMode={FastImage.resizeMode.cover}
-                />
+                <FastImage source={{ uri: image }} style={styles.cardImage} resizeMode={FastImage.resizeMode.cover} />
             )}
             <TemplateBox pAll={20}>
-            <TemplateBox row alignItems="center" mb={20}>
-                <TemplateBox
-                    borderRadius={8}
-                    backgroundColor={LIGHT_GREEN}
-                    alignItems="center"
-                    justifyContent="center"
-                    ph={10}
-                    pv={5}
-                >
-                    <TemplateText size={12} color={BLACK} medium>
-                        {status}
-                    </TemplateText>
+                <TemplateBox row alignItems="center" mb={20}>
+                    <TemplateBox
+                        borderRadius={8}
+                        backgroundColor={LIGHT_GREEN}
+                        alignItems="center"
+                        justifyContent="center"
+                        ph={10}
+                        pv={5}
+                    >
+                        <TemplateText size={12} color={BLACK} medium>
+                            {status}
+                        </TemplateText>
+                    </TemplateBox>
+                    <TemplateBox flex />
+                    {/* <TemplateIcon color={BLACK} size={24} name="bookmark-outline" /> */}
+                    <TemplateIcon color={BLACK} size={24} name="ellipsis-vertical-outline" />
                 </TemplateBox>
-                <TemplateBox flex />
-                {/* <TemplateIcon color={BLACK} size={24} name="bookmark-outline" /> */}
-                <TemplateIcon color={BLACK} size={24} name="ellipsis-vertical-outline" />
-            </TemplateBox>
-            {/* @ts-ignore */}
-            <TemplateText size={16} semiBold color={BLACK} style={styles.title}>
-                {title}
-            </TemplateText>
+                {/* @ts-ignore */}
+                <TemplateText size={16} semiBold color={BLACK} style={styles.title}>
+                    {title}
+                </TemplateText>
 
-            {!!progress && (
-                <TemplateBox mb={16}>
-                    <TemplateText size={12} color={GREY}>
-                        Progress
-                    </TemplateText>
-                    <TemplateBox row alignItems="center" mt={5}>
-                        <Progress.Bar
-                            progress={progress}
-                            width={SCREEN_WIDTH / 1.6}
-                            height={4}
-                            color={LIGHT_GREEN}
-                            unfilledColor={BLACK_20}
-                            style={styles.progress}
-                            borderWidth={0}
-                        />
-                        <TemplateText size={12} color={BLACK}>
-                            {`${progress * 100}%`}
+                {!!progress && (
+                    <TemplateBox mb={16}>
+                        <TemplateText size={12} color={GREY}>
+                            Progress
                         </TemplateText>
+                        <TemplateBox row alignItems="center" mt={5}>
+                            <Progress.Bar
+                                progress={progress}
+                                width={SCREEN_WIDTH / 1.6}
+                                height={4}
+                                color={LIGHT_GREEN}
+                                unfilledColor={BLACK_20}
+                                style={styles.progress}
+                                borderWidth={0}
+                            />
+                            <TemplateText size={12} color={BLACK}>
+                                {`${progress * 100}%`}
+                            </TemplateText>
+                        </TemplateBox>
                     </TemplateBox>
+                )}
+
+                <TemplateBox row alignItems="center">
+                    {isBrand ? (
+                        <AvatarOverlaps imageUrls={enrolledCreatorsAvatars} />
+                    ) : (
+                        <TemplateText size={14} color={BLACK} medium>
+                            {brand}
+                        </TemplateText>
+                    )}
+                    <TemplateBox flex />
+
+                    {documentCount !== undefined && documentCount >= 0 && (
+                        <TemplateBox row alignItems="center">
+                            <TemplateIcon color={BLACK} size={18} name="document-outline" />
+                            <TemplateText size={12} color={BLACK}>
+                                {documentCount!}
+                                {'  '}
+                            </TemplateText>
+                        </TemplateBox>
+                    )}
+                    {notificationCount !== undefined && notificationCount >= 0 && (
+                        <TemplateBox row alignItems="center">
+                            <TemplateIcon color={BLACK} size={18} name="chatbubble-ellipses-outline" />
+                            <TemplateText size={12} color={BLACK}>
+                                {notificationCount!}
+                                {'  '}
+                            </TemplateText>
+                        </TemplateBox>
+                    )}
+                    {daysLeft !== undefined && daysLeft >= 0 && (
+                        <TemplateBox row alignItems="center">
+                            <TemplateIcon color={BLACK} size={18} name="time-outline" />
+                            <TemplateText size={12} color={BLACK}>
+                                {`${daysLeft} days`}
+                                {'  '}
+                            </TemplateText>
+                        </TemplateBox>
+                    )}
                 </TemplateBox>
-            )}
-
-            <TemplateBox row alignItems="center">
-                {isBrand ? (
-                    <AvatarOverlaps imageUrls={enrolledCreatorsAvatars} />
-                ) : (
-                    <TemplateText size={14} color={BLACK} medium>
-                        {brand}
-                    </TemplateText>
-                )}
-                <TemplateBox flex />
-
-                {documentCount !== undefined && documentCount >= 0 && (
-                    <TemplateBox row alignItems="center">
-                        <TemplateIcon color={BLACK} size={18} name="document-outline" />
-                        <TemplateText size={12} color={BLACK}>
-                            {documentCount!}
-                            {'  '}
-                        </TemplateText>
-                    </TemplateBox>
-                )}
-                {notificationCount !== undefined && notificationCount >= 0 && (
-                    <TemplateBox row alignItems="center">
-                        <TemplateIcon color={BLACK} size={18} name="chatbubble-ellipses-outline" />
-                        <TemplateText size={12} color={BLACK}>
-                            {notificationCount!}
-                            {'  '}
-                        </TemplateText>
-                    </TemplateBox>
-                )}
-                {daysLeft !== undefined && daysLeft >= 0 && (
-                    <TemplateBox row alignItems="center">
-                        <TemplateIcon color={BLACK} size={18} name="time-outline" />
-                        <TemplateText size={12} color={BLACK}>
-                            {`${daysLeft} days`}
-                            {'  '}
-                        </TemplateText>
-                    </TemplateBox>
-                )}
-            </TemplateBox>
             </TemplateBox>
         </TemplateBox>
     );

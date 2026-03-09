@@ -23,6 +23,7 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
     const { t } = useTranslation();
     const navigation = useNavigation();
     const [creatorsData, setCreators] = useState([]);
+    const [loading, setLoading] = useState(false);
     const db = getFirestore();
     const creatorsRef = query(
         collection(db, USERS_COLLECTION),
@@ -36,19 +37,34 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
     }, []);
 
     const getCreators = async () => {
-        const querySnapshot = await getDocs(creatorsRef);
-        const data = querySnapshot?.docs?.map(docSnap => ({
-            id: docSnap?.id,
-            ...docSnap?.data(),
-            lastLoginTime: docSnap?.lastLoginTime ? calculateLastLoginTime(docSnap?.lastLoginTime) : 'days ago',
-        }));
-        setCreators(data);
+        try {
+            setLoading(true);
+            const querySnapshot = await getDocs(creatorsRef);
+            const data = querySnapshot?.docs?.map(docSnap => ({
+                id: docSnap?.id,
+                ...docSnap?.data(),
+                lastLoginTime: docSnap?.lastLoginTime ? calculateLastLoginTime(docSnap?.lastLoginTime) : 'days ago',
+            }));
+            setCreators(data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const creatorsDataSample = useMemo(
         () => creatorsData?.sort(() => 0.5 - Math.random()).slice(0, SAMPLE_SIZE),
         [creatorsData, SAMPLE_SIZE],
     );
+
+    if (loading) {
+        return (
+            <View style={[style, styles.loadingContainer]}>
+                <ActivityIndicator size="small" color={BLACK} />
+            </View>
+        );
+    }
 
     return creatorsDataSample?.length ? (
         <View style={style}>
@@ -135,6 +151,11 @@ FeaturedCreatorsCarousel.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+    loadingContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: WRAPPER_MARGIN * 2,
+    },
     titleContainer: {
         paddingHorizontal: WRAPPER_MARGIN,
         marginTop: WRAPPER_MARGIN / 2,

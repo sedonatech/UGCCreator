@@ -9,15 +9,15 @@ import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import useTranslation from '../../../../hooks/useTranslation';
 import {
     RADIUS_SMALL,
-    RADIUS_XSMALL,
     SCREEN_WIDTH,
     SPACE_MEDIUM,
-    SPACE_XSMALL,
     WRAPPER_MARGIN,
 } from '../../../../theme/Layout';
-import CurrentCreatorsCard from './CurrentCreatorsCard';
-import { CREATOR_PROJECT_STATUS, PROFILE } from '../../../../navigation/ScreenNames';
-import { BLACK, BRAND_BLUE, DEEP_LAVENDER, WHITE } from '../../../../theme/Colors';
+import CreatorCard from '../../creators/CreatorCard';
+import { CREATOR_PROJECT_STATUS } from '../../../../navigation/ScreenNames';
+import { BLACK, LIGHT_PURPLE, WHITE } from '../../../../theme/Colors';
+import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
+import { wp } from '../../../../Utils/getResponsiveSize';
 import TemplateText from '../../../../components/TemplateText';
 
 const USERS_COLLECTION = 'users';
@@ -100,14 +100,19 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                         </TemplateBox>
                     }
                     renderItem={({ item }) => (
-                        <CurrentCreatorsCard
+                        <CreatorCard
                             key={item?.id}
                             name={item?.userName}
-                            image={item?.image}
-                            shortDescription={item?.shortDescription}
+                            imageUrl={item?.image}
+                            shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                            location={item?.location?.city || item?.location?.country}
                             style={styles.card}
-                            cardWidth={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
-                            aspectRatio={1.5}
+                            width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
+                            imageStyle={styles.image}
+                            subtitleContainerWidth={94}
+                            textContainerWidth="68%"
+                            lastLoginTime={item?.lastLoginTime || 'days ago'}
+                            ctaText="View Project Status"
                             onPress={() =>
                                 navigation.navigate(CREATOR_PROJECT_STATUS, {
                                     creatorID: item?.id,
@@ -116,11 +121,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                                     creatorFCMToken: item?.fcmToken,
                                 })
                             }
-                            onViewCreatorPress={() =>
-                                navigation.navigate(PROFILE, {
-                                    creatorId: item?.id,
-                                })
-                            }
+                            mt={12}
                         />
                     )}
                     keyExtractor={(item, index) => `${item?.id}-${index}`}
@@ -149,8 +150,14 @@ const styles = StyleSheet.create({
         marginBottom: WRAPPER_MARGIN * 2,
     },
     card: {
-        backgroundColor: BRAND_BLUE,
-        marginVertical: SPACE_XSMALL,
+        backgroundColor: LIGHT_PURPLE,
+        marginRight: 0,
+    },
+    image: {
+        width: wp(80),
+        height: wp(80),
+        borderRadius: wp(16),
+        marginRight: wp(14),
     },
     brandsListContentContainer: {
         width: SCREEN_WIDTH,
