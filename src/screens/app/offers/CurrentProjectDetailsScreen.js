@@ -9,6 +9,7 @@ import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
 import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
+import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import useChatsContext from '../../../hooks/chats/useChatsContext';
 import { HOME } from '../../../navigation/ScreenNames';
