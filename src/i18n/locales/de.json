@@ -172,7 +172,8 @@
             "emailPitch": "Ich bin spezialisiert auf die Erstellung authentischer, konversionsstarker Inhalte und würde gerne besprechen, wie ich Ihrer Marke helfen kann.",
             "emailClosing": "Ich freue mich auf Ihre Rückmeldung!",
             "emailRegards": "Mit freundlichen Grüßen,",
-            "emailSubject": "UGC-Creator Bewerbung - {{brandName}}"
+            "emailSubject": "UGC-Creator Bewerbung - {{brandName}}",
+            "viewDetails": "Details anzeigen"
         },
         "eventsCarousel": {
             "title": "Markenveranstaltungen",

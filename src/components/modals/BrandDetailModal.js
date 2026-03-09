@@ -8,17 +8,7 @@ import TemplateText from '../TemplateText';
 import TemplateIcon from '../TemplateIcon';
 import Button from '../Button';
 import DynamicIcon from '../icons/DynamicIcon';
-import {
-    BLACK,
-    BLACK_10,
-    BLACK_20,
-    BLUE_500,
-    DARK_METAL,
-    IOS_BLUE_20,
-    LIGHT_GREEN_10,
-    METAL,
-    WHITE,
-} from '../../theme/Colors';
+import { BLACK, BLACK_10, BLUE_500, DARK_METAL, IOS_BLUE_20, LIGHT_GREEN_10, METAL, WHITE } from '../../theme/Colors';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import { wp } from '../../Utils/getResponsiveSize';
 import { getCapitalizedFirstLetter } from '../../Utils/texts';
@@ -26,14 +16,7 @@ import WebsitePreview from '../../screens/app/home/components /WebsitePreview';
 import useTranslation from '../../hooks/useTranslation';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
-const BrandDetailModal = ({
-    visible,
-    brand,
-    onClose,
-    onApply,
-    onVisitWebsite,
-    alreadyApplied,
-}) => {
+const BrandDetailModal = ({ visible, brand, onClose, onApply, onVisitWebsite, alreadyApplied }) => {
     const { t, i18n } = useTranslation();
     const language = i18n.language;
     const { platformBrands } = useFeatureFlags();
@@ -101,13 +84,7 @@ const BrandDetailModal = ({
                         </TemplateBox>
 
                         <TemplateBox flex={1}>
-                            <TemplateText
-                                startCase
-                                size={20}
-                                bold
-                                numberOfLines={2}
-                                color={BLACK}
-                            >
+                            <TemplateText startCase size={20} bold numberOfLines={2} color={BLACK}>
                                 {brand?.name}
                             </TemplateText>
                             <TemplateBox
@@ -201,19 +178,21 @@ const BrandDetailModal = ({
                             style={styles.applyButton}
                         />
 
-                        <TemplateBox
-                            row
-                            alignItems="center"
-                            justifyContent="center"
-                            mt={12}
-                            pv={12}
-                            onPress={onVisitWebsite}
-                        >
-                            <TemplateText size={15} color={BLUE_500} medium>
-                                {t('home.platformBrandsCarousel.visitWebsite')}
-                            </TemplateText>
-                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
-                        </TemplateBox>
+                        {brand?.link ? (
+                            <TemplateBox
+                                row
+                                alignItems="center"
+                                justifyContent="center"
+                                mt={12}
+                                pv={12}
+                                onPress={onVisitWebsite}
+                            >
+                                <TemplateText size={15} color={BLUE_500} medium>
+                                    {t('home.platformBrandsCarousel.visitWebsite')}
+                                </TemplateText>
+                                <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                            </TemplateBox>
+                        ) : null}
                     </TemplateBox>
                 </ScrollView>
             </TemplateBox>

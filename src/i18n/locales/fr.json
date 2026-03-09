@@ -172,7 +172,8 @@
             "emailPitch": "Je me spécialise dans la création de contenu authentique et à fort taux de conversion, et j'aimerais discuter de la façon dont je peux aider votre marque.",
             "emailClosing": "Au plaisir de vous lire !",
             "emailRegards": "Cordialement,",
-            "emailSubject": "Candidature créateur UGC - {{brandName}}"
+            "emailSubject": "Candidature créateur UGC - {{brandName}}",
+            "viewDetails": "Voir les détails"
         },
         "eventsCarousel": {
             "title": "Événements de marque",

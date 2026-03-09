@@ -101,7 +101,8 @@ const PlatformBrandsScreen = ({ navigation }) => {
             const apps = await getMyBrandApplications(uid);
             const map = {};
             apps.forEach(app => {
-                map[app.link] = true;
+                const key = app.link || app.brandName;
+                map[key] = true;
             });
             setAppliedBrands(map);
         } catch (e) {
@@ -165,28 +166,29 @@ const PlatformBrandsScreen = ({ navigation }) => {
         });
 
         // Track the application
-        if (uid && item?.link) {
+        const brandKey = item?.link || item?.name;
+        if (uid && brandKey) {
             createBrandApplication({
                 ownerId: uid,
                 brandName: item.name,
-                link: item.link,
+                link: item.link || '',
                 status: 'applied',
             })
                 .then(() => {
-                    setAppliedBrands(prev => ({ ...prev, [item.link]: true }));
+                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
                     Toast.show({
                         type: 'success',
                         text1: t('home.platformBrandsCarousel.applicationTracked'),
                     });
                 })
                 .catch(() => {
-                    setAppliedBrands(prev => ({ ...prev, [item.link]: true }));
+                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
                 });
         }
     };
 
     const renderItem = ({ item }) => {
-        const alreadyApplied = appliedBrands[item?.link];
+        const alreadyApplied = appliedBrands[item?.link || item?.name];
         return (
             <TemplateBox
                 borderRadius={wp(16)}
@@ -286,21 +288,40 @@ const PlatformBrandsScreen = ({ navigation }) => {
                                 : t('home.platformBrandsCarousel.applyWithMediaKit')}
                         </TemplateText>
                     </TemplateBox>
-                    <TemplateBox
-                        row
-                        alignItems="center"
-                        pv={10}
-                        ph={12}
-                        onPress={() => {
-                            trackEvent('platform_brand_details_viewed', { brandName: item?.name });
-                            navigation.navigate(WEBVIEW, { url: item?.link });
-                        }}
-                    >
-                        <TemplateText size={14} color={BLUE_500} medium>
-                            {t('home.platformBrandsCarousel.visitWebsite')}
-                        </TemplateText>
-                        <DynamicIcon name="ArrowRight" color={BLUE_500} />
-                    </TemplateBox>
+                    {item?.link ? (
+                        <TemplateBox
+                            row
+                            alignItems="center"
+                            pv={10}
+                            ph={12}
+                            onPress={() => {
+                                trackEvent('platform_brand_details_viewed', { brandName: item?.name });
+                                navigation.navigate(WEBVIEW, { url: item?.link });
+                            }}
+                        >
+                            <TemplateText size={14} color={BLUE_500} medium>
+                                {t('home.platformBrandsCarousel.visitWebsite')}
+                            </TemplateText>
+                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                        </TemplateBox>
+                    ) : (
+                        <TemplateBox
+                            row
+                            alignItems="center"
+                            pv={10}
+                            ph={12}
+                            onPress={() => {
+                                trackEvent('brand_card_tapped', { brandName: item?.name });
+                                setSelectedBrand(item);
+                                setModalVisible(true);
+                            }}
+                        >
+                            <TemplateText size={14} color={BLUE_500} medium>
+                                {t('home.platformBrandsCarousel.viewDetails')}
+                            </TemplateText>
+                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                        </TemplateBox>
+                    )}
                 </TemplateBox>
             </TemplateBox>
         );
@@ -388,7 +409,7 @@ const PlatformBrandsScreen = ({ navigation }) => {
                     setModalVisible(false);
                     navigation.navigate(WEBVIEW, { url: selectedBrand?.link });
                 }}
-                alreadyApplied={!!appliedBrands[selectedBrand?.link]}
+                alreadyApplied={!!appliedBrands[selectedBrand?.link || selectedBrand?.name]}
             />
         </>
     );

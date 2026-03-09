@@ -172,7 +172,8 @@
             "emailPitch": "I specialize in creating authentic, high-converting content and would love to discuss how I can help your brand.",
             "emailClosing": "Looking forward to hearing from you!",
             "emailRegards": "Best regards,",
-            "emailSubject": "UGC Creator Application - {{brandName}}"
+            "emailSubject": "UGC Creator Application - {{brandName}}",
+            "viewDetails": "View Details"
         },
         "eventsCarousel": {
             "title": "Brand Events",

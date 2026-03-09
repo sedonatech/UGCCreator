@@ -172,7 +172,8 @@
             "emailPitch": "Sou especialista em criar conteúdo autêntico e de alta conversão, e adoraria discutir como posso ajudar a vossa marca.",
             "emailClosing": "Aguardo o vosso contacto!",
             "emailRegards": "Com os melhores cumprimentos,",
-            "emailSubject": "Candidatura de criador UGC - {{brandName}}"
+            "emailSubject": "Candidatura de criador UGC - {{brandName}}",
+            "viewDetails": "Ver detalhes"
         },
         "eventsCarousel": {
             "title": "Eventos de marca",

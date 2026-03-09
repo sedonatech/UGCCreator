@@ -172,7 +172,8 @@
             "emailPitch": "Me especializo en crear contenido auténtico y de alta conversión, y me encantaría discutir cómo puedo ayudar a su marca.",
             "emailClosing": "¡Espero su respuesta!",
             "emailRegards": "Saludos cordiales,",
-            "emailSubject": "Solicitud de creador UGC - {{brandName}}"
+            "emailSubject": "Solicitud de creador UGC - {{brandName}}",
+            "viewDetails": "Ver detalles"
         },
         "eventsCarousel": {
             "title": "Eventos de marca",
