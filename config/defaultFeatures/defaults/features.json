@@ -17,5 +17,6 @@
   "showEmergingBrandsCarousel": true,
   "showSupportChat": false,
   "showUgcGigsCarousel": true,
-  "showAffiliateProgramsCarousel": true
+  "showAffiliateProgramsCarousel": true,
+  "showPlatformBrandsCarousel": true
 }

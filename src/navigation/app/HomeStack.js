@@ -15,6 +15,7 @@ import {
     CURRENT_PROJECT_DETAILS,
     FEED_DETAILS,
     HOME,
+    PLATFORM_BRANDS_SCREEN,
     PROJECT_DETAILS,
     PROJECTS_SCREEN,
     RECOMMENDED_BRANDS,
@@ -46,6 +47,7 @@ import BrandApplicationsScreen from '../../screens/app/home/BrandApplicationsScr
 import BrandDealsScreen from '../../screens/app/home/BrandDealsScreen';
 import ChallengeDetailsScreen from '../../screens/app/home/ChallengeDetailsScreen';
 import BrandOffersScreen from '../../screens/brands/admin/BrandOffersScreen';
+import PlatformBrandsScreen from '../../screens/app/home/PlatformBrandsScreen';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -86,6 +88,7 @@ const HomeStack = () => (
         <Screen name={BRAND_DEALS_SCREEN} options={TRANSPARENT_HEADER} component={BrandDealsScreen} />
         <Screen name={CHALLENGE_DETAILS} options={TRANSPARENT_HEADER} component={ChallengeDetailsScreen} />
         <Screen name={BRAND_OFFERS} options={TRANSPARENT_HEADER} component={BrandOffersScreen} />
+        <Screen name={PLATFORM_BRANDS_SCREEN} options={TRANSPARENT_HEADER} component={PlatformBrandsScreen} />
     </Navigator>
 );
 

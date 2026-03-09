@@ -116,6 +116,8 @@ export const AFFILIATE_BRANDS = 'AffiliateBrands';
 
 export const BRAND_DEALS_SCREEN = 'BrandDealsScreen';
 
+export const PLATFORM_BRANDS_SCREEN = 'PlatformBrandsScreen';
+
 export const ACTIVE_CREATORS = 'ActiveCreators';
 
 export const EVENTS_SCREEN = 'EventsScreen';

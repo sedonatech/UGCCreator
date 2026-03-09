@@ -29,6 +29,7 @@ import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
 import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ProjectsCarousel from './components /ProjectsCarousel';
+import PlatformBrandsCarousel from './components /PlatformBrandsCarousel';
 import useTranslation from '../../../hooks/useTranslation';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
@@ -42,6 +43,7 @@ const HomeScreen = ({ navigation }) => {
     const { features } = useFeatureFlags();
     const brandsCatalogueEnabled = features?.brandsCatalogue?.visible;
     const showAffiliateProgramsCarousel = features?.showAffiliateProgramsCarousel;
+    const showPlatformBrandsCarousel = features?.showPlatformBrandsCarousel ?? true;
     const profile = auth?.profile;
     const profileCompleteRatio = auth?.profileCompleteRatio;
     const { updateProfile } = useProfile();
@@ -225,6 +227,8 @@ const HomeScreen = ({ navigation }) => {
                 <DynamicIcon name={'ArrowRight'} size={24} />
             </TemplateBox>
 
+            {showPlatformBrandsCarousel && <PlatformBrandsCarousel style={styles.platformBrandsCarousel} />}
+
             <TemplateCarousel
                 data={challenges}
                 renderItem={({ item }) => (
@@ -342,6 +346,9 @@ const styles = StyleSheet.create({
     },
 
     affiliateBrandsCarousel: {
+        marginVertical: 15,
+    },
+    platformBrandsCarousel: {
         marginVertical: 15,
     },
 });

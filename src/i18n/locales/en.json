@@ -140,11 +140,11 @@
             "searchPlaceholder": "Search"
         },
         "projects": {
-            "title": "Explore Projects",
+            "title": "Active UGC Projects 💰",
             "searchPlaceholder": "Search"
         },
         "projectsCarousel": {
-            "title": "New Projects",
+            "title": "Active UGC Projects",
             "seeAll": "See All",
             "description": "Check out new projects from trusted brands based on your interests and location",
             "enrolledProjects": "My enrolled projects"
@@ -153,6 +153,25 @@
             "title": "Brands on our Platform",
             "seeAll": "See All",
             "description": "Check out the brands currently on our platform"
+        },
+        "platformBrandsCarousel": {
+            "title": "Brands on our Platform",
+            "seeAll": "See All",
+            "description": "These brands are actively hiring UGC creators. Apply directly with your media kit and track your applications.",
+            "applyWithMediaKit": "Apply with Media Kit",
+            "visitWebsite": "Visit Website",
+            "allCategory": "All",
+            "applicationTracked": "Application tracked!",
+            "alreadyApplied": "Already applied",
+            "viewApplications": "View Applications",
+            "emailGreeting": "Hi {{brandName}} Team,",
+            "emailIntro": "My name is {{userName}} and I'd love to collaborate with your brand on UGC content.",
+            "emailIntroDefault": "I'm a UGC creator and I'd love to collaborate with your brand on UGC content.",
+            "emailMediaKit": "Please find my media kit attached.",
+            "emailPitch": "I specialize in creating authentic, high-converting content and would love to discuss how I can help your brand.",
+            "emailClosing": "Looking forward to hearing from you!",
+            "emailRegards": "Best regards,",
+            "emailSubject": "UGC Creator Application - {{brandName}}"
         },
         "eventsCarousel": {
             "title": "Brand Events",
