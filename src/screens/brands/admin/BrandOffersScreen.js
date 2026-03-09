@@ -10,7 +10,6 @@ import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { CURRENT_PROJECT_DETAILS, PROJECTS_SCREEN } from '../../../navigation/ScreenNames';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import { projectStatuses } from '../../../consts/AppFilters/ProjectStatus';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import CurrentProjectCard from '../../app/home/components /CurrentProjectCard';
 
@@ -30,49 +29,37 @@ const getTagColor = status => {
     return BRAND_BLUE;
 };
 const BrandOffersScreen = ({ navigation }) => {
-    const { projectLimits, setProjectLimits, getEnrolledProjects, enrolledProjects: projects } = useProjectsContext();
+    const { projects, projectLimits, setProjectLimits, getProjects } = useProjectsContext();
     const { auth } = useAuthContext();
     const { profile } = auth;
 
     useEffect(() => {
-        getEnrolledProjects(profile?.id, projectLimits);
+        getProjects(projectLimits);
     }, [projectLimits]);
 
-    const enrolledProjects = useMemo(() => {
-        if (!projects) return [];
+    const brandName = profile?.userName || profile?.name;
 
-        if (projects?.length) {
-            return projects?.map(item => {
-                const application = item?.applications?.length
-                    ? item?.applications?.find(({ creatorId }) => creatorId === profile?.id)
-                    : {};
-                const completedStatuses = projectStatuses?.filter(({ status }) => status === 'completed');
+    const brandProjects = useMemo(() => {
+        if (!projects?.length) return [];
 
-                const progress = completedStatuses?.length
-                    ? Math.round((completedStatuses?.length / projectStatuses?.length) * 10) / 10
-                    : 0;
-                return {
-                    ...item,
-                    ...application,
-                    progress,
-                    id: item?.id,
-                    title: item?.title,
-                    brand: item?.brandName,
-                    price: `From ${item?.priceRange?.max} to ${item?.priceRange?.min} ${item?.currency}`,
-                    status: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
-                    documentCount: application?.documents?.length,
-                    daysLeft: differenceInDays(new Date(item?.endDate), new Date()),
-                    currentStatus: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
-                };
-            });
-        }
-        return [];
-    }, [projects, profile]);
+        return projects?.map(project => ({
+            id: project?.id,
+            title: project?.title,
+            brand: brandName,
+            image: project?.image,
+            price: project?.price,
+            status: project?.applications?.length ? 'Enrolled Creators' : 'No Enrolled Creators',
+            notifications: project?.applications?.length || 0,
+            documents: project?.applications?.[0]?.documents?.length || 0,
+            daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
+        }));
+    }, [projects, brandName]);
 
     const renderItem = ({ item }, index) => (
         <CurrentProjectCard
             title={item?.title}
             brand={item?.brand}
+            image={item?.image}
             price={item?.price}
             status={item?.status}
             notificationCount={item?.notifications}
@@ -84,6 +71,8 @@ const BrandOffersScreen = ({ navigation }) => {
             width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
             slideInDelay={(index + 1) * 100}
             key={item?.id}
+            projectId={item?.id}
+            isBrand
             onPress={() => navigation.navigate(CURRENT_PROJECT_DETAILS, { projectId: item?.id })}
         />
     );
@@ -111,7 +100,7 @@ const BrandOffersScreen = ({ navigation }) => {
                         onPress={() => navigation.navigate(PROJECTS_SCREEN)}
                     />
                 }
-                data={enrolledProjects}
+                data={brandProjects}
                 renderItem={renderItem}
                 keyExtractor={item => item?.id}
                 extraData={projectLimits}
