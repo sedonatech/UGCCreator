@@ -1,10 +1,11 @@
-/* eslint-disable max-len */
 const functions = require('firebase-functions');
 const { GoogleAuth } = require('google-auth-library');
 const fetch = require('node-fetch');
 const admin = require('firebase-admin');
 
 admin.initializeApp();
+
+// ─── Existing HTTP endpoints ─────────────────────────────────────────────────
 
 exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
     try {
@@ -20,9 +21,7 @@ exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
             return res.status(401).json({ error: 'Unauthorized: Invalid ID token' });
         }
 
-        const {
-            token, title, body, data,
-        } = req.body;
+        const { token, title, body, data } = req.body;
 
         if (!token || !title || !body) {
             return res.status(400).json({ error: 'Missing required fields (token, title, body)' });
@@ -48,17 +47,14 @@ exports.sendPushNotification = functions.https.onRequest(async (req, res) => {
             },
         };
 
-        const fcmRes = await fetch(
-            'https://fcm.googleapis.com/v1/projects/ugccreatorapp/messages:send',
-            {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${accessToken.token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(message),
+        const fcmRes = await fetch('https://fcm.googleapis.com/v1/projects/ugccreatorapp/messages:send', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${accessToken.token}`,
+                'Content-Type': 'application/json',
             },
-        );
+            body: JSON.stringify(message),
+        });
 
         const result = await fcmRes.json();
         return res.status(200).json(result);
@@ -103,7 +99,10 @@ exports.userGeneratedContentBrandDealsSearch = functions.https.onRequest(async (
 
         const keywordsParameter = typeof request.query.keywords === 'string' ? request.query.keywords : '';
         const providedKeywords = keywordsParameter
-            ? keywordsParameter.split(',').map((value) => value.trim()).filter(Boolean)
+            ? keywordsParameter
+                  .split(',')
+                  .map(value => value.trim())
+                  .filter(Boolean)
             : [];
 
         const allKeywordsList = [...defaultKeywords, ...providedKeywords];
@@ -130,26 +129,28 @@ exports.userGeneratedContentBrandDealsSearch = functions.https.onRequest(async (
 
         // Normalize to your lead shape
         const normalizedLeadList = rawJobList
-        // keep only obviously relevant postings
-            .filter((job) => {
+            // keep only obviously relevant postings
+            .filter(job => {
                 const combinedTextLowercased = `${job.title ?? ''} ${job.description ?? ''}`.toLowerCase();
                 return (
-                    combinedTextLowercased.includes('ugc')
-          || combinedTextLowercased.includes('user generated content')
-          || combinedTextLowercased.includes('tiktok')
-          || combinedTextLowercased.includes('reels')
-          || combinedTextLowercased.includes('creator')
-          || combinedTextLowercased.includes('influencer')
-          || combinedTextLowercased.includes('social media')
+                    combinedTextLowercased.includes('ugc') ||
+                    combinedTextLowercased.includes('user generated content') ||
+                    combinedTextLowercased.includes('tiktok') ||
+                    combinedTextLowercased.includes('reels') ||
+                    combinedTextLowercased.includes('creator') ||
+                    combinedTextLowercased.includes('influencer') ||
+                    combinedTextLowercased.includes('social media')
                 );
             })
-            .map((job) => {
+            .map(job => {
                 const combinedTextLowercased = `${job.title ?? ''} ${job.description ?? ''}`.toLowerCase();
 
                 let platformHint = 'General';
                 if (combinedTextLowercased.includes('tiktok')) platformHint = 'TikTok';
-                else if (combinedTextLowercased.includes('instagram') || combinedTextLowercased.includes('reels')) platformHint = 'Instagram';
-                else if (combinedTextLowercased.includes('youtube') || combinedTextLowercased.includes('shorts')) platformHint = 'YouTube';
+                else if (combinedTextLowercased.includes('instagram') || combinedTextLowercased.includes('reels'))
+                    platformHint = 'Instagram';
+                else if (combinedTextLowercased.includes('youtube') || combinedTextLowercased.includes('shorts'))
+                    platformHint = 'YouTube';
 
                 return {
                     identifier: String(job.id ?? job.url),
@@ -163,7 +164,7 @@ exports.userGeneratedContentBrandDealsSearch = functions.https.onRequest(async (
             });
 
         // Basic de-duplication by identifier
-        const uniqueLeadList = Array.from(new Map(normalizedLeadList.map((lead) => [lead.identifier, lead])).values());
+        const uniqueLeadList = Array.from(new Map(normalizedLeadList.map(lead => [lead.identifier, lead])).values());
 
         response.set('Access-Control-Allow-Origin', '*');
         response.set('Cache-Control', 'public, max-age=120, s-maxage=300');
@@ -178,3 +179,44 @@ exports.userGeneratedContentBrandDealsSearch = functions.https.onRequest(async (
         return response.status(500).json({ error: error.message || 'Internal error' });
     }
 });
+
+// ─── Debug: Test Notification Endpoint ───────────────────────────────────────
+// Call: https://us-central1-ugccreatorapp.cloudfunctions.net/testNotification
+// Remove this after debugging is done.
+
+exports.testNotification = functions.https.onRequest(async (req, res) => {
+    try {
+        const { getCreatorsWithTokens, sendBatchNotifications } = require('./helpers/fcm');
+
+        const creators = await getCreatorsWithTokens();
+        if (creators.length === 0) {
+            return res.status(200).json({ error: 'No creators with FCM tokens found', creatorsCount: 0 });
+        }
+
+        // Send a test notification to all creators
+        const result = await sendBatchNotifications(
+            creators,
+            userName => ({
+                title: `Hey ${userName || 'Creator'}, this is a test!`,
+                body: 'If you see this, notifications are working!',
+            }),
+            { type: 'test' },
+        );
+
+        return res.status(200).json({
+            creatorsFound: creators.length,
+            creatorsSample: creators.slice(0, 3).map(c => ({ id: c.id, userName: c.userName, hasToken: !!c.fcmToken })),
+            sent: result.sent,
+            failed: result.failed,
+        });
+    } catch (err) {
+        return res.status(500).json({ error: err.message, stack: err.stack });
+    }
+});
+
+// ─── Scheduled Notifications ─────────────────────────────────────────────────
+
+const scheduledNotifications = require('./scheduled/notifications');
+exports.scheduledBrandsCatalogueNotification = scheduledNotifications.scheduledBrandsCatalogueNotification;
+exports.scheduledBrandsHiringNotification = scheduledNotifications.scheduledBrandsHiringNotification;
+exports.scheduledChallengesNotification = scheduledNotifications.scheduledChallengesNotification;
