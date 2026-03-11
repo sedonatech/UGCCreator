@@ -2,11 +2,41 @@
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { APP_TABS } from '../../navigation/ScreenNames';
 
 const useNotificationInteraction = () => {
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false);
+
+    // Display notifications when app is in foreground
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+            console.log('[useNotificationInteraction] Foreground message:', remoteMessage?.notification);
+
+            const channelId = await notifee.createChannel({
+                id: 'default',
+                name: 'Default',
+                importance: AndroidImportance.HIGH,
+            });
+
+            await notifee.displayNotification({
+                title: remoteMessage.notification?.title,
+                body: remoteMessage.notification?.body,
+                data: remoteMessage.data,
+                android: {
+                    channelId,
+                    pressAction: { id: 'default' },
+                    importance: AndroidImportance.HIGH,
+                },
+                ios: {
+                    sound: 'default',
+                },
+            });
+        });
+
+        return unsubscribe;
+    }, []);
 
     // App opened from background via notification
     useEffect(() => {
