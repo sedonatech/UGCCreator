@@ -161,17 +161,36 @@
             "applyWithMediaKit": "Candidatar com Media Kit",
             "visitWebsite": "Visitar site",
             "allCategory": "Todos",
+            "paidPackageReviews": "Avaliações de Pacotes Pagos",
+            "categories": {
+                "Skincare": "Cuidados com a Pele",
+                "Makeup": "Maquilhagem",
+                "Haircare": "Cuidados Capilares",
+                "Fashion": "Moda",
+                "Bodycare": "Cuidados Corporais",
+                "Fragrance": "Fragrâncias",
+                "Jewelry": "Joias",
+                "Food & Drink": "Comida e Bebida",
+                "Health": "Saúde",
+                "Lifestyle": "Estilo de Vida",
+                "Vegan Skincare": "Cuidados Veganos com a Pele",
+                "Vegan Makeup": "Maquilhagem Vegana",
+                "Vegan Haircare": "Cuidados Capilares Veganos",
+                "Vegan Fashion": "Moda Vegana"
+            },
             "applicationTracked": "Candidatura registada!",
             "alreadyApplied": "Já candidatado",
             "viewApplications": "Ver candidaturas",
             "emailGreeting": "Olá equipa {{brandName}},",
             "emailIntro": "O meu nome é {{userName}} e adoraria colaborar com a vossa marca em conteúdo UGC.",
             "emailIntroDefault": "Sou criador de conteúdo UGC e adoraria colaborar com a vossa marca.",
-            "emailMediaKit": "Segue em anexo o meu media kit.",
+            "emailMediaKit": "Anexei o meu media kit para a vossa análise.",
+            "emailAttachReminder": "[LEMBRETE: Por favor, anexe o seu media kit a este e-mail antes de o enviar]",
             "emailPitch": "Sou especialista em criar conteúdo autêntico e de alta conversão, e adoraria discutir como posso ajudar a vossa marca.",
             "emailClosing": "Aguardo o vosso contacto!",
             "emailRegards": "Com os melhores cumprimentos,",
-            "emailSubject": "Candidatura de criador UGC - {{brandName}}"
+            "emailSubject": "Candidatura de criador UGC - {{brandName}}",
+            "viewDetails": "Ver detalhes"
         },
         "eventsCarousel": {
             "title": "Eventos de marca",
@@ -691,6 +710,12 @@
         }
     },
     "offers": {
+        "headerTitle": "Verifique o estado das suas ofertas",
+        "emptyTitle": "Nenhum projeto atual",
+        "emptyMessage": "Não se inscreveu em nenhum projeto. Consulte a página de projetos para encontrar um!",
+        "enrolledCreators": "Criadores inscritos",
+        "noEnrolledCreators": "Nenhum criador inscrito",
+        "messageBrand": "Mensagem para a marca",
         "currentProject": {
             "tabs": {
                 "overview": "Visão geral",

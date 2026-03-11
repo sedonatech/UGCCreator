@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { StyleSheet, FlatList, Linking } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
@@ -31,6 +31,7 @@ import useTrackEvent from '../../../hooks/events/useTrackEvent';
 import useTranslation from '../../../hooks/useTranslation';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import { createBrandApplication, getMyBrandApplications } from '../../../lib/brandApplications';
+import BrandDetailModal from '../../../components/modals/BrandDetailModal';
 import useMailCompose from '../../../hooks/documents/useMailCompose';
 
 const getLocalizedDescription = (item, language) => {
@@ -38,10 +39,29 @@ const getLocalizedDescription = (item, language) => {
     return item?.[key] || item?.description;
 };
 
-const buildEmailBody = (brandName, userName, t) => {
+const buildEmailBody = (brandName, profile, t) => {
+    const userName = profile?.userName;
     const intro = userName
         ? t('home.platformBrandsCarousel.emailIntro', { userName })
         : t('home.platformBrandsCarousel.emailIntroDefault');
+
+    const signature = [t('home.platformBrandsCarousel.emailRegards'), userName || ''];
+
+    if (profile?.email) {
+        signature.push(profile.email);
+    }
+
+    const socialMedia = profile?.socialMedia;
+    if (socialMedia?.instagram) {
+        signature.push(`Instagram: @${socialMedia.instagram}`);
+    }
+    if (socialMedia?.tiktok) {
+        signature.push(`TikTok: @${socialMedia.tiktok}`);
+    }
+    if (socialMedia?.youtube) {
+        signature.push(`YouTube: ${socialMedia.youtube}`);
+    }
+
     return [
         t('home.platformBrandsCarousel.emailGreeting', { brandName }),
         '',
@@ -53,22 +73,27 @@ const buildEmailBody = (brandName, userName, t) => {
         '',
         t('home.platformBrandsCarousel.emailClosing'),
         '',
-        t('home.platformBrandsCarousel.emailRegards'),
-        userName || '',
+        '',
+        ...signature,
+        '',
+        '---',
+        t('home.platformBrandsCarousel.emailAttachReminder'),
     ].join('\n');
 };
 
 const PlatformBrandsScreen = ({ navigation }) => {
     const { trackEvent } = useTrackEvent();
+    const { sendEmailWithAttachment } = useMailCompose();
     const { t, i18n } = useTranslation();
     const language = i18n.language;
     const { platformBrands } = useFeatureFlags();
     const { auth } = useAuthContext();
-    const { sendEmailWithAttachment } = useMailCompose();
     const profile = auth?.profile;
     const uid = profile?.id;
 
     const [appliedBrands, setAppliedBrands] = useState({});
+    const [selectedBrand, setSelectedBrand] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const refreshApplications = useCallback(async () => {
         if (!uid) return;
@@ -76,7 +101,8 @@ const PlatformBrandsScreen = ({ navigation }) => {
             const apps = await getMyBrandApplications(uid);
             const map = {};
             apps.forEach(app => {
-                map[app.link] = true;
+                const key = app.link || app.brandName;
+                map[key] = true;
             });
             setAppliedBrands(map);
         } catch (e) {
@@ -90,7 +116,11 @@ const PlatformBrandsScreen = ({ navigation }) => {
 
     const brands = useMemo(() => {
         if (!platformBrands?.brands) return [];
-        return [...platformBrands.brands].sort(() => 0.5 - Math.random());
+        return [...platformBrands.brands].sort((a, b) => {
+            const aHasLink = a?.link?.startsWith('http') ? 0 : 1;
+            const bHasLink = b?.link?.startsWith('http') ? 0 : 1;
+            return aHasLink - bHasLink;
+        });
     }, [platformBrands?.brands]);
 
     useEffect(() => {
@@ -108,14 +138,17 @@ const PlatformBrandsScreen = ({ navigation }) => {
         value: 'all',
     };
 
+    const prCategory = { name: t('home.platformBrandsCarousel.paidPackageReviews'), value: 'Paid Package Reviews' };
+
+    const translateCategory = cat => t(`home.platformBrandsCarousel.categories.${cat}`, cat);
+
     const brandCategories = useMemo(() => {
         if (!brands) return [];
-        const categories = brands?.map(({ category }) => ({
-            name: category,
-            value: category,
-        }));
-        categories.unshift(allCategory);
-        return removeDuplicatesFromAffiliateBrands(categories);
+        const categories = brands
+            ?.filter(({ category }) => category !== 'Paid Package Reviews')
+            .map(({ category }) => ({ name: translateCategory(category), value: category }));
+        const deduped = removeDuplicatesFromAffiliateBrands(categories);
+        return [allCategory, prCategory, ...deduped];
     }, [brands]);
 
     const [selectedTab, setSelectedTab] = useState(brandCategories?.[0] ?? 'Makeup');
@@ -129,45 +162,40 @@ const PlatformBrandsScreen = ({ navigation }) => {
     const handleApply = item => {
         if (!item?.email) return;
 
-        const mediaKitUrl = profile?.mediaKit?.url;
-        const attachments = mediaKitUrl
-            ? [{ uri: mediaKitUrl, mimeType: 'application/pdf', name: 'media-kit.pdf' }]
-            : [];
-
-        const metaData = {
-            recipients: [item.email],
-            subject: t('home.platformBrandsCarousel.emailSubject', { brandName: item.name }),
-            body: buildEmailBody(item.name, profile?.userName, t),
-            attachments,
-        };
-
         trackEvent('brand_apply_with_media_kit', { brandName: item.name });
 
-        sendEmailWithAttachment(metaData);
+        const subject = t('home.platformBrandsCarousel.emailSubject', { brandName: item.name });
+        const body = buildEmailBody(item.name, profile, t);
+        sendEmailWithAttachment({
+            recipients: [item.email],
+            subject,
+            body,
+        });
 
         // Track the application
-        if (uid && item?.link) {
+        const brandKey = item?.link || item?.name;
+        if (uid && brandKey) {
             createBrandApplication({
                 ownerId: uid,
                 brandName: item.name,
-                link: item.link,
+                link: item.link || '',
                 status: 'applied',
             })
                 .then(() => {
-                    setAppliedBrands(prev => ({ ...prev, [item.link]: true }));
+                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
                     Toast.show({
                         type: 'success',
                         text1: t('home.platformBrandsCarousel.applicationTracked'),
                     });
                 })
                 .catch(() => {
-                    setAppliedBrands(prev => ({ ...prev, [item.link]: true }));
+                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
                 });
         }
     };
 
     const renderItem = ({ item }) => {
-        const alreadyApplied = appliedBrands[item?.link];
+        const alreadyApplied = appliedBrands[item?.link || item?.name];
         return (
             <TemplateBox
                 borderRadius={wp(16)}
@@ -178,6 +206,11 @@ const PlatformBrandsScreen = ({ navigation }) => {
                 borderColor={BLACK_20}
                 selfCenter
                 mb={20}
+                onPress={() => {
+                    trackEvent('brand_card_tapped', { brandName: item?.name });
+                    setSelectedBrand(item);
+                    setModalVisible(true);
+                }}
             >
                 {/* Header: avatar + name + category */}
                 <TemplateBox row alignItems="center" mb={10} justifyContent="space-between">
@@ -212,17 +245,34 @@ const PlatformBrandsScreen = ({ navigation }) => {
                         </TemplateBox>
                     </TemplateBox>
 
-                    <TemplateBox
-                        pv={4}
-                        ph={16}
-                        borderRadius={10}
-                        backgroundColor={IOS_BLUE_20}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateText size={12} medium>
-                            {item?.category}
-                        </TemplateText>
+                    <TemplateBox row alignItems="center">
+                        {item?.category === 'Paid Package Reviews' && (
+                            <TemplateBox
+                                pv={4}
+                                ph={10}
+                                borderRadius={10}
+                                backgroundColor="#EDE7F6"
+                                alignItems="center"
+                                justifyContent="center"
+                                mr={6}
+                            >
+                                <TemplateText size={11} bold color="#6A1B9A">
+                                    📦 PR
+                                </TemplateText>
+                            </TemplateBox>
+                        )}
+                        <TemplateBox
+                            pv={4}
+                            ph={16}
+                            borderRadius={10}
+                            backgroundColor={IOS_BLUE_20}
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <TemplateText size={12} medium>
+                                {translateCategory(item?.category)}
+                            </TemplateText>
+                        </TemplateBox>
                     </TemplateBox>
                 </TemplateBox>
 
@@ -238,12 +288,7 @@ const PlatformBrandsScreen = ({ navigation }) => {
 
                 {/* Email row */}
                 {item?.email && (
-                    <TemplateBox
-                        row
-                        alignItems="center"
-                        mb={10}
-                        onPress={() => Linking.openURL(`mailto:${item.email}`)}
-                    >
+                    <TemplateBox row alignItems="center" mb={10}>
                         <TemplateIcon name="mail-outline" color={DARK_METAL} size={14} />
                         <TemplateText size={12} color={DARK_METAL} ml={6} numberOfLines={1}>
                             {item.email}
@@ -255,34 +300,52 @@ const PlatformBrandsScreen = ({ navigation }) => {
 
                 {/* Actions */}
                 <TemplateBox row alignItems="center" justifyContent="space-between" mt={10}>
-                    {item?.email && (
+                    <TemplateBox
+                        pv={10}
+                        ph={16}
+                        borderRadius={8}
+                        backgroundColor={alreadyApplied ? `${BLUE_500}15` : LIGHT_GREEN_10}
+                    >
+                        <TemplateText size={13} medium color={alreadyApplied ? BLUE_500 : DARK_METAL}>
+                            {alreadyApplied
+                                ? t('home.platformBrandsCarousel.alreadyApplied')
+                                : t('home.platformBrandsCarousel.applyWithMediaKit')}
+                        </TemplateText>
+                    </TemplateBox>
+                    {item?.link ? (
                         <TemplateBox
-                            pv={6}
+                            row
+                            alignItems="center"
+                            pv={10}
                             ph={12}
-                            borderRadius={8}
-                            backgroundColor={alreadyApplied ? `${BLUE_500}15` : LIGHT_GREEN_10}
-                            onPress={() => handleApply(item)}
+                            onPress={() => {
+                                trackEvent('platform_brand_details_viewed', { brandName: item?.name });
+                                navigation.navigate(WEBVIEW, { url: item?.link });
+                            }}
                         >
-                            <TemplateText size={12} medium color={alreadyApplied ? BLUE_500 : DARK_METAL}>
-                                {alreadyApplied
-                                    ? t('home.platformBrandsCarousel.alreadyApplied')
-                                    : t('home.platformBrandsCarousel.applyWithMediaKit')}
+                            <TemplateText size={14} color={BLUE_500} medium>
+                                {t('home.platformBrandsCarousel.visitWebsite')}
                             </TemplateText>
+                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                        </TemplateBox>
+                    ) : (
+                        <TemplateBox
+                            row
+                            alignItems="center"
+                            pv={10}
+                            ph={12}
+                            onPress={() => {
+                                trackEvent('brand_card_tapped', { brandName: item?.name });
+                                setSelectedBrand(item);
+                                setModalVisible(true);
+                            }}
+                        >
+                            <TemplateText size={14} color={BLUE_500} medium>
+                                {t('home.platformBrandsCarousel.viewDetails')}
+                            </TemplateText>
+                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
                         </TemplateBox>
                     )}
-                    <TemplateBox
-                        row
-                        alignItems="center"
-                        onPress={() => {
-                            trackEvent('platform_brand_details_viewed', { brandName: item?.name });
-                            navigation.navigate(WEBVIEW, { url: item?.link });
-                        }}
-                    >
-                        <TemplateText size={14} color={BLUE_500} medium>
-                            {t('home.platformBrandsCarousel.visitWebsite')}
-                        </TemplateText>
-                        <DynamicIcon name="ArrowRight" color={BLUE_500} />
-                    </TemplateBox>
                 </TemplateBox>
             </TemplateBox>
         );
@@ -295,64 +358,84 @@ const PlatformBrandsScreen = ({ navigation }) => {
     }, [selectedTab]);
 
     return (
-        <TemplateBox flex backgroundColor={WHITE}>
-            <FlatList
-                style={styles.container}
-                contentContainerStyle={styles.contentContainer}
-                showsVerticalScrollIndicator={false}
-                scrollEventThrottle={1}
-                ListHeaderComponent={
-                    <TemplateBox backgroundColor={WHITE} style={{ alignItems: 'center' }}>
-                        <TemplateText size={18} startCase bold center>
-                            {t('home.platformBrandsCarousel.title')}
-                        </TemplateText>
-                        <TemplateBox center ph={WRAPPER_MARGIN} mt={8}>
-                            <TemplateText size={13} color={BLACK} center mt={8} ml={WRAPPER_MARGIN}>
-                                {t('home.platformBrandsCarousel.description')}
+        <>
+            <TemplateBox flex backgroundColor={WHITE}>
+                <FlatList
+                    style={styles.container}
+                    contentContainerStyle={styles.contentContainer}
+                    showsVerticalScrollIndicator={false}
+                    scrollEventThrottle={1}
+                    ListHeaderComponent={
+                        <TemplateBox backgroundColor={WHITE} style={{ alignItems: 'center' }}>
+                            <TemplateText size={18} startCase bold center>
+                                {t('home.platformBrandsCarousel.title')}
                             </TemplateText>
-                        </TemplateBox>
+                            <TemplateBox center ph={WRAPPER_MARGIN} mt={8}>
+                                <TemplateText size={13} color={BLACK} center mt={8} ml={WRAPPER_MARGIN}>
+                                    {t('home.platformBrandsCarousel.description')}
+                                </TemplateText>
+                            </TemplateBox>
 
-                        {/* View Applications link */}
-                        <TemplateBox
-                            row
-                            alignItems="center"
-                            mt={12}
-                            onPress={() => {
-                                trackEvent('view_applications_tapped', { source: 'platform_brands_screen' });
-                                navigation.navigate(BRAND_APPLICATIONS);
-                            }}
-                        >
-                            <TemplateIcon name="cash-outline" color={BLUE_500} size={16} />
-                            <TemplateText size={14} color={BLUE_500} medium ml={6}>
-                                {t('home.platformBrandsCarousel.viewApplications')}
-                            </TemplateText>
-                            <DynamicIcon name="ArrowRight" color={BLUE_500} size={16} />
-                        </TemplateBox>
-
-                        <TemplateBox selfCenter flex>
-                            <ToggleCarousel
-                                data={brandCategories}
-                                selectedTab={selectedTab}
-                                onChange={tab => {
-                                    trackEvent('platform_brand_category_selected', { category: tab?.value || tab });
-                                    setSelectedTab(tab);
+                            {/* View Applications link */}
+                            <TemplateBox
+                                row
+                                alignItems="center"
+                                mt={12}
+                                onPress={() => {
+                                    trackEvent('view_applications_tapped', { source: 'platform_brands_screen' });
+                                    navigation.navigate(BRAND_APPLICATIONS);
                                 }}
-                            />
+                            >
+                                <TemplateIcon name="cash-outline" color={BLUE_500} size={16} />
+                                <TemplateText size={14} color={BLUE_500} medium ml={6}>
+                                    {t('home.platformBrandsCarousel.viewApplications')}
+                                </TemplateText>
+                                <DynamicIcon name="ArrowRight" color={BLUE_500} size={16} />
+                            </TemplateBox>
+
+                            <TemplateBox selfCenter flex>
+                                <ToggleCarousel
+                                    data={brandCategories}
+                                    selectedTab={selectedTab}
+                                    onChange={tab => {
+                                        trackEvent('platform_brand_category_selected', { category: tab?.value || tab });
+                                        setSelectedTab(tab);
+                                    }}
+                                />
+                            </TemplateBox>
+                            <TemplateBox />
                         </TemplateBox>
-                        <TemplateBox />
-                    </TemplateBox>
-                }
-                stickyHeaderIndices={[0]}
-                data={brandsData?.slice(0, limit)}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => `${item?.name}-${index}`}
-                initialNumToRender={6}
-                onEndReachedThreshold={0}
-                onEndReached={() => {
-                    setLimit(prevLimit => prevLimit + 4);
+                    }
+                    stickyHeaderIndices={[0]}
+                    data={brandsData?.slice(0, limit)}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => `${item?.name}-${index}`}
+                    initialNumToRender={6}
+                    onEndReachedThreshold={0}
+                    onEndReached={() => {
+                        setLimit(prevLimit => prevLimit + 4);
+                    }}
+                />
+            </TemplateBox>
+            <BrandDetailModal
+                visible={modalVisible}
+                brand={selectedBrand}
+                onClose={() => setModalVisible(false)}
+                onApply={() => {
+                    const brand = selectedBrand;
+                    setModalVisible(false);
+                    setSelectedBrand(null);
+                    // Delay to allow modal dismiss animation to complete
+                    // before presenting the native mail composer
+                    setTimeout(() => handleApply(brand), 500);
                 }}
+                onVisitWebsite={() => {
+                    setModalVisible(false);
+                    navigation.navigate(WEBVIEW, { url: selectedBrand?.link });
+                }}
+                alreadyApplied={!!appliedBrands[selectedBrand?.link || selectedBrand?.name]}
             />
-        </TemplateBox>
+        </>
     );
 };
 

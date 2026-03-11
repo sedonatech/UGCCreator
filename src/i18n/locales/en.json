@@ -161,17 +161,36 @@
             "applyWithMediaKit": "Apply with Media Kit",
             "visitWebsite": "Visit Website",
             "allCategory": "All",
+            "paidPackageReviews": "Paid Package Reviews",
+            "categories": {
+                "Skincare": "Skincare",
+                "Makeup": "Makeup",
+                "Haircare": "Haircare",
+                "Fashion": "Fashion",
+                "Bodycare": "Bodycare",
+                "Fragrance": "Fragrance",
+                "Jewelry": "Jewelry",
+                "Food & Drink": "Food & Drink",
+                "Health": "Health",
+                "Lifestyle": "Lifestyle",
+                "Vegan Skincare": "Vegan Skincare",
+                "Vegan Makeup": "Vegan Makeup",
+                "Vegan Haircare": "Vegan Haircare",
+                "Vegan Fashion": "Vegan Fashion"
+            },
             "applicationTracked": "Application tracked!",
             "alreadyApplied": "Already applied",
             "viewApplications": "View Applications",
             "emailGreeting": "Hi {{brandName}} Team,",
             "emailIntro": "My name is {{userName}} and I'd love to collaborate with your brand on UGC content.",
             "emailIntroDefault": "I'm a UGC creator and I'd love to collaborate with your brand on UGC content.",
-            "emailMediaKit": "Please find my media kit attached.",
+            "emailMediaKit": "I have attached my media kit for your review.",
+            "emailAttachReminder": "[REMINDER: Please attach your media kit to this email before sending]",
             "emailPitch": "I specialize in creating authentic, high-converting content and would love to discuss how I can help your brand.",
             "emailClosing": "Looking forward to hearing from you!",
             "emailRegards": "Best regards,",
-            "emailSubject": "UGC Creator Application - {{brandName}}"
+            "emailSubject": "UGC Creator Application - {{brandName}}",
+            "viewDetails": "View Details"
         },
         "eventsCarousel": {
             "title": "Brand Events",
@@ -681,6 +700,12 @@
         }
     },
     "offers": {
+        "headerTitle": "Check the status of your offers",
+        "emptyTitle": "No Current Projects",
+        "emptyMessage": "You have not enrolled to any project. Check out the projects page to find a project to work on!",
+        "enrolledCreators": "Enrolled Creators",
+        "noEnrolledCreators": "No Enrolled Creators",
+        "messageBrand": "Message Brand",
         "currentProject": {
             "tabs": {
                 "overview": "Overview",

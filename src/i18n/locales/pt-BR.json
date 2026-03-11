@@ -161,17 +161,36 @@
             "applyWithMediaKit": "Candidatar com Media Kit",
             "visitWebsite": "Visitar site",
             "allCategory": "Todos",
+            "paidPackageReviews": "Avaliações de Pacotes Pagos",
+            "categories": {
+                "Skincare": "Cuidados com a Pele",
+                "Makeup": "Maquiagem",
+                "Haircare": "Cuidados Capilares",
+                "Fashion": "Moda",
+                "Bodycare": "Cuidados Corporais",
+                "Fragrance": "Fragrâncias",
+                "Jewelry": "Joias",
+                "Food & Drink": "Comida e Bebida",
+                "Health": "Saúde",
+                "Lifestyle": "Estilo de Vida",
+                "Vegan Skincare": "Cuidados Veganos com a Pele",
+                "Vegan Makeup": "Maquiagem Vegana",
+                "Vegan Haircare": "Cuidados Capilares Veganos",
+                "Vegan Fashion": "Moda Vegana"
+            },
             "applicationTracked": "Candidatura registrada!",
             "alreadyApplied": "Já candidatado",
             "viewApplications": "Ver candidaturas",
             "emailGreeting": "Olá equipe {{brandName}},",
             "emailIntro": "Meu nome é {{userName}} e adoraria colaborar com a sua marca em conteúdo UGC.",
             "emailIntroDefault": "Sou criador de conteúdo UGC e adoraria colaborar com a sua marca.",
-            "emailMediaKit": "Segue em anexo o meu media kit.",
+            "emailMediaKit": "Anexei meu media kit para sua análise.",
+            "emailAttachReminder": "[LEMBRETE: Por favor, anexe seu media kit a este e-mail antes de enviá-lo]",
             "emailPitch": "Sou especialista em criar conteúdo autêntico e de alta conversão, e adoraria discutir como posso ajudar a sua marca.",
             "emailClosing": "Aguardo seu retorno!",
             "emailRegards": "Atenciosamente,",
-            "emailSubject": "Candidatura de criador UGC - {{brandName}}"
+            "emailSubject": "Candidatura de criador UGC - {{brandName}}",
+            "viewDetails": "Ver detalhes"
         },
         "eventsCarousel": {
             "title": "Eventos de marca",
@@ -692,6 +711,12 @@
         }
     },
     "offers": {
+        "headerTitle": "Verifique o status das suas ofertas",
+        "emptyTitle": "Nenhum projeto atual",
+        "emptyMessage": "Você não se inscreveu em nenhum projeto. Confira a página de projetos para encontrar um!",
+        "enrolledCreators": "Criadores inscritos",
+        "noEnrolledCreators": "Nenhum criador inscrito",
+        "messageBrand": "Mensagem para a marca",
         "currentProject": {
             "tabs": {
                 "overview": "Visão geral",

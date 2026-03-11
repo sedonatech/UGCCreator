@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
@@ -22,6 +22,7 @@ const CATEGORY_STYLES = {
     Health: { emoji: '💪', bg: '#E8F5E9' },
     Lifestyle: { emoji: '✨', bg: '#F3E5F5' },
     'Vegan Skincare': { emoji: '🌱🧴', bg: '#E8F5E9' },
+    'Paid Package Reviews': { emoji: '📦', bg: '#EDE7F6' },
 };
 
 const DEFAULT_STYLE = { emoji: '🌐', bg: '#F5F5F5' };
@@ -37,7 +38,9 @@ export const preloadWebsitePreviews = urls => {
 
 const WebsitePreview = ({ url, category, brandName, height = 120 }) => {
     const [loaded, setLoaded] = useState(false);
+    const [error, setError] = useState(false);
     const categoryStyle = CATEGORY_STYLES[category] || DEFAULT_STYLE;
+    const showSpinner = url && !loaded && !error;
 
     return (
         <TemplateBox
@@ -48,19 +51,26 @@ const WebsitePreview = ({ url, category, brandName, height = 120 }) => {
             alignItems="center"
             justifyContent="center"
         >
-            {/* Fallback always rendered underneath */}
-            <TemplateText size={36} mb={6}>
-                {categoryStyle.emoji}
-            </TemplateText>
-            <TemplateText size={14} semiBold color="#555" numberOfLines={1}>
-                {brandName}
-            </TemplateText>
-            <TemplateText size={11} color="#888" mt={2}>
-                {category}
-            </TemplateText>
+            {/* Fallback shown when no URL or image failed */}
+            {(!url || error) && (
+                <>
+                    <TemplateText size={36} mb={6}>
+                        {categoryStyle.emoji}
+                    </TemplateText>
+                    <TemplateText size={14} semiBold color="#555" numberOfLines={1}>
+                        {brandName}
+                    </TemplateText>
+                    <TemplateText size={11} color="#888" mt={2}>
+                        {category}
+                    </TemplateText>
+                </>
+            )}
+
+            {/* Spinner while image is loading */}
+            {showSpinner && <ActivityIndicator size="small" color="#888" />}
 
             {/* Image overlays on top when loaded */}
-            {url && (
+            {url && !error && (
                 <TemplateBox absolute top={0} left={0} right={0} bottom={0}>
                     <FastImage
                         source={{
@@ -71,7 +81,7 @@ const WebsitePreview = ({ url, category, brandName, height = 120 }) => {
                         resizeMode={FastImage.resizeMode.cover}
                         style={[styles.image, !loaded && styles.hidden]}
                         onLoad={() => setLoaded(true)}
-                        onError={() => setLoaded(false)}
+                        onError={() => setError(true)}
                     />
                 </TemplateBox>
             )}

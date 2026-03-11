@@ -161,17 +161,36 @@
             "applyWithMediaKit": "Postuler avec Media Kit",
             "visitWebsite": "Visiter le site",
             "allCategory": "Tout",
+            "paidPackageReviews": "Avis Colis Payés",
+            "categories": {
+                "Skincare": "Soins de la Peau",
+                "Makeup": "Maquillage",
+                "Haircare": "Soins Capillaires",
+                "Fashion": "Mode",
+                "Bodycare": "Soins du Corps",
+                "Fragrance": "Parfums",
+                "Jewelry": "Bijoux",
+                "Food & Drink": "Nourriture et Boissons",
+                "Health": "Santé",
+                "Lifestyle": "Style de Vie",
+                "Vegan Skincare": "Soins de Peau Végans",
+                "Vegan Makeup": "Maquillage Végan",
+                "Vegan Haircare": "Soins Capillaires Végans",
+                "Vegan Fashion": "Mode Végane"
+            },
             "applicationTracked": "Candidature suivie !",
             "alreadyApplied": "Déjà postulé",
             "viewApplications": "Voir les candidatures",
             "emailGreeting": "Bonjour l'équipe {{brandName}},",
             "emailIntro": "Je m'appelle {{userName}} et j'aimerais collaborer avec votre marque sur du contenu UGC.",
             "emailIntroDefault": "Je suis créateur UGC et j'aimerais collaborer avec votre marque sur du contenu UGC.",
-            "emailMediaKit": "Veuillez trouver mon media kit en pièce jointe.",
+            "emailMediaKit": "J'ai joint mon media kit pour votre examen.",
+            "emailAttachReminder": "[RAPPEL : Veuillez joindre votre media kit à cet e-mail avant de l'envoyer]",
             "emailPitch": "Je me spécialise dans la création de contenu authentique et à fort taux de conversion, et j'aimerais discuter de la façon dont je peux aider votre marque.",
             "emailClosing": "Au plaisir de vous lire !",
             "emailRegards": "Cordialement,",
-            "emailSubject": "Candidature créateur UGC - {{brandName}}"
+            "emailSubject": "Candidature créateur UGC - {{brandName}}",
+            "viewDetails": "Voir les détails"
         },
         "eventsCarousel": {
             "title": "Événements de marque",
@@ -681,6 +700,12 @@
         }
     },
     "offers": {
+        "headerTitle": "Vérifiez le statut de vos offres",
+        "emptyTitle": "Aucun projet en cours",
+        "emptyMessage": "Vous n'êtes inscrit à aucun projet. Consultez la page des projets pour en trouver un !",
+        "enrolledCreators": "Créateurs inscrits",
+        "noEnrolledCreators": "Aucun créateur inscrit",
+        "messageBrand": "Contacter la marque",
         "currentProject": {
             "tabs": {
                 "overview": "Aperçu",

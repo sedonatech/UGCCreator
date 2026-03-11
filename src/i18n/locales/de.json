@@ -161,17 +161,36 @@
             "applyWithMediaKit": "Mit Media Kit bewerben",
             "visitWebsite": "Website besuchen",
             "allCategory": "Alle",
+            "paidPackageReviews": "Bezahlte Paketbewertungen",
+            "categories": {
+                "Skincare": "Hautpflege",
+                "Makeup": "Make-up",
+                "Haircare": "Haarpflege",
+                "Fashion": "Mode",
+                "Bodycare": "Körperpflege",
+                "Fragrance": "Düfte",
+                "Jewelry": "Schmuck",
+                "Food & Drink": "Essen & Trinken",
+                "Health": "Gesundheit",
+                "Lifestyle": "Lebensstil",
+                "Vegan Skincare": "Vegane Hautpflege",
+                "Vegan Makeup": "Veganes Make-up",
+                "Vegan Haircare": "Vegane Haarpflege",
+                "Vegan Fashion": "Vegane Mode"
+            },
             "applicationTracked": "Bewerbung verfolgt!",
             "alreadyApplied": "Bereits beworben",
             "viewApplications": "Bewerbungen ansehen",
             "emailGreeting": "Hallo {{brandName}} Team,",
             "emailIntro": "Mein Name ist {{userName}} und ich würde gerne mit Ihrer Marke an UGC-Inhalten zusammenarbeiten.",
             "emailIntroDefault": "Ich bin UGC-Creator und würde gerne mit Ihrer Marke an UGC-Inhalten zusammenarbeiten.",
-            "emailMediaKit": "Anbei finden Sie mein Media Kit.",
+            "emailMediaKit": "Ich habe mein Media Kit zur Ansicht beigefügt.",
+            "emailAttachReminder": "[ERINNERUNG: Bitte hängen Sie Ihr Media Kit an diese E-Mail an, bevor Sie sie senden]",
             "emailPitch": "Ich bin spezialisiert auf die Erstellung authentischer, konversionsstarker Inhalte und würde gerne besprechen, wie ich Ihrer Marke helfen kann.",
             "emailClosing": "Ich freue mich auf Ihre Rückmeldung!",
             "emailRegards": "Mit freundlichen Grüßen,",
-            "emailSubject": "UGC-Creator Bewerbung - {{brandName}}"
+            "emailSubject": "UGC-Creator Bewerbung - {{brandName}}",
+            "viewDetails": "Details anzeigen"
         },
         "eventsCarousel": {
             "title": "Markenveranstaltungen",
@@ -681,6 +700,12 @@
         }
     },
     "offers": {
+        "headerTitle": "Überprüfen Sie den Status Ihrer Angebote",
+        "emptyTitle": "Keine aktuellen Projekte",
+        "emptyMessage": "Sie haben sich noch für kein Projekt angemeldet. Schauen Sie sich die Projektseite an, um ein Projekt zu finden!",
+        "enrolledCreators": "Angemeldete Creator",
+        "noEnrolledCreators": "Keine angemeldeten Creator",
+        "messageBrand": "Marke kontaktieren",
         "currentProject": {
             "tabs": {
                 "overview": "Übersicht",

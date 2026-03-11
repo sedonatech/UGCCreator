@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { StyleSheet, Linking } from 'react-native';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
@@ -22,7 +22,6 @@ import {
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
 import { BRAND_APPLICATIONS, PLATFORM_BRANDS_SCREEN, WEBVIEW } from '../../../../navigation/ScreenNames';
-import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import { getCapitalizedFirstLetter } from '../../../../Utils/texts';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
@@ -32,6 +31,8 @@ import useTranslation from '../../../../hooks/useTranslation';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import useTrackEvent from '../../../../hooks/events/useTrackEvent';
 import { createBrandApplication, getMyBrandApplications } from '../../../../lib/brandApplications';
+import BrandDetailModal from '../../../../components/modals/BrandDetailModal';
+import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
 import useMailCompose from '../../../../hooks/documents/useMailCompose';
 
 const getLocalizedDescription = (item, language) => {
@@ -39,10 +40,29 @@ const getLocalizedDescription = (item, language) => {
     return item?.[key] || item?.description;
 };
 
-const buildEmailBody = (brandName, userName, t) => {
+const buildEmailBody = (brandName, profile, t) => {
+    const userName = profile?.userName;
     const intro = userName
         ? t('home.platformBrandsCarousel.emailIntro', { userName })
         : t('home.platformBrandsCarousel.emailIntroDefault');
+
+    const signature = [t('home.platformBrandsCarousel.emailRegards'), userName || ''];
+
+    if (profile?.email) {
+        signature.push(profile.email);
+    }
+
+    const socialMedia = profile?.socialMedia;
+    if (socialMedia?.instagram) {
+        signature.push(`Instagram: @${socialMedia.instagram}`);
+    }
+    if (socialMedia?.tiktok) {
+        signature.push(`TikTok: @${socialMedia.tiktok}`);
+    }
+    if (socialMedia?.youtube) {
+        signature.push(`YouTube: ${socialMedia.youtube}`);
+    }
+
     return [
         t('home.platformBrandsCarousel.emailGreeting', { brandName }),
         '',
@@ -54,8 +74,11 @@ const buildEmailBody = (brandName, userName, t) => {
         '',
         t('home.platformBrandsCarousel.emailClosing'),
         '',
-        t('home.platformBrandsCarousel.emailRegards'),
-        userName || '',
+        '',
+        ...signature,
+        '',
+        '---',
+        t('home.platformBrandsCarousel.emailAttachReminder'),
     ].join('\n');
 };
 
@@ -65,6 +88,7 @@ const PlatformBrandsCarousel = ({ style }) => {
     const language = i18n.language;
     const { platformBrands } = useFeatureFlags();
     const brands = platformBrands?.brands;
+    const translateCategory = cat => t(`home.platformBrandsCarousel.categories.${cat}`, cat);
     const { auth } = useAuthContext();
     const { trackEvent } = useTrackEvent();
     const { sendEmailWithAttachment } = useMailCompose();
@@ -72,6 +96,8 @@ const PlatformBrandsCarousel = ({ style }) => {
     const uid = profile?.id;
 
     const [appliedBrands, setAppliedBrands] = useState({});
+    const [selectedBrand, setSelectedBrand] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const refreshApplications = useCallback(async () => {
         if (!uid) return;
@@ -79,7 +105,8 @@ const PlatformBrandsCarousel = ({ style }) => {
             const apps = await getMyBrandApplications(uid);
             const map = {};
             apps.forEach(app => {
-                map[app.link] = true;
+                const key = app.link || app.brandName;
+                map[key] = true;
             });
             setAppliedBrands(map);
         } catch (e) {
@@ -92,7 +119,7 @@ const PlatformBrandsCarousel = ({ style }) => {
     }, [refreshApplications]);
 
     const randomFourBrands = useMemo(() => {
-        if (!brands) return [];
+        if (!brands?.length) return [];
         if (brands.length <= 4) return brands;
         const shuffled = [...brands].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 4);
@@ -107,39 +134,34 @@ const PlatformBrandsCarousel = ({ style }) => {
     const handleApply = item => {
         if (!item?.email) return;
 
-        const mediaKitUrl = profile?.mediaKit?.url;
-        const attachments = mediaKitUrl
-            ? [{ uri: mediaKitUrl, mimeType: 'application/pdf', name: 'media-kit.pdf' }]
-            : [];
-
-        const metaData = {
-            recipients: [item.email],
-            subject: t('home.platformBrandsCarousel.emailSubject', { brandName: item.name }),
-            body: buildEmailBody(item.name, profile?.userName, t),
-            attachments,
-        };
-
         trackEvent('brand_apply_with_media_kit', { brandName: item.name });
 
-        sendEmailWithAttachment(metaData);
+        const subject = t('home.platformBrandsCarousel.emailSubject', { brandName: item.name });
+        const body = buildEmailBody(item.name, profile, t);
+        sendEmailWithAttachment({
+            recipients: [item.email],
+            subject,
+            body,
+        });
 
         // Track the application
-        if (uid && item?.link) {
+        const brandKey = item?.link || item?.name;
+        if (uid && brandKey) {
             createBrandApplication({
                 ownerId: uid,
                 brandName: item.name,
-                link: item.link,
+                link: item.link || '',
                 status: 'applied',
             })
                 .then(() => {
-                    setAppliedBrands(prev => ({ ...prev, [item.link]: true }));
+                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
                     Toast.show({
                         type: 'success',
                         text1: t('home.platformBrandsCarousel.applicationTracked'),
                     });
                 })
                 .catch(() => {
-                    setAppliedBrands(prev => ({ ...prev, [item.link]: true }));
+                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
                 });
         }
     };
@@ -147,172 +169,209 @@ const PlatformBrandsCarousel = ({ style }) => {
     if (!brands?.length) return null;
 
     return (
-        <TemplateBox style={style}>
-            <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
-                <TemplateBox width={SCREEN_WIDTH * 0.8}>
-                    <TemplateText size={16} semiBold>
-                        {t('home.platformBrandsCarousel.title')}
+        <>
+            <TemplateBox style={style}>
+                <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
+                    <TemplateBox width={SCREEN_WIDTH * 0.8}>
+                        <TemplateText size={16} semiBold>
+                            {t('home.platformBrandsCarousel.title')}
+                        </TemplateText>
+                    </TemplateBox>
+                    <TemplateBox flex />
+                    <TemplateTouchable onPress={() => navigation.navigate(PLATFORM_BRANDS_SCREEN)}>
+                        <TemplateText startCase size={14} underLine color={IOS_BLUE}>
+                            {t('home.platformBrandsCarousel.seeAll')}
+                        </TemplateText>
+                    </TemplateTouchable>
+                </TemplateBox>
+                <TemplateBox mh={WRAPPER_MARGIN} mb={16}>
+                    <TemplateText size={13} color={BLACK}>
+                        {t('home.platformBrandsCarousel.description')}
                     </TemplateText>
                 </TemplateBox>
-                <TemplateBox flex />
-                <TemplateTouchable onPress={() => navigation.navigate(PLATFORM_BRANDS_SCREEN)}>
-                    <TemplateText startCase size={14} underLine color={IOS_BLUE}>
-                        {t('home.platformBrandsCarousel.seeAll')}
+
+                {/* View Applications link */}
+                <TemplateBox
+                    row
+                    alignItems="center"
+                    mh={WRAPPER_MARGIN}
+                    mb={12}
+                    onPress={() => {
+                        trackEvent('view_applications_tapped', { source: 'carousel' });
+                        navigation.navigate(BRAND_APPLICATIONS);
+                    }}
+                >
+                    <TemplateIcon name="cash-outline" color={BLUE_500} size={16} />
+                    <TemplateText size={14} color={BLUE_500} medium ml={6}>
+                        {t('home.platformBrandsCarousel.viewApplications')}
                     </TemplateText>
-                </TemplateTouchable>
-            </TemplateBox>
-            <TemplateBox mh={WRAPPER_MARGIN} mb={16}>
-                <TemplateText size={13} color={BLACK}>
-                    {t('home.platformBrandsCarousel.description')}
-                </TemplateText>
-            </TemplateBox>
+                    <DynamicIcon name="ArrowRight" color={BLUE_500} size={16} />
+                </TemplateBox>
 
-            {/* View Applications link */}
-            <TemplateBox
-                row
-                alignItems="center"
-                mh={WRAPPER_MARGIN}
-                mb={12}
-                onPress={() => {
-                    trackEvent('view_applications_tapped', { source: 'carousel' });
-                    navigation.navigate(BRAND_APPLICATIONS);
-                }}
-            >
-                <TemplateIcon name="cash-outline" color={BLUE_500} size={16} />
-                <TemplateText size={14} color={BLUE_500} medium ml={6}>
-                    {t('home.platformBrandsCarousel.viewApplications')}
-                </TemplateText>
-                <DynamicIcon name="ArrowRight" color={BLUE_500} size={16} />
-            </TemplateBox>
+                <TemplateCarousel
+                    data={randomFourBrands}
+                    renderItem={({ item }) => {
+                        const alreadyApplied = appliedBrands[item?.link || item?.name];
+                        return (
+                            <TemplateBox
+                                borderRadius={wp(16)}
+                                pAll={wp(16)}
+                                style={styles.card}
+                                width={WRAPPED_SCREEN_WIDTH - 20}
+                                mr={wp(16)}
+                                borderWidth={1}
+                                borderColor={BLACK_20}
+                                onPress={() => {
+                                    trackEvent('brand_card_tapped', { brandName: item?.name });
+                                    setSelectedBrand(item);
+                                    setModalVisible(true);
+                                }}
+                            >
+                                {/* Header: avatar + name + category */}
+                                <TemplateBox row alignItems="center" mb={10} justifyContent="space-between">
+                                    <TemplateBox row alignItems="center" flex={1} mr={10}>
+                                        <TemplateBox
+                                            height={50}
+                                            width={50}
+                                            mr={10}
+                                            borderRadius={10}
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            backgroundColor={LIGHT_GREEN_10}
+                                            shadow
+                                            shadowColor={BLACK}
+                                        >
+                                            <TemplateText startCase size={20} bold color={DARK_METAL}>
+                                                {getCapitalizedFirstLetter(item?.name)}
+                                            </TemplateText>
+                                        </TemplateBox>
 
-            <TemplateCarousel
-                data={randomFourBrands}
-                renderItem={({ item }) => {
-                    const alreadyApplied = appliedBrands[item?.link];
-                    return (
-                        <TemplateBox
-                            borderRadius={wp(16)}
-                            pAll={wp(16)}
-                            style={styles.card}
-                            width={WRAPPED_SCREEN_WIDTH - 20}
-                            mr={wp(16)}
-                            borderWidth={1}
-                            borderColor={BLACK_20}
-                        >
-                            {/* Header: avatar + name + category */}
-                            <TemplateBox row alignItems="center" mb={10} justifyContent="space-between">
-                                <TemplateBox row alignItems="center" flex={1} mr={10}>
+                                        <TemplateBox flex={1}>
+                                            <TemplateText
+                                                startCase
+                                                size={16}
+                                                semiBold
+                                                numberOfLines={1}
+                                                ellipsizeMode="tail"
+                                                color={DARK_METAL}
+                                            >
+                                                {item?.name}
+                                            </TemplateText>
+                                        </TemplateBox>
+                                    </TemplateBox>
+
                                     <TemplateBox
-                                        height={50}
-                                        width={50}
-                                        mr={10}
+                                        pv={4}
+                                        ph={16}
                                         borderRadius={10}
+                                        backgroundColor={IOS_BLUE_20}
                                         alignItems="center"
                                         justifyContent="center"
-                                        backgroundColor={LIGHT_GREEN_10}
-                                        shadow
-                                        shadowColor={BLACK}
                                     >
-                                        <TemplateText startCase size={20} bold color={DARK_METAL}>
-                                            {getCapitalizedFirstLetter(item?.name)}
-                                        </TemplateText>
-                                    </TemplateBox>
-
-                                    <TemplateBox flex={1}>
-                                        <TemplateText
-                                            startCase
-                                            size={16}
-                                            semiBold
-                                            numberOfLines={1}
-                                            ellipsizeMode="tail"
-                                            color={DARK_METAL}
-                                        >
-                                            {item?.name}
+                                        <TemplateText size={12} medium>
+                                            {translateCategory(item?.category)}
                                         </TemplateText>
                                     </TemplateBox>
                                 </TemplateBox>
 
-                                <TemplateBox
-                                    pv={4}
-                                    ph={16}
-                                    borderRadius={10}
-                                    backgroundColor={IOS_BLUE_20}
-                                    alignItems="center"
-                                    justifyContent="center"
-                                >
-                                    <TemplateText size={12} medium>
-                                        {item?.category}
-                                    </TemplateText>
+                                {/* Website Preview */}
+                                <TemplateBox mv={10}>
+                                    <WebsitePreview
+                                        url={item?.link}
+                                        category={item?.category}
+                                        brandName={item?.name}
+                                        height={120}
+                                    />
                                 </TemplateBox>
-                            </TemplateBox>
 
-                            {/* Website Preview */}
-                            <TemplateBox mv={10}>
-                                <WebsitePreview
-                                    url={item?.link}
-                                    category={item?.category}
-                                    brandName={item?.name}
-                                    height={120}
-                                />
-                            </TemplateBox>
+                                {/* Description */}
+                                <TemplateText size={14} numberOfLines={2} mb={10} color={METAL}>
+                                    {getLocalizedDescription(item, language)}
+                                </TemplateText>
 
-                            {/* Description */}
-                            <TemplateText size={14} numberOfLines={2} mb={10} color={METAL}>
-                                {getLocalizedDescription(item, language)}
-                            </TemplateText>
-
-                            {/* Email row */}
-                            {item?.email && (
-                                <TemplateBox
-                                    row
-                                    alignItems="center"
-                                    mb={10}
-                                    onPress={() => Linking.openURL(`mailto:${item.email}`)}
-                                >
-                                    <TemplateIcon name="mail-outline" color={DARK_METAL} size={14} />
-                                    <TemplateText size={12} color={DARK_METAL} ml={6} numberOfLines={1}>
-                                        {item.email}
-                                    </TemplateText>
-                                </TemplateBox>
-                            )}
-
-                            <TemplateBox height={1} width="98%" backgroundColor={BLACK_10} selfCenter mv={4} />
-
-                            {/* Actions */}
-                            <TemplateBox row alignItems="center" justifyContent="space-between" mt={10}>
+                                {/* Email row */}
                                 {item?.email && (
+                                    <TemplateBox row alignItems="center" mb={10}>
+                                        <TemplateIcon name="mail-outline" color={DARK_METAL} size={14} />
+                                        <TemplateText size={12} color={DARK_METAL} ml={6} numberOfLines={1}>
+                                            {item.email}
+                                        </TemplateText>
+                                    </TemplateBox>
+                                )}
+
+                                <TemplateBox height={1} width="98%" backgroundColor={BLACK_10} selfCenter mv={4} />
+
+                                {/* Actions */}
+                                <TemplateBox row alignItems="center" justifyContent="space-between" mt={10}>
                                     <TemplateBox
-                                        pv={6}
-                                        ph={12}
+                                        pv={10}
+                                        ph={16}
                                         borderRadius={8}
                                         backgroundColor={alreadyApplied ? `${BLUE_500}15` : LIGHT_GREEN_10}
-                                        onPress={() => handleApply(item)}
                                     >
-                                        <TemplateText size={12} medium color={alreadyApplied ? BLUE_500 : DARK_METAL}>
+                                        <TemplateText size={13} medium color={alreadyApplied ? BLUE_500 : DARK_METAL}>
                                             {alreadyApplied
                                                 ? t('home.platformBrandsCarousel.alreadyApplied')
                                                 : t('home.platformBrandsCarousel.applyWithMediaKit')}
                                         </TemplateText>
                                     </TemplateBox>
-                                )}
-                                <TemplateBox
-                                    row
-                                    alignItems="center"
-                                    onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
-                                >
-                                    <TemplateText size={14} color={BLUE_500} medium>
-                                        {t('home.platformBrandsCarousel.visitWebsite')}
-                                    </TemplateText>
-                                    <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                                    {item?.link ? (
+                                        <TemplateBox
+                                            row
+                                            alignItems="center"
+                                            pv={10}
+                                            ph={12}
+                                            onPress={() => navigation.navigate(WEBVIEW, { url: item?.link })}
+                                        >
+                                            <TemplateText size={14} color={BLUE_500} medium>
+                                                {t('home.platformBrandsCarousel.visitWebsite')}
+                                            </TemplateText>
+                                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                                        </TemplateBox>
+                                    ) : (
+                                        <TemplateBox
+                                            row
+                                            alignItems="center"
+                                            pv={10}
+                                            ph={12}
+                                            onPress={() => {
+                                                setSelectedBrand(item);
+                                                setModalVisible(true);
+                                            }}
+                                        >
+                                            <TemplateText size={14} color={BLUE_500} medium>
+                                                {t('home.platformBrandsCarousel.viewDetails')}
+                                            </TemplateText>
+                                            <DynamicIcon name="ArrowRight" color={BLUE_500} />
+                                        </TemplateBox>
+                                    )}
                                 </TemplateBox>
                             </TemplateBox>
-                        </TemplateBox>
-                    );
+                        );
+                    }}
+                    contentContainerStyle={styles.cardCarousel}
+                    snapToInterval={SCREEN_WIDTH / 1.6}
+                />
+            </TemplateBox>
+            <BrandDetailModal
+                visible={modalVisible}
+                brand={selectedBrand}
+                onClose={() => setModalVisible(false)}
+                onApply={() => {
+                    const brand = selectedBrand;
+                    setModalVisible(false);
+                    setSelectedBrand(null);
+                    // Delay to allow modal dismiss animation to complete
+                    // before presenting the native mail composer
+                    setTimeout(() => handleApply(brand), 500);
                 }}
-                contentContainerStyle={styles.cardCarousel}
-                snapToInterval={SCREEN_WIDTH / 1.6}
+                onVisitWebsite={() => {
+                    setModalVisible(false);
+                    navigation.navigate(WEBVIEW, { url: selectedBrand?.link });
+                }}
+                alreadyApplied={!!appliedBrands[selectedBrand?.link || selectedBrand?.name]}
             />
-        </TemplateBox>
+        </>
     );
 };
 
