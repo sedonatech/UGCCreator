@@ -89,10 +89,13 @@ const PortfolioScreen = ({ navigation, route }) => {
     const onPickAndUploadMediaKit = async () => {
         try {
             const picked = await pickPdf();
-            await saveMediaKitPdf({
+            const result = await saveMediaKitPdf({
                 uuid: auth?.profile?.id,
                 response: picked,
             });
+            if (result?.url) {
+                auth.update('mediaKit', { url: result.url });
+            }
         } catch (e) {
             console.log('pick/upload failed:', e);
         }

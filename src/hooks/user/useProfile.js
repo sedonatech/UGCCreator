@@ -196,7 +196,7 @@ const useProfile = () => {
 
                     const path = decodeURI(rawPath); // only decode; do not strip file://
 
-                    const metadata = { contentType: 'application/pdf' }; // valid settable metadata :contentReference[oaicite:2]{index=2}
+                    const metadata = { contentType: 'application/pdf' };
                     const reference = storage().ref(`users/${uuid}/media-kit.pdf`);
 
                     const task = reference.putFile(path, metadata);
@@ -215,7 +215,18 @@ const useProfile = () => {
                             );
                             rej(err);
                         },
-                        () => res(task),
+                        async () => {
+                            try {
+                                const downloadUrl = await reference.getDownloadURL();
+                                const db = getFirestore();
+                                const userRef = doc(db, USERS_COLLECTION, uuid);
+                                await updateDoc(userRef, { mediaKit: { url: downloadUrl } });
+                                res({ task, url: downloadUrl });
+                            } catch (urlErr) {
+                                console.warn('[MEDIA-KIT]: failed to save download URL:', urlErr);
+                                res({ task, url: null });
+                            }
+                        },
                     );
                 } catch (err) {
                     rej(err);

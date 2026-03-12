@@ -190,6 +190,9 @@
             "emailClosing": "Aguardo o vosso contacto!",
             "emailRegards": "Com os melhores cumprimentos,",
             "emailSubject": "Candidatura de criador UGC - {{brandName}}",
+            "noMediaKitTitle": "Nenhum media kit encontrado",
+            "noMediaKitMessage": "Carregue um media kit no seu perfil para o anexar automaticamente.",
+            "attachingMediaKit": "A anexar media kit...",
             "viewDetails": "Ver detalhes"
         },
         "eventsCarousel": {

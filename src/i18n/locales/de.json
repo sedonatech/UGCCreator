@@ -190,6 +190,9 @@
             "emailClosing": "Ich freue mich auf Ihre Rückmeldung!",
             "emailRegards": "Mit freundlichen Grüßen,",
             "emailSubject": "UGC-Creator Bewerbung - {{brandName}}",
+            "noMediaKitTitle": "Kein Media Kit gefunden",
+            "noMediaKitMessage": "Laden Sie ein Media Kit in Ihrem Profil hoch, um es automatisch anzuhängen.",
+            "attachingMediaKit": "Media Kit wird angehängt...",
             "viewDetails": "Details anzeigen"
         },
         "eventsCarousel": {

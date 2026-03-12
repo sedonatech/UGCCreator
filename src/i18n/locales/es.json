@@ -190,6 +190,9 @@
             "emailClosing": "¡Espero su respuesta!",
             "emailRegards": "Saludos cordiales,",
             "emailSubject": "Solicitud de creador UGC - {{brandName}}",
+            "noMediaKitTitle": "No se encontró media kit",
+            "noMediaKitMessage": "Sube un media kit en tu perfil para adjuntarlo automáticamente.",
+            "attachingMediaKit": "Adjuntando media kit...",
             "viewDetails": "Ver detalles"
         },
         "eventsCarousel": {

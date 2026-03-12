@@ -190,6 +190,9 @@
             "emailClosing": "Looking forward to hearing from you!",
             "emailRegards": "Best regards,",
             "emailSubject": "UGC Creator Application - {{brandName}}",
+            "noMediaKitTitle": "No media kit found",
+            "noMediaKitMessage": "Upload a media kit in your profile for automatic attachment.",
+            "attachingMediaKit": "Attaching media kit...",
             "viewDetails": "View Details"
         },
         "eventsCarousel": {
