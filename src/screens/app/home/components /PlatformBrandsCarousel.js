@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
@@ -68,17 +68,12 @@ const buildEmailBody = (brandName, profile, t) => {
         '',
         intro,
         '',
-        t('home.platformBrandsCarousel.emailMediaKit'),
-        '',
         t('home.platformBrandsCarousel.emailPitch'),
         '',
         t('home.platformBrandsCarousel.emailClosing'),
         '',
         '',
         ...signature,
-        '',
-        '---',
-        t('home.platformBrandsCarousel.emailAttachReminder'),
     ].join('\n');
 };
 
@@ -134,15 +129,26 @@ const PlatformBrandsCarousel = ({ style }) => {
     const handleApply = item => {
         if (!item?.email) return;
 
-        trackEvent('brand_apply_with_media_kit', { brandName: item.name });
+        trackEvent('brand_apply_tapped', { brandName: item.name });
 
-        const subject = t('home.platformBrandsCarousel.emailSubject', { brandName: item.name });
-        const body = buildEmailBody(item.name, profile, t);
-        sendEmailWithAttachment({
-            recipients: [item.email],
-            subject,
-            body,
-        });
+        Alert.alert(
+            t('home.platformBrandsCarousel.mediaKitReminderTitle'),
+            t('home.platformBrandsCarousel.mediaKitReminderMessage'),
+            [
+                {
+                    text: t('home.platformBrandsCarousel.mediaKitReminderConfirm'),
+                    onPress: () => {
+                        sendEmailWithAttachment({
+                            recipients: [item.email],
+                            subject: t('home.platformBrandsCarousel.emailSubject', {
+                                brandName: item.name,
+                            }),
+                            body: buildEmailBody(item.name, profile, t),
+                        });
+                    },
+                },
+            ],
+        );
 
         // Track the application
         const brandKey = item?.link || item?.name;
@@ -312,7 +318,7 @@ const PlatformBrandsCarousel = ({ style }) => {
                                         <TemplateText size={13} medium color={alreadyApplied ? BLUE_500 : DARK_METAL}>
                                             {alreadyApplied
                                                 ? t('home.platformBrandsCarousel.alreadyApplied')
-                                                : t('home.platformBrandsCarousel.applyWithMediaKit')}
+                                                : t('home.platformBrandsCarousel.applyNow')}
                                         </TemplateText>
                                     </TemplateBox>
                                     {item?.link ? (

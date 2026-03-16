@@ -16,7 +16,7 @@ import WebsitePreview from '../../screens/app/home/components /WebsitePreview';
 import useTranslation from '../../hooks/useTranslation';
 import useFeatureFlags from '../../hooks/featureFlags/useFeatureFlags';
 
-const BrandDetailModal = ({ visible, brand, onClose, onApply, onVisitWebsite, alreadyApplied, loading }) => {
+const BrandDetailModal = ({ visible, brand, onClose, onApply, onVisitWebsite, alreadyApplied }) => {
     const { t, i18n } = useTranslation();
     const language = i18n.language;
     const { platformBrands } = useFeatureFlags();
@@ -166,15 +166,12 @@ const BrandDetailModal = ({ visible, brand, onClose, onApply, onVisitWebsite, al
                     <TemplateBox mt={20} mb={10} alignItems="center">
                         <Button
                             title={
-                                loading
-                                    ? t('home.platformBrandsCarousel.attachingMediaKit')
-                                    : alreadyApplied
+                                alreadyApplied
                                     ? t('home.platformBrandsCarousel.alreadyApplied')
-                                    : t('home.platformBrandsCarousel.applyWithMediaKit')
+                                    : t('home.platformBrandsCarousel.applyNow')
                             }
                             onPress={onApply}
-                            disabled={loading}
-                            color={loading ? `${BLUE_500}50` : alreadyApplied ? `${BLUE_500}30` : BLUE_500}
+                            color={alreadyApplied ? `${BLUE_500}30` : BLUE_500}
                             titleColor={alreadyApplied ? BLUE_500 : WHITE}
                             width={SCREEN_WIDTH * 0.92 - WRAPPER_MARGIN * 2 - 32}
                             height={wp(48)}
@@ -231,7 +228,6 @@ BrandDetailModal.propTypes = {
     onApply: PropTypes.func,
     onVisitWebsite: PropTypes.func,
     alreadyApplied: PropTypes.bool,
-    loading: PropTypes.bool,
 };
 
 BrandDetailModal.defaultProps = {
@@ -241,7 +237,6 @@ BrandDetailModal.defaultProps = {
     onApply: () => {},
     onVisitWebsite: () => {},
     alreadyApplied: false,
-    loading: false,
 };
 
 export default BrandDetailModal;

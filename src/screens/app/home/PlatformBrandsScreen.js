@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { StyleSheet, FlatList } from 'react-native';
-import { CachesDirectoryPath, downloadFile, exists, unlink } from 'react-native-fs';
+import { StyleSheet, FlatList, Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
@@ -40,7 +39,7 @@ const getLocalizedDescription = (item, language) => {
     return item?.[key] || item?.description;
 };
 
-const buildEmailBody = (brandName, profile, t, { isAttached = false } = {}) => {
+const buildEmailBody = (brandName, profile, t) => {
     const userName = profile?.userName;
     const intro = userName
         ? t('home.platformBrandsCarousel.emailIntro', { userName })
@@ -63,26 +62,18 @@ const buildEmailBody = (brandName, profile, t, { isAttached = false } = {}) => {
         signature.push(`YouTube: ${socialMedia.youtube}`);
     }
 
-    const lines = [t('home.platformBrandsCarousel.emailGreeting', { brandName }), '', intro, ''];
-
-    if (isAttached) {
-        lines.push(t('home.platformBrandsCarousel.emailMediaKit'), '');
-    }
-
-    lines.push(
+    return [
+        t('home.platformBrandsCarousel.emailGreeting', { brandName }),
+        '',
+        intro,
+        '',
         t('home.platformBrandsCarousel.emailPitch'),
         '',
         t('home.platformBrandsCarousel.emailClosing'),
         '',
         '',
         ...signature,
-    );
-
-    if (!isAttached) {
-        lines.push('', '---', t('home.platformBrandsCarousel.emailAttachReminder'));
-    }
-
-    return lines.join('\n');
+    ].join('\n');
 };
 
 const PlatformBrandsScreen = ({ navigation }) => {
@@ -98,8 +89,6 @@ const PlatformBrandsScreen = ({ navigation }) => {
     const [appliedBrands, setAppliedBrands] = useState({});
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const [applyLoading, setApplyLoading] = useState(false);
-
     const refreshApplications = useCallback(async () => {
         if (!uid) return;
         try {
@@ -164,57 +153,10 @@ const PlatformBrandsScreen = ({ navigation }) => {
         return brands?.filter(({ category }) => category === selectedTab?.value);
     }, [selectedTab, brands]);
 
-    const downloadMediaKit = async () => {
-        const mediaKitUrl = profile?.mediaKit?.url;
-        if (!mediaKitUrl) return null;
-
-        setApplyLoading(true);
-        try {
-            const cachePath = `${CachesDirectoryPath}/media-kit.pdf`;
-            const fileExists = await exists(cachePath);
-            if (fileExists) {
-                await unlink(cachePath);
-            }
-
-            const result = await downloadFile({
-                fromUrl: mediaKitUrl,
-                toFile: cachePath,
-            }).promise;
-
-            if (result.statusCode === 200 && result.bytesWritten > 0) {
-                return { path: cachePath, type: 'pdf', name: 'media-kit.pdf' };
-            }
-            return null;
-        } catch (err) {
-            console.warn('Media kit download failed:', err);
-            return null;
-        } finally {
-            setApplyLoading(false);
-        }
-    };
-
-    const handleApply = async item => {
+    const handleApply = item => {
         if (!item?.email) return;
-
-        trackEvent('brand_apply_with_media_kit', { brandName: item.name });
-
-        // Download media kit while modal is still open (shows loading state)
-        let attachment = null;
-        console.log('[APPLY] mediaKit URL:', profile?.mediaKit?.url);
-        if (profile?.mediaKit?.url) {
-            attachment = await downloadMediaKit();
-            console.log('[APPLY] download result:', attachment);
-        } else {
-            console.log('[APPLY] No media kit URL on profile');
-            Toast.show({
-                type: 'info',
-                text1: t('home.platformBrandsCarousel.noMediaKitTitle'),
-                text2: t('home.platformBrandsCarousel.noMediaKitMessage'),
-            });
-        }
-
-        // Return the prepared email data so the caller can send after modal dismisses
-        return { item, attachment };
+        trackEvent('brand_apply_tapped', { brandName: item.name });
+        return { item };
     };
 
     const renderItem = ({ item }) => {
@@ -332,7 +274,7 @@ const PlatformBrandsScreen = ({ navigation }) => {
                         <TemplateText size={13} medium color={alreadyApplied ? BLUE_500 : DARK_METAL}>
                             {alreadyApplied
                                 ? t('home.platformBrandsCarousel.alreadyApplied')
-                                : t('home.platformBrandsCarousel.applyWithMediaKit')}
+                                : t('home.platformBrandsCarousel.applyNow')}
                         </TemplateText>
                     </TemplateBox>
                     {item?.link ? (
@@ -444,34 +386,36 @@ const PlatformBrandsScreen = ({ navigation }) => {
                 visible={modalVisible}
                 brand={selectedBrand}
                 onClose={() => setModalVisible(false)}
-                onApply={async () => {
-                    console.log('[APPLY] onApply fired, selectedBrand:', selectedBrand?.name);
+                onApply={() => {
                     const brand = selectedBrand;
-                    const result = await handleApply(brand);
-                    console.log('[APPLY] handleApply result:', result);
+                    const result = handleApply(brand);
 
-                    // Dismiss modal first
                     setModalVisible(false);
                     setSelectedBrand(null);
 
                     if (!result) return;
 
-                    // Wait for modal dismiss animation before opening native mail composer
                     setTimeout(() => {
-                        const { item, attachment } = result;
-                        const isAttached = !!attachment;
-                        const subject = t('home.platformBrandsCarousel.emailSubject', {
-                            brandName: item.name,
-                        });
-                        const body = buildEmailBody(item.name, profile, t, { isAttached });
-                        sendEmailWithAttachment({
-                            recipients: [item.email],
-                            subject,
-                            body,
-                            attachments: isAttached ? [attachment] : undefined,
-                        });
+                        const { item } = result;
+                        Alert.alert(
+                            t('home.platformBrandsCarousel.mediaKitReminderTitle'),
+                            t('home.platformBrandsCarousel.mediaKitReminderMessage'),
+                            [
+                                {
+                                    text: t('home.platformBrandsCarousel.mediaKitReminderConfirm'),
+                                    onPress: () => {
+                                        sendEmailWithAttachment({
+                                            recipients: [item.email],
+                                            subject: t('home.platformBrandsCarousel.emailSubject', {
+                                                brandName: item.name,
+                                            }),
+                                            body: buildEmailBody(item.name, profile, t),
+                                        });
+                                    },
+                                },
+                            ],
+                        );
 
-                        // Track the application
                         const brandKey = item?.link || item?.name;
                         if (uid && brandKey) {
                             createBrandApplication({
@@ -498,7 +442,6 @@ const PlatformBrandsScreen = ({ navigation }) => {
                     navigation.navigate(WEBVIEW, { url: selectedBrand?.link });
                 }}
                 alreadyApplied={!!appliedBrands[selectedBrand?.link || selectedBrand?.name]}
-                loading={applyLoading}
             />
         </>
     );
