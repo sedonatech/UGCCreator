@@ -87,7 +87,6 @@ const PlatformBrandsCarousel = ({ style }) => {
     const { t, i18n } = useTranslation();
     const language = i18n.language;
     const { brands } = useBrands();
-    console.log('🚀 ~ PlatformBrandsCarousel ~ brands:', brands);
     const translateCategory = cat => t(`home.platformBrandsCarousel.categories.${cat}`, cat);
     const { auth } = useAuthContext();
     const { trackEvent } = useTrackEvent();
