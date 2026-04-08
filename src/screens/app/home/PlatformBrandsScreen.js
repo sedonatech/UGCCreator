@@ -18,7 +18,7 @@ import {
 } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
-import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
+import useBrands from '../../../hooks/brands/useBrands';
 import { wp } from '../../../Utils/getResponsiveSize';
 import { BRAND_APPLICATIONS, WEBVIEW } from '../../../navigation/ScreenNames';
 import ToggleCarousel from '../../../components/ToggleCarousel';
@@ -86,7 +86,7 @@ const PlatformBrandsScreen = ({ navigation }) => {
     const { sendEmailWithAttachment } = useMailCompose();
     const { t, i18n } = useTranslation();
     const language = i18n.language;
-    const { platformBrands } = useFeatureFlags();
+    const { brands: firestoreBrands } = useBrands({ limit: 300 });
     const { auth } = useAuthContext();
     const profile = auth?.profile;
     const uid = profile?.id;
@@ -115,13 +115,13 @@ const PlatformBrandsScreen = ({ navigation }) => {
     }, [refreshApplications]);
 
     const brands = useMemo(() => {
-        if (!platformBrands?.brands) return [];
-        return [...platformBrands.brands].sort((a, b) => {
+        if (!firestoreBrands?.length) return [];
+        return [...firestoreBrands].sort((a, b) => {
             const aHasLink = a?.link?.startsWith('http') ? 0 : 1;
             const bHasLink = b?.link?.startsWith('http') ? 0 : 1;
             return aHasLink - bHasLink;
         });
-    }, [platformBrands?.brands]);
+    }, [firestoreBrands]);
 
     useEffect(() => {
         trackEvent('screen_viewed', { screen: 'platform_brands' });

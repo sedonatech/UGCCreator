@@ -32,7 +32,7 @@ import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import useTrackEvent from '../../../../hooks/events/useTrackEvent';
 import { createBrandApplication, getMyBrandApplications } from '../../../../lib/brandApplications';
 import BrandDetailModal from '../../../../components/modals/BrandDetailModal';
-import useFeatureFlags from '../../../../hooks/featureFlags/useFeatureFlags';
+import useBrands from '../../../../hooks/brands/useBrands';
 import useMailCompose from '../../../../hooks/documents/useMailCompose';
 
 const getLocalizedDescription = (item, language) => {
@@ -86,8 +86,8 @@ const PlatformBrandsCarousel = ({ style }) => {
     const navigation = useNavigation();
     const { t, i18n } = useTranslation();
     const language = i18n.language;
-    const { platformBrands } = useFeatureFlags();
-    const brands = platformBrands?.brands;
+    const { brands } = useBrands();
+    console.log('🚀 ~ PlatformBrandsCarousel ~ brands:', brands);
     const translateCategory = cat => t(`home.platformBrandsCarousel.categories.${cat}`, cat);
     const { auth } = useAuthContext();
     const { trackEvent } = useTrackEvent();
