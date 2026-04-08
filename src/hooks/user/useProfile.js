@@ -1,5 +1,5 @@
 // eslint-disable-file consistent-return
-import { getFirestore, doc, setDoc, updateDoc, getDoc } from '@react-native-firebase/firestore';
+import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, serverTimestamp } from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { useState } from 'react';
 import {
@@ -154,6 +154,22 @@ const useProfile = () => {
                 type: 'brand',
                 hasSubscription: false,
                 lastLoginTime: new Date().toISOString(),
+            });
+
+            // Also add to the unified brands collection
+            const brandsRef = doc(collection(db, 'brands'));
+            await setDoc(brandsRef, {
+                name: userName,
+                email: currentUser?.email || '',
+                link: '',
+                category: '',
+                description: DEFAULT_BRAND_DESCRIPTION,
+                isActive: true,
+                isBlocked: false,
+                source: 'account',
+                ownerId: currentUser?.uid,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
             });
         } catch (e) {
             console.log(e);

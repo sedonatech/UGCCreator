@@ -1,29 +1,40 @@
 import { isAndroid } from '../src/Utils/Platform';
+import {
+    REVENUECAT_ANDROID_KEY,
+    REVENUECAT_IOS_KEY,
+    FIREBASE_SERVER_KEY,
+    STREAM_API_KEY,
+    STREAM_API_SECRET,
+    STREAM_APP_ID,
+    FACEBOOK_APP_ID,
+    MAIN_DOMAIN,
+    APPLE_APP_ID,
+    GOOGLE_PACKAGE_NAME,
+} from '@env';
 
 const overrideEntitlements = false;
 
 const overrideSubscription = __DEV__;
 
 const overrideProfileUpdateModal = true;
-const revenueCat = isAndroid ? 'goog_VloSDFYRLkZcXLeXTMxYfNiEtbu' : 'appl_gKgUgJLyYmYOxsOgRIltrYVOswb';
-const firebaseServerKey =
-    'AAAA75Z1awc:APA91bGZlGphZsIZP4vSN3CZFrFCYPM4jv4D2tg0ynItNqSLKTP90lkcrveEC8S1lWX2GfGM2kg0mHAHXIMBbDHMrgmEWkIKDb9R2frYvI2zpUy1GbehQ8wo23WZzJ6OPSWriZFK94_i';
+const revenueCat = isAndroid ? REVENUECAT_ANDROID_KEY : REVENUECAT_IOS_KEY;
+const firebaseServerKey = FIREBASE_SERVER_KEY;
 
-const mainDomain = 'https://www.ugccreatorapp.com/#Contact';
+const mainDomain = MAIN_DOMAIN;
 
 const stream = {
-    apiKey: '3jymrhfzg4ah',
-    apiSecret: 'c3vabn4y94fssbgc9fmj4rpp4479nz9dt7s52cn53ktj2yefxdsxfe6gxb4uunsp',
-    appId: 1236778,
+    apiKey: STREAM_API_KEY,
+    apiSecret: STREAM_API_SECRET,
+    appId: Number(STREAM_APP_ID),
 };
 
 const reviewPromptProps = {
-    AppleAppId: '6446017566',
-    GooglePackageName: 'com.ugccreatorapp',
+    AppleAppId: APPLE_APP_ID,
+    GooglePackageName: GOOGLE_PACKAGE_NAME,
     link: mainDomain,
 };
 
-const fbAppID = '2996542933821709';
+const fbAppID = FACEBOOK_APP_ID;
 
 export default {
     overrideEntitlements,

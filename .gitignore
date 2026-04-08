@@ -58,6 +58,14 @@ yarn-error.log
 **/fastlane/screenshots
 **/fastlane/test_output
 
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Google Play service account key
+google-play-key.json
+
 # Bundle artifact
 *.jsbundle
 
