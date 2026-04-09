@@ -163,12 +163,12 @@ const BrandDetailModal = ({ visible, brand, onClose, onApply, onVisitWebsite, al
                     )}
 
                     {/* Action Buttons */}
-                    <TemplateBox mt={20} mb={10}>
+                    <TemplateBox mt={20} mb={10} alignItems="center">
                         <Button
                             title={
                                 alreadyApplied
                                     ? t('home.platformBrandsCarousel.alreadyApplied')
-                                    : t('home.platformBrandsCarousel.applyWithMediaKit')
+                                    : t('home.platformBrandsCarousel.applyNow')
                             }
                             onPress={onApply}
                             color={alreadyApplied ? `${BLUE_500}30` : BLUE_500}

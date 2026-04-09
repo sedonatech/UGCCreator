@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, FlatList, Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import {
@@ -67,17 +67,12 @@ const buildEmailBody = (brandName, profile, t) => {
         '',
         intro,
         '',
-        t('home.platformBrandsCarousel.emailMediaKit'),
-        '',
         t('home.platformBrandsCarousel.emailPitch'),
         '',
         t('home.platformBrandsCarousel.emailClosing'),
         '',
         '',
         ...signature,
-        '',
-        '---',
-        t('home.platformBrandsCarousel.emailAttachReminder'),
     ].join('\n');
 };
 
@@ -94,7 +89,6 @@ const PlatformBrandsScreen = ({ navigation }) => {
     const [appliedBrands, setAppliedBrands] = useState({});
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
-
     const refreshApplications = useCallback(async () => {
         if (!uid) return;
         try {
@@ -161,37 +155,8 @@ const PlatformBrandsScreen = ({ navigation }) => {
 
     const handleApply = item => {
         if (!item?.email) return;
-
-        trackEvent('brand_apply_with_media_kit', { brandName: item.name });
-
-        const subject = t('home.platformBrandsCarousel.emailSubject', { brandName: item.name });
-        const body = buildEmailBody(item.name, profile, t);
-        sendEmailWithAttachment({
-            recipients: [item.email],
-            subject,
-            body,
-        });
-
-        // Track the application
-        const brandKey = item?.link || item?.name;
-        if (uid && brandKey) {
-            createBrandApplication({
-                ownerId: uid,
-                brandName: item.name,
-                link: item.link || '',
-                status: 'applied',
-            })
-                .then(() => {
-                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
-                    Toast.show({
-                        type: 'success',
-                        text1: t('home.platformBrandsCarousel.applicationTracked'),
-                    });
-                })
-                .catch(() => {
-                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
-                });
-        }
+        trackEvent('brand_apply_tapped', { brandName: item.name });
+        return { item };
     };
 
     const renderItem = ({ item }) => {
@@ -309,7 +274,7 @@ const PlatformBrandsScreen = ({ navigation }) => {
                         <TemplateText size={13} medium color={alreadyApplied ? BLUE_500 : DARK_METAL}>
                             {alreadyApplied
                                 ? t('home.platformBrandsCarousel.alreadyApplied')
-                                : t('home.platformBrandsCarousel.applyWithMediaKit')}
+                                : t('home.platformBrandsCarousel.applyNow')}
                         </TemplateText>
                     </TemplateBox>
                     {item?.link ? (
@@ -423,11 +388,54 @@ const PlatformBrandsScreen = ({ navigation }) => {
                 onClose={() => setModalVisible(false)}
                 onApply={() => {
                     const brand = selectedBrand;
+                    const result = handleApply(brand);
+
                     setModalVisible(false);
                     setSelectedBrand(null);
-                    // Delay to allow modal dismiss animation to complete
-                    // before presenting the native mail composer
-                    setTimeout(() => handleApply(brand), 500);
+
+                    if (!result) return;
+
+                    setTimeout(() => {
+                        const { item } = result;
+                        Alert.alert(
+                            t('home.platformBrandsCarousel.mediaKitReminderTitle'),
+                            t('home.platformBrandsCarousel.mediaKitReminderMessage'),
+                            [
+                                {
+                                    text: t('home.platformBrandsCarousel.mediaKitReminderConfirm'),
+                                    onPress: () => {
+                                        sendEmailWithAttachment({
+                                            recipients: [item.email],
+                                            subject: t('home.platformBrandsCarousel.emailSubject', {
+                                                brandName: item.name,
+                                            }),
+                                            body: buildEmailBody(item.name, profile, t),
+                                        });
+                                    },
+                                },
+                            ],
+                        );
+
+                        const brandKey = item?.link || item?.name;
+                        if (uid && brandKey) {
+                            createBrandApplication({
+                                ownerId: uid,
+                                brandName: item.name,
+                                link: item.link || '',
+                                status: 'applied',
+                            })
+                                .then(() => {
+                                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
+                                    Toast.show({
+                                        type: 'success',
+                                        text1: t('home.platformBrandsCarousel.applicationTracked'),
+                                    });
+                                })
+                                .catch(() => {
+                                    setAppliedBrands(prev => ({ ...prev, [brandKey]: true }));
+                                });
+                        }
+                    }, 500);
                 }}
                 onVisitWebsite={() => {
                     setModalVisible(false);
