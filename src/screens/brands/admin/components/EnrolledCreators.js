@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { chunk } from 'lodash';
 import firestore from '@react-native-firebase/firestore';
@@ -19,6 +19,7 @@ import { BLACK, LIGHT_PURPLE, WHITE } from '../../../../theme/Colors';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import TemplateText from '../../../../components/TemplateText';
+import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
 
 const USERS_COLLECTION = 'users';
 const EnrolledCreators = ({ creatorIds, projectId }) => {
@@ -32,17 +33,19 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
     const [chunkIndex, setChunkIndex] = useState(0);
 
     useEffect(() => {
-        if (creatorIds) getCreators();
+        if (creatorIds?.length) getCreators();
     }, [creatorIds, chunkIndex]);
 
     const chunks = chunk(creatorIds, 10);
     const getCreators = async () => {
+        const currentChunk = chunks?.[chunkIndex];
+        if (!currentChunk?.length) return;
         try {
             setLoading(true);
 
             const querySnapshot = await firestore()
                 .collection(USERS_COLLECTION)
-                .where('id', 'in', chunks?.[chunkIndex])
+                .where('id', 'in', currentChunk)
                 .get();
             const chunkCreators = querySnapshot.docs.map(doc => ({
                 id: doc.id,
@@ -57,8 +60,10 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
         }
     };
 
+    const hasMoreChunks = chunkIndex < chunks.length - 1;
+
     const renderFooter = () => {
-        if (!enrolledCreators?.length) return null;
+        if (!hasMoreChunks || !enrolledCreators?.length) return null;
         return (
             <TemplateBox
                 alignItems="center"
@@ -91,45 +96,42 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                     slideInDelay={200}
                 />
             ) : (
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={enrolledCreators}
-                    ListEmptyComponent={
+                <TemplateBox style={styles.brandsListContentContainer}>
+                    {!enrolledCreators?.length ? (
                         <TemplateBox bottom={10}>
                             <ActivityIndicator size="small" color={BLACK} />
                         </TemplateBox>
-                    }
-                    renderItem={({ item }) => (
-                        <CreatorCard
-                            key={item?.id}
-                            name={item?.userName}
-                            imageUrl={item?.image}
-                            shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
-                            location={item?.location?.city || item?.location?.country}
-                            style={styles.card}
-                            width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
-                            imageStyle={styles.image}
-                            subtitleContainerWidth={94}
-                            textContainerWidth="68%"
-                            lastLoginTime={item?.lastLoginTime || 'days ago'}
-                            ctaText="View Project Status"
-                            onPress={() =>
-                                navigation.navigate(CREATOR_PROJECT_STATUS, {
-                                    creatorID: item?.id,
-                                    projectId,
-                                    creatorEmail: item?.contact?.email || item?.email,
-                                    creatorFCMToken: item?.fcmToken,
-                                })
-                            }
-                            mt={12}
-                        />
+                    ) : (
+                        <>
+                            {enrolledCreators.map((item, index) => (
+                                <CreatorCard
+                                    key={`${item?.id}-${index}`}
+                                    name={item?.userName}
+                                    imageUrl={item?.image}
+                                    shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+                                    location={item?.location?.city || item?.location?.country}
+                                    style={styles.card}
+                                    width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
+                                    imageStyle={styles.image}
+                                    subtitleContainerWidth={94}
+                                    textContainerWidth="68%"
+                                    lastLoginTime={item?.lastLoginTime ? calculateLastLoginTime(item.lastLoginTime) : 'days ago'}
+                                    ctaText="View Project Status"
+                                    onPress={() =>
+                                        navigation.navigate(CREATOR_PROJECT_STATUS, {
+                                            creatorID: item?.id,
+                                            projectId,
+                                            creatorEmail: item?.contact?.email || item?.email,
+                                            creatorFCMToken: item?.fcmToken,
+                                        })
+                                    }
+                                    mt={12}
+                                />
+                            ))}
+                            {renderFooter()}
+                        </>
                     )}
-                    keyExtractor={(item, index) => `${item?.id}-${index}`}
-                    contentContainerStyle={styles.brandsListContentContainer}
-                    removeClippedSubviews
-                    initialNumToRender={10}
-                    ListFooterComponent={renderFooter}
-                />
+                </TemplateBox>
             )}
         </TemplateBox>
     );

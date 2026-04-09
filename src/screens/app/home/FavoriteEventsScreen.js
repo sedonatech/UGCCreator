@@ -62,7 +62,7 @@ const FavoriteEventsScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    if(favoriteEventsIds)fetchEvents();
+    if(favoriteEventsIds?.length)fetchEvents();
   }, [limit, favoriteEventsIds]);
 
   const options = {

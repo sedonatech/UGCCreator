@@ -1120,6 +1120,20 @@
                     "enrolledCreators": "Enrolled Creators"
                 }
             },
+            "projectStatus": {
+                "tabs": {
+                    "status": "Project Status",
+                    "contact": "Contact Creator"
+                }
+            },
+            "contactCreator": {
+                "chat": "Message Creator",
+                "email": "Send Email",
+                "noEmail": {
+                    "title": "No Email Available",
+                    "message": "This creator has not provided an email address."
+                }
+            },
             "loadingMessages": {
                 "fetchingProject": "Fetching project details...",
                 "loadingProject": "Loading project details..."

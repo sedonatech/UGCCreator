@@ -1,10 +1,11 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
 # Ignore everything in config
 config/
 # OSX
-# Ignore config folder
-# This is a common pattern to ignore config files that are not meant to be shared.
-
-
 #
 .DS_Store
 

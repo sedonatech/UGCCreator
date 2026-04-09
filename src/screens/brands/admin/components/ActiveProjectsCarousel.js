@@ -35,6 +35,7 @@ const ActiveProjectsCarousel = ({ style, projectsCarouselData }) => {
                 renderItem={({ item }) => (
                     <CurrentProjectCard
                         title={item?.title}
+                        description={item?.description}
                         brand={item?.brand}
                         image={item?.image}
                         price={item?.price}

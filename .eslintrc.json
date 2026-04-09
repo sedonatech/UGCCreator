@@ -8,7 +8,7 @@
         "sourceType": "module",
         "requireConfigFile": true,
         "babelOptions": {
-            "configFile": "/Users/michaelamoabeng/Documents/Projects/UGCCreator/babel.config.js"
+            "configFile": "./babel.config.js"
         },
         "ecmaFeatures": {
             "jsx": true

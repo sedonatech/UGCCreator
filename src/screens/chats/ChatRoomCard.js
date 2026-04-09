@@ -29,8 +29,10 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
     }, [item]);
 
     const fetchUsers = async ids => {
+        const validIds = ids?.filter(Boolean);
+        if (!validIds?.length) return;
         try {
-            const q = query(usersRef, where('id', 'in', ids));
+            const q = query(usersRef, where('id', 'in', validIds));
             const querySnapshot = await getDocs(q);
             const fetchedUsers = querySnapshot?.docs?.map(docSnap => ({
                 id: docSnap?.id,

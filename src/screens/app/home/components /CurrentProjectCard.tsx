@@ -13,6 +13,7 @@ import useGetEnrolledCreatorsAvatars from '../../../brands/admin/hooks/useGetEnr
 
 interface Props {
     title?: string;
+    description?: string;
     brand?: string;
     image?: string;
     progress?: number;
@@ -32,6 +33,7 @@ interface Props {
 
 const CurrentProjectCard: FC<Props> = ({
     title,
+    description,
     brand,
     image,
     progress,
@@ -87,6 +89,12 @@ const CurrentProjectCard: FC<Props> = ({
                 <TemplateText size={16} semiBold color={BLACK} style={styles.title}>
                     {title}
                 </TemplateText>
+
+                {!!description && (
+                    <TemplateText size={13} color={GREY} numberOfLines={2} style={styles.description}>
+                        {description}
+                    </TemplateText>
+                )}
 
                 {!!progress && (
                     <TemplateBox mb={16}>
@@ -162,6 +170,9 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     title: {
+        marginBottom: 4,
+    },
+    description: {
         marginBottom: 10,
     },
 });
