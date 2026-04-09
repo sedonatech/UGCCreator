@@ -1,5 +1,5 @@
 // eslint-disable-file consistent-return
-import { getFirestore, doc, setDoc, updateDoc, getDoc } from '@react-native-firebase/firestore';
+import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, serverTimestamp } from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { useState } from 'react';
 import {
@@ -155,6 +155,22 @@ const useProfile = () => {
                 hasSubscription: false,
                 lastLoginTime: new Date().toISOString(),
             });
+
+            // Also add to the unified brands collection
+            const brandsRef = doc(collection(db, 'brands'));
+            await setDoc(brandsRef, {
+                name: userName,
+                email: currentUser?.email || '',
+                link: '',
+                category: '',
+                description: DEFAULT_BRAND_DESCRIPTION,
+                isActive: true,
+                isBlocked: false,
+                source: 'account',
+                ownerId: currentUser?.uid,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
+            });
         } catch (e) {
             console.log(e);
         }
@@ -196,7 +212,7 @@ const useProfile = () => {
 
                     const path = decodeURI(rawPath); // only decode; do not strip file://
 
-                    const metadata = { contentType: 'application/pdf' }; // valid settable metadata :contentReference[oaicite:2]{index=2}
+                    const metadata = { contentType: 'application/pdf' };
                     const reference = storage().ref(`users/${uuid}/media-kit.pdf`);
 
                     const task = reference.putFile(path, metadata);
@@ -215,7 +231,18 @@ const useProfile = () => {
                             );
                             rej(err);
                         },
-                        () => res(task),
+                        async () => {
+                            try {
+                                const downloadUrl = await reference.getDownloadURL();
+                                const db = getFirestore();
+                                const userRef = doc(db, USERS_COLLECTION, uuid);
+                                await updateDoc(userRef, { mediaKit: { url: downloadUrl } });
+                                res({ task, url: downloadUrl });
+                            } catch (urlErr) {
+                                console.warn('[MEDIA-KIT]: failed to save download URL:', urlErr);
+                                res({ task, url: null });
+                            }
+                        },
                     );
                 } catch (err) {
                     rej(err);

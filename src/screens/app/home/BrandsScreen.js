@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import Fuse from 'fuse.js';
-import { getFirestore, collection, query, where, limit as fsLimit, getDocs } from '@react-native-firebase/firestore';
 import useTranslation from '../../../hooks/useTranslation';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
@@ -14,36 +13,14 @@ import BrandsCard from './components /BrandsCard';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 import { BRAND_DETAILS } from '../../../navigation/ScreenNames';
 import { FONT_BASE } from '../../../theme/Typography';
-
-const USERS_COLLECTION = 'users';
+import useBrands from '../../../hooks/brands/useBrands';
 
 const BrandsScreen = ({ navigation }) => {
     const { t } = useTranslation();
     const [search, setSearch] = useState('');
-
     const [searchResults, setSearchResults] = useState([]);
 
-    const [brandsData, setBrandsData] = useState([]);
-
-    const [limit, setLimit] = useState(40);
-
-    const db = getFirestore();
-    const brandsRef = query(collection(db, USERS_COLLECTION), where('type', '==', 'brand'), fsLimit(limit));
-    const fetchBrands = async () => {
-        try {
-            const querySnapshot = await getDocs(brandsRef);
-            const fetchedBrands = querySnapshot?.docs?.map(doc => doc?.data());
-            const filtered = (fetchedBrands || [])?.filter(brand => !brand?.isBlocked);
-            if (filtered?.length < 1) setLimit(limit + 20);
-            setBrandsData(filtered);
-        } catch (e) {
-            console.log(e);
-        }
-    };
-
-    useEffect(() => {
-        fetchBrands();
-    }, [limit]);
+    const { brands: brandsData, loading, loadMore } = useBrands({ limit: 40 });
 
     const options = {
         shouldSort: true,
@@ -52,7 +29,7 @@ const BrandsScreen = ({ navigation }) => {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: ['name', 'title', 'shortDescription'],
+        keys: ['name', 'title', 'shortDescription', 'description'],
     };
 
     useEffect(() => {
@@ -65,9 +42,8 @@ const BrandsScreen = ({ navigation }) => {
 
     const filteredBrands = useMemo(() => {
         if (!brandsData) return [];
-
         return search?.length ? searchResults : brandsData;
-    }, [search, brandsData]);
+    }, [search, brandsData, searchResults]);
 
     return (
         <FlatList
@@ -77,7 +53,7 @@ const BrandsScreen = ({ navigation }) => {
                 <BrandsCard
                     image={{ uri: item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                     title={item?.name}
-                    shortDescription={item?.shortDescription}
+                    shortDescription={item?.shortDescription || item?.description}
                     style={styles.card}
                     cardWidth={SCREEN_WIDTH - 2 * WRAPPER_MARGIN}
                     aspectRatio={1.8}
@@ -86,7 +62,6 @@ const BrandsScreen = ({ navigation }) => {
                     descriptionSize={12}
                     // @ts-ignore
                     onPress={() => navigation.navigate(BRAND_DETAILS, { brandId: item?.id })}
-                    // lastLoginTime={item?.lastLoginTime}
                 />
             )}
             ListHeaderComponent={() => (
@@ -114,9 +89,7 @@ const BrandsScreen = ({ navigation }) => {
             contentContainerStyle={styles.contentContainer}
             initialNumToRender={10}
             onEndReachedThreshold={0.5}
-            onEndReached={() => {
-                setLimit(prevLimit => prevLimit + 10);
-            }}
+            onEndReached={loadMore}
             removeClippedSubviews
         />
     );

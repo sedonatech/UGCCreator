@@ -47,7 +47,7 @@ export default function FeaturedShowcaseCarousel({ style }: FeaturedShowcaseCaro
     const navigation = useNavigation();
 
     const { features } = useFeatureFlags();
-    const showCreatorShowcase = features?.showAffiliateProgramsCarousel;
+    const showCreatorShowcase = features?.showCreatorShowcase;
 
     useFocusEffect(
         React.useCallback(() => {

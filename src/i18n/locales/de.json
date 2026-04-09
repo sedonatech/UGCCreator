@@ -157,8 +157,8 @@
         "platformBrandsCarousel": {
             "title": "Marken auf unserer Plattform",
             "seeAll": "Alle ansehen",
-            "description": "Diese Marken suchen aktiv UGC-Creator. Bewirb dich direkt mit deinem Media Kit und verfolge deine Bewerbungen.",
-            "applyWithMediaKit": "Mit Media Kit bewerben",
+            "description": "Diese Marken suchen aktiv UGC-Creator. Bewirb dich direkt und verfolge deine Bewerbungen.",
+            "applyNow": "Jetzt bewerben",
             "visitWebsite": "Website besuchen",
             "allCategory": "Alle",
             "paidPackageReviews": "Bezahlte Paketbewertungen",
@@ -184,12 +184,13 @@
             "emailGreeting": "Hallo {{brandName}} Team,",
             "emailIntro": "Mein Name ist {{userName}} und ich würde gerne mit Ihrer Marke an UGC-Inhalten zusammenarbeiten.",
             "emailIntroDefault": "Ich bin UGC-Creator und würde gerne mit Ihrer Marke an UGC-Inhalten zusammenarbeiten.",
-            "emailMediaKit": "Ich habe mein Media Kit zur Ansicht beigefügt.",
-            "emailAttachReminder": "[ERINNERUNG: Bitte hängen Sie Ihr Media Kit an diese E-Mail an, bevor Sie sie senden]",
             "emailPitch": "Ich bin spezialisiert auf die Erstellung authentischer, konversionsstarker Inhalte und würde gerne besprechen, wie ich Ihrer Marke helfen kann.",
             "emailClosing": "Ich freue mich auf Ihre Rückmeldung!",
             "emailRegards": "Mit freundlichen Grüßen,",
             "emailSubject": "UGC-Creator Bewerbung - {{brandName}}",
+            "mediaKitReminderTitle": "Vergiss dein Media Kit nicht!",
+            "mediaKitReminderMessage": "Denk daran, dein Media Kit PDF vor dem Senden anzuhängen.",
+            "mediaKitReminderConfirm": "Verstanden",
             "viewDetails": "Details anzeigen"
         },
         "eventsCarousel": {

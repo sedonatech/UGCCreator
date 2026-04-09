@@ -157,8 +157,8 @@
         "platformBrandsCarousel": {
             "title": "Marques sur notre plateforme",
             "seeAll": "Voir tout",
-            "description": "Ces marques recrutent activement des créateurs UGC. Postulez directement avec votre media kit et suivez vos candidatures.",
-            "applyWithMediaKit": "Postuler avec Media Kit",
+            "description": "Ces marques recrutent activement des créateurs UGC. Postulez directement et suivez vos candidatures.",
+            "applyNow": "Postuler maintenant",
             "visitWebsite": "Visiter le site",
             "allCategory": "Tout",
             "paidPackageReviews": "Avis Colis Payés",
@@ -184,12 +184,13 @@
             "emailGreeting": "Bonjour l'équipe {{brandName}},",
             "emailIntro": "Je m'appelle {{userName}} et j'aimerais collaborer avec votre marque sur du contenu UGC.",
             "emailIntroDefault": "Je suis créateur UGC et j'aimerais collaborer avec votre marque sur du contenu UGC.",
-            "emailMediaKit": "J'ai joint mon media kit pour votre examen.",
-            "emailAttachReminder": "[RAPPEL : Veuillez joindre votre media kit à cet e-mail avant de l'envoyer]",
             "emailPitch": "Je me spécialise dans la création de contenu authentique et à fort taux de conversion, et j'aimerais discuter de la façon dont je peux aider votre marque.",
             "emailClosing": "Au plaisir de vous lire !",
             "emailRegards": "Cordialement,",
             "emailSubject": "Candidature créateur UGC - {{brandName}}",
+            "mediaKitReminderTitle": "N'oubliez pas votre media kit !",
+            "mediaKitReminderMessage": "Pensez à joindre votre media kit PDF avant d'envoyer.",
+            "mediaKitReminderConfirm": "Compris",
             "viewDetails": "Voir les détails"
         },
         "eventsCarousel": {

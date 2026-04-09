@@ -1,0 +1,12 @@
+# git_url — private repo to store certificates and provisioning profiles
+# Create a new PRIVATE repo on GitHub (e.g. "ugccreator-certificates") and set the URL below.
+git_url(ENV["MATCH_GIT_URL"])
+
+storage_mode("git")
+
+type("appstore")
+
+app_identifier(["com.ugccreator.app"])
+
+# Optional: specify the Apple ID to use
+username(ENV["APPLE_ID"])

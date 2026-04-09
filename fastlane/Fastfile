@@ -1,0 +1,116 @@
+default_platform(:ios)
+
+# ============================================================
+# iOS
+# ============================================================
+platform :ios do
+
+  desc "Load the App Store Connect API key"
+  lane :load_asc_api_key do
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_KEY_CONTENT"],
+      is_key_content_base64: true,
+      in_house: false
+    )
+  end
+
+  desc "Sync certificates and profiles via Match"
+  lane :sync_certificates do
+    load_asc_api_key
+    match(
+      type: "appstore",
+      app_identifier: "com.ugccreator.app",
+      readonly: is_ci
+    )
+  end
+
+  desc "Increment build number based on latest TestFlight build"
+  lane :increment_build do
+    load_asc_api_key
+    current = latest_testflight_build_number(
+      app_identifier: "com.ugccreator.app"
+    )
+    increment_build_number(
+      xcodeproj: "./ios/UGCCreatorApp.xcodeproj",
+      build_number: current + 1
+    )
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :release do
+    load_asc_api_key
+
+    if is_ci
+      setup_ci
+    end
+
+    sync_certificates
+
+    increment_build
+
+    build_app(
+      workspace: "./ios/UGCCreatorApp.xcworkspace",
+      scheme: "UGCCreatorApp",
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          "com.ugccreator.app" => "match AppStore com.ugccreator.app"
+        }
+      },
+      clean: true,
+      output_directory: "./build/ios"
+    )
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+end
+
+# ============================================================
+# Android
+# ============================================================
+platform :android do
+
+  desc "Increment versionCode"
+  lane :increment_version_code_lane do
+    # Read current versionCode from build.gradle and increment
+    gradle_file = "./android/app/build.gradle"
+    current_version_code = android_get_version_code(gradle_file: gradle_file)
+    new_version_code = current_version_code.to_i + 1
+    android_set_version_code(
+      version_code: new_version_code,
+      gradle_file: gradle_file
+    )
+    UI.message("versionCode bumped to #{new_version_code}")
+  end
+
+  desc "Build and upload to Google Play (internal track)"
+  lane :release do
+    increment_version_code_lane
+
+    gradle(
+      project_dir: "./android",
+      task: "bundle",
+      build_type: "Release",
+      properties: {
+        "UGCCREATORAPP_UPLOAD_STORE_FILE" => ENV["ANDROID_KEYSTORE_FILE"],
+        "UGCCREATORAPP_UPLOAD_STORE_PASSWORD" => ENV["ANDROID_KEYSTORE_PASSWORD"],
+        "UGCCREATORAPP_UPLOAD_KEY_ALIAS" => ENV["ANDROID_KEY_ALIAS"],
+        "UGCCREATORAPP_UPLOAD_KEY_PASSWORD" => ENV["ANDROID_KEY_PASSWORD"]
+      }
+    )
+
+    upload_to_play_store(
+      track: "internal",
+      aab: "./android/app/build/outputs/bundle/release/app-release.aab",
+      json_key: ENV["GOOGLE_PLAY_JSON_KEY_FILE"],
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end

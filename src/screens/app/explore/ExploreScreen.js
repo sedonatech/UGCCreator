@@ -30,7 +30,6 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useGetBrands from '../../../hooks/creators/useGetBrands';
 import AllProjectsTab from './components/AllProjectsTab';
 import FeedsTab from './components/FeedsTab';
-import RecommendedBrandsCarousel from '../home/components /RecommendedBrandsCarousel';
 import { FONT_BASE } from '../../../theme/Typography';
 
 export const BRANDS_TAB = {
@@ -47,12 +46,7 @@ export const FEEDS_TAB = {
     value: 'feeds',
 };
 
-export const RECOMMENDED_TAB = {
-    name: 'Recommended',
-    value: 'recommended',
-};
-
-const TAB_DATA = [BRANDS_TAB, RECOMMENDED_TAB, PROJECTS_TAB, FEEDS_TAB];
+const TAB_DATA = [BRANDS_TAB, PROJECTS_TAB, FEEDS_TAB];
 
 const ExploreScreen = ({ route }) => {
     const { t } = useTranslation();
@@ -168,7 +162,6 @@ const ExploreScreen = ({ route }) => {
             {selectedTab === BRANDS_TAB && filteredBrands && <BrandsTab data={filteredBrands} />}
             {selectedTab === PROJECTS_TAB && filteredProjects && <AllProjectsTab projects={filteredProjects} />}
             {selectedTab === FEEDS_TAB && filteredProjects && <FeedsTab />}
-            {selectedTab === RECOMMENDED_TAB && <RecommendedBrandsCarousel style={styles.carousel} />}
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown

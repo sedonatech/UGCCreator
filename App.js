@@ -17,6 +17,7 @@ import { ProjectApplicationProvider } from './src/context/ProjectApplicationProv
 import config from './config';
 import { CoreProvider } from './src/context/core';
 import useSubscriptionConfig from './src/hooks/subscription/useSubscriptionConfig';
+import useSeedBrands from './src/hooks/brands/useSeedBrands';
 import { SubscriptionProvider } from './src/screens/subscriptions/context/context';
 import { ChatsProvider } from './src/context/ChatsProvider';
 import { isAndroid } from './src/Utils/Platform';
@@ -34,6 +35,7 @@ const NAVIGATION_THEME = {
 };
 const MainApp = () => {
     const purchase = useSubscriptionConfig(true);
+    useSeedBrands();
 
     useEffect(() => {
         Settings.initializeSDK();
