@@ -131,6 +131,9 @@ const ChatsScreen = ({ route }) => {
                 {
                     type: 'chats',
                     screen: CHATS,
+                    chatRoomId: chatRoomId || '',
+                    chatRoomName: chatRoomName || '',
+                    senderFcmToken: auth?.profile?.fcmToken || '',
                 },
             );
         } catch (error) {

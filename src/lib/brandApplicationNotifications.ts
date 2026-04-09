@@ -83,6 +83,7 @@ export function setupFollowUpAutoRepeat() {
                 scheduleFollowUpNotification(applicationId as string, brandName as string, nextDate);
             }
         }
+        // Note: PRESS events for foreground are handled in useNotificationInteraction.js
     });
 
     notifee.onBackgroundEvent(async ({ type, detail }) => {
@@ -93,5 +94,7 @@ export function setupFollowUpAutoRepeat() {
                 await scheduleFollowUpNotification(applicationId as string, brandName as string, nextDate);
             }
         }
+        // PRESS events in the background are handled when the app resumes via
+        // notifee.getInitialNotification() in useNotificationInteraction.js
     });
 }
