@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
     Modal,
     View,
-    Text,
     TextInput,
     TouchableOpacity,
     Switch,
@@ -115,9 +114,9 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                     }}
                 >
                     <ScrollView>
-                        <Text style={{ fontSize: 18, fontWeight: '700' }}>
+                        <TemplateText size={18} bold>
                             {isEdit ? t('modals.sampleWork.editTitle') : t('modals.sampleWork.addTitle')}
-                        </Text>
+                        </TemplateText>
 
                         <TouchableOpacity
                             onPress={handlePick}
@@ -129,13 +128,13 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                                 borderRadius: 12,
                             }}
                         >
-                            <Text>
+                            <TemplateText>
                                 {localCover ? t('modals.sampleWork.changeCover') : t('modals.sampleWork.pickCover')}
-                            </Text>
+                            </TemplateText>
                             {(localCover || initial?.coverUrl) && (
-                                <Text style={{ color: DARK_GREY, marginTop: 8 }} numberOfLines={1}>
+                                <TemplateText color={DARK_GREY} style={{ marginTop: 8 }} numberOfLines={1}>
                                     {localCover || initial?.coverUrl}
-                                </Text>
+                                </TemplateText>
                             )}
                         </TouchableOpacity>
 
@@ -190,7 +189,7 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                                 marginTop: 16,
                             }}
                         >
-                            <Text>{t('modals.sampleWork.featuredLabel')}</Text>
+                            <TemplateText>{t('modals.sampleWork.featuredLabel')}</TemplateText>
                             <Switch value={isFeatured} onValueChange={setIsFeatured} />
                         </View>
 
@@ -201,7 +200,7 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                                 marginTop: 12,
                             }}
                         >
-                            <Text>{t('modals.sampleWork.showcaseLabel')}</Text>
+                            <TemplateText>{t('modals.sampleWork.showcaseLabel')}</TemplateText>
                             <Switch value={showcaseOptIn} onValueChange={setShowcaseOptIn} />
                         </View>
 
@@ -219,9 +218,9 @@ export default function SampleWorkModal({ open, onClose, initial }: Props) {
                             {loading ? (
                                 <ActivityIndicator color={PRIMARY} />
                             ) : (
-                                <Text style={{ color: '#fff', fontWeight: '700' }}>
+                                <TemplateText color={WHITE} bold>
                                     {isEdit ? t('modals.sampleWork.saveButton') : t('modals.sampleWork.addButton')}
-                                </Text>
+                                </TemplateText>
                             )}
                         </TouchableOpacity>
 

@@ -16,6 +16,7 @@ import TemplateIcon from '../../../components/TemplateIcon';
 import ResizedImage from '../../../components/ResizedImage';
 import { months } from '../../../consts/months';
 import { isAndroid } from '../../../Utils/Platform';
+import { FONT_BASE } from '../../../theme/Typography';
 
 const EventsScreen = ({ navigation }) => {
     const { t } = useTranslation();
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingRight: 30,
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         color: BLACK,
     },
     card: {

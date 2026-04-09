@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TemplateTouchable from '../TemplateTouchable';
 import { CATEGORY_CARD_HEIGHT, CATEGORY_CARD_WIDTH, RADIUS_SMALL, WRAPPER_MARGIN } from '../../theme/Layout';
-import { BLACK_30, BLUE } from '../../theme/Colors';
+import { BLACK_30, BLUE, CARD_BG_LIGHT } from '../../theme/Colors';
 import TemplateText from '../TemplateText';
 import TemplateIcon from '../TemplateIcon';
 
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: WRAPPER_MARGIN,
         paddingVertical: WRAPPER_MARGIN,
         justifyContent: 'space-between',
-        backgroundColor: '#F6F6F6',
+        backgroundColor: CARD_BG_LIGHT,
     },
     iconContainer: {
         flexDirection: 'row',

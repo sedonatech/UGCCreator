@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import auth from '@react-native-firebase/auth';
@@ -129,13 +128,11 @@ const SignUpScreen = ({ navigation, route }) => {
         >
             <TemplateBox borderRadius={20} overflow="hidden">
                 <TemplateBox
-                    style={{
-                        position: 'absolute',
-                        top: 50,
-                        alignSelf: 'center',
-                        alignItems: 'center',
-                        zIndex: 99,
-                    }}
+                    position="absolute"
+                    top={50}
+                    alignSelf="center"
+                    alignItems="center"
+                    zIndex={99}
                 >
                     <BrandLogo height={58} width={282} color={WHITE} />
                 </TemplateBox>

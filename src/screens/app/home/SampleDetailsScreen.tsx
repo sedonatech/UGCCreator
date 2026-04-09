@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import {
     View,
-    Text,
     ScrollView,
     StyleSheet,
     TouchableOpacity,
@@ -20,7 +19,7 @@ import {
     updateDoc,
 } from '@react-native-firebase/firestore';
 import SampleWorkModal from '../../../components/modals/SampleWorkModal';
-import { BLACK, BLUE, DEFAULT_GRADIENT, ERROR_RED, GREY_SECONDARY, WHITE } from '../../../theme/Colors';
+import { BLACK, BLUE, DEFAULT_GRADIENT, ERROR_RED, GREY_SECONDARY, WHITE, WHITE_BG_08, SLATE_300 } from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
 import { hp } from '../../../Utils/getResponsiveSize';
 import TemplateBox from '../../../components/TemplateBox';
@@ -49,12 +48,15 @@ type UserLite = {
     handle?: string;
 };
 
+// TODO: Add SAMPLE_SUCCESS (#22c55e) to theme/Colors.js
+const SAMPLE_SUCCESS = '#22c55e';
+
 const COLORS = {
     card: 'rgba(20,22,24,0.6)',
-    border: '#ffffff18',
-    text: '#ffffff',
-    textDim: '#cbd5e1',
-    secondary: '#22c55e',
+    border: WHITE_BG_08,
+    text: WHITE,
+    textDim: SLATE_300,
+    secondary: SAMPLE_SUCCESS,
 };
 
 export default function SampleDetailsScreen({ route, navigation }) {
@@ -178,7 +180,7 @@ export default function SampleDetailsScreen({ route, navigation }) {
     if (!sample) {
         return (
             <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
-                <Text style={{ color: COLORS.textDim }}>{t('home.sampleDetails.notFound')}</Text>
+                <TemplateText color={COLORS.textDim}>{t('home.sampleDetails.notFound')}</TemplateText>
             </View>
         );
     }
@@ -201,16 +203,16 @@ export default function SampleDetailsScreen({ route, navigation }) {
             </TemplateBox>
 
             <ScrollView contentContainerStyle={{ padding: 16 }}>
-                <Text style={styles.title} numberOfLines={2}>
+                <TemplateText size={22} bold style={{ color: BLACK, marginBottom: 16 }} numberOfLines={2}>
                     {sample.title}
-                </Text>
+                </TemplateText>
                 <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
                     {sample.isFeatured && <Chip label={t('home.sampleDetails.chips.featured')} tone="good" />}
                     {sample.showcaseOptIn && <Chip label={t('home.sampleDetails.chips.showcase')} tone="good" />}
                 </View>
 
-                <Text style={styles.sectionTitle}>{t('home.sampleDetails.aboutThisWork')}</Text>
-                <Text style={styles.description}>{sample.description}</Text>
+                <TemplateText size={18} bold style={{ marginTop: 18, marginBottom: 6 }}>{t('home.sampleDetails.aboutThisWork')}</TemplateText>
+                <TemplateText size={16} style={{ lineHeight: 20, color: BLACK }}>{sample.description}</TemplateText>
 
                 <TemplateBox row hCenter>
                     {sample.socialUrl ? (
@@ -241,16 +243,16 @@ export default function SampleDetailsScreen({ route, navigation }) {
                 {/* Owner-only controls */}
                 {isOwner ? (
                     <View style={styles.ownerPanel}>
-                        <Text style={styles.sectionTitle}>{t('home.sampleDetails.manage')}</Text>
+                        <TemplateText size={18} bold style={{ marginTop: 18, marginBottom: 6 }}>{t('home.sampleDetails.manage')}</TemplateText>
 
                         <View style={styles.toggleRow}>
-                            <Text style={styles.toggleLabel}>{t('home.sampleDetails.featuredOnProfile')}</Text>
-                            <Switch value={!!sample.isFeatured} onValueChange={toggleFeatured} thumbColor={'#fff'} />
+                            <TemplateText>{t('home.sampleDetails.featuredOnProfile')}</TemplateText>
+                            <Switch value={!!sample.isFeatured} onValueChange={toggleFeatured} thumbColor={WHITE} />
                         </View>
 
                         <View style={styles.toggleRow}>
-                            <Text style={styles.toggleLabel}>{t('home.sampleDetails.optInToShowcase')}</Text>
-                            <Switch value={!!sample.showcaseOptIn} onValueChange={toggleShowcase} thumbColor={'#fff'} />
+                            <TemplateText>{t('home.sampleDetails.optInToShowcase')}</TemplateText>
+                            <Switch value={!!sample.showcaseOptIn} onValueChange={toggleShowcase} thumbColor={WHITE} />
                         </View>
 
                         <View style={{ flexDirection: 'row', gap: 12, marginTop: 12 }}>
@@ -258,10 +260,10 @@ export default function SampleDetailsScreen({ route, navigation }) {
                                 trackEvent('sample_edit_opened');
                                 setEditOpen(true);
                             }} style={styles.ctaPrimary}>
-                                <Text style={styles.ctaPrimaryText}>{t('home.sampleDetails.edit')}</Text>
+                                <TemplateText color={WHITE} bold>{t('home.sampleDetails.edit')}</TemplateText>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={onDelete} style={styles.ctaDanger}>
-                                <Text style={styles.ctaDangerText}>{t('home.sampleDetails.delete')}</Text>
+                                <TemplateText color={WHITE} bold>{t('home.sampleDetails.delete')}</TemplateText>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -285,7 +287,7 @@ function Chip({ label, tone = 'default' }: { label: string; tone?: 'default' | '
                 paddingVertical: 6,
             }}
         >
-            <Text style={{ fontSize: 12, fontWeight: '600' }}>{label}</Text>
+            <TemplateText size={12} semiBold>{label}</TemplateText>
         </View>
     );
 }
@@ -333,7 +335,7 @@ const styles = StyleSheet.create({
     toggleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 6 },
     toggleLabel: {},
     ctaPrimary: { backgroundColor: BLACK, paddingVertical: 12, paddingHorizontal: 16, borderRadius: 12 },
-    ctaPrimaryText: { color: '#fff', fontWeight: '700' },
+    ctaPrimaryText: { color: WHITE, fontWeight: '700' },
     ctaDanger: { backgroundColor: ERROR_RED, paddingVertical: 12, paddingHorizontal: 16, borderRadius: 12 },
     ctaDangerText: { color: WHITE, fontWeight: '700' },
     ctaSecondary: {

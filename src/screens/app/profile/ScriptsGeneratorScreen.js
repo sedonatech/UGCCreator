@@ -14,6 +14,7 @@ import Button from '../../../components/Button';
 import { CREATOR_TOOLS_RESULTS } from '../../../navigation/ScreenNames';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 import { hp } from '../../../Utils/getResponsiveSize';
+import { FONT_BODY_SM } from '../../../theme/Typography';
 
 const ScriptsGeneratorScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
         height: hp(45)
     },
     placeholderStyle: {
-        fontSize: 13,
+        fontSize: FONT_BODY_SM,
     },
 });
 export default ScriptsGeneratorScreen;

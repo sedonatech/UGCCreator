@@ -19,6 +19,8 @@ import {
     GREY,
     METAL,
     RED_500,
+    STATUS_ACCEPTED,
+    STATUS_PENDING,
     WHITE,
     TRANSPARENT,
     FUCSHIA_500,
@@ -31,8 +33,8 @@ import useTrackEvent from '../../../hooks/events/useTrackEvent';
 
 const STATUS_CONFIG: Record<ApplicationStatus, { label: string; color: string }> = {
     applied: { label: 'Applied', color: BLUE_500 },
-    heard_back: { label: 'Heard Back', color: '#F59E0B' },
-    accepted: { label: 'Accepted', color: '#00C566' },
+    heard_back: { label: 'Heard Back', color: STATUS_PENDING },
+    accepted: { label: 'Accepted', color: STATUS_ACCEPTED },
     rejected: { label: 'Rejected', color: RED_500 },
 };
 

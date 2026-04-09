@@ -13,6 +13,8 @@ import {
     LIGHT_GREEN_10,
     LIGHT_PURPLE,
     METAL,
+    PLATFORM_PURPLE_BG,
+    PLATFORM_PURPLE_TEXT,
     TRANSPARENT,
     WHITE,
 } from '../../../theme/Colors';
@@ -251,12 +253,12 @@ const PlatformBrandsScreen = ({ navigation }) => {
                                 pv={4}
                                 ph={10}
                                 borderRadius={10}
-                                backgroundColor="#EDE7F6"
+                                backgroundColor={PLATFORM_PURPLE_BG}
                                 alignItems="center"
                                 justifyContent="center"
                                 mr={6}
                             >
-                                <TemplateText size={11} bold color="#6A1B9A">
+                                <TemplateText size={11} bold color={PLATFORM_PURPLE_TEXT}>
                                     📦 PR
                                 </TemplateText>
                             </TemplateBox>

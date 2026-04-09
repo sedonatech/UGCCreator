@@ -8,6 +8,7 @@ import { BLACK, GREY_30, LAVENDER } from '../../../../theme/Colors';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import TemplateTextInput from '../../../../components/TemplateTextInput';
 import { StyleSheet } from 'react-native';
+import { FONT_BASE } from '../../../../theme/Typography';
 
 interface Props {
     title: string;
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingRight: 30,
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         color: BLACK,
         backgroundColor: GREY_30,
     },

@@ -6,6 +6,7 @@ import { WRAPPED_SCREEN_WIDTH } from '../theme/Layout';
 import TemplateTouchable from './TemplateTouchable';
 import TemplateText from './TemplateText';
 import { BLACK_10, BLACK_80, WHITE, WHITE_50 } from '../theme/Colors';
+import { FONT_MD } from '../theme/Typography';
 
 const ToggleTab = ({
     tabs,
@@ -120,6 +121,6 @@ const styles = StyleSheet.create({
         borderRadius: 18,
     },
     title: {
-        fontSize: 14,
+        fontSize: FONT_MD,
     },
 });

@@ -10,6 +10,7 @@ import {
 import TemplateText from '../../../../components/TemplateText';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateTextInput from '../../../../components/TemplateTextInput';
+import { FONT_MD } from '../../../../theme/Typography';
 
 const RateItem = ({
     title,
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
         backgroundColor: WHITE,
         borderRadius: 10,
         paddingHorizontal: 20,
-        fontSize: 14,
+        fontSize: FONT_MD,
         color: BLACK,
         ...SHADOW('default', WHITE),
     },

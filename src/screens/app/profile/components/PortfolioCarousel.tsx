@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Text, Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import SampleWorkModal from '../../../../components/modals/SampleWorkModal';
 import { getMySamples, SampleWork } from '../../../../lib/sampleWorks';
-import { BLACK, DARK_GREY, GREY_SECONDARY } from '../../../../theme/Colors';
+import { BLACK, DARK_GREY, GREY_SECONDARY, GRAY_400 } from '../../../../theme/Colors';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import { useFocusEffect, useNavigation, NavigationProp } from '@react-navigation/native';
 import { WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
@@ -64,7 +64,7 @@ export default function PortfolioCarousel({ creatorId }: { creatorId?: string })
                 <TemplateText size={18} bold mr={8}>
                     {titleText}
                 </TemplateText>
-                {isOwner && <Text style={{ color: '#9ca3af' }}>{items.length}/10</Text>}
+                {isOwner && <TemplateText color={GRAY_400}>{items.length}/10</TemplateText>}
             </TemplateBox>
             <TemplateText size={13} color={BLACK} style={styles.subtitle}>
                 {subtitleText}

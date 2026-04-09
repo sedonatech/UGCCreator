@@ -8,7 +8,7 @@ import TemplateText from '../TemplateText';
 import TemplateIcon from '../TemplateIcon';
 import Button from '../Button';
 import DynamicIcon from '../icons/DynamicIcon';
-import { BLACK, BLACK_10, BLUE_500, DARK_METAL, IOS_BLUE_20, LIGHT_GREEN_10, METAL, WHITE } from '../../theme/Colors';
+import { BLACK, BLACK_10, BLUE_500, BRAND_DETAIL_BG, DARK_METAL, IOS_BLUE_20, LIGHT_GREEN_10, METAL, WHITE } from '../../theme/Colors';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import { wp } from '../../Utils/getResponsiveSize';
 import { getCapitalizedFirstLetter } from '../../Utils/texts';
@@ -146,7 +146,7 @@ const BrandDetailModal = ({ visible, brand, onClose, onApply, onVisitWebsite, al
                             mt={16}
                             pAll={16}
                             borderRadius={14}
-                            backgroundColor="#F0F7FF"
+                            backgroundColor={BRAND_DETAIL_BG}
                             borderWidth={1}
                             borderColor={`${BLUE_500}20`}
                         >

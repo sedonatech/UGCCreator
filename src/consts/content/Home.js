@@ -1,4 +1,4 @@
-import { BLACK, BLACK_50 } from '../../theme/Colors';
+import { BLACK, BLACK_50, CONTENT_CYAN, CONTENT_GOLD, CONTENT_PINK_LIGHT, CONTENT_TEAL } from '../../theme/Colors';
 
 export const CATEGORIES = [
     {
@@ -232,28 +232,28 @@ export const STATS = [
         title: 'Total Projects',
         value: 12,
         icon: 'cube-outline',
-        color: '#E6FAF7',
+        color: CONTENT_TEAL,
     },
     {
         id: '2',
         title: 'Total Proposals',
         value: 12,
         icon: 'clipboard-outline',
-        color: '#FFDE9F',
+        color: CONTENT_GOLD,
     },
     {
         id: '3',
         title: 'Total Brands',
         value: 120,
         icon: 'briefcase-outline',
-        color: '#E7FAFD',
+        color: CONTENT_CYAN,
     },
     {
         id: '5',
         title: 'Total Payouts',
         value: 120,
         icon: 'card-outline',
-        color: '#FDE9F9',
+        color: CONTENT_PINK_LIGHT,
     },
 ];
 

@@ -11,8 +11,10 @@ export const BLACK_70 = `${BLACK}70`;
 export const BLACK_80 = `${BLACK}80`;
 export const BLACK_90 = `${BLACK}90`;
 export const BLACK_0_5 = `${BLACK}0.5`;
-export const lightGreen = '#34C759';
-export const lightOrange = 'rgba(255, 45, 85, 0.4)';
+export const IOS_GREEN = '#34C759';
+export const lightGreen = IOS_GREEN; // Deprecated — use IOS_GREEN
+export const LIGHT_RED_40 = 'rgba(255, 45, 85, 0.4)';
+export const lightOrange = LIGHT_RED_40; // Deprecated — use LIGHT_RED_40
 export const PAYWALL_PRIMARY_BACKGROUND = 'rgba(235, 235, 245, 0.05)';
 export const WHITE = 'white';
 export const WHITE_10 = 'rgba(255, 255, 255, 0.1)';
@@ -32,7 +34,7 @@ export const IOS_BLUE = '#007AFF';
 export const IOS_BLUE_50 = 'rgba(0, 122, 255, 0.5)';
 export const IOS_BLUE_20 = 'rgba(0, 122, 255, 0.2)';
 export const RED = '#FF3B30';
-export const BLUE_SECONDARY = '#56CCF2';
+export const BLUE_SECONDARY = PRIMARY; // Alias — prefer PRIMARY
 export const BRAND_BLUE = '#A5C4FD';
 export const ERROR_RED = '#FF2D2D';
 export const PINK = 'rgb(255, 204, 210)';
@@ -41,7 +43,7 @@ export const DEEP_PURPLE = '#021942';
 export const LAVENDER = '#E6E6FA';
 export const DEEP_LAVENDER = '#9370DB';
 export const LIGHT_PURPLE = '#ECEDFD';
-export const ACCENT = '#A5C4FD';
+export const ACCENT = BRAND_BLUE; // Alias — prefer BRAND_BLUE
 export const GREY = '#9CA4AB';
 export const DARK_GREY = '#636363';
 export const GREY_SECONDARY = 'rgba(227, 231, 236, 1)';
@@ -56,8 +58,8 @@ export const LIGHT_GREEN = 'rgba(52, 199, 89, 0.3)';
 export const LIGHT_GREEN_10 = 'rgba(52, 199, 89, 0.1)';
 export const ONBOARDING_BLUE = '#3979E8';
 export const OFF_WHITE = '#EFEFEF';
-export const METAL = '#6B7280';
-export const DARK_METAL = '#4B5563';
+export const METAL = '#6B7280'; // Same as GRAY_500 — prefer GRAY_500
+export const DARK_METAL = '#4B5563'; // Same as GRAY_600 — prefer GRAY_600
 export const DARK_OVERLAY = '#00000033';
 
 //New colors
@@ -65,13 +67,14 @@ export const GRAY_500 = '#6B7280';
 export const BLUE_500 = '#3B82F6';
 export const BLUE_500_20 = 'rgba(59, 130, 246, 0.7)';
 export const RED_500 = '#EF4444';
-export const FUCSHIA_500 = '#D946EF';
+export const FUCHSIA_500 = '#D946EF';
+export const FUCSHIA_500 = FUCHSIA_500; // Typo alias — prefer FUCHSIA_500
 export const PINK_500 = '#EC4899';
 export const EMERALD_500 = '#10B981';
 export const AMBER_500 = '#F59E0B';
 export const CYAN_500 = '#06B6D4';
 export const TEAL_500 = '#14B8A6';
-export const PURPLE_500 = '#8B5CF6';
+export const PURPLE_500 = '#8B5CF6'; // Same as VIOLET_500 — prefer VIOLET_500
 
 // Zinc Colors (Course Components)
 export const ZINC_50 = '#FAFAFA';
@@ -161,3 +164,47 @@ export const INDIGO_BG_18 = 'rgba(99, 102, 241, 0.18)';
 export const INDIGO_BG_14 = 'rgba(99, 102, 241, 0.14)';
 export const INDIGO_BORDER_35 = 'rgba(99, 102, 241, 0.35)';
 export const WHITE_BG_08 = 'rgba(255, 255, 255, 0.08)';
+
+// Category Background Colors (used in WebsitePreview)
+export const CATEGORY_BG_GREEN = '#E8F5E9';
+export const CATEGORY_BG_PINK = '#FCE4EC';
+export const CATEGORY_BG_PURPLE = '#F3E5F5';
+export const CATEGORY_BG_BLUE = '#E3F2FD';
+export const CATEGORY_BG_ORANGE = '#FFF3E0';
+export const CATEGORY_BG_YELLOW = '#FFF8E1';
+export const CATEGORY_BG_LAVENDER = '#EDE7F6';
+export const CATEGORY_BG_DEFAULT = '#F5F5F5';
+export const TEXT_SECONDARY = '#555';
+export const TEXT_TERTIARY = '#888';
+
+// Onboarding Surface Colors
+export const ONBOARDING_SURFACE_BLUE = '#F7FAFF';
+export const ONBOARDING_SURFACE_GREEN = '#F4FCF7';
+export const ONBOARDING_SURFACE_PINK = '#FFF6FB';
+export const ONBOARDING_SURFACE_ORANGE = '#FFF9F2';
+export const ONBOARDING_SURFACE_GRAY = '#F8FAFC';
+export const ONBOARDING_BG_LIGHT = '#F6F8FC';
+export const ONBOARDING_BG_BORDER = '#E7ECF4';
+
+// Subscription Colors
+export const SUBSCRIPTION_DARK = '#24174b';
+export const SUBSCRIPTION_BLUE = '#4462a8';
+export const SUBSCRIPTION_BG = '#1e143e';
+
+// Brand Card Colors
+export const CARD_BG_LIGHT = '#F6F6F6';
+export const BRAND_DETAIL_BG = '#F0F7FF';
+
+// Status Colors
+export const STATUS_PENDING = '#F59E0B';
+export const STATUS_ACCEPTED = '#00C566';
+
+// Content Category Colors (Home.js)
+export const CONTENT_TEAL = '#E6FAF7';
+export const CONTENT_GOLD = '#FFDE9F';
+export const CONTENT_CYAN = '#E7FAFD';
+export const CONTENT_PINK_LIGHT = '#FDE9F9';
+
+// Platform Brands
+export const PLATFORM_PURPLE_BG = '#EDE7F6';
+export const PLATFORM_PURPLE_TEXT = '#6A1B9A';

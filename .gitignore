@@ -3,6 +3,11 @@
 .env.*
 !.env.example
 
+# Theme audit
+THEME_AUDIT_REPORT.md
+theme-audit-review.html
+theme-audit.skill
+
 # Ignore everything in config
 config/
 # OSX

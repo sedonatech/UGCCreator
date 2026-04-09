@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable max-len */
-/* eslint-disable react-native/no-inline-styles */
 import { StyleSheet, TextProps } from 'react-native';
 import React, { PropsWithChildren } from 'react';
 import TemplateBox from './TemplateBox';
