@@ -30,6 +30,8 @@ import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useGetBrands from '../../../hooks/creators/useGetBrands';
 import AllProjectsTab from './components/AllProjectsTab';
 import FeedsTab from './components/FeedsTab';
+import { FONT_BASE } from '../../../theme/Typography';
+
 export const BRANDS_TAB = {
     name: 'Brands',
     value: 'brands',
@@ -288,7 +290,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingRight: 30,
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         color: BLACK,
     },
     filterButton: {

@@ -18,6 +18,9 @@ import {
     BLACK_70,
     IOS_BLUE,
     RED,
+    SUBSCRIPTION_BG,
+    SUBSCRIPTION_BLUE,
+    SUBSCRIPTION_DARK,
     WHITE,
     WHITE_10,
     WHITE_20,
@@ -210,7 +213,7 @@ const SubscriptionScreen = ({ navigation, route }) => {
             contentContainerStyle={styles.contentContainer}
         >
             <StatusBar  barStyle='light-content' />
-            <LinearGradient colors={[BLACK, '#24174b', '#4462a8']} style={styles.hero}>
+            <LinearGradient colors={[BLACK, SUBSCRIPTION_DARK, SUBSCRIPTION_BLUE]} style={styles.hero}>
                 <View style={styles.heroOrbPrimary} />
                 <View style={styles.heroOrbSecondary} />
 
@@ -561,7 +564,7 @@ const styles = StyleSheet.create({
         borderRadius: 22,
         padding: 18,
         marginTop: 16,
-        backgroundColor: '#1e143e',
+        backgroundColor: SUBSCRIPTION_BG,
         borderWidth: 1,
         borderColor: 'rgba(255, 255, 255, 0.08)',
     },

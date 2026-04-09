@@ -30,17 +30,19 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
     const [chunkIndex, setChunkIndex] = useState(0);
 
     useEffect(() => {
-        if (creatorIds) getCreators();
+        if (ids?.length) getCreators();
     }, [ids, chunkIndex]);
 
     const chunks = chunk(ids, 10);
     const getCreators = async () => {
+        const currentChunk = chunks?.[chunkIndex];
+        if (!currentChunk?.length) return;
         try {
             setLoading(true);
 
             const querySnapshot = await firestore()
                 .collection(USERS_COLLECTION)
-                .where('id', 'in', chunks?.[chunkIndex])
+                .where('id', 'in', currentChunk)
                 .get();
             const chunkCreators = querySnapshot.docs.map(doc => ({
                 id: doc.id,

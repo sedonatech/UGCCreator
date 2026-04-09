@@ -1,5 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 
@@ -13,15 +13,13 @@ const AvatarOverlaps = ({ imageUrls }) => (
                 <FastImage
                     key={`${index}`}
                     source={{ uri: image }}
-                    style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
-                        borderWidth: 1,
-                        borderColor: WHITE,
-                        marginLeft: index === 0 ? 0 : -16,
-                        zIndex: imageUrls.length - index,
-                    }}
+                    style={[
+                        styles.avatar,
+                        {
+                            marginLeft: index === 0 ? 0 : -16,
+                            zIndex: imageUrls.length - index,
+                        },
+                    ]}
                 />
             ))}
     </TemplateBox>
@@ -34,5 +32,15 @@ AvatarOverlaps.propTypes = {
 AvatarOverlaps.defaultProps = {
     imageUrls: [],
 };
+
+const styles = StyleSheet.create({
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: WHITE,
+    },
+});
 
 export default AvatarOverlaps;

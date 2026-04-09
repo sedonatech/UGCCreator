@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLACK, BLACK_SECONDARY, WHITE } from '../theme/Colors';
+import { FONT_BASE } from '../theme/Typography';
 
 const TemplateTextInput = ({
     focus,
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     default: {
         backgroundColor: WHITE,
         color: BLACK,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         paddingHorizontal: 0, // Needed for android
     },
 });

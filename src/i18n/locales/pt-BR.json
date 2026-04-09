@@ -1134,6 +1134,20 @@
                     "enrolledCreators": "Criadores inscritos"
                 }
             },
+            "projectStatus": {
+                "tabs": {
+                    "status": "Status do Projeto",
+                    "contact": "Contatar Criador"
+                }
+            },
+            "contactCreator": {
+                "chat": "Enviar Mensagem",
+                "email": "Enviar Email",
+                "noEmail": {
+                    "title": "Email não disponível",
+                    "message": "Este criador não forneceu um endereço de email."
+                }
+            },
             "loadingMessages": {
                 "fetchingProject": "Buscando detalhes do projeto...",
                 "loadingProject": "Carregando detalhes do projeto..."

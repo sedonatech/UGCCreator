@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { getFirestore, collection, doc, getDoc } from '@react-native-firebase/firestore';
@@ -138,13 +137,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                                     spacing={0}
                                     trustAllCerts={false}
                                     scrollEnabled={true}
-                                    style={{
-                                        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
-                                        height: 300,
-                                        marginBottom: 20,
-                                        borderRadius: 16,
-                                        // backgroundColor: TRANSPARENT,
-                                    }}
+                                    style={styles.pdfPreview}
                                     onError={e => console.log('[MEDIA-KIT]: thumb error', e)}
                                 />
                             </TemplateBox>
@@ -210,6 +203,12 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+    },
+    pdfPreview: {
+        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
+        height: 300,
+        marginBottom: 20,
+        borderRadius: 16,
     },
 });
 export default PortfolioScreen;

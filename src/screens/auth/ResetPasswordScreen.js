@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useLayoutEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
@@ -79,14 +78,12 @@ const ResetPasswordScreen = ({ navigation, route }) => {
         <Wrapper contentContainerStyle={styles.contentContainerStyle} style={styles.container} keyboard>
             <TemplateBox borderRadius={20} overflow="hidden">
                 <TemplateBox
-                    style={{
-                        position: 'absolute',
-                        paddingTop: 8,
-                        alignSelf: 'center',
-                        alignItems: 'center',
-                        zIndex: 99,
-                    }}
-                    backgroundColor={`${BLACK_10}`}
+                    position="absolute"
+                    pt={8}
+                    alignSelf="center"
+                    alignItems="center"
+                    zIndex={99}
+                    backgroundColor={BLACK_10}
                 />
                 <ResizedImage source={lockImage} style={{ height: 380, width: SCREEN_WIDTH }} />
             </TemplateBox>

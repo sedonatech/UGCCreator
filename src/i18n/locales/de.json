@@ -1123,6 +1123,20 @@
                     "enrolledCreators": "Eingeschriebene Creator"
                 }
             },
+            "projectStatus": {
+                "tabs": {
+                    "status": "Projektstatus",
+                    "contact": "Ersteller kontaktieren"
+                }
+            },
+            "contactCreator": {
+                "chat": "Nachricht senden",
+                "email": "E-Mail senden",
+                "noEmail": {
+                    "title": "Keine E-Mail verfügbar",
+                    "message": "Dieser Ersteller hat keine E-Mail-Adresse angegeben."
+                }
+            },
             "loadingMessages": {
                 "fetchingProject": "Projektdetails werden abgerufen...",
                 "loadingProject": "Projektdetails werden geladen..."

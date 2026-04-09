@@ -55,6 +55,7 @@ const BrandOffersScreen = ({ navigation }) => {
         return sourceProjects?.map(project => ({
             id: project?.id,
             title: project?.title,
+            description: project?.description,
             brand: isBrand ? brandName : project?.brandName,
             image: project?.image,
             price: project?.price,
@@ -72,6 +73,7 @@ const BrandOffersScreen = ({ navigation }) => {
     const renderItem = ({ item }, index) => (
         <CurrentProjectCard
             title={item?.title}
+            description={item?.description}
             brand={item?.brand}
             image={item?.image}
             price={item?.price}

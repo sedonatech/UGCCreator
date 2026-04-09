@@ -5,6 +5,7 @@ import { BRAND_BLUE, ERROR_RED } from '../../theme/Colors';
 import TemplateText from '../TemplateText';
 import { IS_ANDROID } from '../../theme/Layout';
 import TemplateBox from '../TemplateBox';
+import { FONT_XS } from '../../theme/Typography';
 
 const TabLabel = ({ focused, children, showNotification }) => (
     <TemplateBox row center>
@@ -38,7 +39,7 @@ TabLabel.defaultProps = {
 const styles = StyleSheet.create({
     label: {
         color: BRAND_BLUE,
-        fontSize: 10,
+        fontSize: FONT_XS,
         textAlign: 'center',
         marginTop: 4,
         marginBottom: IS_ANDROID ? 4 : 0,

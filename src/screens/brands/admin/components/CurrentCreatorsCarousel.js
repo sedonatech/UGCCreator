@@ -50,7 +50,7 @@ const CurrentCreatorsCarousel = ({ style }) => {
 
     // fetch 10 creators for carousel
     useEffect(() => {
-        if (ids) getCreators();
+        if (ids?.length) getCreators();
     }, [ids]);
 
     const getCreators = async () => {

@@ -1,3 +1,5 @@
+import { COURSE_THEME_1, COURSE_THEME_2, COURSE_THEME_3 } from './courseThemeColors';
+
 const buildNextMonthStart = () => {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0);
@@ -201,8 +203,7 @@ export const COURSE_SEED = [
         description:
             'Transforma-te de principiante completo em criador UGC profissional em 30 dias com tarefas acionáveis diárias.',
         icon: 'videocam',
-        accent: '#4F46E5',
-        gradient: ['#EEF2FF', '#FFFFFF', '#EEF2FF'],
+        ...COURSE_THEME_1,
         totalDays: 30,
         days: buildDays(UGC_DAY_TITLES, UGC_WEEK_TITLES, UGC_WEEK_TIPS),
         releaseAt: null,
@@ -216,8 +217,7 @@ export const COURSE_SEED = [
         description:
             'Aprende como estruturar, negociar e fechar negócios com marcas com confiança enquanto proteges o teu tempo.',
         icon: 'trending-up',
-        accent: '#0F766E',
-        gradient: ['#ECFDF5', '#FFFFFF', '#ECFEFF'],
+        ...COURSE_THEME_2,
         totalDays: 30,
         days: buildDays(NEGOTIATION_DAY_TITLES, NEGOTIATION_WEEK_TITLES, NEGOTIATION_WEEK_TIPS),
         releaseAt: null,
@@ -230,8 +230,7 @@ export const COURSE_SEED = [
         shortDescription: 'Técnicas de produção profissional para criar UGC de alta conversão.',
         description: 'Melhora o teu fluxo de produção com sistemas avançados de filmagem, edição e entrega.',
         icon: 'camera',
-        accent: '#9333EA',
-        gradient: ['#F5F3FF', '#FFFFFF', '#FDF2F8'],
+        ...COURSE_THEME_3,
         totalDays: 30,
         days: buildDays(PRODUCTION_DAY_TITLES, PRODUCTION_WEEK_TITLES, PRODUCTION_WEEK_TIPS),
         releaseAt: buildNextMonthStart(),

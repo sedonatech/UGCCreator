@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import auth from '@react-native-firebase/auth';
@@ -80,15 +79,7 @@ const LoginScreen = ({ navigation }) => {
             keyboard
         >
             <TemplateBox borderRadius={20} overflow="hidden">
-                <TemplateBox
-                    style={{
-                        position: 'absolute',
-                        top: 50,
-                        alignSelf: 'center',
-                        alignItems: 'center',
-                        zIndex: 99,
-                    }}
-                >
+                <TemplateBox position="absolute" top={50} alignSelf="center" alignItems="center" zIndex={99}>
                     <BrandLogo height={58} width={282} color={WHITE} />
                 </TemplateBox>
                 <ResizedImage source={loginImage} style={{ height: 370, width: SCREEN_WIDTH }} />

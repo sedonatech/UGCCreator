@@ -42,6 +42,7 @@ import ResizedImage from '../../../components/ResizedImage';
 import { months } from '../../../consts/months';
 import { isAndroid } from '../../../Utils/Platform';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import { FONT_BASE } from '../../../theme/Typography';
 
 const BrandEventsCompletedScreen = ({ navigation }) => {
     const [search, setSearch] = useState('');
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingRight: 30,
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         color: BLACK,
     },
 });

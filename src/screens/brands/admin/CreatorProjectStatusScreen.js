@@ -9,24 +9,12 @@ import { SCREEN_HEIGHT, WRAPPER_MARGIN, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH } fro
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import BackgroundImage from '../../../components/BackgroundImage';
 import ToggleCarousel from '../../../components/ToggleCarousel';
-import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import { HOME } from '../../../navigation/ScreenNames';
 import CreatorProjectStatusOverviewTab from './components/CreatorProjectStatusOverviewTab';
-import ProjectNotificationsTab from '../../app/offers/components/ProjectNotificationsTab';
+import ContactCreatorSection from './components/ContactCreatorSection';
 import useTranslation from '../../../hooks/useTranslation';
 
 const PROJECTS_COLLECTION = 'projects';
-
-const CURRENT_PROJECT_TABS = [
-    {
-        name: 'Overview',
-        value: 'overview',
-    },
-    {
-        name: 'Project Notifications',
-        value: 'projectNotifications',
-    },
-];
 
 const CreatorProjectStatusScreen = ({ route, navigation }) => {
     const projectId = route?.params?.projectId;
@@ -40,7 +28,16 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
 
     const fromProjectDetails = route?.params?.fromProjectDetails;
 
-    const [selectedTab, setSelectedTab] = useState(CURRENT_PROJECT_TABS[0]);
+    const tabData = useMemo(() => [
+        { name: t('brands.admin.projectStatus.tabs.status') || 'Project Status', value: 'overview' },
+        { name: t('brands.admin.projectStatus.tabs.contact') || 'Contact Creator', value: 'contactCreator' },
+    ], [t]);
+
+    const [selectedTab, setSelectedTab] = useState(tabData[0]);
+
+    useEffect(() => {
+        setSelectedTab(current => tabData.find(({ value }) => value === current?.value) || tabData[0]);
+    }, [tabData]);
 
     const [currentProject, setCurrentProject] = useState(null);
 
@@ -133,15 +130,14 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                     {currentProject?.shortDescription}
                 </TemplateText>
             </TemplateBox>
-            <TemplateBox height={20}>
-                {/* <ToggleCarousel
-                    data={CURRENT_PROJECT_TABS}
+            <TemplateBox selfCenter flex>
+                <ToggleCarousel
+                    data={tabData}
                     selectedTab={selectedTab}
                     onChange={setSelectedTab}
-                    flex={false}
-                /> */}
+                />
             </TemplateBox>
-            {selectedTab?.value === CURRENT_PROJECT_TABS[0].value && (
+            {selectedTab?.value === 'overview' && (
                 <CreatorProjectStatusOverviewTab
                     application={application}
                     creatorID={creatorID}
@@ -150,7 +146,14 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                     creatorFCMToken={creatorFCMToken}
                 />
             )}
-            {selectedTab?.value === CURRENT_PROJECT_TABS[1].value && <ProjectNotificationsTab />}
+            {selectedTab?.value === 'contactCreator' && (
+                <ContactCreatorSection
+                    creatorID={creatorID}
+                    creatorEmail={creatorEmail}
+                    creatorFCMToken={creatorFCMToken}
+                    projectTitle={currentProject?.title}
+                />
+            )}
         </ScrollView>
     );
 };

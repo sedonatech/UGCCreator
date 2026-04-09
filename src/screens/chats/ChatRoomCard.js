@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
@@ -29,8 +28,10 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
     }, [item]);
 
     const fetchUsers = async ids => {
+        const validIds = ids?.filter(Boolean);
+        if (!validIds?.length) return;
         try {
-            const q = query(usersRef, where('id', 'in', ids));
+            const q = query(usersRef, where('id', 'in', validIds));
             const querySnapshot = await getDocs(q);
             const fetchedUsers = querySnapshot?.docs?.map(docSnap => ({
                 id: docSnap?.id,
@@ -98,16 +99,7 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
                     }}
                 />
                 {isSupport && (
-                    <View
-                        style={{
-                            alignSelf: 'flex-start',
-                            position: 'absolute',
-                            paddingHorizontal: 8,
-                            paddingVertical: 2,
-                            backgroundColor: lightOrange,
-                            right: 20,
-                        }}
-                    >
+                    <View style={styles.supportBadge}>
                         <TemplateText size={12} medium color={WHITE}>
                             {t('chats.rooms.support')}
                         </TemplateText>
@@ -184,6 +176,14 @@ const styles = StyleSheet.create({
         height: wp(50),
         borderRadius: wp(10),
         marginRight: wp(16),
+    },
+    supportBadge: {
+        alignSelf: 'flex-start',
+        position: 'absolute',
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        backgroundColor: lightOrange,
+        right: 20,
     },
 });
 

@@ -13,6 +13,7 @@ import { SHADOW } from '../../theme/Shadow';
 import Button from '../Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useTranslation from '../../hooks/useTranslation';
+import { FONT_BASE } from '../../theme/Typography';
 
 interface Props {
     onClose?: () => void;
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingRight: 30,
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         color: BLACK,
     },
     tags: {

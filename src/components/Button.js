@@ -45,6 +45,7 @@ const Button = ({
                 },
                 style,
             ]}
+            disabled={disabled || loading}
         >
             {loading ? (
                 <ActivityIndicator size="small" color={WHITE} />

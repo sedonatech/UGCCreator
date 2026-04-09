@@ -4,28 +4,40 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
+import {
+    CATEGORY_BG_GREEN,
+    CATEGORY_BG_PINK,
+    CATEGORY_BG_PURPLE,
+    CATEGORY_BG_BLUE,
+    CATEGORY_BG_ORANGE,
+    CATEGORY_BG_YELLOW,
+    CATEGORY_BG_LAVENDER,
+    CATEGORY_BG_DEFAULT,
+    TEXT_SECONDARY,
+    TEXT_TERTIARY,
+} from '../../../../theme/Colors';
 
 const getWebsitePreviewUrl = url => `https://image.thum.io/get/width/400/${url}`;
 
 const CATEGORY_STYLES = {
-    Skincare: { emoji: '🧴', bg: '#E8F5E9' },
-    Makeup: { emoji: '💄', bg: '#FCE4EC' },
-    'Vegan Makeup': { emoji: '🌿💄', bg: '#E8F5E9' },
-    Haircare: { emoji: '💇‍♀️', bg: '#F3E5F5' },
-    'Vegan Haircare': { emoji: '🌱💇‍♀️', bg: '#E8F5E9' },
-    Fashion: { emoji: '👗', bg: '#E3F2FD' },
-    'Vegan Fashion': { emoji: '🌿👜', bg: '#E8F5E9' },
-    Bodycare: { emoji: '🛁', bg: '#FFF3E0' },
-    Fragrance: { emoji: '🌸', bg: '#F3E5F5' },
-    Jewelry: { emoji: '💎', bg: '#FFF8E1' },
-    'Food & Drink': { emoji: '🥤', bg: '#FFF3E0' },
-    Health: { emoji: '💪', bg: '#E8F5E9' },
-    Lifestyle: { emoji: '✨', bg: '#F3E5F5' },
-    'Vegan Skincare': { emoji: '🌱🧴', bg: '#E8F5E9' },
-    'Paid Package Reviews': { emoji: '📦', bg: '#EDE7F6' },
+    Skincare: { emoji: '🧴', bg: CATEGORY_BG_GREEN },
+    Makeup: { emoji: '💄', bg: CATEGORY_BG_PINK },
+    'Vegan Makeup': { emoji: '🌿💄', bg: CATEGORY_BG_GREEN },
+    Haircare: { emoji: '💇‍♀️', bg: CATEGORY_BG_PURPLE },
+    'Vegan Haircare': { emoji: '🌱💇‍♀️', bg: CATEGORY_BG_GREEN },
+    Fashion: { emoji: '👗', bg: CATEGORY_BG_BLUE },
+    'Vegan Fashion': { emoji: '🌿👜', bg: CATEGORY_BG_GREEN },
+    Bodycare: { emoji: '🛁', bg: CATEGORY_BG_ORANGE },
+    Fragrance: { emoji: '🌸', bg: CATEGORY_BG_PURPLE },
+    Jewelry: { emoji: '💎', bg: CATEGORY_BG_YELLOW },
+    'Food & Drink': { emoji: '🥤', bg: CATEGORY_BG_ORANGE },
+    Health: { emoji: '💪', bg: CATEGORY_BG_GREEN },
+    Lifestyle: { emoji: '✨', bg: CATEGORY_BG_PURPLE },
+    'Vegan Skincare': { emoji: '🌱🧴', bg: CATEGORY_BG_GREEN },
+    'Paid Package Reviews': { emoji: '📦', bg: CATEGORY_BG_LAVENDER },
 };
 
-const DEFAULT_STYLE = { emoji: '🌐', bg: '#F5F5F5' };
+const DEFAULT_STYLE = { emoji: '🌐', bg: CATEGORY_BG_DEFAULT };
 
 /**
  * Preload website preview images so they're cached before display.
@@ -57,17 +69,17 @@ const WebsitePreview = ({ url, category, brandName, height = 120 }) => {
                     <TemplateText size={36} mb={6}>
                         {categoryStyle.emoji}
                     </TemplateText>
-                    <TemplateText size={14} semiBold color="#555" numberOfLines={1}>
+                    <TemplateText size={14} semiBold color={TEXT_SECONDARY} numberOfLines={1}>
                         {brandName}
                     </TemplateText>
-                    <TemplateText size={11} color="#888" mt={2}>
+                    <TemplateText size={11} color={TEXT_TERTIARY} mt={2}>
                         {category}
                     </TemplateText>
                 </>
             )}
 
             {/* Spinner while image is loading */}
-            {showSpinner && <ActivityIndicator size="small" color="#888" />}
+            {showSpinner && <ActivityIndicator size="small" color={TEXT_TERTIARY} />}
 
             {/* Image overlays on top when loaded */}
             {url && !error && (

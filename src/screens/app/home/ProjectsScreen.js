@@ -17,6 +17,7 @@ import { PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 import { wp } from '../../../Utils/getResponsiveSize';
+import { FONT_BASE } from '../../../theme/Typography';
 
 const ProjectsScreen = () => {
     const { t } = useTranslation();
@@ -44,7 +45,7 @@ const ProjectsScreen = () => {
             isBlocked: item?.isBlocked,
             shortDescription: item?.shortDescription,
             duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
-            projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
+            projectType: projectTypeFilters.find(({ value }) => value === item?.projectType?.[0])?.name,
         }));
     }, [projects]);
 
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingRight: 30,
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         color: BLACK,
     },
 });

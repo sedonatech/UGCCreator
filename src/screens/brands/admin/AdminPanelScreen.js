@@ -55,6 +55,7 @@ const AdminPanelScreen = ({ navigation }) => {
         return projects?.slice(0, 5)?.map(project => ({
             id: project?.id,
             title: project?.title,
+            description: project?.description,
             brand: brandName,
             image: project?.image,
             price: project?.price,

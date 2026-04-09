@@ -12,6 +12,7 @@ import { SHADOW } from '../../../theme/Shadow';
 import BrandsCard from './components /BrandsCard';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 import { BRAND_DETAILS } from '../../../navigation/ScreenNames';
+import { FONT_BASE } from '../../../theme/Typography';
 import useBrands from '../../../hooks/brands/useBrands';
 
 const BrandsScreen = ({ navigation }) => {
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingRight: 30,
         paddingLeft: 10,
-        fontSize: 16,
+        fontSize: FONT_BASE,
         color: BLACK,
     },
     card: {
