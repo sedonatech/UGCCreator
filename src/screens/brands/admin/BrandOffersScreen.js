@@ -52,22 +52,34 @@ const BrandOffersScreen = ({ navigation }) => {
     const brandProjects = useMemo(() => {
         if (!sourceProjects?.length) return [];
 
-        return sourceProjects?.map(project => ({
-            id: project?.id,
-            title: project?.title,
-            description: project?.description,
-            brand: isBrand ? brandName : project?.brandName,
-            image: project?.image,
-            price: project?.price,
-            status: isBrand
-                ? project?.applications?.length
-                    ? t('offers.enrolledCreators')
-                    : t('offers.noEnrolledCreators')
-                : project?.brandName,
-            notifications: project?.applications?.length || 0,
-            documents: project?.applications?.[0]?.documents?.length || 0,
-            daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
-        }));
+        return sourceProjects?.reduce((acc, project) => {
+            try {
+                const endDate = project?.endDate?.toDate?.() ?? (project?.endDate ? new Date(project.endDate) : null);
+                const startDate =
+                    project?.startDate?.toDate?.() ?? (project?.startDate ? new Date(project.startDate) : null);
+                const days = endDate && startDate ? differenceInDays(endDate, startDate) : undefined;
+
+                acc.push({
+                    id: project?.id,
+                    title: project?.title,
+                    description: project?.description,
+                    brand: isBrand ? brandName : project?.brandName,
+                    image: typeof project?.image === 'string' ? project.image : '',
+                    price: project?.price,
+                    status: isBrand
+                        ? Array.isArray(project?.applications) && project.applications.length
+                            ? t('offers.enrolledCreators')
+                            : t('offers.noEnrolledCreators')
+                        : project?.brandName,
+                    notifications: Array.isArray(project?.applications) ? project.applications.length : 0,
+                    documents: project?.applications?.[0]?.documents?.length || 0,
+                    daysLeft: Number.isFinite(days) ? days : undefined,
+                });
+            } catch (e) {
+                console.warn('Skipping project due to data error:', project?.id, e?.message);
+            }
+            return acc;
+        }, []);
     }, [sourceProjects, brandName, isBrand, t]);
 
     const renderItem = ({ item }, index) => (

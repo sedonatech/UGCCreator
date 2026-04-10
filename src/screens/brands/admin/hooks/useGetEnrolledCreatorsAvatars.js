@@ -1,11 +1,8 @@
 import { useMemo } from 'react';
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
-import useGetCreators from '../../../../hooks/brands/useGetCreators';
 
 const useGetEnrolledCreatorsAvatars = (projectId) => {
     const { projects } = useProjectsContext();
-
-    const { creators } = useGetCreators();
 
     const selectedProject = useMemo(() => {
         if (!projects) return null;
@@ -15,18 +12,16 @@ const useGetEnrolledCreatorsAvatars = (projectId) => {
     }, [projects, projectId]);
 
     const enrolledCreatorsAvatars = useMemo(() => {
-        if (!selectedProject) return null;
+        if (!selectedProject) return [];
+        if (!Array.isArray(selectedProject?.applications)) return [];
 
-        return selectedProject?.applications?.reduce((acc, application) => {
-            const creator = creators?.find(({ id }) => id === application?.creatorId);
-
-            if (creator?.image) {
-                acc.push(creator?.image);
+        return selectedProject.applications.reduce((acc, application) => {
+            if (application?.creatorImage && typeof application.creatorImage === 'string') {
+                acc.push(application.creatorImage);
             }
-
             return acc;
         }, []);
-    }, [selectedProject, projectId, creators]);
+    }, [selectedProject, projectId]);
 
     return {
         enrolledCreatorsAvatars,
