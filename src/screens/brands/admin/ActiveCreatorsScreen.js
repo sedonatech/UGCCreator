@@ -1,32 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, ActivityIndicator, View } from 'react-native';
+import { FlatList, ActivityIndicator, StyleSheet, View } from 'react-native';
 import { chunk } from 'lodash';
 import firestore from '@react-native-firebase/firestore';
 import PropTypes from 'prop-types';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
-import { BLACK, BRAND_BLUE, DEEP_LAVENDER, WHITE } from '../../../theme/Colors';
-import { HEADER_MARGIN, RADIUS_SMALL, RADIUS_XSMALL, SPACE_MEDIUM, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { BLACK, LIGHT_PURPLE, WHITE } from '../../../theme/Colors';
+import {
+    HEADER_MARGIN,
+    RADIUS_SMALL,
+    SCREEN_WIDTH,
+    SPACE_MEDIUM,
+    WRAPPER_MARGIN,
+} from '../../../theme/Layout';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-
 import { CREATOR_PROJECT_STATUS } from '../../../navigation/ScreenNames';
 import CreatorCard from '../creators/CreatorCard';
-import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
+import {
+    DEFAULT_CREATOR_SHORT_DESCRIPTION,
+    DEFAULT_CREATOR_WORK_SAMPLE_IMAGE,
+} from '../../../consts/content/Portfolio';
 import { wp } from '../../../Utils/getResponsiveSize';
 import useTranslation from '../../../hooks/useTranslation';
+import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
 
 const USERS_COLLECTION = 'users';
 
 const ActiveCreatorsScreen = ({ route, navigation }) => {
     const ids = route?.params?.ids;
-
     const creatorIds = route?.params?.creatorIds;
 
     const { t } = useTranslation();
     const [activeCreators, setActiveCreators] = useState([]);
-
     const [loading, setLoading] = useState(false);
-
     const [chunkIndex, setChunkIndex] = useState(0);
 
     useEffect(() => {
@@ -57,8 +63,10 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
         }
     };
 
+    const hasMoreChunks = chunkIndex < chunks.length - 1;
+
     const renderFooter = () => {
-        if (!activeCreators?.length) return null;
+        if (!hasMoreChunks || activeCreators?.length <= 5) return null;
         return (
             <TemplateBox
                 alignItems="center"
@@ -84,10 +92,14 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
         <CreatorCard
             name={item?.userName}
             imageUrl={item?.image || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE}
-            shortDescription={item?.shortDescription}
-            location={item?.location?.country}
-            email={item?.email}
+            shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
+            location={item?.location?.city || item?.location?.country}
             style={styles.card}
+            width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
+            imageStyle={styles.image}
+            subtitleContainerWidth={94}
+            textContainerWidth="68%"
+            lastLoginTime={item?.lastLoginTime ? calculateLastLoginTime(item.lastLoginTime) : 'days ago'}
             onPress={() =>
                 navigation.navigate(CREATOR_PROJECT_STATUS, {
                     creatorID: item?.id,
@@ -96,8 +108,8 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
                     creatorFCMToken: item?.fcmToken,
                 })
             }
-            height={wp(194)}
-            mt={SPACE_MEDIUM}
+            mt={12}
+            mh={0}
             ctaText={t('brands.admin.activeCreators.viewProjectStatus')}
         />
     );
@@ -148,7 +160,7 @@ ActiveCreatorsScreen.defaultProps = {
     navigation: {},
 };
 
-const styles = {
+const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
@@ -156,16 +168,20 @@ const styles = {
         marginHorizontal: WRAPPER_MARGIN,
     },
     card: {
-        marginBottom: 10,
+        backgroundColor: LIGHT_PURPLE,
+    },
+    image: {
+        width: wp(80),
+        height: wp(80),
+        borderRadius: wp(16),
+        marginRight: wp(14),
     },
     brandsListContentContainer: {
-        paddingHorizontal: WRAPPER_MARGIN,
+        alignItems: 'center',
+        paddingBottom: WRAPPER_MARGIN * 2,
     },
     loading: {
         marginLeft: 4,
     },
-    flatList: {
-        paddingTop: 100,
-    },
-};
+});
 export default ActiveCreatorsScreen;
