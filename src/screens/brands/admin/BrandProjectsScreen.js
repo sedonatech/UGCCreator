@@ -37,16 +37,31 @@ const BrandProjectsScreen = ({ navigation }) => {
 
     const projectsData = useMemo(() => {
         if (!projects?.length) return [];
-        return projects?.map(project => ({
-            id: project?.id,
-            title: project?.title,
-            brand: brandName,
-            price: project?.price,
-            status: project?.applications?.length ? 'Enrolled Creators' : 'No Enrolled Creators',
-            notifications: project?.applications?.length || 0,
-            documents: project?.applications?.[0]?.documents?.length || 0,
-            daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
-        }));
+        return projects?.reduce((acc, project) => {
+            try {
+                const endDate = project?.endDate?.toDate?.() ?? (project?.endDate ? new Date(project.endDate) : null);
+                const startDate =
+                    project?.startDate?.toDate?.() ?? (project?.startDate ? new Date(project.startDate) : null);
+                const days = endDate && startDate ? differenceInDays(endDate, startDate) : undefined;
+
+                acc.push({
+                    id: project?.id,
+                    title: project?.title,
+                    brand: brandName,
+                    price: project?.price,
+                    status:
+                        Array.isArray(project?.applications) && project.applications.length
+                            ? 'Enrolled Creators'
+                            : 'No Enrolled Creators',
+                    notifications: Array.isArray(project?.applications) ? project.applications.length : 0,
+                    documents: project?.applications?.[0]?.documents?.length || 0,
+                    daysLeft: Number.isFinite(days) ? days : undefined,
+                });
+            } catch (e) {
+                console.warn('Skipping project due to data error:', project?.id, e?.message);
+            }
+            return acc;
+        }, []);
     }, [projects]);
 
     return (

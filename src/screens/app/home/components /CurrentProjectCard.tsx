@@ -4,7 +4,7 @@ import * as Progress from 'react-native-progress';
 import FastImage from 'react-native-fast-image';
 
 import TemplateBox from '../../../../components/TemplateBox';
-import { BLACK, BLACK_20, BRAND_BLUE, GREEN, GREY, LIGHT_GREEN, PINK, WHITE_30 } from '../../../../theme/Colors';
+import { BLACK, BLACK_20, GREY, LIGHT_GREEN, WHITE_30 } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import { RADIUS_MEDIUM, SCREEN_WIDTH } from '../../../../theme/Layout';
 import TemplateIcon from '../../../../components/TemplateIcon';
@@ -64,7 +64,7 @@ const CurrentProjectCard: FC<Props> = ({
             slideInDelay={slideInDelay}
             overflow="hidden"
         >
-            {!!image && (
+            {!!image && typeof image === 'string' && (
                 <FastImage source={{ uri: image }} style={styles.cardImage} resizeMode={FastImage.resizeMode.cover} />
             )}
             <TemplateBox pAll={20}>

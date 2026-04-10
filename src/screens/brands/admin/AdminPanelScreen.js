@@ -52,24 +52,37 @@ const AdminPanelScreen = ({ navigation }) => {
 
     const projectsCarouselData = useMemo(() => {
         if (!projects?.length) return [];
-        return projects?.slice(0, 5)?.map(project => ({
-            id: project?.id,
-            title: project?.title,
-            description: project?.description,
-            brand: brandName,
-            image: project?.image,
-            price: project?.price,
-            status: project?.applications?.length
-                ? t('brands.admin.carousels.activeProjects.enrolledCreators')
-                : t('brands.admin.carousels.activeProjects.noEnrolledCreators'),
-            notifications: project?.applications?.length || 0,
-            documents: project?.applications?.[0]?.documents?.length || 0,
-            daysLeft: differenceInDays(new Date(project?.endDate), new Date(project?.startDate)),
-            onPress: () =>
-                navigation.navigate(BRAND_PROJECT_DETAILS, {
-                    projectId: project?.id,
-                }),
-        }));
+        return projects?.slice(0, 5)?.reduce((acc, project) => {
+            try {
+                const endDate = project?.endDate?.toDate?.() ?? (project?.endDate ? new Date(project.endDate) : null);
+                const startDate =
+                    project?.startDate?.toDate?.() ?? (project?.startDate ? new Date(project.startDate) : null);
+                const days = endDate && startDate ? differenceInDays(endDate, startDate) : undefined;
+
+                acc.push({
+                    id: project?.id,
+                    title: project?.title,
+                    description: project?.description,
+                    brand: brandName,
+                    image: typeof project?.image === 'string' ? project.image : '',
+                    price: project?.price,
+                    status:
+                        Array.isArray(project?.applications) && project.applications.length
+                            ? t('brands.admin.carousels.activeProjects.enrolledCreators')
+                            : t('brands.admin.carousels.activeProjects.noEnrolledCreators'),
+                    notifications: Array.isArray(project?.applications) ? project.applications.length : 0,
+                    documents: project?.applications?.[0]?.documents?.length || 0,
+                    daysLeft: Number.isFinite(days) ? days : undefined,
+                    onPress: () =>
+                        navigation.navigate(BRAND_PROJECT_DETAILS, {
+                            projectId: project?.id,
+                        }),
+                });
+            } catch (e) {
+                console.warn('Skipping project due to data error:', project?.id, e?.message);
+            }
+            return acc;
+        }, []);
     }, [projects]);
 
     const [showOptions, setShowOptions] = useState(false);

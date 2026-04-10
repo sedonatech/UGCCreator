@@ -7,12 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import TemplateBox from '../../../../components/TemplateBox';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import useTranslation from '../../../../hooks/useTranslation';
-import {
-    RADIUS_SMALL,
-    SCREEN_WIDTH,
-    SPACE_MEDIUM,
-    WRAPPER_MARGIN,
-} from '../../../../theme/Layout';
+import { RADIUS_SMALL, SCREEN_WIDTH, SPACE_MEDIUM, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import CreatorCard from '../../creators/CreatorCard';
 import { CREATOR_PROJECT_STATUS } from '../../../../navigation/ScreenNames';
 import { BLACK, LIGHT_PURPLE, WHITE } from '../../../../theme/Colors';
@@ -43,10 +38,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
         try {
             setLoading(true);
 
-            const querySnapshot = await firestore()
-                .collection(USERS_COLLECTION)
-                .where('id', 'in', currentChunk)
-                .get();
+            const querySnapshot = await firestore().collection(USERS_COLLECTION).where('id', 'in', currentChunk).get();
             const chunkCreators = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
@@ -111,11 +103,13 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                                     shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
                                     location={item?.location?.city || item?.location?.country}
                                     style={styles.card}
-                                    width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
+                                    width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                                     imageStyle={styles.image}
                                     subtitleContainerWidth={94}
                                     textContainerWidth="68%"
-                                    lastLoginTime={item?.lastLoginTime ? calculateLastLoginTime(item.lastLoginTime) : 'days ago'}
+                                    lastLoginTime={
+                                        item?.lastLoginTime ? calculateLastLoginTime(item.lastLoginTime) : 'days ago'
+                                    }
                                     ctaText="View Project Status"
                                     onPress={() =>
                                         navigation.navigate(CREATOR_PROJECT_STATUS, {
@@ -126,6 +120,7 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                                         })
                                     }
                                     mt={12}
+                                    mh={0}
                                 />
                             ))}
                             {renderFooter()}

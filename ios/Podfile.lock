@@ -4022,34 +4022,8 @@ PODS:
   - RevenueCat (5.50.1)
   - RNAppleAuthentication (2.5.1):
     - React-Core
-  - RNCAsyncStorage (1.24.0):
-    - boost
-    - DoubleConversion
-    - fast_float
-    - fmt
-    - glog
-    - hermes-engine
-    - RCT-Folly
-    - RCT-Folly/Fabric
-    - RCTRequired
-    - RCTTypeSafety
+  - RNCAsyncStorage (1.17.11):
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - SocketRocket
-    - Yoga
   - RNCClipboard (1.16.3):
     - boost
     - DoubleConversion
@@ -5155,7 +5129,7 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
   RevenueCat: c676920ae9b3c9cd08c49d26e7cd4c04a0263069
   RNAppleAuthentication: d6fe579e5f43cf8db54bdc48518bccea61c592a4
-  RNCAsyncStorage: 7c9d6b389e2977ffe92fe8cafbea77974649c72b
+  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCClipboard: 4eea71d801c880175c12f6ab14332ca86fed935f
   RNCMaskedView: 949696f25ec596bfc697fc88e6f95cf0c79669b6
   RNCPicker: 5ecdf273a7a933dea82838515cc17c402fcf3ff7
@@ -5192,4 +5166,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7ce7cd432105dcccf7d5dea08ca6d02fced9863c
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
