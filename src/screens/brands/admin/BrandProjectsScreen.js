@@ -8,7 +8,7 @@ import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN } 
 
 import { NO_CURRENT_PROJECT_MESSAGE, NO_CURRENT_PROJECT_TITLE } from '../../../consts/content/Home';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import { CURRENT_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
+import { BRAND_PROJECT_DETAILS } from '../../../navigation/ScreenNames';
 import CurrentProjectCard from '../../app/home/components /CurrentProjectCard';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -88,7 +88,7 @@ const BrandProjectsScreen = ({ navigation }) => {
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                         slideInDelay={(index + 1) * 100}
                         key={item?.id}
-                        onPress={() => navigation.navigate(CURRENT_PROJECT_DETAILS, { projectId: item?.id })}
+                        onPress={() => navigation.navigate(BRAND_PROJECT_DETAILS, { projectId: item?.id })}
                     />
                 ))
             ) : (

@@ -16,17 +16,9 @@ import { useNavigation } from '@react-navigation/native';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
-import {
-    BLACK,
-    BRAND_BLUE,
-    GREEN,
-    GREY,
-    GREY_30,
-    LIGHT_PURPLE,
-    WHITE,
-} from '../../../../theme/Colors';
+import { BLACK, BRAND_BLUE, GREEN, GREY, GREY_30, LIGHT_PURPLE, WHITE } from '../../../../theme/Colors';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
-import { CHATS_STACK, CHATS } from '../../../../navigation/ScreenNames';
+import { CHAT_ROOM, CHATS } from '../../../../navigation/ScreenNames';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import FastImage from 'react-native-fast-image';
 import { wp } from '../../../../Utils/getResponsiveSize';
@@ -63,7 +55,7 @@ const ContactCreatorSection = ({ creatorID, creatorEmail, creatorFCMToken, proje
     };
 
     const navigateToChat = (chatRoomId, chatName, receiverFcmToken) => {
-        navigation.navigate(CHATS_STACK, {
+        navigation.navigate(CHAT_ROOM, {
             screen: CHATS,
             params: {
                 chatRoomId,
@@ -86,7 +78,9 @@ const ContactCreatorSection = ({ creatorID, creatorEmail, creatorFCMToken, proje
             setLoading(true);
             const db = getFirestore();
             const chatRoomsRef = collection(db, CHAT_ROOMS_COLLECTION);
-            const chatName = `${auth?.profile?.userName || auth?.profile?.name} & ${creator?.userName || creator?.name}`;
+            const chatName = `${auth?.profile?.userName || auth?.profile?.name} & ${
+                creator?.userName || creator?.name
+            }`;
 
             // Check if chat room already exists
             const brandToCreatorQuery = query(
@@ -148,14 +142,7 @@ const ContactCreatorSection = ({ creatorID, creatorEmail, creatorFCMToken, proje
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>
             {/* Creator Info */}
-            <TemplateBox
-                backgroundColor={GREY_30}
-                borderRadius={12}
-                pAll={16}
-                row
-                alignItems="center"
-                mb={20}
-            >
+            <TemplateBox backgroundColor={GREY_30} borderRadius={12} pAll={16} row alignItems="center" mb={20}>
                 {creatorImage ? (
                     <FastImage
                         source={{ uri: creatorImage }}
