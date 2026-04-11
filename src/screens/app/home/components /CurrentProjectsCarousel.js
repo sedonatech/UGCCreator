@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import differenceInDays from 'date-fns/differenceInDays';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import safeToDate from '../../../../Utils/safeToDate';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CURRENT_PROJECTS_CAROUSEL } from '../../../../consts/content/Home';
@@ -49,7 +50,7 @@ const CurrentProjectsCarousel = ({ style, isBrand, data }) => {
                 price: `From ${item?.priceRange?.max} to ${item?.priceRange?.min} ${item?.currency}`,
                 status: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
                 documentCount: application?.documents?.length,
-                daysLeft: differenceInDays(new Date(item?.endDate), new Date()),
+                daysLeft: safeToDate(item?.endDate) ? differenceInDays(safeToDate(item?.endDate), new Date()) : undefined,
                 currentStatus: application?.status?.filter(({ status }) => status === 'active')[0]?.name,
             };
         });

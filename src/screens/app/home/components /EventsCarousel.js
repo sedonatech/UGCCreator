@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import { getFirestore, collection, query, where, orderBy, limit, getDocs } from '@react-native-firebase/firestore';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import safeToDate from '../../../../Utils/safeToDate';
 import { SHADOW } from '../../../../theme/Shadow';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
@@ -84,7 +85,7 @@ const EventsCarousel = ({ style }) => {
             <TemplateCarousel
                 data={eventsData}
                 renderItem={({ item }) => {
-                    const date = new Date(item?.startDate?.seconds * 1000);
+                    const date = safeToDate(item?.startDate) || new Date();
                     const day = date.getDate();
                     const month = months[date.getMonth()];
                     return (

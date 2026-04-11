@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 
 import useTranslation from '../../../hooks/useTranslation';
@@ -12,6 +12,7 @@ import LoadingOverlay from '../../../components/LoadingOverlay';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import DescriptionRange from './components/DescriptionRange';
 import DescriptionRow from './components/DescriptionRow';
+import safeToDate from '../../../Utils/safeToDate';
 import Button from '../../../components/Button';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import {
@@ -113,6 +114,8 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         }
     }, [selectedProject?.id]);
 
+    const [enrolling, setEnrolling] = useState(false);
+
     const onEnroll = async () => {
         if (enrolled) {
             navigation.navigate(CURRENT_PROJECT_DETAILS, {
@@ -121,25 +124,31 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
             });
             return;
         }
-        const didEnroll = await enrollToProject(profile?.id, selectedProject);
 
-        if (!didEnroll) {
-            return;
+        setEnrolling(true);
+        try {
+            const didEnroll = await enrollToProject(profile?.id, selectedProject);
+
+            if (!didEnroll) {
+                return;
+            }
+
+            markReviewPromptEligibleForTrigger('creator_project_enrolled');
+
+            Alert.alert(
+                t('explore.projectDetails.alerts.enrollSuccess.title'),
+                t('explore.projectDetails.alerts.enrollSuccess.message'),
+                [
+                    {
+                        text: t('explore.projectDetails.alerts.enrollSuccess.ok'),
+                        onPress: () => navigation.goBack(),
+                    },
+                ],
+                { cancelable: false },
+            );
+        } finally {
+            setEnrolling(false);
         }
-
-        markReviewPromptEligibleForTrigger('creator_project_enrolled');
-
-        Alert.alert(
-            t('explore.projectDetails.alerts.enrollSuccess.title'),
-            t('explore.projectDetails.alerts.enrollSuccess.message'),
-            [
-                {
-                    text: t('explore.projectDetails.alerts.enrollSuccess.ok'),
-                    onPress: () => navigation.goBack(),
-                },
-            ],
-            { cancelable: false },
-        );
     };
 
     const buttonCta = useMemo(() => {
@@ -147,12 +156,15 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
         return t('explore.projectDetails.buttons.enrollNow');
     }, [enrolled, t]);
 
-    const formatDate = date =>
-        new Date(date?.seconds * 1000).toLocaleString('en-US', {
+    const formatDate = date => {
+        const d = safeToDate(date);
+        if (!d) return 'N/A';
+        return d.toLocaleString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
         });
+    };
 
     if (!selectedProject) return <LoadingOverlay message={t('explore.projectDetails.loadingMessage')} />;
 
@@ -345,6 +357,7 @@ const ProjectDetailsScreen = ({ route, navigation }) => {
                 style={styles.button}
                 color={BLACK_SECONDARY}
                 onPress={onEnroll}
+                loading={enrolling}
                 height={50}
                 width={SCREEN_WIDTH - 40}
             />

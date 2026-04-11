@@ -1,6 +1,15 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    serverTimestamp,
+} from '@react-native-firebase/firestore';
 import TemplateText from '../../../components/TemplateText';
 import { BLACK, GREEN, WHITE, WHITE_40 } from '../../../theme/Colors';
 import HeaderIconButton from '../../../components/header/HeaderButton';
@@ -11,8 +20,7 @@ import OverviewTab from './components/OverviewTab';
 import ProjectNotificationsTab from './components/ProjectNotificationsTab';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import useChatsContext from '../../../hooks/chats/useChatsContext';
-import { HOME } from '../../../navigation/ScreenNames';
+import { CHAT_ROOM, CHATS, HOME } from '../../../navigation/ScreenNames';
 import useGetUser from '../../../hooks/creators/useGetUser';
 import useTranslation from '../../../hooks/useTranslation';
 import TemplateBox from '../../../components/TemplateBox';
@@ -38,7 +46,7 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
     const { auth } = useAuthContext();
     const { profile } = auth;
     const { t } = useTranslation();
-    const { createChatRoom } = useChatsContext();
+    const [chatLoading, setChatLoading] = useState(false);
     const [selectedTab, setSelectedTab] = useState(CURRENT_PROJECT_TABS[0]);
 
     const { getProject } = useProjectsContext();
@@ -111,7 +119,70 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
     const creatorName = profile?.userName || profile?.name;
     const brandName = currentProjectBrand?.userName || currentProjectBrand?.name;
     const brandFCMToken = currentProjectBrand?.fcmToken;
-    const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
+    const chatRoomName = `${brandName || 'Brand'} & ${creatorName || 'Creator'}`;
+
+    const navigateToChat = (chatRoomId, name, receiverFcmToken) => {
+        navigation.navigate(CHAT_ROOM, {
+            screen: CHATS,
+            params: {
+                chatRoomId,
+                name,
+                receiverFcmToken,
+            },
+        });
+    };
+
+    const handleMessageBrand = async () => {
+        if (!creatorFCMToken || !brandFCMToken || !creatorId || !currentProject?.brandId) {
+            Alert.alert(
+                t('chats.alerts.userNotAvailable.title') || 'User Not Available',
+                t('chats.alerts.userNotAvailable.message') || 'This user is not available for chat.',
+            );
+            return;
+        }
+
+        try {
+            setChatLoading(true);
+            const db = getFirestore();
+            const chatRoomsRef = collection(db, 'chatRooms');
+
+            // Check if chat room already exists
+            const brandToCreatorQuery = query(
+                chatRoomsRef,
+                where('brandId', '==', currentProject.brandId),
+                where('creatorId', '==', creatorId),
+            );
+            const foundChat = await getDocs(brandToCreatorQuery);
+
+            if (foundChat?.docs?.length) {
+                navigateToChat(foundChat.docs[0].id, chatRoomName, brandFCMToken);
+                return;
+            }
+
+            // No existing room — create one then navigate
+            const newRoom = await addDoc(chatRoomsRef, {
+                name: chatRoomName,
+                creatorId,
+                brandId: currentProject.brandId,
+                createdAt: serverTimestamp(),
+                creatorFCMToken,
+                brandFCMToken,
+                lastMessageTimestamp: serverTimestamp(),
+            });
+
+            if (newRoom?.id) {
+                navigateToChat(newRoom.id, chatRoomName, brandFCMToken);
+            }
+        } catch (error) {
+            console.log('[MESSAGE BRAND ERROR]', error);
+            Alert.alert(
+                t('chats.alerts.userNotAvailable.title') || 'Error',
+                t('chats.alerts.userNotAvailable.message') || 'Could not start chat. Please try again.',
+            );
+        } finally {
+            setChatLoading(false);
+        }
+    };
 
     if (!currentProject) return <LoadingOverlay backgroundColor={WHITE} />;
 
@@ -156,19 +227,8 @@ const CurrentProjectDetailsScreen = ({ route, navigation }) => {
             <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                 <Button
                     title={t('offers.messageBrand')}
-                    onPress={async () => {
-                        try {
-                            await createChatRoom(
-                                chatRoomName,
-                                creatorId,
-                                currentProject?.brandId,
-                                creatorFCMToken,
-                                brandFCMToken,
-                            );
-                        } catch (e) {
-                            console.log('-> e', e);
-                        }
-                    }}
+                    onPress={handleMessageBrand}
+                    loading={chatLoading}
                     height={50}
                     width={SCREEN_WIDTH - 40}
                     color={BLACK}

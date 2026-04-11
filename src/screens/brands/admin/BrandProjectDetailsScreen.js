@@ -81,7 +81,8 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
 
     const enrolledCreatorIds = useMemo(() => {
         if (!selectedProject) return null;
-        return selectedProject?.applications?.map(({ creatorId }) => creatorId);
+        if (!Array.isArray(selectedProject?.applications)) return [];
+        return selectedProject.applications.map(({ creatorId }) => creatorId);
     }, [selectedProject]);
 
     const projectLink = useMemo(() => getValidExternalUrl(selectedProject?.link), [selectedProject?.link]);
@@ -128,7 +129,11 @@ const BrandProjectDetailsScreen = ({ route, navigation }) => {
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false} scrollEventThrottle={1}>
             <TemplateBox fullGradient height={SCREEN_HEIGHT / 2.4} gradientColors={[BLACK_30, BLACK_30]}>
                 {/* @ts-ignore */}
-                <BackgroundImage source={{ uri: selectedProject?.image }} width={SCREEN_WIDTH} style={styles.image} />
+                <BackgroundImage
+                    source={{ uri: typeof selectedProject?.image === 'string' ? selectedProject.image : '' }}
+                    width={SCREEN_WIDTH}
+                    style={styles.image}
+                />
                 <TemplateBox absolute top={SCREEN_HEIGHT / 3.4} left={20} pr={20}>
                     <TemplateText bold size={18} color={WHITE}>
                         {selectedProject?.title}

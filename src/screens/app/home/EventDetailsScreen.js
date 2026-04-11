@@ -1,6 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 import { getFirestore, collection, doc, getDoc, setDoc } from '@react-native-firebase/firestore';
@@ -13,6 +10,7 @@ import { WEBVIEW } from '../../../navigation/ScreenNames';
 import { EVENTS_COLLECTION } from '../../../hooks/brands/useEvents';
 import useTranslation from '../../../hooks/useTranslation';
 import { hp, wp } from '../../../Utils/getResponsiveSize';
+import safeToDate from '../../../Utils/safeToDate';
 import TemplateIcon from '../../../components/TemplateIcon';
 import ResizedImage from '../../../components/ResizedImage';
 import { months } from '../../../consts/months';
@@ -52,21 +50,22 @@ const EventDetailsScreen = ({ navigation, route }) => {
         );
     }
 
-    const date = new Date(event?.startDate?.seconds * 1000);
+    const date = safeToDate(event?.startDate) || new Date();
     const day = date.getDate();
     const month = months[date.getMonth()];
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const dayOfWeek = daysOfWeek[date.getDay()];
 
-    const startDate = new Date(event?.startTime?.seconds * 1000);
-    let hours = startDate.getHours();
-    const minutes = startDate.getMinutes();
+    const startDateObj = safeToDate(event?.startTime) || new Date();
+    let hours = startDateObj.getHours();
+    const minutes = startDateObj.getMinutes();
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if minutes < 10
     const period = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12 || 12; // Convert 24-hour format to 12-hour format
-    const time = event?.startTime?.seconds ? `${hours}:${formattedMinutes} ${period}` : null;
+    const time = safeToDate(event?.startTime) ? `${hours}:${formattedMinutes} ${period}` : null;
 
-    const formattedEndDate = new Date(event?.endDate?.seconds * 1000).toLocaleString('en-US', {
+    const endDateObj = safeToDate(event?.endDate) || new Date();
+    const formattedEndDate = endDateObj.toLocaleString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -151,7 +150,7 @@ const EventDetailsScreen = ({ navigation, route }) => {
                                 color={isFavEvent ? ERROR_RED : GREY}
                             />
                         </TemplateBox>
-                        <ResizedImage source={{ uri: event?.image }} style={{ height: '100%', width: '100%' }} />
+                        <ResizedImage source={{ uri: event?.image }} style={styles.eventImage} />
                     </TemplateBox>
 
                     <TemplateBox mt={hp(16)}>
@@ -167,7 +166,7 @@ const EventDetailsScreen = ({ navigation, route }) => {
                                 size={hp(11)}
                                 family="Ionicons"
                                 color={DARK_GREY}
-                                style={{ marginRight: 3, marginTop: 3 }}
+                                style={styles.locationIcon}
                             />
                             <TemplateText medium size={hp(14)} color={DARK_GREY}>
                                 {`${event?.city}, ${event?.country}`}
@@ -180,7 +179,7 @@ const EventDetailsScreen = ({ navigation, route }) => {
                             <TemplateText medium size={hp(14)}>
                                 {day}
                             </TemplateText>
-                            <TemplateText size={hp(12)} color={DARK_GREY} style={{ marginTop: 2 }}>
+                            <TemplateText size={hp(12)} color={DARK_GREY} style={styles.marginTop2}>
                                 {month}
                             </TemplateText>
                         </TemplateBox>
@@ -189,7 +188,7 @@ const EventDetailsScreen = ({ navigation, route }) => {
                                 {dayOfWeek}
                             </TemplateText>
                             {!!time && (
-                                <TemplateText size={hp(12)} style={{ marginTop: 2 }} color={DARK_GREY}>
+                                <TemplateText size={hp(12)} style={styles.marginTop2} color={DARK_GREY}>
                                     {time}
                                 </TemplateText>
                             )}
@@ -226,6 +225,17 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         backgroundColor: IOS_BLUE,
         width: WRAPPED_SCREEN_WIDTH,
+    },
+    eventImage: {
+        height: '100%',
+        width: '100%',
+    },
+    locationIcon: {
+        marginRight: 3,
+        marginTop: 3,
+    },
+    marginTop2: {
+        marginTop: 2,
     },
 });
 

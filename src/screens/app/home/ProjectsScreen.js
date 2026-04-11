@@ -2,12 +2,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
 import differenceInWeeks from 'date-fns/differenceInWeeks';
 import Fuse from 'fuse.js';
+import safeToDate from '../../../Utils/safeToDate';
 import { useNavigation } from '@react-navigation/native';
 import useTranslation from '../../../hooks/useTranslation';
 import { projectTypeFilters } from '../../../consts/AppFilters/ProjectFilters';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
-import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
-import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { HEADER_MARGIN, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { BLACK, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import TemplateTextInput from '../../../components/TemplateTextInput';
@@ -44,7 +45,17 @@ const ProjectsScreen = () => {
             title: item?.title,
             isBlocked: item?.isBlocked,
             shortDescription: item?.shortDescription,
-            duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
+            duration: `${
+                (safeToDate(item?.endDate) && safeToDate(item?.startDate)
+                    ? differenceInWeeks(safeToDate(item?.endDate), safeToDate(item?.startDate))
+                    : 0) ||
+                3(
+                    safeToDate(item?.endDate) && safeToDate(item?.startDate)
+                        ? differenceInWeeks(safeToDate(item?.endDate), safeToDate(item?.startDate))
+                        : 0,
+                ) ||
+                3
+            } weeks`,
             projectType: projectTypeFilters.find(({ value }) => value === item?.projectType?.[0])?.name,
         }));
     }, [projects]);

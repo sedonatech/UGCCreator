@@ -4,6 +4,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Fuse from 'fuse.js';
 import differenceInWeeks from 'date-fns/differenceInWeeks';
+import safeToDate from '../../../Utils/safeToDate';
 import useTranslation from '../../../hooks/useTranslation';
 import TemplateText from '../../../components/TemplateText';
 import { BLACK, BRAND_BLUE, TRANSPARENT, WHITE, WHITE_96 } from '../../../theme/Colors';
@@ -72,7 +73,17 @@ const ExploreScreen = ({ route }) => {
                 image: item?.image,
                 title: item?.title,
                 shortDescription: item?.shortDescription,
-                duration: `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`,
+                duration: `${
+                    (safeToDate(item?.endDate) && safeToDate(item?.startDate)
+                        ? differenceInWeeks(safeToDate(item?.endDate), safeToDate(item?.startDate))
+                        : 0) ||
+                    3(
+                        safeToDate(item?.endDate) && safeToDate(item?.startDate)
+                            ? differenceInWeeks(safeToDate(item?.endDate), safeToDate(item?.startDate))
+                            : 0,
+                    ) ||
+                    3
+                } weeks`,
                 projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
             }))
             ?.slice(0, 4);
@@ -301,9 +312,6 @@ const styles = StyleSheet.create({
     },
     applyText: {
         marginLeft: WRAPPER_MARGIN,
-    },
-    carousel: {
-        marginVertical: WRAPPER_MARGIN,
     },
 });
 export default ExploreScreen;
