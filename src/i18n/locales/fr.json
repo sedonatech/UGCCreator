@@ -1130,6 +1130,7 @@
                 }
             },
             "contactCreator": {
+                "viewProfile": "Voir le Profil",
                 "chat": "Envoyer un Message",
                 "email": "Envoyer un Email",
                 "noEmail": {

@@ -18,7 +18,7 @@ import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { BLACK, BRAND_BLUE, GREEN, GREY, GREY_30, LIGHT_PURPLE, WHITE } from '../../../../theme/Colors';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
-import { CHAT_ROOM, CHATS } from '../../../../navigation/ScreenNames';
+import { CHAT_ROOM, CHATS, PROFILE } from '../../../../navigation/ScreenNames';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import FastImage from 'react-native-fast-image';
 import { wp } from '../../../../Utils/getResponsiveSize';
@@ -176,6 +176,23 @@ const ContactCreatorSection = ({ creatorID, creatorEmail, creatorFCMToken, proje
                         </TemplateBox>
                     )}
                 </TemplateBox>
+            </TemplateBox>
+
+            {/* View Profile Button */}
+            <TemplateBox
+                backgroundColor={BLACK}
+                borderRadius={12}
+                height={52}
+                row
+                alignItems="center"
+                justifyContent="center"
+                mb={12}
+                onPress={() => navigation.navigate(PROFILE, { creatorId: creatorID })}
+            >
+                <TemplateIcon name="person-outline" size={20} color={WHITE} />
+                <TemplateText bold size={15} color={WHITE} ml={10}>
+                    {t('brands.admin.contactCreator.viewProfile') || 'View Profile'}
+                </TemplateText>
             </TemplateBox>
 
             {/* Chat Button */}

@@ -1128,6 +1128,7 @@
                 }
             },
             "contactCreator": {
+                "viewProfile": "View Profile",
                 "chat": "Message Creator",
                 "email": "Send Email",
                 "noEmail": {
