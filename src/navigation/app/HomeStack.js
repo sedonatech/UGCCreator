@@ -11,6 +11,7 @@ import {
     BRANDS_CATALOGUE,
     BRANDS_SCREEN,
     CHALLENGE_DETAILS,
+    CHAT_ROOM,
     CREATOR_TOOLS_RESULTS,
     CURRENT_PROJECT_DETAILS,
     FEED_DETAILS,
@@ -46,6 +47,7 @@ import BrandDealsScreen from '../../screens/app/home/BrandDealsScreen';
 import ChallengeDetailsScreen from '../../screens/app/home/ChallengeDetailsScreen';
 import BrandOffersScreen from '../../screens/brands/admin/BrandOffersScreen';
 import PlatformBrandsScreen from '../../screens/app/home/PlatformBrandsScreen';
+import ChatsStack from '../chats/ChatsStack';
 
 const Stack = createStackNavigator();
 const { Navigator, Screen } = Stack;
@@ -86,6 +88,7 @@ const HomeStack = () => (
         <Screen name={CHALLENGE_DETAILS} options={TRANSPARENT_HEADER} component={ChallengeDetailsScreen} />
         <Screen name={BRAND_OFFERS} options={TRANSPARENT_HEADER} component={BrandOffersScreen} />
         <Screen name={PLATFORM_BRANDS_SCREEN} options={TRANSPARENT_HEADER} component={PlatformBrandsScreen} />
+        <Screen name={CHAT_ROOM} options={{ headerShown: false }} component={ChatsStack} />
     </Navigator>
 );
 

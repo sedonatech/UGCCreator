@@ -1,40 +1,26 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable max-len */
-import React, {
-    memo,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import safeToDate from '../../../Utils/safeToDate';
 import Fuse from 'fuse.js';
 import {
-    getFirestore, collection, query, where, orderBy, limit as fsLimit, getDocs,
+    getFirestore,
+    collection,
+    query,
+    where,
+    orderBy,
+    limit as fsLimit,
+    getDocs,
 } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
-import {
-    HEADER_MARGIN,
-    IS_ANDROID,
-    WRAPPED_SCREEN_WIDTH,
-    WRAPPER_MARGIN,
-} from '../../../theme/Layout';
-import {
-    BLACK,
-    DARK_GREY,
-    DEEP_LAVENDER,
-    GREY,
-    LAVENDER,
-    TRANSPARENT,
-    WHITE,
-} from '../../../theme/Colors';
+import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
+import { BLACK, DARK_GREY, DEEP_LAVENDER, GREY, LAVENDER, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import { SHADOW } from '../../../theme/Shadow';
-import {
-    BRAND_EVENT_DETAILS_SCREEN,
-} from '../../../navigation/ScreenNames';
+import { BRAND_EVENT_DETAILS_SCREEN } from '../../../navigation/ScreenNames';
 import { EVENTS_COLLECTION } from '../../../hooks/brands/useEvents';
 import { hp, wp } from '../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../components/TemplateIcon';
@@ -55,19 +41,20 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
 
     const today = useMemo(() => new Date(), []);
     const db = getFirestore();
-    const getEventsQuery = (limitCount) => query(
-        collection(db, EVENTS_COLLECTION),
-        where('userId', '==', brandId),
-        where('endDate', '<', today),
-        orderBy('endDate', 'desc'),
-        fsLimit(limitCount),
-    );
+    const getEventsQuery = limitCount =>
+        query(
+            collection(db, EVENTS_COLLECTION),
+            where('userId', '==', brandId),
+            where('endDate', '<', today),
+            orderBy('endDate', 'desc'),
+            fsLimit(limitCount),
+        );
 
     const fetchEvents = async () => {
         try {
             const q = getEventsQuery(limit);
             const querySnapshot = await getDocs(q);
-            const fetchedEvents = querySnapshot?.docs?.map((doc) => ({ id: doc?.id, ...doc?.data() }));
+            const fetchedEvents = querySnapshot?.docs?.map(doc => ({ id: doc?.id, ...doc?.data() }));
             setEventsData(fetchedEvents);
         } catch (e) {
             console.log(e);
@@ -104,7 +91,7 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
             return [];
         }
         return eventsData
-            ?.map((event) => ({
+            ?.map(event => ({
                 id: event?.id,
                 name: event?.title,
                 description: event?.description,
@@ -119,20 +106,20 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
     const filteredEvents = useMemo(() => {
         if (events?.length < 1) return [];
         return search?.length
-            ? searchResults?.map((event) => ({
-                id: event?.id,
-                name: event?.title,
-                description: event?.description,
-                image: event?.image,
-                country: event?.country,
-                city: event?.city,
-                startDate: event?.startDate,
-            }))
+            ? searchResults?.map(event => ({
+                  id: event?.id,
+                  name: event?.title,
+                  description: event?.description,
+                  image: event?.image,
+                  country: event?.country,
+                  city: event?.city,
+                  startDate: event?.startDate,
+              }))
             : events;
     }, [search, events, searchResults]);
 
     const renderItem = useCallback(({ item }) => {
-        const date = new Date(item?.startDate?.seconds * 1000);
+        const date = safeToDate(item?.startDate) || new Date();
         const day = date.getDate();
         const month = months[date.getMonth()];
         return (
@@ -153,17 +140,8 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
                     height="200%"
                     onPress={() => navigation.navigate(BRAND_EVENT_DETAILS_SCREEN, { id: item?.id })}
                 />
-                <TemplateBox
-                    backgroundColor={GREY}
-                    width={80}
-                    mr={12}
-                    borderRadius={8}
-                    overflow="hidden"
-                >
-                    <ResizedImage
-                        source={{ uri: item?.image }}
-                        style={{ height: '100%', width: '100%' }}
-                    />
+                <TemplateBox backgroundColor={GREY} width={80} mr={12} borderRadius={8} overflow="hidden">
+                    <ResizedImage source={{ uri: item?.image }} style={{ height: '100%', width: '100%' }} />
                     <TemplateBox
                         zIndex={1}
                         absolute
@@ -198,7 +176,13 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
                                 {item?.name}
                             </TemplateText>
                         </TemplateBox>
-                        <TemplateText size={hp(12)} lineHeight={12.5} light color={DARK_GREY} numberOfLines={!item?.country ? 3 : 2}>
+                        <TemplateText
+                            size={hp(12)}
+                            lineHeight={12.5}
+                            light
+                            color={DARK_GREY}
+                            numberOfLines={!item?.country ? 3 : 2}
+                        >
                             {item?.description}
                         </TemplateText>
                     </TemplateBox>
@@ -246,28 +230,18 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
 
     const ListHeaderComponent = (
         <TemplateBox>
-            <TemplateBox
-                ml={WRAPPER_MARGIN}
-                mt={isAndroid ? 80 : 130}
-                alignItems="center"
-                justifyContent="center"
-            >
+            <TemplateBox ml={WRAPPER_MARGIN} mt={isAndroid ? 80 : 130} alignItems="center" justifyContent="center">
                 <TemplateText size={18} bold startCase center>
                     Your Completed Events
                 </TemplateText>
             </TemplateBox>
 
-            <TemplateBox
-                row
-                alignItems="center"
-                mh={WRAPPER_MARGIN}
-                mt={WRAPPER_MARGIN}
-            >
+            <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
                 <TemplateTextInput
                     placeholder="Search"
                     style={[styles.input, SHADOW('default', WHITE)]}
                     value={search}
-                    onChangeText={(text) => setSearch(text)}
+                    onChangeText={text => setSearch(text)}
                     autoCapitalize="none"
                 />
             </TemplateBox>
@@ -295,7 +269,7 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
             initialNumToRender={10}
             onEndReachedThreshold={0.5}
             onEndReached={() => {
-                setLimit((prevLimit) => prevLimit + 10);
+                setLimit(prevLimit => prevLimit + 10);
             }}
         />
     );

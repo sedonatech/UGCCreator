@@ -2,6 +2,7 @@ import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState
 import { FlatList, StyleSheet } from 'react-native';
 import Fuse from 'fuse.js';
 import firestore from '@react-native-firebase/firestore';
+import safeToDate from '../../../Utils/safeToDate';
 import useTranslation from '../../../hooks/useTranslation';
 import { HEADER_MARGIN, IS_ANDROID, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import { BLACK, BLACK_20, DARK_GREY, ERROR_RED, GREY, TRANSPARENT, WHITE } from '../../../theme/Colors';
@@ -118,7 +119,7 @@ const EventsScreen = ({ navigation }) => {
     }, [search, events, searchResults]);
 
     const renderItem = useCallback(({ item }) => {
-        const date = new Date(item?.startDate?.seconds * 1000);
+        const date = safeToDate(item?.startDate) || new Date();
         const day = date.getDate();
         const month = months[date.getMonth()];
         return (
@@ -141,7 +142,7 @@ const EventsScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate(EVENT_DETAILS_SCREEN, { id: item?.id })}
                 />
                 <TemplateBox backgroundColor={GREY} width={80} mr={12} borderRadius={8} overflow="hidden">
-                    <ResizedImage source={{ uri: item?.image }} style={{ height: '100%', width: '100%' }} />
+                    <ResizedImage source={{ uri: item?.image }} style={styles.eventImage} />
                     <TemplateBox
                         zIndex={1}
                         absolute
@@ -157,7 +158,7 @@ const EventsScreen = ({ navigation }) => {
                         <TemplateText size={hp(10)} semiBold mb={0} center>
                             {day}
                         </TemplateText>
-                        <TemplateText size={hp(8)} light center style={{ lineHeight: 9 }}>
+                        <TemplateText size={hp(8)} light center style={styles.monthLineHeight}>
                             {month}
                         </TemplateText>
                     </TemplateBox>
@@ -193,7 +194,7 @@ const EventsScreen = ({ navigation }) => {
                                 size={hp(11)}
                                 family="Ionicons"
                                 color={DARK_GREY}
-                                style={{ marginRight: 3 }}
+                                style={styles.icon}
                             />
                             <TemplateText size={hp(10)} color={DARK_GREY} medium>
                                 {`${item?.city}, ${item?.country}`}
@@ -269,9 +270,15 @@ const styles = StyleSheet.create({
         fontSize: FONT_BASE,
         color: BLACK,
     },
-    card: {
-        marginBottom: WRAPPER_MARGIN,
-        alignSelf: 'center',
+    icon: {
+        marginRight: 3,
+    },
+    eventImage: {
+        height: '100%',
+        width: '100%',
+    },
+    monthLineHeight: {
+        lineHeight: 9,
     },
 });
 

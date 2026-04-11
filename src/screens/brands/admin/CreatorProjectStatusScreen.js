@@ -28,10 +28,13 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
 
     const fromProjectDetails = route?.params?.fromProjectDetails;
 
-    const tabData = useMemo(() => [
-        { name: t('brands.admin.projectStatus.tabs.status') || 'Project Status', value: 'overview' },
-        { name: t('brands.admin.projectStatus.tabs.contact') || 'Contact Creator', value: 'contactCreator' },
-    ], [t]);
+    const tabData = useMemo(
+        () => [
+            { name: t('brands.admin.projectStatus.tabs.status') || 'Project Status', value: 'overview' },
+            { name: t('brands.admin.projectStatus.tabs.contact') || 'Contact Creator', value: 'contactCreator' },
+        ],
+        [t],
+    );
 
     const [selectedTab, setSelectedTab] = useState(tabData[0]);
 
@@ -65,10 +68,8 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
 
     const application = useMemo(() => {
         if (!currentProject) return null;
-
-        return currentProject?.applications?.length
-            ? currentProject?.applications?.find(({ creatorId }) => creatorId === creatorID)
-            : {};
+        if (!Array.isArray(currentProject?.applications) || !currentProject.applications.length) return {};
+        return currentProject.applications.find(({ creatorId }) => creatorId === creatorID) || {};
     }, [currentProject, creatorID]);
 
     useLayoutEffect(() => {
@@ -101,7 +102,11 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
         >
             <TemplateBox height={SCREEN_HEIGHT / 2.4}>
                 {/* @ts-ignore */}
-                <BackgroundImage source={{ uri: currentProject?.image }} width={SCREEN_WIDTH} style={styles.image} />
+                <BackgroundImage
+                    source={{ uri: typeof currentProject?.image === 'string' ? currentProject.image : '' }}
+                    width={SCREEN_WIDTH}
+                    style={styles.image}
+                />
                 <TemplateBox>
                     <TemplateBox
                         borderRadius={10}
@@ -131,11 +136,7 @@ const CreatorProjectStatusScreen = ({ route, navigation }) => {
                 </TemplateText>
             </TemplateBox>
             <TemplateBox selfCenter flex>
-                <ToggleCarousel
-                    data={tabData}
-                    selectedTab={selectedTab}
-                    onChange={setSelectedTab}
-                />
+                <ToggleCarousel data={tabData} selectedTab={selectedTab} onChange={setSelectedTab} />
             </TemplateBox>
             {selectedTab?.value === 'overview' && (
                 <CreatorProjectStatusOverviewTab

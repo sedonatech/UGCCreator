@@ -8,6 +8,7 @@ import TemplateText from '../../../../components/TemplateText';
 import { BLACK } from '../../../../theme/Colors';
 import DescriptionRange from '../../../app/explore/components/DescriptionRange';
 import DescriptionRow from '../../../app/explore/components/DescriptionRow';
+import safeToDate from '../../../../Utils/safeToDate';
 import {
     ageFilters,
     countryFilters,
@@ -36,7 +37,7 @@ const BrandProjectDescriptionSection = ({ selectedProject }) => {
                     </TemplateText>
                 </>
             )}
-            {!!selectedProject?.startDate && !!selectedProject?.endDate && (
+            {!!(safeToDate(selectedProject?.startDate) && safeToDate(selectedProject?.endDate)) && (
                 <>
                     <TemplateText style={styles.title} bold size={20} color={BLACK}>
                         Timeline
@@ -44,9 +45,9 @@ const BrandProjectDescriptionSection = ({ selectedProject }) => {
                     <DescriptionRange
                         icon="timer-outline"
                         maxSubtitle={t('brands.admin.projectDescription.startDate')}
-                        maxTitle={format(new Date(selectedProject?.startDate?.seconds), 'dd MMM yyyy')}
+                        maxTitle={format(safeToDate(selectedProject?.startDate), 'dd MMM yyyy')}
                         minSubtitle={t('brands.admin.projectDescription.endDate')}
-                        minTitle={format(new Date(selectedProject?.endDate?.seconds), 'dd MMM yyyy')}
+                        minTitle={format(safeToDate(selectedProject?.endDate), 'dd MMM yyyy')}
                     />
                 </>
             )}

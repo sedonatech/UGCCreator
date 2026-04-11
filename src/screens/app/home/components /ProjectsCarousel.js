@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import differenceInWeeks from 'date-fns/differenceInWeeks';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
+import safeToDate from '../../../../Utils/safeToDate';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { BLACK, IOS_BLUE } from '../../../../theme/Colors';
@@ -17,7 +18,6 @@ import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import { projectTypeFilters } from '../../../../consts/AppFilters/ProjectFilters';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import DynamicIcon from '../../../../components/icons/DynamicIcon';
-import { PROJECTS_TAB } from '../../explore/ExploreScreen';
 import useTranslation from '../../../../hooks/useTranslation';
 
 const ProjectsCarousel = ({ style }) => {
@@ -38,8 +38,8 @@ const ProjectsCarousel = ({ style }) => {
                 title: item?.title,
                 shortDescription: item?.shortDescription,
                 duration:
-                    !!item?.startDate && !!item?.endDate
-                        ? `${differenceInWeeks(new Date(item?.endDate), new Date(item?.startDate)) || 3} weeks`
+                    safeToDate(item?.startDate) && safeToDate(item?.endDate)
+                        ? `${differenceInWeeks(safeToDate(item?.endDate), safeToDate(item?.startDate)) || 3} weeks`
                         : 'Ongoing',
                 enrolled: item?.applications?.map(app => app?.creatorId)?.includes(profile?.id),
                 projectType:
