@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { getFirestore, collection, doc, getDoc } from '@react-native-firebase/firestore';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
+import {
+    getFirestore,
+    collection,
+    doc,
+    getDoc,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    serverTimestamp,
+} from '@react-native-firebase/firestore';
 import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import PortfolioHeader from './components/PortfolioHeader';
@@ -10,12 +20,11 @@ import Pdf from 'react-native-pdf';
 import DocumentPicker, { types } from 'react-native-document-picker';
 import TemplateBox from '../../../components/TemplateBox';
 import Button from '../../../components/Button';
-import useChatsContext from '../../../hooks/chats/useChatsContext';
 import CreatorDetailsHeader from './components/CreatorDetailsHeader';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import PortfolioCarousel from './components/PortfolioCarousel';
 import TemplateText from '../../../components/TemplateText';
-import { MEDIA_KIT, WEBVIEW } from '../../../navigation/ScreenNames';
+import { CHAT_ROOM, CHATS, MEDIA_KIT, WEBVIEW } from '../../../navigation/ScreenNames';
 import useProfile from '../../../hooks/user/useProfile';
 import ContactSection from './components/ContactSection';
 import useTranslation from '../../../hooks/useTranslation';
@@ -62,14 +71,73 @@ const PortfolioScreen = ({ navigation, route }) => {
     const paypalLink = creator?.paypalLink || DEFAULT_CREATOR_PAYPAL_LINK;
     const location = creator?.location?.country || creator?.location?.city;
     const email = creator?.email;
-    const { createChatRoom } = useChatsContext();
     const creatorFCMToken = creator?.fcmToken;
-    const creatorName = creator?.userName;
+    const creatorName = creator?.userName || creator?.name;
     const brandId = auth?.profile?.id;
     const brandFCMToken = auth?.profile?.fcmToken;
-    const brandName = auth?.profile?.userName;
-    const chatRoomName = `BRAND:${brandName} - CREATOR:${creatorName} chat`;
+    const brandName = auth?.profile?.userName || auth?.profile?.name;
     const loading = Object.keys(selectedCreator)?.length === 0 && isBrand;
+    const [chatLoading, setChatLoading] = useState(false);
+
+    const navigateToChat = (chatRoomId, chatName, receiverFcmToken) => {
+        navigation.navigate(CHAT_ROOM, {
+            screen: CHATS,
+            params: {
+                chatRoomId,
+                name: chatName,
+                receiverFcmToken,
+            },
+        });
+    };
+
+    const handleContactCreator = async () => {
+        if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId) {
+            Alert.alert(
+                t('chats.alerts.userNotAvailable.title') || 'User Not Available',
+                t('chats.alerts.userNotAvailable.message') || 'This user is not available for chat.',
+            );
+            return;
+        }
+
+        try {
+            setChatLoading(true);
+            const db = getFirestore();
+            const chatRoomsRef = collection(db, 'chatRooms');
+            const chatName = `${brandName} & ${creatorName}`;
+
+            const existingQuery = query(
+                chatRoomsRef,
+                where('brandId', '==', brandId),
+                where('creatorId', '==', creatorId),
+            );
+            const foundChat = await getDocs(existingQuery);
+
+            if (foundChat?.docs?.length) {
+                const existingRoom = foundChat.docs[0];
+                navigateToChat(existingRoom.id, chatName, creatorFCMToken);
+                return;
+            }
+
+            const newRoom = await addDoc(chatRoomsRef, {
+                name: chatName,
+                creatorId,
+                brandId,
+                createdAt: serverTimestamp(),
+                creatorFCMToken,
+                brandFCMToken,
+                lastMessageTimestamp: serverTimestamp(),
+            });
+
+            if (newRoom?.id) {
+                navigateToChat(newRoom.id, chatName, creatorFCMToken);
+            }
+        } catch (e) {
+            console.log('[CONTACT CREATOR ERROR]', e);
+            Alert.alert('Error', 'Could not start chat. Please try again.');
+        } finally {
+            setChatLoading(false);
+        }
+    };
 
     const pickPdf = async () => {
         const res = await DocumentPicker.pickSingle({
@@ -150,7 +218,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                             }
                             height={42}
                             width={SCREEN_WIDTH - 60}
-                            style={{ marginBottom: 20 }}
+                            style={styles.buttonMargin}
                             color={BLACK}
                         />
                         <Button
@@ -158,7 +226,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                             onPress={onPickAndUploadMediaKit}
                             height={42}
                             width={SCREEN_WIDTH - 60}
-                            style={{ marginBottom: 20 }}
+                            style={styles.buttonMargin}
                             color={BLACK}
                         />
                     </TemplateBox>
@@ -171,19 +239,8 @@ const PortfolioScreen = ({ navigation, route }) => {
                     <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                         <Button
                             title={t('profile.portfolio.contactButton')}
-                            onPress={async () => {
-                                try {
-                                    await createChatRoom(
-                                        chatRoomName,
-                                        creatorId,
-                                        brandId,
-                                        creatorFCMToken,
-                                        brandFCMToken,
-                                    );
-                                } catch (e) {
-                                    console.log('-> e', e);
-                                }
-                            }}
+                            onPress={handleContactCreator}
+                            loading={chatLoading}
                             height={50}
                             width={SCREEN_WIDTH - 40}
                             color={BLACK}
@@ -209,6 +266,9 @@ const styles = StyleSheet.create({
         height: 300,
         marginBottom: 20,
         borderRadius: 16,
+    },
+    buttonMargin: {
+        marginBottom: 20,
     },
 });
 export default PortfolioScreen;

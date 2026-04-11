@@ -1,13 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import {
-    CHATS_STACK, CREATORS_PROFILES, PROFILE, WEBVIEW,
-} from '../ScreenNames';
-import {
-    SWITCH,
-    TRANSPARENT_HEADER,
-} from '../../components/header/ScreenOptions';
+import { CHAT_ROOM, CREATORS_PROFILES, PROFILE, WEBVIEW } from '../ScreenNames';
+import { SWITCH, TRANSPARENT_HEADER } from '../../components/header/ScreenOptions';
 
 import CreatorProfilesScreen from '../../screens/brands/creators/CreatorProfilesScreen';
 
@@ -38,16 +33,9 @@ const CreatorsProfilesStack = () => {
                 options={{ ...TRANSPARENT_HEADER, animation: 'none' }}
                 component={CreatorProfilesScreen}
             />
-            <Screen
-                name={PROFILE}
-                options={TRANSPARENT_HEADER}
-                component={PortfolioScreen}
-            />
-            <Screen
-                name={WEBVIEW}
-                options={TRANSPARENT_HEADER}
-                component={WebviewScreen}
-            />
+            <Screen name={PROFILE} options={TRANSPARENT_HEADER} component={PortfolioScreen} />
+            <Screen name={WEBVIEW} options={TRANSPARENT_HEADER} component={WebviewScreen} />
+            <Screen name={CHAT_ROOM} options={{ headerShown: false }} component={ChatsStack} />
         </Navigator>
     );
 };
