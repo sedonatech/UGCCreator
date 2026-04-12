@@ -5,12 +5,13 @@ import { WHITE } from '../../../theme/Colors';
 
 const MediaKitScreen = ({ route }) => {
     const uri = route?.params?.uri;
+    const cacheFileName = route?.params?.cacheFileName;
     const page = route?.params?.page || 1;
 
     return (
         <View style={styles.container}>
             <Pdf
-                source={uri ? { uri, cache: true } : null}
+                source={uri ? { uri, cache: true, ...(cacheFileName && { cacheFileName }) } : null}
                 page={page}
                 trustAllCerts={false}
                 style={styles.pdf}
