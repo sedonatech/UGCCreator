@@ -399,7 +399,9 @@ const PortfolioScreen = ({ navigation, route }) => {
                         <Button
                             title={t('profile.portfolio.generateButton')}
                             onPress={() =>
-                                navigation.navigate(WEBVIEW, { url: 'https://media-gen-free.emergent.host/' })
+                                navigation.navigate(WEBVIEW, {
+                                    url: 'https://ugccreator-media-kit-generator.onrender.com/',
+                                })
                             }
                             height={42}
                             width={SCREEN_WIDTH - WRAPPER_MARGIN * 2 - 40}
