@@ -6,7 +6,7 @@ import { BRAND_BLUE, GREEN, LAVENDER, PINK, TRANSPARENT, WHITE } from '../../../
 import TemplateBox from '../../../components/TemplateBox';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, SPACE_LARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import { BRAND_PROJECT_DETAILS, PROJECTS_SCREEN } from '../../../navigation/ScreenNames';
+import { BRAND_PROJECT_DETAILS, PROJECT_DETAILS, PROJECTS_SCREEN } from '../../../navigation/ScreenNames';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import CurrentProjectCard from '../../app/home/components /CurrentProjectCard';
@@ -101,7 +101,9 @@ const BrandOffersScreen = ({ navigation }) => {
             key={item?.id}
             projectId={item?.id}
             isBrand={isBrand}
-            onPress={() => navigation.navigate(BRAND_PROJECT_DETAILS, { projectId: item?.id })}
+            onPress={() =>
+                navigation.navigate(isBrand ? BRAND_PROJECT_DETAILS : PROJECT_DETAILS, { projectId: item?.id })
+            }
         />
     );
 

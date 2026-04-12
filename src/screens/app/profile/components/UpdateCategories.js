@@ -2,11 +2,14 @@ import { ScrollView, StyleSheet } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import React, { useState } from 'react';
 import {
-    IS_ANDROID, SCREEN_HEIGHT, SCREEN_WIDTH, SPACE_XLARGE, SPACE_XSMALL, WRAPPER_MARGIN,
+    IS_ANDROID,
+    SCREEN_HEIGHT,
+    SCREEN_WIDTH,
+    SPACE_XLARGE,
+    SPACE_XSMALL,
+    WRAPPER_MARGIN,
 } from '../../../../theme/Layout';
-import {
-    BLACK, GREEN, WHITE, WHITE_96,
-} from '../../../../theme/Colors';
+import { BLACK, GREEN, WHITE, WHITE_96 } from '../../../../theme/Colors';
 import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import FilterCategory from '../../explore/components/FilterCategory';
@@ -14,11 +17,13 @@ import {
     ageFilters,
     deliveryFormatFilters,
     genderFilters,
-    languageFilters, projectDurationFilters,
-    projectFilters, projectTypeFilters,
+    languageFilters,
+    projectDurationFilters,
+    projectFilters,
+    projectTypeFilters,
 } from '../../../../consts/AppFilters/ProjectFilters';
-import AddButtonLargeSvg from '../../../../../assets/svgs/AddButtonLargeSvg';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
+import TemplateIcon from '../../../../components/TemplateIcon';
 import PillTag from '../../../../components/PillTag';
 
 const UpdateCategories = () => {
@@ -28,11 +33,20 @@ const UpdateCategories = () => {
 
     const { profile: profileData, update } = auth;
 
-    const [selectedFilters, setSelectedFilters] = useState([]);
+    const currentCategories = Array.isArray(profileData?.categories)
+        ? profileData.categories.filter(c => typeof c === 'string' && c.trim())
+        : [];
 
-    const onProjectFilterPress = (value) => {
+    const [selectedFilters, setSelectedFilters] = useState(currentCategories);
+
+    const openSheet = () => {
+        setSelectedFilters(currentCategories);
+        refRBSheet.current.open();
+    };
+
+    const onProjectFilterPress = value => {
         if (selectedFilters.includes(value)) {
-            setSelectedFilters(selectedFilters.filter((filter) => filter !== value));
+            setSelectedFilters(selectedFilters.filter(filter => filter !== value));
         } else {
             setSelectedFilters([...selectedFilters, value]);
         }
@@ -41,16 +55,21 @@ const UpdateCategories = () => {
     return (
         <TemplateBox mv={SPACE_XLARGE}>
             <TemplateBox selfCenter mb={10}>
-                <TemplateText size={16} bold>Select your Preferred content categories</TemplateText>
+                <TemplateText size={16} bold>
+                    Select your Preferred content categories
+                </TemplateText>
             </TemplateBox>
             <TemplateBox row flexWrap="wrap">
-                {profileData?.categories?.map((category) => (
+                {currentCategories.map(category => (
                     <PillTag
                         key={category}
                         showClose
                         primaryTransparent
                         onPress={() => {
-                            update('categories', profileData?.categories?.filter((cat) => cat !== category));
+                            update(
+                                'categories',
+                                currentCategories.filter(cat => cat !== category),
+                            );
                         }}
                     >
                         {category}
@@ -59,12 +78,22 @@ const UpdateCategories = () => {
             </TemplateBox>
             <TemplateBox height={10} />
             <TemplateBox
-                onPress={() => {
-                    refRBSheet.current.open();
-                }}
+                onPress={openSheet}
                 selfCenter
+                row
+                center
+                borderRadius={10}
+                borderWidth={1.5}
+                borderColor={GREEN}
+                pv={14}
+                ph={WRAPPER_MARGIN}
+                width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
+                style={styles.addButtonDashed}
             >
-                <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} />
+                <TemplateIcon name="add-circle-outline" size={22} family="Ionicons" color={GREEN} />
+                <TemplateText size={14} bold color={GREEN} style={styles.addButtonText}>
+                    Add Categories
+                </TemplateText>
             </TemplateBox>
             <RBSheet
                 ref={refRBSheet}
@@ -72,7 +101,6 @@ const UpdateCategories = () => {
                 closeOnPressMask
                 customStyles={{
                     wrapper: {
-
                         blurType: 'dark',
                         blurAmount: 10,
                     },
@@ -89,16 +117,11 @@ const UpdateCategories = () => {
                     },
                 }}
             >
-
                 <ScrollView>
-                    <TemplateBox
-                        mb={WRAPPER_MARGIN}
-                        mt={SPACE_XSMALL}
-                        alignItems="center"
-                        justifyContent="center"
-                        row
-                    >
-                        <TemplateText size={18} bold>Select Categories</TemplateText>
+                    <TemplateBox mb={WRAPPER_MARGIN} mt={SPACE_XSMALL} alignItems="center" justifyContent="center" row>
+                        <TemplateText size={18} bold>
+                            Select Categories
+                        </TemplateText>
 
                         {selectedFilters.length > 0 && (
                             <TemplateText
@@ -179,9 +202,7 @@ const UpdateCategories = () => {
                         selectedFilters={selectedFilters}
                         translationPrefix="filterProjectDurations"
                     />
-
                 </ScrollView>
-
             </RBSheet>
         </TemplateBox>
     );
@@ -190,6 +211,12 @@ const UpdateCategories = () => {
 const styles = StyleSheet.create({
     applyText: {
         marginLeft: WRAPPER_MARGIN,
+    },
+    addButtonDashed: {
+        borderStyle: 'dashed',
+    },
+    addButtonText: {
+        marginLeft: 8,
     },
 });
 export default UpdateCategories;

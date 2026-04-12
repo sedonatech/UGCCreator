@@ -4,7 +4,8 @@ import challengeBackground from '../../../../assets/images/challenge-background.
 //@ts-ignore
 import kegelChallengeImage from '../../../../assets/images/kegel-challenge-background.jpg';
 import firestore from '@react-native-firebase/firestore';
-import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import TemplateBox from '../../../components/TemplateBox';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateText from '../../../components/TemplateText';
@@ -25,12 +26,15 @@ import {
 import DynamicIcon from '../../../components/icons/DynamicIcon';
 import ToggleTab from '../../../components/ToggleTab';
 import Button from '../../../components/Button';
-import useChallenge, {
+import {
     Challenge,
     ChallengeMetrics,
     ChallengeSubmission,
     enrollInChallenge,
     getChallengeCta,
+    getStatusLabel,
+    canEnrollNow,
+    getEndsInLabel,
     isUserEnrolledInChallenge,
     upsertChallengeSubmission,
 } from '../../../hooks/useChallenge';
@@ -153,7 +157,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
     // challenge submission
     const [isEntriesModalVisible, setIsEntriesModalVisible] = useState(false);
     const { submissions, submissionsLoading, leaderBoardEntries, topEntry, leaderBoardEntriesLoading } =
-        useChallengeSubmission(challengeId, currentUserId);
+        useChallengeSubmission(challengeId, currentUserId, isLeaderBoardModalVisible);
 
     const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
     const [videoUrl, setVideoUrl] = useState('');
@@ -237,8 +241,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
         }
     };
 
-    // labels
-    const { getStatusLabel, canEnrollNow, getEndsInLabel } = useChallenge();
+    // labels — using standalone functions, no useChallenge() hook needed
     const now = useMemo(() => new Date(), []);
     const nowMs = now.getTime();
 
@@ -360,7 +363,7 @@ const ChallengeDetailsScreen: FC<ChallengeDetailsScreenProps> = ({ route, naviga
             )}
             <TemplateBox width={SCREEN_WIDTH} height={260}>
                 <TemplateBox absolute top={0} left={0} right={0} overflow="hidden" height={260}>
-                    <Image source={imageSource} style={styles.backgroundImage} />
+                    <FastImage source={imageSource} style={styles.backgroundImage} resizeMode={FastImage.resizeMode.cover} />
                 </TemplateBox>
                 <TemplateBox absolute bottom={30} left={20}>
                     <TemplateText bold size={22} mb={16} caps style={{ maxWidth: SCREEN_WIDTH - 140 }}>

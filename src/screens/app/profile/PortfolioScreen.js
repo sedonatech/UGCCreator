@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import {
     getFirestore,
@@ -11,7 +12,7 @@ import {
     addDoc,
     serverTimestamp,
 } from '@react-native-firebase/firestore';
-import { BLACK, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLACK, BLACK_60, BRAND_BLUE, GREY_30, IOS_BLUE, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { IS_ANDROID, SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import PortfolioHeader from './components/PortfolioHeader';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -24,12 +25,43 @@ import CreatorDetailsHeader from './components/CreatorDetailsHeader';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import PortfolioCarousel from './components/PortfolioCarousel';
 import TemplateText from '../../../components/TemplateText';
-import { CHAT_ROOM, CHATS, MEDIA_KIT, WEBVIEW } from '../../../navigation/ScreenNames';
+import TemplateIcon from '../../../components/TemplateIcon';
+import PillTag from '../../../components/PillTag';
+import { CHAT_ROOM, CHATS, MEDIA_KIT, UPDATE_PORTFOLIO, WEBVIEW } from '../../../navigation/ScreenNames';
 import useProfile from '../../../hooks/user/useProfile';
 import ContactSection from './components/ContactSection';
 import useTranslation from '../../../hooks/useTranslation';
 
 const USERS_COLLECTION = 'users';
+
+const SectionHeader = ({ icon, title, iconFamily }) => (
+    <TemplateBox row alignItems="center" mb={12}>
+        <TemplateBox
+            width={32}
+            height={32}
+            borderRadius={10}
+            backgroundColor={BRAND_BLUE + '25'}
+            alignItems="center"
+            justifyContent="center"
+            mr={10}
+        >
+            <TemplateIcon name={icon} size={16} family={iconFamily || 'Ionicons'} color={BRAND_BLUE} />
+        </TemplateBox>
+        <TemplateText bold size={17} color={BLACK}>
+            {title}
+        </TemplateText>
+    </TemplateBox>
+);
+
+SectionHeader.propTypes = {
+    icon: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    iconFamily: PropTypes.string,
+};
+
+SectionHeader.defaultProps = {
+    iconFamily: 'Ionicons',
+};
 
 const PortfolioScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
@@ -62,6 +94,7 @@ const PortfolioScreen = ({ navigation, route }) => {
     const { auth } = useAuthContext();
 
     const isBrand = auth?.profile?.type === 'brand';
+    const isOwner = !creatorId || creatorId === auth?.profile?.id;
     const creator = creatorId ? selectedCreator : auth?.profile;
     const profile = auth?.profile;
     const userName = creator?.userName;
@@ -78,6 +111,16 @@ const PortfolioScreen = ({ navigation, route }) => {
     const brandName = auth?.profile?.userName || auth?.profile?.name;
     const loading = Object.keys(selectedCreator)?.length === 0 && isBrand;
     const [chatLoading, setChatLoading] = useState(false);
+
+    const shortDescription = (creator?.shortDescription || '').trim();
+    const description = (creator?.description || '').trim();
+    const portfolioLink = (creator?.portfolioLink || '').trim();
+    const brands = Array.isArray(creator?.brands)
+        ? creator.brands.filter(b => b && typeof b === 'object' && (b.name || '').trim())
+        : [];
+    const categories = Array.isArray(creator?.categories)
+        ? creator.categories.filter(c => typeof c === 'string' && c.trim())
+        : [];
 
     const navigateToChat = (chatRoomId, chatName, receiverFcmToken) => {
         navigation.navigate(CHAT_ROOM, {
@@ -145,7 +188,6 @@ const PortfolioScreen = ({ navigation, route }) => {
             copyTo: 'cachesDirectory',
         });
 
-        // On iOS, res.uri may point at a provider location; use the copied file.
         if (!res.fileCopyUri) throw new Error('No local fileCopyUri; picker did not copy the PDF to app storage');
 
         return {
@@ -153,6 +195,7 @@ const PortfolioScreen = ({ navigation, route }) => {
             filename: res.name || 'media-kit.pdf',
         };
     };
+
     const onPickAndUploadMediaKit = async () => {
         try {
             const picked = await pickPdf();
@@ -167,6 +210,20 @@ const PortfolioScreen = ({ navigation, route }) => {
             console.log('pick/upload failed:', e);
         }
     };
+
+    const hasAbout = !!shortDescription || !!description;
+    const hasBrands = brands.length > 0;
+    const hasCategories = categories.length > 0;
+    const hasContact = !!(
+        contact?.phoneNumber ||
+        contact?.email ||
+        email ||
+        socials?.instagram ||
+        socials?.facebook ||
+        socials?.twitter ||
+        socials?.linkedin
+    );
+
     return (
         <>
             <ScrollView
@@ -179,45 +236,175 @@ const PortfolioScreen = ({ navigation, route }) => {
                 ) : (
                     <PortfolioHeader userName={userName} location={location} creatorId={creatorId} image={image} />
                 )}
+
+                {/* Edit Profile Button — owner only */}
+                {isOwner && !isBrand && (
+                    <TemplateBox selfCenter mt={16} mb={8}>
+                        <TemplateBox
+                            row
+                            center
+                            onPress={() => navigation.navigate(UPDATE_PORTFOLIO)}
+                            backgroundColor={BLACK}
+                            borderRadius={12}
+                            ph={24}
+                            pv={12}
+                        >
+                            <TemplateIcon name="create-outline" size={18} family="Ionicons" color={WHITE} />
+                            <TemplateText color={WHITE} bold size={14} style={styles.editButtonText}>
+                                {t('profile.portfolio.editProfile') || 'Edit Profile'}
+                            </TemplateText>
+                        </TemplateBox>
+                    </TemplateBox>
+                )}
+
+                {/* About Section */}
+                {hasAbout && (
+                    <TemplateBox
+                        mh={WRAPPER_MARGIN}
+                        mt={20}
+                        backgroundColor={WHITE}
+                        borderRadius={16}
+                        pAll={20}
+                        style={styles.card}
+                    >
+                        <SectionHeader icon="person-outline" title={t('profile.portfolio.aboutMe') || 'About Me'} />
+                        {!!shortDescription && (
+                            <TemplateText size={14} color={BLACK} lineHeight={22} bold>
+                                {shortDescription}
+                            </TemplateText>
+                        )}
+                        {!!description && (
+                            <TemplateText size={14} color={BLACK_60} lineHeight={22} mt={8}>
+                                {description}
+                            </TemplateText>
+                        )}
+                        {!!portfolioLink && (
+                            <TemplateBox row alignItems="center" mt={12}>
+                                <TemplateIcon name="link-outline" size={16} family="Ionicons" color={IOS_BLUE} />
+                                <TemplateText
+                                    color={IOS_BLUE}
+                                    size={13}
+                                    style={styles.portfolioLink}
+                                    numberOfLines={1}
+                                    onPress={() => navigation.navigate(WEBVIEW, { url: portfolioLink })}
+                                >
+                                    {portfolioLink}
+                                </TemplateText>
+                            </TemplateBox>
+                        )}
+                    </TemplateBox>
+                )}
+
+                {/* Brands Worked With */}
+                {hasBrands && (
+                    <TemplateBox
+                        mh={WRAPPER_MARGIN}
+                        mt={16}
+                        backgroundColor={WHITE}
+                        borderRadius={16}
+                        pAll={20}
+                        style={styles.card}
+                    >
+                        <SectionHeader
+                            icon="briefcase-outline"
+                            title={t('profile.portfolio.brandsWorkedWith') || 'Brands Worked With'}
+                        />
+                        <TemplateBox row flexWrap="wrap">
+                            {brands.map((b, index) => (
+                                <TemplateBox
+                                    key={`brand-${index}`}
+                                    row
+                                    alignItems="center"
+                                    backgroundColor={BRAND_BLUE + '18'}
+                                    borderRadius={20}
+                                    ph={14}
+                                    pv={8}
+                                    mr={8}
+                                    mb={8}
+                                >
+                                    <TemplateIcon
+                                        name="business-outline"
+                                        size={14}
+                                        family="Ionicons"
+                                        color={BRAND_BLUE}
+                                    />
+                                    <TemplateText size={13} bold color={BLACK} style={styles.brandChipText}>
+                                        {b?.name}
+                                    </TemplateText>
+                                </TemplateBox>
+                            ))}
+                        </TemplateBox>
+                    </TemplateBox>
+                )}
+
+                {/* Preferred Categories */}
+                {hasCategories && (
+                    <TemplateBox
+                        mh={WRAPPER_MARGIN}
+                        mt={16}
+                        backgroundColor={WHITE}
+                        borderRadius={16}
+                        pAll={20}
+                        style={styles.card}
+                    >
+                        <SectionHeader
+                            icon="pricetags-outline"
+                            title={t('profile.portfolio.preferredCategories') || 'Preferred Categories'}
+                        />
+                        <TemplateBox row flexWrap="wrap">
+                            {categories.map((category, index) => (
+                                <PillTag key={`cat-${index}`} primaryTransparent>
+                                    {category}
+                                </PillTag>
+                            ))}
+                        </TemplateBox>
+                    </TemplateBox>
+                )}
+
+                {/* Media Kit — owner only */}
                 {!creatorId && (
                     <TemplateBox
-                        selfCenter
-                        mv={WRAPPER_MARGIN}
                         mh={WRAPPER_MARGIN}
-                        justifyContent="center"
-                        alignItems="center"
+                        mt={16}
+                        backgroundColor={WHITE}
+                        borderRadius={16}
+                        pAll={20}
+                        style={styles.card}
                     >
-                        <TemplateText size={18} bold mb={16}>
-                            {t('profile.portfolio.mediaKitTitle')}
-                        </TemplateText>
-                        <TemplateText size={14} mb={14} center>
+                        <SectionHeader
+                            icon="document-text-outline"
+                            title={t('profile.portfolio.mediaKitTitle') || 'Media Kit'}
+                        />
+                        <TemplateText size={13} color={BLACK_60} mb={14}>
                             {t('profile.portfolio.mediaKitDescription')}
                         </TemplateText>
                         {!!profile?.mediaKit?.url && (
                             <TemplateBox
                                 onPress={() => navigation.navigate(MEDIA_KIT, { uri: profile?.mediaKit?.url })}
+                                mb={16}
                             >
                                 <Pdf
                                     source={{ uri: profile?.mediaKit?.url, cache: false }}
                                     page={1}
-                                    singlePage={true}
+                                    singlePage
                                     fitPolicy={0}
                                     spacing={0}
                                     trustAllCerts={false}
-                                    scrollEnabled={true}
+                                    scrollEnabled
                                     style={styles.pdfPreview}
                                     onError={e => console.log('[MEDIA-KIT]: thumb error', e)}
                                 />
                             </TemplateBox>
                         )}
-
                         <Button
                             title={t('profile.portfolio.generateButton')}
                             onPress={() =>
-                                navigation.navigate(WEBVIEW, { url: 'https://media-gen-free.emergent.host/' })
+                                navigation.navigate(WEBVIEW, {
+                                    url: 'https://ugccreator-media-kit-generator.onrender.com/',
+                                })
                             }
                             height={42}
-                            width={SCREEN_WIDTH - 60}
+                            width={SCREEN_WIDTH - WRAPPER_MARGIN * 2 - 40}
                             style={styles.buttonMargin}
                             color={BLACK}
                         />
@@ -225,16 +412,21 @@ const PortfolioScreen = ({ navigation, route }) => {
                             title={t('profile.portfolio.uploadButton')}
                             onPress={onPickAndUploadMediaKit}
                             height={42}
-                            width={SCREEN_WIDTH - 60}
-                            style={styles.buttonMargin}
+                            width={SCREEN_WIDTH - WRAPPER_MARGIN * 2 - 40}
                             color={BLACK}
                         />
                     </TemplateBox>
                 )}
+
+                {/* Sample Work Carousel */}
                 <PortfolioCarousel creatorId={creatorId} />
 
-                <ContactSection contactInfo={contact} socials={socials} paypalLink={paypalLink} email={email} />
+                {/* Contact Section */}
+                {hasContact && (
+                    <ContactSection contactInfo={contact} socials={socials} paypalLink={paypalLink} email={email} />
+                )}
 
+                {/* Contact Creator Button — brand view only */}
                 {creatorId && (
                     <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                         <Button
@@ -247,6 +439,8 @@ const PortfolioScreen = ({ navigation, route }) => {
                         />
                     </TemplateBox>
                 )}
+
+                <TemplateBox height={40} />
             </ScrollView>
             {loading && <LoadingOverlay message="" />}
         </>
@@ -260,15 +454,32 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flexGrow: 1,
+        backgroundColor: GREY_30,
+    },
+    card: {
+        shadowColor: BLACK,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
     },
     pdfPreview: {
-        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
+        width: SCREEN_WIDTH - WRAPPER_MARGIN * 2 - 40,
         height: 300,
-        marginBottom: 20,
-        borderRadius: 16,
+        borderRadius: 12,
     },
     buttonMargin: {
-        marginBottom: 20,
+        marginBottom: 12,
+    },
+    editButtonText: {
+        marginLeft: 8,
+    },
+    portfolioLink: {
+        marginLeft: 6,
+        flex: 1,
+    },
+    brandChipText: {
+        marginLeft: 6,
     },
 });
 export default PortfolioScreen;

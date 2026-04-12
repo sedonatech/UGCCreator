@@ -450,6 +450,9 @@
             "contactButton": "Contactar criador",
             "updateTitle": "Atualizar portfólio",
             "aboutMe": "Sobre mim",
+            "editProfile": "Editar Perfil",
+            "brandsWorkedWith": "Marcas com as quais trabalhei",
+            "preferredCategories": "Categorias preferidas",
             "sampleWork": {
                 "myTitle": "Os meus trabalhos",
                 "creatorTitle": "Showcase do criador",

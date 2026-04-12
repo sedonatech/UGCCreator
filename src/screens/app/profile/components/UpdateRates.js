@@ -3,14 +3,10 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 
 import { ScrollView } from 'react-native';
 import TemplateBox from '../../../../components/TemplateBox';
-import {
-    IS_ANDROID, SCREEN_WIDTH, SPACE_XLARGE, WRAPPER_MARGIN,
-} from '../../../../theme/Layout';
+import { IS_ANDROID, SCREEN_WIDTH, SPACE_XLARGE, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateText from '../../../../components/TemplateText';
 import AddButtonLargeSvg from '../../../../../assets/svgs/AddButtonLargeSvg';
-import {
-    BLACK, IOS_BLUE, WHITE, WHITE_96,
-} from '../../../../theme/Colors';
+import { BLACK, IOS_BLUE, WHITE, WHITE_96 } from '../../../../theme/Colors';
 import useAuthContext from '../../../../hooks/auth/useAuthContext';
 import RateItem from './RateItem';
 
@@ -27,8 +23,9 @@ const UpdateRates = () => {
     return (
         <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XLARGE}>
             <TemplateBox selfCenter>
-                <TemplateText size={16} startCase bold>Update your rates</TemplateText>
-
+                <TemplateText size={16} startCase bold>
+                    Update your rates
+                </TemplateText>
             </TemplateBox>
             <TemplateBox height={10} />
             <TemplateBox
@@ -62,21 +59,14 @@ const UpdateRates = () => {
                 }}
             >
                 <ScrollView>
-                    <TemplateBox
-                        ml={SCREEN_WIDTH - (WRAPPER_MARGIN * 4)}
-                        onPress={handleUpdate}
-                    >
-                        <TemplateText size={16} color={IOS_BLUE} bold>Update</TemplateText>
+                    <TemplateBox ml={SCREEN_WIDTH - WRAPPER_MARGIN * 4} onPress={handleUpdate}>
+                        <TemplateText size={16} color={IOS_BLUE} bold>
+                            Update
+                        </TemplateText>
                     </TemplateBox>
                     <TemplateBox mb={WRAPPER_MARGIN}>
                         <TemplateBox selfCenter mt={WRAPPER_MARGIN}>
-                            <TemplateText
-                                bold
-                                size={18}
-                                color={BLACK}
-                                center
-                                startCase
-                            >
+                            <TemplateText bold size={18} color={BLACK} center startCase>
                                 Monthly Package
                             </TemplateText>
                         </TemplateBox>
@@ -87,17 +77,11 @@ const UpdateRates = () => {
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
-                                onChangeText={(text) => {
-                                    let selected = profileData?.rates?.monthlyPackage?.find((i) => i?.description === item?.description);
-                                    selected = {
-                                        ...selected,
-                                        price: text,
-                                    };
-                                    profileData?.rates?.monthlyPackage?.splice(index, 1, selected);
-                                    update('rates.monthlyPackage',
-                                        [
-                                            ...profileData?.rates?.monthlyPackage,
-                                        ]);
+                                onChangeText={text => {
+                                    const updated = profileData.rates.monthlyPackage.map((r, i) =>
+                                        i === index ? { ...r, price: text } : r,
+                                    );
+                                    update('rates.monthlyPackage', updated);
                                 }}
                             />
                         ))}
@@ -105,13 +89,7 @@ const UpdateRates = () => {
 
                     <TemplateBox mb={WRAPPER_MARGIN}>
                         <TemplateBox selfCenter mt={WRAPPER_MARGIN}>
-                            <TemplateText
-                                bold
-                                size={18}
-                                color={BLACK}
-                                center
-                                startCase
-                            >
+                            <TemplateText bold size={18} color={BLACK} center startCase>
                                 Video Starting Rate
                             </TemplateText>
                         </TemplateBox>
@@ -122,17 +100,11 @@ const UpdateRates = () => {
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
-                                onChangeText={(text) => {
-                                    let selected = profileData?.rates?.videoStartingRate?.find((i) => i?.description === item?.description);
-                                    selected = {
-                                        ...selected,
-                                        price: text,
-                                    };
-                                    profileData?.rates?.videoStartingRate?.splice(index, 1, selected);
-                                    update('rates.monthlyPackage',
-                                        [
-                                            ...profileData?.rates?.videoStartingRate,
-                                        ]);
+                                onChangeText={text => {
+                                    const updated = profileData.rates.videoStartingRate.map((r, i) =>
+                                        i === index ? { ...r, price: text } : r,
+                                    );
+                                    update('rates.videoStartingRate', updated);
                                 }}
                             />
                         ))}
@@ -140,12 +112,7 @@ const UpdateRates = () => {
 
                     <TemplateBox mb={WRAPPER_MARGIN}>
                         <TemplateBox selfCenter mt={WRAPPER_MARGIN}>
-                            <TemplateText
-                                bold
-                                size={18}
-                                color={BLACK}
-                                center
-                            >
+                            <TemplateText bold size={18} color={BLACK} center>
                                 Photo Starting Rate
                             </TemplateText>
                         </TemplateBox>
@@ -156,17 +123,11 @@ const UpdateRates = () => {
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
-                                onChangeText={(text) => {
-                                    let selected = profileData?.rates?.photoStartingRate?.find((i) => i?.description === item?.description);
-                                    selected = {
-                                        ...selected,
-                                        price: text,
-                                    };
-                                    profileData?.rates?.photoStartingRate?.splice(index, 1, selected);
-                                    update('rates.monthlyPackage',
-                                        [
-                                            ...profileData?.rates?.photoStartingRate,
-                                        ]);
+                                onChangeText={text => {
+                                    const updated = profileData.rates.photoStartingRate.map((r, i) =>
+                                        i === index ? { ...r, price: text } : r,
+                                    );
+                                    update('rates.photoStartingRate', updated);
                                 }}
                             />
                         ))}
@@ -174,12 +135,7 @@ const UpdateRates = () => {
 
                     <TemplateBox mb={WRAPPER_MARGIN}>
                         <TemplateBox selfCenter mt={WRAPPER_MARGIN}>
-                            <TemplateText
-                                bold
-                                size={18}
-                                color={BLACK}
-                                center
-                            >
+                            <TemplateText bold size={18} color={BLACK} center>
                                 Revisions
                             </TemplateText>
                         </TemplateBox>
@@ -190,17 +146,11 @@ const UpdateRates = () => {
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
-                                onChangeText={(text) => {
-                                    let selected = profileData?.rates?.revision?.find((i) => i?.description === item?.description);
-                                    selected = {
-                                        ...selected,
-                                        price: text,
-                                    };
-                                    profileData?.rates?.revision?.splice(index, 1, selected);
-                                    update('rates.monthlyPackage',
-                                        [
-                                            ...profileData?.rates?.revision,
-                                        ]);
+                                onChangeText={text => {
+                                    const updated = profileData.rates.revision.map((r, i) =>
+                                        i === index ? { ...r, price: text } : r,
+                                    );
+                                    update('rates.revision', updated);
                                 }}
                             />
                         ))}
@@ -208,12 +158,7 @@ const UpdateRates = () => {
 
                     <TemplateBox mb={WRAPPER_MARGIN}>
                         <TemplateBox selfCenter mt={WRAPPER_MARGIN}>
-                            <TemplateText
-                                bold
-                                size={18}
-                                color={BLACK}
-                                center
-                            >
+                            <TemplateText bold size={18} color={BLACK} center>
                                 Usage Rights
                             </TemplateText>
                         </TemplateBox>
@@ -224,17 +169,11 @@ const UpdateRates = () => {
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
-                                onChangeText={(text) => {
-                                    let selected = profileData?.rates?.usageRights?.find((i) => i?.description === item?.description);
-                                    selected = {
-                                        ...selected,
-                                        price: text,
-                                    };
-                                    profileData?.rates?.usageRights?.splice(index, 1, selected);
-                                    update('rates.monthlyPackage',
-                                        [
-                                            ...profileData?.rates?.usageRights,
-                                        ]);
+                                onChangeText={text => {
+                                    const updated = profileData.rates.usageRights.map((r, i) =>
+                                        i === index ? { ...r, price: text } : r,
+                                    );
+                                    update('rates.usageRights', updated);
                                 }}
                             />
                         ))}
@@ -242,12 +181,7 @@ const UpdateRates = () => {
 
                     <TemplateBox mb={WRAPPER_MARGIN}>
                         <TemplateBox selfCenter mt={WRAPPER_MARGIN}>
-                            <TemplateText
-                                bold
-                                size={18}
-                                color={BLACK}
-                                center
-                            >
+                            <TemplateText bold size={18} color={BLACK} center>
                                 Exclusive Rights
                             </TemplateText>
                         </TemplateBox>
@@ -258,17 +192,11 @@ const UpdateRates = () => {
                                 title={item?.title}
                                 description={item?.description}
                                 value={item?.price}
-                                onChangeText={(text) => {
-                                    let selected = profileData?.rates?.exclusiveRights?.find((i) => i?.description === item?.description);
-                                    selected = {
-                                        ...selected,
-                                        price: text,
-                                    };
-                                    profileData?.rates?.exclusiveRights?.splice(index, 1, selected);
-                                    update('rates.monthlyPackage',
-                                        [
-                                            ...profileData?.rates?.exclusiveRights,
-                                        ]);
+                                onChangeText={text => {
+                                    const updated = profileData.rates.exclusiveRights.map((r, i) =>
+                                        i === index ? { ...r, price: text } : r,
+                                    );
+                                    update('rates.exclusiveRights', updated);
                                 }}
                             />
                         ))}

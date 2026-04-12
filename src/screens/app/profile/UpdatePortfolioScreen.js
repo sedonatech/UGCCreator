@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
@@ -16,8 +16,6 @@ import { PROFILE } from '../../../navigation/ScreenNames';
 import UpdateCategories from './components/UpdateCategories';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import UpdateBrandsWorkedWith from './components/UpdateBrandsWorkedWith';
-import UpdateWorkExamples from './components/UpdateWorkExamples';
-import UpdateRates from './components/UpdateRates';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
 import useTranslation from '../../../hooks/useTranslation';
 
@@ -27,21 +25,25 @@ const UpdatePortfolioScreen = ({ navigation }) => {
 
     const { auth } = useAuthContext();
 
-    const { profile: profileData, update, updateProfile, loading } = auth;
+    const { profile: profileData, update, updateProfile, updateProfileLoading } = auth;
 
     const { trackEvent } = useTrackEvent();
 
-    const handleUpdate = () => {
+    const [saving, setSaving] = useState(false);
+
+    const handleUpdate = useCallback(async () => {
+        if (saving) return;
         try {
-            setTimeout(async () => {
-                await updateProfile(profileData, profileData?.id);
-                await trackEvent('update_profile');
-                navigation.navigate(PROFILE);
-            }, 3000);
+            setSaving(true);
+            await updateProfile(profileData, profileData?.id);
+            await trackEvent('update_profile');
+            navigation.navigate(PROFILE);
         } catch (e) {
-            console.log(e);
+            console.log('Error saving profile:', e);
+        } finally {
+            setSaving(false);
         }
-    };
+    }, [profileData, saving, updateProfile, trackEvent, navigation]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -62,7 +64,7 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 />
             ),
         });
-    }, [navigation]);
+    }, [navigation, handleUpdate, t]);
 
     return (
         <>
@@ -293,9 +295,10 @@ const UpdatePortfolioScreen = ({ navigation }) => {
                 <UpdateBrandsWorkedWith />
                 <UpdateCategories />
                 {/* <UpdateWorkExamples /> */}
-                <UpdateRates />
             </Wrapper>
-            {loading && <LoadingOverlay message={t('profile.updatePortfolio.updatingMessage')} />}
+            {(saving || updateProfileLoading) && (
+                <LoadingOverlay message={t('profile.updatePortfolio.updatingMessage')} />
+            )}
         </>
     );
 };
