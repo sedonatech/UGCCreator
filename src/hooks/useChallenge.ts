@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+const CHALLENGES_LIMIT = 20;
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 
 export type ChallengeParticipant = {
@@ -100,6 +101,7 @@ const useChallenge = () => {
         const unsubscribe = firestore()
             .collection('challenges')
             .orderBy('challengeStartAt', 'asc')
+            .limit(CHALLENGES_LIMIT)
             .onSnapshot(querySnapshot => {
                 if (querySnapshot.empty) {
                     setChallenge(null);
@@ -149,94 +151,68 @@ const useChallenge = () => {
         return () => unsubscribe();
     }, []);
 
-    const getStatusLabel = (
-        enrollmentStartAt?: Date | null,
-        challengeStartAt?: Date | null,
-        challengeEndAt?: Date | null,
-        now: Date = new Date(),
-        t?: (key: string, options?: any) => string,
-    ): string => {
-        if (!enrollmentStartAt || !challengeStartAt || !challengeEndAt) {
-            return '';
-        }
-
-        const nowMs = now.getTime();
-        const enrollStartMs = enrollmentStartAt.getTime();
-        const challengeStartMs = challengeStartAt.getTime();
-        const challengeEndMs = challengeEndAt.getTime();
-
-        // before enrollment
-        if (nowMs < enrollStartMs) {
-            const diffDays = Math.ceil((enrollStartMs - nowMs) / MS_PER_DAY);
-            if (diffDays <= 0) {
-                return t?.('challenges.status.enrollmentStartsToday') || 'Enrollment starts today';
-            }
-            if (diffDays === 1) {
-                return t?.('challenges.status.dayToEnrollment') || '1 day to enrollment';
-            }
-            return t?.('challenges.status.daysToEnrollment', { days: diffDays }) || `${diffDays} days to enrollment`;
-        }
-
-        // enrollment open, before challenge start and before end
-        if (nowMs >= enrollStartMs && nowMs < challengeStartMs && nowMs < challengeEndMs) {
-            return t?.('challenges.status.enrollmentOpen') || 'Enrollment open';
-        }
-
-        // challenge active
-        if (nowMs >= challengeStartMs && nowMs <= challengeEndMs) {
-            return t?.('challenges.status.challengeStarted') || 'Challenge started';
-        }
-
-        // after challenge end
-        if (nowMs > challengeEndMs) {
-            return t?.('challenges.status.challengeCompleted') || 'Challenge completed';
-        }
-
-        return '';
-    };
-
-    const canEnrollNow = (
-        enrollmentStartAt?: Date | null,
-        challengeEndAt?: Date | null,
-        now: Date = new Date(),
-    ): boolean => {
-        if (!enrollmentStartAt || !challengeEndAt) {
-            return false;
-        }
-
-        const nowMs = now.getTime();
-        const enrollStartMs = enrollmentStartAt.getTime();
-        const challengeEndMs = challengeEndAt.getTime();
-
-        // allowed from enrollment start until challenge end
-        return nowMs >= enrollStartMs && nowMs <= challengeEndMs;
-    };
-
-    const getEndsInLabel = (
-        challengeEndAt?: Date | null,
-        now: Date = new Date(),
-        t?: (key: string, options?: any) => string,
-    ): string => {
-        if (!challengeEndAt) {
-            return '';
-        }
-
-        const diffMs = challengeEndAt.getTime() - now.getTime();
-        if (diffMs <= 0) {
-            return t?.('challenges.status.ended') || 'Ended';
-        }
-
-        const diffDays = Math.ceil(diffMs / MS_PER_DAY);
-        if (diffDays === 1) {
-            return t?.('challenges.status.endsInOneDay') || 'Ends in 1 day';
-        }
-        return t?.('challenges.status.endsInDays', { days: diffDays }) || `Ends in ${diffDays} days`;
-    };
-
-    return { challenge, challenges, challengeLoading, getStatusLabel, canEnrollNow, getEndsInLabel };
+    return { challenge, challenges, challengeLoading, getStatusLabel, canEnrollNow, getEndsInLabel } as const;
 };
 
 export default useChallenge;
+
+// ── Pure utility functions (no Firestore dependency) ──
+
+export function getStatusLabel(
+    enrollmentStartAt?: Date | null,
+    challengeStartAt?: Date | null,
+    challengeEndAt?: Date | null,
+    now: Date = new Date(),
+    t?: (key: string, options?: any) => string,
+): string {
+    if (!enrollmentStartAt || !challengeStartAt || !challengeEndAt) {
+        return '';
+    }
+    const nowMs = now.getTime();
+    const enrollStartMs = enrollmentStartAt.getTime();
+    const challengeStartMs = challengeStartAt.getTime();
+    const challengeEndMs = challengeEndAt.getTime();
+
+    if (nowMs < enrollStartMs) {
+        const diffDays = Math.ceil((enrollStartMs - nowMs) / MS_PER_DAY);
+        if (diffDays <= 0) return t?.('challenges.status.enrollmentStartsToday') || 'Enrollment starts today';
+        if (diffDays === 1) return t?.('challenges.status.dayToEnrollment') || '1 day to enrollment';
+        return t?.('challenges.status.daysToEnrollment', { days: diffDays }) || `${diffDays} days to enrollment`;
+    }
+    if (nowMs >= enrollStartMs && nowMs < challengeStartMs && nowMs < challengeEndMs) {
+        return t?.('challenges.status.enrollmentOpen') || 'Enrollment open';
+    }
+    if (nowMs >= challengeStartMs && nowMs <= challengeEndMs) {
+        return t?.('challenges.status.challengeStarted') || 'Challenge started';
+    }
+    if (nowMs > challengeEndMs) {
+        return t?.('challenges.status.challengeCompleted') || 'Challenge completed';
+    }
+    return '';
+}
+
+export function canEnrollNow(
+    enrollmentStartAt?: Date | null,
+    challengeEndAt?: Date | null,
+    now: Date = new Date(),
+): boolean {
+    if (!enrollmentStartAt || !challengeEndAt) return false;
+    const nowMs = now.getTime();
+    return nowMs >= enrollmentStartAt.getTime() && nowMs <= challengeEndAt.getTime();
+}
+
+export function getEndsInLabel(
+    challengeEndAt?: Date | null,
+    now: Date = new Date(),
+    t?: (key: string, options?: any) => string,
+): string {
+    if (!challengeEndAt) return '';
+    const diffMs = challengeEndAt.getTime() - now.getTime();
+    if (diffMs <= 0) return t?.('challenges.status.ended') || 'Ended';
+    const diffDays = Math.ceil(diffMs / MS_PER_DAY);
+    if (diffDays === 1) return t?.('challenges.status.endsInOneDay') || 'Ends in 1 day';
+    return t?.('challenges.status.endsInDays', { days: diffDays }) || `Ends in ${diffDays} days`;
+}
 
 /**
  * Create or update a participant document so the user is enrolled.

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import { SCREEN_WIDTH } from '../../../../theme/Layout';
 import { BLACK, DEFAULT_GRADIENT, GREEN, WHITE, YELLOW } from '../../../../theme/Colors';
@@ -81,7 +82,13 @@ const ProjectCard: FC<Props> = ({
         )}
 
         <LinearGradient colors={DEFAULT_GRADIENT} style={styles.linearGradient} />
-        {!!image && <Image style={styles.image} source={image} />}
+        {!!image && (
+            <FastImage
+                style={styles.image}
+                source={typeof image === 'string' ? { uri: image, priority: FastImage.priority.normal } : image}
+                resizeMode={FastImage.resizeMode.cover}
+            />
+        )}
         <TemplateBox
             width={CARD_WIDTH - 8}
             selfCenter
@@ -134,7 +141,6 @@ const styles = StyleSheet.create({
         height: 240,
         borderRadius: 16,
         position: 'absolute',
-        resizeMode: 'cover',
         zIndex: -1,
     },
     icon: {

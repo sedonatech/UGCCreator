@@ -97,29 +97,41 @@ const ExploreScreen = ({ route }) => {
 
     const [projectsSearchResults, setProjectsSearchResults] = useState([]);
 
-    const options = {
-        shouldSort: true,
-        threshold: 0.6,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
-        minMatchCharLength: 1,
-        keys: ['name', 'title', 'shortDescription'],
-    };
+    const fuseOptions = useMemo(
+        () => ({
+            shouldSort: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['name', 'title', 'shortDescription'],
+        }),
+        [],
+    );
+
+    // Build Fuse indexes once when data changes, not on every keystroke
+    const brandsFuse = useMemo(() => {
+        if (!brandsData?.length) return null;
+        return new Fuse(brandsData, fuseOptions);
+    }, [brandsData, fuseOptions]);
+
+    const projectsFuse = useMemo(() => {
+        if (!projectsCarouselData?.length) return null;
+        return new Fuse(projectsCarouselData, fuseOptions);
+    }, [projectsCarouselData, fuseOptions]);
 
     useEffect(() => {
-        if (!!search && brandsData?.length) {
-            const fuse = new Fuse(brandsData, options);
-            const results = fuse.search(search).map(({ item }) => item);
+        if (!!search && brandsFuse) {
+            const results = brandsFuse.search(search).map(({ item }) => item);
             setSearchResults(results);
         }
 
-        if (!!search && projectsCarouselData?.length) {
-            const fuse = new Fuse(projectsCarouselData, options);
-            const results = fuse.search(search).map(({ item }) => item);
+        if (!!search && projectsFuse) {
+            const results = projectsFuse.search(search).map(({ item }) => item);
             setProjectsSearchResults(results);
         }
-    }, [search, projectsCarouselData, brandsData]);
+    }, [search, brandsFuse, projectsFuse]);
 
     useEffect(() => {
         if (initialTab === BRANDS_TAB) {

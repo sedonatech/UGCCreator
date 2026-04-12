@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Image, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import TemplateTouchable from './TemplateTouchable';
 import { BLACK, LIGHT_PURPLE } from '../theme/Colors';
 import TemplateBox from './TemplateBox';
@@ -59,10 +60,10 @@ const Avatar = ({ style, height = 50, width = 50, borderRadius = 25 }) => {
                 </TemplateBox>
             ) : (
                 <TemplateBox borderRadius={borderRadius} onPress={() => onAddPhoto(true)} hitslop={{ radius: 25 }}>
-                    <Image
-                        source={{ uri: profileData?.image }}
+                    <FastImage
+                        source={{ uri: profileData?.image, priority: FastImage.priority.normal }}
                         style={[imageStyle, { height, width }]}
-                        resizeMode="cover"
+                        resizeMode={FastImage.resizeMode.cover}
                     />
                 </TemplateBox>
             )}

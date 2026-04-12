@@ -37,9 +37,7 @@ const OverviewTab = ({ application, currentProject, creatorID, brandEmail, brand
         <TemplateBox ph={WRAPPER_MARGIN} mt={WRAPPER_MARGIN} mb={WRAPPER_MARGIN * 2}>
             {overviewStatus?.map((status, index) => {
                 const isProjectCompleted = overviewStatus?.[overviewStatus?.length - 2]?.status === 'completed';
-                console.log('🚀 ~ OverviewTab ~ isProjectCompleted:', isProjectCompleted);
                 const isActive = status.status === 'active';
-                console.log('🚀 ~ OverviewTab ~ isActive:', isActive);
                 return (
                     <TemplateBox row key={status.value}>
                         <TemplateBox alignItems="center" zIndex={2}>

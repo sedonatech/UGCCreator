@@ -29,7 +29,7 @@ export const calculateMetricsPoints = (metrics: ChallengeMetrics): number => {
     return views + likes + comments + shares + saves;
 };
 
-export const useChallengeSubmission = (challengeId?: string, userId?: string) => {
+export const useChallengeSubmission = (challengeId?: string, userId?: string, loadLeaderboard: boolean = false) => {
     const [submissions, setSubmissions] = useState<ChallengeSubmission[]>([]);
     const [submissionsLoading, setSubmissionsLoading] = useState(true);
 
@@ -74,7 +74,7 @@ export const useChallengeSubmission = (challengeId?: string, userId?: string) =>
     }, [challengeId, userId]);
 
     useEffect(() => {
-        if (!challengeId) {
+        if (!challengeId || !loadLeaderboard) {
             setLeaderBoardEntries([]);
             setLeaderBoardEntriesLoading(false);
             return;
@@ -133,7 +133,7 @@ export const useChallengeSubmission = (challengeId?: string, userId?: string) =>
         );
 
         return () => unsubscribe();
-    }, [challengeId]);
+    }, [challengeId, loadLeaderboard]);
 
     const topEntry = leaderBoardEntries.length > 0 ? leaderBoardEntries[0] : null;
 
