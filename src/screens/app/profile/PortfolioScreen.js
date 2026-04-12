@@ -380,11 +380,20 @@ const PortfolioScreen = ({ navigation, route }) => {
                         </TemplateText>
                         {!!profile?.mediaKit?.url && (
                             <TemplateBox
-                                onPress={() => navigation.navigate(MEDIA_KIT, { uri: profile?.mediaKit?.url })}
+                                onPress={() =>
+                                    navigation.navigate(MEDIA_KIT, {
+                                        uri: profile?.mediaKit?.url,
+                                        cacheFileName: `${profile?.id}-media-kit.pdf`,
+                                    })
+                                }
                                 mb={16}
                             >
                                 <Pdf
-                                    source={{ uri: profile?.mediaKit?.url, cache: true }}
+                                    source={{
+                                        uri: profile?.mediaKit?.url,
+                                        cache: true,
+                                        cacheFileName: `${profile?.id}-media-kit.pdf`,
+                                    }}
                                     page={1}
                                     singlePage
                                     fitPolicy={0}
