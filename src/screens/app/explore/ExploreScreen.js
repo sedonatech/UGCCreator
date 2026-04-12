@@ -76,15 +76,9 @@ const ExploreScreen = ({ route }) => {
                 duration: `${
                     (safeToDate(item?.endDate) && safeToDate(item?.startDate)
                         ? differenceInWeeks(safeToDate(item?.endDate), safeToDate(item?.startDate))
-                        : 0) ||
-                    3(
-                        safeToDate(item?.endDate) && safeToDate(item?.startDate)
-                            ? differenceInWeeks(safeToDate(item?.endDate), safeToDate(item?.startDate))
-                            : 0,
-                    ) ||
-                    3
+                        : 0) || 3
                 } weeks`,
-                projectType: projectTypeFilters.find(({ value }) => value === item?.projectType[0])?.name,
+                projectType: projectTypeFilters.find(({ value }) => value === item?.projectType?.[0])?.name,
             }))
             ?.slice(0, 4);
     }, [projects]);
