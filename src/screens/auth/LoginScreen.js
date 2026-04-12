@@ -46,7 +46,9 @@ const LoginScreen = ({ navigation }) => {
                 setError(null);
             }
             await auth().signInWithEmailAndPassword(email, password);
-            const profile = await getProfile(auth().currentUser.uid);
+            const currentUser = auth().currentUser;
+            if (!currentUser) return;
+            const profile = await getProfile(currentUser.uid);
             const token = await messaging().getToken();
 
             const data = token

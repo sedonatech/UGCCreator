@@ -384,7 +384,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                                 mb={16}
                             >
                                 <Pdf
-                                    source={{ uri: profile?.mediaKit?.url, cache: false }}
+                                    source={{ uri: profile?.mediaKit?.url, cache: true }}
                                     page={1}
                                     singlePage
                                     fitPolicy={0}

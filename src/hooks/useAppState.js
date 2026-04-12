@@ -15,18 +15,20 @@ export default function useAppState(settings) {
 
     useEffect(() => {
         function handleAppStateChange(nextAppState) {
-
             if (nextAppState === 'active') {
                 if (isValidFunction(onForeground)) {
                     onForeground();
                 }
             } else if (appState === 'active' && nextAppState.match(/inactive|background/)) {
-                (async () => {
-                    const profile = await getProfile(auth().currentUser.uid);
-                    await updateProfile({lastLoginTime: new Date().toISOString()}, profile?.id)    
-                })().catch(err => {
-                    console.error(err);
-                });
+                const currentUser = auth().currentUser;
+                if (currentUser) {
+                    (async () => {
+                        const profile = await getProfile(currentUser.uid);
+                        await updateProfile({ lastLoginTime: new Date().toISOString() }, profile?.id);
+                    })().catch(err => {
+                        console.error(err);
+                    });
+                }
                 if (isValidFunction(onBackground)) {
                     onBackground();
                 }
