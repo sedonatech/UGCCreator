@@ -58,10 +58,26 @@ const AuthProvider = ({ children }) => {
 
     const update = (key, data) => {
         console.log('[Profile] Auth Provider: Update called, updating profile: ', key, data);
-        setProfile(prevState => ({
-            ...prevState,
-            [key]: data,
-        }));
+        setProfile(prevState => {
+            if (!prevState) return prevState;
+            // Support dot-notation keys like 'rates.monthlyPackage'
+            if (key.includes('.')) {
+                const keys = key.split('.');
+                const topKey = keys[0];
+                const subKey = keys[1];
+                return {
+                    ...prevState,
+                    [topKey]: {
+                        ...prevState[topKey],
+                        [subKey]: data,
+                    },
+                };
+            }
+            return {
+                ...prevState,
+                [key]: data,
+            };
+        });
     };
 
     useEffect(() => {

@@ -1,5 +1,13 @@
 // eslint-disable-file consistent-return
-import { getFirestore, doc, setDoc, updateDoc, getDoc, collection, serverTimestamp } from '@react-native-firebase/firestore';
+import {
+    getFirestore,
+    doc,
+    setDoc,
+    updateDoc,
+    getDoc,
+    collection,
+    serverTimestamp,
+} from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { useState } from 'react';
 import {
@@ -181,9 +189,35 @@ const useProfile = () => {
             setUpdateProfileLoading(true);
             const db = getFirestore();
             const userRef = doc(db, USERS_COLLECTION, id);
-            await updateDoc(userRef, {
-                ...data,
-            });
+            // Only write editable profile fields — avoid overwriting id, type, etc.
+            const {
+                userName,
+                email,
+                shortDescription,
+                description,
+                portfolioLink,
+                socialMedia,
+                contact,
+                location,
+                brands,
+                categories,
+                rates,
+                image,
+            } = data || {};
+            const updateData = {};
+            if (userName !== undefined) updateData.userName = userName;
+            if (email !== undefined) updateData.email = email;
+            if (shortDescription !== undefined) updateData.shortDescription = shortDescription;
+            if (description !== undefined) updateData.description = description;
+            if (portfolioLink !== undefined) updateData.portfolioLink = portfolioLink;
+            if (socialMedia !== undefined) updateData.socialMedia = socialMedia;
+            if (contact !== undefined) updateData.contact = contact;
+            if (location !== undefined) updateData.location = location;
+            if (brands !== undefined) updateData.brands = brands;
+            if (categories !== undefined) updateData.categories = categories;
+            if (rates !== undefined) updateData.rates = rates;
+            if (image !== undefined) updateData.image = image;
+            await updateDoc(userRef, updateData);
         } catch (e) {
             console.log('error updating profile:', e);
         }

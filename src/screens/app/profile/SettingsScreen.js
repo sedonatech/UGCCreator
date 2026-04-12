@@ -9,7 +9,7 @@ import useLogout from './useLogout';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import SettingsRow from './components/SettingsRow';
-import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_PORTFOLIO } from '../../../navigation/ScreenNames';
+import { FORGOT_PASSWORD, SUBSCRIPTION } from '../../../navigation/ScreenNames';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import useNotificationPermissions from '../../../hooks/notifications/useNotificationPermissions';
 import { wp } from '../../../Utils/getResponsiveSize';
@@ -70,12 +70,6 @@ const SettingsScreen = ({ navigation }) => {
             description: t('settings.rows.testSubscriptions.description'),
             onPress: () => navigation.navigate(SUBSCRIPTION, { fromSettings: true }),
             icon: 'card-outline',
-        },
-        {
-            title: t('settings.rows.updatePortfolio.title'),
-            description: t('settings.rows.updatePortfolio.description'),
-            onPress: () => navigation.navigate(UPDATE_PORTFOLIO),
-            icon: 'person-outline',
         },
         {
             title: t('settings.rows.changePassword.title'),
