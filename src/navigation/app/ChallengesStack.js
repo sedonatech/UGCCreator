@@ -12,7 +12,7 @@ const { Navigator, Screen } = Stack;
 const ChallengesStack = () => (
     <Navigator initialRouteName={CHALLENGES} screenOptions={SWITCH}>
         <Screen name={CHALLENGES} options={TRANSPARENT_HEADER} component={ChallengesScreen} />
-        <Screen name={CHALLENGE_DETAILS} options={TRANSPARENT_HEADER} component={ChallengeDetailsScreen} />
+        <Screen name={CHALLENGE_DETAILS} options={{ ...TRANSPARENT_HEADER, animationEnabled: false }} component={ChallengeDetailsScreen} />
     </Navigator>
 );
 

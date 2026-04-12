@@ -42,16 +42,19 @@ export default () => {
     };
 
     useEffect(() => {
+        let userNameInterval;
         if (isLoggedIn && auth?.user?.email && auth?.user?.uid) {
-            (async () => {
-                const userNameInterval = setInterval(async () => {
-                    if (auth?.user?.email) {
-                        clearInterval(userNameInterval);
-                        init(auth?.user?.uid, auth?.user?.email);
-                    }
-                }, 500);
-            })();
+            userNameInterval = setInterval(() => {
+                if (auth?.user?.email) {
+                    clearInterval(userNameInterval);
+                    userNameInterval = null;
+                    init(auth?.user?.uid, auth?.user?.email);
+                }
+            }, 500);
         }
+        return () => {
+            if (userNameInterval) clearInterval(userNameInterval);
+        };
     }, [isLoggedIn, auth?.user?.uid, auth?.user?.email]);
 
     return [ready, userEmail];

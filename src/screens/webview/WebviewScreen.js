@@ -64,12 +64,14 @@ const WebviewScreen = ({ route }) => {
                 contentContainerStyle={styles.contentContainer}
                 showsVerticalScrollIndicator={false}
             >
-                <WebView
-                    source={{ uri: url }}
-                    style={{ marginTop: isAndroid ? 80 : 120 }}
-                    onLoad={handleLoad} // Trigger when WebView finishes loading
-                    onError={handleError}
-                />
+                {url && urlPattern.test(url) && (
+                    <WebView
+                        source={{ uri: url }}
+                        style={{ marginTop: isAndroid ? 80 : 120 }}
+                        onLoad={handleLoad}
+                        onError={handleError}
+                    />
+                )}
             </ScrollView>
         </>
     );

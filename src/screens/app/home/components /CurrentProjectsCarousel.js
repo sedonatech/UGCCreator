@@ -14,7 +14,7 @@ import CurrentProjectCard from './CurrentProjectCard';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import {
     CURRENT_PROJECT_DETAILS,
-    OFFERS, OFFERS_STACK,
+    BRAND_OFFERS,
 } from '../../../../navigation/ScreenNames';
 import { projectStatuses } from '../../../../consts/AppFilters/ProjectStatus';
 import useGetBrands from '../../../../hooks/creators/useGetBrands';
@@ -64,9 +64,7 @@ const CurrentProjectsCarousel = ({ style, isBrand, data }) => {
                     {' '}
                 </TemplateText>
                 <TemplateTouchable
-                    onPress={() => navigation.navigate(OFFERS_STACK, {
-                        screen: OFFERS,
-                    })}
+                    onPress={() => navigation.navigate(BRAND_OFFERS)}
                 >
                     <TemplateText startCase size={14} underLine color={BLUE}>
                         See All
@@ -86,11 +84,8 @@ const CurrentProjectsCarousel = ({ style, isBrand, data }) => {
                         documentCount={item?.documents}
                         daysLeft={item?.daysLeft}
                         progress={item?.progress}
-                        onPress={() => navigation.navigate(OFFERS_STACK, {
-                            screen: CURRENT_PROJECT_DETAILS,
-                            params: {
-                                projectId: item?.id,
-                            },
+                        onPress={() => navigation.navigate(CURRENT_PROJECT_DETAILS, {
+                            projectId: item?.id,
                         })}
                         style={styles.card}
                         isBrand={isBrand}

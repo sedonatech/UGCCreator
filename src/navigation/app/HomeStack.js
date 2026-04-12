@@ -85,7 +85,7 @@ const HomeStack = () => (
         <Screen name={AFFILIATE_BRANDS} options={TRANSPARENT_HEADER} component={AffiliateBrandsScreen} />
         <Screen name={BRAND_APPLICATIONS} options={TRANSPARENT_HEADER} component={BrandApplicationsScreen} />
         <Screen name={BRAND_DEALS_SCREEN} options={TRANSPARENT_HEADER} component={BrandDealsScreen} />
-        <Screen name={CHALLENGE_DETAILS} options={TRANSPARENT_HEADER} component={ChallengeDetailsScreen} />
+        <Screen name={CHALLENGE_DETAILS} options={{ ...TRANSPARENT_HEADER, animationEnabled: false }} component={ChallengeDetailsScreen} />
         <Screen name={BRAND_OFFERS} options={TRANSPARENT_HEADER} component={BrandOffersScreen} />
         <Screen name={PLATFORM_BRANDS_SCREEN} options={TRANSPARENT_HEADER} component={PlatformBrandsScreen} />
         <Screen name={CHAT_ROOM} options={{ headerShown: false }} component={ChatsStack} />

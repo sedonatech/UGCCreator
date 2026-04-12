@@ -78,10 +78,10 @@ const UpdateRates = () => {
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={text => {
-                                    const updated = profileData.rates.monthlyPackage.map((r, i) =>
+                                    const updated = profileData?.rates?.monthlyPackage?.map((r, i) =>
                                         i === index ? { ...r, price: text } : r,
                                     );
-                                    update('rates.monthlyPackage', updated);
+                                    if (updated) update('rates.monthlyPackage', updated);
                                 }}
                             />
                         ))}
@@ -101,10 +101,10 @@ const UpdateRates = () => {
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={text => {
-                                    const updated = profileData.rates.videoStartingRate.map((r, i) =>
+                                    const updated = profileData?.rates?.videoStartingRate?.map((r, i) =>
                                         i === index ? { ...r, price: text } : r,
                                     );
-                                    update('rates.videoStartingRate', updated);
+                                    if (updated) update('rates.videoStartingRate', updated);
                                 }}
                             />
                         ))}
@@ -124,10 +124,10 @@ const UpdateRates = () => {
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={text => {
-                                    const updated = profileData.rates.photoStartingRate.map((r, i) =>
+                                    const updated = profileData?.rates?.photoStartingRate?.map((r, i) =>
                                         i === index ? { ...r, price: text } : r,
                                     );
-                                    update('rates.photoStartingRate', updated);
+                                    if (updated) update('rates.photoStartingRate', updated);
                                 }}
                             />
                         ))}
@@ -147,10 +147,10 @@ const UpdateRates = () => {
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={text => {
-                                    const updated = profileData.rates.revision.map((r, i) =>
+                                    const updated = profileData?.rates?.revision?.map((r, i) =>
                                         i === index ? { ...r, price: text } : r,
                                     );
-                                    update('rates.revision', updated);
+                                    if (updated) update('rates.revision', updated);
                                 }}
                             />
                         ))}
@@ -170,10 +170,10 @@ const UpdateRates = () => {
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={text => {
-                                    const updated = profileData.rates.usageRights.map((r, i) =>
+                                    const updated = profileData?.rates?.usageRights?.map((r, i) =>
                                         i === index ? { ...r, price: text } : r,
                                     );
-                                    update('rates.usageRights', updated);
+                                    if (updated) update('rates.usageRights', updated);
                                 }}
                             />
                         ))}
@@ -193,10 +193,10 @@ const UpdateRates = () => {
                                 description={item?.description}
                                 value={item?.price}
                                 onChangeText={text => {
-                                    const updated = profileData.rates.exclusiveRights.map((r, i) =>
+                                    const updated = profileData?.rates?.exclusiveRights?.map((r, i) =>
                                         i === index ? { ...r, price: text } : r,
                                     );
-                                    update('rates.exclusiveRights', updated);
+                                    if (updated) update('rates.exclusiveRights', updated);
                                 }}
                             />
                         ))}
