@@ -88,17 +88,10 @@ const BrandEventDetailsScreen = ({ navigation, route }) => {
     return (
         <TemplateBox flex backgroundColor={WHITE}>
             <ScrollView>
-                <TemplateBox
-                    mt={HEADER_MARGIN * 0.8}
-                    mb={hp(16)}
-                    borderRadius={hp(16)}
-                    overflow="hidden"
-                    backgroundColor={WHITE}
-                    ph={WRAPPER_MARGIN}
-                >
+                <TemplateBox mt={HEADER_MARGIN * 0.8} mb={hp(16)} backgroundColor={WHITE} ph={WRAPPER_MARGIN}>
                     <TemplateBox
                         width={WRAPPED_SCREEN_WIDTH}
-                        aspectRatio={1}
+                        height={hp(220)}
                         backgroundColor={GREY}
                         borderRadius={hp(16)}
                         overflow="hidden"
@@ -107,16 +100,16 @@ const BrandEventDetailsScreen = ({ navigation, route }) => {
                     </TemplateBox>
 
                     <TemplateBox mt={hp(16)}>
-                        <TemplateText semiBold size={hp(16)}>
+                        <TemplateText semiBold size={hp(20)}>
                             {event?.title}
                         </TemplateText>
                     </TemplateBox>
 
                     {!!event?.country && (
-                        <TemplateBox row center mt={hp(4)}>
+                        <TemplateBox row alignItems="center" mt={hp(8)}>
                             <TemplateIcon
                                 name="location-sharp"
-                                size={hp(11)}
+                                size={hp(14)}
                                 family="Ionicons"
                                 color={DARK_GREY}
                                 style={styles.locationIcon}
@@ -127,32 +120,28 @@ const BrandEventDetailsScreen = ({ navigation, route }) => {
                         </TemplateBox>
                     )}
 
-                    <TemplateBox row hCenter mt={hp(16)}>
-                        <TemplateBox mr={wp(16)} alignItems="center">
+                    <TemplateBox row alignItems="center" mt={hp(16)}>
+                        <TemplateBox mr={wp(16)}>
                             <TemplateText medium size={hp(14)}>
-                                {day}
-                            </TemplateText>
-                            <TemplateText size={hp(12)} color={DARK_GREY} style={styles.marginTop2}>
-                                {month}
+                                {day} {month}
                             </TemplateText>
                         </TemplateBox>
                         <TemplateBox>
                             <TemplateText medium size={hp(14)}>
                                 {dayOfWeek}
+                                {time ? `, ${time}` : ''}
                             </TemplateText>
-                            {!!time && (
-                                <TemplateText size={hp(12)} style={styles.marginTop2} color={DARK_GREY}>
-                                    {time}
-                                </TemplateText>
-                            )}
                         </TemplateBox>
                     </TemplateBox>
 
-                    <TemplateBox mt={hp(16)}>
-                        <TemplateText size={hp(14)}>{event?.description}</TemplateText>
+                    <TemplateBox mt={hp(8)}>
+                        <TemplateText size={hp(12)} color={DARK_GREY}>{`Ends ${formattedEndDate}`}</TemplateText>
                     </TemplateBox>
+
                     <TemplateBox mt={hp(16)}>
-                        <TemplateText size={hp(12)} color={DARK_GREY}>{`End date: ${formattedEndDate}`}</TemplateText>
+                        <TemplateText size={hp(14)} lineHeight={hp(22)} color={DARK_GREY}>
+                            {event?.description}
+                        </TemplateText>
                     </TemplateBox>
                 </TemplateBox>
             </ScrollView>
@@ -184,9 +173,6 @@ const styles = StyleSheet.create({
     locationIcon: {
         marginRight: 3,
         marginTop: 3,
-    },
-    marginTop2: {
-        marginTop: 2,
     },
 });
 

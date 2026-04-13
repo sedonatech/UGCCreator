@@ -27,8 +27,12 @@ const DropdownSearch: FC<Props> = ({
 }) => {
     const [toggleFilters, setToggleFilters] = useState(false);
     const [search, setSearch] = useState('');
+    const MAX_VISIBLE = 20;
     const filteredFilters = useMemo(
-        () => filters?.filter(filter => filter?.name?.toLowerCase().startsWith(search.toLowerCase())),
+        () =>
+            filters
+                ?.filter(filter => filter?.name?.toLowerCase().startsWith(search.toLowerCase()))
+                .slice(0, MAX_VISIBLE),
         [filters, search],
     );
 
@@ -67,7 +71,7 @@ const DropdownSearch: FC<Props> = ({
                         />
                     </TemplateBox>
                     <TemplateBox row flexWrap="wrap" pAll={SPACE_SMALL}>
-                        {(search?.length > 1 || showDefaultOptions) &&
+                        {(search?.length >= 1 || showDefaultOptions) &&
                             filteredFilters?.map(({ value, name }, index) => (
                                 <FilterPill
                                     onPress={() => {

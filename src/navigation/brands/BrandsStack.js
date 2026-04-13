@@ -2,7 +2,16 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import {
-    ACTIVE_CREATORS, ADD_EVENT, BRAND_EVENT_DETAILS_SCREEN, BRAND_EVENTS_COMPLETED_SCREEN, BRAND_EVENTS_SCREEN, BRANDS_TABS, SAMPLE_DETAILS_SCREEN, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW,
+    ACTIVE_CREATORS,
+    ADD_EVENT,
+    BRAND_EVENT_DETAILS_SCREEN,
+    BRAND_EVENTS_COMPLETED_SCREEN,
+    BRAND_EVENTS_SCREEN,
+    BRANDS_TABS,
+    SAMPLE_DETAILS_SCREEN,
+    SUBSCRIPTION,
+    UPDATE_BRAND_PROFILE,
+    WEBVIEW,
 } from '../ScreenNames';
 import { SWITCH, TRANSPARENT_HEADER, TRANSPARENT_HEADER_NO_LOGO } from '../../components/header/ScreenOptions';
 import BrandsTabs from './BrandsTabs';
@@ -30,56 +39,20 @@ const BrandsStack = () => (
             },
         }}
     >
-        <Screen
-            name={BRANDS_TABS}
-            options={{ headerShown: false }}
-            component={BrandsTabs}
-        />
-        <Screen
-            name={SUBSCRIPTION}
-            component={SubscriptionScreen}
-            options={TRANSPARENT_HEADER_NO_LOGO}
-        />
-        <Screen
-            name={UPDATE_BRAND_PROFILE}
-            options={TRANSPARENT_HEADER}
-            component={UpdateBrandProfileScreen}
-        />
-        <Screen
-            name={ACTIVE_CREATORS}
-            options={TRANSPARENT_HEADER}
-            component={ActiveCreatorsScreen}
-        />
-        <Screen
-            name={BRAND_EVENTS_SCREEN}
-            options={TRANSPARENT_HEADER}
-            component={BrandEventsScreen}
-        />
+        <Screen name={BRANDS_TABS} options={{ headerShown: false }} component={BrandsTabs} />
+        <Screen name={SUBSCRIPTION} component={SubscriptionScreen} options={TRANSPARENT_HEADER_NO_LOGO} />
+        <Screen name={UPDATE_BRAND_PROFILE} options={TRANSPARENT_HEADER} component={UpdateBrandProfileScreen} />
+        <Screen name={ACTIVE_CREATORS} options={TRANSPARENT_HEADER} component={ActiveCreatorsScreen} />
+        <Screen name={BRAND_EVENTS_SCREEN} options={TRANSPARENT_HEADER} component={BrandEventsScreen} />
         <Screen
             name={BRAND_EVENTS_COMPLETED_SCREEN}
             options={TRANSPARENT_HEADER}
             component={BrandEventsCompletedScreen}
         />
-        <Screen
-            name={BRAND_EVENT_DETAILS_SCREEN}
-            options={TRANSPARENT_HEADER}
-            component={BrandEventDetailsScreen}
-        />
-        <Screen
-            name={ADD_EVENT}
-            options={TRANSPARENT_HEADER}
-            component={AddEventScreen}
-        />
-        <Screen
-            name={SAMPLE_DETAILS_SCREEN}
-            component={SampleDetailsScreen}
-            options={TRANSPARENT_HEADER}
-        />
-        <Screen
-            name={WEBVIEW}
-            options={TRANSPARENT_HEADER}
-            component={WebviewScreen}
-        />
+        <Screen name={BRAND_EVENT_DETAILS_SCREEN} options={TRANSPARENT_HEADER} component={BrandEventDetailsScreen} />
+        <Screen name={ADD_EVENT} options={TRANSPARENT_HEADER} component={AddEventScreen} />
+        <Screen name={SAMPLE_DETAILS_SCREEN} component={SampleDetailsScreen} options={TRANSPARENT_HEADER} />
+        <Screen name={WEBVIEW} options={TRANSPARENT_HEADER} component={WebviewScreen} />
     </Navigator>
 );
 

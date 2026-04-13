@@ -41,12 +41,7 @@ import useCountries from '../../../hooks/useCountries';
 import DropdownSearch from '../../app/explore/components/DropdownSearch';
 import useEvents from '../../../hooks/brands/useEvents';
 
-const convertTimestampToDate = timestamp => {
-    if (timestamp.seconds !== undefined) {
-        return new Date(timestamp.seconds * 1000);
-    }
-    return timestamp;
-};
+import safeToDate from '../../../Utils/safeToDate';
 
 const AddEventScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
@@ -64,13 +59,27 @@ const AddEventScreen = ({ navigation, route }) => {
 
     const loadEvent = () => {
         const updatedData = {};
+        const dateFields = ['startDate', 'endDate', 'startTime'];
         for (const [key, value] of Object.entries(eventData)) {
-            updatedData[key] =
-                typeof value === 'object' && value !== null && value.seconds !== undefined
-                    ? convertTimestampToDate(value)
-                    : value;
+            if (dateFields.includes(key)) {
+                updatedData[key] = safeToDate(value) || new Date();
+            } else {
+                updatedData[key] = value;
+            }
         }
         setEvent(updatedData);
+    };
+
+    const formatDate = (date, options) => {
+        const d = date instanceof Date ? date : safeToDate(date);
+        if (!d) return '';
+        return d.toLocaleDateString(t('common.localeCode'), options);
+    };
+
+    const formatTime = (date, options) => {
+        const d = date instanceof Date ? date : safeToDate(date);
+        if (!d) return '';
+        return d.toLocaleTimeString(t('common.localeCode'), options);
     };
     const { onAddImage: onAddPhoto, images } = useImageStorage();
     const latestImage = useMemo(() => {
@@ -187,19 +196,19 @@ const AddEventScreen = ({ navigation, route }) => {
                     update('country', value);
                     update('city', null);
                 }}
-                selectedFilter={event?.countries}
+                selectedFilters={event?.country ? [event.country] : []}
             />
             <TemplateBox mb={SPACE_SMALL} width={SPACE_XXLARGE} />
             <DropdownSearch
                 title={event?.city || t('brands.events.addEvent.fields.city')}
-                filters={uniq(cities)?.map(country => ({
-                    name: country,
-                    value: country,
+                filters={uniq(cities)?.map(city => ({
+                    name: city,
+                    value: city,
                 }))}
                 onFilterPress={value => {
                     update('city', value);
                 }}
-                selectedFilter={event?.countries}
+                selectedFilters={event?.city ? [event.city] : []}
             />
             <TemplateBox mb={SPACE_SMALL} width={SPACE_XXLARGE} />
 
@@ -212,20 +221,36 @@ const AddEventScreen = ({ navigation, route }) => {
                 </TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} selfCenter>
                     {showStartDate ? (
-                        <DateTimePicker
-                            value={event?.startDate || new Date()}
-                            mode="date"
-                            display="spinner"
-                            onChange={(e, selectedDate) => {
-                                const currentDate = selectedDate || event?.startDate;
-                                update('startDate', currentDate);
-                                setShowStartDate(false);
-                            }}
-                            textColor={BLACK_40}
-                            themeVariant="light"
-                            onTouchCancel={() => setShowStartDate(false)}
-                            minimumDate={new Date()}
-                        />
+                        <>
+                            <DateTimePicker
+                                value={event?.startDate instanceof Date ? event.startDate : new Date()}
+                                mode="date"
+                                display="spinner"
+                                onChange={(e, selectedDate) => {
+                                    const currentDate = selectedDate || event?.startDate;
+                                    update('startDate', currentDate);
+                                    if (IS_ANDROID) setShowStartDate(false);
+                                }}
+                                textColor={BLACK}
+                                themeVariant="light"
+                                minimumDate={new Date()}
+                            />
+                            {!IS_ANDROID && (
+                                <TemplateBox
+                                    onPress={() => setShowStartDate(false)}
+                                    pAll={SPACE_SMALL}
+                                    backgroundColor={DEEP_PURPLE}
+                                    borderRadius={RADIUS_SMALL}
+                                    alignItems="center"
+                                    selfCenter
+                                    width={WRAPPED_SCREEN_WIDTH}
+                                >
+                                    <TemplateText color={WHITE} semiBold>
+                                        {t('common.actions.done')}
+                                    </TemplateText>
+                                </TemplateBox>
+                            )}
+                        </>
                     ) : (
                         <TemplateBox
                             row
@@ -241,11 +266,7 @@ const AddEventScreen = ({ navigation, route }) => {
                         >
                             <TemplateText>
                                 {event?.startDate
-                                    ? event.startDate.toLocaleDateString(t('common.localeCode'), {
-                                          year: 'numeric',
-                                          month: 'long',
-                                          day: 'numeric',
-                                      })
+                                    ? formatDate(event.startDate, { year: 'numeric', month: 'long', day: 'numeric' })
                                     : t('brands.events.addEvent.placeholders.selectStartDate')}
                             </TemplateText>
                         </TemplateBox>
@@ -262,20 +283,36 @@ const AddEventScreen = ({ navigation, route }) => {
                 </TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} selfCenter>
                     {showEndDate ? (
-                        <DateTimePicker
-                            value={event?.endDate || new Date()}
-                            mode="date"
-                            display="spinner"
-                            onChange={(e, selectedDate) => {
-                                const currentDate = selectedDate || event?.endDate;
-                                update('endDate', currentDate);
-                                setShowEndDate(false);
-                            }}
-                            textColor={BLACK_40}
-                            themeVariant="light"
-                            onTouchCancel={() => setShowEndDate(false)}
-                            minimumDate={event?.startDate}
-                        />
+                        <>
+                            <DateTimePicker
+                                value={event?.endDate instanceof Date ? event.endDate : new Date()}
+                                mode="date"
+                                display="spinner"
+                                onChange={(e, selectedDate) => {
+                                    const currentDate = selectedDate || event?.endDate;
+                                    update('endDate', currentDate);
+                                    if (IS_ANDROID) setShowEndDate(false);
+                                }}
+                                textColor={BLACK}
+                                themeVariant="light"
+                                minimumDate={event?.startDate instanceof Date ? event.startDate : new Date()}
+                            />
+                            {!IS_ANDROID && (
+                                <TemplateBox
+                                    onPress={() => setShowEndDate(false)}
+                                    pAll={SPACE_SMALL}
+                                    backgroundColor={DEEP_PURPLE}
+                                    borderRadius={RADIUS_SMALL}
+                                    alignItems="center"
+                                    selfCenter
+                                    width={WRAPPED_SCREEN_WIDTH}
+                                >
+                                    <TemplateText color={WHITE} semiBold>
+                                        {t('common.actions.done')}
+                                    </TemplateText>
+                                </TemplateBox>
+                            )}
+                        </>
                     ) : (
                         <TemplateBox
                             row
@@ -291,11 +328,7 @@ const AddEventScreen = ({ navigation, route }) => {
                         >
                             <TemplateText>
                                 {event?.endDate
-                                    ? event.endDate.toLocaleDateString(t('common.localeCode'), {
-                                          year: 'numeric',
-                                          month: 'long',
-                                          day: 'numeric',
-                                      })
+                                    ? formatDate(event.endDate, { year: 'numeric', month: 'long', day: 'numeric' })
                                     : t('brands.events.addEvent.placeholders.selectEndDate')}
                             </TemplateText>
                         </TemplateBox>
@@ -312,20 +345,36 @@ const AddEventScreen = ({ navigation, route }) => {
                 </TemplateText>
                 <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} mt={hp(8)}>
                     {showStartTime ? (
-                        <DateTimePicker
-                            value={event?.startTime || new Date()}
-                            mode="time"
-                            is24Hour
-                            display="spinner"
-                            onChange={(e, selectedDate) => {
-                                const currentDate = selectedDate || event?.startTime;
-                                update('startTime', currentDate);
-                                setShowStartTime(false);
-                            }}
-                            textColor={BLACK_40}
-                            themeVariant="light"
-                            onTouchCancel={() => setShowStartTime(false)}
-                        />
+                        <>
+                            <DateTimePicker
+                                value={event?.startTime instanceof Date ? event.startTime : new Date()}
+                                mode="time"
+                                is24Hour
+                                display="spinner"
+                                onChange={(e, selectedDate) => {
+                                    const currentDate = selectedDate || event?.startTime;
+                                    update('startTime', currentDate);
+                                    if (IS_ANDROID) setShowStartTime(false);
+                                }}
+                                textColor={BLACK}
+                                themeVariant="light"
+                            />
+                            {!IS_ANDROID && (
+                                <TemplateBox
+                                    onPress={() => setShowStartTime(false)}
+                                    pAll={SPACE_SMALL}
+                                    backgroundColor={DEEP_PURPLE}
+                                    borderRadius={RADIUS_SMALL}
+                                    alignItems="center"
+                                    selfCenter
+                                    width={WRAPPED_SCREEN_WIDTH}
+                                >
+                                    <TemplateText color={WHITE} semiBold>
+                                        {t('common.actions.done')}
+                                    </TemplateText>
+                                </TemplateBox>
+                            )}
+                        </>
                     ) : (
                         <TemplateBox
                             row
@@ -341,10 +390,7 @@ const AddEventScreen = ({ navigation, route }) => {
                         >
                             <TemplateText>
                                 {event?.startTime
-                                    ? event.startTime.toLocaleTimeString(t('common.localeCode'), {
-                                          hour: '2-digit',
-                                          minute: '2-digit',
-                                      })
+                                    ? formatTime(event.startTime, { hour: '2-digit', minute: '2-digit' })
                                     : t('brands.events.addEvent.placeholders.selectStartTime')}
                             </TemplateText>
                         </TemplateBox>
@@ -418,13 +464,13 @@ const AddEventScreen = ({ navigation, route }) => {
                 title={t('brands.events.addEvent.categories')}
                 filters={projectFilters}
                 onFilterPress={value => {
-                    if (event?.categories.includes(value)) {
-                        const newProjectCategories = event?.categories.filter(item => item !== value);
+                    if (event?.categories?.includes(value)) {
+                        const newProjectCategories = event?.categories?.filter(item => item !== value);
                         return update('categories', newProjectCategories);
                     }
-                    update('categories', [...event?.categories, value]);
+                    update('categories', [...(event?.categories || []), value]);
                 }}
-                selectedFilters={event?.categories}
+                selectedFilters={event?.categories || []}
                 translationPrefix="filterCategories"
             />
 
