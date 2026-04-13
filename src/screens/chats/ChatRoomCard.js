@@ -99,7 +99,6 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
                     left={0}
                     zIndex={99}
                     onPress={() => {
-                        console.log('navigating to chat room', id);
                         navigation.navigate(CHATS, {
                             chatRoomId: id,
                             name: receiver?.name,
