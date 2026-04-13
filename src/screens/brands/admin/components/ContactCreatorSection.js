@@ -66,7 +66,7 @@ const ContactCreatorSection = ({ creatorID, creatorEmail, creatorFCMToken, proje
     };
 
     const handleStartChat = async () => {
-        if (!creatorFCMToken || !brandFCMToken || !creatorID || !brandId) {
+        if (!creatorID || !brandId) {
             Alert.alert(
                 t('chats.alerts.userNotAvailable.title') || 'User Not Available',
                 t('chats.alerts.userNotAvailable.message') || 'This user is not available for chat.',

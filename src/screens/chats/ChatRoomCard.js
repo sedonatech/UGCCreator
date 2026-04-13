@@ -36,9 +36,6 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
             const fetchedUsers = querySnapshot?.docs?.map(docSnap => ({
                 id: docSnap?.id,
                 ...docSnap?.data(),
-                lastLoginTime: docSnap?.data().lastLoginTime
-                    ? calculateLastLoginTime(docSnap?.data().lastLoginTime)
-                    : 'days ago',
             }));
             setUsers(fetchedUsers);
         } catch (e) {
@@ -46,7 +43,19 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
         }
     };
 
-    const receiver = useMemo(() => users?.find(item => userId !== item?.id), [userId, users]);
+    const chatActivityTime = useMemo(() => {
+        const timestamp = item?.lastMessageTimestamp || item?.createdAt;
+        if (!timestamp) return null;
+        try {
+            const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+            if (Number.isNaN(date.getTime())) return null;
+            return calculateLastLoginTime(date);
+        } catch {
+            return null;
+        }
+    }, [item?.lastMessageTimestamp, item?.createdAt]);
+
+    const receiver = useMemo(() => users?.find(user => userId !== user?.id), [userId, users]);
 
     useEffect(() => {
         if (!id) return () => {};
@@ -136,9 +145,9 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
                         {receiver?.userName || receiver?.name}
                     </TemplateText>
                     <TemplateBox height={wp(5)} />
-                    {receiver?.lastLoginTime && !isSupport && (
+                    {chatActivityTime && !isSupport && (
                         <TemplateText size={wp(10)} color={GREY}>
-                            {t('chats.rooms.lastActive', { time: receiver?.lastLoginTime })}
+                            {t('chats.rooms.lastActive', { time: chatActivityTime })}
                         </TemplateText>
                     )}
                 </TemplateBox>
@@ -167,8 +176,21 @@ const ChatRoomCard = ({ id, item, userId, navigation, isSupport, isCreator }) =>
 
 ChatRoomCard.propTypes = {
     id: PropTypes.string.isRequired,
+    item: PropTypes.shape({
+        brandId: PropTypes.string,
+        creatorId: PropTypes.string,
+        lastMessageTimestamp: PropTypes.any,
+        createdAt: PropTypes.any,
+        lastMessageText: PropTypes.string,
+        name: PropTypes.string,
+    }),
+    userId: PropTypes.string,
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }).isRequired,
+    isSupport: PropTypes.bool,
+    isCreator: PropTypes.bool,
 };
-ChatRoomCard.defaultProps = {};
 
 const styles = StyleSheet.create({
     image: {

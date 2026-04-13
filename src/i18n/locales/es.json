@@ -1235,7 +1235,8 @@
                     "linkedin": "Enlace de LinkedIn",
                     "website": "Sitio web",
                     "location": "Ubicación"
-                }
+                },
+                "updatingMessage": "Actualizando la información de tu marca...."
             }
         }
     },

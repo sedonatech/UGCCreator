@@ -6,14 +6,14 @@ import { getFirestore, collection, query, where, limit, getDocs } from '@react-n
 import TemplateText from '../../../../components/TemplateText';
 import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { CREATORS_PROFILES, CREATORS_PROFILES_STACK, PROFILE } from '../../../../navigation/ScreenNames';
-import { BLACK, BLUE, IOS_BLUE, LIGHT_PURPLE } from '../../../../theme/Colors';
+import { BLACK, BLUE, LIGHT_PURPLE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import CreatorCard from '../../creators/CreatorCard';
 import TemplateBox from '../../../../components/TemplateBox';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 import { wp } from '../../../../Utils/getResponsiveSize';
-import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
+
 import useTranslation from '../../../../hooks/useTranslation';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 
@@ -43,7 +43,6 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
             const data = querySnapshot?.docs?.map(docSnap => ({
                 id: docSnap?.id,
                 ...docSnap?.data(),
-                lastLoginTime: docSnap?.lastLoginTime ? calculateLastLoginTime(docSnap?.lastLoginTime) : 'days ago',
             }));
             setCreators(data);
         } catch (error) {
@@ -101,9 +100,6 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
                         style={styles.card}
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
                         imageStyle={styles.image}
-                        subtitleContainerWidth={94}
-                        buttonOffset={50}
-                        textContainerWidth="68%"
                         location={item?.location?.city || item?.location?.country}
                         onPress={() => {
                             if (creator) {
@@ -118,7 +114,6 @@ const FeaturedCreatorsCarousel = ({ style, creator }) => {
                                 creatorId: item?.id,
                             });
                         }}
-                        lastLoginTime={item?.lastLoginTime}
                         mt={12}
                     />
                 )}

@@ -1233,7 +1233,8 @@
                     "linkedin": "LinkedIn Link",
                     "website": "Website",
                     "location": "Location"
-                }
+                },
+                "updatingMessage": "Updating your brand information...."
             }
         }
     },

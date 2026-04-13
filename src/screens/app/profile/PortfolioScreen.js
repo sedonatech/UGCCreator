@@ -134,7 +134,7 @@ const PortfolioScreen = ({ navigation, route }) => {
     };
 
     const handleContactCreator = async () => {
-        if (!creatorFCMToken || !brandFCMToken || !creatorId || !brandId) {
+        if (!creatorId || !brandId) {
             Alert.alert(
                 t('chats.alerts.userNotAvailable.title') || 'User Not Available',
                 t('chats.alerts.userNotAvailable.message') || 'This user is not available for chat.',
@@ -162,12 +162,12 @@ const PortfolioScreen = ({ navigation, route }) => {
             }
 
             const newRoom = await addDoc(chatRoomsRef, {
-                name: chatName,
+                name: chatName || '',
                 creatorId,
                 brandId,
                 createdAt: serverTimestamp(),
-                creatorFCMToken,
-                brandFCMToken,
+                creatorFCMToken: creatorFCMToken || null,
+                brandFCMToken: brandFCMToken || null,
                 lastMessageTimestamp: serverTimestamp(),
             });
 
@@ -175,8 +175,11 @@ const PortfolioScreen = ({ navigation, route }) => {
                 navigateToChat(newRoom.id, chatName, creatorFCMToken);
             }
         } catch (e) {
-            console.log('[CONTACT CREATOR ERROR]', e);
-            Alert.alert('Error', 'Could not start chat. Please try again.');
+            console.error('[CONTACT CREATOR ERROR]', e);
+            Alert.alert(
+                t('chats.alerts.userNotAvailable.title') || 'Error',
+                t('chats.alerts.userNotAvailable.message') || 'Could not start chat. Please try again.',
+            );
         } finally {
             setChatLoading(false);
         }
@@ -436,7 +439,7 @@ const PortfolioScreen = ({ navigation, route }) => {
                 )}
 
                 {/* Contact Creator Button — brand view only */}
-                {creatorId && (
+                {creatorId && isBrand && (
                     <TemplateBox selfCenter mv={WRAPPER_MARGIN}>
                         <Button
                             title={t('profile.portfolio.contactButton')}
@@ -454,6 +457,17 @@ const PortfolioScreen = ({ navigation, route }) => {
             {loading && <LoadingOverlay message="" />}
         </>
     );
+};
+
+PortfolioScreen.propTypes = {
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }).isRequired,
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            creatorId: PropTypes.string,
+        }),
+    }),
 };
 
 const styles = StyleSheet.create({

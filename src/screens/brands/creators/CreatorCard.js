@@ -7,7 +7,7 @@ import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import TemplateIcon from '../../../components/TemplateIcon';
 import { SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
-import { BLACK, BLACK_30, BLACK_60, BLACK_SECONDARY, lightGreen, WHITE } from '../../../theme/Colors';
+import { BLACK, BLACK_30, BLACK_60, BLACK_SECONDARY, WHITE } from '../../../theme/Colors';
 import { DEFAULT_CREATOR_WORK_SAMPLE_IMAGE } from '../../../consts/content/Portfolio';
 import { wp } from '../../../Utils/getResponsiveSize';
 import useTranslation from '../../../hooks/useTranslation';
@@ -21,11 +21,7 @@ const CreatorCard = ({
     style,
     width,
     imageStyle,
-    textContainerWidth,
-    subtitleContainerWidth,
-    lastLoginTime,
     ctaText,
-    height = wp(180),
     ...extraProps
 }) => {
     const { t } = useTranslation();
@@ -34,7 +30,6 @@ const CreatorCard = ({
     return (
         <TemplateBox
             width={width}
-            height={height}
             borderRadius={20}
             borderWidth={StyleSheet.hairlineWidth}
             borderColor={BLACK_30}
@@ -50,51 +45,34 @@ const CreatorCard = ({
                     source={{ uri: imageUrl || DEFAULT_CREATOR_WORK_SAMPLE_IMAGE }}
                     style={[styles.image, imageStyle]}
                 />
-                <TemplateBox flex={1} onPress={onPress}>
+                <TemplateBox flex={1} justifyContent="center" onPress={onPress}>
                     <TemplateText size={16} bold color={BLACK} numberOfLines={1}>
                         {name}
                     </TemplateText>
-                    <TemplateBox height={6} />
+                    <TemplateBox height={4} />
                     <TemplateText size={12} color={BLACK_SECONDARY} numberOfLines={2}>
                         {shortDescription}
                     </TemplateText>
                 </TemplateBox>
             </TemplateBox>
 
-            <TemplateBox row alignItems="center" mt={20} onPress={onPress}>
-                <TemplateBox width={subtitleContainerWidth} onPress={onPress}>
-                    <TemplateBox row alignItems="center">
+            <TemplateBox row alignItems="center" justifyContent="space-between" mt={12}>
+                {!!location && (
+                    <TemplateBox row alignItems="center" flex={1}>
                         <TemplateIcon name="location-outline" color={BLACK_60} size={14} />
-                        <TemplateText size={10} color={BLACK_60} semiBold>
-                            {location || 'London'}
+                        <TemplateText size={11} color={BLACK_60} semiBold ml={2}>
+                            {location}
                         </TemplateText>
                     </TemplateBox>
-                </TemplateBox>
-            </TemplateBox>
-            <TemplateBox row alignItems="center" justifyContent="space-between" width={width - wp(32)}>
+                )}
                 <TemplateBox
-                    ph={8}
-                    pv={4}
-                    backgroundColor={lightGreen}
-                    borderRadius={6}
-                    alignItems="center"
-                    justifyContent="center"
-                    onPress={onPress}
-                >
-                    <TemplateText color={WHITE} size={wp(9)} semiBold>
-                        {`${t('creatorExplore.creators.active')} ${lastLoginTime}`}
-                    </TemplateText>
-                </TemplateBox>
-                <TemplateBox
-                    ph={wp(WRAPPER_MARGIN - 5)}
-                    pv={wp(WRAPPER_MARGIN / 2)}
+                    ph={wp(14)}
+                    pv={wp(8)}
                     backgroundColor={BLACK}
                     borderRadius={wp(10)}
                     alignItems="center"
                     justifyContent="center"
                     onPress={onPress}
-                    alignSelf="flex-end"
-                    mb={wp(12)}
                 >
                     <TemplateText color={WHITE} size={wp(10)} bold>
                         {displayCtaText}
@@ -114,10 +92,6 @@ CreatorCard.propTypes = {
     style: PropTypes.shape({}),
     width: PropTypes.number,
     imageStyle: PropTypes.shape({}),
-    textContainerWidth: PropTypes.number,
-    subtitleContainerWidth: PropTypes.number,
-    lastLoginTime: PropTypes.string,
-    height: PropTypes.number,
     ctaText: PropTypes.string,
 };
 
@@ -130,10 +104,6 @@ CreatorCard.defaultProps = {
     style: {},
     width: SCREEN_WIDTH - WRAPPER_MARGIN * 2,
     imageStyle: {},
-    textContainerWidth: wp(190),
-    subtitleContainerWidth: wp(100),
-    lastLoginTime: 'days ago',
-    height: wp(180),
     ctaText: undefined,
 };
 

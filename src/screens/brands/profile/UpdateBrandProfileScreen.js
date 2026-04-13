@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 
@@ -29,42 +29,53 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
 
     const { trackEvent } = useTrackEvent();
 
-    const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(false);
 
-    const handleUpdate = () => {
-        setTimeout(async () => {
-            setLoading(true);
-            updateProfile(profileData, profileData?.id);
+    const handleUpdate = useCallback(async () => {
+        if (saving) return;
+        try {
+            setSaving(true);
+            await updateProfile(profileData, profileData?.id);
             await trackEvent('update_brand_profile');
             if (fromAdminPanel) {
                 navigation.goBack();
                 return;
             }
-            setLoading(false);
             navigation.navigate(BRANDS_PROFILE);
-        }, 2600);
-    };
+        } catch (e) {
+            console.log('Error saving brand profile:', e);
+        } finally {
+            setSaving(false);
+        }
+    }, [profileData, saving, updateProfile, trackEvent, navigation, fromAdminPanel]);
+
+    const headerLeft = useCallback(
+        () => (
+            <HeaderIconButton
+                name="arrow-back-outline"
+                onPress={() => navigation.goBack()}
+                backDropColor={GREY_SECONDARY}
+                ml={WRAPPER_MARGIN}
+            />
+        ),
+        [navigation],
+    );
+
+    const headerRight = useCallback(
+        () => (
+            <HeaderIconButton
+                title={t('brands.profile.updateProfile.saveButton')}
+                onPress={handleUpdate}
+                backDropColor={GREY_SECONDARY}
+                mr={WRAPPER_MARGIN}
+            />
+        ),
+        [handleUpdate, t],
+    );
 
     useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <HeaderIconButton
-                    name="arrow-back-outline"
-                    onPress={() => navigation.goBack()}
-                    backDropColor={GREY_SECONDARY}
-                    ml={WRAPPER_MARGIN}
-                />
-            ),
-            headerRight: () => (
-                <HeaderIconButton
-                    title={t('brands.profile.updateProfile.saveButton')}
-                    onPress={handleUpdate}
-                    backDropColor={GREY_SECONDARY}
-                    mr={WRAPPER_MARGIN}
-                />
-            ),
-        });
-    }, [navigation, fromAdminPanel]);
+        navigation.setOptions({ headerLeft, headerRight });
+    }, [navigation, headerLeft, headerRight]);
 
     return (
         <Wrapper contentContainerStyle={styles.contentContainer} style={styles.container} keyboard safe={false}>
@@ -309,7 +320,9 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
 
             <UpdateCategories />
 
-            {loading && <LoadingOverlay message="Updating your brand information...." ml={-WRAPPER_MARGIN} />}
+            {saving && (
+                <LoadingOverlay message={t('brands.profile.updateProfile.updatingMessage')} ml={-WRAPPER_MARGIN} />
+            )}
         </Wrapper>
     );
 };
