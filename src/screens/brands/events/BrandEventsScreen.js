@@ -1,4 +1,3 @@
-
 import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import Fuse from 'fuse.js';
@@ -26,11 +25,13 @@ import ResizedImage from '../../../components/ResizedImage';
 import { months } from '../../../consts/months';
 import { isAndroid } from '../../../Utils/Platform';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
+import useTranslation from '../../../hooks/useTranslation';
 import { FONT_BASE } from '../../../theme/Typography';
 
 export const EVENTS_COLLECTION = 'events';
 
 const BrandEventsScreen = ({ navigation }) => {
+    const { t } = useTranslation();
     const [search, setSearch] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [eventsData, setEventsData] = useState([]);
@@ -39,18 +40,17 @@ const BrandEventsScreen = ({ navigation }) => {
     const { auth } = useAuthContext();
     const brandId = auth?.profile?.id;
 
-    const today = useMemo(() => new Date(), []);
     const db = getFirestore();
     const getEventsQuery = limitCount =>
         query(
             collection(db, EVENTS_COLLECTION),
             where('userId', '==', brandId),
-            where('endDate', '>=', today),
-            orderBy('endDate', 'desc'),
+            orderBy('startDate', 'asc'),
             fsLimit(limitCount),
         );
 
     const fetchEvents = async () => {
+        if (!brandId) return;
         try {
             const q = getEventsQuery(limit);
             const querySnapshot = await getDocs(q);
@@ -65,7 +65,7 @@ const BrandEventsScreen = ({ navigation }) => {
         useCallback(() => {
             fetchEvents();
             return () => {};
-        }, []),
+        }, [brandId, limit]),
     );
 
     const options = {
@@ -207,16 +207,16 @@ const BrandEventsScreen = ({ navigation }) => {
     }, []);
 
     const ListHeaderComponent = (
-        <TemplateBox>
-            <TemplateBox ml={WRAPPER_MARGIN} mt={isAndroid ? 80 : 130} alignItems="center" justifyContent="center">
+        <TemplateBox width={WRAPPED_SCREEN_WIDTH}>
+            <TemplateBox mt={isAndroid ? 80 : 130} alignItems="center" justifyContent="center">
                 <TemplateText size={18} bold startCase center>
-                    Your Events
+                    {t('brands.admin.carousels.events.title')}
                 </TemplateText>
             </TemplateBox>
 
-            <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
+            <TemplateBox row alignItems="center" mt={WRAPPER_MARGIN}>
                 <TemplateTextInput
-                    placeholder="Search"
+                    placeholder={t('brands.events.search')}
                     style={[styles.input, SHADOW('default', WHITE)]}
                     value={search}
                     onChangeText={text => setSearch(text)}
@@ -229,7 +229,9 @@ const BrandEventsScreen = ({ navigation }) => {
     const ListEmptyComponent = (
         <TemplateBox flex center mt={hp(HEADER_MARGIN)}>
             <TemplateText size={hp(14)} semiBold>
-                {search?.length ? 'Event not found' : 'No events available'}
+                {search?.length
+                    ? t('brands.events.emptyStates.withSearch')
+                    : t('brands.events.emptyStates.withoutSearch')}
             </TemplateText>
         </TemplateBox>
     );

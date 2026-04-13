@@ -28,6 +28,12 @@ const safeToDate = value => {
         return Number.isNaN(d.getTime()) ? null : d;
     }
 
+    // Stripped Firestore Timestamp (getters lost via React Navigation params)
+    if (typeof value?._seconds === 'number') {
+        const d = new Date(value._seconds * 1000);
+        return Number.isNaN(d.getTime()) ? null : d;
+    }
+
     // Epoch milliseconds
     if (typeof value === 'number') {
         const d = new Date(value);
