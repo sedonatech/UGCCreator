@@ -1151,6 +1151,11 @@
                 "withoutSearch": "No events available"
             },
             "viewMore": "View More",
+            "deleteAlert": {
+                "title": "Delete Event",
+                "message": "Are you sure you want to delete this event? It will no longer be visible to anyone.",
+                "delete": "Delete"
+            },
             "addEvent": {
                 "title": "Add an event",
                 "editTitle": "Edit Event",

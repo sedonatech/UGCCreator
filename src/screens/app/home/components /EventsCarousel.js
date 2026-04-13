@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable max-len */
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
@@ -38,10 +38,12 @@ const EventsCarousel = ({ style }) => {
     const fetchEvents = async () => {
         try {
             const querySnapshot = await getDocs(eventsRef);
-            const fetchedEvents = querySnapshot?.docs?.map(docSnap => ({ id: docSnap?.id, ...docSnap?.data() }));
+            const fetchedEvents = querySnapshot?.docs
+                ?.map(docSnap => ({ id: docSnap?.id, ...docSnap?.data() }))
+                ?.filter(e => !e.isDeleted);
             setEvents(fetchedEvents);
         } catch (e) {
-            console.log(e);
+            console.error('[FETCH EVENTS CAROUSEL ERROR]', e);
         }
     };
 

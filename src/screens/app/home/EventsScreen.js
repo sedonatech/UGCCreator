@@ -57,10 +57,14 @@ const EventsScreen = ({ navigation }) => {
         try {
             const fetchedEvents = await eventsRef
                 .get()
-                .then(querySnapshot => querySnapshot?.docs?.map(doc => ({ id: doc?.id, ...doc?.data() })));
+                .then(querySnapshot =>
+                    querySnapshot?.docs
+                        ?.map(docSnap => ({ id: docSnap?.id, ...docSnap?.data() }))
+                        ?.filter(e => !e.isDeleted),
+                );
             setEventsData(fetchedEvents);
         } catch (e) {
-            console.log(e);
+            console.error('[FETCH EVENTS ERROR]', e);
         }
     };
 

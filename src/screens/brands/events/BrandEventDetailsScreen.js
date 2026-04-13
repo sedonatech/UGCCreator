@@ -1,24 +1,28 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import { getFirestore, collection, doc, getDoc } from '@react-native-firebase/firestore';
 import { useFocusEffect } from '@react-navigation/native';
 import { HEADER_MARGIN, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
-import { ACCENT, DARK_GREY, GREY, IOS_BLUE, LAVENDER, WHITE } from '../../../theme/Colors';
+import { ACCENT, DARK_GREY, ERROR_RED, GREY, IOS_BLUE, LAVENDER, WHITE } from '../../../theme/Colors';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import { ADD_EVENT, WEBVIEW } from '../../../navigation/ScreenNames';
-import { EVENTS_COLLECTION } from '../../../hooks/brands/useEvents';
+import useEvents, { EVENTS_COLLECTION } from '../../../hooks/brands/useEvents';
 import { hp, wp } from '../../../Utils/getResponsiveSize';
 import TemplateIcon from '../../../components/TemplateIcon';
 import ResizedImage from '../../../components/ResizedImage';
 import { months } from '../../../consts/months';
 import safeToDate from '../../../Utils/safeToDate';
 import Button from '../../../components/Button';
-
 import HeaderIconButton from '../../../components/header/HeaderButton';
+import useTranslation from '../../../hooks/useTranslation';
 
 const BrandEventDetailsScreen = ({ navigation, route }) => {
+    const { t } = useTranslation();
+    const { deleteEvent } = useEvents();
     const [event, setEvent] = useState(null);
+    const [deleting, setDeleting] = useState(false);
 
     const id = route?.params?.id;
 
@@ -42,19 +46,57 @@ const BrandEventDetailsScreen = ({ navigation, route }) => {
         }, [id]),
     );
 
+    const handleDeleteEvent = useCallback(() => {
+        Alert.alert(
+            t('brands.events.deleteAlert.title') || 'Delete Event',
+            t('brands.events.deleteAlert.message') ||
+                'Are you sure you want to delete this event? It will no longer be visible to anyone.',
+            [
+                {
+                    text: t('common.actions.cancel') || 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: t('brands.events.deleteAlert.delete') || 'Delete',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            setDeleting(true);
+                            await deleteEvent(id);
+                            navigation.goBack();
+                        } catch (e) {
+                            console.error('[DELETE EVENT ERROR]', e);
+                        } finally {
+                            setDeleting(false);
+                        }
+                    },
+                },
+            ],
+        );
+    }, [id, deleteEvent, navigation, t]);
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <HeaderIconButton
-                    name="pencil"
-                    onPress={() => navigation.navigate(ADD_EVENT, { event })}
-                    backDropColor={LAVENDER}
-                    mr={WRAPPER_MARGIN}
-                />
+                <TemplateBox row alignItems="center">
+                    <HeaderIconButton
+                        name="trash-outline"
+                        onPress={handleDeleteEvent}
+                        backDropColor={ERROR_RED}
+                        color={WHITE}
+                        mr={8}
+                    />
+                    <HeaderIconButton
+                        name="pencil"
+                        onPress={() => navigation.navigate(ADD_EVENT, { event })}
+                        backDropColor={LAVENDER}
+                        mr={WRAPPER_MARGIN}
+                    />
+                </TemplateBox>
             ),
             gestureEnabled: false,
         });
-    }, [navigation, event]);
+    }, [navigation, event, handleDeleteEvent]);
 
     if (!event) {
         return (
@@ -156,6 +198,19 @@ const BrandEventDetailsScreen = ({ navigation, route }) => {
             )}
         </TemplateBox>
     );
+};
+
+BrandEventDetailsScreen.propTypes = {
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        goBack: PropTypes.func.isRequired,
+        setOptions: PropTypes.func.isRequired,
+    }).isRequired,
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            id: PropTypes.string,
+        }),
+    }),
 };
 
 const styles = StyleSheet.create({

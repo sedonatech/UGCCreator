@@ -1153,6 +1153,11 @@
                 "withoutSearch": "Aucun événement disponible"
             },
             "viewMore": "Voir plus",
+            "deleteAlert": {
+                "title": "Supprimer l'événement",
+                "message": "Êtes-vous sûr de vouloir supprimer cet événement ? Il ne sera plus visible par personne.",
+                "delete": "Supprimer"
+            },
             "addEvent": {
                 "title": "Ajouter un événement",
                 "editTitle": "Modifier l'événement",

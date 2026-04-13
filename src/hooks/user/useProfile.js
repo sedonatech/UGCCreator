@@ -191,6 +191,7 @@ const useProfile = () => {
             const userRef = doc(db, USERS_COLLECTION, id);
             // Only write editable profile fields — avoid overwriting id, type, etc.
             const {
+                name,
                 userName,
                 email,
                 shortDescription,
@@ -205,6 +206,7 @@ const useProfile = () => {
                 image,
             } = data || {};
             const updateData = {};
+            if (name !== undefined) updateData.name = name;
             if (userName !== undefined) updateData.userName = userName;
             if (email !== undefined) updateData.email = email;
             if (shortDescription !== undefined) updateData.shortDescription = shortDescription;

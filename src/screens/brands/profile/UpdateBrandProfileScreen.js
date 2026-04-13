@@ -1,5 +1,6 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 import CountryPicker from 'react-native-country-picker-modal';
 
 import { BLACK, BLACK_40, GREY_SECONDARY, TRANSPARENT, WHITE } from '../../../theme/Colors';
@@ -43,7 +44,7 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
             }
             navigation.navigate(BRANDS_PROFILE);
         } catch (e) {
-            console.log('Error saving brand profile:', e);
+            console.error('[UPDATE BRAND PROFILE ERROR]', e);
         } finally {
             setSaving(false);
         }
@@ -325,6 +326,19 @@ const UpdateBrandProfileScreen = ({ navigation, route }) => {
             )}
         </Wrapper>
     );
+};
+
+UpdateBrandProfileScreen.propTypes = {
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        goBack: PropTypes.func.isRequired,
+        setOptions: PropTypes.func.isRequired,
+    }).isRequired,
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            fromAdminPanel: PropTypes.bool,
+        }),
+    }),
 };
 
 const styles = StyleSheet.create({

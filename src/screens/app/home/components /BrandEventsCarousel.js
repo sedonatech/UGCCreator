@@ -11,13 +11,7 @@ import TemplateTouchable from '../../../../components/TemplateTouchable';
 import { DARK_GREY, GREY, IOS_BLUE, LAVENDER, WHITE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import TemplateBox from '../../../../components/TemplateBox';
-import {
-    BRAND_EVENT_DETAILS_SCREEN,
-    BRAND_EVENTS_SCREEN,
-    BRANDS_SCREEN,
-    EVENT_DETAILS_SCREEN,
-    EVENTS_SCREEN,
-} from '../../../../navigation/ScreenNames';
+import { BRAND_EVENT_DETAILS_SCREEN, BRAND_EVENTS_SCREEN } from '../../../../navigation/ScreenNames';
 import { hp, wp } from '../../../../Utils/getResponsiveSize';
 import ResizedImage from '../../../../components/ResizedImage';
 import { months } from '../../../../consts/months';
@@ -41,10 +35,14 @@ const BrandEventsCarousel = ({ style, brandId }) => {
         try {
             const fetchedEvents = await eventsRef
                 .get()
-                .then(querySnapshot => querySnapshot?.docs?.map(doc => ({ id: doc?.id, ...doc?.data() })));
+                .then(querySnapshot =>
+                    querySnapshot?.docs
+                        ?.map(docSnap => ({ id: docSnap?.id, ...docSnap?.data() }))
+                        ?.filter(e => !e.isDeleted),
+                );
             setEvents(fetchedEvents);
         } catch (e) {
-            console.log(e);
+            console.error('[FETCH BRAND EVENTS CAROUSEL ERROR]', e);
         }
     };
 
@@ -205,10 +203,6 @@ const BrandEventsCarousel = ({ style, brandId }) => {
 const styles = StyleSheet.create({
     cardCarousel: {
         paddingHorizontal: WRAPPER_MARGIN,
-    },
-    subtitle: {
-        marginLeft: WRAPPER_MARGIN,
-        marginBottom: 10,
     },
     statusCard: {
         marginBottom: 10,
