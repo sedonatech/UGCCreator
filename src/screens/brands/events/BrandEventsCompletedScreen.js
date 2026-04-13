@@ -54,10 +54,12 @@ const BrandEventsCompletedScreen = ({ navigation }) => {
         try {
             const q = getEventsQuery(limit);
             const querySnapshot = await getDocs(q);
-            const fetchedEvents = querySnapshot?.docs?.map(doc => ({ id: doc?.id, ...doc?.data() }));
+            const fetchedEvents = querySnapshot?.docs
+                ?.map(docSnap => ({ id: docSnap?.id, ...docSnap?.data() }))
+                ?.filter(e => !e.isDeleted);
             setEventsData(fetchedEvents);
         } catch (e) {
-            console.log(e);
+            console.error('[FETCH COMPLETED EVENTS ERROR]', e);
         }
     };
 

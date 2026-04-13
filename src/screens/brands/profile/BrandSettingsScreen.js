@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 
 import { useIsFocused } from '@react-navigation/native';
 import { BLACK_60, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SPACE_XLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
 import TemplateBox from '../../../components/TemplateBox';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
-import { FORGOT_PASSWORD, SUBSCRIPTION, UPDATE_BRAND_PROFILE, WEBVIEW } from '../../../navigation/ScreenNames';
+import { FORGOT_PASSWORD, UPDATE_BRAND_PROFILE, WEBVIEW } from '../../../navigation/ScreenNames';
 import SettingsRow from '../../app/profile/components/SettingsRow';
 import useLogout from '../../app/profile/useLogout';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
@@ -31,10 +32,6 @@ const BrandSettingsScreen = ({ navigation }) => {
 
     const { languageInfo, t } = useTranslation();
 
-    console.log({ userEmail });
-
-    console.log({ isSupportChatAdmin });
-
     const { checkApplicationPermissions, isAuthorized } = useNotificationPermissions();
 
     const { auth } = useAuthContext();
@@ -43,7 +40,7 @@ const BrandSettingsScreen = ({ navigation }) => {
 
     const userEmail = profile?.email;
 
-    // Check if the  user's  email is in the support emails
+    // Check if the user's email is in the support emails
     const isSupportChatAdmin = support?.emails?.includes(userEmail);
 
     const [showLanguageSelector, setShowLanguageSelector] = useState(false);
@@ -66,12 +63,6 @@ const BrandSettingsScreen = ({ navigation }) => {
             description: languageInfo.nativeName,
             onPress: () => setShowLanguageSelector(true),
             icon: 'language-outline',
-        },
-        {
-            title: t('brands.profile.settings.rows.editProfile'),
-            description: t('brands.profile.settings.rows.editProfileDesc'),
-            onPress: () => navigation.navigate(UPDATE_BRAND_PROFILE),
-            icon: 'person-outline',
         },
         {
             title: t('brands.profile.settings.rows.changePassword'),
@@ -104,14 +95,6 @@ const BrandSettingsScreen = ({ navigation }) => {
             },
             icon: 'notifications-outline',
         },
-        // {
-        //     title: 'Subscription',
-        //     description: 'Manage Subscription settings',
-        //     onPress: () => navigation.navigate(SUBSCRIPTION, {
-        //         fromSettings: true,
-        //     }),
-        //     icon: 'card-outline',
-        // },
         {
             title: t('brands.profile.settings.rows.help'),
             description: t('brands.profile.settings.rows.helpDesc'),
@@ -196,6 +179,12 @@ const BrandSettingsScreen = ({ navigation }) => {
             <LanguageSelector visible={showLanguageSelector} onClose={() => setShowLanguageSelector(false)} />
         </ScrollView>
     );
+};
+
+BrandSettingsScreen.propTypes = {
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }).isRequired,
 };
 
 const styles = StyleSheet.create({

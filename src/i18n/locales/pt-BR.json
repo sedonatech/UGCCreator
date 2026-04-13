@@ -1164,6 +1164,11 @@
                 "withoutSearch": "Nenhum evento disponível"
             },
             "viewMore": "Ver mais",
+            "deleteAlert": {
+                "title": "Excluir evento",
+                "message": "Tem certeza de que deseja excluir este evento? Ele não será mais visível para ninguém.",
+                "delete": "Excluir"
+            },
             "addEvent": {
                 "title": "Adicionar um evento",
                 "editTitle": "Editar evento",
@@ -1246,7 +1251,8 @@
                     "linkedin": "Link do LinkedIn",
                     "website": "Site",
                     "location": "Localização"
-                }
+                },
+                "updatingMessage": "Atualizando as informações da sua marca...."
             }
         }
     },

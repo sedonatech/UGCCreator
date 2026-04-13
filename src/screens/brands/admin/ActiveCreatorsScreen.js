@@ -6,13 +6,7 @@ import PropTypes from 'prop-types';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
 import { BLACK, LIGHT_PURPLE, WHITE } from '../../../theme/Colors';
-import {
-    HEADER_MARGIN,
-    RADIUS_SMALL,
-    SCREEN_WIDTH,
-    SPACE_MEDIUM,
-    WRAPPER_MARGIN,
-} from '../../../theme/Layout';
+import { HEADER_MARGIN, RADIUS_SMALL, SCREEN_WIDTH, SPACE_MEDIUM, WRAPPER_MARGIN } from '../../../theme/Layout';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
 import { CREATOR_PROJECT_STATUS } from '../../../navigation/ScreenNames';
 import CreatorCard from '../creators/CreatorCard';
@@ -22,7 +16,6 @@ import {
 } from '../../../consts/content/Portfolio';
 import { wp } from '../../../Utils/getResponsiveSize';
 import useTranslation from '../../../hooks/useTranslation';
-import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
 
 const USERS_COLLECTION = 'users';
 
@@ -46,10 +39,7 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
         try {
             setLoading(true);
 
-            const querySnapshot = await firestore()
-                .collection(USERS_COLLECTION)
-                .where('id', 'in', currentChunk)
-                .get();
+            const querySnapshot = await firestore().collection(USERS_COLLECTION).where('id', 'in', currentChunk).get();
             const chunkCreators = querySnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data(),
@@ -97,9 +87,6 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
             style={styles.card}
             width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
             imageStyle={styles.image}
-            subtitleContainerWidth={94}
-            textContainerWidth="68%"
-            lastLoginTime={item?.lastLoginTime ? calculateLastLoginTime(item.lastLoginTime) : 'days ago'}
             onPress={() =>
                 navigation.navigate(CREATOR_PROJECT_STATUS, {
                     creatorID: item?.id,
@@ -139,11 +126,11 @@ const ActiveCreatorsScreen = ({ route, navigation }) => {
                     removeClippedSubviews
                     initialNumToRender={10}
                     ListFooterComponent={renderFooter}
-                    ListHeaderComponent={() => (
+                    ListHeaderComponent={
                         <TemplateText size={16} bold center mt={HEADER_MARGIN}>
                             Active Creators
                         </TemplateText>
-                    )}
+                    }
                 />
             )}
         </View>

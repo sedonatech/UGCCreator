@@ -14,7 +14,6 @@ import { BLACK, LIGHT_PURPLE, WHITE } from '../../../../theme/Colors';
 import { DEFAULT_CREATOR_SHORT_DESCRIPTION } from '../../../../consts/content/Portfolio';
 import { wp } from '../../../../Utils/getResponsiveSize';
 import TemplateText from '../../../../components/TemplateText';
-import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
 
 const USERS_COLLECTION = 'users';
 const EnrolledCreators = ({ creatorIds, projectId }) => {
@@ -105,11 +104,6 @@ const EnrolledCreators = ({ creatorIds, projectId }) => {
                                     style={styles.card}
                                     width={SCREEN_WIDTH - WRAPPER_MARGIN * 2}
                                     imageStyle={styles.image}
-                                    subtitleContainerWidth={94}
-                                    textContainerWidth="68%"
-                                    lastLoginTime={
-                                        item?.lastLoginTime ? calculateLastLoginTime(item.lastLoginTime) : 'days ago'
-                                    }
                                     ctaText="View Project Status"
                                     onPress={() =>
                                         navigation.navigate(CREATOR_PROJECT_STATUS, {

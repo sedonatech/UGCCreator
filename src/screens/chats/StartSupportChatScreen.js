@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { IS_ANDROID, WRAPPER_MARGIN } from '../../theme/Layout';
 import { TRANSPARENT, WHITE } from '../../theme/Colors';

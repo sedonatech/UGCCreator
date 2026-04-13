@@ -10,7 +10,7 @@ import { BLACK, BLUE, LIGHT_PURPLE } from '../../../../theme/Colors';
 import TemplateCarousel from '../../../../components/carousels/TemplateCarousel';
 import { SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../../theme/Layout';
 import TemplateBox from '../../../../components/TemplateBox';
-import calculateLastLoginTime from '../../../../Utils/calculateLastLoginTime';
+
 import useProjectsContext from '../../../../hooks/brands/useProjectsContext';
 import ProfileStatusCard from '../../../../components/cards/ProfileStatusCard';
 import {
@@ -63,7 +63,6 @@ const CurrentCreatorsCarousel = ({ style }) => {
                 return {
                     id: doc.id,
                     ...data,
-                    lastLoginTime: data?.lastLoginTime ? calculateLastLoginTime(data.lastLoginTime) : 'days ago',
                 };
             });
             const unique = [...new Map(chunkCreators.map(u => [u.email, u])).values()];
@@ -122,9 +121,6 @@ const CurrentCreatorsCarousel = ({ style }) => {
                         style={styles.card}
                         width={SCREEN_WIDTH - WRAPPER_MARGIN * 4.6}
                         imageStyle={styles.image}
-                        subtitleContainerWidth={94}
-                        textContainerWidth="68%"
-                        lastLoginTime={item?.lastLoginTime}
                         onPress={() =>
                             navigation.navigate(CREATOR_PROJECT_STATUS, {
                                 creatorID: item?.id,

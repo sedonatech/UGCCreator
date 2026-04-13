@@ -39,7 +39,7 @@ import { PROFILE } from '../../../navigation/ScreenNames';
 import TemplateSafeAreaView from '../../../components/TemplateSafeAreaView';
 import { isIOS } from '../../../Utils/Platform';
 import FilterPill from '../../app/explore/components/FilterPill';
-import calculateLastLoginTime from '../../../Utils/calculateLastLoginTime';
+
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import useTranslation from '../../../hooks/useTranslation';
 
@@ -142,7 +142,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
                         id: doc.id,
                         ...doc.data(),
                         lastLoginTimeRaw: rawLastLoginTime, // Keep raw timestamp for sorting
-                        lastLoginTime: rawLastLoginTime ? calculateLastLoginTime(rawLastLoginTime) : 'days ago',
                     };
                 })
                 // Requirement: Creators without images need to be filtered out
@@ -203,10 +202,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
                 imageUrl={item?.image}
                 shortDescription={item?.shortDescription || DEFAULT_CREATOR_SHORT_DESCRIPTION}
                 location={item?.location?.country}
-                email={item?.email}
-                lastLoginTime={item?.lastLoginTime}
                 onPress={() => navigation.navigate(PROFILE, { creatorId: item?.id })}
-                height={wp(194)}
                 mt={SPACE_MEDIUM}
             />
         ),

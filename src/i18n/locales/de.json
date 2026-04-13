@@ -1153,6 +1153,11 @@
                 "withoutSearch": "Keine Veranstaltungen verfügbar"
             },
             "viewMore": "Mehr anzeigen",
+            "deleteAlert": {
+                "title": "Veranstaltung löschen",
+                "message": "Sind Sie sicher, dass Sie diese Veranstaltung löschen möchten? Sie wird für niemanden mehr sichtbar sein.",
+                "delete": "Löschen"
+            },
             "addEvent": {
                 "title": "Eine Veranstaltung hinzufügen",
                 "editTitle": "Veranstaltung bearbeiten",
@@ -1235,7 +1240,8 @@
                     "linkedin": "LinkedIn-Link",
                     "website": "Website",
                     "location": "Standort"
-                }
+                },
+                "updatingMessage": "Markeninformationen werden aktualisiert...."
             }
         }
     },

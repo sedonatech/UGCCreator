@@ -10,6 +10,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect } from 'react';
+import PropTypes from 'prop-types';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import {
     getFirestore,
@@ -101,13 +102,13 @@ const ChatRoomsScreen = ({ navigation }) => {
             const usersRef = collection(db, 'users');
             const q = query(usersRef, where('id', '==', brandId));
             const querySnapshot = await getDocs(q);
-            const fetchedUsers = querySnapshot?.docs?.map(doc => ({
-                id: doc?.id,
-                ...doc?.data(),
+            const fetchedUsers = querySnapshot?.docs?.map(docSnap => ({
+                id: docSnap?.id,
+                ...docSnap?.data(),
             }));
             setSupportFcmToken(fetchedUsers?.[0]?.fcmToken);
         } catch (e) {
-            console.error('Error fetching brands:', e);
+            console.error('Error fetching support:', e);
         }
     };
 
@@ -116,9 +117,9 @@ const ChatRoomsScreen = ({ navigation }) => {
         const unsubscribeCreator = onSnapshot(
             creatorRef,
             querySnapshot => {
-                const creatorRooms = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
+                const creatorRooms = querySnapshot.docs.map(docSnap => ({
+                    id: docSnap.id,
+                    ...docSnap.data(),
                 }));
                 setChatRooms(prevRooms => {
                     const mergedRooms = [...prevRooms, ...creatorRooms];
@@ -133,9 +134,9 @@ const ChatRoomsScreen = ({ navigation }) => {
         const unsubscribeBrand = onSnapshot(
             brandRef,
             querySnapshot => {
-                const brandRooms = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
+                const brandRooms = querySnapshot.docs.map(docSnap => ({
+                    id: docSnap.id,
+                    ...docSnap.data(),
                 }));
                 setChatRooms(prevRooms => {
                     const mergedRooms = [...prevRooms, ...brandRooms];
@@ -240,12 +241,12 @@ const ChatRoomsScreen = ({ navigation }) => {
     const chatRoomName = 'SUPPORT CHAT';
     const [supportPress, setSupportPress] = useState(false);
 
-    const handleSupportPress = async () => {
+    const handleOnPressSupportChat = async () => {
         try {
             await createChatRoom(chatRoomName, userId, brandId, userFCMToken, brandFCMToken);
             setSupportPress(true);
         } catch (e) {
-            console.log('-> e', e);
+            console.error('[SUPPORT CHAT ERROR]', e);
         }
     };
 
@@ -277,7 +278,7 @@ const ChatRoomsScreen = ({ navigation }) => {
             title: t('chats.rooms.options.supportBugs'),
             onPress: () => {
                 setShowOptions(false);
-                handleSupportPress();
+                handleOnPressSupportChat();
             },
         },
     ];
@@ -297,8 +298,8 @@ const ChatRoomsScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior={isIOS ? 'padding' : 'height'} style={styles.mainContainer}>
             <StatusBar barStyle="dark-content" />
-            <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={{ flex: 1 }}>
-                <View style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={() => setShowOptions(false)} style={styles.flex}>
+                <View style={styles.flex}>
                     <FlatList
                         data={searchedChatRooms}
                         showsVerticalScrollIndicator={false}
@@ -376,7 +377,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                                 </Swipeable>
                             </GestureHandlerRootView>
                         )}
-                        ListEmptyComponent={() => (
+                        ListEmptyComponent={
                             <TemplateBox
                                 mt={HEADER_MARGIN}
                                 alignItems="center"
@@ -400,7 +401,7 @@ const ChatRoomsScreen = ({ navigation }) => {
 
                                 <TemplateBox height={WRAPPER_MARGIN} />
                             </TemplateBox>
-                        )}
+                        }
                         ListFooterComponent={
                             <View style={styles.listFooter}>
                                 <TemplateSafeAreaView ios />
@@ -417,14 +418,7 @@ const ChatRoomsScreen = ({ navigation }) => {
                     />
 
                     {showOptions && (
-                        <View
-                            style={{
-                                position: 'absolute',
-                                right: WRAPPER_MARGIN,
-                                top: HEADER_MARGIN * 1.5,
-                                zIndex: 9999,
-                            }}
-                        >
+                        <View style={styles.optionsMenu}>
                             {options?.map(({ title, onPress }, index) => (
                                 <TemplateBox
                                     key={index}
@@ -453,12 +447,28 @@ const ChatRoomsScreen = ({ navigation }) => {
     );
 };
 
+ChatRoomsScreen.propTypes = {
+    navigation: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        setOptions: PropTypes.func.isRequired,
+    }).isRequired,
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
     mainContainer: {
         flex: 1,
+    },
+    flex: {
+        flex: 1,
+    },
+    optionsMenu: {
+        position: 'absolute',
+        right: WRAPPER_MARGIN,
+        top: HEADER_MARGIN * 1.5,
+        zIndex: 9999,
     },
     contentContainer: {
         flexGrow: 1,

@@ -42,14 +42,16 @@ const FavoriteEventsScreen = ({ navigation }) => {
                 .where('eventId', 'in', favoriteEventsIds)
                 .get()
                 .then(querySnapshot =>
-                    querySnapshot?.docs?.map(doc => ({
-                        id: doc?.id,
-                        ...doc?.data(),
-                    })),
+                    querySnapshot?.docs
+                        ?.map(docSnap => ({
+                            id: docSnap?.id,
+                            ...docSnap?.data(),
+                        }))
+                        ?.filter(e => !e.isDeleted),
                 );
             setEventsData(fetchedEvents);
         } catch (e) {
-            console.log(e);
+            console.error('[FETCH FAVORITE EVENTS ERROR]', e);
         }
     };
 
@@ -250,10 +252,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontSize: FONT_BASE,
         color: BLACK,
-    },
-    card: {
-        marginBottom: WRAPPER_MARGIN,
-        alignSelf: 'center',
     },
 });
 
