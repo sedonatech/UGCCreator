@@ -60,7 +60,7 @@ const BrandEventsCarousel = ({ style, brandId }) => {
                 city: event?.city,
                 startDate: event?.startDate,
             }))
-            ?.sort((a, b) => a?.startDate?.seconds - b?.startDate?.seconds);
+            ?.sort((a, b) => (safeToDate(a?.startDate)?.getTime() ?? 0) - (safeToDate(b?.startDate)?.getTime() ?? 0));
     }, [events]);
 
     useFocusEffect(
@@ -122,7 +122,7 @@ const BrandEventsCarousel = ({ style, brandId }) => {
                                 onPress={() => navigation.navigate(BRAND_EVENT_DETAILS_SCREEN, { id: item?.id })}
                             />
                             <TemplateBox backgroundColor={GREY} width={80} mr={12} borderRadius={8} overflow="hidden">
-                                <ResizedImage source={{ uri: item?.image }} style={{ height: '100%', width: '100%' }} />
+                                <ResizedImage source={{ uri: item?.image }} style={styles.eventImage} />
 
                                 <TemplateBox
                                     zIndex={1}
@@ -208,13 +208,19 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: LAVENDER,
     },
+    eventImage: {
+        height: '100%',
+        width: '100%',
+    },
 });
 
 BrandEventsCarousel.propTypes = {
     style: PropTypes.shape({}),
+    brandId: PropTypes.string,
 };
 
 BrandEventsCarousel.defaultProps = {
     style: {},
+    brandId: '',
 };
 export default BrandEventsCarousel;

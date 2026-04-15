@@ -868,6 +868,14 @@
             "loadingMessage": "Obteniendo creadores...",
             "viewProfile": "Ver perfil",
             "active": "Activo",
+            "swipe": {
+                "viewProfile": "VER",
+                "skip": "PASAR",
+                "allSwiped": "Has visto a todos los creadores. Ajusta tus filtros o empieza de nuevo.",
+                "startOver": "Empezar de nuevo",
+                "skipHint": "Pasar",
+                "viewHint": "Ver perfil"
+            },
             "filters": {
                 "title": "Seleccionar filtros",
                 "apply": "Aplicar filtros",
@@ -1038,7 +1046,8 @@
                     "title": "Tus proyectos activos",
                     "seeAll": "Ver todo",
                     "enrolledCreators": "Creadores inscritos",
-                    "noEnrolledCreators": "Sin creadores inscritos"
+                    "creatorsWaiting": "{{count}} creador(es) esperando aprobación",
+                    "noEnrolledCreators": "Aún no hay creadores"
                 },
                 "events": {
                     "title": "Tus eventos",
@@ -1184,7 +1193,9 @@
                 "buttons": {
                     "create": "Crear evento",
                     "edit": "Editar evento",
-                    "replaceImage": "Reemplazar imagen"
+                    "replaceImage": "Cambiar foto",
+                    "addImage": "Agregar foto del evento",
+                    "tapToUpload": "Toca para subir"
                 },
                 "required": "  <Obligatorio>",
                 "alerts": {
@@ -1370,6 +1381,19 @@
         "business": "Negocios",
         "real-estate": "Bienes Raíces",
         "art": "Arte"
+    },
+    "eventCategories": {
+        "conference": "Conferencia",
+        "workshop": "Taller",
+        "networking": "Networking",
+        "product-launch": "Lanzamiento de producto",
+        "pop-up": "Pop-up",
+        "sports": "Deportes",
+        "drinks-social": "Bebidas / Social",
+        "festival": "Festival",
+        "exhibition": "Exposición",
+        "webinar": "Webinar",
+        "other": "Otro"
     },
     "filterCountries": {
         "united-states": "Estados Unidos",

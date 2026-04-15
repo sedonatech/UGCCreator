@@ -18,8 +18,6 @@ interface Props {
     image?: string;
     progress?: number;
     status?: string;
-    notificationCount?: number;
-    documentCount?: number;
     daysLeft?: number;
     onPress?: () => void;
     style?: any;
@@ -38,8 +36,6 @@ const CurrentProjectCard: FC<Props> = ({
     image,
     progress,
     status,
-    notificationCount,
-    documentCount,
     daysLeft,
     onPress,
     style,
@@ -128,24 +124,6 @@ const CurrentProjectCard: FC<Props> = ({
                     )}
                     <TemplateBox flex />
 
-                    {documentCount !== undefined && documentCount >= 0 && (
-                        <TemplateBox row alignItems="center">
-                            <TemplateIcon color={BLACK} size={18} name="document-outline" />
-                            <TemplateText size={12} color={BLACK}>
-                                {documentCount!}
-                                {'  '}
-                            </TemplateText>
-                        </TemplateBox>
-                    )}
-                    {notificationCount !== undefined && notificationCount >= 0 && (
-                        <TemplateBox row alignItems="center">
-                            <TemplateIcon color={BLACK} size={18} name="chatbubble-ellipses-outline" />
-                            <TemplateText size={12} color={BLACK}>
-                                {notificationCount!}
-                                {'  '}
-                            </TemplateText>
-                        </TemplateBox>
-                    )}
                     {daysLeft !== undefined && daysLeft >= 0 && (
                         <TemplateBox row alignItems="center">
                             <TemplateIcon color={BLACK} size={18} name="time-outline" />

@@ -13,7 +13,7 @@ const useFirebaseSetStorage = () => {
     const [progress, setProgress] = useState(0);
     const [picture, setPicture] = useState(false);
 
-    const saveAPicture = async ({ isAvatar = false, customMetadata = {}, response, uuid }) =>
+    const saveAPicture = async ({ isAvatar = false, customMetadata = {}, response, uuid, subfolder }) =>
         new Promise((res, rej) => {
             setProgress(0);
 
@@ -25,7 +25,10 @@ const useFirebaseSetStorage = () => {
                     const imageName = isAvatar || isProgressPicture;
                     const metadata = { customMetadata };
 
-                    const reference = storage().ref(`users/${uuid}/${imageName}`);
+                    const storagePath = subfolder
+                        ? `users/${uuid}/${subfolder}/${imageName}`
+                        : `users/${uuid}/${imageName}`;
+                    const reference = storage().ref(storagePath);
                     const save = () => reference.putFile(path, metadata);
 
                     save().on('state_changed', taskSnapshot => {
@@ -95,6 +98,7 @@ const useFirebaseSetStorage = () => {
         pickerOptions = 'openPicker',
         customOptions = {},
         uuid,
+        subfolder,
     }) => {
         try {
             const pickerConfig = landscapeMode
@@ -130,6 +134,7 @@ const useFirebaseSetStorage = () => {
                     customMetadata,
                     response,
                     uuid,
+                    subfolder,
                 });
             } else {
                 setPicture({ ...response, ...customMetadata });

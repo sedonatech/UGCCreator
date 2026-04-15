@@ -104,7 +104,7 @@ const EventsScreen = ({ navigation }) => {
                 city: event?.city,
                 startDate: event?.startDate,
             }))
-            ?.sort((a, b) => a?.startDate?.seconds - b?.startDate?.seconds);
+            ?.sort((a, b) => (safeToDate(a?.startDate)?.getTime() ?? 0) - (safeToDate(b?.startDate)?.getTime() ?? 0));
     }, [eventsData]);
 
     const filteredEvents = useMemo(() => {

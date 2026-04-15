@@ -46,6 +46,53 @@ export const projectFilters: ProjectFilters[] = [
     }
 ];
 
+export const eventCategoryFilters: ProjectFilters[] = [
+    {
+        name: 'Conference',
+        value: 'conference',
+    },
+    {
+        name: 'Workshop',
+        value: 'workshop',
+    },
+    {
+        name: 'Networking',
+        value: 'networking',
+    },
+    {
+        name: 'Product Launch',
+        value: 'product-launch',
+    },
+    {
+        name: 'Pop-up',
+        value: 'pop-up',
+    },
+    {
+        name: 'Sports',
+        value: 'sports',
+    },
+    {
+        name: 'Drinks / Social',
+        value: 'drinks-social',
+    },
+    {
+        name: 'Festival',
+        value: 'festival',
+    },
+    {
+        name: 'Exhibition',
+        value: 'exhibition',
+    },
+    {
+        name: 'Webinar',
+        value: 'webinar',
+    },
+    {
+        name: 'Other',
+        value: 'other',
+    },
+];
+
 export const countryFilters: ProjectFilters[] = [
     {
         name: 'United States',

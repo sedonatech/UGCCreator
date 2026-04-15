@@ -4,7 +4,7 @@ import useAuthContext from '../auth/useAuthContext';
 import useFirebaseSetStorage from '../imageUpload/useFirebaseSetStorage';
 import useFirebaseGetStorage from '../imageUpload/useFirebaseGetStorage';
 
-const useImageStorage = () => {
+const useImageStorage = ({ subfolder } = {}) => {
     const { auth } = useAuthContext();
     const uuid = auth?.user?.uid;
     const { showActionSheetWithOptions } = useActionSheet();
@@ -21,6 +21,7 @@ const useImageStorage = () => {
             customMetadata: {},
             pickerOptions: options,
             uuid,
+            subfolder,
         });
     };
 
@@ -28,7 +29,7 @@ const useImageStorage = () => {
         (async () => {
             try {
                 const imageFromStorage = await getAvatar(uuid);
-                const imagesFromStorage = await getImages(uuid);
+                const imagesFromStorage = await getImages(uuid, subfolder);
                 if (imageFromStorage) {
                     setImage(imageFromStorage);
                 }
