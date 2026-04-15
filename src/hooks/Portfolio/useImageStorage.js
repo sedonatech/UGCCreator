@@ -15,7 +15,7 @@ const useImageStorage = ({ subfolder } = {}) => {
     const { getAvatar, getImages } = useFirebaseGetStorage();
 
     const handleOnPhotoSelect = async (options, isAvatar) => {
-        await takeAPicture({
+        const result = await takeAPicture({
             saveAutomatically: true,
             isAvatar,
             customMetadata: {},
@@ -23,6 +23,10 @@ const useImageStorage = ({ subfolder } = {}) => {
             uuid,
             subfolder,
         });
+        // Immediately add the uploaded image to state — no waiting for full re-listing
+        if (result?.url) {
+            setImages(prev => [result, ...(prev || [])]);
+        }
     };
 
     useEffect(() => {
@@ -48,7 +52,7 @@ const useImageStorage = ({ subfolder } = {}) => {
                 options: ['Camera', 'Gallery', 'Cancel'],
                 cancelButtonIndex: 2,
             },
-            (buttonIndex) => {
+            buttonIndex => {
                 if (buttonIndex === 0) {
                     handleOnPhotoSelect('openCamera', isAvatar);
                 } else if (buttonIndex === 1) {

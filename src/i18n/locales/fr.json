@@ -1091,10 +1091,12 @@
                     "create": "Créer un projet"
                 },
                 "image": {
-                    "addInstruction": "Appuyez pour ajouter une image de projet",
-                    "replaceInstruction": "Appuyez pour remplacer l'image",
-                    "replaceConfirm": "Êtes-vous sûr de vouloir remplacer l'image ?"
+                    "addInstruction": "Ajouter une photo de projet",
+                    "replaceInstruction": "Changer la photo",
+                    "replaceConfirm": "Êtes-vous sûr de vouloir remplacer l'image ?",
+                    "tapToUpload": "Appuyez pour télécharger"
                 },
+                "required": "  <Obligatoire>",
                 "alerts": {
                     "fillRequired": "Veuillez remplir tous les champs obligatoires :",
                     "successTitle": "Projet créé avec succès",

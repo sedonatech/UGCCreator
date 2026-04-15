@@ -83,7 +83,7 @@ const AddEventScreen = ({ navigation, route }) => {
         if (!d) return '';
         return d.toLocaleTimeString(t('common.localeCode'), options);
     };
-    const { onAddImage: onAddPhoto, images, progress } = useImageStorage({ subfolder: 'events' });
+    const { onAddImage: onAddPhoto, images } = useImageStorage({ subfolder: 'events' });
     const latestImage = useMemo(() => {
         if (!images) return null;
         const sortedImages = images

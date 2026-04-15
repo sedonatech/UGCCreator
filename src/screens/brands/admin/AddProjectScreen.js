@@ -1,14 +1,32 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FastImage from 'react-native-fast-image';
-import { BLACK, BLACK_40, BLUE, DEEP_PURPLE, GREY_SECONDARY, PRIMARY, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import {
+    BLACK,
+    BLACK_40,
+    BLACK_60,
+    BLUE,
+    DEEP_PURPLE,
+    GREY,
+    GREY_SECONDARY,
+    LAVENDER,
+    TRANSPARENT,
+    WHITE,
+} from '../../../theme/Colors';
 import TemplateText from '../../../components/TemplateText';
-import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, SPACE_XXLARGE, WRAPPER_MARGIN } from '../../../theme/Layout';
+import {
+    HEADER_MARGIN,
+    IS_ANDROID,
+    SCREEN_WIDTH,
+    SPACE_XXLARGE,
+    WRAPPED_SCREEN_WIDTH,
+    WRAPPER_MARGIN,
+} from '../../../theme/Layout';
 import TemplateTextInput from '../../../components/TemplateTextInput';
 import Button from '../../../components/Button';
 import TemplateBox from '../../../components/TemplateBox';
+import TemplateIcon from '../../../components/TemplateIcon';
 import useProjects from '../../../hooks/brands/useProjects';
 import Wrapper from '../../../components/Wrapper';
 import CurrencyPicker from '../../../components/CurrencyPicker';
@@ -22,9 +40,7 @@ import {
     projectTypeFilters,
 } from '../../../consts/AppFilters/ProjectFilters';
 import FilterCategory from '../../app/explore/components/FilterCategory';
-import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
 import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
-import { wp } from '../../../Utils/getResponsiveSize';
 import useTranslation from '../../../hooks/useTranslation';
 import { markReviewPromptEligibleForTrigger } from '../../../hooks/useAppReview';
 
@@ -37,23 +53,31 @@ const AddProjectScreen = ({ navigation, route }) => {
     const { update, project, createProject, loading } = useProjects();
     const [imageLoading, setImageLoading] = useState(false);
 
-    const { onAddImage: onAddPhoto, images } = useImageStorage();
+    const { onAddImage: onAddPhoto, images } = useImageStorage({ subfolder: 'projects' });
+
+    // For future edit flow: const projectData = route?.params?.projectData;
+    const projectData = null;
+    const [updateImage, setUpdateImage] = useState(false);
 
     const latestImage = useMemo(() => {
         if (!images) return null;
         const sortedImages = images
             ?.filter(item => !!item?.contentDisposition)
             .sort((a, b) => b?.generation - a?.generation);
-        setImageLoading(false);
+
         return sortedImages[0];
     }, [images]);
 
     useEffect(() => {
-        console.log('[AddProject] latestImage changed:', latestImage?.url);
         if (latestImage) {
+            // Guard only when editing an existing project (not creating)
+            if (projectData && !updateImage) return;
             update('image', latestImage?.url);
-            console.log('[AddProject] Updated project image to:', latestImage?.url);
+            setImageLoading(false);
+            return;
         }
+
+        if (projectData) update('image', projectData?.image);
     }, [latestImage]);
 
     const getUnfilledFields = () => {
@@ -193,55 +217,69 @@ const AddProjectScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateBox row>
-                    <TemplateText size={16} mr={5}>
+                <TemplateBox row alignItems="center">
+                    <TemplateText size={16}>
                         {t('brands.admin.addProject.fields.image')}
+                        <TemplateText size={12} ml={10} color={GREY}>
+                            {t('brands.admin.addProject.required')}
+                        </TemplateText>
                     </TemplateText>
-                    {imageLoading && <ActivityIndicator size="small" color={BLUE} />}
+                    {imageLoading && <ActivityIndicator size="small" color={BLUE} style={styles.imageLoader} />}
                 </TemplateBox>
                 <TemplateBox height={10} />
-                {(latestImage?.url || project?.image) && (
-                    <TemplateBox height={120} width={120} borderRadius={10}>
-                        <FastImage source={{ uri: latestImage?.url || project?.image }} style={styles.image} />
-                    </TemplateBox>
-                )}
-
-                <TemplateBox height={10} />
                 <TemplateBox
+                    width={WRAPPED_SCREEN_WIDTH}
+                    borderRadius={12}
+                    overflow="hidden"
                     onPress={() => {
-                        console.log('[AddProject] Image button pressed, current image:', project?.image);
                         if (project?.image) {
                             Alert.alert(t('brands.admin.addProject.image.replaceConfirm'), '', [
                                 {
-                                    text: t('common.buttons.cancel'),
-                                    onPress: () => console.log('[AddProject] Cancel Pressed'),
+                                    text: t('common.actions.cancel'),
                                     style: 'cancel',
                                 },
                                 {
                                     text: t('common.buttons.ok'),
                                     onPress: () => {
-                                        console.log('[AddProject] Replacing image, calling onAddPhoto');
                                         setImageLoading(true);
+                                        setUpdateImage(true);
                                         onAddPhoto();
                                     },
                                 },
                             ]);
-                            return;
+                        } else {
+                            setImageLoading(true);
+                            onAddPhoto();
                         }
-                        console.log('[AddProject] Adding new image, calling onAddPhoto');
-                        setImageLoading(true);
-                        onAddPhoto();
                     }}
-                    mt={SPACE_XXLARGE}
-                    alignItems="center"
-                    justifyContent="center"
                 >
-                    <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} height={wp(62)} />
-                    <TemplateText style={{ position: 'absolute' }} size={14} color={BLACK}>
-                        {project?.image
-                            ? t('brands.admin.addProject.image.replaceInstruction')
-                            : t('brands.admin.addProject.image.addInstruction')}
-                    </TemplateText>
+                    {project?.image ? (
+                        <TemplateBox>
+                            <FastImage
+                                source={{ uri: project?.image }}
+                                style={styles.projectCoverImage}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                            <TemplateBox style={styles.imageOverlay} row alignItems="center" justifyContent="center">
+                                <TemplateIcon name="camera-outline" size={18} color={WHITE} />
+                                <TemplateBox width={6} />
+                                <TemplateText size={14} color={WHITE} semiBold>
+                                    {t('brands.admin.addProject.image.replaceInstruction')}
+                                </TemplateText>
+                            </TemplateBox>
+                        </TemplateBox>
+                    ) : (
+                        <TemplateBox style={styles.imagePlaceholder} alignItems="center" justifyContent="center">
+                            <TemplateIcon name="camera-outline" size={36} color={GREY} />
+                            <TemplateBox height={8} />
+                            <TemplateText size={15} color={BLACK} semiBold>
+                                {t('brands.admin.addProject.image.addInstruction')}
+                            </TemplateText>
+                            <TemplateText size={12} color={GREY} mt={4}>
+                                {t('brands.admin.addProject.image.tapToUpload')}
+                            </TemplateText>
+                        </TemplateBox>
+                    )}
                 </TemplateBox>
             </TemplateBox>
 
@@ -421,10 +459,29 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         alignSelf: 'center',
     },
-    image: {
-        width: wp(120),
-        height: wp(120),
-        borderRadius: wp(10),
+    projectCoverImage: {
+        width: '100%',
+        aspectRatio: 16 / 9,
+    },
+    imageOverlay: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: BLACK_60,
+        paddingVertical: 10,
+    },
+    imagePlaceholder: {
+        width: '100%',
+        aspectRatio: 16 / 9,
+        borderWidth: 1.5,
+        borderColor: GREY_SECONDARY,
+        borderStyle: 'dashed',
+        borderRadius: 12,
+        backgroundColor: LAVENDER,
+    },
+    imageLoader: {
+        marginLeft: 8,
     },
 });
 export default AddProjectScreen;

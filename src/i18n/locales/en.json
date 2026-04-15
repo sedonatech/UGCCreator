@@ -1089,10 +1089,12 @@
                     "create": "Create Project"
                 },
                 "image": {
-                    "addInstruction": "Tap to add project image",
-                    "replaceInstruction": "Tap to replace image",
-                    "replaceConfirm": "Are you sure you want to replace the image?"
+                    "addInstruction": "Add Project Photo",
+                    "replaceInstruction": "Change Photo",
+                    "replaceConfirm": "Are you sure you want to replace the image?",
+                    "tapToUpload": "Tap to upload"
                 },
+                "required": "  <Required>",
                 "alerts": {
                     "fillRequired": "Please fill all required fields:",
                     "successTitle": "Project created successfully",

@@ -1091,10 +1091,12 @@
                     "create": "Projekt erstellen"
                 },
                 "image": {
-                    "addInstruction": "Tippen Sie, um ein Projektbild hinzuzufügen",
-                    "replaceInstruction": "Tippen Sie, um das Bild zu ersetzen",
-                    "replaceConfirm": "Sind Sie sicher, dass Sie das Bild ersetzen möchten?"
+                    "addInstruction": "Projektfoto hinzufügen",
+                    "replaceInstruction": "Foto ändern",
+                    "replaceConfirm": "Sind Sie sicher, dass Sie das Bild ersetzen möchten?",
+                    "tapToUpload": "Zum Hochladen tippen"
                 },
+                "required": "  <Erforderlich>",
                 "alerts": {
                     "fillRequired": "Bitte füllen Sie alle erforderlichen Felder aus:",
                     "successTitle": "Projekt erfolgreich erstellt",
