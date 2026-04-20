@@ -28,10 +28,11 @@ const useFirebaseGetStorage = () => {
         }
     };
 
-    const getImages = async (uuid) => {
+    const getImages = async (uuid, subfolder) => {
         try {
             const storageInstance = getStorage();
-            const reference = ref(storageInstance, `users/${uuid}`);
+            const storagePath = subfolder ? `users/${uuid}/${subfolder}` : `users/${uuid}`;
+            const reference = ref(storageInstance, storagePath);
             const referenceList = await list(reference);
             const items = referenceList?.items ?? [];
             const data = items.map(async (itemRef) => {

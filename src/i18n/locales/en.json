@@ -864,6 +864,14 @@
             "loadingMessage": "Fetching creators...",
             "viewProfile": "View Profile",
             "active": "Active",
+            "swipe": {
+                "viewProfile": "VIEW",
+                "skip": "SKIP",
+                "allSwiped": "You've seen all creators! Adjust your filters or start over.",
+                "startOver": "Start Over",
+                "skipHint": "Skip",
+                "viewHint": "View Profile"
+            },
             "filters": {
                 "title": "Select Filters",
                 "apply": "Apply Filters",
@@ -1034,7 +1042,8 @@
                     "title": "Your Active Projects",
                     "seeAll": "See All",
                     "enrolledCreators": "Enrolled Creators",
-                    "noEnrolledCreators": "No Enrolled Creators"
+                    "creatorsWaiting": "{{count}} creator(s) waiting for approval",
+                    "noEnrolledCreators": "No creators yet"
                 },
                 "events": {
                     "title": "Your Events",
@@ -1080,10 +1089,12 @@
                     "create": "Create Project"
                 },
                 "image": {
-                    "addInstruction": "Tap to add project image",
-                    "replaceInstruction": "Tap to replace image",
-                    "replaceConfirm": "Are you sure you want to replace the image?"
+                    "addInstruction": "Add Project Photo",
+                    "replaceInstruction": "Change Photo",
+                    "replaceConfirm": "Are you sure you want to replace the image?",
+                    "tapToUpload": "Tap to upload"
                 },
+                "required": "  <Required>",
                 "alerts": {
                     "fillRequired": "Please fill all required fields:",
                     "successTitle": "Project created successfully",
@@ -1182,7 +1193,9 @@
                 "buttons": {
                     "create": "Create Event",
                     "edit": "Edit Event",
-                    "replaceImage": "Replace Image"
+                    "replaceImage": "Change Photo",
+                    "addImage": "Add Event Photo",
+                    "tapToUpload": "Tap to upload"
                 },
                 "required": "  <Required>",
                 "alerts": {
@@ -1368,6 +1381,19 @@
         "business": "Business",
         "real-estate": "Real Estate",
         "art": "Art"
+    },
+    "eventCategories": {
+        "conference": "Conference",
+        "workshop": "Workshop",
+        "networking": "Networking",
+        "product-launch": "Product Launch",
+        "pop-up": "Pop-up",
+        "sports": "Sports",
+        "drinks-social": "Drinks / Social",
+        "festival": "Festival",
+        "exhibition": "Exhibition",
+        "webinar": "Webinar",
+        "other": "Other"
     },
     "filterCountries": {
         "united-states": "United States",

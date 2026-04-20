@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FastImage from 'react-native-fast-image';
 import { uniq } from 'lodash';
@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import {
     BLACK,
     BLACK_40,
+    BLACK_60,
+    BLUE,
     DEEP_PURPLE,
     GREY,
     GREY_SECONDARY,
@@ -32,11 +34,11 @@ import TemplateTextInput from '../../../components/TemplateTextInput';
 import Button from '../../../components/Button';
 import TemplateBox from '../../../components/TemplateBox';
 import Wrapper from '../../../components/Wrapper';
-import { projectFilters } from '../../../consts/AppFilters/ProjectFilters';
+import { eventCategoryFilters } from '../../../consts/AppFilters/ProjectFilters';
 import FilterCategory from '../../app/explore/components/FilterCategory';
-import AddButtonLargeSvg from '../../../../assets/svgs/AddButtonLargeSvg';
+import TemplateIcon from '../../../components/TemplateIcon';
 import useImageStorage from '../../../hooks/Portfolio/useImageStorage';
-import { hp, wp } from '../../../Utils/getResponsiveSize';
+import { hp } from '../../../Utils/getResponsiveSize';
 import useCountries from '../../../hooks/useCountries';
 import DropdownSearch from '../../app/explore/components/DropdownSearch';
 import useEvents from '../../../hooks/brands/useEvents';
@@ -49,9 +51,9 @@ const AddEventScreen = ({ navigation, route }) => {
     const eventData = route?.params?.event;
 
     const [showStartDate, setShowStartDate] = useState(false);
-    const [showEndDate, setShowEndDate] = useState(false);
     const [showStartTime, setShowStartTime] = useState(false);
     const [updateImage, setUpdateImage] = useState(false);
+    const [imageLoading, setImageLoading] = useState(false);
 
     useEffect(() => {
         if (eventData) loadEvent();
@@ -59,7 +61,7 @@ const AddEventScreen = ({ navigation, route }) => {
 
     const loadEvent = () => {
         const updatedData = {};
-        const dateFields = ['startDate', 'endDate', 'startTime'];
+        const dateFields = ['startDate', 'startTime'];
         for (const [key, value] of Object.entries(eventData)) {
             if (dateFields.includes(key)) {
                 updatedData[key] = safeToDate(value) || new Date();
@@ -81,7 +83,7 @@ const AddEventScreen = ({ navigation, route }) => {
         if (!d) return '';
         return d.toLocaleTimeString(t('common.localeCode'), options);
     };
-    const { onAddImage: onAddPhoto, images } = useImageStorage();
+    const { onAddImage: onAddPhoto, images } = useImageStorage({ subfolder: 'events' });
     const latestImage = useMemo(() => {
         if (!images) return null;
         const sortedImages = images
@@ -93,10 +95,11 @@ const AddEventScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (latestImage) {
-            // fixes the issue where your'e trying to edit an event
-            // and latest image has higher generation value that previous event
+            // fixes the issue where you're trying to edit an event
+            // and latest image has higher generation value than previous event
             if (eventData && !updateImage) return;
             update('image', latestImage?.url);
+            setImageLoading(false);
             return;
         }
 
@@ -104,19 +107,18 @@ const AddEventScreen = ({ navigation, route }) => {
     }, [latestImage]);
 
     const getUnfilledFields = () => {
-        const { image, title, startDate, endDate, description } = event;
+        const { image, title, startDate, description } = event;
         const unfilledFields = [];
         if (!image?.length) unfilledFields.push('image');
         if (!title?.trim()?.length) unfilledFields.push('title');
         if (!startDate) unfilledFields.push('startDate');
-        if (!endDate) unfilledFields.push('endDate');
         if (!description?.trim()?.length) unfilledFields.push('description');
         return unfilledFields?.join(', ');
     };
 
     const handleCreateEvent = () => {
-        const { image, title, startDate, endDate, description } = event;
-        if (!image?.length || !title?.trim()?.length || !startDate || !endDate || !description?.trim()?.length)
+        const { image, title, startDate, description } = event;
+        if (!image?.length || !title?.trim()?.length || !startDate || !description?.trim()?.length)
             return Alert.alert(t('common.alerts.fillRequiredFields'), getUnfilledFields());
 
         if (eventData) {
@@ -276,68 +278,6 @@ const AddEventScreen = ({ navigation, route }) => {
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_SMALL} selfCenter>
                 <TemplateText size={16}>
-                    {t('brands.events.addEvent.fields.endDate')}
-                    <TemplateText size={12} ml={10} color={GREY}>
-                        {t('brands.events.addEvent.required')}
-                    </TemplateText>
-                </TemplateText>
-                <TemplateBox width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} selfCenter>
-                    {showEndDate ? (
-                        <>
-                            <DateTimePicker
-                                value={event?.endDate instanceof Date ? event.endDate : new Date()}
-                                mode="date"
-                                display="spinner"
-                                onChange={(e, selectedDate) => {
-                                    const currentDate = selectedDate || event?.endDate;
-                                    update('endDate', currentDate);
-                                    if (IS_ANDROID) setShowEndDate(false);
-                                }}
-                                textColor={BLACK}
-                                themeVariant="light"
-                                minimumDate={event?.startDate instanceof Date ? event.startDate : new Date()}
-                            />
-                            {!IS_ANDROID && (
-                                <TemplateBox
-                                    onPress={() => setShowEndDate(false)}
-                                    pAll={SPACE_SMALL}
-                                    backgroundColor={DEEP_PURPLE}
-                                    borderRadius={RADIUS_SMALL}
-                                    alignItems="center"
-                                    selfCenter
-                                    width={WRAPPED_SCREEN_WIDTH}
-                                >
-                                    <TemplateText color={WHITE} semiBold>
-                                        {t('common.actions.done')}
-                                    </TemplateText>
-                                </TemplateBox>
-                            )}
-                        </>
-                    ) : (
-                        <TemplateBox
-                            row
-                            alignItems="center"
-                            justifyContent="space-between"
-                            pAll={SPACE_MEDIUM}
-                            width={WRAPPED_SCREEN_WIDTH}
-                            borderRadius={RADIUS_SMALL}
-                            backgroundColor={LAVENDER}
-                            mv={SPACE_SMALL}
-                            selfCenter
-                            onPress={() => setShowEndDate(true)}
-                        >
-                            <TemplateText>
-                                {event?.endDate
-                                    ? formatDate(event.endDate, { year: 'numeric', month: 'long', day: 'numeric' })
-                                    : t('brands.events.addEvent.placeholders.selectEndDate')}
-                            </TemplateText>
-                        </TemplateBox>
-                    )}
-                </TemplateBox>
-            </TemplateBox>
-
-            <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_SMALL} selfCenter>
-                <TemplateText size={16}>
                     {t('brands.events.addEvent.fields.startTime')}
                     <TemplateText size={12} ml={10} color={GREY}>
                         {t('brands.events.addEvent.required')}
@@ -399,53 +339,70 @@ const AddEventScreen = ({ navigation, route }) => {
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
-                <TemplateText size={16}>
-                    {t('brands.events.addEvent.fields.image')}
-                    <TemplateText size={12} ml={10} color={GREY}>
-                        {t('brands.events.addEvent.required')}
+                <TemplateBox row alignItems="center">
+                    <TemplateText size={16}>
+                        {t('brands.events.addEvent.fields.image')}
+                        <TemplateText size={12} ml={10} color={GREY}>
+                            {t('brands.events.addEvent.required')}
+                        </TemplateText>
                     </TemplateText>
-                </TemplateText>
+                    {imageLoading && <ActivityIndicator size="small" color={BLUE} style={styles.imageLoader} />}
+                </TemplateBox>
                 <TemplateBox height={10} />
-                {event?.image && (
-                    <TemplateBox aspectRatio={1} width={WRAPPED_SCREEN_WIDTH} borderRadius={10} mb={10}>
-                        <FastImage source={{ uri: event?.image }} style={styles.image} />
-                    </TemplateBox>
-                )}
-
-                {event?.image ? (
-                    <TemplateBox
-                        onPress={() => {
+                <TemplateBox
+                    width={WRAPPED_SCREEN_WIDTH}
+                    borderRadius={12}
+                    overflow="hidden"
+                    onPress={() => {
+                        if (event?.image) {
                             Alert.alert(t('common.alerts.replaceImage.message'), '', [
                                 {
                                     text: t('common.actions.cancel'),
-                                    onPress: () => console.log('Cancel Pressed'),
                                     style: 'cancel',
                                 },
                                 {
                                     text: t('common.buttons.ok'),
                                     onPress: () => {
-                                        onAddPhoto();
+                                        setImageLoading(true);
                                         setUpdateImage(true);
+                                        onAddPhoto();
                                     },
                                 },
                             ]);
-                        }}
-                        width={WRAPPED_SCREEN_WIDTH}
-                        pAll={SPACE_MEDIUM}
-                        backgroundColor={LAVENDER}
-                        borderRadius={RADIUS_SMALL}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <TemplateText size={16} color={DEEP_PURPLE} semiBold>
-                            {t('brands.events.addEvent.buttons.replaceImage')}
-                        </TemplateText>
-                    </TemplateBox>
-                ) : (
-                    <TemplateBox onPress={() => onAddPhoto()}>
-                        <AddButtonLargeSvg width={SCREEN_WIDTH - WRAPPER_MARGIN * 2} />
-                    </TemplateBox>
-                )}
+                        } else {
+                            setImageLoading(true);
+                            onAddPhoto();
+                        }
+                    }}
+                >
+                    {event?.image ? (
+                        <TemplateBox>
+                            <FastImage
+                                source={{ uri: event?.image }}
+                                style={styles.eventCoverImage}
+                                resizeMode={FastImage.resizeMode.cover}
+                            />
+                            <TemplateBox style={styles.imageOverlay} row alignItems="center" justifyContent="center">
+                                <TemplateIcon name="camera-outline" size={18} color={WHITE} />
+                                <TemplateBox width={6} />
+                                <TemplateText size={14} color={WHITE} semiBold>
+                                    {t('brands.events.addEvent.buttons.replaceImage')}
+                                </TemplateText>
+                            </TemplateBox>
+                        </TemplateBox>
+                    ) : (
+                        <TemplateBox style={styles.imagePlaceholder} alignItems="center" justifyContent="center">
+                            <TemplateIcon name="camera-outline" size={36} color={GREY} />
+                            <TemplateBox height={8} />
+                            <TemplateText size={15} color={BLACK} semiBold>
+                                {t('brands.events.addEvent.buttons.addImage')}
+                            </TemplateText>
+                            <TemplateText size={12} color={GREY} mt={4}>
+                                {t('brands.events.addEvent.buttons.tapToUpload')}
+                            </TemplateText>
+                        </TemplateBox>
+                    )}
+                </TemplateBox>
             </TemplateBox>
 
             <TemplateBox ph={WRAPPER_MARGIN} mb={SPACE_XXLARGE}>
@@ -462,16 +419,16 @@ const AddEventScreen = ({ navigation, route }) => {
 
             <FilterCategory
                 title={t('brands.events.addEvent.categories')}
-                filters={projectFilters}
+                filters={eventCategoryFilters}
                 onFilterPress={value => {
                     if (event?.categories?.includes(value)) {
-                        const newProjectCategories = event?.categories?.filter(item => item !== value);
-                        return update('categories', newProjectCategories);
+                        const newCategories = event?.categories?.filter(item => item !== value);
+                        return update('categories', newCategories);
                     }
                     update('categories', [...(event?.categories || []), value]);
                 }}
                 selectedFilters={event?.categories || []}
-                translationPrefix="filterCategories"
+                translationPrefix="eventCategories"
             />
 
             <Button
@@ -514,10 +471,29 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         alignSelf: 'center',
     },
-    image: {
+    eventCoverImage: {
         width: '100%',
-        height: '100%',
-        borderRadius: wp(10),
+        aspectRatio: 16 / 9,
+    },
+    imageOverlay: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: BLACK_60,
+        paddingVertical: 10,
+    },
+    imagePlaceholder: {
+        width: '100%',
+        aspectRatio: 16 / 9,
+        borderWidth: 1.5,
+        borderColor: GREY_SECONDARY,
+        borderStyle: 'dashed',
+        borderRadius: 12,
+        backgroundColor: LAVENDER,
+    },
+    imageLoader: {
+        marginLeft: 8,
     },
 });
 export default AddEventScreen;

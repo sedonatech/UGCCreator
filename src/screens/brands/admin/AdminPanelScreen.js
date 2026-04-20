@@ -11,8 +11,6 @@ import { ADD_EVENT, ADD_PROJECT, BRAND_PROJECT_DETAILS } from '../../../navigati
 import useAuthContext from '../../../hooks/auth/useAuthContext';
 import Greeting from '../../app/home/components /Greeting';
 import { HEADER_MARGIN, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
-import CurrentCreatorsCarousel from './components/CurrentCreatorsCarousel';
-import FeaturedCreatorsCarousel from './components/FeaturedCreatorsCarousel';
 import ActiveProjectsCarousel from './components/ActiveProjectsCarousel';
 import useProjectsContext from '../../../hooks/brands/useProjectsContext';
 import ProfileStatusCard from '../../../components/cards/ProfileStatusCard';
@@ -26,7 +24,6 @@ import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import BrandEventsCarousel from '../../app/home/components /BrandEventsCarousel';
 import HeaderIconButton from '../../../components/header/HeaderButton';
 import useProfile from '../../../hooks/user/useProfile';
-import FeaturedShowcaseCarousel from '../../app/home/components /FeaturedSamplesCarousel';
 import useTranslation from '../../../hooks/useTranslation';
 
 const AdminPanelScreen = ({ navigation }) => {
@@ -68,10 +65,10 @@ const AdminPanelScreen = ({ navigation }) => {
                     price: project?.price,
                     status:
                         Array.isArray(project?.applications) && project.applications.length
-                            ? t('brands.admin.carousels.activeProjects.enrolledCreators')
+                            ? t('brands.admin.carousels.activeProjects.creatorsWaiting', {
+                                  count: project.applications.length,
+                              })
                             : t('brands.admin.carousels.activeProjects.noEnrolledCreators'),
-                    notifications: Array.isArray(project?.applications) ? project.applications.length : 0,
-                    documents: project?.applications?.[0]?.documents?.length || 0,
                     daysLeft: Number.isFinite(days) ? days : undefined,
                     onPress: () =>
                         navigation.navigate(BRAND_PROJECT_DETAILS, {
@@ -194,9 +191,6 @@ const AdminPanelScreen = ({ navigation }) => {
                             </TemplateBox>
                         </TemplateBox>
                     )}
-                    <CurrentCreatorsCarousel style={styles.carousel} />
-                    <FeaturedCreatorsCarousel style={styles.carousel} />
-                    <FeaturedShowcaseCarousel style={styles.carousel} />
                     <BrandEventsCarousel brandId={profile?.id} />
                     {projectsCarouselData?.length ? (
                         <ActiveProjectsCarousel style={styles.carousel} projectsCarouselData={projectsCarouselData} />

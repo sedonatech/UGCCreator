@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Linking, StyleSheet, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import TemplateBox from '../../../../components/TemplateBox';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
-import { BLACK, BLACK_0_5 } from '../../../../theme/Colors';
+import { BLACK, BLACK_0_5, IOS_BLUE } from '../../../../theme/Colors';
 import TemplateText from '../../../../components/TemplateText';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import { WEBVIEW } from '../../../../navigation/ScreenNames';
@@ -35,17 +36,31 @@ const ContactSection = ({ contactInfo, socials, email }) => {
                 </TemplateBox>
             )}
             {(contactInfo?.email || email) && (
-                <TemplateBox row alignItems="center" backgroundColor={BLACK_0_5} borderRadius={10} mb={WRAPPER_MARGIN}>
-                    <TemplateBox pr={20}>
+                <TemplateBox
+                    row
+                    pAll={10}
+                    alignItems="center"
+                    onPress={() => {
+                        const emailAddress = contactInfo?.email || email;
+                        if (emailAddress) {
+                            Linking.openURL(`mailto:${emailAddress}`);
+                        }
+                    }}
+                    backgroundColor={BLACK_0_5}
+                    borderRadius={10}
+                    mb={WRAPPER_MARGIN}
+                >
+                    <TemplateIcon name="mail-outline" size={20} color={BLACK} />
+                    <View style={styles.emailSpacer} />
+                    <View style={styles.emailContent}>
                         <TemplateText color={BLACK} semiBold size={16}>
                             {t('profile.portfolio.contact.email')}
                         </TemplateText>
-                        <TemplateBox height={10} />
-                        <TemplateText color={BLACK} size={14}>
+                        <TemplateText color={IOS_BLUE} size={14} numberOfLines={1} style={styles.emailLink}>
                             {contactInfo?.email || email}
                         </TemplateText>
-                    </TemplateBox>
-                    <TemplateBox flex />
+                    </View>
+                    <TemplateIcon name="open-outline" size={20} color={BLACK} />
                 </TemplateBox>
             )}
             {socials?.instagram && (
@@ -166,4 +181,17 @@ ContactSection.defaultProps = {
     socials: {},
     email: '',
 };
+
+const styles = StyleSheet.create({
+    emailSpacer: {
+        width: 10,
+    },
+    emailContent: {
+        flex: 1,
+    },
+    emailLink: {
+        textDecorationLine: 'underline',
+    },
+});
+
 export default ContactSection;

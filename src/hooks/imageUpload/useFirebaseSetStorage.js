@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
-import storage from '@react-native-firebase/storage';
+import storage, { getDownloadURL, getMetadata } from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ const useFirebaseSetStorage = () => {
     const [progress, setProgress] = useState(0);
     const [picture, setPicture] = useState(false);
 
-    const saveAPicture = async ({ isAvatar = false, customMetadata = {}, response, uuid }) =>
+    const saveAPicture = async ({ isAvatar = false, customMetadata = {}, response, uuid, subfolder }) =>
         new Promise((res, rej) => {
             setProgress(0);
 
@@ -25,20 +25,26 @@ const useFirebaseSetStorage = () => {
                     const imageName = isAvatar || isProgressPicture;
                     const metadata = { customMetadata };
 
-                    const reference = storage().ref(`users/${uuid}/${imageName}`);
-                    const save = () => reference.putFile(path, metadata);
+                    const storagePath = subfolder
+                        ? `users/${uuid}/${subfolder}/${imageName}`
+                        : `users/${uuid}/${imageName}`;
+                    const reference = storage().ref(storagePath);
+                    const task = reference.putFile(path, metadata);
 
-                    save().on('state_changed', taskSnapshot => {
+                    task.on('state_changed', taskSnapshot => {
                         console.log(
                             `[IMAGE-LIBRARY]: ${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
                         );
                     });
                     try {
-                        const result = await save();
+                        await task;
                         console.log('[IMAGE-LIBRARY]: Image uploaded to the bucket!');
+                        // Get download URL + metadata immediately — no full re-listing needed
+                        const url = await getDownloadURL(reference);
+                        const uploadedMeta = await getMetadata(reference);
                         setProgress(1);
                         setTimeout(() => setProgress(0), 1000);
-                        return res(result);
+                        return res({ url, ...uploadedMeta });
                     } catch (error) {
                         return rej(error);
                     }
@@ -95,6 +101,7 @@ const useFirebaseSetStorage = () => {
         pickerOptions = 'openPicker',
         customOptions = {},
         uuid,
+        subfolder,
     }) => {
         try {
             const pickerConfig = landscapeMode
@@ -125,12 +132,14 @@ const useFirebaseSetStorage = () => {
             };
 
             if (saveAutomatically) {
-                await saveAPicture({
+                const uploadResult = await saveAPicture({
                     isAvatar,
                     customMetadata,
                     response,
                     uuid,
+                    subfolder,
                 });
+                return uploadResult;
             } else {
                 setPicture({ ...response, ...customMetadata });
             }

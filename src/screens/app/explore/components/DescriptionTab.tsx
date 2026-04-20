@@ -3,7 +3,7 @@ import TemplateBox from '../../../../components/TemplateBox';
 import TemplateText from '../../../../components/TemplateText';
 import { WRAPPER_MARGIN } from '../../../../theme/Layout';
 import {
-    BLACK, BLACK_0_5
+    BLACK, BLACK_0_5, IOS_BLUE
 } from '../../../../theme/Colors';
 import TemplateIcon from '../../../../components/TemplateIcon';
 import openUrl from '../../../../Utils/openUrl';
@@ -195,7 +195,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                     row
                     pAll={10}
                     alignItems="center"
-                    onPress={() => openUrl(tiktok)}
+                    onPress={() => openUrl(linkedin)}
                     backgroundColor={BLACK_0_5}
                     borderRadius={10}
                     mb={WRAPPER_MARGIN}
@@ -240,7 +240,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                     row
                     pAll={10}
                     alignItems="center"
-                    onPress={() => openUrl(tiktok)}
+                    onPress={() => openUrl(`mailto:${email}`)}
                     backgroundColor={BLACK_0_5}
                     borderRadius={10}
                     mb={WRAPPER_MARGIN}
@@ -251,7 +251,7 @@ const DescriptionTab: FC<DescriptionTabProps> = ({
                         color={BLACK}
                     />
                     <TemplateBox width={10} />
-                    <TemplateText color={BLACK} semiBold size={wp(14)}>Send an email</TemplateText>
+                    <TemplateText color={IOS_BLUE} semiBold size={wp(14)} style={{ textDecorationLine: 'underline' }}>Send an email</TemplateText>
                     <TemplateBox flex />
                     <TemplateIcon
                         name="open-outline"

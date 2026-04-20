@@ -868,6 +868,14 @@
             "loadingMessage": "Creators werden abgerufen...",
             "viewProfile": "Profil ansehen",
             "active": "Aktiv",
+            "swipe": {
+                "viewProfile": "ANSEHEN",
+                "skip": "WEITER",
+                "allSwiped": "Du hast alle Creator gesehen! Passe deine Filter an oder starte neu.",
+                "startOver": "Neu starten",
+                "skipHint": "Weiter",
+                "viewHint": "Profil ansehen"
+            },
             "filters": {
                 "title": "Filter auswählen",
                 "apply": "Filter anwenden",
@@ -1038,7 +1046,8 @@
                     "title": "Ihre aktiven Projekte",
                     "seeAll": "Alle anzeigen",
                     "enrolledCreators": "Eingeschriebene Creators",
-                    "noEnrolledCreators": "Keine eingeschriebenen Creators"
+                    "creatorsWaiting": "{{count}} Creator warten auf Genehmigung",
+                    "noEnrolledCreators": "Noch keine Creator"
                 },
                 "events": {
                     "title": "Ihre Veranstaltungen",
@@ -1082,10 +1091,12 @@
                     "create": "Projekt erstellen"
                 },
                 "image": {
-                    "addInstruction": "Tippen Sie, um ein Projektbild hinzuzufügen",
-                    "replaceInstruction": "Tippen Sie, um das Bild zu ersetzen",
-                    "replaceConfirm": "Sind Sie sicher, dass Sie das Bild ersetzen möchten?"
+                    "addInstruction": "Projektfoto hinzufügen",
+                    "replaceInstruction": "Foto ändern",
+                    "replaceConfirm": "Sind Sie sicher, dass Sie das Bild ersetzen möchten?",
+                    "tapToUpload": "Zum Hochladen tippen"
                 },
+                "required": "  <Erforderlich>",
                 "alerts": {
                     "fillRequired": "Bitte füllen Sie alle erforderlichen Felder aus:",
                     "successTitle": "Projekt erfolgreich erstellt",
@@ -1184,7 +1195,9 @@
                 "buttons": {
                     "create": "Veranstaltung erstellen",
                     "edit": "Veranstaltung bearbeiten",
-                    "replaceImage": "Bild ersetzen"
+                    "replaceImage": "Foto ändern",
+                    "addImage": "Eventfoto hinzufügen",
+                    "tapToUpload": "Tippen zum Hochladen"
                 },
                 "required": "  <Erforderlich>",
                 "alerts": {
@@ -1370,6 +1383,19 @@
         "business": "Geschäft",
         "real-estate": "Immobilien",
         "art": "Kunst"
+    },
+    "eventCategories": {
+        "conference": "Konferenz",
+        "workshop": "Workshop",
+        "networking": "Networking",
+        "product-launch": "Produkteinführung",
+        "pop-up": "Pop-up",
+        "sports": "Sport",
+        "drinks-social": "Getränke / Social",
+        "festival": "Festival",
+        "exhibition": "Ausstellung",
+        "webinar": "Webinar",
+        "other": "Andere"
     },
     "filterCountries": {
         "united-states": "Vereinigte Staaten",

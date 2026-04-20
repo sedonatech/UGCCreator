@@ -4,7 +4,7 @@ import useAuthContext from '../auth/useAuthContext';
 import useFirebaseSetStorage from '../imageUpload/useFirebaseSetStorage';
 import useFirebaseGetStorage from '../imageUpload/useFirebaseGetStorage';
 
-const useImageStorage = () => {
+const useImageStorage = ({ subfolder } = {}) => {
     const { auth } = useAuthContext();
     const uuid = auth?.user?.uid;
     const { showActionSheetWithOptions } = useActionSheet();
@@ -15,20 +15,25 @@ const useImageStorage = () => {
     const { getAvatar, getImages } = useFirebaseGetStorage();
 
     const handleOnPhotoSelect = async (options, isAvatar) => {
-        await takeAPicture({
+        const result = await takeAPicture({
             saveAutomatically: true,
             isAvatar,
             customMetadata: {},
             pickerOptions: options,
             uuid,
+            subfolder,
         });
+        // Immediately add the uploaded image to state — no waiting for full re-listing
+        if (result?.url) {
+            setImages(prev => [result, ...(prev || [])]);
+        }
     };
 
     useEffect(() => {
         (async () => {
             try {
                 const imageFromStorage = await getAvatar(uuid);
-                const imagesFromStorage = await getImages(uuid);
+                const imagesFromStorage = await getImages(uuid, subfolder);
                 if (imageFromStorage) {
                     setImage(imageFromStorage);
                 }
@@ -47,7 +52,7 @@ const useImageStorage = () => {
                 options: ['Camera', 'Gallery', 'Cancel'],
                 cancelButtonIndex: 2,
             },
-            (buttonIndex) => {
+            buttonIndex => {
                 if (buttonIndex === 0) {
                     handleOnPhotoSelect('openCamera', isAvatar);
                 } else if (buttonIndex === 1) {
