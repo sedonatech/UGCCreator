@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { startCase, toLower } from 'lodash';
+import startCase from 'lodash/startCase';
+import toLower from 'lodash/toLower';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { getFirestore, collection, query, where, getDocs, limit, startAfter } from '@react-native-firebase/firestore';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -97,6 +98,7 @@ const CreatorProfilesScreen = ({ navigation }) => {
 
     const db = getFirestore();
     const refRBSheet = useRef();
+    const searchCacheRef = useRef({ firstWord: '', results: [] });
     const { auth } = useAuthContext();
     const { t } = useTranslation();
     const isCreator = auth?.profile?.type === 'creator';
@@ -109,12 +111,24 @@ const CreatorProfilesScreen = ({ navigation }) => {
     // ─────────────────────────────────────────────
 
     /**
+     * Filter cached results by remaining words (second word onward).
+     * Used when the first word hasn't changed to avoid a redundant Firestore query.
+     */
+    const filterByRemainingWords = (results, words) => {
+        if (words.length <= 1) return results;
+        const remainingWords = words.slice(1).map(w => w.toLowerCase());
+        return results.filter(creator => {
+            const nameLower = (creator.userName || '').toLowerCase();
+            return remainingWords.every(w => nameLower.includes(w));
+        });
+    };
+
+    /**
      * Search creators by userName using Firestore prefix query.
      *
      * Strategy: query Firestore with a prefix range on the FIRST word (startCase),
-     * then filter remaining words client-side. This handles mixed-case names like
-     * "Deep patel" because startCase("deep") = "Deep" matches the prefix,
-     * and "patel" is matched client-side.
+     * then filter remaining words client-side. Results for the first word are cached
+     * so that typing a second/third word filters instantly without hitting Firestore.
      *
      * Searches ALL creators regardless of whether they have a profile image.
      */
@@ -125,13 +139,19 @@ const CreatorProfilesScreen = ({ navigation }) => {
             return;
         }
 
+        const firstWord = startCase(toLower(words[0]));
+
+        // If the first word matches the cache, filter client-side only (no Firestore query)
+        if (firstWord === searchCacheRef.current.firstWord) {
+            const filtered = filterByRemainingWords(searchCacheRef.current.results, words);
+            setSearchResults(filtered.slice(0, 5));
+            return;
+        }
+
         try {
             setSearchLoading(true);
 
-            // Build prefix range from first word using startCase
-            const firstWord = startCase(toLower(words[0]));
             const firstWordEnd = getPrefixEnd(firstWord);
-
             const searchQuery = query(
                 collection(db, USERS_COLLECTION),
                 where('type', '==', 'creator'),
@@ -141,18 +161,13 @@ const CreatorProfilesScreen = ({ navigation }) => {
             );
 
             const snapshot = await getDocs(searchQuery);
-            let results = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+            const results = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-            // If multiple words typed, filter remaining words client-side
-            if (words.length > 1) {
-                const remainingWords = words.slice(1).map(w => w.toLowerCase());
-                results = results.filter(creator => {
-                    const nameLower = (creator.userName || '').toLowerCase();
-                    return remainingWords.every(w => nameLower.includes(w));
-                });
-            }
+            // Cache results keyed on the first word
+            searchCacheRef.current = { firstWord, results };
 
-            setSearchResults(results.slice(0, 5));
+            const filtered = filterByRemainingWords(results, words);
+            setSearchResults(filtered.slice(0, 5));
         } catch (error) {
             console.error('[SEARCH ERROR]', error);
             setSearchResults([]);
@@ -161,15 +176,17 @@ const CreatorProfilesScreen = ({ navigation }) => {
         }
     };
 
-    // Debounce search input
+    // Debounce search input — depends on trimmed searchTerm to avoid
+    // redundant queries from trailing spaces
     useEffect(() => {
         if (searchTerm.length < 1) {
             setSearchResults([]);
+            searchCacheRef.current = { firstWord: '', results: [] };
             return;
         }
         const timeout = setTimeout(() => searchCreators(searchTerm), 250);
         return () => clearTimeout(timeout);
-    }, [search]);
+    }, [searchTerm]);
 
     // ─────────────────────────────────────────────
     // SWIPE DECK — unchanged from original
@@ -330,19 +347,68 @@ const CreatorProfilesScreen = ({ navigation }) => {
                     </TemplateText>
                 </TemplateBox>
 
-                {/* Search bar */}
-                <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN} mt={WRAPPER_MARGIN}>
-                    <TemplateTextInput
-                        placeholder={t('creatorExplore.creators.searchPlaceholder')}
-                        style={[styles.input, SHADOW('default', WHITE)]}
-                        value={search}
-                        onChangeText={text => setSearch(text)}
-                        autoCapitalize="none"
-                    />
-                    <TemplateTouchable onPress={() => refRBSheet?.current?.open()} style={styles.filterButton}>
-                        <Filter />
-                    </TemplateTouchable>
-                </TemplateBox>
+                {/* Search bar + absolute dropdown container */}
+                <View style={styles.searchContainer}>
+                    <TemplateBox row alignItems="center" mh={WRAPPER_MARGIN}>
+                        <TemplateTextInput
+                            placeholder={t('creatorExplore.creators.searchPlaceholder')}
+                            style={[styles.input, SHADOW('default', WHITE)]}
+                            value={search}
+                            onChangeText={text => setSearch(text)}
+                            autoCapitalize="none"
+                        />
+                        <TemplateTouchable onPress={() => refRBSheet?.current?.open()} style={styles.filterButton}>
+                            <Filter />
+                        </TemplateTouchable>
+                    </TemplateBox>
+
+                    {/* Search results dropdown — floats over card deck */}
+                    {isSearchActive && (
+                        <View style={styles.searchDropdown}>
+                            {searchLoading ? (
+                                <TemplateBox pv={16} alignItems="center">
+                                    <ActivityIndicator size="small" color={IOS_BLUE} />
+                                </TemplateBox>
+                            ) : searchResults.length === 0 ? (
+                                <TemplateBox pv={16} alignItems="center">
+                                    <TemplateText size={14} color={BLACK_60}>
+                                        {t('creatorExplore.creators.noResults')}
+                                    </TemplateText>
+                                </TemplateBox>
+                            ) : (
+                                searchResults.map(creator => (
+                                    <TouchableOpacity
+                                        key={creator.id}
+                                        style={styles.searchResultItem}
+                                        onPress={() => {
+                                            setSearch('');
+                                            setSearchResults([]);
+                                            navigation.navigate(PROFILE, { creatorId: creator.id });
+                                        }}
+                                        activeOpacity={0.7}
+                                    >
+                                        <FastImage
+                                            source={{ uri: creator.image || undefined }}
+                                            style={styles.searchResultAvatar}
+                                            resizeMode={FastImage.resizeMode.cover}
+                                        />
+                                        <View style={styles.searchResultInfo}>
+                                            <TemplateText size={15} semiBold color={BLACK} numberOfLines={1}>
+                                                {creator.userName}
+                                            </TemplateText>
+                                            {!!(creator.location?.city || creator.location?.country) && (
+                                                <TemplateText size={12} color={BLACK_60} numberOfLines={1}>
+                                                    {creator.location?.city || creator.location?.country}
+                                                </TemplateText>
+                                            )}
+                                        </View>
+                                        <TemplateIcon name="chevron-forward" size={18} color={BLACK_60} />
+                                    </TouchableOpacity>
+                                ))
+                            )}
+                        </View>
+                    )}
+                </View>
 
                 {/* Active filters */}
                 {!!selectedFilters?.length && (
@@ -358,53 +424,6 @@ const CreatorProfilesScreen = ({ navigation }) => {
                             />
                         ))}
                     </TemplateBox>
-                )}
-
-                {/* Search results dropdown — overlays above the swipe deck */}
-                {isSearchActive && (
-                    <View style={styles.searchDropdown}>
-                        {searchLoading ? (
-                            <TemplateBox pv={16} alignItems="center">
-                                <ActivityIndicator size="small" color={IOS_BLUE} />
-                            </TemplateBox>
-                        ) : searchResults.length === 0 ? (
-                            <TemplateBox pv={16} alignItems="center">
-                                <TemplateText size={14} color={BLACK_60}>
-                                    {t('creatorExplore.creators.noResults')}
-                                </TemplateText>
-                            </TemplateBox>
-                        ) : (
-                            searchResults.map(creator => (
-                                <TouchableOpacity
-                                    key={creator.id}
-                                    style={styles.searchResultItem}
-                                    onPress={() => {
-                                        setSearch('');
-                                        setSearchResults([]);
-                                        navigation.navigate(PROFILE, { creatorId: creator.id });
-                                    }}
-                                    activeOpacity={0.7}
-                                >
-                                    <FastImage
-                                        source={{ uri: creator.image || undefined }}
-                                        style={styles.searchResultAvatar}
-                                        resizeMode={FastImage.resizeMode.cover}
-                                    />
-                                    <View style={styles.searchResultInfo}>
-                                        <TemplateText size={15} semiBold color={BLACK} numberOfLines={1}>
-                                            {creator.userName}
-                                        </TemplateText>
-                                        {!!(creator.location?.city || creator.location?.country) && (
-                                            <TemplateText size={12} color={BLACK_60} numberOfLines={1}>
-                                                {creator.location?.city || creator.location?.country}
-                                            </TemplateText>
-                                        )}
-                                    </View>
-                                    <TemplateIcon name="chevron-forward" size={18} color={BLACK_60} />
-                                </TouchableOpacity>
-                            ))
-                        )}
-                    </View>
                 )}
 
                 {/* Swipe card deck */}
@@ -656,6 +675,10 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
     },
+    searchContainer: {
+        marginTop: WRAPPER_MARGIN,
+        zIndex: 99,
+    },
     cardDeckOuter: {
         flex: 1,
     },
@@ -679,7 +702,10 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     searchDropdown: {
-        marginHorizontal: WRAPPER_MARGIN,
+        position: 'absolute',
+        top: wp(50),
+        left: WRAPPER_MARGIN,
+        right: WRAPPER_MARGIN,
         backgroundColor: WHITE,
         borderRadius: wp(12),
         shadowColor: BLACK,
@@ -687,7 +713,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.12,
         shadowRadius: 8,
         elevation: 6,
-        zIndex: 10,
+        zIndex: 99,
         overflow: 'hidden',
     },
     searchResultItem: {
