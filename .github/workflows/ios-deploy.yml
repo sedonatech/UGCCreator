@@ -1,13 +1,7 @@
 name: iOS - Build & Deploy to TestFlight
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - '**.md'
-      - 'android/**'
-
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch: # Manual trigger only — runs only when started by hand
 
 concurrency:
   group: ios-deploy-${{ github.ref }}
@@ -31,7 +25,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.1'
           bundler-cache: true  # Caches gems from Gemfile.lock
 
       - name: Install JS dependencies
