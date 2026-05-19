@@ -1,7 +1,8 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { BLACK, BLACK_10, BLACK_20, BLACK_SECONDARY, GREY_30, ONBOARDING_BLUE } from '../../theme/Colors';
+import LinearGradient from 'react-native-linear-gradient';
+import { BLACK, BLACK_20, ONBOARDING_BLUE, WHITE } from '../../theme/Colors';
 import TemplateText from '../../components/TemplateText';
 import { SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../theme/Layout';
 import Button from '../../components/Button';
@@ -10,7 +11,6 @@ import Wrapper from '../../components/Wrapper';
 import TemplateTextInput from '../../components/TemplateTextInput';
 import Error from '../../components/Error';
 import HeaderIconButton from '../../components/header/HeaderButton';
-import TemplateBox from '../../components/TemplateBox';
 import ResizedImage from '../../components/ResizedImage';
 import useTranslation from '../../hooks/useTranslation';
 
@@ -76,61 +76,60 @@ const ResetPasswordScreen = ({ navigation, route }) => {
 
     return (
         <Wrapper contentContainerStyle={styles.contentContainerStyle} style={styles.container} keyboard>
-            <TemplateBox borderRadius={20} overflow="hidden">
-                <TemplateBox
-                    position="absolute"
-                    pt={8}
-                    alignSelf="center"
-                    alignItems="center"
-                    zIndex={99}
-                    backgroundColor={BLACK_10}
+            <View style={styles.hero}>
+                <ResizedImage source={lockImage} style={{ height: 340, width: SCREEN_WIDTH }} />
+                <LinearGradient
+                    colors={['rgba(255,255,255,0)', 'rgba(255,255,255,1)']}
+                    style={styles.heroBottomFade}
                 />
-                <ResizedImage source={lockImage} style={{ height: 380, width: SCREEN_WIDTH }} />
-            </TemplateBox>
+            </View>
 
-            <TemplateBox width={WRAPPED_SCREEN_WIDTH} mt={16}>
-                <TemplateText size={18} bold caps color={BLACK} style={styles.title}>
-                    {isUpdate ? t('auth.resetPassword.updateTitle') : t('auth.resetPassword.resetTitle')}
-                </TemplateText>
-                <TemplateText size={16} color={BLACK_SECONDARY} medium>
-                    {t('auth.resetPassword.instruction')}
-                </TemplateText>
-            </TemplateBox>
-            <TemplateTextInput
-                placeholder={t('auth.resetPassword.emailPlaceholder')}
-                style={styles.input}
-                value={email}
-                onChangeText={text => setEmail(text)}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <Error show={!!error} style={styles.generalError}>
-                {error}
-            </Error>
-            <View style={styles.buttonContainer}>
-                <Button
-                    title={t('auth.resetPassword.resetButton')}
-                    onPress={handleResetPassword}
-                    style={styles.button}
-                    loading={loading}
-                    height={50}
-                    width={SCREEN_WIDTH - 40}
-                    color={BLACK}
-                />
-                {!isUpdate && (
-                    <TemplateText size={16} center style={styles.signupLink} medium>
-                        {t('auth.resetPassword.newToApp')}{' '}
-                        <TemplateText
-                            color={ONBOARDING_BLUE}
-                            underLine
-                            size={16}
-                            medium
-                            onPress={() => navigation.navigate(ONBOARDING)}
-                        >
-                            {t('auth.resetPassword.signUp')}
-                        </TemplateText>
+            <View style={styles.formCard}>
+                <View style={styles.textBlock}>
+                    <TemplateText size={24} bold color={BLACK} style={styles.title}>
+                        {isUpdate ? t('auth.resetPassword.updateTitle') : t('auth.resetPassword.resetTitle')}
                     </TemplateText>
-                )}
+                    <TemplateText size={15} color="#6B7280" medium lineHeight={22}>
+                        {t('auth.resetPassword.instruction')}
+                    </TemplateText>
+                </View>
+
+                <TemplateTextInput
+                    placeholder={t('auth.resetPassword.emailPlaceholder')}
+                    style={styles.input}
+                    value={email}
+                    onChangeText={text => setEmail(text)}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <Error show={!!error} style={styles.generalError}>
+                    {error}
+                </Error>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        title={t('auth.resetPassword.resetButton')}
+                        onPress={handleResetPassword}
+                        style={styles.button}
+                        loading={loading}
+                        height={56}
+                        width={SCREEN_WIDTH - 40}
+                        color={BLACK}
+                        titleSize={17}
+                    />
+                    {!isUpdate && (
+                        <TemplateText size={15} center style={styles.signupLink} medium color="#6B7280">
+                            {t('auth.resetPassword.newToApp')}{' '}
+                            <TemplateText
+                                color={ONBOARDING_BLUE}
+                                size={15}
+                                semiBold
+                                onPress={() => navigation.navigate(ONBOARDING)}
+                            >
+                                {t('auth.resetPassword.signUp')}
+                            </TemplateText>
+                        </TemplateText>
+                    )}
+                </View>
             </View>
         </Wrapper>
     );
@@ -139,31 +138,55 @@ const ResetPasswordScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
+        backgroundColor: WHITE,
     },
     contentContainerStyle: {},
+    hero: {
+        width: SCREEN_WIDTH,
+        height: 340,
+    },
+    heroBottomFade: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 130,
+    },
+    formCard: {
+        width: SCREEN_WIDTH,
+        alignItems: 'center',
+        marginTop: -28,
+    },
+    textBlock: {
+        width: WRAPPED_SCREEN_WIDTH,
+    },
     buttonContainer: {
         alignSelf: 'center',
     },
     button: {
         marginTop: 24,
         marginBottom: 16,
-        borderRadius: 26,
+        borderRadius: 28,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.16,
+        shadowRadius: 12,
     },
     signupLink: {
         marginBottom: 16,
     },
     title: {
-        marginBottom: WRAPPER_MARGIN,
+        marginBottom: 8,
     },
     input: {
-        height: 60,
-        width: SCREEN_WIDTH - 32,
-        borderWidth: 0.4,
-        borderColor: BLACK_10,
-        borderRadius: 26,
-        paddingLeft: 16,
-        backgroundColor: GREY_30,
-        marginTop: 16,
+        height: 58,
+        width: SCREEN_WIDTH - 40,
+        borderWidth: 1,
+        borderColor: '#E6E8EC',
+        borderRadius: 18,
+        paddingLeft: 18,
+        backgroundColor: '#F6F7F9',
+        marginTop: 18,
     },
     generalError: {
         marginVertical: 10,

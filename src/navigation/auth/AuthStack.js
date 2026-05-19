@@ -24,7 +24,7 @@ const { Navigator, Screen } = Stack;
 
 const AuthStack = () => (
     <Navigator
-        initialRouteName={WELCOME}
+        initialRouteName={ONBOARDING}
         screenOptions={{
             cardStyle: {
                 backgroundColor: WHITE,

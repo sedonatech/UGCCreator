@@ -51,6 +51,10 @@ target 'UGCCreatorApp' do
       project.targets.each do |target|
         target.build_configurations.each do |config|
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+          defs = config.build_settings['GCC_PREPROCESSOR_DEFINITIONS']
+          defs = [defs] unless defs.is_a?(Array)
+          defs << 'FMT_USE_CONSTEVAL=0' unless defs.include?('FMT_USE_CONSTEVAL=0')
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = defs
           config.build_settings["DEVELOPMENT_TEAM"] = "XW576HXDLG"
         end
       end
