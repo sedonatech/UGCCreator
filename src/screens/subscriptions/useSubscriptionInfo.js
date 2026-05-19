@@ -14,11 +14,11 @@ export default () => {
     } = STATUSES;
 
     useEffect(() => {
-        // NOTE: Only full_access accounted for currently, more options to be added at a later date
+        // NOTE: Only the "pro" entitlement accounted for currently, more options to be added at a later date
         (async () => {
             try {
                 console.log('purchaserInfo: ', purchaserInfo);
-                const entitlement = purchaserInfo?.entitlements?.all?.full_access;
+                const entitlement = purchaserInfo?.entitlements?.all?.pro;
                 console.log('expiration: ', differenceInDays(new Date(entitlement?.expirationDate), new Date()));
 
                 if (entitlement == null) {

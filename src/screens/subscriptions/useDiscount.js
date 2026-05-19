@@ -23,7 +23,7 @@ export default Platform.select({
                 try {
                     const product = availablePackage?.product;
 
-                    const previousEntitlementPurchase = purchaserInfo?.entitlements?.all?.full_access;
+                    const previousEntitlementPurchase = purchaserInfo?.entitlements?.all?.pro;
                     // Is eligible iOS user if: has a purchase from the app store that isn't sandbox
                     const eligible = !!previousEntitlementPurchase && (previousEntitlementPurchase?.store === 'APP_STORE' && previousEntitlementPurchase?.isSandbox !== true);
 

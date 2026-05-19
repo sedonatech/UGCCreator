@@ -32,7 +32,7 @@ export default () => {
 
         const purchaseMade = await onPurchasePackage();
 
-        if (typeof purchaseMade.customerInfo.entitlements.active.full_access !== 'undefined') {
+        if (typeof purchaseMade.customerInfo.entitlements.active.pro !== 'undefined') {
             return true;
         }
         if (Object.keys(purchaseMade?.customerInfo?.entitlements?.active)?.includes(availablePackage?.offeringIdentifier)) {
