@@ -97,7 +97,9 @@ const SignUpScreen = ({ navigation, route }) => {
     const handleSignUp = async () => {
         setLoading(true);
         try {
-            await AsyncStorage.setItem('@userType', namePlaceholder);
+            if (type) {
+                await AsyncStorage.setItem('@userType', type);
+            }
             const response = await auth().createUserWithEmailAndPassword(email, password);
 
             if (response?.user) {
@@ -109,7 +111,7 @@ const SignUpScreen = ({ navigation, route }) => {
             }
 
             if (e.code === 'auth/invalid-email') {
-                setPassword(t('auth.signup.errors.emailInvalid'));
+                setError(t('auth.signup.errors.emailInvalid'));
             }
             setLoading(false);
         }

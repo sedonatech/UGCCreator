@@ -51,7 +51,7 @@ const ResetPasswordScreen = ({ navigation, route }) => {
                 ],
             );
         } catch (err) {
-            if (err.code === 'au-email') {
+            if (err.code === 'auth/invalid-email') {
                 setError(t('auth.resetPassword.errors.invalidEmail'));
             }
             if (err.code === 'auth/user-not-found') {
