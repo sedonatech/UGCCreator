@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import IonIcon from '@react-native-vector-icons/ionicons';
-import { BLUE_SECONDARY } from '../theme/Colors';
+import { PRIMARY } from '../theme/Colors';
 
 interface Props {
     name: React.ComponentProps<typeof IonIcon>['name'];
@@ -9,7 +9,7 @@ interface Props {
     style?: object | object[];
 }
 
-const TemplateIcon: FC<Props> = ({ name, size = 15, color = BLUE_SECONDARY, style, ...rest }) => {
+const TemplateIcon: FC<Props> = ({ name, size = 15, color = PRIMARY, style, ...rest }) => {
     return <IonIcon name={name} size={size} color={color} style={style} {...rest} />;
 };
 

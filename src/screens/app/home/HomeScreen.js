@@ -5,11 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import { useIsFocused } from '@react-navigation/native';
 import messaging from '@react-native-firebase/messaging';
-import { BLACK, BLACK_20, TRANSPARENT, WHITE } from '../../../theme/Colors';
+import { BLACK, IOS_BLUE, TRANSPARENT, WHITE } from '../../../theme/Colors';
 import { HEADER_MARGIN, IS_ANDROID, SCREEN_WIDTH, WRAPPED_SCREEN_WIDTH, WRAPPER_MARGIN } from '../../../theme/Layout';
 import Greeting from './components /Greeting';
 import useAuthContext from '../../../hooks/auth/useAuthContext';
-import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK, UGCAI } from '../../../navigation/ScreenNames';
+import { BRANDS_CATALOGUE, CHALLENGE_DETAILS, PROFILE_STACK, UGCAI, WEBVIEW } from '../../../navigation/ScreenNames';
 import useFeatureFlags from '../../../hooks/featureFlags/useFeatureFlags';
 import TemplateBox from '../../../components/TemplateBox';
 import TemplateText from '../../../components/TemplateText';
@@ -27,11 +27,12 @@ import ChallengeCard from './components /ChallengeCard';
 import useChallenge from '../../../hooks/useChallenge';
 import TemplateCarousel from '../../../components/carousels/TemplateCarousel';
 import DynamicIcon from '../../../components/icons/DynamicIcon';
-import { WEBVIEW } from '../../../navigation/ScreenNames';
 import ProjectsCarousel from './components /ProjectsCarousel';
 import PlatformBrandsCarousel from './components /PlatformBrandsCarousel';
 import useTranslation from '../../../hooks/useTranslation';
 import useTrackEvent from '../../../hooks/events/useTrackEvent';
+
+const IOS_SYSTEM_GROUPED_BG = '#F2F2F7';
 
 const FEEDBACK_FORM_URL =
     'https://docs.google.com/forms/d/e/1FAIpQLScOnFg0D06OPE5T5w7SZEcy12m9Si0JMAhOAGjGqj5NtMMVgA/viewform?usp=publish-editor';
@@ -209,12 +210,12 @@ const HomeScreen = ({ navigation }) => {
                 alignItems="center"
                 justifyContent="space-between"
                 borderRadius={16}
+                backgroundColor={WHITE}
                 onPress={() => {
                     trackEvent('home_media_kit_tapped');
                     navigation.navigate(PROFILE_STACK);
                 }}
-                borderWidth={1}
-                borderColor={BLACK_20}
+                style={SHADOW('card', WHITE)}
             >
                 <TemplateBox>
                     <TemplateText size={16} semiBold>
@@ -224,7 +225,7 @@ const HomeScreen = ({ navigation }) => {
                         <TemplateText size={14}>{t('home.mediaKit.description')}</TemplateText>
                     </TemplateBox>
                 </TemplateBox>
-                <DynamicIcon name={'ArrowRight'} size={24} />
+                <DynamicIcon name={'ArrowRight'} size={24} color={IOS_BLUE} />
             </TemplateBox>
 
             {showPlatformBrandsCarousel && <PlatformBrandsCarousel style={styles.platformBrandsCarousel} />}
@@ -330,7 +331,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: IS_ANDROID ? TRANSPARENT : WHITE,
+        backgroundColor: IS_ANDROID ? TRANSPARENT : IOS_SYSTEM_GROUPED_BG,
     },
     contentContainer: {
         flexGrow: 1,

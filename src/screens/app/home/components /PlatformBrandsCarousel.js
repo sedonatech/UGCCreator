@@ -176,15 +176,15 @@ const PlatformBrandsCarousel = ({ style }) => {
     return (
         <>
             <TemplateBox style={style}>
-                <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={10}>
-                    <TemplateBox width={SCREEN_WIDTH * 0.8}>
-                        <TemplateText size={16} semiBold>
+                <TemplateBox row alignItems="center" ph={WRAPPER_MARGIN} mb={6}>
+                    <TemplateBox width={SCREEN_WIDTH * 0.7}>
+                        <TemplateText size={22} bold>
                             {t('home.platformBrandsCarousel.title')}
                         </TemplateText>
                     </TemplateBox>
                     <TemplateBox flex />
                     <TemplateTouchable onPress={() => navigation.navigate(PLATFORM_BRANDS_SCREEN)}>
-                        <TemplateText startCase size={14} underLine color={IOS_BLUE}>
+                        <TemplateText size={15} color={IOS_BLUE}>
                             {t('home.platformBrandsCarousel.seeAll')}
                         </TemplateText>
                     </TemplateTouchable>
@@ -224,8 +224,6 @@ const PlatformBrandsCarousel = ({ style }) => {
                                 style={styles.card}
                                 width={WRAPPED_SCREEN_WIDTH - 20}
                                 mr={wp(16)}
-                                borderWidth={1}
-                                borderColor={BLACK_20}
                                 onPress={() => {
                                     trackEvent('brand_card_tapped', { brandName: item?.name });
                                     setSelectedBrand(item);
@@ -267,13 +265,13 @@ const PlatformBrandsCarousel = ({ style }) => {
 
                                     <TemplateBox
                                         pv={4}
-                                        ph={16}
-                                        borderRadius={10}
-                                        backgroundColor={IOS_BLUE_20}
+                                        ph={12}
+                                        borderRadius={20}
+                                        backgroundColor="#F2F2F7"
                                         alignItems="center"
                                         justifyContent="center"
                                     >
-                                        <TemplateText size={12} medium>
+                                        <TemplateText size={12} medium color={DARK_METAL}>
                                             {translateCategory(item?.category)}
                                         </TemplateText>
                                     </TemplateBox>
@@ -386,9 +384,11 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: WHITE,
-        borderColor: BLACK_20,
-        borderWidth: 1.2,
-        shadowColor: BLACK,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
     },
 });
 

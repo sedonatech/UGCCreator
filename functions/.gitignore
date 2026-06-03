@@ -1,2 +1,4 @@
 node_modules/
 *.local
+# Audit scripts (exécutés localement pour data cleanup, ne pas déployer)
+audit-scripts/
