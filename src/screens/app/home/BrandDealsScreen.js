@@ -36,6 +36,7 @@ const BrandDealsScreen = ({ navigation }) => {
             await createBrandApplication({
                 ownerId: uid,
                 brandName: item?.company || item?.title,
+                brandEmail: item?.email,
                 link: item?.link,
                 status: 'applied',
             });

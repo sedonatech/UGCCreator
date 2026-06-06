@@ -12,6 +12,8 @@ import androidSubscription from './defaults/androidSubscription.json';
 import support from './defaults/support.json';
 import testers from './defaults/testers.json';
 import ugcGigs from './defaults/ugcGigs.json';
+import affiliate from './defaults/affiliate.json';
+import brandsCatalogue from './defaults/brandsCatalogue.json';
 
 // Map of subscription benefits by language
 export const subscriptionBenefitsMap = {
@@ -52,4 +54,6 @@ export default {
     androidSubscription,
     support,
     testers,
+    affiliate,
+    brandsCatalogue,
 };

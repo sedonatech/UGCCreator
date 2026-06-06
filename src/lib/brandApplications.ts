@@ -20,12 +20,23 @@ export type BrandApplication = {
     id?: string;
     ownerId: string;
     brandName: string;
+    /** Brand contact email — required for the auto follow-up sequence (Smart Sequence) */
+    brandEmail?: string;
     link: string;
     status: ApplicationStatus;
     notes?: string;
     appliedAt?: Timestamp;
     updatedAt?: Timestamp;
     nextFollowUp?: Timestamp;
+    /**
+     * Smart Sequence step counter for auto follow-up emails.
+     * 0 = initial email sent (manual), J+3 follow-up not yet sent
+     * 1 = J+3 follow-up sent, J+7 follow-up not yet sent
+     * 2 = J+7 follow-up sent, sequence complete
+     */
+    sequenceStep?: number;
+    /** Timestamp of last auto follow-up email sent by Cloud Function */
+    lastFollowUpSentAt?: Timestamp;
 };
 
 const COLLECTION = 'brandApplications';
@@ -51,6 +62,7 @@ export async function createBrandApplication(
         appliedAt: now,
         updatedAt: now,
         nextFollowUp: Timestamp.fromMillis(followUpDate.getTime()),
+        sequenceStep: 0,
     });
 
     await scheduleFollowUpNotification(ref.id, input.brandName, followUpDate);

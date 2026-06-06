@@ -155,6 +155,7 @@ const PlatformBrandsCarousel = ({ style }) => {
             createBrandApplication({
                 ownerId: uid,
                 brandName: item.name,
+                brandEmail: item.email,
                 link: item.link || '',
                 status: 'applied',
             })

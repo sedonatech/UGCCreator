@@ -47,6 +47,7 @@ const AffiliateBrandsCarousel = ({ style }) => {
             await createBrandApplication({
                 ownerId: uid,
                 brandName: item?.name,
+                brandEmail: item?.email,
                 link: item?.link,
                 status: 'applied',
             });
